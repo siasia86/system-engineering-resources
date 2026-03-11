@@ -1,0 +1,41 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+*.cache
+
+# Personal notes (not for sharing)
+*_private.md
+*_personal.md
+notes/
+
+# Backup files
+*.backup
+*.old
+
+# 회사 특정 정보 (제외)
+51_siasia/
+51_masang/
+
+# 중복 디렉토리
+33_sjyun_32_readme.md/
+00_readme.md/
+99_ETC/
