@@ -1,20 +1,19 @@
-# Python Class 가이드
+# Python Class 튜토리얼
+
+초보자를 위한 Python 클래스 완벽 가이드입니다.
+
+> **참고**: 클래스 구성 요소(생성자, 메서드, 프로퍼티, 매직 메서드 등)의 상세한 레퍼런스는 [python_class_components.md](./python_class_components.md)를 참고하세요.
 
 ## 목차
 1. [기초 개념](#기초-개념)
 2. [클래스 정의와 인스턴스](#클래스-정의와-인스턴스)
-3. [생성자와 소멸자](#생성자와-소멸자)
-4. [속성과 메서드](#속성과-메서드)
-5. [상속](#상속)
-6. [특수 메서드](#특수-메서드)
-7. [클래스 변수 vs 인스턴스 변수](#클래스-변수-vs-인스턴스-변수)
-8. [정적 메서드와 클래스 메서드](#정적-메서드와-클래스-메서드)
-9. [프로퍼티](#프로퍼티)
-10. [실전 예제](#실전-예제)
-11. [고급 주제](#고급-주제)
-12. [실전 팁](#실전-팁-tips)
-13. [자주하는 실수](#자주하는-실수)
-14. [베스트 프랙티스](#베스트-프랙티스)
+3. [생성자와 기본 사용법](#생성자와-기본-사용법)
+4. [상속](#상속)
+5. [실전 예제](#실전-예제)
+6. [고급 주제](#고급-주제)
+7. [실전 팁](#실전-팁-tips)
+8. [자주하는 실수](#자주하는-실수)
+9. [베스트 프랙티스](#베스트-프랙티스)
 
 ---
 
@@ -72,7 +71,7 @@ dog2.bark()  # <__main__.Dog object at 0x...>가 짖습니다 (다른 주소)
 
 ---
 
-## 생성자와 소멸자
+## 생성자와 기본 사용법
 
 ### 생성자 (__init__)
 인스턴스 생성 시 자동 호출
@@ -104,46 +103,11 @@ dog1 = Dog("바둑이", 3)
 dog2 = Dog("멍멍이")  # age는 기본값 1
 ```
 
-### 소멸자 (__del__)
-인스턴스 삭제 시 자동 호출
-
+### 인스턴스 속성과 메서드
 ```python
 class Dog:
     def __init__(self, name):
-        self.name = name
-        print(f"{self.name} 생성됨")
-    
-    def __del__(self):
-        print(f"{self.name} 삭제됨")
-
-dog = Dog("바둑이")  # 바둑이 생성됨
-del dog              # 바둑이 삭제됨
-```
-
----
-
-## 속성과 메서드
-
-### 인스턴스 속성
-```python
-class Dog:
-    def __init__(self, name, age):
         self.name = name  # 인스턴스 속성
-        self.age = age
-
-dog = Dog("바둑이", 3)
-print(dog.name)  # 바둑이
-
-# 속성 추가/수정 가능
-dog.color = "갈색"
-print(dog.color)  # 갈색
-```
-
-### 인스턴스 메서드
-```python
-class Dog:
-    def __init__(self, name):
-        self.name = name
     
     def bark(self):  # 인스턴스 메서드
         return f"{self.name}가 멍멍!"
@@ -155,6 +119,8 @@ dog = Dog("바둑이")
 print(dog.bark())  # 바둑이가 멍멍!
 print(dog.get_age_in_human_years(3))  # 21
 ```
+
+> **더 알아보기**: 생성자, 메서드 종류, 프로퍼티, 매직 메서드에 대한 자세한 내용은 [python_class_components.md](./python_class_components.md)를 참고하세요.
 
 ---
 
@@ -202,12 +168,6 @@ dog = Dog("바둑이", "진돗개")
 # Dog 생성: 진돗개
 ```
 
-**실행 결과:**
-```
-Animal 생성: 바둑이
-Dog 생성: 진돗개
-```
-
 ### 다중 상속
 ```python
 class Flyable:
@@ -225,339 +185,6 @@ class Duck(Flyable, Swimmable):
 duck = Duck("도널드")
 print(duck.fly())   # 날 수 있어요
 print(duck.swim())  # 수영할 수 있어요
-```
-
----
-
-## 특수 메서드
-
-### __str__ (문자열 표현)
-```python
-class Dog:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-    
-    def __str__(self):
-        return f"Dog(name={self.name}, age={self.age})"
-
-dog = Dog("바둑이", 3)
-print(dog)  # Dog(name=바둑이, age=3)
-```
-
-### __repr__ (개발자용 표현)
-```python
-class Dog:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-    
-    def __repr__(self):
-        return f"Dog('{self.name}', {self.age})"
-
-dog = Dog("바둑이", 3)
-print(repr(dog))  # Dog('바둑이', 3)
-```
-
-### __len__ (길이)
-```python
-class Team:
-    def __init__(self, members):
-        self.members = members
-    
-    def __len__(self):
-        return len(self.members)
-
-team = Team(["철수", "영희", "민수"])
-print(len(team))  # 3
-```
-
-### __getitem__ (인덱싱)
-```python
-class Team:
-    def __init__(self, members):
-        self.members = members
-    
-    def __getitem__(self, index):
-        return self.members[index]
-
-team = Team(["철수", "영희", "민수"])
-print(team[0])  # 철수
-print(team[1])  # 영희
-```
-
-### __add__ (덧셈)
-```python
-class Point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-    
-    def __add__(self, other):
-        return Point(self.x + other.x, self.y + other.y)
-    
-    def __str__(self):
-        return f"Point({self.x}, {self.y})"
-
-p1 = Point(1, 2)
-p2 = Point(3, 4)
-p3 = p1 + p2
-print(p3)  # Point(4, 6)
-```
-
-**실행 결과:**
-```
-Point(4, 6)
-```
-
-### __eq__ (비교)
-```python
-class Dog:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-    
-    def __eq__(self, other):
-        return self.name == other.name and self.age == other.age
-
-dog1 = Dog("바둑이", 3)
-dog2 = Dog("바둑이", 3)
-dog3 = Dog("멍멍이", 3)
-
-print(dog1 == dog2)  # True
-print(dog1 == dog3)  # False
-```
-
----
-
-## 클래스 변수 vs 인스턴스 변수
-
-### 인스턴스 변수
-각 인스턴스마다 독립적
-
-```python
-class Dog:
-    def __init__(self, name):
-        self.name = name  # 인스턴스 변수
-
-dog1 = Dog("바둑이")
-dog2 = Dog("멍멍이")
-
-print(dog1.name)  # 바둑이
-print(dog2.name)  # 멍멍이
-```
-
-### 클래스 변수
-모든 인스턴스가 공유
-
-```python
-class Dog:
-    species = "Canis familiaris"  # 클래스 변수
-    
-    def __init__(self, name):
-        self.name = name  # 인스턴스 변수
-
-dog1 = Dog("바둑이")
-dog2 = Dog("멍멍이")
-
-print(dog1.species)  # Canis familiaris
-print(dog2.species)  # Canis familiaris
-
-# 클래스 변수 변경
-Dog.species = "개"
-print(dog1.species)  # 개
-print(dog2.species)  # 개
-```
-
-### 인스턴스 카운팅
-```python
-class Dog:
-    count = 0  # 클래스 변수
-    
-    def __init__(self, name):
-        self.name = name
-        Dog.count += 1  # 생성될 때마다 증가
-
-dog1 = Dog("바둑이")
-dog2 = Dog("멍멍이")
-dog3 = Dog("뽀삐")
-
-print(Dog.count)  # 3
-```
-
----
-
-## 정적 메서드와 클래스 메서드
-
-### 정적 메서드 (@staticmethod)
-클래스나 인스턴스와 무관한 독립적인 메서드
-
-```python
-class Math:
-    @staticmethod
-    def add(x, y):
-        return x + y
-    
-    @staticmethod
-    def multiply(x, y):
-        return x * y
-
-# 인스턴스 생성 없이 호출
-print(Math.add(5, 3))       # 8
-print(Math.multiply(5, 3))  # 15
-```
-
-### 클래스 메서드 (@classmethod)
-클래스 자체를 다루는 메서드
-
-```python
-class Dog:
-    count = 0
-    
-    def __init__(self, name):
-        self.name = name
-        Dog.count += 1
-    
-    @classmethod
-    def get_count(cls):
-        return cls.count
-    
-    @classmethod
-    def create_puppy(cls, name):
-        return cls(name)
-
-dog1 = Dog("바둑이")
-dog2 = Dog("멍멍이")
-
-print(Dog.get_count())  # 2
-
-# 팩토리 메서드로 활용
-puppy = Dog.create_puppy("뽀삐")
-print(Dog.get_count())  # 3
-```
-
-**실행 결과:**
-```
-2
-3
-```
-
-### 비교
-
-```python
-class Example:
-    class_var = "클래스 변수"
-    
-    def instance_method(self):
-        # self: 인스턴스 접근
-        return f"인스턴스 메서드: {self}"
-    
-    @classmethod
-    def class_method(cls):
-        # cls: 클래스 접근
-        return f"클래스 메서드: {cls.class_var}"
-    
-    @staticmethod
-    def static_method():
-        # self, cls 없음
-        return "정적 메서드"
-
-obj = Example()
-print(obj.instance_method())     # 인스턴스 메서드
-print(Example.class_method())    # 클래스 메서드: 클래스 변수
-print(Example.static_method())   # 정적 메서드
-```
-
----
-
-## 프로퍼티
-
-### @property (getter)
-```python
-class Circle:
-    def __init__(self, radius):
-        self._radius = radius
-    
-    @property
-    def radius(self):
-        return self._radius
-    
-    @property
-    def diameter(self):
-        return self._radius * 2
-    
-    @property
-    def area(self):
-        return 3.14 * self._radius ** 2
-
-circle = Circle(5)
-print(circle.radius)    # 5
-print(circle.diameter)  # 10
-print(circle.area)      # 78.5
-```
-
-**실행 결과:**
-```
-5
-10
-78.5
-```
-
-### @property.setter
-```python
-class Person:
-    def __init__(self, name, age):
-        self._name = name
-        self._age = age
-    
-    @property
-    def age(self):
-        return self._age
-    
-    @age.setter
-    def age(self, value):
-        if value < 0:
-            raise ValueError("나이는 0 이상이어야 합니다")
-        self._age = value
-
-person = Person("홍길동", 30)
-print(person.age)  # 30
-
-person.age = 31    # setter 호출
-print(person.age)  # 31
-
-# person.age = -1  # ValueError
-```
-
-**실행 결과:**
-```
-30
-31
-```
-`person.age = -1` 실행 시: `ValueError: 나이는 0 이상이어야 합니다`
-
-### 읽기 전용 속성
-```python
-class Product:
-    def __init__(self, name, price):
-        self._name = name
-        self._price = price
-    
-    @property
-    def name(self):
-        return self._name
-    
-    @property
-    def price(self):
-        return self._price
-    
-    # setter 없음 = 읽기 전용
-
-product = Product("노트북", 1000000)
-print(product.name)   # 노트북
-print(product.price)  # 1000000
-
-# product.price = 900000  # AttributeError
 ```
 
 ---
@@ -705,7 +332,7 @@ class Date:
     @classmethod
     def today(cls):
         """오늘 날짜 반환 (예시)"""
-        return cls(2026, 3, 3)
+        return cls(2026, 3, 11)
     
     def __str__(self):
         return f"{self.year}-{self.month:02d}-{self.day:02d}"
@@ -716,12 +343,12 @@ class Date:
                 self.day == other.day)
 
 # 사용
-date1 = Date(2026, 3, 3)
-date2 = Date.from_string("2026-03-03")
+date1 = Date(2026, 3, 11)
+date2 = Date.from_string("2026-03-11")
 date3 = Date.today()
 
-print(date1)  # 2026-03-03
-print(date2)  # 2026-03-03
+print(date1)  # 2026-03-11
+print(date2)  # 2026-03-11
 print(date1 == date2)  # True
 ```
 
@@ -804,44 +431,7 @@ print(obj._protected)  # 2 (접근 가능하지만 권장 안 함)
 print(obj._MyClass__private)  # 3 (맹글링된 이름으로 접근 가능)
 ```
 
-**실행 결과:**
-```
-1
-2
-3
-```
-
-### Tip 2: __slots__로 메모리 절약
-```python
-# 일반 클래스 (딕셔너리 사용)
-class Point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-# __slots__ 사용 (메모리 절약)
-class PointWithSlots:
-    __slots__ = ['x', 'y']
-    
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-# 장점: 메모리 사용량 감소 (수천~수만 개 인스턴스 생성 시 유용)
-# 단점: 동적으로 속성 추가 불가
-
-p = PointWithSlots(1, 2)
-print(p.x, p.y)  # 1 2
-# p.z = 3  # AttributeError: 'PointWithSlots' object has no attribute 'z'
-```
-
-**실행 결과:**
-```
-1 2
-```
-`p.z = 3` 실행 시: `AttributeError: 'PointWithSlots' object has no attribute 'z'`
-
-###  Tip 3: isinstance()와 type() 차이
+### Tip 2: isinstance()와 type() 차이
 ```python
 class Animal:
     pass
@@ -860,15 +450,7 @@ print(type(dog) == Dog)     # True
 print(type(dog) == Animal)  # False
 ```
 
-**실행 결과:**
-```
-True
-True
-True
-False
-```
-
-###  Tip 4: hasattr, getattr, setattr
+### Tip 3: hasattr, getattr, setattr
 ```python
 class Dog:
     def __init__(self, name):
@@ -889,45 +471,7 @@ setattr(dog, 'age', 3)
 print(dog.age)  # 3
 ```
 
-###  Tip 5: 클래스 변수 주의사항
-```python
-# 위험: 가변 객체를 클래스 변수로 사용
-class Dog:
-    tricks = []  # 클래스 변수 (모든 인스턴스 공유!)
-    
-    def __init__(self, name):
-        self.name = name
-    
-    def add_trick(self, trick):
-        self.tricks.append(trick)
-
-dog1 = Dog("바둑이")
-dog2 = Dog("멍멍이")
-
-dog1.add_trick("앉아")
-dog2.add_trick("손")
-
-print(dog1.tricks)  # ['앉아', '손'] - 공유됨!
-print(dog2.tricks)  # ['앉아', '손'] - 공유됨!
-
-# 올바른 방법: 인스턴스 변수 사용
-class Dog:
-    def __init__(self, name):
-        self.name = name
-        self.tricks = []  # 인스턴스 변수
-    
-    def add_trick(self, trick):
-        self.tricks.append(trick)
-```
-
-**실행 결과:**
-```
-['앉아', '손']
-['앉아', '손']
-```
-⚠️ 두 개가 같은 리스트를 공유합니다!
-
-###  Tip 6: 메서드 체이닝
+### Tip 4: 메서드 체이닝
 ```python
 class Calculator:
     def __init__(self, value=0):
@@ -950,104 +494,7 @@ result = Calculator(10).add(5).multiply(2).subtract(3)
 print(result.value)  # 27
 ```
 
-**실행 결과:**
-```
-27
-```
-계산 과정: (10 + 5) × 2 - 3 = 15 × 2 - 3 = 30 - 3 = 27
-
-###  Tip 7: __call__로 호출 가능한 객체
-```python
-class Multiplier:
-    def __init__(self, factor):
-        self.factor = factor
-    
-    def __call__(self, x):
-        return x * self.factor
-
-double = Multiplier(2)
-triple = Multiplier(3)
-
-print(double(5))  # 10
-print(triple(5))  # 15
-```
-
-**실행 결과:**
-```
-10
-15
-```
-
-###  Tip 8: 컨텍스트 매니저 (__enter__, __exit__)
-```python
-class FileManager:
-    def __init__(self, filename, mode):
-        self.filename = filename
-        self.mode = mode
-        self.file = None
-    
-    def __enter__(self):
-        self.file = open(self.filename, self.mode)
-        return self.file
-    
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.file:
-            self.file.close()
-
-# with 문 사용
-with FileManager('test.txt', 'w') as f:
-    f.write('Hello, World!')
-# 자동으로 파일 닫힘
-```
-
-###  Tip 9: 클래스 데코레이터
-```python
-def singleton(cls):
-    """싱글톤 데코레이터"""
-    instances = {}
-    
-    def get_instance(*args, **kwargs):
-        if cls not in instances:
-            instances[cls] = cls(*args, **kwargs)
-        return instances[cls]
-    
-    return get_instance
-
-@singleton
-class Database:
-    def __init__(self):
-        print("Database 연결")
-
-db1 = Database()  # Database 연결
-db2 = Database()  # 출력 없음 (같은 인스턴스)
-print(db1 is db2)  # True
-```
-
-###  Tip 10: __dict__로 속성 확인
-```python
-class Dog:
-    species = "Canis familiaris"
-    
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-
-dog = Dog("바둑이", 3)
-
-# 인스턴스 속성
-print(dog.__dict__)  # {'name': '바둑이', 'age': 3}
-
-# 클래스 속성
-print(Dog.__dict__)  # {..., 'species': 'Canis familiaris', ...}
-```
-
-**실행 결과:**
-```
-{'name': '바둑이', 'age': 3}
-{'__module__': '__main__', 'species': 'Canis familiaris', '__init__': <function Dog.__init__ at ...>, '__dict__': <attribute '__dict__' of 'Dog' objects>, '__weakref__': <attribute '__weakref__' of 'Dog' objects>, '__doc__': None}
-```
-
-###  Tip 11: 상속 순서 확인 (MRO)
+### Tip 5: 상속 순서 확인 (MRO)
 ```python
 class A:
     pass
@@ -1064,76 +511,9 @@ class D(B, C):
 # Method Resolution Order
 print(D.__mro__)
 # (<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>)
-
-# 또는
-print(D.mro())
 ```
 
-**실행 결과:**
-```
-(<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <class 'object'>)
-```
-메서드 탐색 순서: D → B → C → A → object
-
-###  Tip 12: 추상 속성
-```python
-from abc import ABC, abstractmethod
-
-class Shape(ABC):
-    @property
-    @abstractmethod
-    def area(self):
-        pass
-
-class Circle(Shape):
-    def __init__(self, radius):
-        self.radius = radius
-    
-    @property
-    def area(self):
-        return 3.14 * self.radius ** 2
-
-circle = Circle(5)
-print(circle.area)  # 78.5
-```
-
-###  Tip 13: 클래스 비교 연산자 전체 구현
-```python
-from functools import total_ordering
-
-@total_ordering
-class Person:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-    
-    def __eq__(self, other):
-        return self.age == other.age
-    
-    def __lt__(self, other):
-        return self.age < other.age
-    
-    # @total_ordering이 나머지 연산자 자동 생성
-    # __le__, __gt__, __ge__
-
-p1 = Person("철수", 20)
-p2 = Person("영희", 25)
-
-print(p1 < p2)   # True
-print(p1 <= p2)  # True
-print(p1 > p2)   # False
-print(p1 >= p2)  # False
-```
-
-**실행 결과:**
-```
-True
-True
-False
-False
-```
-
-###  Tip 14: 복사 (얕은 복사 vs 깊은 복사)
+### Tip 6: 복사 (얕은 복사 vs 깊은 복사)
 ```python
 import copy
 
@@ -1158,40 +538,6 @@ dog3.toys.append("공2")
 
 print(dog1.toys)  # ['공', '인형', '뼈다귀'] (독립적)
 print(dog3.toys)  # ['공', '인형', '뼈다귀', '공2']
-```
-
-**실행 결과:**
-```
-바둑이
-['공', '인형', '뼈다귀']
-['공', '인형', '뼈다귀']
-['공', '인형', '뼈다귀', '공2']
-```
-얕은 복사: name은 독립적이지만 toys 리스트는 공유됨!
-
-###  Tip 15: 디버깅용 __repr__
-```python
-class Dog:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-    
-    def __repr__(self):
-        # 재생성 가능한 형태로 표현
-        return f"Dog('{self.name}', {self.age})"
-    
-    def __str__(self):
-        # 사용자 친화적 표현
-        return f"{self.name} ({self.age}살)"
-
-dog = Dog("바둑이", 3)
-print(str(dog))   # 바둑이 (3살)
-print(repr(dog))  # Dog('바둑이', 3)
-print(dog)        # 바둑이 (3살) (__str__ 우선)
-
-# 리스트에서는 __repr__ 사용
-dogs = [dog]
-print(dogs)  # [Dog('바둑이', 3)]
 ```
 
 ---
@@ -1355,3 +701,6 @@ class Dog:
 - 상속으로 코드 재사용
 - 특수 메서드로 연산자 오버로딩
 - 프로퍼티로 캡슐화
+
+**더 알아보기:**
+- [python_class_components.md](./python_class_components.md) - 클래스 구성 요소 상세 레퍼런스
