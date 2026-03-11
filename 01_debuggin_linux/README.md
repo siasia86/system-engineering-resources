@@ -145,7 +145,7 @@ gdb ./myapp core
 valgrind --leak-check=full ./myapp
 ```
 
-## 📞 지원
+##  지원
 
 ### 문의
 - **Slack:** -
@@ -166,5 +166,5 @@ valgrind --leak-check=full ./myapp
 
 **최종 업데이트:** 2026-01-29  
 **다음 리뷰:** 2026-04-29  
-**관리자:** 냠냠
+**관리자:** siasia
 

@@ -1113,5 +1113,5 @@ strace -o /tmp/trace.log -s 128 -p <PID>
 
 ---
 
-**문서 관리자:** SRE Team  
+**문서 관리자:** siasia86
 **피드백:** siasia.linux@gmail.com
