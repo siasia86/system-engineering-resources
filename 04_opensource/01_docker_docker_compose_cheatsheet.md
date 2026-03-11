@@ -1,6 +1,6 @@
 # Docker & Docker Compose Cheat Sheet
 
-## 1️⃣ Docker 기본 명령어
+## 1. Docker 기본 명령어
 
 ### 컨테이너 관리
 ```
@@ -37,7 +37,7 @@ docker volume rm $(docker volume ls -q) # 모든 볼륨 삭제
 docker system prune -a -f               # 사용하지 않는 모든 이미지/컨테이너/네트워크 정리
 ```
 
-## 2️⃣ Docker Compose 기본 명령어
+## 2. Docker Compose 기본 명령어
 
 ### 컨테이너 관리
 ```
