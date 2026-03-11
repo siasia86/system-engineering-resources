@@ -1,6 +1,6 @@
 # Contributing to System Engineering Learning Resources
 
-이 프로젝트에 기여해주셔서 감사합니다! 🎉
+이 프로젝트에 기여해주셔서 감사합니다! 
 
 ## 기여 방법
 
@@ -135,4 +135,4 @@ GitHub에서 Pull Request 생성
 
 ---
 
-감사합니다! 🙏
+감사합니다! 
