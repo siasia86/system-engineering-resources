@@ -63,7 +63,7 @@ systemctl status game-server.service
 
 | 번호 | 항목 | 설명 |
 |------|------|------|
-| (1) | `enabled` | 서버 부팅 시 자동 시작되도록 설정된 상태입니다 (`systemctl enable` 으로 설정) |
+| (1) | `enabled` | 서버(OS) 부팅 시 자동 시작되도록 설정된 상태입니다 (`systemctl enable` 으로 설정) |
 | (2) | `preset: enabled` | 배포판(OS)의 기본 정책에 의해 활성화된 상태를 의미합니다 |
 | (3) | `active (running)` | 현재 서비스가 정상적으로 실행 중인 상태입니다 |
 
@@ -73,6 +73,9 @@ systemctl status game-server.service
 
 ### n8n  : 수작업으로 만든 systemd 
 ![systemctl status 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_n8n-server.png)
+
+### rsync  : 서버(OS) 시작시 자동으로 실행 되지 않습니다. 
+![systemctl status 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_rsync.png)
 
 ```bash
 # 게임 서버 포트(예: 7777)의 리스닝 상태를 확인합니다.
@@ -106,6 +109,11 @@ uptime
 > - Load Average > 코어 수: 과부하 상태이며, 프로세스가 대기 중임을 의미합니다
 > - 예) 4코어 서버에서 load average 4.0 = 100% 사용, 8.0 = 200% (대기 발생)
 
+### uptime  
+![uptime 출력 예시](../98_image/game-infra-kpi-presentation/uptime_cmd.png)
+### w
+![w 출력 예시](../98_image/game-infra-kpi-presentation/w_cmd.png)
+
 ```bash
 # 최근 24시간 내 서비스 재시작 이력을 조회합니다.
 journalctl -u game-server.service --since "24 hours ago" | grep -i "start\|stop\|fail"
@@ -127,6 +135,8 @@ Get-EventLog -LogName System -EntryType Error -After (Get-Date).AddDays(-1) |
 # 시스템 부팅 시간을 확인합니다.
 systeminfo | findstr "부팅 시간"
 ```
+### powershell_netstat 
+![powershell_netstat_출력 예시](../98_image/game-infra-kpi-presentation/powershell_netstat.png)
 
 ### 1-5. 장애 대응 흐름도
 
