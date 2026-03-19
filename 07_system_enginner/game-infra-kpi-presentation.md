@@ -68,8 +68,10 @@ systemctl status game-server.service
 | (3) | `active (running)` | 현재 서비스가 정상적으로 실행 중인 상태입니다 |
 
 > 주요 Active 상태값: `active (running)` 실행 중 / `inactive (dead)` 중지됨 / `failed` 실행 실패
-
+# zabbix
 ![systemctl status 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_zabbix-server.png)
+# n8n 
+![systemctl status 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_n8n-server.png)
 
 ```bash
 # 게임 서버 포트(예: 7777)의 리스닝 상태를 확인합니다.
