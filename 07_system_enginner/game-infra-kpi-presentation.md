@@ -68,7 +68,7 @@ systemctl status game-server.service
 | (3) | `active (running)` | 현재 서비스가 정상적으로 실행 중인 상태입니다 |
 
 > 주요 Active 상태값: `active (running)` 실행 중 / `inactive (dead)` 중지됨 / `failed` 실행 실패
-### zabbix : 배포판에 있는 systemd
+### zabbix-server : 배포판에 있는 systemd
 ![systemctl status 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_zabbix-server.png)
 
 ### n8n  : 수작업으로 만든 systemd 
@@ -109,10 +109,8 @@ uptime
 > - Load Average > 코어 수: 과부하 상태이며, 프로세스가 대기 중임을 의미합니다
 > - 예) 4코어 서버에서 load average 4.0 = 100% 사용, 8.0 = 200% (대기 발생)
 
-### uptime  
-![uptime 출력 예시](../98_image/game-infra-kpi-presentation/uptime_cmd.png)
-### w
-![w 출력 예시](../98_image/game-infra-kpi-presentation/w_cmd.png)
+### uptime  + w
+![uptime w_출력 예시](../98_image/game-infra-kpi-presentation/uptime_cmd.png)
 
 ```bash
 # 최근 24시간 내 서비스 재시작 이력을 조회합니다.
@@ -165,16 +163,16 @@ systeminfo | findstr "부팅 시간"
 
 ### 1-6. 실무 권장 사항
 
-- Health Check 주기는 **10~30초**를 권장합니다 (너무 짧으면 오탐이 발생할 수 있습니다)
-- 장애 자동 전환(Failover)을 위해 Keepalived(VIP), HAProxy, AWS ALB Target Group 등을 활용하실 수 있습니다
-- 장애 등급(P1~P4)을 사전에 정의가 필요 합니다.
+- Health Check 주기는 **10~30초**를 권장 (너무 짧으면 오탐이 발생할 수 있습니다)
+- 장애 자동 전환(Failover)을 위해 Keepalived(VIP), HAProxy, AWS ALB Target Group 등을 활용
+- 장애 등급(P1~P4)을 사전에 정의가 필요
 
 ### 1-7. 참고 자료
 
-- [SLA Uptime 계산기 및 등급별 다운타임 산출](https://devopsprojectshq.com/tools/sla-tool/)
-- [99.9%와 99.99% SLA 차이점 상세 설명](https://medium.com/axel-springer-tech/whats-the-difference-between-99-9-and-99-99-sla-uptime-489e201a3c7b)
-- [Uptime 비율별 허용 다운타임 계산](https://onlineornot.com/uptime-calculator)
-- [SLA Uptime 산출 공식 및 활용 방법](https://deadly.hostingpost.com/)
+- [99.9%와 99.99% SLA 차이점 상세 설명](https://medium.com/axel-springer-tech/whats-the-difference-between-99-9-and-99-99-sla-uptime-489e201a3c7b) ★★
+- [Uptime 비율별 허용 다운타임 계산](https://onlineornot.com/uptime-calculator) ★
+- [SLA Uptime 계산기 및 등급별 다운타임 산출](https://devopsprojectshq.com/tools/sla-tool/) ★
+- [SLA Uptime 산출 공식 및 활용 방법](https://deadly.hostingpost.com/) ★
 
 ---
 
@@ -221,12 +219,74 @@ PING naver.com (223.130.192.248) 56(84) bytes of data.
 
 
 # TCP 연결의 각 단계별 소요 시간을 측정합니다.
-curl -s -o /dev/null -w "DNS: %{time_namelookup}s\nConnect: %{time_connect}s\nTTFB: %{time_starttransfer}s\nTotal: %{time_total}s\n" http://api.game.com/status
-curl -w "%{time_total}\n" game-server.example.com 
+curl -s -o /dev/null -w "DNS: %{time_namelookup}s\nConnect: %{time_connect}s\nTTFB: %{time_starttransfer}s\nTotal: %{time_total}s\n" https://google.com
+```
 
-# MTR을 사용하여 네트워크 경로별 지연 구간을 분석합니다.
-mtr --report --report-cycles 20 game-server.example.com
+**출력 예시 및 항목 설명:**
 
+```
+DNS: 0.000522s
+Connect: 0.028811s
+TTFB: 0.211920s
+Total: 0.211989s
+```
+
+```
+|-- DNS 조회 --|-- TCP 연결 --|-- 서버 처리 + 첫 바이트 수신 --|-- 데이터 전송 --|
+0          0.0005s       0.028s                          0.211s          0.211s
+            namelookup       connect                       TTFB             Total
+```
+
+| 항목 | curl 변수 | 설명 |
+|------|-----------|------|
+| DNS | `time_namelookup` | 도메인 → IP 주소 DNS 조회에 걸린 시간입니다 |
+| Connect | `time_connect` | TCP 3-way handshake 완료까지 걸린 시간입니다 (DNS 포함) |
+| TTFB | `time_starttransfer` | 요청 후 서버로부터 첫 번째 바이트를 수신하기까지의 시간입니다 |
+| Total | `time_total` | 전체 요청~응답 완료까지의 총 소요 시간입니다 |
+
+> TTFB(Time To First Byte)는 서버 응답 성능의 핵심 지표입니다. 이 값이 높으면 서버 처리 지연 또는 네트워크 구간 병목을 의심해야 합니다.
+
+```bash
+
+# MTR을 사용하여 네트워크 경로별 지연 구간을 분석합니다 (TCP 모드).
+# ICMP가 차단된 환경에서는 --tcp 옵션을 사용합니다.
+sudo mtr --report --report-cycles 20 --tcp --port 443 google.com
+```
+
+**출력 예시 및 항목 설명:**
+
+```
+HOST: sjyun                       Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- _gateway                   0.0%    20    0.6   0.6   0.3   4.8   1.0
+  2.|-- ???                       100.0    20    0.0   0.0   0.0   0.0   0.0
+  3.|-- ???                       100.0    20    0.0   0.0   0.0   0.0   0.0
+  4.|-- 112.174.48.169             0.0%    20    1.2   1.6   1.0   6.0   1.1
+  5.|-- 112.174.84.129             0.0%    20    1.6   2.6   1.2  16.7   3.6
+  6.|-- 72.14.202.136              0.0%    20   25.4  23.8  22.1  26.2   1.6
+  7.|-- 142.251.254.143            0.0%    20   29.8  27.6  25.3  29.8   1.2
+  8.|-- 142.250.60.160             0.0%    20   29.5  27.6  25.5  31.9   1.6
+  ...
+ 15.|-- tu-in-f102.1e100.net      65.0%    20   27.3  28.2  27.3  30.0   0.9
+```
+
+| 항목 | 설명 |
+|------|------|
+| Loss% | 패킷 손실률입니다 (0%가 정상이며, 높으면 해당 구간에서 패킷 유실이 발생하고 있습니다) |
+| Snt | 전송한 패킷 수입니다 (`--report-cycles` 값과 동일합니다) |
+| Last | 마지막 패킷의 왕복 시간(ms)입니다 |
+| Avg | 평균 왕복 시간(ms)입니다 |
+| Best | 가장 빠른 왕복 시간(ms)입니다 |
+| Wrst | 가장 느린 왕복 시간(ms)입니다 |
+| StDev | 표준편차입니다 (값이 크면 지연 시간이 불안정한 구간입니다) |
+
+> **MTR 분석 포인트**
+> - 특정 홉에서 Loss%가 급증하면 해당 구간이 병목입니다
+> - Avg가 이전 홉 대비 크게 증가하는 구간이 지연 원인입니다
+> - StDev가 높은 구간은 네트워크 품질이 불안정한 것을 의미합니다
+> - 중간 홉의 Loss%만 높고 최종 목적지는 0%라면 ICMP 제한일 수 있으므로 무시해도 됩니다
+
+
+```bash
 # MySQL의 Slow Query를 확인합니다.
 mysqladmin -u root -p processlist | grep -i "query"
 tail -f /var/log/mysql/slow-query.log
@@ -262,18 +322,148 @@ Get-Counter "\Web Service(*)\Current Connections" -SampleInterval 5 -MaxSamples 
 
 ### 2-5. 실무 권장 사항
 
-- 응답 시간은 평균값이 아닌 **P50, P95, P99 백분위**로 측정하시기 바랍니다 (평균값은 이상치를 숨길 수 있습니다)
-- 게임 장르별로 허용 가능한 지연 시간이 다릅니다: FPS < 30ms, MMORPG < 100ms, 턴제 < 500ms
-- 글로벌 서비스를 운영하실 경우, 리전별 Latency 대시보드를 반드시 구성하시기 바랍니다
+- 응답 시간은 평균값이 아닌 **P50, P95, P99 백분위**로 측정 (평균값은 이상치를 숨길 수 있습니다)
+- 게임 장르별로 허용 가능한 지연 시간이 다름: FPS < 30ms, MMORPG < 100ms, 턴제 < 500ms
+- 글로벌 서비스 경우, 리전별 Latency 대시보드를 반드시 구성
 
-### 2-6. 참고 자료
+### 2-6. IDC 내부 네트워크 구간별 지연
 
-- [P50, P95, P99 Latency 백분위 개념 및 활용](https://oneuptime.com/blog/post/2025-09-15-p50-vs-p95-vs-p99-latency-percentiles/view)
-- [Latency 지표의 실무 해석 방법](https://www.sebastianduerr.com/blog/latency-metrics-that-tell-the-truth)
-- [게임 네트워크 성능 최적화 기법](https://www.numberanalytics.com/blog/optimizing-network-performance-games)
-- [게임 Latency 종합 가이드 (RTT, Jitter, Packet Loss)](https://worldstream.com/en/gaming-latency-guide/)
-- [게임 플랫폼 모니터링 및 플레이어 경험 최적화](https://odown.com/blog/gaming-platform-monitoring-performance-player-experience-optimization)
-- [RTT 최적화를 통한 네트워크 성능 개선 전략](https://www.softwebsolutions.com/resources/reduce-rtt-optimize-network-performance/)
+IDC 환경에서는 서버 간 물리적 위치에 따라 네트워크 지연이 달라집니다.
+
+```
++----------+    ~0.1ms    +----------+
+| Server A |<------------>| Server B |   ← 같은 랙 (Same Rack)
++----------+              +----------+
+      |
+      | ~0.5ms
+      v
++----------+              +----------+
+| Server C |<------------>| Server D |   ← 다른 랙 (Different Rack)
++----------+    ~0.5ms    +----------+
+      |
+      | ~1ms
+      v
++----------+              +----------+
+| Server E |<------------>| Server F |   ← 다른 존/층 (Different Zone)
++----------+    ~1ms      +----------+
+```
+
+| 구간 | 예상 지연 | 설명 |
+|------|----------|------|
+| 같은 랙 내 서버 간 | ~0.1ms | ToR(Top of Rack) 스위치 1회 경유입니다 |
+| 다른 랙 서버 간 | ~0.5ms | Aggregation 스위치를 경유합니다 |
+| 다른 존/층 서버 간 | ~1ms | Core 스위치를 경유합니다 |
+| IDC → 외부 인터넷 | 5ms~ | Core → Border → ISP 경로를 거칩니다 |
+
+> **실무 포인트**
+> - 게임 서버와 DB 서버는 가능한 같은 랙 또는 인접 랙에 배치하여 지연을 최소화합니다
+> - `ping` 또는 `hping3`으로 서버 간 지연을 주기적으로 측정하여 기준값을 확보합니다
+
+```bash
+# 같은 IDC 내 서버 간 지연 측정
+ping -c 100 -i 0.1 <대상_서버_IP>
+
+# 결과에서 avg 값을 확인합니다
+# rtt min/avg/max/mdev = 0.05/0.08/0.15/0.02 ms
+```
+
+| 항목 | 예시 값 | 설명 |
+|------|--------|------|
+| min | 0.05ms | 전체 패킷 중 가장 빠른 왕복 시간입니다 |
+| avg | 0.08ms | 전체 패킷의 평균 왕복 시간입니다 |
+| max | 0.15ms | 전체 패킷 중 가장 느린 왕복 시간입니다 |
+| mdev | 0.02ms | 평균 편차(Mean Deviation)입니다. 값이 클수록 지연이 불안정합니다 |
+
+> `mdev`가 `avg` 대비 높으면 jitter(지터)가 심한 상태로, 게임 서비스에서 끊김 현상의 원인이 됩니다
+
+**IDC 내부 서버 간 지연 판단 기준:**
+
+| 상태 | avg | mdev | 판단 |
+|------|-----|------|------|
+| 🟢 정상 | < 0.5ms | < 0.1ms | 같은 랙 또는 인접 랙 수준입니다 |
+| 🟡 주의 | 0.5 ~ 2ms | 0.1 ~ 0.5ms | 다른 존/층 경유 또는 스위치 부하가 의심됩니다 |
+| 🔴 이상 | > 2ms | > 0.5ms | 네트워크 장비 장애, 루프, 대역폭 포화를 점검해야 합니다 |
+
+**IDC → 외부(유저) 구간 지연 판단 기준:**
+
+| 상태 | avg | mdev | 판단 |
+|------|-----|------|------|
+| 🟢 정상 | < 10ms | < 2ms | 국내 유저 기준 양호한 상태입니다 |
+| 🟡 주의 | 10 ~ 30ms | 2 ~ 10ms | 회선 혼잡 또는 경로 우회 가능성이 있습니다 |
+| 🔴 이상 | > 30ms | > 10ms | 회선 장애, ISP 문제, BGP 경로 이상을 점검해야 합니다 |
+
+> 위 기준은 국내 IDC 환경 기준이며, 해외 유저 대상 서비스는 물리적 거리에 따라 50~200ms도 정상 범위일 수 있습니다
+
+**광섬유 전파 속도 기반 물리적 최소 RTT:**
+
+빛의 속도(~30만 km/s)와 광섬유 내 전파 속도(빛의 약 2/3, ~20만 km/s)에 의해 아래 수치 이하로는 절대 내려갈 수 없습니다.
+
+```
+RTT = (거리 × 2) ÷ 200,000 km/s × 1000ms
+```
+
+| 구간 | 거리 (대략) | 최소 RTT (이론값) |
+|------|-----------|-----------------|
+| 서울 ↔ 부산 | ~330km | ~3.3ms |
+| 서울 ↔ 도쿄 | ~1,150km | ~11.5ms |
+| 서울 ↔ 미국 서부 (LA) | ~9,500km | ~95ms |
+| 서울 ↔ 미국 동부 (NY) | ~11,000km | ~110ms |
+| 서울 ↔ 유럽 (프랑크푸르트) | ~8,500km | ~85ms |
+| 지구 반대편 (최대) | ~20,000km | ~200ms |
+
+> **실제 RTT는 라우터 경유, 해저 케이블 우회 경로 등으로 이론값의 1.5~2배 정도 발생**
+> **글로벌 게임 서비스에서 각 리전에 서버를 배치해야 하는 근본적인 이유**
+
+### 2-7. IDC 회선 이중화와 장애 시 지연 변화
+
+IDC 회선 장애 시 백업 회선으로 전환되면서 네트워크 경로가 변경되고, 지연이 증가할 수 있습니다.
+
+```
+정상 상태 (주 회선)
++--------+    주 회선 (KT)     +--------+
+|  IDC   |====================>| 유저    |   RTT: 5ms
++--------+    백업 회선 (LG)   +--------+
+              (대기 중)
+
+장애 상태 (BGP Failover)
++--------+    주 회선 (KT) X   +--------+
+|  IDC   |-------- X           | 유저    |
++--------+    백업 회선 (LG)   +--------+
+          =====================>           RTT: 15ms (경로 변경)
+```
+
+| 항목 | 설명 |
+|------|------|
+| BGP Failover 시간 | 회선 장애 감지 후 경로 전환까지 30초~수 분 소요될 수 있습니다 |
+| 전환 중 영향 | Failover 동안 패킷 손실 및 접속 끊김이 발생할 수 있습니다 |
+| 경로 변경 후 지연 | 백업 회선의 경로가 다르므로 RTT가 증가할 수 있습니다 |
+| BFD 적용 시 | BGP에 BFD(Bidirectional Forwarding Detection)를 적용하면 감지 시간을 1초 이내로 단축할 수 있습니다 |
+
+```bash
+# 현재 BGP 경로 확인 (네트워크 장비 접근 가능 시)
+# show ip bgp summary
+# show ip route
+
+# 서버에서 외부 경로 변경 감지 (traceroute 경로 비교)
+sudo mtr --report --report-cycles 10 --tcp --port 443 google.com
+
+# 회선 장애 시 지연 변화를 로그로 기록합니다
+while true; do
+  echo "$(date '+%Y-%m-%d %H:%M:%S') $(ping -c 1 -W 2 8.8.8.8 | grep 'time=')" >> /var/log/latency_monitor.log
+  sleep 5
+done
+```
+
+> **실무 포인트**
+> - 주기적으로 주 회선과 백업 회선의 RTT를 비교 측정하여 기준값을 확보합니다
+> - BGP Failover 테스트를 정기적으로 수행하여 전환 시간과 영향 범위를 사전에 파악합니다
+> - 회선 장애 발생 시 알림(Slack, 문자 등)이 즉시 발송되도록 모니터링을 구성합니다
+
+### 2-8. 참고 자료
+
+- [P50, P95, P99 Latency 백분위 개념 및 활용](https://oneuptime.com/blog/post/2025-09-15-p50-vs-p95-vs-p99-latency-percentiles/view) ★
+- [Latency 지표의 실무 해석 방법](https://www.sebastianduerr.com/blog/latency-metrics-that-tell-the-truth) ★★
+- [RTT 최적화를 통한 네트워크 성능 개선 전략](https://www.softwebsolutions.com/resources/reduce-rtt-optimize-network-performance/) ★★★
 
 ---
 
