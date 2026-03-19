@@ -209,22 +209,14 @@ systeminfo | findstr "부팅 시간"
 ```bash
 # 네트워크 왕복 시간(RTT)을 측정합니다.
 ping -c 10 game-server.example.com
-
-Example)
-ping -c 10 naver.com
-PING naver.com (223.130.192.248) 56(84) bytes of data.
-
---- naver.com ping statistics ---
-10 packets transmitted, 0 received, 100% packet loss, time 9250ms
+```
 
 
+```bash
 # TCP 연결의 각 단계별 소요 시간을 측정합니다.
 curl -s -o /dev/null -w "DNS: %{time_namelookup}s\nConnect: %{time_connect}s\nTTFB: %{time_starttransfer}s\nTotal: %{time_total}s\n" https://google.com
-```
 
-**출력 예시 및 항목 설명:**
-
-```
+**출력 예시 및 항목 설명: **
 DNS: 0.000522s
 Connect: 0.028811s
 TTFB: 0.211920s
@@ -251,11 +243,9 @@ Total: 0.211989s
 # MTR을 사용하여 네트워크 경로별 지연 구간을 분석합니다 (TCP 모드).
 # ICMP가 차단된 환경에서는 --tcp 옵션을 사용합니다.
 sudo mtr --report --report-cycles 20 --tcp --port 443 google.com
-```
+
 
 **출력 예시 및 항목 설명:**
-
-```
 HOST: sjyun                       Loss%   Snt   Last   Avg  Best  Wrst StDev
   1.|-- _gateway                   0.0%    20    0.6   0.6   0.3   4.8   1.0
   2.|-- ???                       100.0    20    0.0   0.0   0.0   0.0   0.0
