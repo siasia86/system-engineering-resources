@@ -266,7 +266,7 @@ ss -tnp | grep game-server | wc -l
 cat /proc/sys/net/core/somaxconn
 sysctl net.ipv4.tcp_max_syn_backlog
 
-# 파일 디스크립터 사용량을 확인합니다 (동접 증가 시 fd 부족에 주의하셔야 합니다.
+# 파일 디스크립터 사용량을 확인합니다 (동접 증가 시 fd 부족에 주의하셔야 합니다)
 ls /proc/$(pgrep game-server)/fd | wc -l
 cat /proc/sys/fs/file-max
 ```
@@ -488,7 +488,7 @@ iptables -L -n --line-numbers
 # firewalld를 사용하는 경우
 firewall-cmd --list-all
 
-# 현재 열려 있는 포트를 확인합니다 (불필요한 포트 노출 여부를 점검합니다.
+# 현재 열려 있는 포트를 확인합니다 (불필요한 포트 노출 여부를 점검합니다)
 ss -tlnp
 
 # SSL 인증서의 만료일을 확인합니다.
