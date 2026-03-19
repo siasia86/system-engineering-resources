@@ -37,9 +37,9 @@
 
 ### 1-3. 게임 서비스의 특수성
 
-- 정기 점검(주 1회 등)은 가용성 산정에서 **제외**하는 것이 일반적입니다
-- 긴급 점검이나 롤백은 **장애 시간에 포함**됩니다
-- 채널/월드 단위의 부분 장애도 가용성에 영향을 줍니다
+- 정기 점검(주 1회 등)은 가용성 산정에서 **제외**하는 것이 일반적입니다.
+- 긴급 점검이나 롤백은 **장애 시간에 포함** 됩니다.
+- 채널/월드 단위의 부분 장애도 가용성에 영향을 줍니다.
 
 ### 1-4. 모니터링 및 확인 방법
 
@@ -48,7 +48,30 @@
 ```bash
 # 프로세스 생존 여부를 확인합니다.
 systemctl status game-server.service
+```
 
+**출력 예시 및 항목 설명:**
+
+```
+ Loaded: loaded (/usr/lib/systemd/system/game-server.service; enabled; preset: enabled)
+                                                                -------          -------
+                                                                (1)              (2)
+ Active: active (running) since Sat 2026-02-28 06:11:14 KST; 2 weeks 5 days ago
+         ----------------
+         (3)
+```
+
+| 번호 | 항목 | 설명 |
+|------|------|------|
+| (1) | `enabled` | 서버 부팅 시 자동 시작되도록 설정된 상태입니다 (`systemctl enable` 으로 설정) |
+| (2) | `preset: enabled` | 배포판(OS)의 기본 정책에 의해 활성화된 상태를 의미합니다 |
+| (3) | `active (running)` | 현재 서비스가 정상적으로 실행 중인 상태입니다 |
+
+> 주요 Active 상태값: `active (running)` 실행 중 / `inactive (dead)` 중지됨 / `failed` 실행 실패
+
+![systemctl status 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_zabbix-server.png)
+
+```bash
 # 게임 서버 포트(예: 7777)의 리스닝 상태를 확인합니다.
 ss -tlnp | grep 7777
 
@@ -57,7 +80,30 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/health
 
 # 서버 가동 시간을 확인합니다.
 uptime
+```
 
+**출력 예시 및 항목 설명:**
+
+```
+ 17:05:30 up 19 days,  10:54,  2 users,  load average: 0.35, 0.42, 0.38
+ --------    -----------------  -------   ----------------------------
+ (1)         (2)                (3)       (4)
+```
+
+| 번호 | 항목 | 설명 |
+|------|------|------|
+| (1) | 현재 시간 | 서버의 현재 시각입니다 |
+| (2) | 가동 시간 | 마지막 부팅 이후 경과 시간입니다 (재시작 없이 운영된 기간) |
+| (3) | 접속 사용자 수 | 현재 서버에 로그인한 사용자 수입니다 |
+| (4) | Load Average | 1분 / 5분 / 15분 평균 시스템 부하입니다 |
+
+> **Load Average 판단 기준** (CPU 코어 수 기준으로 해석합니다)
+> - CPU 코어 수 확인: `nproc` 또는 `lscpu | grep "^CPU(s)"`
+> - Load Average ≤ 코어 수: 정상 범위입니다
+> - Load Average > 코어 수: 과부하 상태이며, 프로세스가 대기 중임을 의미합니다
+> - 예) 4코어 서버에서 load average 4.0 = 100% 사용, 8.0 = 200% (대기 발생)
+
+```bash
 # 최근 24시간 내 서비스 재시작 이력을 조회합니다.
 journalctl -u game-server.service --since "24 hours ago" | grep -i "start\|stop\|fail"
 ```
@@ -100,13 +146,15 @@ systeminfo | findstr "부팅 시간"
 |   사후 보고서    |
 |   (RCA 작성)     |
 +------------------+
+
+**RCA(Root Cause Analysis, 근본 원인 분석)**
 ```
 
 ### 1-6. 실무 권장 사항
 
 - Health Check 주기는 **10~30초**를 권장합니다 (너무 짧으면 오탐이 발생할 수 있습니다)
 - 장애 자동 전환(Failover)을 위해 Keepalived(VIP), HAProxy, AWS ALB Target Group 등을 활용하실 수 있습니다
-- 장애 등급(P1~P4)을 사전에 정의하고, 에스컬레이션 절차를 문서화해 두시기 바랍니다
+- 장애 등급(P1~P4)을 사전에 정의가 필요 합니다.
 
 ### 1-7. 참고 자료
 
