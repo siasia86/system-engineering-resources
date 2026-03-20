@@ -437,11 +437,6 @@ IDC 회선 장애 시 백업 회선으로 전환되면서 네트워크 경로가
 # 서버에서 외부 경로 변경 감지 (traceroute 경로 비교)
 sudo mtr --report --report-cycles 10 --tcp --port 443 google.com
 
-# 회선 장애 시 지연 변화를 로그로 기록합니다
-while true; do
-  echo "$(date '+%Y-%m-%d %H:%M:%S') $(ping -c 1 -W 2 8.8.8.8 | grep 'time=')" >> /var/log/latency_monitor.log
-  sleep 5
-done
 ```
 
 > **실무 포인트**
@@ -454,7 +449,10 @@ done
 - [P50, P95, P99 Latency 백분위 개념 및 활용](https://oneuptime.com/blog/post/2025-09-15-p50-vs-p95-vs-p99-latency-percentiles/view) ★
 - [Latency 지표의 실무 해석 방법](https://www.sebastianduerr.com/blog/latency-metrics-that-tell-the-truth) ★★
 - [RTT 최적화를 통한 네트워크 성능 개선 전략](https://www.softwebsolutions.com/resources/reduce-rtt-optimize-network-performance/) ★★★
-- [ASN 운영 및 IDC DDoS 대응 가이드](./asn_and_cloudflare_ddos.md) ★★★
+
+### 2.9. 작성자가 만든 자료 
+- [[개인자료]ASN 운영 및 IDC DDoS 대응 가이드](./asn_and_cloudflare_ddos.md) ★★★
+
 
 
 ---
@@ -489,7 +487,7 @@ CCU : Current Concurrent Users (현재 동시 접속자)
 | Redis           | 2대 (Cluster)  | 6~12대 (Cluster)  |
 | 네트워크 대역폭 | 1~2 Gbps       | 10~20 Gbps        |
 
-> 실제 수치는 게임 장르, 패킷 크기, 통신 빈도에 따라 크게 달라질 수 있습니다.
+> 실제 수치는 게임 장르, 패킷 크기, 통신 빈도에 따라 다를 수 있습니다.
 
 ### 3-4. 모니터링 및 확인 방법
 
@@ -570,10 +568,78 @@ sysctl -p
 ### 3-7. 실무 권장 사항
 
 - 대형 업데이트나 이벤트 전에는 **PCU 예측치의 1.5~2배** 용량을 확보해 두시기 바랍니다
-- 입장 대기열(Queue) 시스템은 서버를 보호하는 마지막 방어선입니다
 - CCU와 함께 **CPS(Connections Per Second, 초당 연결 수)**도 모니터링하시기 바랍니다 (로그인 폭주 대비)
 
-### 3-8. 참고 자료
+### 3-8. AWS Auto Scaling 기준 및 정책
+
+CCU 증가에 대응하기 위해 Auto Scaling을 구성할 때, CPU/Memory 외에도 다양한 메트릭을 활용할 수 있습니다.
+
+**사전 정의 메트릭:**
+
+| 메트릭                           | 서비스       | 설명                                                |
+|----------------------------------|--------------|-----------------------------------------------------|
+| CPU Utilization                  | EC2, ECS     | 가장 일반적인 기준입니다                            |
+| Network In/Out                   | EC2          | 네트워크 트래픽 기반입니다                          |
+| ALB Request Count Per Target     | ALB + EC2    | 인스턴스당 요청 수 기반입니다                       |
+| Target Response Time             | ALB          | 응답 시간 기반입니다 (지연 증가 시 스케일아웃)      |
+| SQS Queue Depth                  | SQS + EC2    | 대기열 메시지 수 기반입니다                         |
+| ECS Service Average Memory       | ECS          | ECS 서비스 메모리 사용률입니다                      |
+| DynamoDB Read/Write Capacity     | DynamoDB     | 프로비저닝된 용량 기반입니다                        |
+| RDS Connections                  | Aurora       | Read Replica 수를 조절합니다                        |
+
+**커스텀 메트릭 (CloudWatch Custom Metric):**
+
+CloudWatch에 커스텀 메트릭을 게시하면 어떤 값이든 스케일링 기준으로 사용할 수 있습니다.
+
+| 커스텀 메트릭 예시     | 용도                                          |
+|------------------------|-----------------------------------------------|
+| 동시 접속자 수 (CCU)   | 게임 서버 스케일링에 적합합니다                |
+| GPU Utilization        | ML 추론 서버 스케일링에 사용합니다             |
+| 디스크 I/O (IOPS)      | I/O 집약적 워크로드에 사용합니다               |
+| 커넥션 풀 사용률       | DB 커넥션 포화 방지에 사용합니다               |
+| 메시지 처리 지연 시간  | 실시간 처리 파이프라인에 사용합니다             |
+| 에러율 (5xx 비율)      | 에러 급증 시 인스턴스 교체/증설에 사용합니다   |
+
+**스케일링 정책 유형:**
+
+| 유형               | 설명                                                                  |
+|--------------------|-----------------------------------------------------------------------|
+| Target Tracking    | 목표값 설정 (예: CPU 60% 유지) — 가장 권장됩니다                      |
+| Step Scaling       | 임계값 구간별 다른 조정량 (예: 70% → +1대, 90% → +3대)               |
+| Simple Scaling     | 단일 임계값 기반 — 쿨다운 기간 필요, 비권장입니다                     |
+| Scheduled Scaling  | 시간 기반 (예: 매일 20시 피크타임 전 미리 증설)                       |
+| Predictive Scaling | ML 기반 트래픽 예측으로 사전 스케일아웃합니다                          |
+
+**게임 서비스 스케일링 정책 조합 예시:**
+
+```
++--------------------------------------------------+
+|              스케일링 정책 조합                     |
+|                                                    |
+|  1. Scheduled Scaling                              |
+|     - 매일 19:00 최소 인스턴스 10대로 증설         |
+|     - 매일 02:00 최소 인스턴스 3대로 축소          |
+|                                                    |
+|  2. Target Tracking (평상시)                       |
+|     - ALB Request Count Per Target = 1000          |
+|     - CPU Utilization = 65%                        |
+|                                                    |
+|  3. Predictive Scaling (보조)                      |
+|     - 과거 트래픽 패턴 학습                        |
+|     - 이벤트/업데이트 전 자동 사전 증설            |
+|                                                    |
+|  4. Step Scaling (비상)                            |
+|     - CPU 90% 초과 → 즉시 +5대                    |
++--------------------------------------------------+
+```
+
+> **핵심 포인트**
+> - CPU만으로 스케일링하면 I/O나 네트워크 병목을 놓칠 수 있습니다
+> - 게임 서비스는 CCU 기반 커스텀 메트릭 + Scheduled Scaling 조합이 효과적입니다
+> - Predictive Scaling은 패턴이 일정한 서비스(매일 비슷한 피크)에서 잘 동작합니다
+> - 여러 정책을 동시에 적용할 수 있으며, 가장 많은 인스턴스를 요구하는 정책이 우선됩니다
+
+### 3-9. 참고 자료
 
 - [게임 서버 스케일링 실무 사례 및 CCU 기반 용량 산정](https://cloudpap.com/blog/game-server-scaling-lessons/)
 - [Amazon GameLift 1억 CCU 벤치마크 테스트](https://aws.amazon.com/blogs/gametech/amazon-gamelift-achieves-100-million-concurrently-connected-users-per-game/)
