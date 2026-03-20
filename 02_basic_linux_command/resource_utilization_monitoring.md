@@ -1,15 +1,44 @@
-# 게임 서비스 리소스 사용률 (Resource Utilization) 모니터링
+# Linux Server 리소스 사용률 (Resource Utilization) 모니터링
 
 ## 1. CPU 사용률 모니터링
 
 ### 실시간 모니터링
 ```bash
-# CPU 사용률 확인
-top -p $(pgrep -d',' game_server)
+# 기본 패키지
+top 
+```
+![top_기본](../98_image/game-infra-kpi-presentation/top.png)
+
+```bash
+# 설치 필요
+top + tt mm 
+```
+![top+tt,mm](../98_image/game-infra-kpi-presentation/top_tt_mm.png)
+
+```bash
+# 설치 필요
 htop
+```
+![htop](../98_image/game-infra-kpi-presentation/htop.png)
+
+```bash
+# 설치 필요
+bashtop
+```
+![bashtop](../98_image/game-infra-kpi-presentation/bashtop.png)
+
+### 
+- top, htop 은  P (process 순서 정렬) M (memory 순서 정렬) 단축키가 있습니다.
+
+```bash
+# 응용 명령 방법
+top -p $(pgrep -d',' game_server)
 
 # CPU 코어별 사용률
 mpstat -P ALL 1
+
+# CPU 코어별 기록 (10분 단위)
+sar
 
 # 게임 프로세스 CPU 사용률
 ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -10
