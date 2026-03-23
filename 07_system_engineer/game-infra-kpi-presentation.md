@@ -951,7 +951,7 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 
 - 아래는 5가지 핵심 지표를 한눈에 확인할 수 있는 zabbix 대시보드 화면 입니다.
 
-![zabbix main page](../98_image/game-infra-kpi-presentation/zabbix_main_page.png)
+![zabbix main page](../98_image/resource-utilization-monitoring/zabbix_main_page.png)
 
 
 
