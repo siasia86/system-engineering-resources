@@ -69,13 +69,13 @@ systemctl status game-server.service
 
 > 주요 Active 상태값: `active (running)` 실행 중 / `inactive (dead)` 중지됨 / `failed` 실행 실패
 ### zabbix-server : 배포판에 있는 systemd
-![systemctl status 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_zabbix-server.png)
+![systemctl status zabbix 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_zabbix-server.png)
 
 ### n8n  : 수작업으로 만든 systemd 
-![systemctl status 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_n8n-server.png)
+![systemctl status n8n 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_n8n-server.png)
 
 ### rsync  : 서버(OS) 시작시 자동으로 실행 되지 않습니다. 
-![systemctl status 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_rsync.png)
+![systemctl status rsync 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_rsync.png)
 
 ```bash
 # 게임 서버 포트(예: 7777)의 리스닝 상태를 확인합니다.
@@ -110,7 +110,7 @@ uptime
 > - 예) 4코어 서버에서 load average 4.0 = 100% 사용, 8.0 = 200% (대기 발생)
 
 ### uptime  + w
-![uptime w_출력 예시](../98_image/game-infra-kpi-presentation/uptime_cmd.png)
+![uptime, w 출력 예시](../98_image/game-infra-kpi-presentation/uptime_cmd.png)
 
 ```bash
 # 최근 24시간 내 서비스 재시작 이력을 조회합니다.
@@ -469,7 +469,7 @@ sudo mtr --report --report-cycles 10 --tcp --port 443 google.com
 ### 3-1. 정의
 
 특정 시점에 게임 서버에 동시에 접속해 있는 사용자 수를 의미합니다.  
-게임 인프라의 **용량 산정(Capacity Planning)**에서 가장 기본이 되는 지표입니다.
+게임 인프라의 **용량 산정**(Capacity Planning)에서 가장 기본이 되는 지표입니다.
 
 ### 3-2. 관련 지표 체계
 
@@ -502,17 +502,23 @@ CCU : Current Concurrent Users (현재 동시 접속자)
 
 ```bash
 # 게임 서버 포트(7777) 기준 현재 TCP 연결 수를 확인합니다.
-ss -tn state established | grep ":7777" | wc -l
+ss -ntp state established | grep ":7777" | wc -l
+
+netstat -anotp | grep -i "ESTABLISHED" | grep "443"
 
 # 연결 상태별로 분류하여 확인합니다.
-ss -tan | awk '{print $1}' | sort | uniq -c | sort -rn
+ss -ntpa | awk '{print $1}' | sort | uniq -c | sort -rn
+
+netstat -anotp  | awk '{print $6}' | sort | uniq -c | sort -rn
 
 # 게임 서버 프로세스의 연결 수를 확인합니다.
-ss -tnp | grep game-server | wc -l
+ss -ntp | grep -i "game-server" | wc -l
+
+netstat -nltp | grep -i  "game-server" | wc -l
 
 # 시스템의 최대 연결 수 설정값을 확인합니다.
 cat /proc/sys/net/core/somaxconn
-sysctl net.ipv4.tcp_max_syn_backlog
+sysctl -a | grep -i max_syn
 
 # 파일 디스크립터 사용량을 확인합니다 (동접 증가 시 fd 부족에 주의하셔야 합니다)
 ls /proc/$(pgrep game-server)/fd | wc -l
@@ -572,10 +578,53 @@ sysctl -p
 # gameuser  hard  nofile  1000000
 ```
 
+# ubuntu-24.04 mysql systemd
+```bash
+# /etc/security/limits.conf 에서 조절 하였는데, 수치가 반영이 안되는 경우
+
+# 해당 서비스 패키지 확인
+dpkg -l | grep -i mysql-server
+
+# library (systemd) 설정 경로 확인
+dpkg -L mysql-server-8.0 | grep -i lib
+
+# vi 로 편집
+/usr/lib/systemd/system/mysql.service
+
+# MySQL systemd service file
+
+[Unit]
+Description=MySQL Community Server
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=notify
+User=mysql
+Group=mysql
+PermissionsStartOnly=true
+ExecStartPre=/usr/share/mysql/mysql-systemd-start pre
+ExecStart=/usr/sbin/mysqld
+TimeoutSec=infinity
+Restart=on-failure
+RuntimeDirectory=mysqld
+RuntimeDirectoryMode=755
+## 아래 부분 수정 후 systemd restart 또는 systemd daemon-reload
+LimitNOFILE=10000
+
+```
+
+![mysql services limit-1](../98_image/game-infra-kpi-presentation/mysql_services_limit-1.png)
+![mysql services limit-2](../98_image/game-infra-kpi-presentation/mysql_services_limit-2.png)
+
+
+
 ### 3-7. 실무 권장 사항
 
-- 대형 업데이트나 이벤트 전에는 **PCU 예측치의 1.5~2배** 용량을 확보해 두시기 바랍니다
-- CCU와 함께 **CPS(Connections Per Second, 초당 연결 수)**도 모니터링하시기 바랍니다 (로그인 폭주 대비)
+- 대형 업데이트나 이벤트 전에는 **PCU 예측치의 1.5~2배** 용량 산정하는 것을 권장 합니다. 
+- CCU와 함께 **CPS(Connections Per Second, 초당 연결 수)**도 모니터링 해야 합니다. (로그인 폭주 대비)
 
 ### 3-8. AWS Auto Scaling 기준 및 정책
 
@@ -620,8 +669,8 @@ CloudWatch에 커스텀 메트릭을 게시하면 어떤 값이든 스케일링 
 **게임 서비스 스케일링 정책 조합 예시:**
 
 ```
-+--------------------------------------------------+
-|              스케일링 정책 조합                     |
++----------------------------------------------------+
+|              스케일링 정책 조합                    |
 |                                                    |
 |  1. Scheduled Scaling                              |
 |     - 매일 19:00 최소 인스턴스 10대로 증설         |
@@ -636,15 +685,14 @@ CloudWatch에 커스텀 메트릭을 게시하면 어떤 값이든 스케일링 
 |     - 이벤트/업데이트 전 자동 사전 증설            |
 |                                                    |
 |  4. Step Scaling (비상)                            |
-|     - CPU 90% 초과 → 즉시 +5대                    |
-+--------------------------------------------------+
+|     - CPU 90% 초과 → 즉시 +5대                     |
++----------------------------------------------------+
 ```
 
 > **핵심 포인트**
-> - CPU만으로 스케일링하면 I/O나 네트워크 병목을 놓칠 수 있습니다
-> - 게임 서비스는 CCU 기반 커스텀 메트릭 + Scheduled Scaling 조합이 효과적입니다
-> - Predictive Scaling은 패턴이 일정한 서비스(매일 비슷한 피크)에서 잘 동작합니다
-> - 여러 정책을 동시에 적용할 수 있으며, 가장 많은 인스턴스를 요구하는 정책이 우선됩니다
+> - CPU만으로 스케일링하면 I/O나 네트워크 병목 현상을 놓칠 수 있습니다.
+> - Predictive Scaling은 패턴이 일정한 서비스(매일 비슷한 피크)에서 잘 동작 한다고 합니다.
+> - 여러 정책을 동시에 적용할 수 있으며, 가장 많은 인스턴스를 요구하는 정책이 우선됩니다.
 
 ### 3-9. 참고 자료
 
@@ -707,6 +755,8 @@ top -b -n 1 | head -20
 # 특정 프로세스의 리소스 사용량을 추적합니다.
 pidstat -p $(pgrep game-server) 1 5
 ```
+############################
+- [[개인자료]ASN 운영 및 IDC DDoS 대응 가이드](./asn_and_cloudflare_ddos.md) ★★★
 
 #### Windows
 
