@@ -10,7 +10,7 @@ top
 ![top_기본](../98_image/resource-utilization-monitoring/top.png)
 
 ```bash
-# 설치 필요
+# 기본 패키지
 top + tt mm 
 ```
 ![top+tt,mm](../98_image/resource-utilization-monitoring/top_tt_mm.png)
@@ -37,7 +37,8 @@ top -p $(pgrep -d',' game_server)
 # CPU 코어별 사용률
 mpstat -P ALL 1
 
-# CPU 코어별 기록 (10분 단위)
+# top, htop, bashtop 은 **실시간 현황**
+# CPU 코어별 **기록** (10분 단위) 
 sar
 
 # 게임 프로세스 CPU 사용률
@@ -73,12 +74,29 @@ ps aux --sort=-%mem | head -10
 ```bash
 # 디스크 사용률
 df -h
-du -sh /game/logs/* | sort -hr
+du -sch /game/logs/* | sort -hr
 
 # I/O 성능 모니터링
+# 처음 출력되는 수치는 현재 상태가 아닌, 부팅 이후의 누적 평균
 iostat -x 1
+
+#
 iotop -o
+
 ```
+![nmon disk io.png](../98_image/resource-utilization-monitoring/iostat_x_1_1.png)
+
+### nmon ★★★
+```bash
+# 설치 필요 
+nmon
+
+# 진입 후 
+d  
+```
+![nmon disk io.png](../98_image/resource-utilization-monitoring/nmon_disk_io.png)
+
+
 
 ### 임계값 설정
 - **정상**: 디스크 사용률 < 80%, I/O Wait < 10%
@@ -97,6 +115,12 @@ ss -tuln | grep :게임포트
 # 대역폭 사용률
 vnstat -i eth0
 ```
+
+### bmon ★★★
+```bash
+bmon
+```
+![bmon](../98_image/resource-utilization-monitoring/bmon.png)
 
 ### 임계값 설정
 - **정상**: 대역폭 사용률 < 70%
