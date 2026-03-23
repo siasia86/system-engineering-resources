@@ -7,25 +7,25 @@
 # 기본 패키지
 top 
 ```
-![top_기본](../98_image/game-infra-kpi-presentation/top.png)
+![top_기본](../98_image/resource-utilization-monitoring/top.png)
 
 ```bash
 # 설치 필요
 top + tt mm 
 ```
-![top+tt,mm](../98_image/game-infra-kpi-presentation/top_tt_mm.png)
+![top+tt,mm](../98_image/resource-utilization-monitoring/top_tt_mm.png)
 
 ```bash
 # 설치 필요
 htop
 ```
-![htop](../98_image/game-infra-kpi-presentation/htop.png)
+![htop](../98_image/resource-utilization-monitoring/htop.png)
 
 ```bash
 # 설치 필요
 bashtop
 ```
-![bashtop](../98_image/game-infra-kpi-presentation/bashtop.png)
+![bashtop](../98_image/resource-utilization-monitoring/bashtop.png)
 
 ### 
 - top, htop 은  P (process 순서 정렬) M (memory 순서 정렬) 단축키가 있습니다.
