@@ -80,13 +80,16 @@ du -sch /game/logs/* | sort -hr
 # 처음 출력되는 수치는 현재 상태가 아닌, 부팅 이후의 누적 평균
 iostat -x 1
 
-#
+# I/O 성능 모니터링
 iotop -o
 
-```
-![nmon disk io.png](../98_image/resource-utilization-monitoring/iostat_x_1_1.png)
+``` 
+- 기록을 남겨야 하는 상황일때 사용 (zabbix 와 조합하여 모니터링 등)
+![iostat -x 1 1](../98_image/resource-utilization-monitoring/iostat_x_1_1.png)
 
 ### nmon ★★★
+- 실시간 확인은 nmon 이 tui 환경으로 가시성이 조금 더 좋습니다. 
+
 ```bash
 # 설치 필요 
 nmon
@@ -94,7 +97,7 @@ nmon
 # 진입 후 
 d  
 ```
-![nmon disk io.png](../98_image/resource-utilization-monitoring/nmon_disk_io.png)
+![nmon disk io](../98_image/resource-utilization-monitoring/nmon_disk_io.png)
 
 
 
@@ -117,7 +120,10 @@ vnstat -i eth0
 ```
 
 ### bmon ★★★
+- 실시간 확인은 bmon 이 tui 환경으로 가기성이 조금 더 좋습니다.
+
 ```bash
+# 설치 필요
 bmon
 ```
 ![bmon](../98_image/resource-utilization-monitoring/bmon.png)
@@ -166,8 +172,6 @@ netstat -an | grep :게임포트 | grep ESTABLISHED | wc -l
 systemctl status game-server
 journalctl -u game-server -f
 
-# 응답 시간 측정
-ping -c 10 게임서버IP
 ```
 
 ### 주요 모니터링 포인트
@@ -176,21 +180,13 @@ ping -c 10 게임서버IP
 - **패킷 손실률**: < 1% (정상), > 5% (위험)
 - **메모리 누수**: 지속적인 메모리 증가 패턴 감지
 
+
 ## 7. 알림 및 대응 방안
-
-### 자동 알림 설정
-```bash
-# crontab 설정
-*/5 * * * * /home/game/scripts/resource_monitor.sh
-
-# 임계값 초과 시 알림
-if [ $CPU_USAGE -gt 85 ]; then
-    mail -s "CPU Alert" siasia.linux@gmail.com < /dev/null
-fi
-```
+- 서버 하나씩 확인하기 어려우니, zabbix monitor (grafana) 에서 모니터링을 진행 하고 있습니다.
 
 ### 대응 방안
 - **CPU 과부하**: 프로세스 우선순위 조정, 스케일 아웃
 - **메모리 부족**: 캐시 정리, 메모리 증설
 - **디스크 포화**: 로그 정리, 스토리지 확장
 - **네트워크 병목**: 트래픽 분산, 대역폭 증설
+
