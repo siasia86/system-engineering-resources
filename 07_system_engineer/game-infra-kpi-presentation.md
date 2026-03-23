@@ -133,11 +133,11 @@ Get-EventLog -LogName System -EntryType Error -After (Get-Date).AddDays(-1) |
 # 시스템 부팅 시간을 확인합니다.
 systeminfo | findstr "부팅 시간"
 ```
-### powershell_netstat 
-![powershell_netstat_출력 예시](../98_image/game-infra-kpi-presentation/powershell_netstat.png)
+### powershell netstat 
+![powershell netstat_출력 예시](../98_image/game-infra-kpi-presentation/powershell_netstat.png)
 
-### powershell_systeminfo
-![powershell_systeminfo_출력 예시](../98_image/game-infra-kpi-presentation/powershell_systeminfo.png)
+### powershell systeminfo
+![powershell systeminfo_출력 예시](../98_image/game-infra-kpi-presentation/powershell_systeminfo.png)
 
 ### 1-5. 장애 대응 흐름도
 
@@ -755,8 +755,6 @@ top -b -n 1 | head -20
 # 특정 프로세스의 리소스 사용량을 추적합니다.
 pidstat -p $(pgrep game-server) 1 5
 ```
-############################
-- [[개인자료]ASN 운영 및 IDC DDoS 대응 가이드](./asn_and_cloudflare_ddos.md) ★★★
 
 #### Windows
 
@@ -819,6 +817,8 @@ du -ah /var/log/ | sort -rh | head -10
 - [Linux 리소스 모니터링 모범 사례](https://zuzia.app/guides/linux-resource-monitoring-best-practices/)
 - [서버 리소스 모니터링 가이드라인](https://help.orangehrm.com/hc/en-us/articles/10204491113113-Server-Resource-Monitoring-Guidelines)
 
+### 4-8. 추가 자료
+- [[개인자료]resource utilization monitoring.md](./resource_utilization_monitoring.md) ★★★
 ---
 
 ## 5. 보안 지표 (Security Metrics)
@@ -910,27 +910,29 @@ cat /proc/sys/net/netfilter/nf_conntrack_count
 cat /proc/sys/net/netfilter/nf_conntrack_max
 ```
 
-### 5-5. 보안 점검 주기별 체크리스트
+### 5-5. 보안/서버 점검 주기별 체크리스트
 
 ```
-+------------------+        +------------------+        +------------------+
-|   일간 점검      |        |   주간 점검      |        |   월간 점검      |
-+------------------+        +------------------+        +------------------+
-| - 로그인 실패    |        | - 보안 패치 현황 |        | - 취약점 스캔    |
-|   이상 탐지      |        | - 계정 권한 검토 |        | - 모의 침투 점검 |
-| - 방화벽 차단    |        | - 불필요 포트    |        | - 보안 정책 검토 |
-|   로그 확인      |        |   점검           |        | - 인증서 갱신    |
-| - 트래픽 이상    |        | - 백업 무결성    |        |   계획 확인      |
-|   모니터링       |        |   확인           |        | - 접근 제어 감사 |
-+------------------+        +------------------+        +------------------+
++------------------+        +------------------+
+|   일간 점검      |        |   월간 점검      |
++------------------+        +------------------+
+| - 로그인 실패    |        | - 보안 패치 현황 |
+|   이상 탐지      |        | - 계정 권한 검토 |
+| - 방화벽 차단    |        | - 불필요 포트    |
+|   로그 확인      |        |   점검           |
+| - 트래픽 이상    |        | - 백업 무결성    |
+|   모니터링       |        | - 접근 제어 감사 |
++------------------+        +------------------+
 ```
+- 실제 zabbix, ELK 등 시스템 모니터링 툴로 일간/주간 점검을 진행 하고 있습니다.
+- 매월 하진 못하더라도 최소 6개월에 한번씩 월감 점검을 진행 하고 있습니다. 
 
 ### 5-6. 실무 권장 사항
 
-- fail2ban 등을 활용하여 SSH 무차별 대입 공격(Brute Force)을 자동으로 차단하도록 설정하시기 바랍니다
-- 게임 서버 포트는 **허용된 IP 대역에서만 접근 가능**하도록 방화벽을 설정하셔야 합니다.
-- 인증서 만료 모니터링은 자동화하시기 바랍니다 (Let's Encrypt + certbot 자동 갱신 등)
-- 보안 패치는 **테스트 환경에서 검증한 후 운영 환경에 적용**하는 원칙을 준수하시기 바랍니다
+- fail2ban 등을 활용하여 SSH 무차별 대입 공격(Brute Force)을 자동으로 차단하도록 설정을 권장 합니다.
+- 게임 서버 포트는 **허용된 IP 대역에서만 접근 가능**하도록 방화벽을 설정을 권장 합니다.
+- 인증서 만료 모니터링은 자동화를 권장 합니다.
+- 보안 패치는 **테스트 환경에서 검증한 후 운영 환경에 적용**하는 원칙을 준수를 권장 합니다.
 
 ### 5-7. 참고 자료
 
@@ -941,32 +943,17 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 - [fail2ban을 활용한 SSH Brute Force 방어](https://linuxiac.com/how-to-protect-ssh-with-fail2ban/)
 - [fail2ban 설치 및 설정 가이드](https://www.veeble.com/kb/mastering-fail2ban-defense-for-linux-server/)
 
+### 5-8. DDoS 관련 추가 자료
+- [[개인자료]ASN 운영 및 IDC DDoS 대응 가이드](./asn_and_cloudflare_ddos.md) ★★★
 ---
 
-## 종합 대시보드 구성 예시
+## 종합 대시보드 구성
 
-아래는 5가지 핵심 지표를 한눈에 확인할 수 있는 대시보드 구성 예시입니다.
+- 아래는 5가지 핵심 지표를 한눈에 확인할 수 있는 zabbix 대시보드 화면 입니다.
 
-```
-+----------------------------------------------------------------------+
-|                    Game Service Infra Dashboard                       |
-+----------------------------------------------------------------------+
-|                                                                      |
-|  +------------------+  +------------------+  +------------------+    |
-|  |   Availability   |  |     Latency      |  |       CCU        |    |
-|  |    99.97%        |  |   P95: 45ms      |  |   Current: 52K  |    |
-|  |   [  GREEN  ]    |  |   [  GREEN  ]    |  |   [  YELLOW ]   |    |
-|  +------------------+  +------------------+  +------------------+    |
-|                                                                      |
-|  +------------------+  +------------------+                          |
-|  |    Resources     |  |    Security      |                          |
-|  | CPU: 62%  MEM:71%|  | Blocked: 1,247  |                          |
-|  | Disk:45% Net:38% |  | Failed SSH: 23  |                          |
-|  |   [  GREEN  ]    |  |   [  GREEN  ]    |                          |
-|  +------------------+  +------------------+                          |
-|                                                                      |
-+----------------------------------------------------------------------+
-```
+![zabbix main page](../98_image/game-infra-kpi-presentation/zabbix_main_page.png)
+
+
 
 ---
 
