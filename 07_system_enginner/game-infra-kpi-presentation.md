@@ -1,8 +1,8 @@
 # 게임 서비스 인프라 운영 핵심 지표 5가지
 
-> 교육일: 2026-03-19  
-> 대상: 인프라 / 시스템 엔지니어  
-> 목적: 게임 서비스 안정 운영을 위한 핵심 모니터링 지표와 실무 대응 방안을 학습합니다.
+> 발표일: 2026-03-27
+> 대상: 인프라 / 시스템 엔지니어 / 관심있는 개발자
+> 목적: 게임 서비스 안정 운영을 위한 핵심 모니터링 지표와 실무 대응 방안을 공유 합니다.
 
 ---
 
@@ -136,6 +136,9 @@ systeminfo | findstr "부팅 시간"
 ### powershell_netstat 
 ![powershell_netstat_출력 예시](../98_image/game-infra-kpi-presentation/powershell_netstat.png)
 
+### powershell_systeminfo
+![powershell_systeminfo_출력 예시](../98_image/game-infra-kpi-presentation/powershell_systeminfo.png)
+
 ### 1-5. 장애 대응 흐름도
 
 ```
@@ -243,9 +246,10 @@ Total: 0.211989s
 # MTR을 사용하여 네트워크 경로별 지연 구간을 분석합니다 (TCP 모드).
 # ICMP가 차단된 환경에서는 --tcp 옵션을 사용합니다.
 sudo mtr --report --report-cycles 20 --tcp --port 443 google.com
-
+```
 
 **출력 예시 및 항목 설명:**
+```bash
 HOST: sjyun                       Loss%   Snt   Last   Avg  Best  Wrst StDev
   1.|-- _gateway                   0.0%    20    0.6   0.6   0.3   4.8   1.0
   2.|-- ???                       100.0    20    0.0   0.0   0.0   0.0   0.0
@@ -258,6 +262,9 @@ HOST: sjyun                       Loss%   Snt   Last   Avg  Best  Wrst StDev
   ...
  15.|-- tu-in-f102.1e100.net      65.0%    20   27.3  28.2  27.3  30.0   0.9
 ```
+### mtr
+![mtr_출력 예시](../98_image/game-infra-kpi-presentation/mtr.png)
+
 
 | 항목  | 설명                                                                                  |
 |-------|---------------------------------------------------------------------------------------|
@@ -269,11 +276,11 @@ HOST: sjyun                       Loss%   Snt   Last   Avg  Best  Wrst StDev
 | Wrst  | 가장 느린 왕복 시간(ms)입니다                                                         |
 | StDev | 표준편차입니다 (값이 크면 지연 시간이 불안정한 구간입니다)                            |
 
-> **MTR 분석 포인트**
-> - 특정 홉에서 Loss%가 급증하면 해당 구간이 병목입니다
-> - Avg가 이전 홉 대비 크게 증가하는 구간이 지연 원인입니다
-> - StDev가 높은 구간은 네트워크 품질이 불안정한 것을 의미합니다
-> - 중간 홉의 Loss%만 높고 최종 목적지는 0%라면 ICMP 제한일 수 있으므로 무시해도 됩니다
+> **MTR 분석 방법**
+> - 특정 홉에서 Loss%가 급증하면 해당 구간이 병목입니다.
+> - Avg가 이전 홉 대비 크게 증가하는 구간이 지연 원인입니다.
+> - StDev가 높은 구간은 네트워크 품질이 불안정한 것을 의미합니다.
+> - 중간 홉의 Loss%만 높고 최종 목적지는 0%라면 ICMP 제한일 수 있으므로 무시해도 됩니다. (ICMP 차단정책/rate-limit)
 
 
 ```bash
