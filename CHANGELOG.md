@@ -40,7 +40,6 @@
 - Python 가이드 (클래스, 로깅, Magic Attributes)
 - 라이선스 가이드
 - 각 디렉토리별 README.md
-- CONTRIBUTING.md
 - LICENSE.md
 
 ### Documentation
