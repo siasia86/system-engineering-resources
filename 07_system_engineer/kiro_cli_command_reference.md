@@ -687,6 +687,53 @@ Plan 에이전트 출력 예시:
 
 용도별 AI 에이전트를 만들어서 도구 권한, 프롬프트, 참고 파일을 분리합니다.
 
+#### `tools` vs `allowedTools` vs `prompt` vs `skill://`
+
+| 필드             | 역할                                | 값 형태                          | 없으면?                    |
+|------------------|-------------------------------------|----------------------------------|----------------------------|
+| `tools`          | 사용 가능한 도구 카테고리 활성화    | 카테고리명 (`shell`, `read` 등)  | 해당 도구 자체를 못 씀     |
+| `allowedTools`   | 사용자 확인 없이 자동 승인할 도구   | 실제 도구명 (`execute_bash` 등)  | 매번 `y/n` 확인 프롬프트   |
+| `prompt`         | 에이전트 페르소나/정체성 정의       | 자유 텍스트                      | 기본 에이전트 동작         |
+| `resources`      | 스킬(행동 규칙) 또는 파일 참조      | `skill://xxx`, `file://xxx`      | 추가 규칙 없음             |
+
+`tools` 카테고리 → 실제 도구 매핑:
+
+| `tools` 카테고리 | 포함되는 실제 도구 (`allowedTools`용)           |
+|-------------------|-------------------------------------------------|
+| `read`            | `fs_read`, `glob`, `grep`, `code`               |
+| `write`           | `fs_write`                                      |
+| `shell`           | `execute_bash`                                  |
+| `aws`             | `use_aws`                                       |
+| `delegate`        | `use_subagent`                                  |
+| `thinking`        | 내부 추론 (별도 도구명 없음)                    |
+| `knowledge`       | `web_search`, `web_fetch`                       |
+
+실행 흐름:
+
+```
+1단계: tools → "이 카테고리 도구를 쓸 수 있나?"
+   shell ✅ → execute_bash 사용 가능
+   (tools에 없으면 아예 호출 불가)
+
+2단계: allowedTools → "확인 없이 바로 실행할까?"
+   execute_bash ✅ → 자동 실행
+   (allowedTools에 없으면 매번 y/n 물어봄)
+```
+
+`prompt` vs `skill://` 설계 패턴:
+
+```
+prompt  = 직무기술서 (Job Description) — "너는 인프라 엔지니어다"
+skill:// = 사내 업무 규정 (SOP)        — "위험 작업 전 확인받아라"
+
+infra-engineer.json  ← prompt: 인프라 전문가 페르소나
+  └── skill://work-rules   ← 공통 업무 규칙 (여러 에이전트 재사용)
+
+dev-engineer.json    ← prompt: 개발자 페르소나
+  └── skill://work-rules   ← 같은 규칙 재사용
+  └── skill://code-review  ← 추가 스킬
+```
+
 #### 예시: 인프라 운영 에이전트
 
 ```json
