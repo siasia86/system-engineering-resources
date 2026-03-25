@@ -55,8 +55,8 @@ tracepoint:block:block_rq_complete /@start[args->dev, args->sector]/ {
 
 ## 관련 문서
 
-- [Linux 디버깅 도구](../01_debuggin_linux/) - strace, perf 등
-- [시스템 엔지니어링](../07_system_enginner/) - 로드맵
+- [Linux 디버깅 도구](../08_debugging_linux/) - strace, perf 등
+- [시스템 엔지니어링](../04_system_engineer/) - 로드맵
 
 ---
 

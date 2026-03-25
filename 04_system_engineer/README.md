@@ -73,8 +73,8 @@ SRE 핵심 역량
 
 ## 관련 문서
 
-- [Linux 디버깅](../01_debuggin_linux/)
-- [컨테이너](../04_opensource/)
+- [Linux 디버깅](../08_debugging_linux/)
+- [컨테이너](../07_opensource/)
 - [네트워크](../05_computer_science/)
 
 ---

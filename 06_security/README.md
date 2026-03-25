@@ -50,7 +50,7 @@ iptables -A INPUT -p tcp --dport 80 -m limit --limit 25/minute --limit-burst 100
 ## 관련 문서
 
 - [네트워크 기초](../05_computer_science/)
-- [시스템 엔지니어링](../07_system_enginner/)
+- [시스템 엔지니어링](../04_system_engineer/)
 
 ---
 
