@@ -76,7 +76,6 @@ SOFTWARE.
 
 이 프로젝트에 기여함으로써 위 라이선스에 동의하는 것으로 간주됩니다.
 
-자세한 내용은 [CONTRIBUTING.md](CONTRIBUTING.md)를 참조하세요.
 
 ---
 

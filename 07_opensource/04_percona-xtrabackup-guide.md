@@ -1623,7 +1623,7 @@ systemctl start mysqld
 
 ## 13. 실무 팁 모음
 
-### 💡 Tip 1: 백업 전 데이터베이스 상태 확인
+### Tip 1: 백업 전 데이터베이스 상태 확인
 
 ```bash
 # 백업 전 체크리스트
@@ -1651,7 +1651,7 @@ ORDER BY SUM(data_length + index_length) DESC;
 EOF
 ```
 
-### 💡 Tip 2: 백업 중 성능 영향 최소화
+### Tip 2: 백업 중 성능 영향 최소화
 
 ```bash
 # 1. 낮은 우선순위로 실행 (CPU)
@@ -1673,7 +1673,7 @@ else
 fi
 ```
 
-### 💡 Tip 3: 백업 실패 시 자동 재시도
+### Tip 3: 백업 실패 시 자동 재시도
 
 ```bash
 #!/bin/bash
@@ -1702,7 +1702,7 @@ echo "Backup failed after $MAX_RETRIES attempts"
 exit 1
 ```
 
-### 💡 Tip 4: 백업 파일 무결성 검증
+### Tip 4: 백업 파일 무결성 검증
 
 ```bash
 #!/bin/bash
@@ -1744,7 +1744,7 @@ xtrabackup --prepare --apply-log-only --target-dir="${BACKUP_DIR}" 2>&1 | \
     grep -q "completed OK" && echo "✅ Prepare test passed" || echo "❌ Prepare test failed"
 ```
 
-### 💡 Tip 5: 백업 시간 예측
+### Tip 5: 백업 시간 예측
 
 ```bash
 #!/bin/bash
@@ -1769,7 +1769,7 @@ echo "Estimated backup time: ${ESTIMATED_MINUTES} minutes"
 echo "Last backup: ${LAST_BACKUP_TIME}"
 ```
 
-### 💡 Tip 6: 증분 백업 체인 시각화
+### Tip 6: 증분 백업 체인 시각화
 
 ```bash
 #!/bin/bash
@@ -1787,7 +1787,7 @@ for full in $(ls -d ${FULL_DIR}/*-00 2>/dev/null | sort); do
     full_lsn=$(grep "to_lsn" ${full}/xtrabackup_checkpoints | awk '{print $3}')
     full_size=$(du -sh ${full} | awk '{print $1}')
     
-    echo "📦 Full Backup: ${full_date}"
+    echo "Full Backup: ${full_date}"
     echo "   LSN: 0 -> ${full_lsn}"
     echo "   Size: ${full_size}"
     
@@ -1802,7 +1802,7 @@ for full in $(ls -d ${FULL_DIR}/*-00 2>/dev/null | sort); do
         
         # LSN 일치 확인
         if [ "${inc_from}" == "${full_lsn}" ]; then
-            echo "   └─ 📄 Inc: ${inc_date} (LSN: ${inc_from} -> ${inc_to}, Size: ${inc_size})"
+            echo "   └─ Inc: ${inc_date} (LSN: ${inc_from} -> ${inc_to}, Size: ${inc_size})"
         else
             echo "   └─ ⚠️  Inc: ${inc_date} (LSN MISMATCH!)"
         fi
@@ -1812,7 +1812,7 @@ for full in $(ls -d ${FULL_DIR}/*-00 2>/dev/null | sort); do
 done
 ```
 
-### 💡 Tip 7: 특정 시점 복원 (PITR) 상세 가이드
+### Tip 7: 특정 시점 복원 (PITR) 상세 가이드
 
 ```bash
 #!/bin/bash
@@ -1863,7 +1863,7 @@ echo "Verify data:"
 echo "mysql -u root -p -e 'SELECT NOW(), COUNT(*) FROM mydb.mytable;'"
 ```
 
-### 💡 Tip 8: 백업 압축률 비교
+### Tip 8: 백업 압축률 비교
 
 ```bash
 #!/bin/bash
@@ -1903,7 +1903,7 @@ echo "XtraBackup:      ${XB_COMPRESS_SIZE}"
 echo "gzip:            ${GZIP_SIZE}"
 ```
 
-### 💡 Tip 9: 백업 중 데이터베이스 변경 감지
+### Tip 9: 백업 중 데이터베이스 변경 감지
 
 ```bash
 #!/bin/bash
@@ -1942,7 +1942,7 @@ DURATION=$((BACKUP_END - BACKUP_START))
 echo "Backup completed in ${DURATION} seconds"
 ```
 
-### 💡 Tip 10: 백업 파일 암호화 (GPG)
+### Tip 10: 백업 파일 암호화 (GPG)
 
 ```bash
 #!/bin/bash
@@ -1966,7 +1966,7 @@ echo "Encrypted backup: ${ENCRYPTED_FILE}"
 # gpg --decrypt backup-20240101.tar.gz.gpg | tar xzf -
 ```
 
-### 💡 Tip 11: 백업 전후 Hook 스크립트
+### Tip 11: 백업 전후 Hook 스크립트
 
 ```bash
 #!/bin/bash
@@ -2035,7 +2035,7 @@ post_backup ${BACKUP_EXIT_CODE}
 exit ${BACKUP_EXIT_CODE}
 ```
 
-### 💡 Tip 12: 백업 로그 분석
+### Tip 12: 백업 로그 분석
 
 ```bash
 #!/bin/bash
@@ -2080,7 +2080,7 @@ echo "" >> ${REPORT_FILE}
 echo "Report saved to: ${REPORT_FILE}"
 ```
 
-### 💡 Tip 13: 빠른 복원을 위한 준비
+### Tip 13: 빠른 복원을 위한 준비
 
 ```bash
 #!/bin/bash
@@ -2123,7 +2123,7 @@ chmod 700 /backup/restore/quick-restore-$(date +%Y%m%d).sh
 echo "✅ Backup is ready for quick restore"
 ```
 
-### 💡 Tip 14: 백업 디스크 공간 자동 관리
+### Tip 14: 백업 디스크 공간 자동 관리
 
 ```bash
 #!/bin/bash
@@ -2164,7 +2164,7 @@ if [ ${USAGE} -ge ${THRESHOLD} ]; then
 fi
 ```
 
-### 💡 Tip 15: 백업 성능 벤치마크
+### Tip 15: 백업 성능 벤치마크
 
 ```bash
 #!/bin/bash
