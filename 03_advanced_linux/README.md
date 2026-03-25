@@ -68,4 +68,14 @@ tracepoint:block:block_rq_complete /@start[args->dev, args->sector]/ {
 
 ---
 
-© 2026. Licensed under CC BY 4.0.
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+
+---
+
+**마지막 업데이트**: 2026-03-25
+
+© 2026 siasia86. Licensed under CC BY 4.0.

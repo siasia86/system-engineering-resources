@@ -1,0 +1,35 @@
+name: Update README dates
+
+on:
+  push:
+    branches: [main]
+    paths: ['**/*.md']
+
+jobs:
+  update-date:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update dates in changed READMEs
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          CHANGED=$(git diff --name-only HEAD~1 HEAD -- '*.md' 2>/dev/null || true)
+
+          for file in $CHANGED; do
+            if [ -f "$file" ] && grep -q '^\*\*마지막 업데이트\*\*' "$file"; then
+              sed -i "s/\*\*마지막 업데이트\*\*: [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}/**마지막 업데이트**: $TODAY/" "$file"
+              git add "$file"
+            fi
+          done
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git diff --cached --quiet || git commit -m "docs: update last modified date"
+          git diff --cached --quiet || git push
