@@ -146,7 +146,7 @@ limitations under the License.
 재배포 가능  
 라이선스 변경 가능  
 
-📌 조건: 출처 표시
+조건: 출처 표시
 
 ```markdown
 이 문서는 CC BY 4.0 라이선스를 따릅니다.
@@ -165,7 +165,7 @@ https://creativecommons.org/licenses/by/4.0/
 수정 가능  
 재배포 가능  
 
-📌 조건: 출처 표시 + 같은 라이선스 적용
+조건: 출처 표시 + 같은 라이선스 적용
 
 ```markdown
 이 문서는 CC BY-SA 4.0 라이선스를 따릅니다.
@@ -186,7 +186,7 @@ https://creativecommons.org/licenses/by-sa/4.0/
 재배포 가능  
 상업적 사용 금지  
 
-📌 조건: 출처 표시 + 비영리 목적
+조건: 출처 표시 + 비영리 목적
 
 ```markdown
 이 문서는 CC BY-NC 4.0 라이선스를 따릅니다.
@@ -205,7 +205,7 @@ https://creativecommons.org/licenses/by-nc/4.0/
 재배포 가능 (원본만)  
 수정 금지  
 
-📌 조건: 출처 표시 + 원본 그대로 사용
+조건: 출처 표시 + 원본 그대로 사용
 
 ```markdown
 이 문서는 CC BY-ND 4.0 라이선스를 따릅니다.
@@ -224,7 +224,7 @@ https://creativecommons.org/licenses/by-nd/4.0/
 재배포 가능  
 상업적 사용 금지  
 
-📌 조건: 출처 표시 + 비영리 + 같은 라이선스
+조건: 출처 표시 + 비영리 + 같은 라이선스
 
 ---
 
@@ -236,7 +236,7 @@ https://creativecommons.org/licenses/by-nd/4.0/
 상업적 사용 금지  
 수정 금지  
 
-📌 조건: 출처 표시 + 비영리 + 원본 그대로
+조건: 출처 표시 + 비영리 + 원본 그대로
 
 ---
 
@@ -1382,7 +1382,7 @@ EOF
 
 ---
 
-### 💻 코드인 경우
+### 코드인 경우
 
 #### MIT License (가장 추천)
 

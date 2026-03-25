@@ -1,3 +1,5 @@
+> ⚠️ **이 문서는 더 이상 사용되지 않습니다. (Deprecated: 2026-03-25)**
+
 # Contributing to System Engineering Learning Resources
 
 이 프로젝트에 기여해주셔서 감사합니다!

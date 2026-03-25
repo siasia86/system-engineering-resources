@@ -1020,7 +1020,7 @@ class IncidentManager:
         # Slack 알림
         self.slack.post_message(
             channel='#incidents',
-            text=f"🚨 {severity.value.upper()}: {title}"
+            text=f"{severity.value.upper()}: {title}"
         )
         
         # 자동 대응 시도

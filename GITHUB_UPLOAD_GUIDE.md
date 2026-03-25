@@ -1,3 +1,5 @@
+> ⚠️ **이 문서는 더 이상 사용되지 않습니다. (Deprecated: 2026-03-25)**
+
 # GitHub 업로드 가이드
 
 이 저장소를 GitHub에 업로드하는 방법입니다.
@@ -103,7 +105,7 @@ rm -rf 99_ETC/
 ### 1. GitHub 저장소 설정
 
 **About 섹션 설정:**
-1. 저장소 페이지에서 우측 상단 ⚙️ (Settings) 클릭
+1. 저장소 페이지에서 우측 상단 (Settings) 클릭
 2. Description 추가: `System Engineering Learning Resources - Linux, Network, Security, Programming`
 3. Website 추가 (있다면)
 4. Topics 추가: `linux`, `networking`, `security`, `devops`, `sre`, `system-engineering`
