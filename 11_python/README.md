@@ -186,9 +186,7 @@ logging.info("작업 시작")
 
 ---
 
-## 관련 문서
-
-- [시스템 엔지니어링](../04_system_engineer/) - Python 활용
+[문서 전체 로드맵](../README.md)
 
 ---
 
