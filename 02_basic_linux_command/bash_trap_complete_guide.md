@@ -256,7 +256,7 @@ fi
 touch "$LOCK_FILE"
 echo "Lock acquired"
 
-echo "📦 Starting backup..."
+echo "Starting backup..."
 echo "   Target: $BACKUP_FILE"
 
 # 백업 실행 (예시)
@@ -907,7 +907,7 @@ cleanup() {
     
     if [ $exit_code -ne 0 ]; then
         echo "Failed at step $CURRENT_STEP"
-        echo "💾 State saved. Run again to resume."
+        echo "State saved. Run again to resume."
     else
         rm -f "$STATE_FILE"
         echo "All steps completed"
@@ -919,7 +919,7 @@ trap cleanup EXIT
 # 이전 상태 복구
 if [ -f "$STATE_FILE" ]; then
     CURRENT_STEP=$(cat "$STATE_FILE")
-    echo "📂 Resuming from step $CURRENT_STEP"
+    echo "Resuming from step $CURRENT_STEP"
 fi
 
 # 단계별 실행
@@ -1345,7 +1345,7 @@ log "Script started"
 SSH_PIDS=()
 
 cleanup_connections() {
-    echo "🔌 Closing connections..."
+    echo "Closing connections..."
     for pid in "${SSH_PIDS[@]}"; do
         kill $pid 2>/dev/null && echo "  ✓ Closed connection (PID: $pid)"
     done
@@ -1506,7 +1506,7 @@ cleanup() {
 trap cleanup EXIT
 
 for stage in "${STAGES[@]}"; do
-    echo "🔨 Stage: $stage"
+    echo "Stage: $stage"
     
     case $stage in
         download)
