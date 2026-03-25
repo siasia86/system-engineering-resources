@@ -2,6 +2,27 @@
 
 이 프로젝트의 주요 변경 사항을 기록합니다.
 
+## [1.1.0] - 2026-03-25
+
+### Added
+- `01_install/` 디렉토리 README.md 목차에 추가 (Ansible 기초, 설치 및 팀 운영 가이드)
+- GitHub Actions workflow 추가 (`.github/workflows/update-date.yml`)
+  - `main` 브랜치 push 시 변경된 README.md의 마지막 업데이트 날짜 자동 갱신
+
+### Changed
+- `07_system_engineer/` → `04_system_engineer/`로 번호 변경 (자주 사용하는 디렉토리 우선 배치)
+- `04_opensource/` → `07_opensource/`로 번호 변경 (swap)
+- `08_debuggin_linux/` → `08_debugging_linux/`로 오타 수정
+- README.md 목차 순서를 디렉토리 번호 순으로 재정렬 (1~10번)
+- 모든 하위 디렉토리 README.md 푸터 통일 (통계 배지, 마지막 업데이트, 저작권)
+
+### Fixed
+- 문서 내 `debuggin_linux` → `debugging_linux` 오타 수정 (6개 파일)
+- 문서 내 `07_system_enginner` → `04_system_engineer` 오타 및 경로 수정 (6개 파일)
+- 문서 내 `01_debuggin_linux` → `08_debugging_linux` 잘못된 번호 참조 수정
+
+---
+
 ## [1.0.0] - 2026-03-11
 
 ### Added
@@ -56,4 +77,19 @@
 
 ---
 
+[1.1.0]: https://github.com/siasia86/system-engineering-resources/releases/tag/v1.1.0
 [1.0.0]: https://github.com/siasia86/system-engineering-resources/releases/tag/v1.0.0
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+
+---
+
+**마지막 업데이트**: 2026-03-25
+
+© 2026 siasia86. Licensed under CC BY 4.0.
