@@ -106,13 +106,13 @@ GitHub에서 Pull Request 생성
 
 새 문서를 추가할 때 적절한 디렉토리를 선택하세요:
 
-- `01_debuggin_linux/` - Linux 디버깅 도구
+- `08_debugging_linux/` - Linux 디버깅 도구
 - `02_basic_linux_command/` - 기본 명령어 및 스크립팅
 - `03_advanced_linux/` - 고급 시스템 관리
-- `04_opensource/` - 오픈소스 도구
+- `07_opensource/` - 오픈소스 도구
 - `05_computer_science/` - 네트워크 및 프로토콜
 - `06_security/` - 보안
-- `07_system_enginner/` - 시스템 엔지니어링
+- `04_system_engineer/` - 시스템 엔지니어링
 - `11_python/` - Python 프로그래밍
 
 새 카테고리가 필요하면 Issue를 열어주세요.
