@@ -135,3 +135,21 @@ reboot -f
 - GRUB에 패스워드가 설정된 경우 → rescue/live CD 부팅 후 chroot로 복구
 - 디스크 암호화(LUKS) 환경 → 암호화 패스프레이즈 없으면 복구 불가
 - 클라우드 VM(AWS, GCP 등) → 콘솔 접근 불가하므로 rescue mode 또는 디스크 분리 후 다른 VM에 마운트하여 복구
+
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**마지막 업데이트**: 2026-03-29
+
+© 2026 siasia86. Licensed under CC BY 4.0.
