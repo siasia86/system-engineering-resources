@@ -352,3 +352,21 @@ If you are interested in becoming a maintainer (we always welcome more maintaine
 [56]: https://github.com/vim-airline/vim-airline-themes/blob/master/autoload/airline/themes/dark_minimal.vim
 [57]: https://github.com/autozimu/LanguageClient-neovim
 [58]: https://github.com/vim-airline/vim-airline/blob/master/LICENSE
+
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**마지막 업데이트**: 2026-03-29
+
+© 2026 siasia86. Licensed under CC BY 4.0.
