@@ -433,3 +433,262 @@ ansible-galaxy init roles/gameserver
 ```
 
 여기까지가 일상 업무의 80%를 커버합니다.
+
+---
+
+## 13. 모듈 상세 사용법
+
+### 모듈 조회 명령
+
+```bash
+# 전체 모듈 목록
+ansible-doc -l
+
+# 특정 모듈 사용법 확인
+ansible-doc apt
+ansible-doc copy
+ansible-doc template
+
+# 모듈 파라미터만 간략히
+ansible-doc -s service
+```
+
+### 모듈 기본 문법
+
+```yaml
+- name: 작업 설명
+  모듈명:
+    파라미터1: 값
+    파라미터2: 값
+  register: 결과변수        # 실행 결과 저장 (선택)
+  notify: 핸들러명          # 변경 시 핸들러 호출 (선택)
+  when: 조건               # 조건부 실행 (선택)
+  changed_when: false      # 항상 ok 표시 (조회성 명령에 사용)
+```
+
+### 주요 모듈 파라미터 정리
+
+| 모듈         | 주요 파라미터                                          | state 값                        |
+|-------------|-------------------------------------------------------|--------------------------------|
+| `apt`       | name, state, update_cache                             | present, absent, latest        |
+| `dnf`       | name, state, enablerepo                               | present, absent, latest        |
+| `copy`      | src, dest, content, owner, group, mode                | -                              |
+| `template`  | src, dest, owner, group, mode                         | -                              |
+| `file`      | path, state, owner, group, mode, src(link)            | file, directory, link, absent  |
+| `service`   | name, state, enabled                                  | started, stopped, restarted    |
+| `user`      | name, state, shell, groups, append                    | present, absent                |
+| `cron`      | name, minute, hour, day, month, weekday, job, state   | present, absent                |
+| `lineinfile`| path, regexp, line, state, insertafter                | present, absent                |
+| `command`   | cmd (또는 free_form), creates, removes                | -                              |
+| `shell`     | cmd (또는 free_form), creates, removes                | - (파이프/리다이렉션 가능)       |
+| `stat`      | path                                                  | -                              |
+| `debug`     | msg, var                                              | -                              |
+
+---
+
+### 예시 1 — Nginx 설치 + 설정 + 서비스 관리
+
+```yaml
+---
+- name: Nginx 웹서버 배포
+  hosts: webservers
+  become: true
+
+  vars:
+    server_name: example.com
+    http_port: 80
+
+  tasks:
+    # apt 모듈 - 패키지 설치
+    - name: nginx 설치
+      apt:
+        name: nginx
+        state: present
+        update_cache: true
+
+    # file 모듈 - 디렉토리 생성
+    - name: 웹 루트 디렉토리 생성
+      file:
+        path: /var/www/{{ server_name }}
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: "0755"
+
+    # template 모듈 - 설정 파일 배포 (변수 치환)
+    - name: nginx 설정 배포
+      template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/sites-available/{{ server_name }}
+      notify: reload nginx
+
+    # file 모듈 - 심볼릭 링크
+    - name: site 활성화
+      file:
+        src: /etc/nginx/sites-available/{{ server_name }}
+        dest: /etc/nginx/sites-enabled/{{ server_name }}
+        state: link
+      notify: reload nginx
+
+    # copy 모듈 - 정적 파일 복사
+    - name: index.html 배포
+      copy:
+        src: files/index.html
+        dest: /var/www/{{ server_name }}/index.html
+        owner: www-data
+
+    # service 모듈 - 서비스 시작 + 부팅 시 자동 시작
+    - name: nginx 시작
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+  handlers:
+    - name: reload nginx
+      service:
+        name: nginx
+        state: reloaded
+```
+
+---
+
+### 예시 2 — 시스템 점검 + 정보 수집
+
+```yaml
+---
+- name: 시스템 점검
+  hosts: all
+  become: true
+
+  tasks:
+    # setup 모듈 - 시스템 정보 수집
+    - name: 시스템 정보 수집
+      setup:
+        filter: "ansible_os_family,ansible_distribution*,ansible_memtotal_mb"
+
+    # debug 모듈 - 변수 출력
+    - name: OS 정보 출력
+      debug:
+        msg: "{{ inventory_hostname }}: {{ ansible_distribution }} {{ ansible_distribution_version }} ({{ ansible_os_family }})"
+
+    # command 모듈 - 명령 실행 + register로 결과 저장
+    - name: 디스크 사용량 확인
+      command: df -h /
+      register: disk_result
+      changed_when: false
+
+    - name: 디스크 결과 출력
+      debug:
+        msg: "{{ disk_result.stdout_lines }}"
+
+    # shell 모듈 - 파이프 사용 가능
+    - name: 메모리 사용률 확인
+      shell: free -m | awk 'NR==2{printf "%.1f%%", $3*100/$2}'
+      register: mem_result
+      changed_when: false
+
+    - name: 메모리 결과 출력
+      debug:
+        msg: "{{ inventory_hostname }} 메모리 사용률: {{ mem_result.stdout }}"
+
+    # stat 모듈 - 파일 존재 여부 확인
+    - name: 백업 디렉토리 확인
+      stat:
+        path: /backup
+      register: backup_dir
+
+    - name: 백업 디렉토리 상태
+      debug:
+        msg: "{{ '/backup 존재' if backup_dir.stat.exists else '/backup 없음' }}"
+```
+
+---
+
+### 예시 3 — 유저 관리 + 보안 설정
+
+```yaml
+---
+- name: 유저 관리 및 보안 설정
+  hosts: all
+  become: true
+
+  vars:
+    deploy_users:
+      - name: deploy
+        shell: /bin/bash
+        groups: sudo
+        key: "ssh-ed25519 AAAA... deploy@server"
+      - name: monitor
+        shell: /bin/bash
+        groups: sudo
+        key: "ssh-ed25519 AAAA... monitor@server"
+
+  tasks:
+    # user 모듈 - 유저 생성 (반복문)
+    - name: 유저 생성
+      user:
+        name: "{{ item.name }}"
+        shell: "{{ item.shell }}"
+        groups: "{{ item.groups }}"
+        append: yes
+        state: present
+      loop: "{{ deploy_users }}"
+
+    # authorized_key 모듈 - SSH 키 등록
+    - name: SSH 키 등록
+      authorized_key:
+        user: "{{ item.name }}"
+        key: "{{ item.key }}"
+      loop: "{{ deploy_users }}"
+
+    # copy 모듈 - content로 직접 파일 생성
+    - name: sudoers 설정
+      copy:
+        content: "{{ item.name }} ALL=(ALL) NOPASSWD: ALL\n"
+        dest: "/etc/sudoers.d/{{ item.name }}"
+        mode: "0440"
+      loop: "{{ deploy_users }}"
+
+    # lineinfile 모듈 - SSH 보안 설정
+    - name: root 로그인 비활성화
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PermitRootLogin'
+        line: 'PermitRootLogin no'
+      notify: restart sshd
+
+    - name: 패스워드 인증 비활성화
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+      notify: restart sshd
+
+    - name: SSH 타임아웃 설정
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?ClientAliveInterval'
+        line: 'ClientAliveInterval 300'
+      notify: restart sshd
+
+  handlers:
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted
+```
+
+---
+
+### 모듈 실행 흐름 요약
+
+```
++------------------+     +------------------+     +------------------+
+| task 실행        |     | 변경 감지         |     | 후처리            |
+| (모듈 호출)       | --> | changed: true?   | --> | notify handler   |
++------------------+     +------------------+     +------------------+
+
+register  → 결과를 변수에 저장 → debug로 출력 또는 when 조건에 활용
+changed_when: false → 항상 ok 표시 (조회성 명령에 사용)
+```
