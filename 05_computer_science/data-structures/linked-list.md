@@ -39,10 +39,20 @@ None <---+------+<--->+------+<--->+------+---> None
 |---------------|------------|---------------------|
 | 맨 앞 삽입/삭제 | O(1)       | head 포인터만 변경   |
 | 맨 뒤 삽입     | O(1)       | tail 포인터 유지 시  |
+| 맨 뒤 삭제     | O(n)       | 단일: 이전 노드 탐색 필요, 이중: O(1) |
 | 중간 삽입/삭제  | O(1)       | 위치를 알고 있을 때   |
 | 탐색           | O(n)       | 순차 접근만 가능     |
 
+## 공간 복잡도
+
+| 종류          | 노드당 오버헤드          | 전체       |
+|--------------|------------------------|-----------|
+| 단일 연결 리스트| 포인터 1개 (next)       | O(n)      |
+| 이중 연결 리스트| 포인터 2개 (prev, next) | O(n)      |
+
 ## 구현 (Python)
+
+### 단일 연결 리스트
 
 ```python
 class Node:
@@ -87,6 +97,34 @@ class LinkedList:
             cur.next = cur.next.next
 ```
 
+### 이중 연결 리스트
+
+```python
+class DNode:
+    def __init__(self, val):
+        self.val = val
+        self.prev = None
+        self.next = None
+
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = DNode(0)  # 센티널 head
+        self.tail = DNode(0)  # 센티널 tail
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def append(self, val):
+        node = DNode(val)
+        node.prev = self.tail.prev
+        node.next = self.tail
+        self.tail.prev.next = node
+        self.tail.prev = node
+
+    def delete(self, node):
+        node.prev.next = node.next
+        node.next.prev = node.prev
+```
+
 ## 배열 vs 연결 리스트
 
 | 항목          | 배열          | 연결 리스트       |
@@ -97,12 +135,61 @@ class LinkedList:
 | 캐시 효율     | 높음          | 낮음              |
 | 메모리 오버헤드| 없음          | 포인터 추가 저장    |
 
+## 자주 나오는 문제 패턴
+
+| 문제                    | 핵심 접근법                            |
+|------------------------|---------------------------------------|
+| 리스트 역순             | 포인터 3개 (prev, cur, next) 순회       |
+| 사이클 탐지             | Floyd 알고리즘 (slow/fast 포인터)       |
+| 중간 노드 찾기          | slow/fast 포인터 (1칸/2칸)             |
+| 두 리스트 병합 (정렬)    | 더미 헤드 + 비교 순회                   |
+| 뒤에서 N번째 노드 삭제   | 투 포인터 (N칸 간격)                    |
+
+### 리스트 역순
+
+```python
+def reverse(head):
+    prev = None
+    cur = head
+    while cur:
+        nxt = cur.next
+        cur.next = prev
+        prev = cur
+        cur = nxt
+    return prev
+```
+
+### 사이클 탐지 (Floyd)
+
+```python
+def has_cycle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True
+    return False
+```
+
+### 중간 노드
+
+```python
+def middle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    return slow
+```
+
 ## 활용
 
 - 스택, 큐 구현
 - LRU 캐시 (이중 연결 리스트 + 해시맵)
 - 다항식 표현
 - 운영체제 프로세스 관리
+- 메모리 할당기 (free list)
 
 ---
 
@@ -117,6 +204,6 @@ class LinkedList:
 
 ---
 
-**마지막 업데이트**: 2026-04-04
+**마지막 업데이트**: 2026-04-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.
