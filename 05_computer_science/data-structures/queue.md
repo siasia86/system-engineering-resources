@@ -31,6 +31,14 @@ enqueue -->  +----+----+----+----+  --> dequeue
 | peek()     | front 요소 조회          | O(1)       |
 | isEmpty()  | 비어있는지 확인           | O(1)       |
 
+## 공간 복잡도
+
+| 구현 방식    | 공간 복잡도 | 비고                          |
+|------------|-----------|------------------------------|
+| 배열 (선형)  | O(n)      | dequeue 시 앞쪽 공간 낭비      |
+| 배열 (원형)  | O(n)      | 공간 재활용, 낭비 없음          |
+| 연결 리스트  | O(n)      | 노드당 포인터 오버헤드           |
+
 ## 구현 (Python)
 
 ```python
@@ -59,6 +67,19 @@ class Queue:
 
 ## 원형 큐 구현
 
+```
+front=0, rear=4, capacity=5:
+
++---+---+---+---+---+
+| _ | 2 | 3 | 4 | _ |
++---+---+---+---+---+
+  0   1   2   3   4
+      f           r
+
+dequeue → front = (0+1) % 5 = 1
+enqueue → rear  = (4+1) % 5 = 0  ← 앞쪽 재활용
+```
+
 ```python
 class CircularQueue:
     def __init__(self, capacity):
@@ -85,6 +106,53 @@ class CircularQueue:
         return val
 ```
 
+## 덱 (Deque) 구현
+
+```python
+from collections import deque
+
+dq = deque()
+dq.append(1)       # 오른쪽 삽입
+dq.appendleft(2)   # 왼쪽 삽입
+dq.pop()           # 오른쪽 제거
+dq.popleft()       # 왼쪽 제거
+
+# 최대 크기 제한 (슬라이딩 윈도우에 유용)
+dq = deque(maxlen=3)
+dq.append(1)  # [1]
+dq.append(2)  # [1, 2]
+dq.append(3)  # [1, 2, 3]
+dq.append(4)  # [2, 3, 4] ← 1 자동 제거
+```
+
+## 우선순위 큐
+
+```python
+import heapq
+
+pq = []
+heapq.heappush(pq, (2, "low"))     # (우선순위, 데이터)
+heapq.heappush(pq, (1, "high"))
+heapq.heappush(pq, (3, "lowest"))
+
+print(heapq.heappop(pq))  # (1, 'high') ← 우선순위 높은 것 먼저
+```
+
+| 연산        | 시간 복잡도 |
+|------------|------------|
+| 삽입        | O(log n)   |
+| 최솟값 제거  | O(log n)   |
+| 최솟값 조회  | O(1)       |
+
+## 자주 나오는 문제 패턴
+
+| 문제                    | 핵심 접근법                        |
+|------------------------|-----------------------------------|
+| BFS 탐색               | 큐에 시작점 넣고 레벨별 순회         |
+| 슬라이딩 윈도우 최댓값    | 덱으로 단조 감소 유지               |
+| 작업 스케줄링            | 우선순위 큐로 다음 작업 선택         |
+| 스트림 중앙값            | 최대힙 + 최소힙 (우선순위 큐 2개)    |
+
 ## 활용
 
 - BFS (너비 우선 탐색)
@@ -92,6 +160,7 @@ class CircularQueue:
 - 프린터 작업 대기열
 - 메시지 큐 (Kafka, RabbitMQ)
 - 캐시 구현
+- 네트워크 패킷 버퍼
 
 ---
 
@@ -106,6 +175,6 @@ class CircularQueue:
 
 ---
 
-**마지막 업데이트**: 2026-04-04
+**마지막 업데이트**: 2026-04-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.
