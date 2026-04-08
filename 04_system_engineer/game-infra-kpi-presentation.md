@@ -86,6 +86,9 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/health
 
 # 서버 가동 시간을 확인합니다.
 uptime
+
+# 프로세서 시작 시간을 확인 합니다.
+ps -eo lstart,pid,cmd |  grep -i zabbix_server
 ```
 
 **출력 예시 및 항목 설명:**
@@ -120,6 +123,13 @@ journalctl -u game-server.service --since "24 hours ago" | grep -i "start\|stop\
 #### Windows
 
 ```powershell
+# 프로세서 시작 시간을 확인 합니다. 
+(Get-Process -Name "firefox").StartTime
+(Get-Process -id 21808).StartTime
+
+# 프로세서 시작 시간
+Get-Process firefox | Sort-Object StartTime -Descending| Select-Object -First 1|ForEach-Object { "$($_.StartTime.ToString('yyyy-MM-dd HH:mm:ss'))" }
+
 # 서비스 상태를 확인합니다.
 Get-Service -Name "GameServerService" | Select-Object Status, StartType
 
@@ -127,8 +137,7 @@ Get-Service -Name "GameServerService" | Select-Object Status, StartType
 netstat -an | findstr "7777"
 
 # 이벤트 로그에서 최근 1일간 서비스 장애 이력을 조회합니다.
-Get-EventLog -LogName System -EntryType Error -After (Get-Date).AddDays(-1) |
-  Where-Object { $_.Source -match "Service" }
+Get-EventLog -LogName System -EntryType Error -After (Get-Date).AddDays(-1) |  Where-Object { $_.Source -match "Service" }
 
 # 시스템 부팅 시간을 확인합니다.
 systeminfo | findstr "부팅 시간"

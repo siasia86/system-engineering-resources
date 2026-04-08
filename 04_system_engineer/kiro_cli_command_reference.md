@@ -81,13 +81,83 @@
 
 ### `/context` — 컨텍스트 관리
 
-AI에게 대화 중 참고할 파일을 추가하거나, 현재 컨텍스트 윈도우 사용량을 확인합니다.
+컨텍스트(Context)란 AI가 답변을 생성할 때 참고하는 모든 정보입니다.
+시스템 프롬프트, 이전 대화 내용, 등록된 파일, 도구 정의 등이 모두 컨텍스트에 포함됩니다.
+`/context` 명령어로 이 컨텍스트에 파일을 추가하거나, 현재 사용량을 확인할 수 있습니다.
+
+> 💡 Context Window 개념 상세는 [섹션 4. Context Window](#4-context-window-개념) 참고
+
+#### 서브커맨드
+
+| 명령어                          | 설명                                              |
+|---------------------------------|---------------------------------------------------|
+| `/context`                      | 컨텍스트 윈도우 토큰 사용량 상세 표시             |
+| `/context show`                 | 컨텍스트 규칙 및 매칭된 파일 목록 표시            |
+| `/context show --expand`        | 파일 내용 및 대화 요약까지 표시                   |
+| `/context add <경로...>`        | 컨텍스트 파일 규칙 추가 (glob 패턴 가능)          |
+| `/context add --force <경로...>`| 크기 제한 초과 파일도 강제 추가                   |
+| `/context remove <경로...>`     | 컨텍스트 파일 규칙 제거 (별칭: `/context rm`)     |
+| `/context clear`                | 모든 세션 컨텍스트 규칙 제거                      |
+
+#### 사용량 확인 예시
 
 ```
-/context                    ← 현재 컨텍스트 상태 확인
+> /context
+
+Context Window Usage:
+  Context files:    15,234 tokens (15.2%)
+  Tool definitions:  2,456 tokens  (2.5%)
+  Assistant:        45,678 tokens (45.7%)
+  User prompts:     12,345 tokens (12.3%)
+  Total:            75,713 tokens (75.7%)
 ```
 
-파일을 컨텍스트에 등록하면 매번 내용을 붙여넣지 않아도 AI가 참고할 수 있습니다.
+#### 컨텍스트 파일 확인 예시
+
+```
+> /context show
+
+Agent (rust-expert)
+  - src/**/*.rs
+      src/main.rs
+      src/lib.rs
+  - Cargo.toml  /Users/me/project/Cargo.toml
+  - skill://.kiro/skills/**/SKILL.md
+      database-helper
+
+Session (temporary)
+  <none>
+
+3 matched files in use
+  - src/main.rs          (2.3% of context window)
+  - src/lib.rs           (1.8% of context window)
+  - database-helper      (0.1% of context window)
+Context files total: 4.2% of context window
+```
+
+#### 파일 추가/제거 예시
+
+```bash
+/context add README.md docs/**/*.md    # 파일 또는 glob 패턴 추가
+/context remove README.md              # 제거
+/context clear                         # 전체 초기화
+```
+
+#### Agent 컨텍스트 vs Session 컨텍스트
+
+| 구분              | Agent (영구)                       | Session (임시)                     |
+|-------------------|------------------------------------|------------------------------------|
+| 설정 방법         | 에이전트 JSON의 `resources` 필드   | `/context add` 명령어              |
+| 지속성            | 세션 종료 후에도 유지              | 세션 종료 시 삭제                  |
+| 용도              | 항상 참고해야 하는 파일            | 현재 작업에만 필요한 파일          |
+
+⚠️ `/context add/remove/clear` 는 세션 한정입니다. 영구 설정은 에이전트 JSON의 `resources` 필드를 수정하세요.
+
+#### 크기 제한
+
+- 컨텍스트 윈도우 비율 기준으로 제한 적용
+- 초과 시 오래된 파일부터 자동 제거 (경고 표시)
+- `--force` 옵션으로 제한 무시 가능
 
 ### `/code` — 코드 인텔리전스 (LSP)
 
@@ -113,13 +183,128 @@ AI가 현재 사용할 수 있는 도구 목록과 권한을 보여줍니다.
 
 ### `/prompts` — 프롬프트 템플릿
 
-자주 쓰는 프롬프트를 `.kiro/prompts/` 에 저장해두고 재사용합니다.
+프롬프트 템플릿은 자주 반복하는 요청을 `.md` 파일로 저장해두고, `@이름` 또는 `/prompts get` 으로 재사용하는 기능입니다.
+매번 같은 지시를 타이핑하지 않아도 되고, 인자(argument)를 넘겨서 동적으로 내용을 바꿀 수 있습니다.
+
+#### 저장 위치 및 우선순위
+
+| 범위              | 경로                          | 우선순위 |
+|-------------------|-------------------------------|----------|
+| 로컬 (워크스페이스)| `.kiro/prompts/`             | 1 (최고) |
+| 글로벌 (사용자)   | `~/.kiro/prompts/`            | 2        |
+| MCP 서버          | MCP 서버 제공                 | 3 (최저) |
+
+같은 이름이면 로컬 > 글로벌 > MCP 순으로 적용됩니다.
+
+#### 서브커맨드
+
+| 명령어                                    | 설명                                  |
+|-------------------------------------------|---------------------------------------|
+| `/prompts list [검색어]`                  | 프롬프트 목록 (검색어로 필터 가능)    |
+| `/prompts get <이름> [인자...]`           | 프롬프트 로드 후 메시지로 전송        |
+| `/prompts create --name <이름> [--content <내용>] [--global]` | 새 프롬프트 생성 |
+| `/prompts edit <이름> [--global]`         | 기존 프롬프트 편집 ($EDITOR)          |
+| `/prompts remove <이름> [--global]`       | 프롬프트 삭제                         |
+| `/prompts details <이름>`                 | 상세 정보 (설명, 인자, 출처)          |
+
+#### `@` 빠른 호출
 
 ```
-/prompts            ← 등록된 프롬프트 목록 확인
+@<Tab>                    ← 전체 프롬프트 자동완성
+@server-check             ← server-check 프롬프트 실행
+@deploy-check prd nginx   ← 인자 전달
 ```
 
-반복 요청 (코드 리뷰, 배포 체크리스트 등) 을 템플릿으로 만들어두는 용도입니다.
+#### 프롬프트 파일 형식
+
+`.kiro/prompts/` 에 `.md` 파일로 저장합니다. 인자는 플레이스홀더로 지정합니다.
+
+| 플레이스홀더 | 동작                              |
+|-------------|-----------------------------------|
+| `${1}`~`${10}` | 위치 기반 인자                |
+| `$ARGUMENTS`   | 모든 인자를 공백으로 연결     |
+| `${@}`         | `$ARGUMENTS` 와 동일 (별칭)  |
+
+#### 이름 규칙
+
+- 영숫자, 하이픈(`-`), 언더스코어(`_`) 만 허용
+- 최대 50자
+- 패턴: `^[a-zA-Z0-9_-]+$`
+
+#### 인프라 엔지니어 활용 예시
+
+##### 예시 1: 서버 상태 점검
+
+```markdown
+<!-- ~/.kiro/prompts/server-check.md -->
+${1} 서버의 다음 항목을 점검해줘:
+- CPU, Memory, Disk 사용률
+- 최근 에러 로그 (최근 1시간)
+- 프로세스 상태 (${2} 서비스)
+결과를 표로 정리해줘.
+```
+
+```
+@server-check prd-web-01 nginx
+```
+
+##### 예시 2: 배포 전 체크리스트
+
+```markdown
+<!-- ~/.kiro/prompts/deploy-check.md -->
+${1} 환경에 ${2} 배포 전 체크리스트:
+1. 현재 서비스 상태 확인
+2. 디스크 여유 공간 확인 (최소 5GB)
+3. 최근 배포 이력 확인
+4. 롤백 절차 확인
+5. 모니터링 대시보드 URL 확인
+```
+
+```
+@deploy-check prd game-server
+```
+
+##### 예시 3: 장애 분석
+
+```markdown
+<!-- ~/.kiro/prompts/incident-analysis.md -->
+다음 장애를 분석해줘:
+- 대상: ${1}
+- 증상: ${2}
+
+분석 항목:
+1. 타임라인 정리
+2. 근본 원인 추정
+3. 영향 범위
+4. 재발 방지 대책
+```
+
+```
+@incident-analysis "prd-db-01" "커넥션 풀 고갈로 응답 지연"
+```
+
+##### 예시 4: Ansible Playbook 리뷰
+
+```markdown
+<!-- ~/.kiro/prompts/ansible-review.md -->
+@${1} Ansible Playbook을 리뷰해줘:
+- idempotent 여부
+- 에러 핸들링 (failed_when, ignore_errors)
+- 변수 하드코딩 여부
+- 보안 (vault, 권한)
+- 성능 (serial, forks, async)
+```
+
+```
+@ansible-review ./playbooks/deploy.yml
+```
+
+#### 팁
+
+- 공통 프롬프트는 `~/.kiro/prompts/` (글로벌), 프로젝트 전용은 `.kiro/prompts/` (로컬)에 배치
+- 따옴표로 감싸면 공백 포함 인자를 하나로 전달: `@분석 "prd DB 서버"`
+- MCP 프롬프트는 읽기 전용 (편집 불가)
+- 프롬프트 내에서 `@파일경로` 로 파일 참조도 함께 사용 가능
 
 ### `/hooks` — 컨텍스트 훅
 
@@ -1952,7 +2137,7 @@ kiro-cli settings open
 | `chat.enableThinking`                | boolean | false  | 복잡한 추론용 thinking 도구       |
 | `chat.enableKnowledge`               | boolean | false  | 지식 베이스 기능                  |
 | `chat.enableCodeIntelligence`        | boolean | false  | LSP 코드 인텔리전스              |
-| `chat.enableDelegate`                | boolean | false  | subagent 위임 기능                |
+| `chat.enableDelegate`                | boolean | false  | delegate (비동기 백그라운드 에이전트) |
 | `chat.enableTangentMode`             | boolean | false  | tangent 모드                      |
 | `chat.enableSubagent`                | boolean | false  | subagent 기능                     |
 
