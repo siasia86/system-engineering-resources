@@ -1,0 +1,220 @@
+#!/bin/bash
+#
+# Git Security Check Script
+# 커밋 전 민감 정보 및 대용량 파일 검사
+#
+# rsync -av /home/sjyun/.kiro/ /root/sj_del/00_default/.kiro/  --exclude .cli_bash_history
+# rsync -av /root/32_system-engineering-resources/ /root/sj_del/32_readme.md/ --exclude=.git
+#
+#
+
+echo "### git status --ignored ###"
+git status --ignored
+echo "### git status --ignored ###"
+
+set -e
+
+# 색상 정의
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
+PURPLE='\033[0;35m'
+NC='\033[0m' # No Color
+
+# 설정
+MAX_FILE_SIZE="40M"
+SCAN_DIR="${1:-.}"
+
+# 카운터
+ISSUE_COUNT=0
+
+echo "=========================================="
+echo "Git Security Check"
+echo "=========================================="
+echo "Scan Directory: $SCAN_DIR"
+echo ""
+
+# 1. 민감한 IP 주소 검사
+echo "[1/5] Checking for sensitive IP addresses..."
+SENSITIVE_IPS=(
+    '\b61\.10[01]\.[0-9]{1,3}\.[0-9]{1,3}\b'
+    '\b112\.185\.[0-9]{1,3}\.[0-9]{1,3}\b'
+    '\b10\.211\.[0-9]{1,3}\.[0-9]{1,3}\b'
+    '\b3\.112\.[0-9]{1,3}\.[0-9]{1,3}\b'
+)
+
+for ip_pattern in "${SENSITIVE_IPS[@]}"; do
+    echo "  Searching for: $ip_pattern"
+    
+    results=$(find "$SCAN_DIR" -type d -name ".git" -prune -o \
+        ! \( -name "git-check.sh" \
+            -o -name "*.tar" \
+            -o -name "*.tar.gz" \
+            -o -name "*.tgz" \
+            -o -name "*.png" \
+            -o -name "*.jpg" \
+            -o -name "*.jpeg" \
+            -o -name "*.gif" \
+            -o -name "*.zip" \
+            -o -name "*.jar" \
+            -o -name "*.pdf" \
+            -o -name "*.out" \
+            -o -name "*.bin" \
+            -o -name "*.bak" \
+            -o -name "*.trn" \
+            -o -name "*.swp" \
+            -o -name "*.swo" \
+            -o -name "*.log" \
+        \) -type f -print0 2>/dev/null | \
+        xargs -0 grep -IlE "$ip_pattern" 2>/dev/null || true)
+    
+    if [ -n "$results" ]; then
+        echo -e "${RED}  ✗ Found IP pattern: $ip_pattern${NC}"
+        echo "$results" | while read -r file; do
+            echo -e "    - ${PURPLE}$file${NC}"
+            grep -nE "$ip_pattern" "$file" 2>/dev/null | head -3 | while IFS=: read -r line_num content; do
+                # IP 패턴만 빨간색으로 강조
+                highlighted=$(echo "$content" | sed -E "s/($ip_pattern)/\\o033[0;31m\1\\o033[0m/g")
+                echo -e "      ${line_num}:${highlighted}"
+            done
+        done
+        ((ISSUE_COUNT++))
+    fi
+done
+
+# 2. 비밀번호/키 패턴 검사
+echo ""
+echo "[2/5] Checking for passwords and keys..."
+SENSITIVE_PATTERNS=(
+    "password.*=.*['\"]"
+    "passwd.*=.*['\"]"
+    "api[_-]?key.*=.*['\"]"
+    "secret.*=.*['\"]"
+    "token.*=.*['\"]"
+    "aws_access_key"
+    "aws_secret"
+    "private[_-]?key"
+    "BEGIN.*PRIVATE.*KEY"
+)
+
+for pattern in "${SENSITIVE_PATTERNS[@]}"; do
+    results=$(find "$SCAN_DIR" -type d -name ".git" -prune -o \
+        ! \( -name "git-check.sh" \
+            -o -name "*.tar" \
+            -o -name "*.tar.gz" \
+            -o -name "*.png" \
+            -o -name "*.zip" \
+            -o -name "*.jar" \
+            -o -name "*.pdf" \
+            -o -name "*.bak" \
+            -o -name "*.trn" \
+            -o -name "*.swp" \
+        \) -type f -print0 2>/dev/null | \
+        xargs -0 grep -IiE "$pattern" 2>/dev/null | \
+        grep -v "^\s*#" | \
+        grep -v "example" | \
+        grep -v "placeholder" || true)
+    
+    if [ -n "$results" ]; then
+        echo -e "${RED}  ✗ Found pattern: $pattern${NC}"
+        echo "$results" | head -5 | while IFS=: read -r file content; do
+            # 패턴만 빨간색으로 강조
+            highlighted=$(echo "$content" | sed -E "s/($pattern)/\\o033[0;31m\1\\o033[0m/gi")
+            echo -e "    ${PURPLE}$file${NC}:${highlighted}"
+        done
+        ((ISSUE_COUNT++))
+    fi
+done
+
+# 3. AWS 계정 ID 검사
+echo ""
+echo "[3/5] Checking for AWS Account IDs..."
+results=$(find "$SCAN_DIR" -type d -name ".git" -prune -o \
+    ! \( -name "git-check.sh" \
+        -o -name "*.tar" \
+        -o -name "*.tar.gz" \
+        -o -name "*.png" \
+        -o -name "*.zip" \
+        -o -name "*.bak" \
+        -o -name "*.trn" \
+        -o -name "*.swp" \
+    \) -type f -print0 2>/dev/null | \
+    xargs -0 grep -IoE "[0-9]{12}" 2>/dev/null | \
+    sort -u || true)
+
+if [ -n "$results" ]; then
+    echo -e "${YELLOW}  ⚠ Found 12-digit numbers (potential AWS Account IDs):${NC}"
+    echo "$results" | head -10 | sed 's/^/    /'
+    echo "  Please verify these are not sensitive account IDs"
+fi
+
+# 4. 대용량 파일 검사
+echo ""
+echo "[4/5] Checking for large files (>$MAX_FILE_SIZE)..."
+large_files=$(find "$SCAN_DIR" -type d -name ".git" -prune -o \
+    -type f -size +$MAX_FILE_SIZE -print 2>/dev/null || true)
+
+if [ -n "$large_files" ]; then
+    echo -e "${RED}  ✗ Found large files:${NC}"
+    echo "$large_files" | while read -r file; do
+        size=$(du -h "$file" | cut -f1)
+        echo -e "    - ${PURPLE}$file${NC} ($size)"
+    done
+    ((ISSUE_COUNT++))
+else
+    echo -e "${GREEN}  ✓ No large files found${NC}"
+fi
+
+# 5. 민감한 파일명 검사
+echo ""
+echo "[5/5] Checking for sensitive filenames..."
+SENSITIVE_FILES=(
+    "*.pem"
+    "*.key"
+    "*.p12"
+    "*.pfx"
+    "*.jks"
+    "id_rsa"
+    "id_dsa"
+    "*.env"
+    ".env.*"
+    "credentials"
+    "secret*"
+)
+
+for pattern in "${SENSITIVE_FILES[@]}"; do
+    results=$(find "$SCAN_DIR" -type d -name ".git" -prune -o \
+        -type f -name "$pattern" -print 2>/dev/null || true)
+    
+    if [ -n "$results" ]; then
+        echo -e "${RED}  ✗ Found sensitive files: $pattern${NC}"
+        echo "$results" | while read -r file; do
+            echo -e "    ${PURPLE}$file${NC}"
+        done
+        ((ISSUE_COUNT++))
+    fi
+done
+
+# 결과 요약
+echo ""
+echo "=========================================="
+echo "Summary"
+echo "=========================================="
+
+if [ $ISSUE_COUNT -eq 0 ]; then
+    echo -e "${GREEN}✓ No security issues found!${NC}"
+    echo ""
+    echo "Safe to commit."
+    exit 0
+else
+    echo -e "${RED}✗ Found $ISSUE_COUNT security issue(s)${NC}"
+    echo ""
+    echo "Please review and fix the issues above before committing."
+    echo ""
+    echo "Common fixes:"
+    echo "  1. Remove sensitive IPs and replace with placeholders"
+    echo "  2. Use environment variables for passwords/keys"
+    echo "  3. Add large files to .gitignore"
+    echo "  4. Move credentials to .env files (and add to .gitignore)"
+    exit 1
+fi
