@@ -1198,3 +1198,21 @@ Bash ―― Python ―― Go ―― C# ―――――― C ―――――― C
 - 백엔드 개발: **Go**
 - 게임 개발: **C#** (Unity)
 - 시스템 프로그래밍: **C** → **C++**
+
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**마지막 업데이트**: 2026-04-11
+
+© 2026 siasia86. Licensed under CC BY 4.0.

@@ -272,7 +272,7 @@ Router A ----X---- Router B
 
 - KT, LG U+, SK브로드밴드 등 대형 ISP는 장비 자체는 BFD를 지원합니다
 - 다만 고객과의 BGP 피어링에서 BFD를 켜줄지는 **별도 요청 및 협의** 사항입니다
-- 일반 인터넷 회선에서는 보통 적용하지 않으며, **전용회선(Dedicated Line)이나 프리미엄 서비스** 계~시 가능한 경우가 많습니다
+- 일반 인터넷 회선에서는 보통 적용하지 않으며, **전용회선(Dedicated Line)이나 프리미엄 서비스** 계약 시 가능한 경우가 많습니다
 
 ### 9-3. BFD 미지원 시 대안
 
@@ -281,7 +281,7 @@ Router A ----X---- Router B
 | BGP Timer 조정     | Keepalive 3초 / Hold 9초로 공격적으로 줄여 감지 시간을 단축합니다 |
 | 서버 레벨 헬스체크 | 자체 헬스체크로 회선 장애를 감지하고 DNS/라우팅을 전환합니다      |
 
-> IDC 계~시 ISP에 "BGP 피어링에 BFD 적용 가능한지" 사전에 확인하는 것을 권장합니다.
+> IDC 계약 시 ISP에 "BGP 피어링에 BFD 적용 가능한지" 사전에 확인하는 것을 권장합니다.
 
 ---
 
@@ -315,3 +315,21 @@ Router A ----X---- Router B
 - Cloudflare BGP Blackhole 설명: <https://www.cloudflare.com/learning/ddos/glossary/ddos-blackhole-routing/>
 - RTBH (RFC 5635): <https://datatracker.ietf.org/doc/html/rfc5635>
 - BGP Flowspec (RFC 5575): <https://datatracker.ietf.org/doc/html/rfc5575>
+
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**마지막 업데이트**: 2026-04-11
+
+© 2026 siasia86. Licensed under CC BY 4.0.

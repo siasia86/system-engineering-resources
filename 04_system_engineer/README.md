@@ -17,6 +17,7 @@
 - **[리소스 모니터링](resource_utilization_monitoring.md)** - Linux 서버 리소스 사용률 모니터링
 - **[백업 도구 비교](backup_tools_comparison.md)** - 백업 도구 완벽 비교 가이드
 - **[인프라 Monorepo](infra_monorepo_and_boilerplate.md)** - 인프라 Monorepo & 보일러플레이트 가이드
+- **[S3 Gateway Endpoint 크로스 계정](s3_gateway_endpoint_cross_account.md)** - S3 Gateway Endpoint 크로스 계정 설정 가이드
 
 ### 네트워크 / 보안
 - **[ASN 및 DDoS 대응](asn_and_cloudflare_ddos.md)** - ASN 운영 및 IDC DDoS 대응 가이드
@@ -29,6 +30,7 @@
 - **[AI 개발 요청 템플릿](ai_development_request_template.md)** - AI 개발 요청 통합 템플릿
 - **[AI Markdown 디자인 패턴](ai_markdown_design_patterns.md)** - AI 에이전트용 Markdown 디자인 패턴
 - **[Kiro CLI 레퍼런스](kiro_cli_command_reference.md)** - Kiro CLI Command Reference
+- **[LSP 가이드](lsp-guide.md)** - Language Server Protocol 가이드
 
 ---
 
@@ -105,6 +107,6 @@ SRE 핵심 역량
 
 ---
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-04-11
 
 © 2026 siasia86. Licensed under CC BY 4.0.
