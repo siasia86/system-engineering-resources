@@ -434,3 +434,21 @@ ADR은 개별 결정의 "왜", Golden Path는 결정들의 "요약본"입니다.
 | Postmortem     | 무엇이 잘못?              | 장애 후   | 전체 팀             |
 | Golden Path    | 무엇을 기본으로?          | 분기별    | 신규 프로젝트 담당자|
 | Boilerplate    | (자동 생성)               | 필요 시   | 프로젝트 시작자     |
+
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**마지막 업데이트**: 2026-04-11
+
+© 2026 siasia86. Licensed under CC BY 4.0.
