@@ -1,8 +1,8 @@
 # tcpdump 예제
 
-## IP 헤더 tcpdump 예시 추가 내용:
+## IP 헤더
 
-### tcpdump 예시
+
 
 ```bash
 # 기본 IP 패킷 캡처
@@ -33,11 +33,11 @@ tcpdump -i eth0 'ip[6] & 0x40 != 0'
 
 ---
 
-# TCP 헤더에 tcpdump 예시 추가
 
-## TCP 헤더 tcpdump 예시 추가 내용:
 
-### tcpdump 예시
+## TCP 헤더
+
+
 
 ```bash
 # TCP 패킷 캡처
@@ -85,11 +85,11 @@ tcpdump -i eth0 -X tcp port 80
 
 ---
 
-# UDP 헤더에 tcpdump 예시 추가
 
-## UDP 헤더 tcpdump 예시 추가 내용:
 
-### tcpdump 예시
+## UDP 헤더
+
+
 
 ```bash
 # UDP 패킷 캡처
@@ -124,11 +124,11 @@ tcpdump -i eth0 -v udp
 
 ---
 
-# PROXY Protocol v2에 tcpdump 예시 추가
 
-## PROXY Protocol v2 tcpdump 예시 추가 내용:
 
-### tcpdump 예시
+## PROXY Protocol v2
+
+
 
 ```bash
 # PROXY Protocol 헤더 캡처

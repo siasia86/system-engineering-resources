@@ -24,7 +24,7 @@ trap - 시그널  # trap 해제
 | 시그널 | 의미 | 발생 시점 |
 |--------|------|-----------|
 | `EXIT` | 스크립트 종료 | 정상 종료, 에러 종료, exit 호출 시 |
-| `ERR` | 에러 발생 | 명령어 실행 실패 시 (set -e 필요) |
+| `ERR` | 에러 발생 | 명령어가 0이 아닌 종료 코드 반환 시 |
 | `INT` | 인터럽트 | Ctrl+C 입력 시 (SIGINT) |
 | `TERM` | 종료 요청 | kill 명령 시 (SIGTERM) |
 | `DEBUG` | 디버그 | 모든 명령 실행 직전 |
@@ -124,13 +124,13 @@ cleanup() {
     # 백그라운드 프로세스 종료
     if [ -n "$BG_PID" ]; then
         kill $BG_PID 2>/dev/null
-        echo "  ✓ Stopped background process"
+        echo "  OK Stopped background process"
     fi
     
     # 임시 디렉토리 삭제
     if [ -n "$TEMP_DIR" ] && [ -d "$TEMP_DIR" ]; then
         rm -rf "$TEMP_DIR"
-        echo "  ✓ Removed temp directory"
+        echo "  OK Removed temp directory"
     fi
     
     echo "Cleanup completed"
@@ -234,7 +234,7 @@ cleanup() {
     # 락 파일 제거
     if [ -f "$LOCK_FILE" ]; then
         rm -f "$LOCK_FILE"
-        echo "  ✓ Lock file removed"
+        echo "  OK Lock file removed"
     fi
     
     if [ $exit_code -eq 0 ]; then
@@ -429,9 +429,9 @@ run_cleanups() {
 trap run_cleanups EXIT
 
 # cleanup 등록
-add_cleanup "echo '  ✓ Cleanup 1'"
+add_cleanup "echo '  OK Cleanup 1'"
 add_cleanup "rm -f /tmp/file1"
-add_cleanup "echo '  ✓ Cleanup 2'"
+add_cleanup "echo '  OK Cleanup 2'"
 add_cleanup "rm -f /tmp/file2"
 
 echo "Working..."
@@ -535,7 +535,7 @@ echo "Done"
 
 4. **DEBUG trap은 성능 영향** - 프로덕션에서는 제거
 
-5. **ERR trap은 set -e 필요** - set -e 없이는 동작하지 않음
+5. **ERR trap과 set -e 조합 권장** - set -e 없이도 ERR trap은 동작하지만, set -e와 함께 사용하면 에러 시 즉시 종료 가능
 
 ---
 
@@ -825,24 +825,29 @@ cat nonexistent.txt | grep "pattern"  # 에러 발생 (cat 실패)
 
 ### errexit과 trap ERR 차이
 
+**set -e만 사용:** 에러 시 즉시 종료
 ```bash
 #!/bin/bash
-
-# set -e만 사용
 set -e
 false
-echo "Not executed"
-
-# trap ERR 사용
-trap 'echo "Error caught!"' ERR
-false
-echo "Still executed!"  # trap은 스크립트를 멈추지 않음
-
-# 둘 다 사용 (권장)
-set -e
-trap 'echo "Error on line $LINENO"; exit 1' ERR
+echo "Not executed"  # 실행 안됨
 ```
 
+**trap ERR만 사용:** 에러 감지하지만 스크립트 계속 진행
+```bash
+#!/bin/bash
+trap 'echo "Error caught!"' ERR
+false
+echo "Still executed!"  # 실행됨
+```
+
+**둘 다 사용 (권장):** 에러 감지 + 즉시 종료
+```bash
+#!/bin/bash
+set -e
+trap 'echo "Error on line $LINENO"' ERR
+false  # ERR trap 실행 후 스크립트 종료
+```
 ---
 
 ## 고급 패턴
@@ -866,7 +871,7 @@ rollback() {
             echo "  Restoring from backup..."
             cp -r "$BACKUP_DIR"/* /target/dir/
             rm -rf "$BACKUP_DIR"
-            echo "  ✓ Rollback completed"
+            echo "  OK Rollback completed"
         fi
     else
         echo "Operation successful"
@@ -1112,27 +1117,27 @@ trap "rm -f \"$FILE\"" EXIT  # 따옴표 이스케이프
 trap 'rm -f "$FILE"' EXIT  # 작은따옴표 사용 (변수는 실행 시 평가)
 ```
 
-### 실수 4: ERR trap이 모든 에러를 잡지 못함
+### 실수 4: ERR trap 동작 시 스크립트가 계속 진행됨
 
 ```bash
 #!/bin/bash
 
-# 잘못된 예
+# set -e 없이 ERR trap만 사용하면
 trap 'echo "Error!"' ERR
 
-false  # trap 실행 안됨 (set -e가 없어서)
-echo "Still running"
+false  # trap 실행됨 (명령 실패 시 ERR trap 동작)
+echo "스크립트가 멈추지 않고 계속 진행됨"
 ```
 
 **해결책:**
 ```bash
 #!/bin/bash
 
-# 올바른 예
-set -e  # 필수!
+# set -e와 함께 사용하면 에러 시 즉시 종료
+set -e
 trap 'echo "Error on line $LINENO"' ERR
 
-false  # 이제 trap 실행됨
+false  # ERR trap 실행 후 스크립트 종료
 ```
 
 ### 실수 5: 파이프라인에서 에러 무시
@@ -1274,7 +1279,7 @@ show_duration() {
     local minutes=$(((duration % 3600) / 60))
     local seconds=$((duration % 60))
     
-    printf "⏱️  Duration: %02d:%02d:%02d\n" $hours $minutes $seconds
+    printf "Duration: %02d:%02d:%02d\n" $hours $minutes $seconds
 }
 
 trap show_duration EXIT
@@ -1347,7 +1352,7 @@ SSH_PIDS=()
 cleanup_connections() {
     echo "Closing connections..."
     for pid in "${SSH_PIDS[@]}"; do
-        kill $pid 2>/dev/null && echo "  ✓ Closed connection (PID: $pid)"
+        kill $pid 2>/dev/null && echo "  OK Closed connection (PID: $pid)"
     done
 }
 
