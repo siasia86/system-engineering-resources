@@ -1,4 +1,4 @@
-# Root Password Recovery Guide
+# Root 패스워드 복구
 
 각 OS별 root 패스워드 분실 시 복구 절차.
 모든 작업은 물리 콘솔 또는 IPMI/iLO/iDRAC 등 원격 콘솔 접근이 필요하다.
