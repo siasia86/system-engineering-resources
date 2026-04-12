@@ -1,4 +1,4 @@
-# IP 헤더에 tcpdump 예시 추가
+# tcpdump 예제
 
 ## IP 헤더 tcpdump 예시 추가 내용:
 
