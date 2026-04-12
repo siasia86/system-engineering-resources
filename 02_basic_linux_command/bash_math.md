@@ -1,4 +1,4 @@
-# Bash Math Operations Guide
+# Bash 수학 연산
 
 *Content was rephrased for compliance with licensing restrictions*
 
