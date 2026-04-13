@@ -1074,7 +1074,7 @@ description: Infrastructure operation rules for server tasks and deployments.
 
 ### 스킬/프롬프트는 영어로 작성
 
-한글은 토큰당 1~2글자, 영어는 토큰당 3~4글자입니다.
+한글은 토큰당 1\~2글자, 영어는 토큰당 3\~4글자입니다.
 같은 의미를 영어로 작성하면 토큰을 약 30~50% 절약할 수 있습니다.
 
 ```
