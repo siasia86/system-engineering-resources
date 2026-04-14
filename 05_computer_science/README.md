@@ -5,21 +5,25 @@
 ## 문서 목록
 
 ### TCP/IP
-- **[TCP 상태 다이어그램](01_TCP_state.md)** - TCP 연결 상태 전이
-- **[패킷 분석](02_packet_analysis.md)** - 네트워크 패킷 구조 분석
-- **[네트워크 헤더](03_network_headers.md)** - Ethernet, IP, TCP, UDP 헤더 구조
+- **[IP 주소 체계 가이드](ip_addressing_guide.md)** - IPv4, 서브넷, CIDR 표기법
+- **[TCP 상태 다이어그램](TCP_state.md)** - TCP 연결 상태 전이
+- **[패킷 분석](packet_analysis.md)** - 네트워크 패킷 구조 분석
+- **[tcpdump 예제](tcpdump_examples.md)** - 네트워크 패킷 캡처 실전 예제
+- **[네트워크 헤더](network_headers.md)** - Ethernet, IP, TCP, UDP 헤더 구조
 
 ### HTTP
-- **[HTTP 메서드](04_http_methods.md)** - GET, POST, PUT, DELETE 등
+- **[HTTP 메서드](http_methods.md)** - GET, POST, PUT, DELETE 등
 
 ---
 
 ## 학습 순서
 
-1. **네트워크 기초** → [네트워크 헤더](03_network_headers.md)
-2. **TCP 이해** → [TCP 상태](01_TCP_state.md)
-3. **패킷 분석** → [패킷 분석](02_packet_analysis.md)
-4. **HTTP 프로토콜** → [HTTP 메서드](04_http_methods.md)
+1. **IP 주소 체계** → [IP 주소 체계 가이드](ip_addressing_guide.md)
+2. **네트워크 기초** → [네트워크 헤더](network_headers.md)
+3. **TCP 이해** → [TCP 상태](TCP_state.md)
+4. **패킷 분석** → [패킷 분석](packet_analysis.md)
+5. **패킷 캡처 실습** → [tcpdump 예제](tcpdump_examples.md)
+6. **HTTP 프로토콜** → [HTTP 메서드](http_methods.md)
 
 ---
 
@@ -65,6 +69,6 @@ Client                Server
 
 ---
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-04-14
 
 © 2026 siasia86. Licensed under CC BY 4.0.
