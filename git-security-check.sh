@@ -1,6 +1,7 @@
 #!/bin/bash
+# Git Security Check Script. In Ubuntu-24.04
+# Created by sjyun on 2026-02-02. Version 26.4.15 Modified by sjyun on 2026-04-15.
 #
-# Git Security Check Script
 # 커밋 전 민감 정보 및 대용량 파일 검사
 #
 # rsync -av /home/sjyun/.kiro/ /root/sj_del/00_default/.kiro/  --exclude .cli_bash_history
@@ -14,18 +15,19 @@ echo "### git status --ignored ###"
 
 set -e
 
-# 색상 정의
+# color
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
 PURPLE='\033[0;35m'
-NC='\033[0m' # No Color
+# No Color
+NC='\033[0m'
 
-# 설정
+# config
 MAX_FILE_SIZE="40M"
 SCAN_DIR="${1:-.}"
 
-# 카운터
+# count
 ISSUE_COUNT=0
 
 echo "=========================================="
@@ -34,7 +36,7 @@ echo "=========================================="
 echo "Scan Directory: $SCAN_DIR"
 echo ""
 
-# 1. 민감한 IP 주소 검사
+# 1. Check for sensitive IP addresses
 echo "[1/5] Checking for sensitive IP addresses..."
 SENSITIVE_IPS=(
     '\b61\.10[01]\.[0-9]{1,3}\.[0-9]{1,3}\b'
@@ -65,6 +67,9 @@ for ip_pattern in "${SENSITIVE_IPS[@]}"; do
             -o -name "*.swp" \
             -o -name "*.swo" \
             -o -name "*.log" \
+			-o -name "*.map.json" \
+			-o -name "*_rsyncd.conf" \
+			-o -name "*rsyslog.conf" \
         \) -type f -print0 2>/dev/null | \
         xargs -0 grep -IlE "$ip_pattern" 2>/dev/null || true)
     
@@ -73,16 +78,16 @@ for ip_pattern in "${SENSITIVE_IPS[@]}"; do
         echo "$results" | while read -r file; do
             echo -e "    - ${PURPLE}$file${NC}"
             grep -nE "$ip_pattern" "$file" 2>/dev/null | head -3 | while IFS=: read -r line_num content; do
-                # IP 패턴만 빨간색으로 강조
+                # IP pattern in red color
                 highlighted=$(echo "$content" | sed -E "s/($ip_pattern)/\\o033[0;31m\1\\o033[0m/g")
                 echo -e "      ${line_num}:${highlighted}"
             done
         done
-        ((ISSUE_COUNT++))
+        ((ISSUE_COUNT++)) || true
     fi
 done
 
-# 2. 비밀번호/키 패턴 검사
+# 2. Check for password/key patterns
 echo ""
 echo "[2/5] Checking for passwords and keys..."
 SENSITIVE_PATTERNS=(
@@ -118,15 +123,15 @@ for pattern in "${SENSITIVE_PATTERNS[@]}"; do
     if [ -n "$results" ]; then
         echo -e "${RED}  ✗ Found pattern: $pattern${NC}"
         echo "$results" | head -5 | while IFS=: read -r file content; do
-            # 패턴만 빨간색으로 강조
+            # pattern in red
             highlighted=$(echo "$content" | sed -E "s/($pattern)/\\o033[0;31m\1\\o033[0m/gi")
             echo -e "    ${PURPLE}$file${NC}:${highlighted}"
         done
-        ((ISSUE_COUNT++))
+        ((ISSUE_COUNT++)) || true
     fi
 done
 
-# 3. AWS 계정 ID 검사
+# 3. Check for AWS account IDs
 echo ""
 echo "[3/5] Checking for AWS Account IDs..."
 results=$(find "$SCAN_DIR" -type d -name ".git" -prune -o \
@@ -138,6 +143,7 @@ results=$(find "$SCAN_DIR" -type d -name ".git" -prune -o \
         -o -name "*.bak" \
         -o -name "*.trn" \
         -o -name "*.swp" \
+		-o -name "*.map.json" \
     \) -type f -print0 2>/dev/null | \
     xargs -0 grep -IoE "[0-9]{12}" 2>/dev/null | \
     sort -u || true)
@@ -148,7 +154,7 @@ if [ -n "$results" ]; then
     echo "  Please verify these are not sensitive account IDs"
 fi
 
-# 4. 대용량 파일 검사
+# 4. Check for large files
 echo ""
 echo "[4/5] Checking for large files (>$MAX_FILE_SIZE)..."
 large_files=$(find "$SCAN_DIR" -type d -name ".git" -prune -o \
@@ -160,12 +166,12 @@ if [ -n "$large_files" ]; then
         size=$(du -h "$file" | cut -f1)
         echo -e "    - ${PURPLE}$file${NC} ($size)"
     done
-    ((ISSUE_COUNT++))
+    ((ISSUE_COUNT++)) || true
 else
     echo -e "${GREEN}  ✓ No large files found${NC}"
 fi
 
-# 5. 민감한 파일명 검사
+# 4. Check for large files
 echo ""
 echo "[5/5] Checking for sensitive filenames..."
 SENSITIVE_FILES=(
@@ -191,11 +197,11 @@ for pattern in "${SENSITIVE_FILES[@]}"; do
         echo "$results" | while read -r file; do
             echo -e "    ${PURPLE}$file${NC}"
         done
-        ((ISSUE_COUNT++))
+        ((ISSUE_COUNT++)) || true
     fi
 done
 
-# 결과 요약
+# Summary of Results
 echo ""
 echo "=========================================="
 echo "Summary"
