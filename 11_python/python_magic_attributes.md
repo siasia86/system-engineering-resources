@@ -357,6 +357,90 @@ from mypackage import *
 
 ---
 
+## __pycache__ 디렉토리
+
+Python이 모듈을 import할 때 자동 생성하는 바이트코드 캐시 디렉토리입니다.
+
+### 생성 원리
+
+```
+mypackage/
+    __init__.py
+    module1.py
+    __pycache__/              ← Python이 자동 생성
+        __init__.cpython-311.pyc
+        module1.cpython-311.pyc
+```
+
+```python
+# module1.py를 import하면
+import mypackage.module1
+
+# Python이 자동으로 수행하는 과정:
+# 1. module1.py 소스 코드 읽기
+# 2. 바이트코드(.pyc)로 컴파일
+# 3. __pycache__/module1.cpython-311.pyc 에 저장
+# 4. 다음 import 시 .pyc 캐시 사용 (소스 변경 없으면)
+```
+
+### 파일명 규칙
+
+```
+<모듈명>.cpython-<버전>.pyc
+
+module1.cpython-311.pyc    # Python 3.11
+module1.cpython-312.pyc    # Python 3.12
+```
+
+여러 Python 버전이 공존할 수 있도록 버전 번호가 포함됩니다.
+
+### 동작 방식
+
+```python
+# 첫 import: 소스 → 컴파일 → .pyc 생성 → 실행
+import module1  # 느림 (컴파일 필요)
+
+# 두 번째 import: .pyc 캐시 사용 → 실행
+import module1  # 빠름 (캐시 사용)
+
+# 소스 수정 후 import: 재컴파일 → .pyc 갱신 → 실행
+import module1  # 자동 감지하여 재컴파일
+```
+
+### .gitignore 설정
+
+```gitignore
+# 반드시 추가 (버전 관리 불필요)
+__pycache__/
+*.pyc
+```
+
+### 삭제 방법
+
+```bash
+# 현재 디렉토리 하위 전체 삭제
+find . -type d -name __pycache__ -exec rm -rf {} +
+
+# 특정 디렉토리만
+rm -rf mypackage/__pycache__
+
+# Python 옵션으로 .pyc 생성 자체를 방지
+python -B script.py
+PYTHONDONTWRITEBYTECODE=1 python script.py
+```
+
+### 환경 변수
+
+```bash
+# .pyc 생성 방지
+export PYTHONDONTWRITEBYTECODE=1
+
+# .pyc 저장 경로 변경 (Python 3.8+)
+export PYTHONPYCACHEPREFIX=/tmp/pycache
+```
+
+---
+
 ## 요약
 
 ### 모듈 속성
