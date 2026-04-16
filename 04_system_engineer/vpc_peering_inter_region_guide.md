@@ -11,6 +11,7 @@
 - [통신 확인](#통신-확인)
 - [체크리스트](#체크리스트)
 - [주의사항](#주의사항)
+- [기존 라우팅 테이블에 Peering 경로 추가](#기존-라우팅-테이블에-peering-경로-추가)
 
 ## 사전 조건
 
@@ -87,6 +88,28 @@
 | `10.0.0.0/16`  | Peering Connection 선택 |
 
 4. Save changes
+
+### Step 3-1: 기존 라우팅 테이블에 Peering 경로만 추가
+
+이미 라우팅 테이블이 존재하는 경우, 기존 경로를 건드리지 않고 Peering 경로만 추가한다.
+
+1. VPC → Route tables → 대상 라우팅 테이블 선택
+2. Routes 탭에서 상대 VPC CIDR로 향하는 경로가 있는지 확인
+3. 경로가 없으면: Edit routes → Add route
+
+| Destination      | Target                |
+|-----------------|-----------------------|
+| `상대 VPC CIDR` | Peering Connection 선택 |
+
+4. 경로가 이미 있으면 (다른 Target으로 설정된 경우): 해당 경로의 Target을 Peering Connection으로 변경
+5. Save changes
+
+⚠️ 서브넷별로 라우팅 테이블이 다를 수 있다. Peering 통신이 필요한 서브넷의 라우팅 테이블에만 추가한다.
+
+확인 방법:
+1. VPC → Subnets → 대상 서브넷 선택
+2. Route table 탭에서 연결된 라우팅 테이블 확인
+3. 해당 라우팅 테이블에 Peering 경로가 있는지 확인
 
 ### Step 4: 보안 그룹 수정 (양쪽 모두)
 
@@ -224,6 +247,90 @@ traceroute 10.1.1.10
 | 보안 그룹 참조        | Inter-Region Peering에서는 상대 보안 그룹 ID 참조 불가     |
 | IPv6                 | Inter-Region Peering에서 IPv6 지원                      |
 
+
+## 기존 라우팅 테이블에 Peering 경로 추가
+
+이미 라우팅 테이블이 존재하는 환경에서 Peering 경로만 추가하는 방법이다.
+VPC Peering을 생성/수락해도 라우트 엔트리는 자동으로 추가되지 않는다.
+
+### 현재 라우팅 테이블 확인
+
+```bash
+# 대상 VPC의 라우팅 테이블과 기존 경로 확인
+aws ec2 describe-route-tables \
+  --filters "Name=vpc-id,Values=<vpc-id>" \
+  --query "RouteTables[].{RTB:RouteTableId,Routes:Routes[].{Dest:DestinationCidrBlock,Target:GatewayId||VpcPeeringConnectionId||NatGatewayId}}" \
+  --region us-east-1 \
+  --output table
+```
+
+### Peering 경로가 이미 있는지 확인
+
+```bash
+# 상대 CIDR로 향하는 경로가 있는지 확인
+aws ec2 describe-route-tables \
+  --route-table-ids <rtb-id> \
+  --query "RouteTables[].Routes[?DestinationCidrBlock=='<상대-vpc-cidr>']" \
+  --region us-east-1
+```
+
+결과가 비어 있으면 (`[]`) 경로 추가가 필요하다.
+
+### 경로 추가 (create-route)
+
+```bash
+# 기존 라우팅 테이블에 Peering 경로만 추가
+aws ec2 create-route \
+  --route-table-id <rtb-id> \
+  --destination-cidr-block <상대-vpc-cidr> \
+  --vpc-peering-connection-id <pcx-xxxxxxxxx> \
+  --region us-east-1
+```
+
+⚠️ 동일 destination이 이미 존재하면 `RouteAlreadyExists` 에러가 발생한다. 이 경우 `replace-route`를 사용한다.
+
+### 기존 경로 변경 (replace-route)
+
+```bash
+# 동일 destination의 target만 Peering으로 변경
+aws ec2 replace-route \
+  --route-table-id <rtb-id> \
+  --destination-cidr-block <상대-vpc-cidr> \
+  --vpc-peering-connection-id <pcx-xxxxxxxxx> \
+  --region us-east-1
+```
+
+### 서브넷별 라우팅 테이블이 다른 경우
+
+Peering 통신이 필요한 서브넷의 라우팅 테이블에만 추가하면 된다.
+
+```bash
+# VPC 내 모든 서브넷과 연결된 라우팅 테이블 확인
+aws ec2 describe-route-tables \
+  --filters "Name=vpc-id,Values=<vpc-id>" \
+  --query "RouteTables[].{RTB:RouteTableId,Subnets:Associations[].SubnetId}" \
+  --region us-east-1 \
+  --output table
+
+# 필요한 라우팅 테이블에만 경로 추가
+for rtb in rtb-aaa rtb-bbb; do
+  aws ec2 create-route \
+    --route-table-id $rtb \
+    --destination-cidr-block <상대-vpc-cidr> \
+    --vpc-peering-connection-id <pcx-xxxxxxxxx> \
+    --region us-east-1
+done
+```
+
+### 추가 후 확인
+
+```bash
+aws ec2 describe-route-tables \
+  --route-table-ids <rtb-id> \
+  --query "RouteTables[].Routes[?VpcPeeringConnectionId!=null].{Dest:DestinationCidrBlock,Peering:VpcPeeringConnectionId,Status:State}" \
+  --region us-east-1 \
+  --output table
+```
 ---
 
 ## 통계
@@ -237,6 +344,6 @@ traceroute 10.1.1.10
 
 ---
 
-**마지막 업데이트**: 2026-04-13
+**마지막 업데이트**: 2026-04-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.
