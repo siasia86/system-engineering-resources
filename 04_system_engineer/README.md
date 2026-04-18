@@ -22,6 +22,7 @@
 ### 네트워크 / 보안
 - **[ASN 및 DDoS 대응](asn_and_cloudflare_ddos.md)** - ASN 운영 및 IDC DDoS 대응 가이드
 - **[CDN, Proxy, Origin IP](cdn-proxy-origin-ip.md)** - CDN, Proxy, Origin IP 정리
+- **[Inter-Region VPC Peering](vpc_peering_inter_region_guide.md)** - Inter-Region VPC Peering 가이드
 
 ### 설계 / 문서화
 - **[ADR 가이드](adr_guide.md)** - Architecture Decision Record 가이드
@@ -31,6 +32,7 @@
 - **[AI Markdown 디자인 패턴](ai_markdown_design_patterns.md)** - AI 에이전트용 Markdown 디자인 패턴
 - **[Kiro CLI 레퍼런스](kiro_cli_command_reference.md)** - Kiro CLI Command Reference
 - **[LSP 가이드](lsp-guide.md)** - Language Server Protocol 가이드
+- **[Kiro 모델 가이드](kiro_model_guide.md)** - Kiro CLI 모델 선택 및 활용 가이드
 
 ---
 
@@ -107,6 +109,6 @@ SRE 핵심 역량
 
 ---
 
-**마지막 업데이트**: 2026-04-11
+**마지막 업데이트**: 2026-04-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.
