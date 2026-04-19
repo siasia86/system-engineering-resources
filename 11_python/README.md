@@ -8,6 +8,8 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 
 ### 기초
 - **[Print 함수](python_print.md)** - print() 함수 사용법과 매개변수
+- **[자료구조](python_data_structures.md)** - 리스트, 딕셔너리, 튜플, 집합, collections
+- **[문자열 처리](python_string.md)** - 문자열 메서드, f-string, 인코딩
 - **[제어문](python_control_flow.md)** - if/elif/else, for, while, break/continue
 - **[함수](python_functions.md)** - 함수 정의, 매개변수, 람다, 기본 데코레이터
 
@@ -19,8 +21,10 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 
 ### 중급
 - **[파일 입출력](python_file_io.md)** - 파일 읽기/쓰기, with문, 경로 처리
+- **[파일/디렉토리 조작](python_os_pathlib.md)** - os, pathlib, shutil
 - **[예외 처리](python_exceptions.md)** - try/except/finally, raise, 사용자 정의 예외
 - **[컴프리헨션](python_comprehensions.md)** - 리스트/딕셔너리/집합 컴프리헨션
+- **[정규표현식](python_regex.md)** - re 모듈, 패턴 매칭, 로그 파싱
 
 ### 고급
 - **[데코레이터](python_decorators.md)** - 데코레이터 개념과 활용, functools
@@ -30,6 +34,10 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 ### 실전
 - **[패키지](python_packages.md)** - 패키지 구조, __init__.py, import
 - **[Python 로깅](python_logging.md)** - logging 모듈 완벽 가이드
+- **[subprocess](python_subprocess.md)** - 외부 명령 실행, 프로세스 관리
+- **[JSON/YAML](python_json_yaml.md)** - 설정 파일, 데이터 교환
+- **[argparse](python_argparse.md)** - CLI 도구 제작
+- **[가상환경](python_virtual_env.md)** - venv, pip, 의존성 관리
 
 ---
 
@@ -37,17 +45,21 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 
 ### 초보자
 1. [Print 함수](python_print.md) - 기본 출력
-2. [제어문](python_control_flow.md) - 조건문과 반복문
-3. [함수](python_functions.md) - 함수 기초
-4. [클래스 튜토리얼](python_class.md) - 객체지향 기초
-5. [상속](python_inheritance.md) - 클래스 확장
+2. [자료구조](python_data_structures.md) - 리스트, 딕셔너리, 튜플, 집합
+3. [문자열 처리](python_string.md) - 문자열 메서드, 포맷팅
+4. [제어문](python_control_flow.md) - 조건문과 반복문
+5. [함수](python_functions.md) - 함수 기초
+6. [클래스 튜토리얼](python_class.md) - 객체지향 기초
+7. [상속](python_inheritance.md) - 클래스 확장
 
 ### 중급자
 1. [클래스 구성 요소](python_class_components.md) - 클래스 심화
 2. [파일 입출력](python_file_io.md) - 파일 처리
-3. [예외 처리](python_exceptions.md) - 에러 핸들링
-4. [컴프리헨션](python_comprehensions.md) - 간결한 코드 작성
-5. [Python 로깅](python_logging.md) - 실무 로깅
+3. [파일/디렉토리 조작](python_os_pathlib.md) - os, pathlib, shutil
+4. [예외 처리](python_exceptions.md) - 에러 핸들링
+5. [컴프리헨션](python_comprehensions.md) - 간결한 코드 작성
+6. [정규표현식](python_regex.md) - 패턴 매칭
+7. [Python 로깅](python_logging.md) - 실무 로깅
 
 ### 고급자
 1. [데코레이터](python_decorators.md) - 함수 확장
@@ -55,6 +67,10 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 3. [컨텍스트 매니저](python_context_managers.md) - 리소스 관리
 4. [패키지](python_packages.md) - 모듈 구조화
 5. [모듈 속성](python_magic_attributes.md) - 모듈 시스템 이해
+6. [subprocess](python_subprocess.md) - 외부 명령 실행
+7. [JSON/YAML](python_json_yaml.md) - 설정 파일 처리
+8. [argparse](python_argparse.md) - CLI 도구 제작
+9. [가상환경](python_virtual_env.md) - 환경 관리
 
 ---
 
