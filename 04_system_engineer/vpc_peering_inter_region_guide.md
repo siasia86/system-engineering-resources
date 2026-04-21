@@ -64,7 +64,7 @@
 3. 상태가 `Pending acceptance`인 연결 선택
 4. Actions → Accept request → Accept
 
-### Step 3: 라우팅 테이블 추가 (양쪽 모두)
+### Step 3: 라우팅 테이블 추가 (양쪽 모두) // 일반적으로 이미 라우팅 테이블이 존재해서 3-1 에서 작업 진행
 
 버지니아 측:
 
