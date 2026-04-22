@@ -880,13 +880,13 @@ from .module import func1, func2
 
 ## 요약
 
-| 개념 | 설명 | 예제 |
-|------|------|------|
-| 패키지 | 모듈의 디렉토리 | `mypackage/` |
-| `__init__.py` | 패키지 정의 | 초기화 코드 |
-| 절대 import | 전체 경로 | `from mypackage.module import func` |
-| 상대 import | 상대 경로 | `from .module import func` |
-| `__all__` | export 목록 | `__all__ = ['func1']` |
+| 개념          | 설명            | 예제                                |
+|---------------|-----------------|-------------------------------------|
+| 패키지        | 모듈의 디렉토리 | `mypackage/`                        |
+| `__init__.py` | 패키지 정의     | 초기화 코드                         |
+| 절대 import   | 전체 경로       | `from mypackage.module import func` |
+| 상대 import   | 상대 경로       | `from .module import func`          |
+| `__all__`     | export 목록     | `__all__ = ['func1']`               |
 
 **핵심 포인트:**
 - 절대 import 우선 사용

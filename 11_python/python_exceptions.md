@@ -729,15 +729,15 @@ raise ValueError("로그인 실패: 잘못된 인증 정보")
 
 ## 요약
 
-| 개념 | 설명 | 예시 |
-|------|------|------|
-| try/except | 예외 처리 | `try: ... except ValueError:` |
-| else | 예외 없을 때 | `else: print("성공")` |
-| finally | 항상 실행 | `finally: cleanup()` |
-| raise | 예외 발생 | `raise ValueError("오류")` |
-| 사용자 정의 | 커스텀 예외 | `class MyError(Exception):` |
-| with | 컨텍스트 매니저 | `with open(...) as f:` |
-| from | 예외 체이닝 | `raise ... from e` |
+| 개념        | 설명            | 예시                          |
+|-------------|-----------------|-------------------------------|
+| try/except  | 예외 처리       | `try: ... except ValueError:` |
+| else        | 예외 없을 때    | `else: print("성공")`         |
+| finally     | 항상 실행       | `finally: cleanup()`          |
+| raise       | 예외 발생       | `raise ValueError("오류")`    |
+| 사용자 정의 | 커스텀 예외     | `class MyError(Exception):`   |
+| with        | 컨텍스트 매니저 | `with open(...) as f:`        |
+| from        | 예외 체이닝     | `raise ... from e`            |
 
 **핵심 포인트:**
 - 구체적인 예외부터 처리

@@ -1084,14 +1084,14 @@ def expensive_function(n):
 
 ## 요약
 
-| 개념 | 설명 | 예시 |
-|------|------|------|
-| 함수 데코레이터 | 함수에 기능 추가 | `@decorator` |
-| 클래스 데코레이터 | 클래스에 기능 추가 | `@add_method` |
-| 매개변수 데코레이터 | 설정 가능한 데코레이터 | `@repeat(3)` |
-| functools.wraps | 메타데이터 보존 | `@wraps(func)` |
-| lru_cache | 자동 캐싱 | `@lru_cache` |
-| singledispatch | 타입별 오버로딩 | `@singledispatch` |
+| 개념                | 설명                   | 예시              |
+|---------------------|------------------------|-------------------|
+| 함수 데코레이터     | 함수에 기능 추가       | `@decorator`      |
+| 클래스 데코레이터   | 클래스에 기능 추가     | `@add_method`     |
+| 매개변수 데코레이터 | 설정 가능한 데코레이터 | `@repeat(3)`      |
+| functools.wraps     | 메타데이터 보존        | `@wraps(func)`    |
+| lru_cache           | 자동 캐싱              | `@lru_cache`      |
+| singledispatch      | 타입별 오버로딩        | `@singledispatch` |
 
 **핵심 포인트:**
 - functools.wraps 항상 사용

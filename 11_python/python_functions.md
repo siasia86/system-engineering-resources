@@ -746,15 +746,15 @@ print(greet.__name__)  # greet
 
 ## 요약
 
-| 개념 | 설명 | 예시 |
-|------|------|------|
-| 함수 정의 | `def` 키워드 사용 | `def func():` |
-| 매개변수 | 함수 입력값 | `def func(a, b):` |
-| 반환값 | `return`으로 반환 | `return result` |
-| *args | 가변 위치 인자 | `def func(*args):` |
-| **kwargs | 가변 키워드 인자 | `def func(**kwargs):` |
-| 람다 | 익명 함수 | `lambda x: x * 2` |
-| 데코레이터 | 함수 기능 확장 | `@decorator` |
+| 개념       | 설명              | 예시                  |
+|------------|-------------------|-----------------------|
+| 함수 정의  | `def` 키워드 사용 | `def func():`         |
+| 매개변수   | 함수 입력값       | `def func(a, b):`     |
+| 반환값     | `return`으로 반환 | `return result`       |
+| *args      | 가변 위치 인자    | `def func(*args):`    |
+| **kwargs   | 가변 키워드 인자  | `def func(**kwargs):` |
+| 람다       | 익명 함수         | `lambda x: x * 2`     |
+| 데코레이터 | 함수 기능 확장    | `@decorator`          |
 
 **핵심 포인트:**
 - 함수는 한 가지 일만 수행

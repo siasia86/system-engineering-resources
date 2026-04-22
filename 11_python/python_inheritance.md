@@ -1252,14 +1252,14 @@ class Child(Parent):
 
 ## 요약
 
-| 개념 | 설명 | 예시 |
-|------|------|------|
-| 상속 | 부모 클래스 기능 물려받기 | `class Dog(Animal):` |
-| `super()` | 부모 클래스 메서드 호출 | `super().__init__()` |
-| 오버라이딩 | 부모 메서드 재정의 | `def speak(self):` |
-| 다중 상속 | 여러 부모로부터 상속 | `class Duck(Flyable, Swimmable):` |
-| MRO | 메서드 탐색 순서 | `Class.__mro__` |
-| 추상 클래스 | 인스턴스화 불가, 구현 강제 | `ABC`, `@abstractmethod` |
+| 개념        | 설명                       | 예시                              |
+|-------------|----------------------------|-----------------------------------|
+| 상속        | 부모 클래스 기능 물려받기  | `class Dog(Animal):`              |
+| `super()`   | 부모 클래스 메서드 호출    | `super().__init__()`              |
+| 오버라이딩  | 부모 메서드 재정의         | `def speak(self):`                |
+| 다중 상속   | 여러 부모로부터 상속       | `class Duck(Flyable, Swimmable):` |
+| MRO         | 메서드 탐색 순서           | `Class.__mro__`                   |
+| 추상 클래스 | 인스턴스화 불가, 구현 강제 | `ABC`, `@abstractmethod`          |
 
 **핵심 포인트:**
 - 상속은 is-a 관계일 때 사용
