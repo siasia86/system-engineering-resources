@@ -1,15 +1,19 @@
 # HTTP Methods 가이드
 
 ## 목차
-1. [CRUD 매핑](#crud-매핑)
-2. [주요 메서드](#주요-메서드)
-3. [추가 메서드](#추가-메서드)
-4. [속성 비교](#속성-비교)
-5. [RESTful API 설계](#restful-api-설계-예시)
-6. [실전 예제](#실전-예제)
-7. [보안 고려사항](#보안-고려사항)
 
-## CRUD 매핑
+| 단계 | 섹션                                                                                                                      |
+|------|---------------------------------------------------------------------------------------------------------------------------|
+| 기초 | [1. CRUD 매핑](#1-crud-매핑) / [2. 주요 메서드](#2-주요-메서드) / [3. 추가 메서드](#3-추가-메서드)                        |
+| 비교 | [4. 속성 비교](#4-속성-비교) / [5. PUT vs PATCH](#5-put-vs-patch-차이) / [6. 멱등성](#6-멱등성-idempotent)                |
+| 실전 | [7. RESTful API 설계](#7-restful-api-설계-예시) / [8. 상태 코드](#8-상태-코드와-함께-사용) / [9. 실전 예제](#9-실전-예제) |
+| 보안 | [10. 보안 고려사항](#10-보안-고려사항)                                                                                    |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 1. CRUD 매핑
 
 | CRUD   | HTTP Method | 설명        |
 |--------|-------------|-------------|
@@ -18,7 +22,11 @@
 | UPDATE | PUT / PATCH | 리소스 수정 |
 | DELETE | DELETE      | 리소스 삭제 |
 
-## 주요 메서드
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 2. 주요 메서드
 
 ### GET
 - **목적**: 리소스 조회
@@ -142,7 +150,11 @@ Content-Type: application/json
 }
 ```
 
-## 추가 메서드
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 3. 추가 메서드
 
 ### HEAD
 - **목적**: 메타데이터만 조회
@@ -196,7 +208,11 @@ Access-Control-Request-Headers: Content-Type
 - **보안 이슈**: XST(Cross-Site Tracing) 공격 가능
 - **권장**: 프로덕션 환경에서 비활성화
 
-## 속성 비교
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 4. 속성 비교
 
 | Method  | Safe | Idempotent | Cacheable | Body |
 |---------|------|------------|-----------|------|
@@ -208,7 +224,115 @@ Access-Control-Request-Headers: Content-Type
 | HEAD    | ✓    | ✓          | ✓         | ✗    |
 | OPTIONS | ✓    | ✓          | ✗         | ✗    |
 
-## RESTful API 설계 예시
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 5. PUT vs PATCH 차이
+
+### PUT (전체 교체)
+```http
+PUT /api/products/123
+Content-Type: application/json
+
+{
+  "name": "노트북 Pro",
+  "price": 2000000,
+  "category": "electronics",
+  "stock": 30,
+  "description": "고성능 노트북"
+}
+```
+- **모든 필드 필수**
+- 누락된 필드는 null 또는 기본값으로 설정됨
+- 리소스 전체를 새 데이터로 교체
+
+### PATCH (부분 수정)
+```http
+PATCH /api/products/123
+Content-Type: application/json
+
+{
+  "price": 1800000,
+  "stock": 28
+}
+```
+- **변경할 필드만 전송**
+- 나머지 필드는 기존 값 유지
+- 네트워크 효율적
+
+### 실무 선택 가이드
+
+| 상황             | 권장 메서드 | 이유             |
+|------------------|-------------|------------------|
+| 전체 데이터 교체 | PUT         | 명확한 의도 표현 |
+| 일부 필드만 수정 | PATCH       | 효율적, 안전     |
+| 상태 변경        | PATCH       | 부분 업데이트    |
+| 폼 전체 제출     | PUT         | 모든 필드 포함   |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 6. 멱등성 (Idempotent)
+
+**정의**: 같은 요청을 여러 번 보내도 결과가 동일한 성질
+
+### 멱등성이 있는 메서드
+
+```http
+# GET - 항상 같은 데이터 반환
+GET /api/products/123
+→ 1번 호출: {id: 123, name: "노트북"}
+→ 100번 호출: {id: 123, name: "노트북"} (동일)
+
+# PUT - 최종 상태 동일
+PUT /api/products/123 {"price": 2000000}
+→ 1번 호출: price = 2000000
+→ 100번 호출: price = 2000000 (동일)
+
+# DELETE - 삭제 후 상태 동일
+DELETE /api/products/123
+→ 1번 호출: 삭제됨 (204 No Content)
+→ 2번 호출: 이미 없음 (404 Not Found)
+→ 결과: 리소스가 없는 상태로 동일
+```
+
+### 멱등성이 없는 메서드
+
+```http
+# POST - 호출할 때마다 새 리소스 생성
+POST /api/products {"name": "마우스"}
+→ 1번 호출: id=124 생성
+→ 2번 호출: id=125 생성
+→ 3번 호출: id=126 생성 (매번 다른 결과)
+```
+
+### 실무 적용
+
+**재시도 로직 설계:**
+- GET, PUT, DELETE: 안전하게 재시도 가능
+- POST: 중복 생성 방지 필요 (Idempotency Key 사용)
+
+**Idempotency Key 패턴 (POST):**
+```http
+POST /api/orders
+Idempotency-Key: unique-request-id-12345
+Content-Type: application/json
+
+{
+  "productId": 123,
+  "quantity": 2
+}
+```
+- 같은 Key로 재요청 시 기존 결과 반환
+- 네트워크 오류 시 안전한 재시도 가능
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 7. RESTful API 설계 예시
 
 ### 기본 리소스 CRUD
 
@@ -278,103 +402,11 @@ POST /api/files/upload
 POST /api/reports/export
 ```
 
-## PUT vs PATCH 차이
+[⬆ 목차로 돌아가기](#목차)
 
-### PUT (전체 교체)
-```http
-PUT /api/products/123
-Content-Type: application/json
+---
 
-{
-  "name": "노트북 Pro",
-  "price": 2000000,
-  "category": "electronics",
-  "stock": 30,
-  "description": "고성능 노트북"
-}
-```
-- **모든 필드 필수**
-- 누락된 필드는 null 또는 기본값으로 설정됨
-- 리소스 전체를 새 데이터로 교체
-
-### PATCH (부분 수정)
-```http
-PATCH /api/products/123
-Content-Type: application/json
-
-{
-  "price": 1800000,
-  "stock": 28
-}
-```
-- **변경할 필드만 전송**
-- 나머지 필드는 기존 값 유지
-- 네트워크 효율적
-
-### 실무 선택 가이드
-
-| 상황             | 권장 메서드 | 이유             |
-|------------------|-------------|------------------|
-| 전체 데이터 교체 | PUT         | 명확한 의도 표현 |
-| 일부 필드만 수정 | PATCH       | 효율적, 안전     |
-| 상태 변경        | PATCH       | 부분 업데이트    |
-| 폼 전체 제출     | PUT         | 모든 필드 포함   |
-
-## 멱등성 (Idempotent)
-
-**정의**: 같은 요청을 여러 번 보내도 결과가 동일한 성질
-
-### 멱등성이 있는 메서드
-
-```http
-# GET - 항상 같은 데이터 반환
-GET /api/products/123
-→ 1번 호출: {id: 123, name: "노트북"}
-→ 100번 호출: {id: 123, name: "노트북"} (동일)
-
-# PUT - 최종 상태 동일
-PUT /api/products/123 {"price": 2000000}
-→ 1번 호출: price = 2000000
-→ 100번 호출: price = 2000000 (동일)
-
-# DELETE - 삭제 후 상태 동일
-DELETE /api/products/123
-→ 1번 호출: 삭제됨 (204 No Content)
-→ 2번 호출: 이미 없음 (404 Not Found)
-→ 결과: 리소스가 없는 상태로 동일
-```
-
-### 멱등성이 없는 메서드
-
-```http
-# POST - 호출할 때마다 새 리소스 생성
-POST /api/products {"name": "마우스"}
-→ 1번 호출: id=124 생성
-→ 2번 호출: id=125 생성
-→ 3번 호출: id=126 생성 (매번 다른 결과)
-```
-
-### 실무 적용
-
-**재시도 로직 설계:**
-- GET, PUT, DELETE: 안전하게 재시도 가능
-- POST: 중복 생성 방지 필요 (Idempotency Key 사용)
-
-**Idempotency Key 패턴 (POST):**
-```http
-POST /api/orders
-Idempotency-Key: unique-request-id-12345
-Content-Type: application/json
-
-{
-  "productId": 123,
-  "quantity": 2
-}
-```
-- 같은 Key로 재요청 시 기존 결과 반환
-- 네트워크 오류 시 안전한 재시도 가능
-
-## 상태 코드와 함께 사용
+## 8. 상태 코드와 함께 사용
 
 ### GET 요청
 ```http
@@ -440,7 +472,11 @@ DELETE /api/products/123
 → 429 Too Many Requests (요청 제한 초과)
 ```
 
-## 실전 예제
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 9. 실전 예제
 
 ### 예제 1: 전자상거래 상품 관리
 
@@ -649,7 +685,11 @@ Response: 204 No Content
 - TRACE: XST 공격 가능, 비활성화 권장
 - OPTIONS: CORS 설정 확인
 
-## 보안 고려사항
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 10. 보안 고려사항
 
 ### 1. GET 요청 보안
 ```http
@@ -825,25 +865,34 @@ Response: 500 Internal Server Error
 - 상세 에러는 서버 로그에만 기록
 - 에러 코드로 문제 추적 가능하게 설계
 
-## 추가 학습 자료
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 11. 추가 학습 자료
 
 ### HTTP 명세
-- RFC 7231: HTTP/1.1 Semantics and Content
-- RFC 5789: PATCH Method for HTTP
-- RFC 7540: HTTP/2
 
-### RESTful API 설계 가이드
-- REST API 성숙도 모델 (Richardson Maturity Model)
-- HATEOAS (Hypermedia as the Engine of Application State)
-- API 문서화: OpenAPI/Swagger
+| RFC      | 내용                           |
+|----------|--------------------------------|
+| RFC 7231 | HTTP/1.1 Semantics and Content |
+| RFC 5789 | PATCH Method for HTTP          |
+| RFC 7540 | HTTP/2                         |
 
 ### 실습 도구
-- Postman: API 테스트 도구
-- curl: 커맨드라인 HTTP 클라이언트
-- HTTPie: 사용자 친화적 HTTP 클라이언트
-- Insomnia: REST API 클라이언트
 
-## 요약
+| 도구     | 설명                          |
+|----------|-------------------------------|
+| Postman  | API 테스트 도구               |
+| curl     | 커맨드라인 HTTP 클라이언트    |
+| HTTPie   | 사용자 친화적 HTTP 클라이언트 |
+| Insomnia | REST API 클라이언트           |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 12. 요약
 
 | 메서드  | 용도        | 멱등성 | 안전 | Body | 주요 상태 코드 |
 |---------|-------------|--------|------|------|----------------|
@@ -854,3 +903,22 @@ Response: 500 Internal Server Error
 | DELETE  | 삭제        | ✓      | ✗    | △    | 204, 404       |
 | HEAD    | 메타데이터  | ✓      | ✓    | ✗    | 200            |
 | OPTIONS | 메서드 확인 | ✓      | ✓    | ✗    | 200            |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+**작성일**: 2026-04-22
+**마지막 업데이트**: 2026-04-22
+
+© 2026 siasia86. Licensed under CC BY 4.0.
