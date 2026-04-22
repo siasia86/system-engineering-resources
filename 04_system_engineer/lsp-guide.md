@@ -26,24 +26,24 @@ Emacs  ─┘
 ### 동작 구조
 
 ```
-+----------------+   JSON-RPC over stdio   +------------------+
+┌────────────────┐   JSON─RPC over stdio   ┌──────────────────┐
 │  에디터/클라이언트 │ ──────────────────────→ │  Language Server  │
 │  (VSCode, Vim) │ ←────────────────────── │  (pyright, gopls) │
-+----------------+                         +------------------+
+└────────────────┘                         └──────────────────┐
 ```
 
 클라이언트와 서버는 JSON-RPC 프로토콜로 통신하며, 서버는 언어별로 독립 프로세스로 실행된다.
 
 ### 제공 기능
 
-| 기능 | 설명 |
-|------|------|
-| 자동완성 | 변수, 함수, 속성 목록 제안 |
-| 정의로 이동 | 함수/클래스 선언부로 이동 |
-| 참조 찾기 | 심볼이 사용된 모든 위치 표시 |
-| 오류 진단 | 타입 오류, 미정의 변수 실시간 표시 |
-| 타입 정보 | 커서 위치의 타입/문서 표시 |
-| 심볼 이름 변경 | 코드베이스 전체 일괄 변경 |
+| 기능           | 설명                               |
+|----------------|------------------------------------|
+| 자동완성       | 변수, 함수, 속성 목록 제안         |
+| 정의로 이동    | 함수/클래스 선언부로 이동          |
+| 참조 찾기      | 심볼이 사용된 모든 위치 표시       |
+| 오류 진단      | 타입 오류, 미정의 변수 실시간 표시 |
+| 타입 정보      | 커서 위치의 타입/문서 표시         |
+| 심볼 이름 변경 | 코드베이스 전체 일괄 변경          |
 
 ---
 
@@ -265,13 +265,13 @@ response = ec2.describe_instances(
 
 확장 설치만으로 대부분 자동 설정됨.
 
-| 확장 | LSP 서버 |
-|------|----------|
-| HashiCorp Terraform | terraform-ls |
-| YAML | yaml-language-server |
-| Ansible | ansible-language-server |
-| Python | pyright (Pylance) |
-| Bash IDE | bash-language-server |
+| 확장                | LSP 서버                |
+|---------------------|-------------------------|
+| HashiCorp Terraform | terraform-ls            |
+| YAML                | yaml-language-server    |
+| Ansible             | ansible-language-server |
+| Python              | pyright (Pylance)       |
+| Bash IDE            | bash-language-server    |
 
 ### Neovim (`nvim-lspconfig`)
 

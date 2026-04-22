@@ -523,12 +523,12 @@ echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
 ## 관련 도구
 
-| 도구 | 용도 |
-|------|------|
-| **gdb** | 소스 디버깅 |
-| **lldb** | LLVM 디버거 |
-| **cgdb** | gdb + 컬러 |
-| **ddd** | gdb GUI |
+| 도구         | 용도          |
+|--------------|---------------|
+| **gdb**      | 소스 디버깅   |
+| **lldb**     | LLVM 디버거   |
+| **cgdb**     | gdb + 컬러    |
+| **ddd**      | gdb GUI       |
 | **valgrind** | 메모리 디버깅 |
 
 ## 요약

@@ -270,14 +270,14 @@ uv pip freeze > requirements.txt
 
 ## 요약
 
-| 도구 | 용도 |
-|------|------|
-| `venv` | 프로젝트별 가상환경 생성 |
-| `pip` | 패키지 설치/관리 |
-| `pip freeze` | 의존성 목록 추출 |
-| `requirements.txt` | 의존성 명세 |
-| `pyenv` | Python 버전 관리 |
-| `pipx` | CLI 도구 격리 설치 |
+| 도구               | 용도                     |
+|--------------------|--------------------------|
+| `venv`             | 프로젝트별 가상환경 생성 |
+| `pip`              | 패키지 설치/관리         |
+| `pip freeze`       | 의존성 목록 추출         |
+| `requirements.txt` | 의존성 명세              |
+| `pyenv`            | Python 버전 관리         |
+| `pipx`             | CLI 도구 격리 설치       |
 
 **관련 문서:**
 - [패키지](./python_packages.md) - 패키지 구조
