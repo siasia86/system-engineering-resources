@@ -58,14 +58,14 @@ json.dumps(data,
 
 ### 타입 매핑
 
-| Python | JSON |
-|--------|------|
-| dict | object |
-| list, tuple | array |
-| str | string |
-| int, float | number |
-| True/False | true/false |
-| None | null |
+| Python      | JSON       |
+|-------------|------------|
+| dict        | object     |
+| list, tuple | array      |
+| str         | string     |
+| int, float  | number     |
+| True/False  | true/false |
+| None        | null       |
 
 ---
 
@@ -241,14 +241,14 @@ config = load_config('prd')
 
 ## 요약
 
-| 항목 | JSON | YAML |
-|------|------|------|
-| 모듈 | `json` (내장) | `pyyaml` (설치 필요) |
-| 읽기 | `json.load()` / `loads()` | `yaml.safe_load()` |
-| 쓰기 | `json.dump()` / `dumps()` | `yaml.dump()` |
-| 용도 | API, 데이터 교환 | 설정 파일 |
-| 주석 | ❌ 불가 | ✅ 가능 (`#`) |
-| 가독성 | 보통 | 좋음 |
+| 항목   | JSON                      | YAML                 |
+|--------|---------------------------|----------------------|
+| 모듈   | `json` (내장)             | `pyyaml` (설치 필요) |
+| 읽기   | `json.load()` / `loads()` | `yaml.safe_load()`   |
+| 쓰기   | `json.dump()` / `dumps()` | `yaml.dump()`        |
+| 용도   | API, 데이터 교환          | 설정 파일            |
+| 주석   | ❌ 불가                   | ✅ 가능 (`#`)        |
+| 가독성 | 보통                      | 좋음                 |
 
 **관련 문서:**
 - [파일 입출력](./python_file_io.md) - 파일 처리

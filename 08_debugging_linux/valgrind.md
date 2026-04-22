@@ -414,13 +414,13 @@ grep "ERROR SUMMARY" valgrind.log
 
 ## 관련 도구
 
-| 도구 | 용도 |
-|------|------|
-| **valgrind** | 메모리 디버깅 |
+| 도구                 | 용도             |
+|----------------------|------------------|
+| **valgrind**         | 메모리 디버깅    |
 | **AddressSanitizer** | 빠른 메모리 검사 |
-| **LeakSanitizer** | 누수 검사 |
-| **MemorySanitizer** | 초기화 검사 |
-| **gdb** | 소스 디버깅 |
+| **LeakSanitizer**    | 누수 검사        |
+| **MemorySanitizer**  | 초기화 검사      |
+| **gdb**              | 소스 디버깅      |
 
 ## 요약
 

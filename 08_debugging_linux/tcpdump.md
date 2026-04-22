@@ -481,13 +481,13 @@ sudo tcpdump -r capture.pcap -w capture.pcapng
 
 ## 관련 도구
 
-| 도구 | 용도 |
-|------|------|
-| **tcpdump** | 패킷 캡처 (CLI) |
-| **wireshark** | 패킷 분석 (GUI) |
-| **tshark** | Wireshark CLI |
-| **ngrep** | 네트워크 grep |
-| **tcpflow** | TCP 스트림 재구성 |
+| 도구          | 용도              |
+|---------------|-------------------|
+| **tcpdump**   | 패킷 캡처 (CLI)   |
+| **wireshark** | 패킷 분석 (GUI)   |
+| **tshark**    | Wireshark CLI     |
+| **ngrep**     | 네트워크 grep     |
+| **tcpflow**   | TCP 스트림 재구성 |
 
 ## 요약
 
