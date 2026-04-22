@@ -1649,12 +1649,12 @@ mixed-project/
     │
     ├─ 문서/콘텐츠인가?
     │   │
-    │   ├─ 자유롭게 사용 → CC BY 4.0 ⭐
+    │   ├─ 자유롭게 사용 → CC BY 4.0
     │   └─ 오픈소스 유지 → CC BY-SA 4.0
     │
     └─ 코드인가?
         │
-        ├─ 간단하게 → MIT License ⭐
+        ├─ 간단하게 → MIT License
         └─ 특허 보호 → Apache 2.0
 ```
 
