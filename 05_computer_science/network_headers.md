@@ -475,22 +475,22 @@ X-Forwarded-For: 1.2.3.4, 10.0.0.1
 ```
 Client                                              Server
     │                                                  │
-    ├── ClientHello ═══════════════════════════▶       │
+    ├── ClientHello ───────────────────────────▶       │
     │   - TLS Version                                  │
     │   - Supported Cipher Suites                      │
     │   - Random Data                                  │
     │                                                  │
-    │       ◀═══════════════════ ServerHello ──────────┤
+    │       ◀─────────────────── ServerHello ──────────┤
     │         - Selected Cipher Suite                  │
     │         - Server Certificate                     │
     │         - Random Data                            │
     │                                                  │
-    ├── ClientKeyExchange ════════════════════▶        │
-    ├── ChangeCipherSpec ═════════════════════▶        │
-    ├── Finished ═════════════════════════════▶        │
+    ├── ClientKeyExchange ────────────────────▶        │
+    ├── ChangeCipherSpec ─────────────────────▶        │
+    ├── Finished ─────────────────────────────▶        │
     │                                                  │
-    │       ◀═══════════════ ChangeCipherSpec ─────────┤
-    │       ◀═══════════════════════ Finished ─────────┤
+    │       ◀─────────────── ChangeCipherSpec ─────────┤
+    │       ◀─────────────────────── Finished ─────────┤
     │                                                  │
     └── Encrypted Communication Start ─────────────────┘
 ```
@@ -701,10 +701,10 @@ IP
 ```
 Client                                              Server
     │                                                  │
-    ├── ClientHello + Data ════════════════════▶       │
+    ├── ClientHello + Data ────────────────────▶       │
     │   (Reuse previous session)                       │
     │                                                  │
-    │       ◀════════════════════ ServerHello + Data ──┤
+    │       ◀──────────────────── ServerHello + Data ──┤
     │                                                  │
     └── Immediate Data Transfer ───────────────────────┘
 ```
