@@ -1,20 +1,19 @@
 # 네트워크 헤더 구조 (Network Headers)
 
 ## 목차
-1. [Ethernet 헤더 (Layer 2)](#ethernet-헤더-layer-2)
-2. [ARP 헤더](#arp-헤더)
-3. [IPv6 헤더](#ipv6-헤더)
-4. [ICMP 헤더](#icmp-헤더)
-5. [DNS 헤더](#dns-헤더)
-6. [HTTP 헤더](#http-헤더)
-7. [TLS/SSL 헤더](#tlsssl-헤더)
-8. [GRE 헤더](#gre-헤더)
-9. [VXLAN 헤더](#vxlan-헤더)
-10. [QUIC 헤더](#quic-헤더)
+
+| 단계  | 섹션                                                                                                                                    |
+|-------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| L2/L3 | [1. Ethernet 헤더](#1-ethernet-헤더-layer-2) / [2. ARP 헤더](#2-arp-헤더) / [3. IPv6 헤더](#3-ipv6-헤더) / [4. ICMP 헤더](#4-icmp-헤더) |
+| 응용  | [5. DNS 헤더](#5-dns-헤더) / [6. HTTP 헤더](#6-http-헤더) / [7. TLS/SSL 헤더](#7-tlsssl-헤더)                                           |
+| 터널  | [8. GRE 헤더](#8-gre-헤더) / [9. VXLAN 헤더](#9-vxlan-헤더) / [10. QUIC 헤더](#10-quic-헤더)                                            |
+| 실전  | [11. 패킷 캡슐화 예시](#11-패킷-캡슐화-예시) / [12. 패킷 분석 명령어](#12-패킷-분석-명령어)                                             |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
-## Ethernet 헤더 (Layer 2)
+## 1. Ethernet 헤더 (Layer 2)
 
 ### 구조 (14-18 bytes)
 
@@ -83,9 +82,11 @@
 14:30:15.123456 aa:bb:cc:dd:ee:ff > 00:11:22:33:44:55, ethertype IPv4 (0x0800)
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## ARP 헤더
+## 2. ARP 헤더
 
 ### 구조 (28 bytes for IPv4)
 
@@ -156,9 +157,11 @@ Target IP: 192.168.1.100
 결과: 피해자의 트래픽이 공격자를 거쳐감 (MITM)
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## IPv6 헤더
+## 3. IPv6 헤더
 
 ### 구조 (40 bytes, 고정)
 
@@ -226,9 +229,11 @@ fe80::1
 ff02::1 (모든 노드)
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## ICMP 헤더
+## 4. ICMP 헤더
 
 ### 구조 (8+ bytes)
 
@@ -302,9 +307,11 @@ iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 1/s -j ACCEP
 iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## DNS 헤더
+## 5. DNS 헤더
 
 ### 구조 (12+ bytes)
 
@@ -396,9 +403,11 @@ tcpdump -i eth0 -n port 53 | awk '{print $5}' | cut -d. -f1-4 | sort | uniq -c |
 ```
 
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## HTTP 헤더
+## 6. HTTP 헤더
 
 ### 구조 (텍스트 기반)
 
@@ -466,9 +475,11 @@ X-Forwarded-For: 1.2.3.4, 10.0.0.1
 | **X-Frame-Options**           | 클릭재킹 방어     |
 | **X-Content-Type-Options**    | MIME 스니핑 방지  |
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## TLS/SSL 헤더
+## 7. TLS/SSL 헤더
 
 ### TLS Handshake 구조
 
@@ -539,9 +550,11 @@ Extension: server_name
 - 하나의 IP에 여러 도메인 호스팅
 - 프록시/방화벽에서 도메인 기반 필터링
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## GRE 헤더
+## 8. GRE 헤더
 
 ### 구조 (4-16 bytes)
 
@@ -590,9 +603,11 @@ GRE 캡슐화: [외부 IP][GRE][원본 IP][TCP][Data]
 온프레미스 ←→ GRE 터널 ←→ AWS VPC
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## VXLAN 헤더
+## 9. VXLAN 헤더
 
 ### 구조 (8 bytes)
 
@@ -641,9 +656,11 @@ VNI 200: 고객 B 네트워크
 VNI 300: 고객 C 네트워크
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## QUIC 헤더
+## 10. QUIC 헤더
 
 ### 구조 (Long Header)
 
@@ -709,9 +726,11 @@ Client                                              Server
     └── Immediate Data Transfer ───────────────────────┘
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## 패킷 캡슐화 예시
+## 11. 패킷 캡슐화 예시
 
 ### 일반 웹 트래픽
 
@@ -737,9 +756,11 @@ Client                                              Server
 [Ethernet][IP][UDP][QUIC][HTTP/3][Data]
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## 패킷 분석 명령어
+## 12. 패킷 분석 명령어
 
 ### 특정 헤더 필터링
 
@@ -812,18 +833,39 @@ vxlan.vni == 100
 quic
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 참고 자료
 
-- RFC 894: Ethernet
-- RFC 826: ARP
-- RFC 2460: IPv6
-- RFC 792: ICMP
-- RFC 1035: DNS
-- RFC 2616: HTTP/1.1
-- RFC 7540: HTTP/2
-- RFC 8446: TLS 1.3
-- RFC 2784: GRE
-- RFC 7348: VXLAN
-- RFC 9000: QUIC
+| RFC      | 내용     |
+|----------|----------|
+| RFC 894  | Ethernet |
+| RFC 826  | ARP      |
+| RFC 2460 | IPv6     |
+| RFC 792  | ICMP     |
+| RFC 1035 | DNS      |
+| RFC 2616 | HTTP/1.1 |
+| RFC 7540 | HTTP/2   |
+| RFC 8446 | TLS 1.3  |
+| RFC 2784 | GRE      |
+| RFC 7348 | VXLAN    |
+| RFC 9000 | QUIC     |
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+**작성일**: 2026-04-22
+**마지막 업데이트**: 2026-04-22
+
+© 2026 siasia86. Licensed under CC BY 4.0.

@@ -1,15 +1,18 @@
 # 패킷 분석 (Packet Analysis)
 
 ## 목차
-1. [IP 헤더 (IPv4)](#ip-헤더-ipv4)
-2. [TCP 헤더](#tcp-헤더)
-3. [UDP 헤더](#udp-헤더)
-4. [PROXY Protocol v2](#proxy-protocol-v2)
-5. [패킷 분석 도구](#패킷-분석-도구)
+
+| 단계   | 섹션                                                                                           |
+|--------|------------------------------------------------------------------------------------------------|
+| 헤더   | [1. IP 헤더 (IPv4)](#1-ip-헤더-ipv4) / [2. TCP 헤더](#2-tcp-헤더) / [3. UDP 헤더](#3-udp-헤더) |
+| 프록시 | [4. PROXY Protocol v2](#4-proxy-protocol-v2)                                                   |
+| 실전   | [5. 패킷 분석 도구](#5-패킷-분석-도구) / [6. 실전 패킷 분석 예시](#6-실전-패킷-분석-예시)      |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
-## IP 헤더 (IPv4)
+## 1. IP 헤더 (IPv4)
 
 ### 구조 (20-60 bytes)
 
@@ -99,9 +102,11 @@ Internet Protocol Version 4, Src: 192.168.1.100, Dst: 10.0.0.1
     Destination Address: 10.0.0.1
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## TCP 헤더
+## 2. TCP 헤더
 
 ### 구조 (20-60 bytes)
 
@@ -242,9 +247,11 @@ Transmission Control Protocol, Src Port: 54321, Dst Port: 80, Seq: 1, Ack: 1
     Options: (12 bytes), Maximum segment size, No-Operation (NOP), Window scale
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## UDP 헤더
+## 3. UDP 헤더
 
 ### 구조 (8 bytes)
 
@@ -312,9 +319,11 @@ tcpdump -i eth0 -v udp
 | **헤더 크기** | 20-60 bytes                     | 8 bytes                 |
 | **용도**      | HTTP, FTP, SSH, SMTP            | DNS, DHCP, VoIP, 게임   |
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## PROXY Protocol v2
+## 4. PROXY Protocol v2
 
 ### 개요
 
@@ -329,7 +338,7 @@ tcpdump -i eth0 -v udp
 
 ---
 
-### PROXY Protocol v2 헤더 구조
+### 4. PROXY Protocol v2 헤더 구조
 
 ```
  0                   1                   2                   3
@@ -438,13 +447,13 @@ Version | Command
 
 ---
 
-### PROXY Protocol v2 예시
+### 4. PROXY Protocol v2 예시
 
 #### 예시 1: IPv4 + TCP
 
 ```
 Hex Dump:
-0D 0A 0D 0A 00 0D 0A 51 55 49 54 0A  |  Signature
+0D 0A 0D 0A 00 0D 0A 51 55 49 54 0A   |  Signature
 21                                    |  Version 2, PROXY command
 11                                    |  AF=INET, Proto=STREAM
 00 0C                                 |  Address length = 12 bytes
@@ -463,14 +472,14 @@ D4 31                                 |  Source Port: 54321
 
 ```
 Hex Dump:
-0D 0A 0D 0A 00 0D 0A 51 55 49 54 0A  |  Signature
-21                                    |  Version 2, PROXY command
-21                                    |  AF=INET6, Proto=STREAM
-00 24                                 |  Address length = 36 bytes
+0D 0A 0D 0A 00 0D 0A 51 55 49 54 0A              |  Signature
+21                                               |  Version 2, PROXY command
+21                                               |  AF=INET6, Proto=STREAM
+00 24                                            |  Address length = 36 bytes
 20 01 0D B8 00 00 00 00 00 00 00 00 00 00 00 01  |  Source IPv6
 20 01 0D B8 00 00 00 00 00 00 00 00 00 00 00 02  |  Dest IPv6
-D4 31                                 |  Source Port: 54321
-00 50                                 |  Dest Port: 80
+D4 31                                            |  Source Port: 54321
+00 50                                            |  Dest Port: 80
 ```
 
 ---
@@ -707,9 +716,11 @@ print(f"Client: {info['src_ip']}:{info['src_port']}")
 print(f"Server: {info['dst_ip']}:{info['dst_port']}")
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## 패킷 분석 도구
+## 5. 패킷 분석 도구
 
 ### tcpdump
 
@@ -773,9 +784,11 @@ ngrep -q -W byline "^GET|^POST" tcp port 80
 ngrep -x -q "" tcp port 80
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## 실전 패킷 분석 예시
+## 6. 실전 패킷 분석 예시
 
 ### SYN Flood 공격 탐지
 
@@ -810,13 +823,34 @@ tcpdump -i eth0 'tcp[tcpflags] & tcp-fin != 0'     # FIN
 tcpdump -i eth0 'tcp[tcpflags] & tcp-rst != 0'     # RST
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 참고 자료
 
-- RFC 791: Internet Protocol (IPv4)
-- RFC 793: Transmission Control Protocol (TCP)
-- RFC 768: User Datagram Protocol (UDP)
-- PROXY Protocol Specification v2: https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt
-- Wireshark User Guide: https://www.wireshark.org/docs/
-- tcpdump Manual: https://www.tcpdump.org/manpages/tcpdump.1.html
+| 문서                 | URL                                                         |
+|----------------------|-------------------------------------------------------------|
+| RFC 791 - IPv4       | -                                                           |
+| RFC 793 - TCP        | -                                                           |
+| RFC 768 - UDP        | -                                                           |
+| PROXY Protocol v2    | https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt |
+| Wireshark User Guide | https://www.wireshark.org/docs/                             |
+| tcpdump Manual       | https://www.tcpdump.org/manpages/tcpdump.1.html             |
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+**작성일**: 2026-04-22
+**마지막 업데이트**: 2026-04-22
+
+© 2026 siasia86. Licensed under CC BY 4.0.
