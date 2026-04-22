@@ -685,10 +685,13 @@ ansible-doc -s service
 
 ```
 ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
-│ task 실행        |     | 변경 감지         |     | 후처리            |
-│ (모듈 호출)       | --> | changed: true?   | --> | notify handler   |
-└──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
-
-register  → 결과를 변수에 저장 → debug로 출력 또는 when 조건에 활용
-changed_when: false → 항상 ok 표시 (조회성 명령에 사용)
+│ Task Execution   │     │ Change Detection │     │ Post Processing  │
+│ (Module Call)    │ ──▶ │ changed: true?   │ ──▶ │ notify handler   │
+└──────────────────┘     └──────────────────┘     └──────────────────┘
 ```
+
+- Task Execution: task 실행 (모듈 호출)
+- Change Detection: 변경 감지
+- Post Processing: 후처리 (handler 실행)
+- `register`: 결과를 변수에 저장 → `debug`로 출력 또는 `when` 조건에 활용
+- `changed_when: false`: 항상 ok 표시 (조회성 명령에 사용)
