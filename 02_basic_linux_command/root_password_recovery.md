@@ -94,14 +94,14 @@ exit
 
 모든 버전 동일한 절차. GRUB2 사용.
 
-| 버전 | Init System | 비고 |
-|---|---|---|
-| 14.04 | Upstart | EOL (2019-04) |
-| 16.04 | systemd | EOL (2021-04, ESM 2026-04) |
-| 18.04 | systemd | EOL (2023-05, ESM 2028-04) |
-| 20.04 | systemd | LTS (2025-04까지, ESM 2030-04) |
-| 22.04 | systemd | LTS (2027-04까지) |
-| 24.04 | systemd | LTS (2029-04까지) |
+| 버전  | Init System | 비고                           |
+|-------|-------------|--------------------------------|
+| 14.04 | Upstart     | EOL (2019-04)                  |
+| 16.04 | systemd     | EOL (2021-04, ESM 2026-04)     |
+| 18.04 | systemd     | EOL (2023-05, ESM 2028-04)     |
+| 20.04 | systemd     | LTS (2025-04까지, ESM 2030-04) |
+| 22.04 | systemd     | LTS (2027-04까지)              |
+| 24.04 | systemd     | LTS (2029-04까지)              |
 
 1. 부팅 시 GRUB 메뉴에서 커널 선택 → `e` 키
 2. `linux` 줄에서 `ro quiet splash` 를 `rw init=/bin/bash` 로 변경
@@ -120,13 +120,13 @@ reboot -f
 
 ## 요약 비교
 
-| OS | Bootloader | 핵심 파라미터 | SELinux relabel |
-|---|---|---|---|
-| CentOS 5 | GRUB Legacy | `single` | 불필요 |
-| CentOS 7 | GRUB2 | `rd.break` | enforcing일 때만 `touch /.autorelabel` |
-| Rocky 9 | GRUB2 | `rd.break` | enforcing일 때만 `touch /.autorelabel` |
-| Rocky 10 | GRUB2 | `rd.break` | enforcing일 때만 `touch /.autorelabel` |
-| Ubuntu 전 버전 | GRUB2 | `rw init=/bin/bash` | 불필요 |
+| OS             | Bootloader  | 핵심 파라미터       | SELinux relabel                        |
+|----------------|-------------|---------------------|----------------------------------------|
+| CentOS 5       | GRUB Legacy | `single`            | 불필요                                 |
+| CentOS 7       | GRUB2       | `rd.break`          | enforcing일 때만 `touch /.autorelabel` |
+| Rocky 9        | GRUB2       | `rd.break`          | enforcing일 때만 `touch /.autorelabel` |
+| Rocky 10       | GRUB2       | `rd.break`          | enforcing일 때만 `touch /.autorelabel` |
+| Ubuntu 전 버전 | GRUB2       | `rw init=/bin/bash` | 불필요                                 |
 
 ---
 

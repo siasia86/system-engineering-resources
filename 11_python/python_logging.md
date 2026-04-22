@@ -135,19 +135,19 @@ encoding="cp949"   # Windows 한글
 ## 포맷 설정
 
 ### 주요 포맷 변수
-| 변수 | 설명 | 예시 |
-|------|------|------|
-| `%(asctime)s` | 시간 | 2026-03-03 14:06:45 |
-| `%(levelname)s` | 레벨 | INFO, ERROR 등 |
-| `%(message)s` | 로그 메시지 | 작업 시작 |
-| `%(name)s` | 로거 이름 | root, __main__ |
-| `%(filename)s` | 파일명 | app.py |
-| `%(funcName)s` | 함수명 | my_function |
-| `%(lineno)d` | 줄 번호 | 10 |
-| `%(process)d` | 프로세스 ID | 12345 |
-| `%(thread)d` | 스레드 ID | 67890 |
-| `%(pathname)s` | 전체 경로 | /home/user/app.py |
-| `%(module)s` | 모듈명 | app |
+| 변수            | 설명        | 예시                |
+|-----------------|-------------|---------------------|
+| `%(asctime)s`   | 시간        | 2026-03-03 14:06:45 |
+| `%(levelname)s` | 레벨        | INFO, ERROR 등      |
+| `%(message)s`   | 로그 메시지 | 작업 시작           |
+| `%(name)s`      | 로거 이름   | root, __main__      |
+| `%(filename)s`  | 파일명      | app.py              |
+| `%(funcName)s`  | 함수명      | my_function         |
+| `%(lineno)d`    | 줄 번호     | 10                  |
+| `%(process)d`   | 프로세스 ID | 12345               |
+| `%(thread)d`    | 스레드 ID   | 67890               |
+| `%(pathname)s`  | 전체 경로   | /home/user/app.py   |
+| `%(module)s`    | 모듈명      | app                 |
 
 ### 포맷 예제
 
@@ -361,14 +361,14 @@ logger.info("로그 메시지")
 ```
 
 ### when 옵션
-| 옵션 | 설명 |
-|------|------|
-| `S` | 초 |
-| `M` | 분 |
-| `H` | 시간 |
-| `D` | 일 |
-| `midnight` | 자정 |
-| `W0`~`W6` | 요일 (월~일) |
+| 옵션       | 설명         |
+|------------|--------------|
+| `S`        | 초           |
+| `M`        | 분           |
+| `H`        | 시간         |
+| `D`        | 일           |
+| `midnight` | 자정         |
+| `W0`~`W6`  | 요일 (월~일) |
 
 ---
 
@@ -822,15 +822,15 @@ handler = logging.FileHandler("app.log", encoding="utf-8")
 
 ### 언제 무엇을 사용할까?
 
-| 상황 | 방법 |
-|------|------|
-| 간단한 스크립트 | `logging.basicConfig()` |
-| 파일 저장 | `filename="app.log"` |
-| 파일 + 화면 | `handlers=[FileHandler, StreamHandler]` |
-| 로그 로테이션 | `RotatingFileHandler` 또는 `TimedRotatingFileHandler` |
-| 모듈별 관리 | `logger = logging.getLogger(__name__)` |
-| 에러 추적 | `logging.exception()` 또는 `exc_info=True` |
-| 프로덕션 | 로그 로테이션 + 레벨 분리 + 설정 파일 |
+| 상황            | 방법                                                  |
+|-----------------|-------------------------------------------------------|
+| 간단한 스크립트 | `logging.basicConfig()`                               |
+| 파일 저장       | `filename="app.log"`                                  |
+| 파일 + 화면     | `handlers=[FileHandler, StreamHandler]`               |
+| 로그 로테이션   | `RotatingFileHandler` 또는 `TimedRotatingFileHandler` |
+| 모듈별 관리     | `logger = logging.getLogger(__name__)`                |
+| 에러 추적       | `logging.exception()` 또는 `exc_info=True`            |
+| 프로덕션        | 로그 로테이션 + 레벨 분리 + 설정 파일                 |
 
 ### 추천 설정 (실무)
 ```python

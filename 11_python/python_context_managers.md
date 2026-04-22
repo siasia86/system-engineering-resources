@@ -788,15 +788,15 @@ class GoodContext:
 
 ## 요약
 
-| 개념 | 설명 | 예시 |
-|------|------|------|
-| with 문 | 컨텍스트 매니저 사용 | `with open(...) as f:` |
-| __enter__ | 리소스 획득 | `def __enter__(self):` |
-| __exit__ | 리소스 해제 | `def __exit__(self, ...):` |
-| @contextmanager | 간단한 구현 | `@contextmanager` |
-| suppress | 예외 무시 | `with suppress(Error):` |
-| ExitStack | 동적 관리 | `with ExitStack():` |
-| async with | 비동기 컨텍스트 | `async with resource:` |
+| 개념            | 설명                 | 예시                       |
+|-----------------|----------------------|----------------------------|
+| with 문         | 컨텍스트 매니저 사용 | `with open(...) as f:`     |
+| __enter__       | 리소스 획득          | `def __enter__(self):`     |
+| __exit__        | 리소스 해제          | `def __exit__(self, ...):` |
+| @contextmanager | 간단한 구현          | `@contextmanager`          |
+| suppress        | 예외 무시            | `with suppress(Error):`    |
+| ExitStack       | 동적 관리            | `with ExitStack():`        |
+| async with      | 비동기 컨텍스트      | `async with resource:`     |
 
 **핵심 포인트:**
 - 리소스는 항상 컨텍스트 매니저로 관리

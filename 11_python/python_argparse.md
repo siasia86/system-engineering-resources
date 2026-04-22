@@ -249,15 +249,15 @@ $ python sysadmin.py disk -t 80
 
 ## 요약
 
-| 항목 | 설명 | 예시 |
-|------|------|------|
-| 위치 인자 | 필수, 순서대로 | `add_argument('host')` |
-| 옵션 인자 | 선택, 이름 지정 | `add_argument('--port')` |
-| type | 타입 변환 | `type=int` |
-| choices | 허용 값 제한 | `choices=['a','b']` |
-| action | 동작 방식 | `action='store_true'` |
-| nargs | 인자 개수 | `nargs='+'` |
-| subparsers | 서브커맨드 | `add_subparsers()` |
+| 항목       | 설명            | 예시                     |
+|------------|-----------------|--------------------------|
+| 위치 인자  | 필수, 순서대로  | `add_argument('host')`   |
+| 옵션 인자  | 선택, 이름 지정 | `add_argument('--port')` |
+| type       | 타입 변환       | `type=int`               |
+| choices    | 허용 값 제한    | `choices=['a','b']`      |
+| action     | 동작 방식       | `action='store_true'`    |
+| nargs      | 인자 개수       | `nargs='+'`              |
+| subparsers | 서브커맨드      | `add_subparsers()`       |
 
 **관련 문서:**
 - [subprocess](./python_subprocess.md) - 외부 명령 실행

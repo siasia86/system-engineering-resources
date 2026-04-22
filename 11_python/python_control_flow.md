@@ -424,14 +424,14 @@ def find_product():
 
 ## 요약
 
-| 구문 | 용도 | 예시 |
-|------|------|------|
-| if/elif/else | 조건 분기 | `if x > 0:` |
-| for | 반복 (횟수 정해짐) | `for i in range(10):` |
-| while | 반복 (조건 기반) | `while x < 10:` |
-| break | 반복 중단 | `break` |
-| continue | 다음 반복 | `continue` |
-| pass | 빈 블록 | `pass` |
+| 구문         | 용도               | 예시                  |
+|--------------|--------------------|-----------------------|
+| if/elif/else | 조건 분기          | `if x > 0:`           |
+| for          | 반복 (횟수 정해짐) | `for i in range(10):` |
+| while        | 반복 (조건 기반)   | `while x < 10:`       |
+| break        | 반복 중단          | `break`               |
+| continue     | 다음 반복          | `continue`            |
+| pass         | 빈 블록            | `pass`                |
 
 **핵심 포인트:**
 - 조건문으로 분기 처리

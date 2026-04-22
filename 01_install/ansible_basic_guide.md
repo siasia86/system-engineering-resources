@@ -5,7 +5,7 @@
 Ansible은 에이전트 없이 SSH로 대상 서버를 관리하는 자동화 도구입니다.
 
 ```
-Control Node (내 서버)  ──SSH──>  Managed Node (대상 서버)
+Control Node (내 서버)  ──SSH──▶  Managed Node (대상 서버)
 
 명령 실행 방식:
   ad-hoc   → 1회성 명령 (ansible 명령어)
@@ -18,12 +18,12 @@ Control Node (내 서버)  ──SSH──>  Managed Node (대상 서버)
 
 우선순위가 높은 순서대로 적용됩니다. 먼저 발견된 설정이 나머지를 무시합니다.
 
-| 우선순위 | 위치                              | 설명                           |
-|----------|-----------------------------------|--------------------------------|
-| 1 (최고) | `ANSIBLE_CONFIG` 환경변수         | 명시적 지정                    |
-| 2        | `./ansible.cfg`                   | 현재 디렉토리                  |
-| 3        | `~/.ansible.cfg`                  | 홈 디렉토리                    |
-| 4 (최저) | `/etc/ansible/ansible.cfg`        | 시스템 전역                    |
+| 우선순위 | 위치                       | 설명          |
+|----------|----------------------------|---------------|
+| 1 (최고) | `ANSIBLE_CONFIG` 환경변수  | 명시적 지정   |
+| 2        | `./ansible.cfg`            | 현재 디렉토리 |
+| 3        | `~/.ansible.cfg`           | 홈 디렉토리   |
+| 4 (최저) | `/etc/ansible/ansible.cfg` | 시스템 전역   |
 
 ```bash
 # 현재 적용 중인 설정 파일 확인
@@ -65,13 +65,13 @@ pipelining = True
 ssh_args = -o ControlMaster=auto -o ControlPersist=60s
 ```
 
-| 설정                    | 설명                                                |
-|-------------------------|-----------------------------------------------------|
-| forks                   | 동시 접속 수 (기본 5, 서버 많으면 20~50)            |
-| pipelining              | SSH 연결 재사용으로 속도 향상                       |
-| host_key_checking       | 최초 접속 시 fingerprint 확인 비활성화              |
-| callback_whitelist      | timer 추가 시 실행 시간 표시                        |
-| display_args_to_stdout  | 실행 인자를 로그에 기록                             |
+| 설정                   | 설명                                     |
+|------------------------|------------------------------------------|
+| forks                  | 동시 접속 수 (기본 5, 서버 많으면 20~50) |
+| pipelining             | SSH 연결 재사용으로 속도 향상            |
+| host_key_checking      | 최초 접속 시 fingerprint 확인 비활성화   |
+| callback_whitelist     | timer 추가 시 실행 시간 표시             |
+| display_args_to_stdout | 실행 인자를 로그에 기록                  |
 
 ---
 
@@ -130,19 +130,19 @@ ansible webservers -i inventory/dev -m service -a "name=nginx state=restarted" -
 
 ### 자주 쓰는 모듈
 
-| 모듈      | 용도                 | 예시                                         |
-|-----------|----------------------|----------------------------------------------|
-| ping      | 연결 테스트          | `-m ping`                                    |
-| shell     | 쉘 명령 실행         | `-m shell -a "uptime"`                       |
-| copy      | 파일 복사            | `-m copy -a "src=a dest=b"`                  |
-| dnf       | 패키지 관리 (RHEL)   | `-m dnf -a "name=htop state=present"`        |
-| apt       | 패키지 관리 (Ubuntu) | `-m apt -a "name=htop state=present"`        |
-| service   | 서비스 관리          | `-m service -a "name=nginx state=started"`   |
-| file      | 파일/디렉토리 관리   | `-m file -a "path=/tmp/dir state=directory"` |
-| user      | 사용자 관리          | `-m user -a "name=deploy state=present"`     |
-| template  | 템플릿 배포          | Playbook 에서 사용                           |
-| lineinfile| 파일 내 특정 줄 수정 | `-m lineinfile -a "path=... line=..."`       |
-| cron      | cron 작업 관리       | `-m cron -a "name=backup minute=0 hour=2 job=..."` |
+| 모듈       | 용도                 | 예시                                               |
+|------------|----------------------|----------------------------------------------------|
+| ping       | 연결 테스트          | `-m ping`                                          |
+| shell      | 쉘 명령 실행         | `-m shell -a "uptime"`                             |
+| copy       | 파일 복사            | `-m copy -a "src=a dest=b"`                        |
+| dnf        | 패키지 관리 (RHEL)   | `-m dnf -a "name=htop state=present"`              |
+| apt        | 패키지 관리 (Ubuntu) | `-m apt -a "name=htop state=present"`              |
+| service    | 서비스 관리          | `-m service -a "name=nginx state=started"`         |
+| file       | 파일/디렉토리 관리   | `-m file -a "path=/tmp/dir state=directory"`       |
+| user       | 사용자 관리          | `-m user -a "name=deploy state=present"`           |
+| template   | 템플릿 배포          | Playbook 에서 사용                                 |
+| lineinfile | 파일 내 특정 줄 수정 | `-m lineinfile -a "path=... line=..."`             |
+| cron       | cron 작업 관리       | `-m cron -a "name=backup minute=0 hour=2 job=..."` |
 
 ---
 
@@ -200,17 +200,17 @@ ansible-playbook -i inventory/dev playbooks/hello.yml -v
 
 낮은 순서 → 높은 순서 (아래로 갈수록 우선):
 
-| 우선순위 | 위치                                  | 예시                                |
-|----------|---------------------------------------|-------------------------------------|
-| 1 (최저) | role defaults                         | `roles/common/defaults/main.yml`    |
-| 2        | inventory group_vars/all              | `group_vars/all.yml`                |
-| 3        | inventory group_vars/그룹명           | `group_vars/webservers.yml`         |
-| 4        | inventory host_vars/호스트명          | `host_vars/dev-app-web-01.yml`      |
-| 5        | play vars                             | playbook 내 `vars:` 섹션           |
-| 6        | role vars                             | `roles/common/vars/main.yml`        |
-| 7        | task vars                             | task 내 `vars:` 섹션               |
-| 8        | set_fact                              | `set_fact:` 로 동적 설정           |
-| 9 (최고) | extra vars (`-e`)                     | `-e "app_env=staging"`             |
+| 우선순위 | 위치                         | 예시                             |
+|----------|------------------------------|----------------------------------|
+| 1 (최저) | role defaults                | `roles/common/defaults/main.yml` |
+| 2        | inventory group_vars/all     | `group_vars/all.yml`             |
+| 3        | inventory group_vars/그룹명  | `group_vars/webservers.yml`      |
+| 4        | inventory host_vars/호스트명 | `host_vars/dev-app-web-01.yml`   |
+| 5        | play vars                    | playbook 내 `vars:` 섹션         |
+| 6        | role vars                    | `roles/common/vars/main.yml`     |
+| 7        | task vars                    | task 내 `vars:` 섹션             |
+| 8        | set_fact                     | `set_fact:` 로 동적 설정         |
+| 9 (최고) | extra vars (`-e`)            | `-e "app_env=staging"`           |
 
 ```yaml
 # group_vars/webservers.yml
@@ -405,20 +405,20 @@ ansible-galaxy init roles/gameserver
 
 ## 11. 자주 쓰는 실행 옵션
 
-| 옵션                    | 설명                                    |
-|-------------------------|-----------------------------------------|
-| `-i inventory/dev`      | 인벤토리 파일 지정                      |
-| `--check`               | dry-run (실제 변경 없음)                |
-| `--diff`                | 파일 변경 내용 diff 출력                |
-| `--limit host1`         | 특정 호스트만 실행                      |
-| `--tags deploy`         | 특정 태그만 실행                        |
-| `--skip-tags debug`     | 특정 태그 제외                          |
-| `--step`                | task 마다 확인 후 실행                  |
-| `--start-at-task "이름"`| 특정 task 부터 실행                     |
-| `-e "key=value"`        | 변수 전달 (최우선)                      |
-| `-v / -vv / -vvv`       | 상세 출력 단계                          |
-| `--list-tasks`          | 실행할 task 목록만 출력                 |
-| `--list-hosts`          | 대상 호스트 목록만 출력                 |
+| 옵션                     | 설명                     |
+|--------------------------|--------------------------|
+| `-i inventory/dev`       | 인벤토리 파일 지정       |
+| `--check`                | dry-run (실제 변경 없음) |
+| `--diff`                 | 파일 변경 내용 diff 출력 |
+| `--limit host1`          | 특정 호스트만 실행       |
+| `--tags deploy`          | 특정 태그만 실행         |
+| `--skip-tags debug`      | 특정 태그 제외           |
+| `--step`                 | task 마다 확인 후 실행   |
+| `--start-at-task "이름"` | 특정 task 부터 실행      |
+| `-e "key=value"`         | 변수 전달 (최우선)       |
+| `-v / -vv / -vvv`        | 상세 출력 단계           |
+| `--list-tasks`           | 실행할 task 목록만 출력  |
+| `--list-hosts`           | 대상 호스트 목록만 출력  |
 
 ---
 
@@ -468,21 +468,21 @@ ansible-doc -s service
 
 ### 주요 모듈 파라미터 정리
 
-| 모듈         | 주요 파라미터                                          | state 값                        |
-|-------------|-------------------------------------------------------|--------------------------------|
-| `apt`       | name, state, update_cache                             | present, absent, latest        |
-| `dnf`       | name, state, enablerepo                               | present, absent, latest        |
-| `copy`      | src, dest, content, owner, group, mode                | -                              |
-| `template`  | src, dest, owner, group, mode                         | -                              |
-| `file`      | path, state, owner, group, mode, src(link)            | file, directory, link, absent  |
-| `service`   | name, state, enabled                                  | started, stopped, restarted    |
-| `user`      | name, state, shell, groups, append                    | present, absent                |
-| `cron`      | name, minute, hour, day, month, weekday, job, state   | present, absent                |
-| `lineinfile`| path, regexp, line, state, insertafter                | present, absent                |
-| `command`   | cmd (또는 free_form), creates, removes                | -                              |
-| `shell`     | cmd (또는 free_form), creates, removes                | - (파이프/리다이렉션 가능)       |
-| `stat`      | path                                                  | -                              |
-| `debug`     | msg, var                                              | -                              |
+| 모듈         | 주요 파라미터                                       | state 값                      |
+|--------------|-----------------------------------------------------|-------------------------------|
+| `apt`        | name, state, update_cache                           | present, absent, latest       |
+| `dnf`        | name, state, enablerepo                             | present, absent, latest       |
+| `copy`       | src, dest, content, owner, group, mode              | -                             |
+| `template`   | src, dest, owner, group, mode                       | -                             |
+| `file`       | path, state, owner, group, mode, src(link)          | file, directory, link, absent |
+| `service`    | name, state, enabled                                | started, stopped, restarted   |
+| `user`       | name, state, shell, groups, append                  | present, absent               |
+| `cron`       | name, minute, hour, day, month, weekday, job, state | present, absent               |
+| `lineinfile` | path, regexp, line, state, insertafter              | present, absent               |
+| `command`    | cmd (또는 free_form), creates, removes              | -                             |
+| `shell`      | cmd (또는 free_form), creates, removes              | - (파이프/리다이렉션 가능)    |
+| `stat`       | path                                                | -                             |
+| `debug`      | msg, var                                            | -                             |
 
 ---
 
@@ -684,10 +684,10 @@ ansible-doc -s service
 ### 모듈 실행 흐름 요약
 
 ```
-+------------------+     +------------------+     +------------------+
-| task 실행        |     | 변경 감지         |     | 후처리            |
-| (모듈 호출)       | --> | changed: true?   | --> | notify handler   |
-+------------------+     +------------------+     +------------------+
+┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
+│ task 실행        |     | 변경 감지         |     | 후처리            |
+│ (모듈 호출)       | --> | changed: true?   | --> | notify handler   |
+└──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
 
 register  → 결과를 변수에 저장 → debug로 출력 또는 when 조건에 활용
 changed_when: false → 항상 ok 표시 (조회성 명령에 사용)

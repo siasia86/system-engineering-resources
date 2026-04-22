@@ -342,14 +342,14 @@ def mask_sensitive(text):
 
 ## 요약
 
-| 함수 | 용도 | 반환 |
-|------|------|------|
-| `re.match()` | 시작부터 매칭 | Match 또는 None |
-| `re.search()` | 전체에서 첫 매칭 | Match 또는 None |
-| `re.findall()` | 모든 매칭 | 리스트 |
-| `re.finditer()` | 모든 매칭 | 이터레이터 |
-| `re.sub()` | 치환 | 문자열 |
-| `re.split()` | 분할 | 리스트 |
+| 함수            | 용도             | 반환            |
+|-----------------|------------------|-----------------|
+| `re.match()`    | 시작부터 매칭    | Match 또는 None |
+| `re.search()`   | 전체에서 첫 매칭 | Match 또는 None |
+| `re.findall()`  | 모든 매칭        | 리스트          |
+| `re.finditer()` | 모든 매칭        | 이터레이터      |
+| `re.sub()`      | 치환             | 문자열          |
+| `re.split()`    | 분할             | 리스트          |
 
 **관련 문서:**
 - [문자열 처리](./python_string.md) - 문자열 메서드

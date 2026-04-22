@@ -60,15 +60,15 @@
 
 ### 문제 유형별
 
-| 문제 | 1순위 | 2순위 | 3순위 |
-|------|-------|-------|-------|
-| **파일을 못 찾음** | strace | lsof | - |
-| **메모리 누수** | valgrind | ltrace | bpftrace |
-| **CPU 병목** | perf | bpftrace | - |
-| **네트워크 문제** | tcpdump | strace | lsof |
-| **디스크 느림** | iotop | strace | perf |
-| **크래시 분석** | gdb | strace | - |
-| **포트 충돌** | lsof | strace | - |
+| 문제               | 1순위    | 2순위    | 3순위    |
+|--------------------|----------|----------|----------|
+| **파일을 못 찾음** | strace   | lsof     | -        |
+| **메모리 누수**    | valgrind | ltrace   | bpftrace |
+| **CPU 병목**       | perf     | bpftrace | -        |
+| **네트워크 문제**  | tcpdump  | strace   | lsof     |
+| **디스크 느림**    | iotop    | strace   | perf     |
+| **크래시 분석**    | gdb      | strace   | -        |
+| **포트 충돌**      | lsof     | strace   | -        |
 
 ### 환경별
 

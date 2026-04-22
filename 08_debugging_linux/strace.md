@@ -31,10 +31,10 @@ strace -f ./myapp                 # 자식 프로세스 포함
 
 ### strace vs ltrace
 
-| 도구 | 추적 대상 | 레벨 |
-|------|----------|------|
+| 도구       | 추적 대상                   | 레벨         |
+|------------|-----------------------------|--------------|
 | **strace** | 시스템 콜 (커널 인터페이스) | Kernel Space |
-| **ltrace** | 라이브러리 함수 (libc 등) | User Space |
+| **ltrace** | 라이브러리 함수 (libc 등)   | User Space   |
 
 ```
 Application (ls)
@@ -523,15 +523,15 @@ strace -e trace=ipc myapp
 
 ## 시스템 콜 카테고리
 
-| 카테고리 | 시스템 콜 예시 |
-|----------|---------------|
-| **파일** | open, openat, read, write, close, stat |
-| **프로세스** | fork, execve, exit, wait, kill |
-| **메모리** | mmap, munmap, brk, mprotect |
-| **네트워크** | socket, connect, send, recv, bind |
-| **IPC** | pipe, msgget, semget, shmget |
-| **시그널** | signal, sigaction, kill, sigprocmask |
-| **디렉토리** | openat, getdents, mkdir, rmdir |
+| 카테고리     | 시스템 콜 예시                         |
+|--------------|----------------------------------------|
+| **파일**     | open, openat, read, write, close, stat |
+| **프로세스** | fork, execve, exit, wait, kill         |
+| **메모리**   | mmap, munmap, brk, mprotect            |
+| **네트워크** | socket, connect, send, recv, bind      |
+| **IPC**      | pipe, msgget, semget, shmget           |
+| **시그널**   | signal, sigaction, kill, sigprocmask   |
+| **디렉토리** | openat, getdents, mkdir, rmdir         |
 
 ## 트러블슈팅
 
@@ -594,13 +594,13 @@ strace -f bash -c "ls | grep test"
 
 ## 관련 도구
 
-| 도구 | 용도 |
-|------|------|
-| **ltrace** | 라이브러리 함수 추적 |
-| **perf** | 성능 프로파일링 |
-| **ftrace** | 커널 함수 추적 |
-| **bpftrace** | eBPF 기반 추적 |
-| **lsof** | 열린 파일 확인 |
+| 도구         | 용도                 |
+|--------------|----------------------|
+| **ltrace**   | 라이브러리 함수 추적 |
+| **perf**     | 성능 프로파일링      |
+| **ftrace**   | 커널 함수 추적       |
+| **bpftrace** | eBPF 기반 추적       |
+| **lsof**     | 열린 파일 확인       |
 
 ## 실무 활용
 
@@ -656,18 +656,18 @@ strace -e trace=memory myapp
 
 ### 언제 어떤 도구를 사용할까?
 
-| 상황 | 도구 | 이유 |
-|------|------|------|
-| **파일을 못 찾음** | strace | 시스템 콜 에러 (ENOENT) 확인 |
-| **라이브러리 버전 문제** | ltrace | 함수 호출 및 심볼 확인 |
-| **성능 병목** | 둘 다 | 전체 흐름 파악 후 분석 |
-| **메모리 누수 의심** | ltrace | malloc/free 추적 |
-| **권한 문제** | strace | 시스템 콜 에러 (EACCES, EPERM) |
-| **네트워크 연결 실패** | strace | socket, connect 시스템 콜 |
-| **설정 파일 로딩** | 둘 다 | ltrace(fopen), strace(openat) |
-| **프로세스 생성 문제** | strace | fork, execve 시스템 콜 |
-| **디스크 I/O 느림** | strace | read, write 시스템 콜 |
-| **라이브러리 함수 버그** | ltrace | 함수 인자 및 반환값 확인 |
+| 상황                     | 도구   | 이유                           |
+|--------------------------|--------|--------------------------------|
+| **파일을 못 찾음**       | strace | 시스템 콜 에러 (ENOENT) 확인   |
+| **라이브러리 버전 문제** | ltrace | 함수 호출 및 심볼 확인         |
+| **성능 병목**            | 둘 다  | 전체 흐름 파악 후 분석         |
+| **메모리 누수 의심**     | ltrace | malloc/free 추적               |
+| **권한 문제**            | strace | 시스템 콜 에러 (EACCES, EPERM) |
+| **네트워크 연결 실패**   | strace | socket, connect 시스템 콜      |
+| **설정 파일 로딩**       | 둘 다  | ltrace(fopen), strace(openat)  |
+| **프로세스 생성 문제**   | strace | fork, execve 시스템 콜         |
+| **디스크 I/O 느림**      | strace | read, write 시스템 콜          |
+| **라이브러리 함수 버그** | ltrace | 함수 인자 및 반환값 확인       |
 
 ### 동시 사용 예제
 
@@ -948,37 +948,37 @@ unbuffer strace myapp | tee output.log
 
 ### 파일 관련 에러
 
-| 에러 코드 | 의미 | 일반적인 원인 | 해결 방법 |
-|----------|------|--------------|----------|
-| **ENOENT** | No such file or directory | 파일/디렉토리 없음 | 경로 확인, 파일 생성 |
-| **EACCES** | Permission denied | 권한 부족 | chmod, chown, sudo |
-| **EISDIR** | Is a directory | 파일 대신 디렉토리 | 경로 확인 |
-| **ENOTDIR** | Not a directory | 디렉토리 대신 파일 | 경로 확인 |
-| **EEXIST** | File exists | 파일이 이미 존재 | 다른 이름 사용 |
-| **EROFS** | Read-only file system | 읽기 전용 파일시스템 | 마운트 옵션 확인 |
+| 에러 코드   | 의미                      | 일반적인 원인        | 해결 방법            |
+|-------------|---------------------------|----------------------|----------------------|
+| **ENOENT**  | No such file or directory | 파일/디렉토리 없음   | 경로 확인, 파일 생성 |
+| **EACCES**  | Permission denied         | 권한 부족            | chmod, chown, sudo   |
+| **EISDIR**  | Is a directory            | 파일 대신 디렉토리   | 경로 확인            |
+| **ENOTDIR** | Not a directory           | 디렉토리 대신 파일   | 경로 확인            |
+| **EEXIST**  | File exists               | 파일이 이미 존재     | 다른 이름 사용       |
+| **EROFS**   | Read-only file system     | 읽기 전용 파일시스템 | 마운트 옵션 확인     |
 
 ### 메모리 관련 에러
 
-| 에러 코드 | 의미 | 해결 방법 |
-|----------|------|----------|
+| 에러 코드  | 의미          | 해결 방법              |
+|------------|---------------|------------------------|
 | **ENOMEM** | Out of memory | 메모리 확보, swap 증가 |
-| **EFAULT** | Bad address | 포인터 확인 |
+| **EFAULT** | Bad address   | 포인터 확인            |
 
 ### 프로세스 관련 에러
 
-| 에러 코드 | 의미 | 해결 방법 |
-|----------|------|----------|
-| **EPERM** | Operation not permitted | root 권한 필요 |
-| **ESRCH** | No such process | PID 확인 |
-| **ECHILD** | No child processes | wait() 호출 확인 |
+| 에러 코드  | 의미                    | 해결 방법        |
+|------------|-------------------------|------------------|
+| **EPERM**  | Operation not permitted | root 권한 필요   |
+| **ESRCH**  | No such process         | PID 확인         |
+| **ECHILD** | No child processes      | wait() 호출 확인 |
 
 ### 네트워크 관련 에러
 
-| 에러 코드 | 의미 | 해결 방법 |
-|----------|------|----------|
-| **ECONNREFUSED** | Connection refused | 서버 실행 확인 |
-| **ETIMEDOUT** | Connection timed out | 네트워크/방화벽 확인 |
-| **ENETUNREACH** | Network is unreachable | 라우팅 확인 |
+| 에러 코드        | 의미                   | 해결 방법            |
+|------------------|------------------------|----------------------|
+| **ECONNREFUSED** | Connection refused     | 서버 실행 확인       |
+| **ETIMEDOUT**    | Connection timed out   | 네트워크/방화벽 확인 |
+| **ENETUNREACH**  | Network is unreachable | 라우팅 확인          |
 
 ## 전체 출력 예시
 
@@ -1107,9 +1107,9 @@ strace -o /tmp/trace.log -s 128 -p <PID>
 
 ## 문서 변경 이력
 
-| 버전 | 날짜 | 변경 내용 |
-|------|------|----------|
-| 1.0 | 2026-01-29 | 초기 작성 |
+| 버전 | 날짜       | 변경 내용 |
+|------|------------|-----------|
+| 1.0  | 2026-01-29 | 초기 작성 |
 
 ---
 

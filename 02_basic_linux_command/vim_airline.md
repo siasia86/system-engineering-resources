@@ -11,23 +11,23 @@ That line consists of several sections, each one displaying some piece of
 information. By default (without configuration) this line will look like this:
 
 ```
-+-----------------------------------------------------------------------------+
-|~                                                                            |
-|~                                                                            |
-|~                     VIM - Vi IMproved                                      |
-|~                                                                            |
-|~                       version 8.0                                          |
-|~                    by Bram Moolenaar et al.                                |
-|~           Vim is open source and freely distributable                      |
-|~                                                                            |
-|~           type :h :q<Enter>          to exit                               |
-|~           type :help<Enter> or <F1>  for on-line help                      |
-|~           type :help version8<Enter> for version info                      |
-|~                                                                            |
-|~                                                                            |
-+-----------------------------------------------------------------------------+
-| A | B |                     C                            X | Y | Z |  [...] |
-+-----------------------------------------------------------------------------+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│~                                                                            │
+│~                                                                            │
+│~                     VIM - Vi IMproved                                      │
+│~                                                                            │
+│~                       version 8.0                                          │
+│~                    by Bram Moolenaar et al.                                │
+│~           Vim is open source and freely distributable                      │
+│~                                                                            │
+│~           type :h :q<Enter>          to exit                               │
+│~           type :help<Enter> or <F1>  for on-line help                      │
+│~           type :help version8<Enter> for version info                      │
+│~                                                                            │
+│~                                                                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ A | B |                     C                            X | Y | Z |  [...] │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 The statusline is the colored line at the bottom, which contains the sections
@@ -238,17 +238,17 @@ I wrote the initial version on an airplane, and since it's light as air it turne
 
 This plugin follows the standard runtime path structure, and as such it can be installed with a variety of plugin managers:
 
-| Plugin Manager | Install with... |
-| ------------- | ------------- |
-| [Pathogen][11] | `git clone https://github.com/vim-airline/vim-airline ~/.vim/bundle/vim-airline`<br/>Remember to run `:Helptags` to generate help tags |
-| [NeoBundle][12] | `NeoBundle 'vim-airline/vim-airline'` |
-| [Vundle][13] | `Plugin 'vim-airline/vim-airline'` |
-| [Plug][40] | `Plug 'vim-airline/vim-airline'` |
-| [VAM][22] | `call vam#ActivateAddons([ 'vim-airline' ])` |
-| [Dein][52] | `call dein#add('vim-airline/vim-airline')` |
-| [minpac][55] | `call minpac#add('vim-airline/vim-airline')` |
-| pack feature (native Vim 8 package feature)| `git clone https://github.com/vim-airline/vim-airline ~/.vim/pack/dist/start/vim-airline`<br/>Remember to run `:helptags` to generate help tags |
-| manual | copy all of the files into your `~/.vim` directory |
+| Plugin Manager                              | Install with...                                                                                                                                 |
+|---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Pathogen][11]                              | `git clone https://github.com/vim-airline/vim-airline ~/.vim/bundle/vim-airline`<br/>Remember to run `:Helptags` to generate help tags          |
+| [NeoBundle][12]                             | `NeoBundle 'vim-airline/vim-airline'`                                                                                                           |
+| [Vundle][13]                                | `Plugin 'vim-airline/vim-airline'`                                                                                                              |
+| [Plug][40]                                  | `Plug 'vim-airline/vim-airline'`                                                                                                                |
+| [VAM][22]                                   | `call vam#ActivateAddons([ 'vim-airline' ])`                                                                                                    |
+| [Dein][52]                                  | `call dein#add('vim-airline/vim-airline')`                                                                                                      |
+| [minpac][55]                                | `call minpac#add('vim-airline/vim-airline')`                                                                                                    |
+| pack feature (native Vim 8 package feature) | `git clone https://github.com/vim-airline/vim-airline ~/.vim/pack/dist/start/vim-airline`<br/>Remember to run `:helptags` to generate help tags |
+| manual                                      | copy all of the files into your `~/.vim` directory                                                                                              |
 
 # Documentation
 

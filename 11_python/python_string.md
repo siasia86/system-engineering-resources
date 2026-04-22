@@ -278,16 +278,16 @@ stem = name.rsplit('.', 1)[0]  # 'access'
 
 ## 요약
 
-| 메서드 | 용도 | 예시 |
-|--------|------|------|
-| `split()` | 분할 | `"a,b".split(',')` → `['a','b']` |
-| `join()` | 결합 | `','.join(['a','b'])` → `'a,b'` |
-| `strip()` | 공백 제거 | `" hi ".strip()` → `'hi'` |
-| `replace()` | 치환 | `"ab".replace('a','x')` → `'xb'` |
-| `find()` | 검색 | `"abc".find('b')` → `1` |
-| `upper/lower()` | 대소문자 | `"hi".upper()` → `'HI'` |
-| `startswith()` | 시작 확인 | `"abc".startswith('a')` → `True` |
-| `encode()` | 인코딩 | `"한글".encode('utf-8')` |
+| 메서드          | 용도      | 예시                             |
+|-----------------|-----------|----------------------------------|
+| `split()`       | 분할      | `"a,b".split(',')` → `['a','b']` |
+| `join()`        | 결합      | `','.join(['a','b'])` → `'a,b'`  |
+| `strip()`       | 공백 제거 | `" hi ".strip()` → `'hi'`        |
+| `replace()`     | 치환      | `"ab".replace('a','x')` → `'xb'` |
+| `find()`        | 검색      | `"abc".find('b')` → `1`          |
+| `upper/lower()` | 대소문자  | `"hi".upper()` → `'HI'`          |
+| `startswith()`  | 시작 확인 | `"abc".startswith('a')` → `True` |
+| `encode()`      | 인코딩    | `"한글".encode('utf-8')`         |
 
 **관련 문서:**
 - [정규표현식](./python_regex.md) - 패턴 매칭

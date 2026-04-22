@@ -21,15 +21,15 @@ trap - 시그널  # trap 해제
 
 ## 주요 시그널
 
-| 시그널 | 의미 | 발생 시점 |
-|--------|------|-----------|
-| `EXIT` | 스크립트 종료 | 정상 종료, 에러 종료, exit 호출 시 |
-| `ERR` | 에러 발생 | 명령어가 0이 아닌 종료 코드 반환 시 |
-| `INT` | 인터럽트 | Ctrl+C 입력 시 (SIGINT) |
-| `TERM` | 종료 요청 | kill 명령 시 (SIGTERM) |
-| `DEBUG` | 디버그 | 모든 명령 실행 직전 |
-| `RETURN` | 함수 리턴 | 함수나 source 종료 시 |
-| `HUP` | 연결 끊김 | 터미널 세션 종료 시 (SIGHUP) |
+| 시그널   | 의미          | 발생 시점                           |
+|----------|---------------|-------------------------------------|
+| `EXIT`   | 스크립트 종료 | 정상 종료, 에러 종료, exit 호출 시  |
+| `ERR`    | 에러 발생     | 명령어가 0이 아닌 종료 코드 반환 시 |
+| `INT`    | 인터럽트      | Ctrl+C 입력 시 (SIGINT)             |
+| `TERM`   | 종료 요청     | kill 명령 시 (SIGTERM)              |
+| `DEBUG`  | 디버그        | 모든 명령 실행 직전                 |
+| `RETURN` | 함수 리턴     | 함수나 source 종료 시               |
+| `HUP`    | 연결 끊김     | 터미널 세션 종료 시 (SIGHUP)        |
 
 ---
 
@@ -645,14 +645,14 @@ kill -l
 
 ### 주요 시그널 번호
 
-| 번호 | 이름 | trap 사용 | 설명 |
-|------|------|-----------|------|
-| 1 | SIGHUP | `HUP` | 터미널 연결 끊김 |
-| 2 | SIGINT | `INT` | Ctrl+C (인터럽트) |
-| 3 | SIGQUIT | `QUIT` | Ctrl+\ (코어 덤프와 함께 종료) |
-| 9 | SIGKILL | 불가 | 강제 종료 (trap 불가) |
-| 15 | SIGTERM | `TERM` | 정상 종료 요청 (기본 kill) |
-| 19 | SIGSTOP | 불가 | 프로세스 일시 정지 (trap 불가) |
+| 번호 | 이름    | trap 사용 | 설명                           |
+|------|---------|-----------|--------------------------------|
+| 1    | SIGHUP  | `HUP`     | 터미널 연결 끊김               |
+| 2    | SIGINT  | `INT`     | Ctrl+C (인터럽트)              |
+| 3    | SIGQUIT | `QUIT`    | Ctrl+\ (코어 덤프와 함께 종료) |
+| 9    | SIGKILL | 불가      | 강제 종료 (trap 불가)          |
+| 15   | SIGTERM | `TERM`    | 정상 종료 요청 (기본 kill)     |
+| 19   | SIGSTOP | 불가      | 프로세스 일시 정지 (trap 불가) |
 
 **중요**: `SIGKILL(9)`과 `SIGSTOP(19)`는 trap으로 잡을 수 없습니다!
 
@@ -1536,13 +1536,13 @@ done
 
 ## 요약
 
-| 용도 | trap 명령 |
-|------|-----------|
-| 임시 파일 정리 | `trap "rm -f $TEMP_FILE" EXIT` |
-| 에러 추적 | `trap 'echo "Error on line $LINENO"' ERR` |
-| Ctrl+C 처리 | `trap 'cleanup; exit' INT` |
-| 디버깅 | `trap 'echo "$BASH_COMMAND"' DEBUG` |
-| 락 파일 관리 | `trap "rm -f $LOCK_FILE" EXIT` |
+| 용도           | trap 명령                                 |
+|----------------|-------------------------------------------|
+| 임시 파일 정리 | `trap "rm -f $TEMP_FILE" EXIT`            |
+| 에러 추적      | `trap 'echo "Error on line $LINENO"' ERR` |
+| Ctrl+C 처리    | `trap 'cleanup; exit' INT`                |
+| 디버깅         | `trap 'echo "$BASH_COMMAND"' DEBUG`       |
+| 락 파일 관리   | `trap "rm -f $LOCK_FILE" EXIT`            |
 
 **핵심**: `trap`을 사용하면 스크립트가 어떻게 종료되든 (정상, 에러, Ctrl+C) 정리 작업을 보장할 수 있습니다!
 
