@@ -214,7 +214,7 @@ Each subnet: 62 usable hosts
 
 ### AWS 예약 IP 규칙
 
-AWS VPC의 모든 서브넷은 **5개 IP를 자동 예약**한다.
+AWS VPC의 모든 서브넷은 **5개 IP를 자동 예약**합니다.
 
 ```
 Example: 10.0.1.0/24
