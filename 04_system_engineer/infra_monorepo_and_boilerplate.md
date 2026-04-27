@@ -402,7 +402,7 @@ Post-flight:
 
 ```
 ADR-001 (OS 선택)       ──┐
-ADR-002 (IaC 선택)      ──┼──▶ Golden Path (표준 경로 요약)
+ADR-002 (IaC 선택)      ──┼──> Golden Path (표준 경로 요약)
 ADR-003 (모니터링 선택) ──┘
 ```
 

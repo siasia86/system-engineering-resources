@@ -15,16 +15,16 @@
 Client                                            Server
 [CLOSED]                                          [LISTEN]
     │                                                 │
-    ├── SYN ═══════════════════════════════════▶      │  1. SYN
+    ├── SYN ═══════════════════════════════════>      │  1. SYN
     │   (seq=100)                                     │
 [SYN_SENT]                                            │
     │                                                 │
     │                                          [SYN_RECEIVED]
     │                                                 │
-    │       ◀═══════════════════════ SYN + ACK ───────┤  2. SYN+ACK          
+    │       <═══════════════════════ SYN + ACK ───────┤  2. SYN+ACK          
     │   (seq=200, ack=101)                            │
     │                                                 │
-    ├── ACK ═══════════════════════════════════▶      │  3. ACK
+    ├── ACK ═══════════════════════════════════>      │  3. ACK
     │   (ack=201)                                     │
     │                                                 │
 [ESTABLISHED] ════════════════════════════════ [ESTABLISHED]
@@ -60,13 +60,13 @@ Client                                            Server
 Client                                            Server
 [ESTABLISHED]                                [ESTABLISHED]
     │                                                 │
-    ├── FIN ═══════════════════════════════════▶      │  1. Close Request
+    ├── FIN ═══════════════════════════════════>      │  1. Close Request
     │   (seq=300)                                     │
 [FIN_WAIT_1]                                          │
     │                                                 │
     │                                          [CLOSE_WAIT]
     │                                                 │
-    │       ◀══════════════════════════ ACK ──────────┤  2. Close ACK        
+    │       <══════════════════════════ ACK ──────────┤  2. Close ACK        
     │   (ack=301)                                     │
     │                                                 │
 [FIN_WAIT_2]                                          │
@@ -75,10 +75,10 @@ Client                                            Server
     │                                                 │
     │                                          [LAST_ACK]
     │                                                 │
-    │       ◀══════════════════════════ FIN ──────────┤  3. Server Close     
+    │       <══════════════════════════ FIN ──────────┤  3. Server Close     
     │   (seq=400)                                     │
     │                                                 │
-    ├── ACK ═══════════════════════════════════▶      │  4. Final ACK
+    ├── ACK ═══════════════════════════════════>      │  4. Final ACK
     │   (ack=401)                                     │
     │                                                 │
 [TIME_WAIT]                                      [CLOSED]
@@ -200,7 +200,7 @@ sysctl -w net.ipv4.tcp_tw_recycle=1  # 주의: 최신 커널에서 제거됨
 Client                                            Server
 [ESTABLISHED]                                [ESTABLISHED]
     │                                                 │
-    ├── RST ═══════════════════════════════════▶      │  Immediate Close
+    ├── RST ═══════════════════════════════════>      │  Immediate Close
     │                                                 │
 [CLOSED]                                         [CLOSED]
     │                                                 │
