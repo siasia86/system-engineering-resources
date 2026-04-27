@@ -4,7 +4,7 @@
 
 ```
 인터넷
-  ↓
+  v
 ┌─────────────────────────────────────────────────────────────┐
 │                     글로벌 DNS 레이어                       │
 └─────────────────────────────────────────────────────────────┘
@@ -13,7 +13,7 @@ Route 53 (DNS)
 ├─ Failover Routing
 └─ Geo Routing
 
-  ↓
+  v
 ┌─────────────────────────────────────────────────────────────┐
 │                  VPC 경계 방어 레이어                       │
 └─────────────────────────────────────────────────────────────┘
@@ -24,7 +24,7 @@ AWS Network Firewall (Suricata 기반 IPS/IDS)
 ├─ 지리적 차단 (GeoIP)
 └─ CloudWatch Logs 연동
 
-  ↓
+  v
 ┌─────────────────────────────────────────────────────────────┐
 │                  로드밸런싱 레이어                          │
 └─────────────────────────────────────────────────────────────┘
@@ -34,7 +34,7 @@ NLB (Network Load Balancer)
 ├─ Health Check
 └─ PROXY Protocol v2 전송
 
-  ↓
+  v
 ┌─────────────────────────────────────────────────────────────┐
 │         Linux Proxy 레이어 (Auto Scaling Group)             │
 └─────────────────────────────────────────────────────────────┘
@@ -78,7 +78,7 @@ Linux Proxy (3-5대, Auto Scaling)
    ├─ CrowdSec 메트릭             │    │  │  │
    └─ HAProxy 상태                │    │  │  │
                                   │    │  │  │
-  ↓                               │    │  │  │
+  v                               │    │  │  │
 ┌─────────────────────────────────────────────────────────────┐
 │                  백엔드 애플리케이션                        │
 └─────────────────────────────────────────────────────────────┘
@@ -94,7 +94,7 @@ Windows 게임서버 (Auto Scaling)
 
 ┌─────────────────────────────────────┐    │    │  │  │
 │  CrowdSec LAPI Server               │    │    │  │  │
-│  (별도 EC2 t3.micro)                │ ◀──┘    │  │  │
+│  (별도 EC2 t3.micro)                │ <──┘    │  │  │
 │  ├─ MySQL/PostgreSQL (RDS)          │         │  │  │
 │  ├─ AI 기반 탐지 엔진               │         │  │  │
 │  ├─ 커뮤니티 블랙리스트             │         │  │  │
@@ -102,14 +102,14 @@ Windows 게임서버 (Auto Scaling)
 └─────────────────────────────────────┘         │  │  │
                                                 │  │  │
 ┌─────────────────────────────────────┐         │  │  │
-│  Redis (ElastiCache)                │ ◀───────┘  │  │
+│  Redis (ElastiCache)                │ <───────┘  │  │
 │  ├─ XDP BPF Map 동기화              │            │  │
 │  ├─ 실시간 차단 IP 공유             │            │  │
 │  └─ 10초 주기 업데이트              │            │  │
 └─────────────────────────────────────┘            │  │
                                                    │  │
 ┌─────────────────────────────────────┐            │  │
-│  Zabbix Server (중앙 모니터링)      │ ◀──────────┘  │
+│  Zabbix Server (중앙 모니터링)      │ <──────────┘  │
 │  ├─ 실시간 대시보드                 │               │
 │  ├─ 알람 (Slack/Email)              │               │
 │  ├─ 트래픽 그래프                   │               │
@@ -117,7 +117,7 @@ Windows 게임서버 (Auto Scaling)
 └─────────────────────────────────────┘               │
                                                       │
 ┌─────────────────────────────────────┐               │
-│  CloudWatch                         │ ◀─────────────┘
+│  CloudWatch                         │ <─────────────┘
 │  ├─ Network Firewall 로그           │
 │  ├─ NLB 메트릭                      │
 │  ├─ Auto Scaling 이벤트             │
@@ -141,19 +141,19 @@ Windows 게임서버 (Auto Scaling)
 
 ```
 클라이언트
-  ↓
+  v
 Route 53 (DNS 조회)
-  ↓
+  v
 AWS Network Firewall (검사 통과)
-  ↓
+  v
 NLB (로드밸런싱)
-  ↓
+  v
 Linux Proxy
   ├─ XDP (통과)
   ├─ nftables (통과)
   ├─ CrowdSec (로그 분석)
   └─ HAProxy (백엔드 전달)
-  ↓
+  v
 Windows 게임서버
 ```
 
@@ -161,18 +161,18 @@ Windows 게임서버
 
 ```
 공격자
-  ↓
+  v
 Route 53
-  ↓
+  v
 AWS Network Firewall (일부 차단)
-  ↓
+  v
 NLB
-  ↓
+  v
 Linux Proxy
   ├─ XDP (Redis 차단 목록 확인) → DROP
   ├─ nftables (CrowdSec 차단 목록) → DROP
   └─ CrowdSec (실시간 탐지) → 새 공격 학습
-  ↓
+  v
 차단 완료
 ```
 
@@ -180,21 +180,21 @@ Linux Proxy
 
 ```
 Linux Proxy (CrowdSec Agent)
-  ↓ (차단 결정 요청)
+  v (차단 결정 요청)
 CrowdSec LAPI Server
-  ↓ (차단 IP 목록 응답)
+  v (차단 IP 목록 응답)
 Linux Proxy (nftables 업데이트)
 
 Linux Proxy (XDP 동기화 스크립트)
-  ↓ (차단 IP 조회)
+  v (차단 IP 조회)
 Redis (ElastiCache)
-  ↓ (차단 IP 목록 응답)
+  v (차단 IP 목록 응답)
 Linux Proxy (XDP BPF Map 업데이트)
 
 Linux Proxy (Zabbix Agent)
-  ↓ (메트릭 전송)
+  v (메트릭 전송)
 Zabbix Server
-  ↓ (알람 발송)
+  v (알람 발송)
 관리자
 ```
 

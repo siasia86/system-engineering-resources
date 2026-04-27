@@ -11,9 +11,9 @@
 
 ```
 ┌─────────────────────┐         SSH         ┌─────────────────────┐
-│   Control Node      │────────────────────▶│   Managed Node 1    │
-│   (Ansible 설치)    │────────────────────▶│   Managed Node 2    │
-│                     │────────────────────▶│   Managed Node 3    │
+│   Control Node      │────────────────────>│   Managed Node 1    │
+│   (Ansible 설치)    │────────────────────>│   Managed Node 2    │
+│                     │────────────────────>│   Managed Node 3    │
 └─────────────────────┘                     └─────────────────────┘
   - ansible 설치                              - Python 3 만 필요
   - Playbook 작성/실행                        - 에이전트 설치 불필요
@@ -390,7 +390,7 @@ ansible-vault edit vars/secrets.yml
 └──────────────────┘
          |
          | SSH (ansible 서비스 계정)
-         ▼
+         v
 ┌──────────────────┐
 │  Managed Nodes   │
 └──────────────────┘

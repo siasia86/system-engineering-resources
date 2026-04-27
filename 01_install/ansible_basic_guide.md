@@ -5,7 +5,7 @@
 Ansible은 에이전트 없이 SSH로 대상 서버를 관리하는 자동화 도구입니다.
 
 ```
-Control Node (내 서버)  ──SSH──▶  Managed Node (대상 서버)
+Control Node (내 서버)  ──SSH──>  Managed Node (대상 서버)
 
 명령 실행 방식:
   ad-hoc   → 1회성 명령 (ansible 명령어)
@@ -686,7 +686,7 @@ ansible-doc -s service
 ```
 ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
 │ Task Execution   │     │ Change Detection │     │ Post Processing  │
-│ (Module Call)    │ ──▶ │ changed: true?   │ ──▶ │ notify handler   │
+│ (Module Call)    │ ──> │ changed: true?   │ ──> │ notify handler   │
 └──────────────────┘     └──────────────────┘     └──────────────────┘
 ```
 

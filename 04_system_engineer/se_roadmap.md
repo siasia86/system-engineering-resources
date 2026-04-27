@@ -18,19 +18,19 @@
 
 ```
 Junior SE (0-2년)
-    ↓
+    v
     Linux 기초 + 네트워킹 + 스크립팅
     
 Mid-level SE (2-5년)
-    ↓
+    v
     고급 시스템 관리 + 클라우드 + 자동화
     
 Senior SE (5-8년)
-    ↓
+    v
     아키텍처 설계 + 멘토링 + 전문화
     
 Lead SE / Architect (8년+)
-    ↓
+    v
     전략 수립 + 팀 관리 + 기술 리더십
 ```
 
@@ -628,11 +628,11 @@ ansible-playbook -i inventory playbook.yml
 **3-Tier 아키텍처**
 ```
 [Load Balancer]
-    ↓
+    v
 [Web Servers] (Apache/Nginx)
-    ↓
+    v
 [Application Servers] (Tomcat/Node.js)
-    ↓
+    v
 [Database Servers] (MySQL/PostgreSQL)
 ```
 
@@ -669,11 +669,11 @@ sar -n DEV 1 10
 **예측 및 계획**
 ```
 현재 사용량 분석
-    ↓
+    v
 성장률 계산
-    ↓
+    v
 3-6개월 후 예측
-    ↓
+    v
 용량 증설 계획
 ```
 
@@ -783,13 +783,13 @@ services:
 **인프라 로드맵**
 ```
 현재 상태 분석
-    ↓
+    v
 문제점 파악
-    ↓
+    v
 개선 방안 수립
-    ↓
+    v
 우선순위 결정
-    ↓
+    v
 실행 계획
 ```
 

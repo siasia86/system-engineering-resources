@@ -37,11 +37,11 @@ ltrace -T ./myapp                 # 시간 측정
 
 ```
 Application (ls)
-    ↓
+    v
 Library Functions (libc)  ← ltrace가 추적
-    ↓
+    v
 System Calls (kernel)     ← strace가 추적
-    ↓
+    v
 Linux Kernel
 ```
 
@@ -739,7 +739,7 @@ ltrace myapp 2>&1 | tee ltrace.log
 
 ```
 초기화 → 옵션 파싱 → 환경 확인 → 디렉토리 열기 → 파일 읽기 → 정렬 → 출력 → 종료
-   ↓         ↓           ↓            ↓            ↓         ↓       ↓       ↓
+   v         v           v            v            v         v       v       v
 setlocale getopt_long  getenv      opendir      readdir   qsort   write  closedir
 ```
 
