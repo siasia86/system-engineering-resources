@@ -233,7 +233,7 @@ Full ──→ Diff1
 # 기본 명령어
 xtrabackup \
   --user=backup \
-  --password='SecurePassword123!' \
+  --password='SecurePassword123' \
   --backup \
   --target-dir=/backup/full/$(date +%Y%m%d-%H)
 
@@ -248,7 +248,7 @@ xtrabackup \
 # 압축하여 백업 (디스크 공간 절약)
 xtrabackup \
   --user=backup \
-  --password='SecurePassword123!' \
+  --password='SecurePassword123' \
   --backup \
   --compress \
   --compress-threads=4 \

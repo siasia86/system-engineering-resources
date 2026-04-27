@@ -2,12 +2,13 @@
 
 ## 목차
 
-| 단계  | 섹션                                                                                                              |
-|-------|-------------------------------------------------------------------------------------------------------------------|
-| 기본  | [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. Pipeline 유형](#3-pipeline-유형)                           |
-| 실전  | [4. Declarative Pipeline](#4-declarative-pipeline) / [5. Scripted Pipeline](#5-scripted-pipeline)                |
-| 고급  | [6. 공유 라이브러리](#6-공유-라이브러리) / [7. 에이전트/노드](#7-에이전트노드) / [8. 플러그인](#8-플러그인)      |
-| 운영  | [9. 보안](#9-보안) / [10. 모니터링](#10-모니터링) / [11. Tips](#11-tips)                                         |
+| 단계   | 섹션                                                                                                                                                          |
+|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 기본   | [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. Pipeline 유형](#3-pipeline-유형)                               |
+| 실전   | [4. Declarative Pipeline](#4-declarative-pipeline) / [5. Scripted Pipeline](#5-scripted-pipeline)                    |
+| 고급   | [6. 공유 라이브러리](#6-공유-라이브러리) / [7. 에이전트/노드](#7-에이전트노드) / [8. 플러그인](#8-플러그인)          |
+| 운영   | [9. 보안](#9-보안) / [10. 모니터링](#10-모니터링) / [11. Tips](#11-tips)                                                                                     |
+| 확장   | [12. 멀티브랜치 Pipeline](#12-멀티브랜치-pipeline) / [13. Docker 빌드/ECR](#13-docker-빌드--ecr) / [14. 테스트 리포트/아티팩트](#14-테스트-리포트--아티팩트) |
 
 ---
 
@@ -17,13 +18,18 @@ Jenkins는 오픈소스 CI/CD 자동화 서버. **Jenkinsfile**로 빌드/테스
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│                    Jenkins Pipeline 흐름                     │
+│                    Jenkins Pipeline Flow                     │
 │                                                              │
 │  SCM (Git) -> Checkout -> Build -> Test -> Deploy -> Notify  │
 │                                                              │
-│  Controller ──> Agent (Node) ──> Workspace ──> Steps        │
+│  Controller ──> Agent (Node) ──> Workspace ──> Steps         │
 └──────────────────────────────────────────────────────────────┘
 ```
+
+- SCM에서 코드를 Checkout → Build → Test → Deploy → Notify 순서로 실행
+- Controller가 Agent(Node)에 작업을 위임하여 Workspace에서 Steps를 실행
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -33,11 +39,11 @@ Jenkins는 오픈소스 CI/CD 자동화 서버. **Jenkinsfile**로 빌드/테스
 ┌─────────────────┐        ┌──────────────────────────────┐
 │ Jenkins         │        │ Agents                       │
 │ Controller      │        │                              │
-│                 │ JNLP/  │  ┌──────────┐ ┌──────────┐  │
-│  - Job 관리     │ SSH    │  │ Agent 01 │ │ Agent 02 │  │
-│  - 스케줄링     │ ──────>│  │ (Linux)  │ │ (Docker) │  │
-│  - UI/API       │        │  └──────────┘ └──────────┘  │
-│  - 플러그인     │        │                              │
+│                 │ JNLP/  │  ┌──────────┐ ┌──────────┐   │
+│  - Job Mgmt     │ SSH    │  │ Agent 01 │ │ Agent 02 │   │
+│  - Scheduling   │ ──────>│  │ (Linux)  │ │ (Docker) │   │
+│  - UI/API       │        │  └──────────┘ └──────────┘   │
+│  - Plugins      │        │                              │
 └─────────────────┘        └──────────────────────────────┘
          │
          v
@@ -45,19 +51,23 @@ Jenkins는 오픈소스 CI/CD 자동화 서버. **Jenkinsfile**로 빌드/테스
   (JENKINS_HOME)
 ```
 
-- Controller: 파이프라인 오케스트레이션, UI 제공. 실제 빌드 작업은 Agent에서 실행.
+- Controller: 파이프라인 오케스트레이션(Job 관리, 스케줄링, UI/API, 플러그인). 실제 빌드 작업은 Agent에서 실행.
 - Agent: 실제 빌드/테스트/배포 실행 노드. Docker, SSH, JNLP 방식으로 연결.
 - Workspace: Agent에서 각 Job이 사용하는 작업 디렉토리.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
 ## 3. Pipeline 유형
 
-| 유형                  | 특징                                      | 권장 여부  |
-|----------------------|------------------------------------------|-----------|
-| Declarative Pipeline | 구조화된 문법, 검증 용이, 가독성 높음     | ✅ 권장    |
-| Scripted Pipeline    | Groovy 전체 문법 사용, 유연성 높음        | 복잡한 로직용 |
-| Freestyle Job        | UI 기반 설정, 코드 관리 불가              | ❌ 비권장  |
+| 유형                   | 특징                                     | 권장 여부      |
+|------------------------|------------------------------------------|----------------|
+| Declarative Pipeline   | 구조화된 문법, 검증 용이, 가독성 높음    | ✅ 권장        |
+| Scripted Pipeline      | Groovy 전체 문법 사용, 유연성 높음       | 복잡한 로직용  |
+| Freestyle Job          | UI 기반 설정, 코드 관리 불가             | ❌ 비권장      |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -176,6 +186,8 @@ steps {
 }
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 5. Scripted Pipeline
@@ -211,6 +223,8 @@ node('linux') {
     }
 }
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -261,6 +275,8 @@ pipeline {
 ```
 
 Jenkins 관리 → System → Global Pipeline Libraries에서 라이브러리 등록 필요.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -321,25 +337,29 @@ pipeline {
 }
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 8. 플러그인
 
 ### 필수 플러그인
 
-| 플러그인                    | 용도                              |
-|----------------------------|----------------------------------|
-| Pipeline                   | 파이프라인 기본 기능              |
-| Git                        | Git 연동                         |
-| Credentials Binding        | 자격증명 주입                    |
-| Blue Ocean                 | 파이프라인 시각화 UI              |
-| Slack Notification         | Slack 알림                       |
-| Docker Pipeline            | Docker 빌드/실행                 |
-| Kubernetes                 | K8s 동적 에이전트                |
-| AWS Steps                  | AWS CLI 래퍼                     |
-| JUnit                      | 테스트 결과 리포트               |
-| HTML Publisher             | HTML 리포트 게시                 |
-| Timestamper                | 로그에 타임스탬프 추가           |
+| 플러그인              | 용도                         |
+|-----------------------|------------------------------|
+| Pipeline              | 파이프라인 기본 기능         |
+| Git                   | Git 연동                     |
+| Credentials Binding   | 자격증명 주입                |
+| Blue Ocean            | 파이프라인 시각화 UI         |
+| Slack Notification    | Slack 알림                   |
+| Docker Pipeline       | Docker 빌드/실행             |
+| Kubernetes            | K8s 동적 에이전트            |
+| AWS Steps             | AWS CLI 래퍼                 |
+| JUnit                 | 테스트 결과 리포트           |
+| HTML Publisher        | HTML 리포트 게시             |
+| Timestamper           | 로그에 타임스탬프 추가       |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -375,6 +395,8 @@ curl -X POST \
   --user "username:api-token"
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 10. 모니터링
@@ -393,13 +415,13 @@ curl -s "http://localhost:8080/job/my-job/lastBuild/api/json" \
 
 ### 주요 모니터링 지표
 
-| 지표                    | 확인 방법                              |
-|------------------------|----------------------------------------|
-| 빌드 성공률             | Build History, Blue Ocean             |
-| 빌드 시간 추이          | Build Time Trend 플러그인             |
-| 큐 대기 시간            | Manage Jenkins -> Load Statistics     |
-| 에이전트 상태           | Manage Jenkins -> Nodes               |
-| 디스크 사용량           | JENKINS_HOME 모니터링 필수            |
+| 지표               | 확인 방법                           |
+|--------------------|-------------------------------------|
+| 빌드 성공률        | Build History, Blue Ocean           |
+| 빌드 시간 추이     | Build Time Trend 플러그인           |
+| 큐 대기 시간       | Manage Jenkins -> Load Statistics   |
+| 에이전트 상태      | Manage Jenkins -> Nodes             |
+| 디스크 사용량      | JENKINS_HOME 모니터링 필수          |
 
 ### Prometheus 연동
 
@@ -413,6 +435,8 @@ scrape_configs:
 ```
 
 Prometheus 플러그인 설치 필요.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -487,6 +511,294 @@ sh '''
 '''
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
+
+## 12. 멀티브랜치 Pipeline
+
+### 개념
+
+SCM 저장소의 브랜치/PR을 자동으로 감지하여 각각 독립적인 파이프라인을 생성합니다.
+
+```
+GitHub Repository
+├── main          → Jenkins Job: my-app/main
+├── develop       → Jenkins Job: my-app/develop
+├── feature/login → Jenkins Job: my-app/feature%2Flogin
+└── PR #42        → Jenkins Job: my-app/PR-42
+```
+
+### 설정 (Jenkins UI)
+
+```
+New Item → Multibranch Pipeline
+→ Branch Sources: GitHub / GitLab
+→ Discover Branches: All branches
+→ Discover Pull Requests: Merge with target branch
+→ Build Configuration: by Jenkinsfile (경로: Jenkinsfile)
+→ Scan Multibranch Pipeline Triggers: 1분마다 또는 Webhook
+```
+
+### Jenkinsfile 브랜치 분기 패턴
+
+```groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'make build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'make test'
+            }
+        }
+
+        stage('Deploy Staging') {
+            when {
+                branch 'develop'
+            }
+            steps {
+                sh 'make deploy-staging'
+            }
+        }
+
+        stage('Deploy Production') {
+            when {
+                branch 'main'
+            }
+            steps {
+                input message: '운영 배포 승인', ok: '배포'
+                sh 'make deploy-prod'
+            }
+        }
+
+        stage('PR Check') {
+            when {
+                changeRequest()   // PR일 때만 실행
+            }
+            steps {
+                sh 'make lint && make test-coverage'
+            }
+        }
+    }
+}
+```
+
+### GitHub Webhook 설정
+
+```
+GitHub Repository → Settings → Webhooks → Add webhook
+Payload URL: https://jenkins.example.com/github-webhook/
+Content type: application/json
+Events: Push, Pull requests
+```
+
+```groovy
+// Jenkinsfile에서 webhook 트리거 활성화
+properties([
+    pipelineTriggers([githubPush()])
+])
+```
+
+### 브랜치별 배포 환경 분기
+
+```groovy
+def deployEnv = [
+    'main'   : 'production',
+    'develop': 'staging',
+].get(env.BRANCH_NAME, 'dev')
+
+echo "Deploy target: ${deployEnv}"
+```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 13. Docker 빌드 / ECR
+
+### ECR 로그인 + 이미지 빌드 + 푸시
+
+```groovy
+pipeline {
+    agent any
+
+    environment {
+        AWS_REGION     = 'ap-northeast-1'
+        AWS_ACCOUNT_ID = '123456789012'
+        ECR_REPO       = 'my-app'
+        IMAGE_TAG      = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+        ECR_URI        = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
+    }
+
+    stages {
+        stage('ECR Login') {
+            steps {
+                withAWS(credentials: 'aws-ecr', region: "${AWS_REGION}") {
+                    sh 'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh "docker build --cache-from ${ECR_URI}:latest -t ${ECR_URI}:${IMAGE_TAG} -t ${ECR_URI}:latest ."
+            }
+        }
+
+        stage('Push') {
+            steps {
+                sh "docker push ${ECR_URI}:${IMAGE_TAG} && docker push ${ECR_URI}:latest"
+            }
+        }
+
+        stage('Deploy') {
+            when { branch 'main' }
+            steps {
+                withAWS(credentials: 'aws-ecr', region: "${AWS_REGION}") {
+                    sh "aws ecs update-service --cluster prod-cluster --service my-app --force-new-deployment"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            sh "docker rmi ${ECR_URI}:${IMAGE_TAG} || true"
+        }
+    }
+}
+```
+
+### 태그 전략
+
+| 태그 패턴                   | 용도                          |
+|-----------------------------|-------------------------------|
+| `latest`                    | 최신 main 브랜치 이미지       |
+| `main-42` (브랜치-빌드번호) | 재현 가능한 특정 빌드         |
+| `v1.2.3` (Git 태그)         | 릴리즈 버전                   |
+| `sha-a1b2c3d` (커밋 해시)   | 정확한 소스 추적              |
+
+```groovy
+// Git 태그 기반 이미지 태그
+def gitTag = sh(script: 'git describe --tags --exact-match 2>/dev/null || echo ""', returnStdout: true).trim()
+def imageTag = gitTag ?: "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+```
+
+### 멀티스테이지 빌드 캐시 활용
+
+```groovy
+stage('Build') {
+    steps {
+        script {
+            sh "docker pull ${ECR_URI}:builder || true"
+            sh "docker build --target builder --cache-from ${ECR_URI}:builder -t ${ECR_URI}:builder ."
+            sh "docker build --cache-from ${ECR_URI}:builder --cache-from ${ECR_URI}:latest -t ${ECR_URI}:${IMAGE_TAG} ."
+            sh "docker push ${ECR_URI}:builder"
+        }
+    }
+}
+```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 14. 테스트 리포트 / 아티팩트
+
+### JUnit 테스트 리포트
+
+```groovy
+stage('Test') {
+    steps {
+        sh 'make test'   // JUnit XML 생성: test-results/*.xml
+    }
+    post {
+        always {
+            junit(
+                testResults: 'test-results/**/*.xml',
+                allowEmptyResults: true
+            )
+        }
+    }
+}
+```
+
+### 코드 커버리지 (Cobertura)
+
+```groovy
+post {
+    always {
+        cobertura(
+            coberturaReportFile: 'coverage.xml',
+            failUnhealthy: true,
+            lineCoverageTargets: '80, 70, 60'   // healthy, unhealthy, failing
+        )
+    }
+}
+```
+
+### HTML 리포트 게시
+
+```groovy
+post {
+    always {
+        publishHTML(target: [
+            allowMissing         : false,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : 'reports/html',
+            reportFiles          : 'index.html',
+            reportName           : 'Test Report'
+        ])
+    }
+}
+```
+
+### 아티팩트 보관
+
+```groovy
+post {
+    success {
+        archiveArtifacts(
+            artifacts: 'dist/**/*.jar, dist/**/*.war',
+            fingerprint: true,
+            allowEmptyArchive: false
+        )
+    }
+}
+```
+
+### stash / unstash (다른 노드 간 파일 전달)
+
+```groovy
+stage('Build') {
+    steps {
+        sh 'make build'
+        stash name: 'build-artifacts', includes: 'dist/**'
+    }
+}
+
+stage('Integration Test') {
+    agent { label 'test-server' }
+    steps {
+        unstash 'build-artifacts'
+        sh 'make integration-test'
+        junit 'test-results/*.xml'
+    }
+}
+```
+
+### 빌드 상태 배지 (README)
+
+```markdown
+[![Build Status](https://jenkins.example.com/buildStatus/icon?job=my-app%2Fmain)](https://jenkins.example.com/job/my-app/job/main/)
+```
 
 [⬆ 목차로 돌아가기](#목차)

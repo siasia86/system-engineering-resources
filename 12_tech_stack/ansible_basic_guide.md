@@ -1,5 +1,17 @@
 # Ansible 기초 가이드
 
+## 목차
+
+| 단계   | 섹션                                                                                                                                          |
+|--------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| 기본   | [1. 개요](#1-개요) / [2. ansible.cfg](#2-ansiblecfg-적용-우선순위) / [3. Inventory](#3-inventory-대상-서버-목록)                              |
+| 실전   | [4. Ad-hoc](#4-ad-hoc-명령-1회성-실행) / [5. Playbook](#5-playbook-기초) / [6. 변수](#6-변수-우선순위) / [7. Handler](#7-handler-변경-시에만-실행) |
+| 고급   | [8. 조건문/반복문](#8-조건문--반복문) / [9. Template](#9-template-jinja2) / [10. Role](#10-role-구조) / [11. 옵션](#11-자주-쓰는-실행-옵션)   |
+| 참고   | [12. 실습 순서](#12-실습-순서-권장) / [13. 모듈 상세](#13-모듈-상세-사용법)                                                                  |
+| 고급   | [14. 에러 처리](#14-에러-처리) / [15. 태그](#15-태그) / [16. Dynamic Inventory](#16-dynamic-inventory)                                       |
+
+---
+
 ## 1. 개요
 
 Ansible은 에이전트 없이 SSH로 대상 서버를 관리하는 자동화 도구입니다.
@@ -11,6 +23,8 @@ Control Node (내 서버)  ──SSH──>  Managed Node (대상 서버)
   ad-hoc   → 1회성 명령 (ansible 명령어)
   playbook → 반복 가능한 자동화 (ansible-playbook 명령어)
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -73,6 +87,8 @@ ssh_args = -o ControlMaster=auto -o ControlPersist=60s
 | callback_whitelist     | timer 추가 시 실행 시간 표시             |
 | display_args_to_stdout | 실행 인자를 로그에 기록                  |
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 3. Inventory (대상 서버 목록)
@@ -101,6 +117,8 @@ ansible_ssh_private_key_file=~/.ssh/id_ed25519
 ansible-inventory -i inventory/dev --list
 ansible-inventory -i inventory/dev --graph
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -143,6 +161,8 @@ ansible webservers -i inventory/dev -m service -a "name=nginx state=restarted" -
 | template   | 템플릿 배포          | Playbook 에서 사용                                 |
 | lineinfile | 파일 내 특정 줄 수정 | `-m lineinfile -a "path=... line=..."`             |
 | cron       | cron 작업 관리       | `-m cron -a "name=backup minute=0 hour=2 job=..."` |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -194,6 +214,8 @@ ansible-playbook -i inventory/dev playbooks/hello.yml --limit dev-app-web-01
 ansible-playbook -i inventory/dev playbooks/hello.yml -v
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 6. 변수 우선순위
@@ -231,6 +253,8 @@ http_port: 8080    # 이 호스트만 다른 포트
 ansible-playbook playbooks/deploy.yml -e "app_env=staging http_port=8080"
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 7. Handler (변경 시에만 실행)
@@ -256,6 +280,8 @@ ansible-playbook playbooks/deploy.yml -e "app_env=staging http_port=8080"
 ```
 
 `notify`는 task에서 실제 변경(changed)이 발생했을 때만 handler를 호출합니다.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -293,6 +319,8 @@ tasks:
     when: ansible_distribution == "Rocky"
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 9. Template (Jinja2)
@@ -327,6 +355,8 @@ tasks:
       dest: /etc/nginx/nginx.conf
     notify: restart nginx
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -401,6 +431,8 @@ roles/
 ansible-galaxy init roles/gameserver
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 11. 자주 쓰는 실행 옵션
@@ -420,6 +452,8 @@ ansible-galaxy init roles/gameserver
 | `--list-tasks`           | 실행할 task 목록만 출력  |
 | `--list-hosts`           | 대상 호스트 목록만 출력  |
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 12. 실습 순서 권장
@@ -433,6 +467,8 @@ ansible-galaxy init roles/gameserver
 ```
 
 여기까지가 일상 업무의 80%를 커버합니다.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -483,8 +519,6 @@ ansible-doc -s service
 | `shell`      | cmd (또는 free_form), creates, removes              | - (파이프/리다이렉션 가능)    |
 | `stat`       | path                                                | -                             |
 | `debug`      | msg, var                                            | -                             |
-
----
 
 ### 예시 1 — Nginx 설치 + 설정 + 서비스 관리
 
@@ -551,8 +585,6 @@ ansible-doc -s service
         state: reloaded
 ```
 
----
-
 ### 예시 2 — 시스템 점검 + 정보 수집
 
 ```yaml
@@ -602,8 +634,6 @@ ansible-doc -s service
       debug:
         msg: "{{ '/backup 존재' if backup_dir.stat.exists else '/backup 없음' }}"
 ```
-
----
 
 ### 예시 3 — 유저 관리 + 보안 설정
 
@@ -679,8 +709,6 @@ ansible-doc -s service
         state: restarted
 ```
 
----
-
 ### 모듈 실행 흐름 요약
 
 ```
@@ -695,3 +723,237 @@ ansible-doc -s service
 - Post Processing: 후처리 (handler 실행)
 - `register`: 결과를 변수에 저장 → `debug`로 출력 또는 `when` 조건에 활용
 - `changed_when: false`: 항상 ok 표시 (조회성 명령에 사용)
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 14. 에러 처리
+
+### block / rescue / always
+
+Python의 try/except/finally 와 동일한 구조입니다.
+
+```yaml
+tasks:
+  - block:
+      - name: 패키지 설치 시도
+        dnf:
+          name: myapp
+          state: present
+
+      - name: 서비스 시작
+        service:
+          name: myapp
+          state: started
+
+    rescue:
+      - name: 실패 시 롤백
+        shell: /opt/myapp/rollback.sh
+
+      - name: 알림 발송
+        debug:
+          msg: "배포 실패: {{ ansible_failed_result.msg }}"
+
+    always:
+      - name: 로그 수집 (성공/실패 무관)
+        fetch:
+          src: /var/log/myapp/deploy.log
+          dest: ./logs/
+```
+
+### ignore_errors / failed_when
+
+```yaml
+tasks:
+  - name: 프로세스 종료 (없어도 무시)
+    shell: pkill myapp
+    ignore_errors: true
+
+  - name: 헬스체크 (응답코드 기준으로 실패 판단)
+    uri:
+      url: http://localhost:8080/health
+      return_content: true
+    register: health
+    failed_when: health.status != 200 or 'ok' not in health.content
+
+  - name: 디스크 사용률 확인 (90% 초과 시 실패)
+    shell: df / | awk 'NR==2{print $5}' | tr -d '%'
+    register: disk_usage
+    failed_when: disk_usage.stdout | int > 90
+    changed_when: false
+```
+
+### any_errors_fatal
+
+한 호스트라도 실패하면 전체 play를 즉시 중단합니다.
+
+```yaml
+- name: 배포
+  hosts: webservers
+  any_errors_fatal: true   # 기본값 false
+  tasks:
+    - name: 배포 스크립트 실행
+      shell: /opt/deploy.sh
+```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 15. 태그
+
+### 태그 작성
+
+```yaml
+tasks:
+  - name: nginx 설치
+    dnf:
+      name: nginx
+      state: present
+    tags:
+      - install
+      - nginx
+
+  - name: nginx 설정 배포
+    template:
+      src: nginx.conf.j2
+      dest: /etc/nginx/nginx.conf
+    tags:
+      - config
+      - nginx
+
+  - name: nginx 재시작
+    service:
+      name: nginx
+      state: restarted
+    tags:
+      - restart
+      - nginx
+
+  - name: 항상 실행
+    debug:
+      msg: "always runs"
+    tags:
+      - always   # --tags 지정 시에도 항상 실행되는 특수 태그
+```
+
+### Role에 태그 적용
+
+```yaml
+# playbooks/site.yml
+- hosts: webservers
+  roles:
+    - role: nginx
+      tags: nginx          # role 전체에 태그 적용
+    - role: mysql
+      tags: mysql
+```
+
+### 실행 예시
+
+```bash
+# nginx 태그만 실행
+ansible-playbook site.yml --tags nginx
+
+# 설치 + 설정만 실행
+ansible-playbook site.yml --tags "install,config"
+
+# restart 제외하고 실행
+ansible-playbook site.yml --skip-tags restart
+
+# 어떤 task가 실행되는지 확인 (dry-run)
+ansible-playbook site.yml --tags nginx --list-tasks
+```
+
+### 특수 태그
+
+| 태그       | 동작                                          |
+|------------|-----------------------------------------------|
+| `always`   | `--tags` 지정 여부와 무관하게 항상 실행       |
+| `never`    | `--tags never` 로 명시해야만 실행             |
+| `tagged`   | 태그가 있는 task만 실행                       |
+| `untagged` | 태그가 없는 task만 실행                       |
+| `all`      | 모든 task 실행 (기본값)                       |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 16. Dynamic Inventory
+
+정적 INI 파일 대신 AWS EC2 등 외부 소스에서 인벤토리를 동적으로 생성합니다.
+
+### AWS EC2 플러그인 설정
+
+```bash
+pip install boto3 botocore
+ansible-galaxy collection install amazon.aws
+```
+
+```yaml
+# inventory/aws_ec2.yml
+plugin: amazon.aws.aws_ec2
+regions:
+  - ap-northeast-1
+  - ap-northeast-2
+
+filters:
+  instance-state-name: running
+  tag:Env: production          # Env=production 태그가 있는 인스턴스만
+
+keyed_groups:
+  - key: tags.Role             # Role 태그 값으로 그룹 생성
+    prefix: role
+  - key: placement.region      # 리전별 그룹
+    prefix: region
+  - key: instance_type         # 인스턴스 타입별 그룹
+    prefix: type
+
+hostnames:
+  - private-ip-address         # 내부망 접속 시
+  # - public-ip-address        # 외부 접속 시
+
+compose:
+  ansible_host: private_ip_address
+```
+
+### 사용 예시
+
+```bash
+# 인벤토리 확인
+ansible-inventory -i inventory/aws_ec2.yml --list
+ansible-inventory -i inventory/aws_ec2.yml --graph
+
+# 특정 그룹 대상 실행
+ansible role_webserver -i inventory/aws_ec2.yml -m ping
+
+# playbook 실행
+ansible-playbook -i inventory/aws_ec2.yml site.yml --limit role_webserver
+```
+
+### ansible.cfg 에 등록
+
+```ini
+[defaults]
+inventory = inventory/aws_ec2.yml   # 기본 인벤토리로 지정
+```
+
+### 정적 + 동적 혼합
+
+```
+inventory/
+├── aws_ec2.yml        # 동적 (AWS EC2)
+├── group_vars/
+│   ├── all.yml
+│   └── role_webserver.yml
+└── host_vars/
+    └── bastion.yml    # 정적 호스트 개별 설정
+```
+
+```bash
+# 디렉토리 전체를 인벤토리로 지정하면 자동으로 혼합 처리
+ansible-playbook -i inventory/ site.yml
+```
+
+[⬆ 목차로 돌아가기](#목차)
