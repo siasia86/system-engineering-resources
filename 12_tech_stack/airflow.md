@@ -666,7 +666,7 @@ export AIRFLOW_CONN_MY_POSTGRES='postgresql://user:pass@host:5432/db'
 export AIRFLOW_CONN_MY_S3='{"conn_type": "aws", "extra": {"region_name": "ap-northeast-1"}}'
 
 # Variable
-export AIRFLOW_VAR_API_KEY='secret-api-key'
+export AIRFLOW_VAR_API_KEY='SecureKey123'
 ```
 
 ### 웹서버 보안 설정

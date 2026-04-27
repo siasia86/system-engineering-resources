@@ -1031,10 +1031,10 @@ xtrabackup --backup --target-dir=/backup/test --dry-run
 
 ```bash
 # ❌ 나쁜 예: 평문 패스워드
-xtrabackup --user=backup --password='MyPassword123' --backup
+xtrabackup --user=backup --password='SecurePassword123' --backup
 
 # ✅ 좋은 예: 파일로 관리
-echo "MyPassword123" > /etc/xtrabackup/.password
+echo "SecurePassword123" > /etc/xtrabackup/.password
 chmod 600 /etc/xtrabackup/.password
 
 xtrabackup --user=backup --password=$(cat /etc/xtrabackup/.password) --backup
@@ -1043,7 +1043,7 @@ xtrabackup --user=backup --password=$(cat /etc/xtrabackup/.password) --backup
 # /etc/xtrabackup/my.cnf
 [xtrabackup]
 user=backup
-password=MyPassword123
+password=SecurePassword123
 
 xtrabackup --defaults-file=/etc/xtrabackup/my.cnf --backup
 chmod 600 /etc/xtrabackup/my.cnf
