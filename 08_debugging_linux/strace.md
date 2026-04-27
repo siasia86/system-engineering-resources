@@ -38,13 +38,13 @@ strace -f ./myapp                 # 자식 프로세스 포함
 
 ```
 Application (ls)
-    ↓
+    v
 Library Functions (libc)  ← ltrace
-    ↓
+    v
 System Calls (kernel)     ← strace
-    ↓
+    v
 Linux Kernel
-    ↓
+    v
 Hardware
 ```
 
@@ -986,7 +986,7 @@ unbuffer strace myapp | tee output.log
 
 ```
 프로그램 실행 → 라이브러리 로딩 → 프로세스 설정 → 디렉토리 열기 → 파일 읽기 → 출력 → 종료
-      ↓              ↓                ↓               ↓            ↓         ↓       ↓
+      v              v                v               v            v         v       v
    execve         openat           arch_prctl       openat      getdents64  write  exit_group
                   mmap             set_tid_address  fstat
                   close            mprotect
