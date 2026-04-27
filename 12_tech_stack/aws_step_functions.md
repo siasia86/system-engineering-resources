@@ -2,11 +2,12 @@
 
 ## 목차
 
-| 단계  | 섹션                                                                                                      |
-|-------|-----------------------------------------------------------------------------------------------------------|
-| 기본  | [1. 개요](#1-개요) / [2. 핵심 개념](#2-핵심-개념) / [3. 상태 유형](#3-상태-유형)                         |
-| 실전  | [4. ASL 작성](#4-asl-작성) / [5. 실행 모드](#5-실행-모드) / [6. 에러 처리](#6-에러-처리)                 |
-| 운영  | [7. 모니터링](#7-모니터링) / [8. 비용](#8-비용) / [9. Tips](#9-tips)                                     |
+| 단계   | 섹션                                                                                                                                              |
+|--------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| 기본   | [1. 개요](#1-개요) / [2. 핵심 개념](#2-핵심-개념) / [3. 상태 유형](#3-상태-유형)                                                                 |
+| 실전   | [4. ASL 작성](#4-asl-작성) / [5. 실행 모드](#5-실행-모드) / [6. 에러 처리](#6-에러-처리)                                                        |
+| 운영   | [7. 모니터링](#7-모니터링) / [8. 비용](#8-비용) / [9. Tips](#9-tips)                                                                             |
+| 고급   | [10. 실전 패턴](#10-실전-패턴) / [11. CDK / Terraform](#11-cdk--terraform) / [12. 로컬 테스트](#12-로컬-테스트)                                  |
 
 ---
 
@@ -17,18 +18,20 @@ AWS Step Functions는 AWS 서비스와 Lambda 등을 **시각적 워크플로우
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│                  State Machine                       │
+│                    State Machine                     │
 │                                                      │
 │  [Start] -> [Task] -> [Choice] -> [Task] -> [End]    │
-│                           │                          │
-│                           v                          │
-│                        [Fail]                        │
+│                          │                           │
+│                          v                           │
+│                       [Fail]                         │
 └──────────────────────────────────────────────────────┘
 ```
 
 - 상태 머신(State Machine): 워크플로우 전체 정의
 - 상태(State): 워크플로우의 각 단계
 - 실행(Execution): 상태 머신의 1회 실행 인스턴스
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -40,7 +43,7 @@ AWS Step Functions는 AWS 서비스와 Lambda 등을 **시각적 워크플로우
 
 ```json
 {
-  "Comment": "간단한 예시",
+  "Comment": "Simple example",
   "StartAt": "HelloWorld",
   "States": {
     "HelloWorld": {
@@ -54,28 +57,32 @@ AWS Step Functions는 AWS 서비스와 Lambda 등을 **시각적 워크플로우
 
 ### 실행 유형 비교
 
-| 구분             | Standard                  | Express                        |
-|-----------------|---------------------------|--------------------------------|
-| 최대 실행 시간   | 1년                       | 5분                            |
-| 실행 이력        | 90일 보관                 | CloudWatch Logs만              |
-| 과금 기준        | 상태 전환 횟수             | 실행 횟수 + 실행 시간           |
-| 적합 용도        | 장기 비즈니스 프로세스     | 고빈도 단기 이벤트 처리         |
-| 정확히 1회 실행  | 보장                      | 최소 1회 (중복 가능)            |
+| 구분                | Standard                   | Express                         |
+|---------------------|----------------------------|---------------------------------|
+| 최대 실행 시간      | 1년                        | 5분                             |
+| 실행 이력           | 90일 보관                  | CloudWatch Logs만               |
+| 과금 기준           | 상태 전환 횟수             | 실행 횟수 + 실행 시간           |
+| 적합 용도           | 장기 비즈니스 프로세스     | 고빈도 단기 이벤트 처리         |
+| 정확히 1회 실행     | 보장                       | 최소 1회 (중복 가능)            |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
 ## 3. 상태 유형
 
-| 상태 유형  | 설명                                      | 주요 필드                        |
-|-----------|------------------------------------------|----------------------------------|
-| `Task`    | Lambda, ECS, SNS 등 작업 실행            | `Resource`, `TimeoutSeconds`     |
-| `Choice`  | 조건 분기                                | `Choices`, `Default`             |
-| `Parallel`| 여러 브랜치 병렬 실행                    | `Branches`                       |
-| `Map`     | 배열 항목별 반복 실행                    | `Iterator`, `MaxConcurrency`     |
-| `Wait`    | 지정 시간 또는 타임스탬프까지 대기       | `Seconds`, `Timestamp`           |
-| `Pass`    | 입력을 출력으로 그대로 전달 (디버깅용)   | `Result`, `ResultPath`           |
-| `Succeed` | 성공 종료                                | -                                |
-| `Fail`    | 실패 종료                                | `Error`, `Cause`                 |
+| 상태 유형   | 설명                                     | 주요 필드                       |
+|-------------|------------------------------------------|---------------------------------|
+| `Task`      | Lambda, ECS, SNS 등 작업 실행            | `Resource`, `TimeoutSeconds`    |
+| `Choice`    | 조건 분기                                | `Choices`, `Default`            |
+| `Parallel`  | 여러 브랜치 병렬 실행                    | `Branches`                      |
+| `Map`       | 배열 항목별 반복 실행                    | `Iterator`, `MaxConcurrency`    |
+| `Wait`      | 지정 시간 또는 타임스탬프까지 대기       | `Seconds`, `Timestamp`          |
+| `Pass`      | 입력을 출력으로 그대로 전달 (디버깅용)   | `Result`, `ResultPath`          |
+| `Succeed`   | 성공 종료                                | -                               |
+| `Fail`      | 실패 종료                                | `Error`, `Cause`                |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -93,12 +100,12 @@ AWS Step Functions는 AWS 서비스와 Lambda 등을 **시각적 워크플로우
 }
 ```
 
-| 필드          | 역할                                      |
-|--------------|------------------------------------------|
-| `InputPath`  | 전체 입력 중 Task에 전달할 부분 선택      |
-| `ResultPath` | Task 결과를 저장할 입력 내 경로           |
-| `OutputPath` | 다음 상태로 전달할 출력 선택              |
-| `Parameters` | 입력 재구성 (정적 값 + 동적 값 혼합)      |
+| 필드           | 역할                                     |
+|----------------|------------------------------------------|
+| `InputPath`    | 전체 입력 중 Task에 전달할 부분 선택     |
+| `ResultPath`   | Task 결과를 저장할 입력 내 경로          |
+| `OutputPath`   | 다음 상태로 전달할 출력 선택             |
+| `Parameters`   | 입력 재구성 (정적 값 + 동적 값 혼합)     |
 
 ### Choice 상태 예시
 
@@ -141,6 +148,8 @@ AWS Step Functions는 AWS 서비스와 Lambda 등을 **시각적 워크플로우
 }
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 5. 실행 모드
@@ -164,11 +173,13 @@ Lambda 호출 없이 AWS 서비스를 직접 호출.
 
 ### 통합 패턴
 
-| 패턴                        | 동작                                      | 사용 시점                    |
-|----------------------------|------------------------------------------|------------------------------|
-| Request-Response (기본)     | 호출 후 즉시 다음 상태로                  | 비동기 작업                  |
-| `.sync`                    | 작업 완료까지 대기                        | ECS Task, Glue Job 등        |
-| `.waitForTaskToken`        | 외부 시스템 콜백 대기                     | 사람 승인, 외부 API 연동      |
+| 패턴                         | 동작                         | 사용 시점                     |
+|------------------------------|------------------------------|-------------------------------|
+| Request-Response (기본)      | 호출 후 즉시 다음 상태로     | 비동기 작업                   |
+| `.sync`                      | 작업 완료까지 대기           | ECS Task, Glue Job 등         |
+| `.waitForTaskToken`          | 외부 시스템 콜백 대기        | 사람 승인, 외부 API 연동      |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -211,13 +222,15 @@ Lambda 호출 없이 AWS 서비스를 직접 호출.
 
 ### 주요 내장 에러 코드
 
-| 에러 코드                  | 발생 조건                          |
-|---------------------------|-----------------------------------|
-| `States.ALL`              | 모든 에러 (catch-all)              |
-| `States.TaskFailed`       | Task 실행 실패                     |
-| `States.Timeout`          | TimeoutSeconds 초과                |
-| `States.HeartbeatTimeout` | HeartbeatSeconds 내 응답 없음      |
-| `States.NoChoiceMatched`  | Choice에서 매칭 없고 Default 없음  |
+| 에러 코드                   | 발생 조건                         |
+|-----------------------------|-----------------------------------|
+| `States.ALL`                | 모든 에러 (catch-all)             |
+| `States.TaskFailed`         | Task 실행 실패                    |
+| `States.Timeout`            | TimeoutSeconds 초과               |
+| `States.HeartbeatTimeout`   | HeartbeatSeconds 내 응답 없음     |
+| `States.NoChoiceMatched`    | Choice에서 매칭 없고 Default 없음 |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -238,16 +251,20 @@ aws stepfunctions describe-execution \
   --execution-arn arn:aws:states:ap-northeast-1:123456789:execution:MyMachine:exec-id
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 8. 비용
 
-| 항목              | Standard                        | Express                              |
-|------------------|---------------------------------|--------------------------------------|
-| 무료 티어         | 월 4,000회 상태 전환             | 월 1,000회 실행, 100초               |
-| 과금 단위         | 상태 전환 1만 회당 $0.025        | 실행 100만 회당 $1 + GB-초당 $0.00001 |
+| 항목           | Standard                          | Express                               |
+|----------------|-----------------------------------|---------------------------------------|
+| 무료 티어      | 월 4,000회 상태 전환              | 월 1,000회 실행, 100초                |
+| 과금 단위      | 상태 전환 1만 회당 $0.025         | 실행 100만 회당 $1 + GB-초당 $0.00001 |
 
 > 💡 Express는 고빈도 단기 워크플로우에서 Standard 대비 90% 이상 비용 절감 가능.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -281,5 +298,341 @@ Pass 상태로 중간 데이터 확인:
 `$.Execution.Name`, `$.Execution.StartTime` 등 컨텍스트 객체 활용 가능.
 
 ---
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 10. 실전 패턴
+
+### 패턴 1 — 배치 처리 (S3 파일 목록 병렬 처리)
+
+```json
+{
+  "Comment": "S3 파일 병렬 처리",
+  "StartAt": "ListFiles",
+  "States": {
+    "ListFiles": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "list-s3-files",
+        "Payload.$": "$"
+      },
+      "ResultSelector": {
+        "files.$": "$.Payload.files"
+      },
+      "Next": "ProcessFiles"
+    },
+    "ProcessFiles": {
+      "Type": "Map",
+      "ItemsPath": "$.files",
+      "MaxConcurrency": 10,
+      "Iterator": {
+        "StartAt": "ProcessSingleFile",
+        "States": {
+          "ProcessSingleFile": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+              "FunctionName": "process-file",
+              "Payload.$": "$"
+            },
+            "Retry": [
+              {
+                "ErrorEquals": ["Lambda.TooManyRequestsException"],
+                "IntervalSeconds": 2,
+                "MaxAttempts": 3,
+                "BackoffRate": 2
+              }
+            ],
+            "End": true
+          }
+        }
+      },
+      "Next": "Notify"
+    },
+    "Notify": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:ap-northeast-1:123456789:batch-complete",
+        "Message": "Batch processing complete"
+      },
+      "End": true
+    }
+  }
+}
+```
+
+### 패턴 2 — 사람 승인 (Human Approval)
+
+`.waitForTaskToken`으로 외부 승인을 기다립니다.
+
+```json
+{
+  "StartAt": "RequestApproval",
+  "States": {
+    "RequestApproval": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke.waitForTaskToken",
+      "Parameters": {
+        "FunctionName": "send-approval-email",
+        "Payload": {
+          "taskToken.$": "$$.Task.Token",
+          "executionId.$": "$$.Execution.Name",
+          "input.$": "$"
+        }
+      },
+      "TimeoutSeconds": 86400,
+      "Catch": [
+        {
+          "ErrorEquals": ["States.Timeout"],
+          "Next": "ApprovalTimeout"
+        }
+      ],
+      "Next": "CheckApproval"
+    },
+    "CheckApproval": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.approved",
+          "BooleanEquals": true,
+          "Next": "Deploy"
+        }
+      ],
+      "Default": "Rejected"
+    },
+    "Deploy": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::ecs:runTask.sync",
+      "Parameters": {
+        "Cluster": "prod-cluster",
+        "TaskDefinition": "deploy-task"
+      },
+      "End": true
+    },
+    "Rejected":      { "Type": "Fail", "Error": "Rejected", "Cause": "Approval denied" },
+    "ApprovalTimeout": { "Type": "Fail", "Error": "Timeout", "Cause": "No response within 24h" }
+  }
+}
+```
+
+```python
+# 승인 Lambda에서 콜백 전송
+import boto3
+
+def send_callback(task_token: str, approved: bool):
+    sf = boto3.client('stepfunctions')
+    if approved:
+        sf.send_task_success(
+            taskToken=task_token,
+            output='{"approved": true}'
+        )
+    else:
+        sf.send_task_failure(
+            taskToken=task_token,
+            error='Rejected',
+            cause='Denied by approver'
+        )
+```
+
+### 패턴 3 — Step Functions → Step Functions (중첩 실행)
+
+```json
+{
+  "Type": "Task",
+  "Resource": "arn:aws:states:::states:startExecution.sync",
+  "Parameters": {
+    "StateMachineArn": "arn:aws:states:ap-northeast-1:123456789:stateMachine:SubWorkflow",
+    "Input": {
+      "orderId.$": "$.orderId"
+    }
+  },
+  "ResultPath": "$.subResult",
+  "Next": "NextState"
+}
+```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 11. CDK / Terraform
+
+### AWS CDK (TypeScript)
+
+```bash
+npm install @aws-cdk/aws-stepfunctions @aws-cdk/aws-stepfunctions-tasks
+```
+
+```typescript
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+
+// Lambda Task
+const processTask = new tasks.LambdaInvoke(this, 'ProcessTask', {
+  lambdaFunction: myLambda,
+  outputPath: '$.Payload',
+  retryOnServiceExceptions: true,
+});
+
+// Choice
+const choice = new sfn.Choice(this, 'CheckStatus')
+  .when(sfn.Condition.stringEquals('$.status', 'approved'), deployTask)
+  .otherwise(rejectTask);
+
+// 에러 처리
+processTask.addRetry({
+  errors: ['Lambda.TooManyRequestsException'],
+  interval: cdk.Duration.seconds(2),
+  maxAttempts: 3,
+  backoffRate: 2,
+});
+
+processTask.addCatch(errorHandler, {
+  errors: ['States.ALL'],
+  resultPath: '$.error',
+});
+
+// State Machine 정의
+const stateMachine = new sfn.StateMachine(this, 'MyStateMachine', {
+  definition: processTask.next(choice),
+  timeout: cdk.Duration.hours(1),
+  tracingEnabled: true,   // X-Ray
+  logs: {
+    destination: new logs.LogGroup(this, 'SfnLogs'),
+    level: sfn.LogLevel.ALL,
+  },
+});
+```
+
+### Terraform
+
+```hcl
+resource "aws_sfn_state_machine" "my_machine" {
+  name     = "my-state-machine"
+  role_arn = aws_iam_role.sfn_role.arn
+
+  definition = jsonencode({
+    Comment = "My workflow"
+    StartAt = "ProcessTask"
+    States = {
+      ProcessTask = {
+        Type     = "Task"
+        Resource = "arn:aws:states:::lambda:invoke"
+        Parameters = {
+          FunctionName = aws_lambda_function.processor.arn
+          "Payload.$"  = "$"
+        }
+        Retry = [{
+          ErrorEquals  = ["Lambda.TooManyRequestsException"]
+          IntervalSeconds = 2
+          MaxAttempts  = 3
+          BackoffRate  = 2
+        }]
+        End = true
+      }
+    }
+  })
+
+  logging_configuration {
+    log_destination        = "${aws_cloudwatch_log_group.sfn.arn}:*"
+    include_execution_data = true
+    level                  = "ALL"
+  }
+
+  tracing_configuration {
+    enabled = true
+  }
+}
+
+resource "aws_iam_role" "sfn_role" {
+  name = "sfn-execution-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Service = "states.amazonaws.com" }
+      Action    = "sts:AssumeRole"
+    }]
+  })
+}
+```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 12. 로컬 테스트
+
+### Step Functions Local (Docker)
+
+AWS 비용 없이 로컬에서 State Machine을 실행합니다.
+
+```bash
+# Docker로 실행
+docker run -p 8083:8083   -e AWS_DEFAULT_REGION=ap-northeast-1   -e AWS_ACCESS_KEY_ID=local   -e AWS_SECRET_ACCESS_KEY=local   amazon/aws-stepfunctions-local
+```
+
+```bash
+# 로컬 State Machine 생성
+aws stepfunctions create-state-machine   --endpoint-url http://localhost:8083   --name "TestMachine"   --definition file://my_state_machine.json   --role-arn "arn:aws:iam::123456789:role/DummyRole"
+
+# 실행
+aws stepfunctions start-execution   --endpoint-url http://localhost:8083   --state-machine-arn "arn:aws:states:ap-northeast-1:123456789:stateMachine:TestMachine"   --input '{"orderId": "ORD-001"}'
+
+# 실행 결과 확인
+aws stepfunctions describe-execution   --endpoint-url http://localhost:8083   --execution-arn "arn:aws:states:ap-northeast-1:123456789:execution:TestMachine:exec-1"
+```
+
+### Lambda Mock 연동
+
+Step Functions Local에서 Lambda를 Mock으로 대체합니다.
+
+```json
+// MockConfigFile.json
+{
+  "StateMachines": {
+    "TestMachine": {
+      "TestCases": {
+        "HappyPath": {
+          "ProcessTask": {
+            "Return": {
+              "StatusCode": 200,
+              "Payload": { "result": "success" }
+            }
+          }
+        },
+        "ErrorPath": {
+          "ProcessTask": {
+            "Throw": {
+              "Error": "Lambda.ServiceException",
+              "Cause": "Service unavailable"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+```bash
+# Mock 설정 파일과 함께 실행
+docker run -p 8083:8083   -e SFN_MOCK_CONFIG=/MockConfigFile.json   -v $(pwd)/MockConfigFile.json:/MockConfigFile.json   amazon/aws-stepfunctions-local
+
+# Mock 테스트 케이스 실행
+aws stepfunctions start-execution   --endpoint-url http://localhost:8083   --state-machine-arn "arn:aws:states:ap-northeast-1:123456789:stateMachine:TestMachine#HappyPath"   --input '{}'
+```
+
+### ASL 문법 검증 (AWS Toolkit)
+
+```bash
+# AWS CLI로 정의 유효성 검사 (실제 배포 없이)
+aws stepfunctions validate-state-machine-definition   --definition file://my_state_machine.json
+```
 
 [⬆ 목차로 돌아가기](#목차)
