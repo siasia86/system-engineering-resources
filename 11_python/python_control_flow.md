@@ -192,9 +192,9 @@ while True:
 ```python
 password = ""
 
-while password != "1234":
+while password != "SecurePassword123":
     password = input("비밀번호 입력: ")
-    if password == "1234":
+    if password == "SecurePassword123":
         print("로그인 성공")
     else:
         print("비밀번호 오류")
