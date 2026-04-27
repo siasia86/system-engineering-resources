@@ -26,7 +26,7 @@ NC='\033[0m'
 # config
 MAX_FILE_SIZE="40M"
 SCAN_DIR="${1:-.}"
-MAX_LINES=5          # 섹션별 최대 출력 라인 수
+MAX_LINES=30          # 섹션별 최대 출력 라인 수
 
 # count
 ISSUE_COUNT=0

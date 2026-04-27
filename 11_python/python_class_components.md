@@ -624,7 +624,7 @@ Python에는 진정한 private 변수가 없지만, 관례를 따릅니다:
 class BankAccount:
     def __init__(self, balance):
         self._balance = balance      # Protected (관례상 외부에서 접근 자제)
-        self.__secret = "비밀"       # Name mangling (더 강한 보호)
+        self.__secret = "비밀번호"       # Name mangling (더 강한 보호)
     
     def get_balance(self):
         return self._balance

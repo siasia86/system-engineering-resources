@@ -190,7 +190,7 @@ while True:
 ### 조건부 while
 
 ```python
-password = ""
+password = "SecurePassword123"
 
 while password != "SecurePassword123":
     password = input("비밀번호 입력: ")
