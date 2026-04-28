@@ -1,6 +1,6 @@
 # Python Class 튜토리얼
 
-초보자를 위한 Python 클래스 완벽 가이드입니다.
+초보자를 위한 Python 클래스 가이드입니다.
 
 > **참고**: 클래스 구성 요소(생성자, 메서드, 프로퍼티, 매직 메서드 등)의 상세한 레퍼런스는 [python_class_components.md](./python_class_components.md)를 참고하세요.
 
