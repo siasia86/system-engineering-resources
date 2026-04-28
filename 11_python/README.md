@@ -33,7 +33,7 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 
 ### 실전
 - **[패키지](python_packages.md)** - 패키지 구조, __init__.py, import
-- **[Python 로깅](python_logging.md)** - logging 모듈 완벽 가이드
+- **[Python 로깅](python_logging.md)** - logging 모듈 가이드
 - **[subprocess](python_subprocess.md)** - 외부 명령 실행, 프로세스 관리
 - **[JSON/YAML](python_json_yaml.md)** - 설정 파일, 데이터 교환
 - **[argparse](python_argparse.md)** - CLI 도구 제작

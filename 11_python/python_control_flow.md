@@ -1,6 +1,6 @@
 # Python 제어문 (Control Flow)
 
-Python의 조건문과 반복문에 대한 완벽 가이드입니다.
+Python의 조건문과 반복문에 대한 가이드입니다.
 
 ## 목차
 - [조건문 (if/elif/else)](#조건문-ifelifelse)
