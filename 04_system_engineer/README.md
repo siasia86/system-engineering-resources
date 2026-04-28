@@ -15,7 +15,7 @@
 ### 인프라 운영
 - **[게임 인프라 KPI](game-infra-kpi-presentation.md)** - 게임 서비스 인프라 운영 핵심 지표
 - **[리소스 모니터링](resource_utilization_monitoring.md)** - Linux 서버 리소스 사용률 모니터링
-- **[백업 도구 비교](backup_tools_comparison.md)** - 백업 도구 완벽 비교 가이드
+- **[백업 도구 비교](backup_tools_comparison.md)** - 백업 도구 비교 가이드
 - **[인프라 Monorepo](infra_monorepo_and_boilerplate.md)** - 인프라 Monorepo & 보일러플레이트 가이드
 - **[S3 Gateway Endpoint 크로스 계정](s3_gateway_endpoint_cross_account.md)** - S3 Gateway Endpoint 크로스 계정 설정 가이드
 
