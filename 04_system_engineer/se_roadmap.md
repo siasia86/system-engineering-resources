@@ -902,7 +902,7 @@ resource "aws_instance" "web" {
 - 난이도: ⭐⭐⭐⭐⭐
 - 비용: $2,000+
 - 유효기간: 3년
-- 추천: 최고 수준 증명
+- 추천: 전문성 증명
 
 **CCIE** (Cisco Certified Internetwork Expert)
 - 난이도: ⭐⭐⭐⭐⭐

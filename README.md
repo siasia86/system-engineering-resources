@@ -66,7 +66,7 @@ SE/SRE 로드맵, 실무 운영, 도구 비교, AI 활용.
 |------|------|
 | [SE 로드맵](04_system_engineer/se_roadmap.md) | 시스템 엔지니어 커리어 경로 |
 | [SRE 로드맵](04_system_engineer/sre_roadmap.md) | Site Reliability Engineer 경로 |
-| [SE 완전 로드맵 - 언어](04_system_engineer/se_complete_roadmap_programming_languages.md) | 언어별 학습 로드맵 |
+| [SE 로드맵 - 언어](04_system_engineer/se_complete_roadmap_programming_languages.md) | 언어별 학습 로드맵 |
 | [언어 비교](04_system_engineer/c_cpp_csharp_go_python_bash_comparison.md) | C/C++/C#/Go/Python/Bash 비교 |
 | [게임 인프라 KPI](04_system_engineer/game-infra-kpi-presentation.md) | 인프라 운영 핵심 지표 |
 | [리소스 모니터링](04_system_engineer/resource_utilization_monitoring.md) | CPU/메모리/디스크/네트워크 |
