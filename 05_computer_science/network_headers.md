@@ -9,8 +9,6 @@
 | 터널  | [8. GRE 헤더](#8-gre-헤더) / [9. VXLAN 헤더](#9-vxlan-헤더) / [10. QUIC 헤더](#10-quic-헤더)                                            |
 | 실전  | [11. 패킷 캡슐화 예시](#11-패킷-캡슐화-예시) / [12. 패킷 분석 명령어](#12-패킷-분석-명령어)                                             |
 
-[⬆ 목차로 돌아가기](#목차)
-
 ---
 
 ## 1. Ethernet 헤더 (Layer 2)
@@ -839,19 +837,17 @@ quic
 
 ## 참고 자료
 
-| RFC      | 내용     |
-|----------|----------|
-| RFC 894  | Ethernet |
-| RFC 826  | ARP      |
-| RFC 2460 | IPv6     |
-| RFC 792  | ICMP     |
-| RFC 1035 | DNS      |
-| RFC 2616 | HTTP/1.1 |
-| RFC 7540 | HTTP/2   |
-| RFC 8446 | TLS 1.3  |
-| RFC 2784 | GRE      |
-| RFC 7348 | VXLAN    |
-| RFC 9000 | QUIC     |
+- RFC 894: Ethernet
+- RFC 826: ARP
+- RFC 2460: IPv6
+- RFC 792: ICMP
+- RFC 1035: DNS
+- RFC 2616: HTTP/1.1
+- RFC 7540: HTTP/2
+- RFC 8446: TLS 1.3
+- RFC 2784: GRE
+- RFC 7348: VXLAN
+- RFC 9000: QUIC
 
 ---
 

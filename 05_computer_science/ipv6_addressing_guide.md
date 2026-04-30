@@ -280,12 +280,11 @@ print(f"First:       {subnets[0]}")
 
 ## 참고 자료
 
-| RFC      | 내용                                           |
-|----------|------------------------------------------------|
-| RFC 4291 | IPv6 Addressing Architecture                   |
-| RFC 3849 | IPv6 Address Prefix Reserved for Documentation |
-| RFC 4193 | Unique Local IPv6 Unicast Addresses            |
-| RFC 4862 | IPv6 SLAAC                                     |
+- RFC 4291: IPv6 Addressing Architecture
+- RFC 3849: IPv6 Address Prefix Reserved for Documentation
+- RFC 4193: Unique Local IPv6 Unicast Addresses
+- RFC 4862: IPv6 SLAAC
+
 ---
 
 ## 통계

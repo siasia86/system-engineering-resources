@@ -9,8 +9,15 @@
 - **[IPv6 주소 체계 가이드](ipv6_addressing_guide.md)** - IPv6 구조, 표기법, 서브넷, AWS VPC
 - **[TCP 상태 다이어그램](TCP_state.md)** - TCP 연결 상태 전이
 - **[패킷 분석](packet_analysis.md)** - 네트워크 패킷 구조 분석
-- **[tcpdump 예제](tcpdump_examples.md)** - 네트워크 패킷 캡처 실전 예제
+- **[tcpdump 예제](tcpdump_examples.md)**
+- **[Switch VLAN Mode](switch_vlan_mode.md)** - Access/Trunk/Dynamic 모드, VLAN Hopping 방어
 - **[네트워크 헤더](network_headers.md)** - Ethernet, IP, TCP, UDP 헤더 구조
+
+### CPU
+- **[CPU CISC vs RISC](cpu_cisc_risc.md)** - 명령어 집합 아키텍처 비교
+
+### 자료구조
+- **[자료구조](data-structures/)** - Array, Stack, Queue, Linked List, Tree, Graph, Heap, Hash Table
 
 ### HTTP
 - **[HTTP 메서드](http_methods.md)** - GET, POST, PUT, DELETE 등
@@ -53,6 +60,9 @@ Client                Server
   |-------- ACK -------->|
   |                      |
 ```
+
+---
+
 
 ---
 
