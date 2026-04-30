@@ -15,6 +15,8 @@ Python에서 파일을 읽고 쓰는 모든 방법을 다루는 실용 가이드
 - [자주하는 실수](#자주하는-실수)
 - [요약](#요약)
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 파일 입출력이란?
@@ -27,6 +29,8 @@ Python에서 파일을 읽고 쓰는 모든 방법을 다루는 실용 가이드
 - **대용량 처리**: 메모리에 올리지 않고 처리
 - **데이터 공유**: 다른 프로그램과 데이터 교환
 - **로그 기록**: 실행 기록 저장
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -49,6 +53,8 @@ file = open('data.txt', 'r')
 content = file.read()
 # 메모리 누수, 파일 잠금 문제 발생
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -94,6 +100,8 @@ with open('data.txt', 'r', encoding='utf-8') as file:
     content = file.read()
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 파일 쓰기
@@ -130,6 +138,8 @@ with open('output.txt', 'w') as file:
     print('Python File I/O', file=file)
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## with 문
@@ -165,6 +175,8 @@ except ZeroDivisionError:
     print("에러 발생")
 # 파일은 이미 닫혔음
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -213,6 +225,8 @@ with open('data.txt', 'a') as file:
 with open('data.txt', 'x') as file:
     file.write('새 파일')
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -312,6 +326,8 @@ if os.path.isdir(path):
 dirname = os.path.dirname(path)   # 디렉토리
 basename = os.path.basename(path) # 파일명
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -450,6 +466,8 @@ backup_path = backup_file('important.txt')
 print(f'백업 완료: {backup_path}')
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 실전 팁
@@ -560,6 +578,8 @@ from pathlib import Path
 Path('copy.png').write_bytes(Path('image.png').read_bytes())
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 자주하는 실수
@@ -652,6 +672,8 @@ script_dir = Path(__file__).parent
 data_file = script_dir / 'data.txt'
 content = data_file.read_text()
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 

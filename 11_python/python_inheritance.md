@@ -18,6 +18,8 @@ Python의 상속 개념과 활용 방법에 대한 종합 가이드입니다.
 - [자주하는 실수](#자주하는-실수)
 - [요약](#요약)
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 상속이란?
@@ -35,6 +37,8 @@ Python의 상속 개념과 활용 방법에 대한 종합 가이드입니다.
 
 - **부모 클래스** (Parent Class): 상속을 해주는 클래스 (Base Class, Super Class)
 - **자식 클래스** (Child Class): 상속을 받는 클래스 (Derived Class, Sub Class)
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -93,6 +97,8 @@ print(issubclass(Dog, Animal))  # True
 print(issubclass(Animal, Dog))  # False
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## super() 함수
@@ -147,6 +153,8 @@ class Dog(Animal):
         super().__init__(name)  # MRO를 따름
         self.breed = breed
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -240,6 +248,8 @@ d = D()
 # super()가 MRO를 따라 A가 한 번만 호출됨
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 메서드 오버라이딩
@@ -298,6 +308,8 @@ class Student(Person):
 student = Student("김철수", "2024001")
 print(student)  # Student: 김철수 (ID: 2024001)
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -396,6 +408,8 @@ dog = Dog("바둑이")
 print(dog.speak())  # 멍멍!
 print(dog.move())   # 바둑이가 움직입니다
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -580,6 +594,8 @@ processor2 = PaymentProcessor(bank_transfer)
 processor2.execute_payment(100000)
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 상속 vs 컴포지션
@@ -662,6 +678,8 @@ class Car:  # Car has an Engine
 - has-a 관계
 - 일부 기능만 필요
 - 런타임에 동작 변경
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -884,6 +902,8 @@ dog = Dog("바둑이", "진돗개")
 # Animal.__init__: 바둑이
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 베스트 프랙티스
@@ -1022,6 +1042,8 @@ class Animal:
         """
         raise NotImplementedError("하위 클래스에서 구현하세요")
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -1247,6 +1269,8 @@ class Child(Parent):
 class Child(Parent):
     child_value = 0
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 

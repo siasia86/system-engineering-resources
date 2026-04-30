@@ -8,6 +8,8 @@
 - [실전 예제](#실전-예제)
 - [요약](#요약)
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## JSON
@@ -66,6 +68,8 @@ json.dumps(data,
 | int, float  | number     |
 | True/False  | true/false |
 | None        | null       |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -132,6 +136,8 @@ with open('multi.yml', 'r') as f:
 config = yaml.safe_load(yaml_str)    # ✅ 안전
 # config = yaml.load(yaml_str)       # ❌ 위험
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -236,6 +242,8 @@ def load_config(env='dev'):
 
 config = load_config('prd')
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 

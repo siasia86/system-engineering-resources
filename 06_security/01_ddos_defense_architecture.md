@@ -1,5 +1,26 @@
 # DDoS 방어 아키텍처
 
+## 목차
+
+| 섹션 |
+|------|
+| [전체 구조도](#전체-구조도) |
+| [데이터 플로우](#데이터-플로우) |
+| [네트워크 구성](#네트워크-구성) |
+| [레이어별 역할](#레이어별-역할) |
+| [차단 IP 추가 방법](#차단-ip-추가-방법) |
+| [모니터링](#모니터링) |
+| [비용 (월간 예상)](#비용-월간-예상) |
+| [성능 지표](#성능-지표) |
+| [관리 명령어](#관리-명령어) |
+
+---
+
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 전체 구조도
 
 ```
@@ -133,6 +154,8 @@ Windows 게임서버 (Auto Scaling)
 └─────────────────────────────────────┘
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 데이터 플로우
@@ -198,6 +221,8 @@ Zabbix Server
 관리자
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 네트워크 구성
@@ -261,6 +286,8 @@ Port: 27015
 Protocol: TCP/UDP
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 레이어별 역할
@@ -320,6 +347,8 @@ Protocol: TCP/UDP
 - 처리량: 100K conn/s
 - 지연시간: < 1ms
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 차단 IP 추가 방법
@@ -352,6 +381,8 @@ cat blocked_ips.txt | while read ip; do
   redis-cli -h redis.xxxxx.cache.amazonaws.com SADD blocked_ips "$ip"
 done
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -389,6 +420,8 @@ aws s3 cp s3://logs/network-firewall/ - | grep "DROP"
 aws s3 cp s3://logs/haproxy/ - | awk '{print $1}' | sort | uniq -c | sort -rn | head -10
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 비용 (월간 예상)
@@ -406,6 +439,8 @@ aws s3 cp s3://logs/haproxy/ - | awk '{print $1}' | sort | uniq -c | sort -rn | 
 | **CloudWatch**       | 로그 + 메트릭              | $10         |
 | **S3**               | 로그 저장                  | $5          |
 | **총계**             |                            | **$533/월** |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -427,6 +462,8 @@ aws s3 cp s3://logs/haproxy/ - | awk '{print $1}' | sort | uniq -c | sort -rn | 
 | **XDP (Redis)**         | 10초        | 커널 진입 전       |
 | **nftables (CrowdSec)** | 10초        | 커널 네트워크 스택 |
 | **Network Firewall**    | 실시간      | VPC 경계           |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 

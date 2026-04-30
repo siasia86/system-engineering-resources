@@ -10,6 +10,8 @@
 - [실전 예제](#실전-예제)
 - [요약](#요약)
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## subprocess.run()
@@ -55,6 +57,8 @@ else:
     print(f"에러 발생: {result.stderr}")
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 입출력 캡처
@@ -96,6 +100,8 @@ result = subprocess.run(
 print(result.stdout)  # error found
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## shell 옵션
@@ -130,6 +136,8 @@ p2 = subprocess.Popen(['grep', 'error'], stdin=p1.stdout, stdout=subprocess.PIPE
 p1.stdout.close()
 output = p2.communicate()[0]
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -205,6 +213,8 @@ except subprocess.CalledProcessError as e:
     print(f"stderr: {e.stderr}")
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 실전 예제
@@ -265,6 +275,8 @@ def search_log(log_file, pattern, lines=10):
     matches = result.stdout.strip().split('\n')
     return matches[-lines:] if matches[0] else []
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 

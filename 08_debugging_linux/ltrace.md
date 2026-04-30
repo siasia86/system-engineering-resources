@@ -12,6 +12,10 @@
 - [실전 예제](#실전-디버깅-시나리오)
 - [프로덕션 주의사항](#성능-오버헤드-비교)
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 빠른 참조
 
 ```bash
@@ -23,6 +27,10 @@ ltrace -p <PID>                   # 실행 중인 프로세스
 ltrace -o output.log ./myapp      # 파일로 저장
 ltrace -T ./myapp                 # 시간 측정
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## ltrace란?
 
@@ -45,11 +53,19 @@ System Calls (kernel)     ← strace가 추적
 Linux Kernel
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## ltrace ls 실행
 
 ```bash
 ltrace ls
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 출력 분석
 
@@ -259,6 +275,10 @@ __memcpy_chk(0x647c31e54d70, 0x647c31e4cf53, 27, 27)  = 0x647c31e54d70
 - `closedir()` - 디렉토리 닫기
 - `free()` - 메모리 해제
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 전체 실행 흐름
 
 ```
@@ -295,6 +315,10 @@ __memcpy_chk(0x647c31e54d70, 0x647c31e4cf53, 27, 27)  = 0x647c31e54d70
    ├─ closedir()        - 디렉토리 닫기
    └─ free()            - 메모리 해제
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## ltrace 유용한 옵션
 
@@ -355,6 +379,10 @@ ltrace -d ls
 ltrace -c ls
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 실용 예제
 
 ### 1. 성능 분석
@@ -393,6 +421,10 @@ ltrace -c ls
  ...
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 트러블슈팅
 
 ### 문제 1: 출력이 너무 많음
@@ -413,6 +445,10 @@ sudo ltrace -p <PID>
 ltrace -b ls
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## ltrace 내부 동작
 
 **ltrace는 어떻게 작동하나?**
@@ -428,6 +464,10 @@ ltrace -b ls
 3. **심볼 테이블 읽기**
    - ELF 바이너리의 심볼 정보 사용
    - 함수 이름과 주소 매핑
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 제한사항
 
@@ -449,6 +489,10 @@ ltrace -b ls
 4. **내부 함수**
    - 라이브러리 내부에서만 호출되는 함수
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 관련 도구
 
 | 도구         | 용도             |
@@ -458,6 +502,10 @@ ltrace -b ls
 | **perf**     | 성능 프로파일링  |
 | **valgrind** | 메모리 분석      |
 | **lsof**     | 열린 파일 확인   |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 실무 활용
 
@@ -487,6 +535,10 @@ ltrace -e 'fopen,fread,fclose' myapp
 ltrace -e 'socket,connect,send,recv' myapp
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 요약
 
 **ltrace ls는 다음을 보여줍니다:**
@@ -508,6 +560,10 @@ ltrace -e 'socket,connect,send,recv' myapp
 - 성능 병목 찾기
 - 라이브러리 의존성 확인
 - 디버깅 및 트러블슈팅
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## ltrace vs strace 실전 선택 가이드
 
@@ -562,6 +618,10 @@ ltrace -e 'fopen,fread' myapp
 strace -t -T myapp > strace.log
 ltrace -t -T myapp > ltrace.log
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 실전 디버깅 시나리오
 
@@ -648,6 +708,10 @@ grep free mem.log | wc -l    # 해제 횟수
 # 할당 > 해제 → 메모리 누수!
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 성능 오버헤드 비교
 
 ### 실행 시간 비교
@@ -670,6 +734,10 @@ time strace ls > /dev/null 2>&1
 - ltrace가 strace보다 약 2배 느림
 - 프로덕션 환경에서는 짧은 시간만 사용
 - 개발/테스트 환경에서 주로 사용
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 자주 발생하는 문제와 해결책
 
@@ -720,6 +788,10 @@ ltrace myapp > ltrace.out 2> ltrace.err
 ltrace myapp 2>&1 | tee ltrace.log
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 에러 코드 해석 가이드
 
 ### 일반적인 에러
@@ -732,6 +804,10 @@ ltrace myapp 2>&1 | tee ltrace.log
 | **EINVAL** | 잘못된 인자            | 함수 인자 확인             |
 | **EBADF**  | 잘못된 파일 디스크립터 | 파일 열기/닫기 확인        |
 | **EPERM**  | 작업 허용 안 됨        | root 권한 필요             |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 전체 출력 예시
 
@@ -760,6 +836,10 @@ closedir(0x...) = 0
 +++ exited (status 0) +++
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 추가 학습 자료
 
 **공식 문서:**
@@ -775,6 +855,8 @@ closedir(0x...) = 0
 **온라인 리소스:**
 - ltrace GitHub: https://github.com/dkogan/ltrace
 - Linux man pages: https://man7.org/
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -809,6 +891,8 @@ ltrace -e 'malloc,free' -p <PID>
 # 3. 통계만 (오버헤드 최소)
 ltrace -c -p <PID>
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 

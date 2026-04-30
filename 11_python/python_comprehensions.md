@@ -14,6 +14,8 @@ Python의 리스트, 딕셔너리, 집합 컴프리헨션과 제너레이터 표
 - [실전 팁](#실전-팁)
 - [요약](#요약)
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 어원과 역사
@@ -43,6 +45,8 @@ S = [x**2 for x in range(5)]
 - **2000년**: Python 2.0에서 리스트 컴프리헨션 추가 (PEP 202)
 - **2003년**: Python 2.4에서 제너레이터 표현식 추가 (PEP 289)
 - **2007년**: Python 3.0에서 딕셔너리/세트 컴프리헨션 추가 (PEP 274, PEP 3100)
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -107,6 +111,8 @@ even_flat = [num for row in matrix for num in row if num % 2 == 0]
 print(even_flat)  # [2, 4, 6, 8]
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 딕셔너리 컴프리헨션
@@ -168,6 +174,8 @@ indexed = {i: word for i, word in enumerate(words)}
 print(indexed)  # {0: 'apple', 1: 'banana', 2: 'cherry'}
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 집합 컴프리헨션
@@ -210,6 +218,8 @@ print(unique_chars)  # {'h', 'e', 'l', 'o', 'w', 'r', 'd'}
 multiples = {x for x in range(1, 51) if x % 3 == 0 or x % 5 == 0}
 print(len(multiples))  # 23
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -272,6 +282,8 @@ has_even = any(x % 2 == 0 for x in range(5))
 print(has_even)  # True
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 중첩 컴프리헨션
@@ -312,6 +324,8 @@ pairs = [(x, y) for x in range(3) for y in range(3) if x != y]
 print(pairs)
 # [(0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1)]
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -395,6 +409,8 @@ distances = [math.sqrt(x**2 + y**2) for x, y in points]
 print(distances)  # [0.0, 5.0, 1.414...]
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 성능 비교
@@ -414,6 +430,8 @@ for x in range(100):
 
 # 리스트 컴프리헨션이 약 20-30% 빠름
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -525,6 +543,8 @@ def process_row(row):
 
 result = [process_row(row) for row in matrix if sum(row) > 10]
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 

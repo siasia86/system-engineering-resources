@@ -11,6 +11,8 @@
 - [실전 예제](#실전-예제)
 - [요약](#요약)
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## pathlib (권장)
@@ -103,6 +105,8 @@ for log in Path('/var/log').rglob('*.log'):
     print(log)
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## os / os.path
@@ -147,6 +151,8 @@ os.environ['HOME']                    # 환경변수 읽기
 os.environ.get('API_KEY', 'default')  # 기본값
 os.getenv('PATH')                     # get과 동일
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -194,6 +200,8 @@ shutil.make_archive('backup', 'gztar', '/var/log')   # backup.tar.gz
 shutil.unpack_archive('backup.zip', '/tmp/extracted')
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## glob 패턴
@@ -205,6 +213,8 @@ glob.glob('/var/log/*.log')           # 직접 하위 .log 파일
 glob.glob('/var/log/**/*.log', recursive=True)  # 재귀 탐색
 glob.glob('/etc/nginx/conf.d/*.conf')
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -257,6 +267,8 @@ p.is_symlink()    # True
 p.resolve()       # 실제 경로 반환
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 실전 예제
@@ -303,6 +315,8 @@ def backup_config(config_path):
     shutil.copy2(str(src), str(dst))
     return dst
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
