@@ -1290,7 +1290,7 @@ SE → IT Manager
 
 ---
 
-**문서 관리자:** SRE Team  
+**문서 관리자:** system engineering Team  
 **피드백:** siasia.linux@gmail.com  
 **다음 리뷰:** 2026-04-29
 
@@ -1300,7 +1300,6 @@ SE → IT Manager
 ## 참고 자료
 
 - roadmap.sh DevOps: [roadmap.sh/devops](https://roadmap.sh/devops) — ★★★☆☆
-- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/) — ★★★☆☆
 
 ---
 

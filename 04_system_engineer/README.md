@@ -80,7 +80,6 @@ SE/SRE/DBA 로드맵, 실무 운영, 도구, AI 활용, 법률 관련 문서 모
 ## 참고 자료
 
 - roadmap.sh DevOps: [roadmap.sh/devops](https://roadmap.sh/devops) — ★★★☆☆
-- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/) — ★★★☆☆
 - System Design Primer: [github.com/donnemartin](https://github.com/donnemartin/system-design-primer) — ★★★☆☆
 
 ---

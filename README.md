@@ -362,7 +362,6 @@ Python 프로그래밍 가이드.
 ## 참고 자료
 
 - roadmap.sh: [roadmap.sh](https://roadmap.sh/) — ★★★☆☆
-- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/) — ★★★☆☆
 - Linux Documentation Project: [tldp.org](https://tldp.org/) — ★★☆☆☆
 
 ---
