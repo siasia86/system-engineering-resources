@@ -639,6 +639,13 @@ aws stepfunctions validate-state-machine-definition   --definition file://my_sta
 
 ---
 
+## 참고 자료
+
+- AWS Step Functions Documentation: [docs.aws.amazon.com](https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html)
+- AWS Step Functions Developer Guide: [State Machine Concepts](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

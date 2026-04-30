@@ -326,6 +326,13 @@ def dijkstra(graph, start):
 - 컴파일러 의존성 분석
 ---
 
+## 참고 자료
+
+- Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
+- Sedgewick, Robert. "Algorithms, 4th Edition"
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

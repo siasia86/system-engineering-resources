@@ -234,6 +234,13 @@ def middle(head):
 - 메모리 할당기 (free list)
 ---
 
+## 참고 자료
+
+- Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
+- Python Documentation: [collections.deque](https://docs.python.org/3/library/collections.html#collections.deque)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

@@ -69,6 +69,14 @@ Client                Server
 [문서 전체 로드맵](../README.md)
 ---
 
+## 참고 자료
+
+- Tanenbaum, Andrew S. "Computer Networks"
+- Stevens, W. Richard. "TCP/IP Illustrated, Volume 1"
+- Cisco Networking Academy: [netacad.com](https://www.netacad.com/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
