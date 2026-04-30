@@ -7,6 +7,8 @@
 - [print vs logging](#print-vs-logging)
 - [언제 무엇을 사용할까?](#언제-무엇을-사용할까)
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 기본 사용법
@@ -15,6 +17,10 @@
 print("Hello, World!")
 print("a", "b", "c")  # a b c
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 주요 매개변수
 
@@ -62,6 +68,10 @@ for i in range(100):
     print(f"\r진행: {i}%", end="", flush=True)
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 실전 예제
 
 ### CSV 형식 출력
@@ -87,6 +97,10 @@ with open("app.log", "a") as f:
     print("2026-03-03", "작업 완료", sep=" | ", file=f)
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## print vs logging
 
 ### print 사용 (간단한 경우)
@@ -109,6 +123,10 @@ logging.basicConfig(
 logging.info("작업 시작")
 logging.error("에러 발생")
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 언제 무엇을 사용할까?
 
