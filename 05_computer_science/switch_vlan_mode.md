@@ -591,6 +591,14 @@ interface range FastEthernet0/20-24
 
 ---
 
+## 참고 자료
+
+- Cisco IOS Configuration Guide: VLAN Configuration
+- IEEE 802.1Q: Virtual Bridged Local Area Networks
+- RFC 5517: Cisco Systems' Private VLANs
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
@@ -602,7 +610,6 @@ interface range FastEthernet0/20-24
 
 ---
 **작성일**: 2026-04-24
-
 **마지막 업데이트**: 2026-04-24
 
 © 2026 siasia86. Licensed under CC BY 4.0.
