@@ -798,3 +798,22 @@ airflow tasks states-for-dag-run my_dag manual__2026-04-27T00:00:00+00:00
 | `min_file_process_interval`   | DAG 수가 많으면 60~120초로 증가                  |
 
 [⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-04-27
+
+**마지막 업데이트**: 2026-04-27
+
+© 2026 siasia86. Licensed under CC BY 4.0.

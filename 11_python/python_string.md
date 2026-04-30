@@ -293,3 +293,22 @@ stem = name.rsplit('.', 1)[0]  # 'access'
 - [정규표현식](./python_regex.md) - 패턴 매칭
 - [파일 입출력](./python_file_io.md) - 파일 처리
 - [Print 함수](./python_print.md) - 출력
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-04-20
+
+**마지막 업데이트**: 2026-04-20
+
+© 2026 siasia86. Licensed under CC BY 4.0.

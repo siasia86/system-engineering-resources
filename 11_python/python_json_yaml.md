@@ -254,3 +254,22 @@ config = load_config('prd')
 - [파일 입출력](./python_file_io.md) - 파일 처리
 - [파일/디렉토리 조작](./python_os_pathlib.md) - 경로 처리
 - [예외 처리](./python_exceptions.md) - 에러 핸들링
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-04-20
+
+**마지막 업데이트**: 2026-04-20
+
+© 2026 siasia86. Licensed under CC BY 4.0.

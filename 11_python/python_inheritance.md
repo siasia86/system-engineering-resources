@@ -1271,3 +1271,22 @@ class Child(Parent):
 **관련 문서:**
 - [클래스 튜토리얼](./python_class.md) - 클래스 기초
 - [클래스 구성 요소](./python_class_components.md) - 메서드, 프로퍼티
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-03-11
+
+**마지막 업데이트**: 2026-03-11
+
+© 2026 siasia86. Licensed under CC BY 4.0.

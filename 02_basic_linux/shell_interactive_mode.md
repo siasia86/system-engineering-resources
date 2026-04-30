@@ -312,3 +312,22 @@ sudo rm /etc/profile.d/my_setting.sh
 ⚠️ cron 스크립트에서 `~/.bashrc` 의존은 금지. 필요한 PATH/환경변수는 스크립트 상단에 명시적으로 선언합니다.
 
 [⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-04-28
+
+**마지막 업데이트**: 2026-04-28
+
+© 2026 siasia86. Licensed under CC BY 4.0.

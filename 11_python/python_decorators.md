@@ -1103,3 +1103,22 @@ def expensive_function(n):
 **관련 문서:**
 - [함수 튜토리얼](./python_functions.md) - 함수 기초
 - [클래스 튜토리얼](./python_class.md) - 클래스 데코레이터
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-03-11
+
+**마지막 업데이트**: 2026-03-11
+
+© 2026 siasia86. Licensed under CC BY 4.0.
