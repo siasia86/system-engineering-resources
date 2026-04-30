@@ -6,6 +6,38 @@
 
 ---
 
+## [2.0.0] - 2026-04-30
+
+### Added
+- `09_database/` 신규 디렉토리 — RDBMS 11개 문서
+  (normalization, join, index, explain, transaction, lock, view, procedure, replication, partition, schema_migration)
+- `10_nosql/` 신규 디렉토리 — MongoDB, Redis, Elasticsearch
+- `04_system_engineer/01_roadmap/` 서브디렉토리 분리 (SE/SRE/DBA 로드맵)
+- `04_system_engineer/02_operations/` ~ `05_legal/` 서브디렉토리 분리
+- `license_guide.md` 전면 재작성 (라이선스 역사, 이슈, 법적 근거 추가)
+- `12_tech_stack/git_guide.md` 신규 — diff/log/fetch/stash/rebase/safe.directory
+- `04_system_engineer/05_legal/drm_guide.md` 신규
+- `04_system_engineer/05_legal/ip_ownership_guide.md` 신규
+- `04_system_engineer/01_roadmap/dba_roadmap.md` 신규
+- 루트 README.md 문서 트리 섹션 추가
+
+### Changed
+- 전체 .md 푸터 통일 — stars/forks/watchers 배지, 작성일/마지막업데이트 빈줄 규칙
+- 전체 참고 자료 별점 추가 (★★☆☆☆ 기본값 기준)
+- 전체 목차 표 형식 통일 — H2만 포함, H3 혼입 제거
+- `[⬆ 목차로 돌아가기]` 전체 파일 추가
+- `05_computer_science/` 참고 자료 목록 형태 변환 (표 → 목록)
+- `se_complete_roadmap_programming_languages.md` 제목 수정 ("완전" 제거)
+
+### Fixed
+- `packet_analysis.md` 중복 H2 섹션 제거
+- `license_guide.md` `## License` H2 20개+ 중복 제거 (코드블록으로 이동)
+- 전체 과장 표현 수정 ("최고 성능" → "높은 성능" 등)
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## [1.1.0] - 2026-03-25
 
 ### Added
@@ -65,33 +97,6 @@
 - `Removed` - 제거된 기능
 - `Fixed` - 버그 수정
 - `Security` - 보안 관련 변경
-
-### 예시
-
-```markdown
-[⬆ 목차로 돌아가기](#목차)
-
----
-
-## [1.1.0] - 2026-04-01
-
-### Added
-- Kubernetes 가이드 추가
-- Ansible 플레이북 예제
-
-### Changed
-- Docker 가이드 업데이트 (Docker Compose v2)
-
-### Fixed
-- Bash trap 가이드 오타 수정
-```
-
----
-
-[1.1.0]: https://github.com/siasia86/system-engineering-resources/releases/tag/v1.1.0
-[1.0.0]: https://github.com/siasia86/system-engineering-resources/releases/tag/v1.0.0
-
----
 
 ## 참고 자료
 
