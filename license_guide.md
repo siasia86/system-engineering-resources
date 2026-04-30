@@ -1,18 +1,28 @@
 # 라이선스 가이드
 
 ## 목차
-1. [소프트웨어 라이선스](#소프트웨어-라이선스)
-2. [Creative Commons 라이선스](#creative-commons-라이선스)
-3. [라이선스 비교](#라이선스-비교)
-4. [사용 예시](#사용-예시)
-5. [선택 가이드](#선택-가이드)
-6. [실전 팁](#실전-팁-tips)
-7. [빠른 결정 플로우차트](#빠른-결정-플로우차트)
-8. [체크리스트](#체크리스트)
-9. [자주 묻는 질문](#자주-묻는-질문-faq)
-10. [라이선스 위반 시](#라이선스-위반-시)
 
-[⬆ 목차로 돌아가기](#목차)
+| 섹션 |
+|------|
+| [소프트웨어 라이선스](#소프트웨어-라이선스) / [Creative Commons 라이선스](#creative-commons-라이선스) / [라이선스 비교](#라이선스-비교) |
+| [사용 예시](#사용-예시) / [License](#license) / [문서 정보](#문서-정보) |
+| [License](#license) / [선택 가이드](#선택-가이드) / [실무 추천](#실무-추천) |
+| [라이선스 파일 생성](#라이선스-파일-생성) / [주의사항](#주의사항) / [License](#license) |
+| [자주 묻는 질문 (FAQ)](#자주-묻는-질문-faq) / [라이선스 위반 시](#라이선스-위반-시) / [실전 팁 (Tips)](#실전-팁-tips) |
+| [License](#license) / [License](#license) / [Contributing](#contributing) |
+| [License / 라이선스](#license-라이선스) / [License](#license) / [License](#license) |
+| [빠른 결정 플로우차트](#빠른-결정-플로우차트) / [체크리스트](#체크리스트) / [참고 링크](#참고-링크) |
+| [요약](#요약) / [GitHub에서 라이선스 사용하기](#github에서-라이선스-사용하기) / [License](#license) |
+| [License](#license) / [GitHub 라이선스 실전 가이드](#github-라이선스-실전-가이드) / [License](#license) |
+| [License](#license) / [Dual Licensing](#dual-licensing) / [GitHub 라이선스 팁](#github-라이선스-팁) |
+| [[2.0.0] - 2026-03-11](#200---2026-03-11) / [License Agreement](#license-agreement) / [License History](#license-history) |
+| [빠른 시작 체크리스트](#빠른-시작-체크리스트) / [출처 표시를 원할 때 추천 라이선스](#출처-표시를-원할-때-추천-라이선스) / [License](#license) |
+| [문서 정보](#문서-정보) / [License](#license) / [License](#license) |
+| [License](#license) / [출처 표시 라이선스 비교](#출처-표시-라이선스-비교) / [실전 예시](#실전-예시) |
+| [License](#license) / [Installation](#installation) / [License](#license) |
+| [License](#license) / [빠른 결정 가이드](#빠른-결정-가이드) / [출처 표시 예시](#출처-표시-예시) |
+| [명령어 요약](#명령어-요약) / [License](#license) / [License](#license) |
+
 
 ---
 
