@@ -1732,6 +1732,13 @@ git push
 
 ---
 
+## 참고 자료
+
+- Creative Commons Licenses: [creativecommons.org](https://creativecommons.org/licenses/)
+- Choose a License: [choosealicense.com](https://choosealicense.com/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

@@ -412,6 +412,13 @@ diff before.txt after.txt
 
 ---
 
+## 참고 자료
+
+- Linux perf wiki: [perf.wiki.kernel.org](https://perf.wiki.kernel.org/)
+- Brendan Gregg - perf Examples: [brendangregg.com](https://www.brendangregg.com/perf.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

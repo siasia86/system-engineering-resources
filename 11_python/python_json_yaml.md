@@ -257,6 +257,13 @@ config = load_config('prd')
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [json](https://docs.python.org/3/library/json.html)
+- PyYAML Documentation: [pyyaml.org](https://pyyaml.org/wiki/PyYAMLDocumentation)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

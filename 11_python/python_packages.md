@@ -902,6 +902,13 @@ from .module import func1, func2
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [Packages](https://docs.python.org/3/tutorial/modules.html#packages)
+- PyPA - Python Packaging: [packaging.python.org](https://packaging.python.org/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

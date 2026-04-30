@@ -242,6 +242,13 @@ test 명령은 정수만 허용:
 
 ---
 
+## 참고 자료
+
+- GNU Bash Manual: [bash.info](https://www.gnu.org/software/bash/manual/bash.html)
+- Linux man pages - bc: [man7.org](https://man7.org/linux/man-pages/man1/bc.1p.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

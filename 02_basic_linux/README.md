@@ -94,6 +94,13 @@ main "$@"
 
 ---
 
+## 참고 자료
+
+- GNU Bash Manual: [bash.info](https://www.gnu.org/software/bash/manual/bash.html)
+- Linux man pages: [man7.org](https://man7.org/linux/man-pages/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

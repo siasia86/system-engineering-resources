@@ -361,6 +361,7 @@ AWS 실사용 IP   = 전체 IP - 5
 - RFC 791: Internet Protocol
 - RFC 1918: Private Address Space
 - RFC 4632: CIDR
+- Subnet Calculator: [subnet-calculator.com](https://www.subnet-calculator.com/)
 
 ---
 

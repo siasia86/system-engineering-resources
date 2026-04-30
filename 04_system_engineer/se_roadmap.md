@@ -1248,6 +1248,13 @@ SE → IT Manager
 
 ---
 
+## 참고 자료
+
+- roadmap.sh DevOps: [roadmap.sh/devops](https://roadmap.sh/devops)
+- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

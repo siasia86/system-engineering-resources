@@ -51,6 +51,13 @@ iptables -A INPUT -p tcp --dport 80 -m limit --limit 25/minute --limit-burst 100
 
 ---
 
+## 참고 자료
+
+- Cloudflare DDoS Protection: [cloudflare.com](https://www.cloudflare.com/ddos/)
+- OWASP: [owasp.org](https://owasp.org/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

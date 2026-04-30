@@ -2209,6 +2209,13 @@ cat ${RESULTS_FILE}
 
 ---
 
+## 참고 자료
+
+- Percona XtraBackup Documentation: [docs.percona.com](https://docs.percona.com/percona-xtrabackup/latest/)
+- MySQL Backup Documentation: [dev.mysql.com](https://dev.mysql.com/doc/refman/8.0/en/backup-and-recovery.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

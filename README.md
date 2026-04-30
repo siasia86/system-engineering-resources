@@ -227,6 +227,13 @@ code .
 
 ---
 
+## 참고 자료
+
+- roadmap.sh: [roadmap.sh](https://roadmap.sh/)
+- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

@@ -2044,6 +2044,13 @@ Staff/Principal (8년+):
 
 ---
 
+## 참고 자료
+
+- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/)
+- roadmap.sh SRE: [roadmap.sh/sre](https://roadmap.sh/sre)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

@@ -1117,6 +1117,14 @@ strace -o /tmp/trace.log -s 128 -p <PID>
 **피드백:** siasia.linux@gmail.com
 ---
 
+## 참고 자료
+
+- strace GitHub: [strace](https://github.com/strace/strace)
+- Linux man pages - strace: [man7.org](https://man7.org/linux/man-pages/man1/strace.1.html)
+- Brendan Gregg - strace: [brendangregg.com](https://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

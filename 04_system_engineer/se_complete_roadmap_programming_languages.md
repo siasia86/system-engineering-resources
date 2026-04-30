@@ -878,6 +878,13 @@ Security (선택, 고가치)
 
 ---
 
+## 참고 자료
+
+- roadmap.sh: [roadmap.sh](https://roadmap.sh/)
+- TIOBE Index: [tiobe.com](https://www.tiobe.com/tiobe-index/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

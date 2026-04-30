@@ -217,6 +217,13 @@ def eval_postfix(tokens):
 - 컴파일러 구문 분석
 ---
 
+## 참고 자료
+
+- Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
+- Python Documentation: [list as stack](https://docs.python.org/3/tutorial/datastructures.html#using-lists-as-stacks)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

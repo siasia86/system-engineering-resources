@@ -168,6 +168,12 @@ valgrind --leak-check=full ./myapp
 
 ---
 
+## 참고 자료
+
+- Brendan Gregg - Linux Performance: [brendangregg.com](https://www.brendangregg.com/linuxperf.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

@@ -550,6 +550,12 @@ result = [process_row(row) for row in matrix if sum(row) > 10]
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [List Comprehensions](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

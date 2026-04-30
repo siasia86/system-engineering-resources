@@ -1200,6 +1200,14 @@ Bash ―― Python ―― Go ―― C# ―――――― C ―――――― C
 
 ---
 
+## 참고 자료
+
+- Go Documentation: [go.dev](https://go.dev/doc/)
+- Python Documentation: [docs.python.org](https://docs.python.org/3/)
+- Microsoft C# Documentation: [learn.microsoft.com](https://learn.microsoft.com/en-us/dotnet/csharp/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

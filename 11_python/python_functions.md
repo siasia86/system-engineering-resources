@@ -769,6 +769,12 @@ print(greet.__name__)  # greet
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [Defining Functions](https://docs.python.org/3/tutorial/controlflow.html#defining-functions)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

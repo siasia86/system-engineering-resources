@@ -206,6 +206,13 @@ logging.info("작업 시작")
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [docs.python.org](https://docs.python.org/3/)
+- Python Tutorial: [Python Tutorial](https://docs.python.org/3/tutorial/index.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

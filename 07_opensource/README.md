@@ -49,6 +49,13 @@ docker-compose logs -f
 
 ---
 
+## 참고 자료
+
+- Docker Documentation: [docs.docker.com](https://docs.docker.com/)
+- Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

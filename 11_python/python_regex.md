@@ -358,6 +358,13 @@ def mask_sensitive(text):
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [re](https://docs.python.org/3/library/re.html)
+- Python Regex HOWTO: [Regular Expression HOWTO](https://docs.python.org/3/howto/regex.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

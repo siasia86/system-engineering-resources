@@ -884,6 +884,13 @@ logger.error("에러 발생")
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [logging](https://docs.python.org/3/library/logging.html)
+- Python Logging HOWTO: [Logging HOWTO](https://docs.python.org/3/howto/logging.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

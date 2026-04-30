@@ -380,6 +380,12 @@ print(host)  # 'localhost'
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [Data Structures](https://docs.python.org/3/tutorial/datastructures.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

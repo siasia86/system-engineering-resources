@@ -349,6 +349,13 @@ def lca(root, p, q):
 - 파일 시스템 디렉토리 구조
 ---
 
+## 참고 자료
+
+- Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
+- Sedgewick, Robert. "Algorithms, 4th Edition"
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

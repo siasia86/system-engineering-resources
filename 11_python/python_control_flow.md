@@ -446,6 +446,12 @@ def find_product():
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [Control Flow](https://docs.python.org/3/tutorial/controlflow.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

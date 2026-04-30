@@ -311,6 +311,12 @@ ansible localhost -m debug -a "var=db_password" \
 
 ---
 
+## 참고 자료
+
+- Ansible Vault Documentation: [Ansible Vault](https://docs.ansible.com/ansible/latest/vault_guide/index.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
