@@ -1,5 +1,20 @@
 # vim-airline [![Build Status](https://travis-ci.org/vim-airline/vim-airline.png)](https://travis-ci.org/vim-airline/vim-airline)[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/chrisbra)
 
+## 목차
+
+| 섹션 |
+|------|
+| [Straightforward customization](#straightforward-customization) |
+| [Themes](#themes) |
+| [Automatic truncation](#automatic-truncation) |
+| [Smarter tab line](#smarter-tab-line) |
+| [Seamless integration](#seamless-integration) |
+| [Extras](#extras) |
+| [Configurable and extensible](#configurable-and-extensible) |
+
+---
+
+
 Lean &amp; mean status/tabline for vim that's light as air.
 
 ![img](https://github.com/vim-airline/vim-airline/wiki/screenshots/demo.gif)
@@ -75,11 +90,19 @@ For a better look, those sections can be colored differently, depending on vario
 *  The master branch tries to be as stable as possible, and new features are merged in only after they have gone through a [full regression test][33].
 *  Unit testing suite.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## Straightforward customization
 
 If you don't like the defaults, you can replace all sections with standard `statusline` syntax.  Give your statusline that you've built over the years a face lift.
 
 ![image](https://f.cloud.github.com/assets/306502/1009429/d69306da-0b38-11e3-94bf-7c6e3eef41e9.png)
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## Themes
 
@@ -95,11 +118,19 @@ Plugin 'vim-airline/vim-airline-themes'
 
 See https://github.com/vim-airline/vim-airline-themes for more.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## Automatic truncation
 
 Sections and parts within sections can be configured to automatically hide when the window size shrinks.
 
 ![image](https://f.cloud.github.com/assets/306502/1060831/05c08aac-11bc-11e3-8470-a506a3037f45.png)
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## Smarter tab line
 
@@ -135,6 +166,10 @@ Here is a complete list of formatters with screenshots:
 
 #### `unique_tail_improved`
 ![image](https://user-images.githubusercontent.com/2652762/34422842-1cee23f2-ebe6-11e7-962d-97e068873077.png)
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## Seamless integration
 
@@ -188,6 +223,10 @@ vim-airline integrates with a variety of plugins out of the box.  These extensio
 #### [LanguageClient][57]
 ![image](https://user-images.githubusercontent.com/9622/45275524-52f45c00-b48b-11e8-8b83-a66240b10747.gif)
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## Extras
 
 vim-airline also supplies some supplementary stand-alone extensions.  In addition to the tabline extension mentioned earlier, there is also:
@@ -201,6 +240,10 @@ The example shows a custom statusline setting, that imitates Vims default status
 to call custom functions.  Use `:let g:airline_statusline_ontop=1` to enable it.
 
 ![image](https://i.imgur.com/tW1lMRU.png)
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## Configurable and extensible
 
