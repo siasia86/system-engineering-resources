@@ -88,6 +88,7 @@ be made available under the GPL along with build & install instructions.
 Linux 커널은 GPL v2를 사용합니다. GPL v2 코드를 포함한 소프트웨어를 바이너리로만 배포하면 소스코드 공개 의무를 위반합니다.
 
 2009년 Microsoft의 Hyper-V Linux Integration Services(LIS) 드라이버가 GPL v2 Linux 커널 코드를 포함한 채 바이너리로만 배포된 사실이 확인됐습니다.
+
 Microsoft는 이후 약 20,000줄의 Hyper-V 드라이버 코드를 Linux 커널에 공식 기여했으며, 이는 Microsoft가 Linux 커널에 코드를 기여한 첫 사례입니다.
 
 ```
@@ -147,7 +148,7 @@ modification, are permitted provided that the following conditions are met:
 
 #### 광고 조항 이슈 (4-Clause → 2-Clause)
 
-원래 BSD는 4-Clause로 "광고 자료에 UC Berkeley 출처 표시 의무" 조항이 포함되어 있었다.
+원래 BSD는 4-Clause로 "광고 자료에 UC Berkeley 출처 표시 의무" 조항이 포함되어 있었습니다.
 이 조항이 GPL과 호환되지 않아 FSF로부터 비호환 판정을 받았으며, 수백 개 기여자 각각의 출처를 광고에 표시해야 하는 현실적 문제가 발생했습니다.
 
 1999년 UC Berkeley가 공식적으로 광고 조항(3번째 조항)을 삭제하여 현재의 3-Clause(New BSD)가 됐습니다.
