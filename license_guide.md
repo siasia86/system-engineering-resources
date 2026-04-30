@@ -1,5 +1,7 @@
 # 라이선스 가이드
 
+⚠️ 이 문서는 학습 목적의 요약 가이드이며 법적 조언이 아닙니다. 실제 라이선스 적용 시 원문과 법률 전문가 검토를 권장합니다.
+
 ## 목차
 
 | 섹션 |
@@ -14,7 +16,11 @@
 
 ### MIT License
 
+> 1980년대 후반 MIT에서 X Window System 배포를 위해 작성. 현재 가장 널리 사용되는 오픈소스 라이선스.
+> — [OSI](https://opensource.org/licenses/MIT)
+
 가장 자유로운 라이선스. 출처 표시만 하면 상업적 사용, 수정, 배포 모두 허용.
+원문: [opensource.org/licenses/MIT](https://opensource.org/licenses/MIT)
 
 ```
 MIT License
@@ -32,44 +38,62 @@ The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 ```
 
-| 항목 | 허용 여부 |
-|------|-----------|
-| 상업적 사용 | ✅ |
-| 수정 | ✅ |
-| 배포 | ✅ |
-| 특허 사용 | ⚠️ 명시 없음 |
-| 출처 표시 의무 | ✅ |
-| 동일 라이선스 의무 | ❌ |
+> 상업적 사용 ✅ / 수정 ✅ / 배포 ✅ / 특허 ⚠️ 명시 없음 / 출처 표시 의무 ✅ → [비교표](#3-라이선스-비교)
 
 ### Apache License 2.0
 
-MIT와 유사하나 특허 사용 권한 명시. 기업 환경에서 선호.
+> 2004년 Apache Software Foundation이 v2.0 발표. v1.0(1995)의 광고 조항 제거 및 특허 조항 명시.
+> — [Apache Software Foundation](https://www.apache.org/licenses/LICENSE-2.0)
 
-| 항목 | 허용 여부 |
-|------|-----------|
-| 상업적 사용 | ✅ |
-| 수정 | ✅ |
-| 배포 | ✅ |
-| 특허 사용 | ✅ |
-| 출처 표시 의무 | ✅ |
-| 동일 라이선스 의무 | ❌ |
+MIT와 유사하나 특허 사용 권한 명시. 기업 환경에서 선호.
+원문: [apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
+```
+Apache License 2.0
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+
+Grant of Patent License: each Contributor grants a perpetual,
+worldwide, patent license to make, use, sell the Work.
+```
+
+> 상업적 사용 ✅ / 수정 ✅ / 배포 ✅ / 특허 ✅ / 출처 표시 의무 ✅ → [비교표](#3-라이선스-비교)
 
 ### GNU GPL v3
 
-수정 배포 시 동일 라이선스(GPL) 적용 의무. Copyleft.
+> 1989년 Richard Stallman이 GNU 프로젝트를 위해 작성. v2(1991) → v3(2007)로 특허 및 DRM 조항 강화.
+> — [Free Software Foundation](https://www.gnu.org/licenses/gpl-3.0.html)
 
-| 항목 | 허용 여부 |
-|------|-----------|
-| 상업적 사용 | ✅ |
-| 수정 | ✅ |
-| 배포 | ✅ |
-| 특허 사용 | ✅ |
-| 출처 표시 의무 | ✅ |
-| 동일 라이선스 의무 | ✅ (강제) |
+수정 배포 시 동일 라이선스(GPL) 적용 의무. Copyleft.
+원문: [gnu.org/licenses/gpl-3.0](https://www.gnu.org/licenses/gpl-3.0.html)
+
+```
+GNU General Public License v3.0
+
+You may copy, distribute and modify the software as long as you
+track changes/dates in source files. Any modifications must also
+be made available under the GPL along with build & install instructions.
+```
+
+> 상업적 사용 ✅ / 수정 ✅ / 배포 ✅ / 특허 ✅ / 동일 라이선스 의무 ✅ (강제) → [비교표](#3-라이선스-비교)
 
 ### BSD License
 
+> 1980년대 UC Berkeley의 BSD Unix 배포를 위해 작성. 원래 4-Clause였으나 광고 조항 논란으로 2-Clause로 단순화(1999).
+> — [OSI](https://opensource.org/licenses/BSD-2-Clause)
+
 MIT와 유사. 2-Clause(Simplified)와 3-Clause(New) 두 종류.
+원문: [opensource.org/licenses/BSD-2-Clause](https://opensource.org/licenses/BSD-2-Clause)
+
+```
+BSD 2-Clause License
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+1. Redistributions of source code must retain the above copyright notice.
+2. Redistributions in binary form must reproduce the above copyright notice.
+```
 
 - **2-Clause**: 출처 표시 + 보증 부인
 - **3-Clause**: 2-Clause + 프로젝트 이름 광고 금지
@@ -93,6 +117,7 @@ MIT와 유사. 2-Clause(Simplified)와 3-Clause(New) 두 종류.
 | **CC0** | ✅ | ✅ | ❌ | 퍼블릭 도메인 (출처 불필요) |
 
 이 저장소는 **CC BY 4.0** 적용 — 출처 표시 시 자유롭게 사용 가능.
+원문: [creativecommons.org/licenses/by/4.0](https://creativecommons.org/licenses/by/4.0/)
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -390,14 +415,6 @@ GitHub CLA Assistant 등 도구로 자동화 가능.
 ### 법적 근거
 
 - 한국 저작권법: [law.go.kr](https://www.law.go.kr/법령/저작권법) — ★★☆☆☆
-
----
-
-## 통계 [choosealicense.com](https://choosealicense.com/)
-- Creative Commons: [creativecommons.org](https://creativecommons.org/licenses/)
-- SPDX License List: [spdx.org/licenses](https://spdx.org/licenses/)
-- OSI Approved Licenses: [opensource.org/licenses](https://opensource.org/licenses/)
-- TLDR Legal: [tldrlegal.com](https://tldrlegal.com/)
 
 ---
 
