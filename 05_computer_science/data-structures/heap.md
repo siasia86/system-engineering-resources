@@ -245,6 +245,13 @@ def heap_sort(arr):
 - 운영체제 프로세스 스케줄링
 ---
 
+## 참고 자료
+
+- Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
+- Python Documentation: [heapq](https://docs.python.org/3/library/heapq.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

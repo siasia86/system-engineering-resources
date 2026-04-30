@@ -87,6 +87,13 @@ docker compose up -d
 
 ---
 
+## 참고 자료
+
+- Docker Documentation: [docs.docker.com](https://docs.docker.com/)
+- Docker Compose Reference: [docs.docker.com/compose](https://docs.docker.com/compose/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

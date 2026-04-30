@@ -81,6 +81,13 @@
 
 ---
 
+## 참고 자료
+
+- Keep a Changelog: [keepachangelog.com](https://keepachangelog.com/)
+- Semantic Versioning: [semver.org](https://semver.org/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

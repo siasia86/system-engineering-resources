@@ -323,6 +323,14 @@ def backup_config(config_path):
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [os](https://docs.python.org/3/library/os.html)
+- Python Documentation: [pathlib](https://docs.python.org/3/library/pathlib.html)
+- Python Documentation: [shutil](https://docs.python.org/3/library/shutil.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

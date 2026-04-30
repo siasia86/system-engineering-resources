@@ -296,6 +296,13 @@ stem = name.rsplit('.', 1)[0]  # 'access'
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str)
+- Python Documentation: [string](https://docs.python.org/3/library/string.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

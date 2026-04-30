@@ -484,6 +484,12 @@ export PYTHONPYCACHEPREFIX=/tmp/pycache
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [Data Model](https://docs.python.org/3/reference/datamodel.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

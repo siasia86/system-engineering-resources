@@ -213,6 +213,13 @@ print(heapq.heappop(pq))  # (1, 'high') ← 우선순위 높은 것 먼저
 - 네트워크 패킷 버퍼
 ---
 
+## 참고 자료
+
+- Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
+- Python Documentation: [queue](https://docs.python.org/3/library/queue.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

@@ -994,6 +994,13 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 
 ---
 
+## 참고 자료
+
+- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/)
+- Prometheus Documentation: [prometheus.io](https://prometheus.io/docs/introduction/overview/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

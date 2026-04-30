@@ -285,6 +285,13 @@ uv pip freeze > requirements.txt
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [venv](https://docs.python.org/3/library/venv.html)
+- pip Documentation: [pip.pypa.io](https://pip.pypa.io/en/stable/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

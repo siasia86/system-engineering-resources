@@ -380,6 +380,13 @@ command | tee >(grep ERROR > errors.log) > all.log
 
 ---
 
+## 참고 자료
+
+- GNU Bash Manual - Redirections: [bash.info](https://www.gnu.org/software/bash/manual/bash.html#Redirections)
+- Linux man pages - pipe: [man7.org](https://man7.org/linux/man-pages/man2/pipe.2.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
