@@ -584,3 +584,22 @@ git push -u origin main
 | 승인 프로세스 | 수동                      | 워크플로우 내장                |
 | 스케줄링      | cron                      | 내장 스케줄러                  |
 | 도입 시점     | 즉시                      | 팀 10명 이상 또는 ISMS 요구 시 |
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-03-24
+
+**마지막 업데이트**: 2026-03-24
+
+© 2026 siasia86. Licensed under CC BY 4.0.

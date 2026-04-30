@@ -440,3 +440,22 @@ grep "ERROR SUMMARY" valgrind.log
 - 버퍼 오버플로우 감지
 - 초기화 에러 확인
 - 성능 최적화
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-03-25
+
+**마지막 업데이트**: 2026-03-25
+
+© 2026 siasia86. Licensed under CC BY 4.0.

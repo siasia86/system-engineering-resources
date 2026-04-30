@@ -462,3 +462,22 @@ done
 - 파일 시스템 언마운트 문제
 - 네트워크 디버깅
 - 메모리 누수 확인
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-03-25
+
+**마지막 업데이트**: 2026-03-25
+
+© 2026 siasia86. Licensed under CC BY 4.0.
