@@ -649,8 +649,8 @@ echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
 ## 참고 자료
 
-- GDB Documentation: [sourceware.org/gdb](https://sourceware.org/gdb/documentation/)
-- GDB Cheat Sheet: [darkdust.net](https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf)
+- GDB Documentation: [sourceware.org/gdb](https://sourceware.org/gdb/documentation/) — ★★☆☆☆
+- GDB Cheat Sheet: [darkdust.net](https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf) — ★★☆☆☆
 
 ---
 

@@ -771,9 +771,9 @@ p = Product("노트북", 1000000, 10)
 
 ## 참고 자료
 
-- [Python 공식 문서 - 클래스](https://docs.python.org/ko/3/tutorial/classes.html)
-- [Python 공식 문서 - 데이터 모델 (매직 메서드)](https://docs.python.org/ko/3/reference/datamodel.html)
-- [PEP 8 - Python 코딩 스타일 가이드](https://peps.python.org/pep-0008/)
+- [Python 공식 문서 - 클래스](https://docs.python.org/ko/3/tutorial/classes.html) — ★★★☆☆
+- [Python 공식 문서 - 데이터 모델 (매직 메서드)](https://docs.python.org/ko/3/reference/datamodel.html) — ★★★☆☆
+- [PEP 8 - Python 코딩 스타일 가이드](https://peps.python.org/pep-0008/) — ★★☆☆☆
 
 ---
 

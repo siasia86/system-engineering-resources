@@ -828,9 +828,9 @@ tcpdump -i eth0 'tcp[tcpflags] & tcp-rst != 0'     # RST
 ## 참고 자료
 
 - RFC 791: IPv4 / RFC 793: TCP / RFC 768: UDP
-- PROXY Protocol v2: [proxy-protocol.txt](https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt)
-- Wireshark User Guide: [wireshark.org](https://www.wireshark.org/docs/)
-- tcpdump Manual: [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html)
+- PROXY Protocol v2: [proxy-protocol.txt](https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt) — ★★☆☆☆
+- Wireshark User Guide: [wireshark.org](https://www.wireshark.org/docs/) — ★★☆☆☆
+- tcpdump Manual: [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) — ★★☆☆☆
 
 ---
 

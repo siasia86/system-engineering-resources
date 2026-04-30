@@ -252,9 +252,9 @@ WHERE order_id = 1 AND version = 3;
 
 ## 참고 자료
 
-- MySQL Documentation: [InnoDB Locking](https://dev.mysql.com/doc/refman/8.0/en/innodb-locking.html)
-- PostgreSQL Documentation: [Explicit Locking](https://www.postgresql.org/docs/current/explicit-locking.html)
-- MySQL Documentation: [Deadlocks](https://dev.mysql.com/doc/refman/8.0/en/innodb-deadlocks.html)
+- MySQL Documentation: [InnoDB Locking](https://dev.mysql.com/doc/refman/8.0/en/innodb-locking.html) — ★★★☆☆
+- PostgreSQL Documentation: [Explicit Locking](https://www.postgresql.org/docs/current/explicit-locking.html) — ★★★☆☆
+- MySQL Documentation: [Deadlocks](https://dev.mysql.com/doc/refman/8.0/en/innodb-deadlocks.html) — ★★★☆☆
 
 ---
 

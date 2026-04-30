@@ -139,7 +139,7 @@ logging.error("에러 발생")
 
 ## 참고 자료
 
-- Python Documentation: [print()](https://docs.python.org/3/library/functions.html#print)
+- Python Documentation: [print()](https://docs.python.org/3/library/functions.html#print) — ★★★☆☆
 
 ---
 

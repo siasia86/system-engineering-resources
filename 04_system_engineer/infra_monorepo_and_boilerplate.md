@@ -532,8 +532,8 @@ ADR은 개별 결정의 "왜", Golden Path는 결정들의 "요약본"입니다.
 
 ## 참고 자료
 
-- Monorepo Tools: [monorepo.tools](https://monorepo.tools/)
-- Terraform Documentation: [developer.hashicorp.com](https://developer.hashicorp.com/terraform/docs)
+- Monorepo Tools: [monorepo.tools](https://monorepo.tools/) — ★★☆☆☆
+- Terraform Documentation: [developer.hashicorp.com](https://developer.hashicorp.com/terraform/docs) — ★★☆☆☆
 
 ---
 

@@ -700,8 +700,8 @@ content = data_file.read_text()
 
 ## 참고 자료
 
-- Python Documentation: [Reading and Writing Files](https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files)
-- Python Documentation: [io](https://docs.python.org/3/library/io.html)
+- Python Documentation: [Reading and Writing Files](https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files) — ★★★☆☆
+- Python Documentation: [io](https://docs.python.org/3/library/io.html) — ★★★☆☆
 
 ---
 

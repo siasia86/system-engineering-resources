@@ -394,7 +394,7 @@ print(host)  # 'localhost'
 
 ## 참고 자료
 
-- Python Documentation: [Data Structures](https://docs.python.org/3/tutorial/datastructures.html)
+- Python Documentation: [Data Structures](https://docs.python.org/3/tutorial/datastructures.html) — ★★★☆☆
 
 ---
 

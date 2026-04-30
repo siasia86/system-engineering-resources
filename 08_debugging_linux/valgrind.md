@@ -518,8 +518,8 @@ grep "ERROR SUMMARY" valgrind.log
 
 ## 참고 자료
 
-- Valgrind Documentation: [valgrind.org](https://valgrind.org/docs/manual/manual.html)
-- Valgrind Quick Start: [valgrind.org](https://valgrind.org/docs/manual/quick-start.html)
+- Valgrind Documentation: [valgrind.org](https://valgrind.org/docs/manual/manual.html) — ★★☆☆☆
+- Valgrind Quick Start: [valgrind.org](https://valgrind.org/docs/manual/quick-start.html) — ★★☆☆☆
 
 ---
 

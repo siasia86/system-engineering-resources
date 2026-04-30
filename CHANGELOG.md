@@ -95,8 +95,8 @@
 
 ## 참고 자료
 
-- Keep a Changelog: [keepachangelog.com](https://keepachangelog.com/)
-- Semantic Versioning: [semver.org](https://semver.org/)
+- Keep a Changelog: [keepachangelog.com](https://keepachangelog.com/) — ★★☆☆☆
+- Semantic Versioning: [semver.org](https://semver.org/) — ★★☆☆☆
 
 ---
 

@@ -964,8 +964,8 @@ ansible-playbook -i inventory/ site.yml
 
 ## 참고 자료
 
-- Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/)
-- Ansible Best Practices: [Best Practices](https://docs.ansible.com/ansible/latest/tips_tricks/ansible_tips_tricks.html)
+- Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/) — ★★★☆☆
+- Ansible Best Practices: [Best Practices](https://docs.ansible.com/ansible/latest/tips_tricks/ansible_tips_tricks.html) — ★★★☆☆
 
 ---
 
