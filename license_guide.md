@@ -40,6 +40,8 @@ copies or substantial portions of the Software.
 
 > 상업적 사용 ✅ / 수정 ✅ / 배포 ✅ / 특허 ⚠️ 명시 없음 / 출처 표시 의무 ✅ → [비교표](#3-라이선스-비교)
 
+---
+
 ### Apache License 2.0
 
 > 2004년 Apache Software Foundation이 v2.0 발표. v1.0(1995)의 광고 조항 제거 및 특허 조항 명시.
@@ -60,6 +62,8 @@ worldwide, patent license to make, use, sell the Work.
 
 > 상업적 사용 ✅ / 수정 ✅ / 배포 ✅ / 특허 ✅ / 출처 표시 의무 ✅ → [비교표](#3-라이선스-비교)
 
+
+---
 
 ### GNU GPL v3
 
@@ -99,6 +103,8 @@ Microsoft는 이후 약 20,000줄의 Hyper-V 드라이버 코드를 Linux 커널
 ⚠️ 이 사례는 GPL v2 기반이며, 현재 섹션의 GPL v3와 조항 구성이 다를 수 있다.
 
 > — [Linux Kernel Mailing List, 2009](https://lkml.org/lkml/2009/7/20/264)
+
+---
 
 ### BSD License
 
