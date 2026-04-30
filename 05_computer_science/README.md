@@ -21,7 +21,7 @@
 - **[CPU CISC vs RISC](cpu_cisc_risc.md)** - 명령어 집합 아키텍처 비교
 
 ### 자료구조
-- **[자료구조](data-structures/)** - Array, Stack, Queue, Linked List, Tree, Graph, Heap, Hash Table
+- **[자료구조](01_data_structures/)** - Array, Stack, Queue, Linked List, Tree, Graph, Heap, Hash Table
 
 ### HTTP
 - **[HTTP 메서드](http_methods.md)** - GET, POST, PUT, DELETE 등

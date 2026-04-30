@@ -28,11 +28,11 @@ SE/SRE/DBA 로드맵, 실무 운영, 도구, AI 활용, 법률 관련 문서 모
 
 | 문서 | 설명 |
 |------|------|
-| [게임 인프라 KPI](02_operations/game-infra-kpi-presentation.md) | 인프라 운영 핵심 지표 |
+| [게임 인프라 KPI](02_operations/game_infra_kpi_presentation.md) | 인프라 운영 핵심 지표 |
 | [리소스 모니터링](02_operations/resource_utilization_monitoring.md) | CPU/메모리/디스크/네트워크 |
 | [백업 도구 비교](02_operations/backup_tools_comparison.md) | rsync, BorgBackup 등 비교 |
 | [ASN 및 DDoS 대응](02_operations/asn_and_cloudflare_ddos.md) | ASN 운영, Cloudflare DDoS |
-| [CDN/Proxy/Origin IP](02_operations/cdn-proxy-origin-ip.md) | CDN 구조, Origin IP 보호 |
+| [CDN/Proxy/Origin IP](02_operations/cdn_proxy_origin_ip.md) | CDN 구조, Origin IP 보호 |
 | [S3 Gateway Endpoint](02_operations/s3_gateway_endpoint_cross_account.md) | 크로스 계정 S3 접근 |
 | [VPC Peering](02_operations/vpc_peering_inter_region_guide.md) | Inter-Region VPC Peering |
 | [인프라 Monorepo](02_operations/infra_monorepo_and_boilerplate.md) | 모노레포 구조, 보일러플레이트 |
@@ -46,7 +46,7 @@ SE/SRE/DBA 로드맵, 실무 운영, 도구, AI 활용, 법률 관련 문서 모
 | 문서 | 설명 |
 |------|------|
 | [언어 비교](03_tools/c_cpp_csharp_go_python_bash_comparison.md) | C/C++/C#/Go/Python/Bash 비교 |
-| [LSP 가이드](03_tools/lsp-guide.md) | Language Server Protocol |
+| [LSP 가이드](03_tools/lsp_guide.md) | Language Server Protocol |
 | [ADR 가이드](03_tools/adr_guide.md) | Architecture Decision Record |
 
 [⬆ 목차로 돌아가기](#목차)
