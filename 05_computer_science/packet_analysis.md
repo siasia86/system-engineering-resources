@@ -52,8 +52,6 @@
 | **Destination Address**   | 32 bits | 목적지 IP 주소                                          |
 | **Options**               | 가변    | 선택적 옵션 (보안, 라우팅 등)                           |
 
-### 예시 (Wireshark)
-
 ### tcpdump 예시
 
 ```bash
@@ -338,7 +336,7 @@ tcpdump -i eth0 -v udp
 
 ---
 
-### 4. PROXY Protocol v2 헤더 구조
+### PROXY Protocol v2 헤더 구조
 
 ```
  0                   1                   2                   3
@@ -829,15 +827,12 @@ tcpdump -i eth0 'tcp[tcpflags] & tcp-rst != 0'     # RST
 
 ## 참고 자료
 
-| 문서                 | URL                                                         |
-|----------------------|-------------------------------------------------------------|
-| RFC 791 - IPv4       | -                                                           |
-| RFC 793 - TCP        | -                                                           |
-| RFC 768 - UDP        | -                                                           |
-| PROXY Protocol v2    | https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt |
-| Wireshark User Guide | https://www.wireshark.org/docs/                             |
-| tcpdump Manual       | https://www.tcpdump.org/manpages/tcpdump.1.html             |
-
+- RFC 791 - IPv4: -
+- RFC 793 - TCP: -
+- RFC 768 - UDP: -
+- PROXY Protocol v2: https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt
+- Wireshark User Guide: https://www.wireshark.org/docs/
+- tcpdump Manual: https://www.tcpdump.org/manpages/tcpdump.1.html
 ---
 
 ## 통계
