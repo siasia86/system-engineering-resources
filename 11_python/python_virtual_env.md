@@ -3,15 +3,13 @@
 venv, pip, 프로젝트 환경 관리 가이드입니다.
 
 ## 목차
-- [venv](#venv)
-- [pip](#pip)
-- [requirements.txt](#requirementstxt)
-- [pyenv](#pyenv)
-- [프로젝트 구조](#프로젝트-구조)
-- [실전 팁](#실전-팁)
-- [요약](#요약)
 
-[⬆ 목차로 돌아가기](#목차)
+| 섹션 |
+|------|
+| [venv](#venv) / [pip](#pip) / [requirements.txt](#requirementstxt) |
+| [pyenv](#pyenv) / [프로젝트 구조](#프로젝트-구조) / [실전 팁](#실전-팁) |
+| [요약](#요약) |
+
 
 ---
 

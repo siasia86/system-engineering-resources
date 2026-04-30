@@ -4,26 +4,12 @@
 
 | 섹션 |
 |------|
-| [1. 4-파일 패턴 (멀티 에이전트 시스템)](#1-4-파일-패턴-멀티-에이전트-시스템) |
-| [Orchestration rules](#orchestration-rules) |
-| [Who I am](#who-i-am) |
-| [My place in the system](#my-place-in-the-system) |
-| [What I do NOT do          ← 가장 중요한 섹션](#what-i-do-not-do-가장-중요한-섹션) |
-| [2. 3단계 로딩 패턴 (Progressive Disclosure)](#2-3단계-로딩-패턴-progressive-disclosure) |
-| [3. 스킬 디렉토리 패턴](#3-스킬-디렉토리-패턴) |
-| [Available References](#available-references) |
-| [4. 마크다운 프롬프트 구조 패턴](#4-마크다운-프롬프트-구조-패턴) |
-| [Context (중간: 상황 설명)](#context-중간-상황-설명) |
-| [Output Format (중간: 출력 형식)](#output-format-중간-출력-형식) |
-| [Step 1: Analyze](#step-1-analyze) |
-| [Step 2: Plan](#step-2-plan) |
-| [Step 3: Execute](#step-3-execute) |
-| [Release Workflow](#release-workflow) |
-| [5. 토큰 효율 패턴](#5-토큰-효율-패턴) |
-| [예시](#예시) |
-| [6. 스킬 작성 규칙](#6-스킬-작성-규칙) |
-| [7. 보안 규칙](#7-보안-규칙) |
-| [8. 실전 적용 예시 (Kiro CLI)](#8-실전-적용-예시-kiro-cli) |
+| [1. 4-파일 패턴 (멀티 에이전트 시스템)](#1-4-파일-패턴-멀티-에이전트-시스템) / [What I do NOT do          ← 가장 중요한 섹션](#what-i-do-not-do-가장-중요한-섹션) / [2. 3단계 로딩 패턴 (Progressive Disclosure)](#2-3단계-로딩-패턴-progressive-disclosure) |
+| [3. 스킬 디렉토리 패턴](#3-스킬-디렉토리-패턴) / [4. 마크다운 프롬프트 구조 패턴](#4-마크다운-프롬프트-구조-패턴) / [Context (중간: 상황 설명)](#context-중간-상황-설명) |
+| [Output Format (중간: 출력 형식)](#output-format-중간-출력-형식) / [Step 1: Analyze](#step-1-analyze) / [Step 2: Plan](#step-2-plan) |
+| [Step 3: Execute](#step-3-execute) / [5. 토큰 효율 패턴](#5-토큰-효율-패턴) / [예시](#예시) |
+| [6. 스킬 작성 규칙](#6-스킬-작성-규칙) / [7. 보안 규칙](#7-보안-규칙) / [8. 실전 적용 예시 (Kiro CLI)](#8-실전-적용-예시-kiro-cli) |
+
 
 ---
 

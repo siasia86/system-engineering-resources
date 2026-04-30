@@ -3,17 +3,13 @@
 문자열 패턴 매칭과 텍스트 처리를 위한 정규표현식 가이드입니다.
 
 ## 목차
-- [기본 함수](#기본-함수)
-- [패턴 문법](#패턴-문법)
-- [그룹](#그룹)
-- [Greedy vs Lazy](#greedy-vs-lazy)
-- [Lookahead / Lookbehind](#lookahead--lookbehind)
-- [re.compile()](#recompile)
-- [공통 패턴](#공통-패턴)
-- [실전 예제](#실전-예제)
-- [요약](#요약)
 
-[⬆ 목차로 돌아가기](#목차)
+| 섹션 |
+|------|
+| [기본 함수](#기본-함수) / [패턴 문법](#패턴-문법) / [그룹](#그룹) |
+| [Greedy vs Lazy](#greedy-vs-lazy) / [Lookahead / Lookbehind](#lookahead-lookbehind) / [re.compile()](#recompile) |
+| [공통 패턴](#공통-패턴) / [실전 예제](#실전-예제) / [요약](#요약) |
+
 
 ---
 

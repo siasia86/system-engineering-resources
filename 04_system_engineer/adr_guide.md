@@ -4,31 +4,10 @@
 
 | 섹션 |
 |------|
-| [1. ADR 이란](#1-adr-이란) |
-| [2. 디렉토리 구조](#2-디렉토리-구조) |
-| [3. 템플릿](#3-템플릿) |
-| [Context](#context) |
-| [Decision](#decision) |
-| [Alternatives Considered](#alternatives-considered) |
-| [Consequences](#consequences) |
-| [References](#references) |
-| [4. ADR 작성 대상](#4-adr-작성-대상) |
-| [5. 인프라 ADR 예시](#5-인프라-adr-예시) |
-| [Context](#context) |
-| [Decision](#decision) |
-| [Alternatives Considered](#alternatives-considered) |
-| [Consequences](#consequences) |
-| [References](#references) |
-| [Context](#context) |
-| [Decision](#decision) |
-| [Alternatives Considered](#alternatives-considered) |
-| [Consequences](#consequences) |
-| [References](#references) |
-| [6. 작성 규칙](#6-작성-규칙) |
-| [7. 팀 운영](#7-팀-운영) |
-| [8. AI 에이전트와 ADR](#8-ai-에이전트와-adr) |
-| [When triggered](#when-triggered) |
-| [Workflow](#workflow) |
+| [1. ADR 이란](#1-adr-이란) / [2. 디렉토리 구조](#2-디렉토리-구조) / [3. 템플릿](#3-템플릿) |
+| [4. ADR 작성 대상](#4-adr-작성-대상) / [5. 인프라 ADR 예시](#5-인프라-adr-예시) / [6. 작성 규칙](#6-작성-규칙) |
+| [7. 팀 운영](#7-팀-운영) / [8. AI 에이전트와 ADR](#8-ai-에이전트와-adr) |
+
 
 ---
 

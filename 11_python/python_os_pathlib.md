@@ -3,15 +3,13 @@
 파일 시스템 조작을 위한 os, pathlib, shutil 모듈 가이드입니다.
 
 ## 목차
-- [pathlib (권장)](#pathlib-권장)
-- [os / os.path](#os--ospath)
-- [shutil](#shutil)
-- [glob 패턴](#glob-패턴)
-- [권한 관리](#권한-관리)
-- [실전 예제](#실전-예제)
-- [요약](#요약)
 
-[⬆ 목차로 돌아가기](#목차)
+| 섹션 |
+|------|
+| [pathlib (권장)](#pathlib-권장) / [os / os.path](#os-ospath) / [shutil](#shutil) |
+| [glob 패턴](#glob-패턴) / [권한 관리](#권한-관리) / [실전 예제](#실전-예제) |
+| [요약](#요약) |
+
 
 ---
 

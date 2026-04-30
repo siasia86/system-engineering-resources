@@ -3,14 +3,12 @@
 외부 명령어 실행과 프로세스 관리를 위한 subprocess 모듈 가이드입니다.
 
 ## 목차
-- [subprocess.run()](#subprocessrun)
-- [입출력 캡처](#입출력-캡처)
-- [shell 옵션](#shell-옵션)
-- [Popen](#popen)
-- [실전 예제](#실전-예제)
-- [요약](#요약)
 
-[⬆ 목차로 돌아가기](#목차)
+| 섹션 |
+|------|
+| [subprocess.run()](#subprocessrun) / [입출력 캡처](#입출력-캡처) / [shell 옵션](#shell-옵션) |
+| [Popen](#popen) / [실전 예제](#실전-예제) / [요약](#요약) |
+
 
 ---
 
