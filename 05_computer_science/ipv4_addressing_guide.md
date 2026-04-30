@@ -358,11 +358,10 @@ AWS 실사용 IP   = 전체 IP - 5
 
 ## 참고 자료
 
-| RFC      | 내용                  |
-|----------|-----------------------|
-| RFC 791  | Internet Protocol     |
-| RFC 1918 | Private Address Space |
-| RFC 4632 | CIDR                  |
+- RFC 791: Internet Protocol
+- RFC 1918: Private Address Space
+- RFC 4632: CIDR
+
 ---
 
 ## 통계

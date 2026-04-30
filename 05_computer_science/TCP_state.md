@@ -9,6 +9,8 @@
 | 심화 | [5. TIME_WAIT](#5-time_wait-상태) / [6. 비정상 종료](#6-비정상-종료-rst) / [7. CLOSE_WAIT](#7-close_wait-문제)          |
 | 실전 | [8. 상태 확인 명령어](#8-tcp-상태-확인-명령어) / [9. DDoS 방어](#9-ddos-방어와-tcp-상태)                                |
 
+---
+
 ## 1. TCP 3-Way Handshake (연결 설정)
 
 ```
