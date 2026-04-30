@@ -37,7 +37,8 @@
 - **[Kiro CLI 레퍼런스](kiro_cli_command_reference.md)** - Kiro CLI Command Reference
 - **[LSP 가이드](lsp-guide.md)** - Language Server Protocol 가이드
 - **[DBA 로드맵](dba_roadmap.md)**
-- **[DRM 가이드](drm_guide.md)** - DRM 개념, Tivoization, DMCA, GPL v3 관계 - DBA 역할, 학습 순서, 자격증, SE와의 차이
+- **[DRM 가이드](drm_guide.md)**
+- **[업무 외 저작물 귀속](ip_ownership_guide.md)** - 저작권법 제9조, 근로계약서 귀속 조항 - DRM 개념, Tivoization, DMCA, GPL v3 관계 - DBA 역할, 학습 순서, 자격증, SE와의 차이
 - **[Kiro 모델 가이드](kiro_model_guide.md)** - Kiro CLI 모델 선택 및 활용 가이드
 
 [⬆ 목차로 돌아가기](#목차)
