@@ -106,6 +106,13 @@ kiro-cli chat --list-models
 
 ---
 
+## 참고 자료
+
+- Kiro CLI Documentation: [kiro.dev](https://kiro.dev/docs/)
+- Anthropic Claude Models: [docs.anthropic.com](https://docs.anthropic.com/en/docs/about-claude/models/overview)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

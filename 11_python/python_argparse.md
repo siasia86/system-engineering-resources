@@ -266,6 +266,12 @@ $ python sysadmin.py disk -t 80
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [argparse](https://docs.python.org/3/library/argparse.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

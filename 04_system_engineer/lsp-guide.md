@@ -344,6 +344,13 @@ require('lspconfig').ansiblels.setup{}
 
 ---
 
+## 참고 자료
+
+- Language Server Protocol Specification: [microsoft.github.io](https://microsoft.github.io/language-server-protocol/)
+- LSP Implementations: [langserver.org](https://langserver.org/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

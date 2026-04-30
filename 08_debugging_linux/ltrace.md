@@ -825,6 +825,12 @@ ltrace -c -p <PID>
 
 ---
 
+## 참고 자료
+
+- ltrace man page: [man7.org](https://man7.org/linux/man-pages/man1/ltrace.1.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

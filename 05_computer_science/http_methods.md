@@ -908,6 +908,14 @@ Response: 500 Internal Server Error
 
 ---
 
+## 참고 자료
+
+- RFC 7231 - HTTP/1.1 Semantics: [RFC 7231](https://datatracker.ietf.org/doc/html/rfc7231)
+- RFC 5789 - PATCH Method: [RFC 5789](https://datatracker.ietf.org/doc/html/rfc5789)
+- MDN Web Docs - HTTP Methods: [HTTP request methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

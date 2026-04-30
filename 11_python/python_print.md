@@ -117,6 +117,12 @@ logging.error("에러 발생")
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [print()](https://docs.python.org/3/library/functions.html#print)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

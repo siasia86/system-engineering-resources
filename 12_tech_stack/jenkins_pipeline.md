@@ -805,6 +805,13 @@ stage('Integration Test') {
 
 ---
 
+## 참고 자료
+
+- Jenkins Pipeline Documentation: [jenkins.io](https://www.jenkins.io/doc/book/pipeline/)
+- Jenkins Pipeline Syntax: [Pipeline Syntax](https://www.jenkins.io/doc/book/pipeline/syntax/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

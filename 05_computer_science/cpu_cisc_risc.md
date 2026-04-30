@@ -577,6 +577,14 @@ CISC 탄생 --> RISC 등장 --> CISC+RISC --> ARM/RISC-V
 
 ---
 
+## 참고 자료
+
+- Patterson, David A. & Hennessy, John L. "Computer Organization and Design"
+- Intel Software Developer's Manual: [Intel SDM](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html)
+- ARM Architecture Reference Manual: [ARM Developer Docs](https://developer.arm.com/documentation)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

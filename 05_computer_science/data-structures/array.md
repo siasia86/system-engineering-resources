@@ -181,6 +181,13 @@ def rotate(nums, k):
 - 이미지 처리 (픽셀 배열)
 ---
 
+## 참고 자료
+
+- Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
+- Python Documentation: [list](https://docs.python.org/3/tutorial/datastructures.html)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)

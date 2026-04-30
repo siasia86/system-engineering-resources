@@ -1106,6 +1106,13 @@ def expensive_function(n):
 
 ---
 
+## 참고 자료
+
+- Python Documentation: [functools](https://docs.python.org/3/library/functools.html)
+- PEP 318: [Decorators for Functions and Methods](https://peps.python.org/pep-0318/)
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
