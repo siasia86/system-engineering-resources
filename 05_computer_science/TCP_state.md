@@ -349,7 +349,9 @@ sysctl -w net.ipv4.ip_local_port_range="10000 65535"
 ![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
 
 ---
-**작성일**: 2026-04-22
+
+**작성일**: 2026-04-14
+
 **마지막 업데이트**: 2026-04-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.

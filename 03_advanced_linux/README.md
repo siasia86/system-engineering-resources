@@ -76,6 +76,8 @@ tracepoint:block:block_rq_complete /@start[args->dev, args->sector]/ {
 
 ---
 
+**작성일**: 2026-03-11
+
 **마지막 업데이트**: 2026-03-25
 
 © 2026 siasia86. Licensed under CC BY 4.0.
