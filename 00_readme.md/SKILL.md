@@ -32,6 +32,18 @@ Use sudo for file operations under /root/
 - Write test code only when explicitly requested
 - Never hardcode secret keys
 
+## 10. Example credentials (placeholder only)
+Use the following standard placeholders for example passwords/keys in code and docs:
+- username:  `Secureuser123`
+- password:  `SecurePassword123`
+- key/secret: `SecureKey123`
+- token:     `SecureToken123`
+- db name:   `SecureDbName123`
+- domain:    `example.com` / `db.example.com`
+- email:     `user@example.com`
+- IP:        `192.0.2.1` (RFC 5737 documentation range)
+- S3 bucket: `my-bucket`
+
 ## 9. Response style
 - Concise and direct answers
 - Skip unnecessary praise/agreement

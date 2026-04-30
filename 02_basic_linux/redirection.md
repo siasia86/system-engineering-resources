@@ -391,6 +391,8 @@ command | tee >(grep ERROR > errors.log) > all.log
 
 ---
 
+**작성일**: 2026-04-28
+
 **마지막 업데이트**: 2026-04-15
 
 © 2026 siasia86. Licensed under CC BY 4.0.
