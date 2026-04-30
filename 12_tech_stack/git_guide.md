@@ -134,6 +134,24 @@ git diff --stat main origin/main
  2 files changed, 9 insertions(+), 6 deletions(-)
 ```
 
+### diff 비교 대상 요약
+
+| 명령어 | 비교 대상 | 설명 |
+|--------|-----------|------|
+| `git diff` | Working Dir vs Staging | `git add` 전 변경사항 |
+| `git diff --staged` | Staging vs 마지막 Commit | `git add` 후 커밋 전 변경사항 |
+| `git diff HEAD` | Working Dir vs 마지막 Commit | 스테이징 여부 무관 전체 변경사항 |
+| `git diff origin/main` | 로컬 브랜치 vs 원격 브랜치 | 로컬이 원격보다 얼마나 앞서 있는지 |
+
+```bash
+# -C 옵션: 해당 경로에서 git 명령 실행 (cd 없이)
+git -C /path/to/repo diff origin/main
+
+# 위 두 명령은 동일
+cd /path/to/repo && git diff origin/main
+```
+
+
 ### 유용한 옵션
 
 ```bash
