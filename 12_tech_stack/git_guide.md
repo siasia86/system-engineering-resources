@@ -512,7 +512,9 @@ sudo chown -R $(whoami):$(whoami) /path/to/repo
 ![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
 
 ---
+
 **작성일**: 2026-04-30
+
 **마지막 업데이트**: 2026-04-30
 
 © 2026 siasia86. Licensed under CC BY 4.0.

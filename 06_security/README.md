@@ -62,6 +62,8 @@ iptables -A INPUT -p tcp --dport 80 -m limit --limit 25/minute --limit-burst 100
 
 ---
 
+**작성일**: 2026-03-11
+
 **마지막 업데이트**: 2026-03-25
 
 © 2026 siasia86. Licensed under CC BY 4.0.

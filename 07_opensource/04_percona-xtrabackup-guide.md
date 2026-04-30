@@ -1615,7 +1615,7 @@ systemctl start mysqld
 
 ---
 
-**작성일**: 2024-01-11  
+**작성일**: 2026-03-25  
 **버전**: 1.0  
 **작성자**: Infrastructure Team
 
