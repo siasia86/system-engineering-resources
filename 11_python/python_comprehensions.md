@@ -547,3 +547,22 @@ result = [process_row(row) for row in matrix if sum(row) > 10]
 **관련 문서:**
 - [제어문](./python_control_flow.md) - 기본 반복문
 - [함수](./python_functions.md) - 함수와 컴프리헨션 조합
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-03-11
+
+**마지막 업데이트**: 2026-03-11
+
+© 2026 siasia86. Licensed under CC BY 4.0.

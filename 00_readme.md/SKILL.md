@@ -48,3 +48,22 @@ Use the following standard placeholders for example passwords/keys in code and d
 - Concise and direct answers
 - Skip unnecessary praise/agreement
 - Politely correct wrong information
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-04-09
+
+**마지막 업데이트**: 2026-04-09
+
+© 2026 siasia86. Licensed under CC BY 4.0.

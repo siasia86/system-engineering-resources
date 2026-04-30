@@ -763,3 +763,22 @@ p = Product("노트북", 1000000, 10)
 - [Python 공식 문서 - 클래스](https://docs.python.org/ko/3/tutorial/classes.html)
 - [Python 공식 문서 - 데이터 모델 (매직 메서드)](https://docs.python.org/ko/3/reference/datamodel.html)
 - [PEP 8 - Python 코딩 스타일 가이드](https://peps.python.org/pep-0008/)
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-03-11
+
+**마지막 업데이트**: 2026-03-11
+
+© 2026 siasia86. Licensed under CC BY 4.0.
