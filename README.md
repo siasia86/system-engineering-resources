@@ -76,11 +76,11 @@ SE/SRE/DBA 로드맵, 실무 운영, 도구, AI 활용, 법률.
 
 | 문서 | 설명 |
 |------|------|
-| [게임 인프라 KPI](04_system_engineer/02_operations/game-infra-kpi-presentation.md) | 인프라 운영 핵심 지표 |
+| [게임 인프라 KPI](04_system_engineer/02_operations/game_infra_kpi_presentation.md) | 인프라 운영 핵심 지표 |
 | [리소스 모니터링](04_system_engineer/02_operations/resource_utilization_monitoring.md) | CPU/메모리/디스크/네트워크 |
 | [백업 도구 비교](04_system_engineer/02_operations/backup_tools_comparison.md) | rsync, BorgBackup 등 |
 | [ASN 및 DDoS 대응](04_system_engineer/02_operations/asn_and_cloudflare_ddos.md) | ASN 운영, Cloudflare DDoS |
-| [CDN/Proxy/Origin IP](04_system_engineer/02_operations/cdn-proxy-origin-ip.md) | CDN 구조, Origin IP 보호 |
+| [CDN/Proxy/Origin IP](04_system_engineer/02_operations/cdn_proxy_origin_ip.md) | CDN 구조, Origin IP 보호 |
 | [S3 Gateway Endpoint](04_system_engineer/02_operations/s3_gateway_endpoint_cross_account.md) | 크로스 계정 S3 접근 |
 | [VPC Peering](04_system_engineer/02_operations/vpc_peering_inter_region_guide.md) | Inter-Region VPC Peering |
 | [인프라 Monorepo](04_system_engineer/02_operations/infra_monorepo_and_boilerplate.md) | 모노레포 구조 |
@@ -90,7 +90,7 @@ SE/SRE/DBA 로드맵, 실무 운영, 도구, AI 활용, 법률.
 | 문서 | 설명 |
 |------|------|
 | [언어 비교](04_system_engineer/03_tools/c_cpp_csharp_go_python_bash_comparison.md) | C/C++/C#/Go/Python/Bash |
-| [LSP 가이드](04_system_engineer/03_tools/lsp-guide.md) | Language Server Protocol |
+| [LSP 가이드](04_system_engineer/03_tools/lsp_guide.md) | Language Server Protocol |
 | [ADR 가이드](04_system_engineer/03_tools/adr_guide.md) | Architecture Decision Record |
 
 ### AI 활용
@@ -128,7 +128,7 @@ SE/SRE/DBA 로드맵, 실무 운영, 도구, AI 활용, 법률.
 | [tcpdump 예제](05_computer_science/tcpdump_examples.md) | 패킷 캡처 실전 예제 |
 | [Switch VLAN Mode](05_computer_science/switch_vlan_mode.md) | Access/Trunk/Dynamic, VLAN Hopping |
 | [CPU CISC vs RISC](05_computer_science/cpu_cisc_risc.md) | 명령어 집합 아키텍처 비교 |
-| [자료구조](05_computer_science/data-structures/) | Array, Stack, Queue, Tree, Graph 등 |
+| [자료구조](05_computer_science/01_data_structures/) | Array, Stack, Queue, Tree, Graph 등 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -155,7 +155,7 @@ SE/SRE/DBA 로드맵, 실무 운영, 도구, AI 활용, 법률.
 | [Docker & Docker Compose](07_opensource/01_docker_docker_compose_cheatsheet.md) | 명령어 치트시트 |
 | [n8n Docker Compose](07_opensource/02_n8n_docker_cheatsheet.md) | n8n + MySQL 구성 |
 | [컨테이너 아키텍처](07_opensource/03_container_architecture.md) | Namespace, Cgroup, OCI |
-| [Percona XtraBackup](07_opensource/04_percona-xtrabackup-guide.md) | MySQL 온라인 백업 |
+| [Percona XtraBackup](07_opensource/04_percona_xtrabackup_guide.md) | MySQL 온라인 백업 |
 | [Ansible vs Jenkins](07_opensource/ansible_vs_jenkins.md) | 자동화 도구 비교 |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -307,12 +307,12 @@ Python 프로그래밍 가이드.
     - [se_roadmap.md](04_system_engineer/01_roadmap/se_roadmap.md) / [sre_roadmap.md](04_system_engineer/01_roadmap/sre_roadmap.md) / [dba_roadmap.md](04_system_engineer/01_roadmap/dba_roadmap.md)
     - [se_complete_roadmap_programming_languages.md](04_system_engineer/01_roadmap/se_complete_roadmap_programming_languages.md)
   - 02_operations/
-    - [game-infra-kpi-presentation.md](04_system_engineer/02_operations/game-infra-kpi-presentation.md) / [resource_utilization_monitoring.md](04_system_engineer/02_operations/resource_utilization_monitoring.md)
+    - [game-infra-kpi-presentation.md](04_system_engineer/02_operations/game_infra_kpi_presentation.md) / [resource_utilization_monitoring.md](04_system_engineer/02_operations/resource_utilization_monitoring.md)
     - [backup_tools_comparison.md](04_system_engineer/02_operations/backup_tools_comparison.md) / [asn_and_cloudflare_ddos.md](04_system_engineer/02_operations/asn_and_cloudflare_ddos.md)
-    - [cdn-proxy-origin-ip.md](04_system_engineer/02_operations/cdn-proxy-origin-ip.md) / [s3_gateway_endpoint_cross_account.md](04_system_engineer/02_operations/s3_gateway_endpoint_cross_account.md)
+    - [cdn-proxy-origin-ip.md](04_system_engineer/02_operations/cdn_proxy_origin_ip.md) / [s3_gateway_endpoint_cross_account.md](04_system_engineer/02_operations/s3_gateway_endpoint_cross_account.md)
     - [vpc_peering_inter_region_guide.md](04_system_engineer/02_operations/vpc_peering_inter_region_guide.md) / [infra_monorepo_and_boilerplate.md](04_system_engineer/02_operations/infra_monorepo_and_boilerplate.md)
   - 03_tools/
-    - [c_cpp_csharp_go_python_bash_comparison.md](04_system_engineer/03_tools/c_cpp_csharp_go_python_bash_comparison.md) / [lsp-guide.md](04_system_engineer/03_tools/lsp-guide.md) / [adr_guide.md](04_system_engineer/03_tools/adr_guide.md)
+    - [c_cpp_csharp_go_python_bash_comparison.md](04_system_engineer/03_tools/c_cpp_csharp_go_python_bash_comparison.md) / [lsp-guide.md](04_system_engineer/03_tools/lsp_guide.md) / [adr_guide.md](04_system_engineer/03_tools/adr_guide.md)
   - 04_ai/
     - [kiro_cli_command_reference.md](04_system_engineer/04_ai/kiro_cli_command_reference.md) / [kiro_model_guide.md](04_system_engineer/04_ai/kiro_model_guide.md)
     - [ai_development_request_template.md](04_system_engineer/04_ai/ai_development_request_template.md) / [ai_markdown_design_patterns.md](04_system_engineer/04_ai/ai_markdown_design_patterns.md)
@@ -322,15 +322,15 @@ Python 프로그래밍 가이드.
   - [cpu_cisc_risc.md](05_computer_science/cpu_cisc_risc.md) / [http_methods.md](05_computer_science/http_methods.md) / [ipv4_addressing_guide.md](05_computer_science/ipv4_addressing_guide.md)
   - [ipv6_addressing_guide.md](05_computer_science/ipv6_addressing_guide.md) / [network_headers.md](05_computer_science/network_headers.md) / [packet_analysis.md](05_computer_science/packet_analysis.md)
   - [switch_vlan_mode.md](05_computer_science/switch_vlan_mode.md) / [tcpdump_examples.md](05_computer_science/tcpdump_examples.md) / [TCP_state.md](05_computer_science/TCP_state.md)
-  - data-structures/
-    - [array.md](05_computer_science/data-structures/array.md) / [stack.md](05_computer_science/data-structures/stack.md) / [queue.md](05_computer_science/data-structures/queue.md)
-    - [linked-list.md](05_computer_science/data-structures/linked-list.md) / [binary-tree.md](05_computer_science/data-structures/binary-tree.md) / [graph.md](05_computer_science/data-structures/graph.md)
-    - [heap.md](05_computer_science/data-structures/heap.md) / [hash-table.md](05_computer_science/data-structures/hash-table.md)
+  - 01_data_structures/
+    - [array.md](05_computer_science/01_data_structures/array.md) / [stack.md](05_computer_science/01_data_structures/stack.md) / [queue.md](05_computer_science/01_data_structures/queue.md)
+    - [linked-list.md](05_computer_science/01_data_structures/linked_list.md) / [binary-tree.md](05_computer_science/01_data_structures/binary_tree.md) / [graph.md](05_computer_science/01_data_structures/graph.md)
+    - [heap.md](05_computer_science/01_data_structures/heap.md) / [hash-table.md](05_computer_science/01_data_structures/hash_table.md)
 - 06_security/
   - [01_ddos_defense_architecture.md](06_security/01_ddos_defense_architecture.md)
 - 07_opensource/
   - [01_docker_docker_compose_cheatsheet.md](07_opensource/01_docker_docker_compose_cheatsheet.md) / [02_n8n_docker_cheatsheet.md](07_opensource/02_n8n_docker_cheatsheet.md)
-  - [03_container_architecture.md](07_opensource/03_container_architecture.md) / [04_percona-xtrabackup-guide.md](07_opensource/04_percona-xtrabackup-guide.md)
+  - [03_container_architecture.md](07_opensource/03_container_architecture.md) / [04_percona-xtrabackup-guide.md](07_opensource/04_percona_xtrabackup_guide.md)
   - [ansible_vs_jenkins.md](07_opensource/ansible_vs_jenkins.md)
 - 08_debugging_linux/
   - [strace.md](08_debugging_linux/strace.md) / [ltrace.md](08_debugging_linux/ltrace.md) / [gdb.md](08_debugging_linux/gdb.md)
