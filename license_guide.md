@@ -85,10 +85,10 @@ be made available under the GPL along with build & install instructions.
 
 #### GPL v2 강제 공개 사례 — Microsoft Hyper-V (2009)
 
-Linux 커널은 GPL v2를 사용한다. GPL v2 코드를 포함한 소프트웨어를 바이너리로만 배포하면 소스코드 공개 의무를 위반한다.
+Linux 커널은 GPL v2를 사용합니다. GPL v2 코드를 포함한 소프트웨어를 바이너리로만 배포하면 소스코드 공개 의무를 위반합니다.
 
-2009년 Microsoft의 Hyper-V Linux Integration Services(LIS) 드라이버가 GPL v2 Linux 커널 코드를 포함한 채 바이너리로만 배포된 사실이 확인됐다.
-Microsoft는 이후 약 20,000줄의 Hyper-V 드라이버 코드를 Linux 커널에 공식 기여했으며, 이는 Microsoft가 Linux 커널에 코드를 기여한 첫 사례다.
+2009년 Microsoft의 Hyper-V Linux Integration Services(LIS) 드라이버가 GPL v2 Linux 커널 코드를 포함한 채 바이너리로만 배포된 사실이 확인됐습니다.
+Microsoft는 이후 약 20,000줄의 Hyper-V 드라이버 코드를 Linux 커널에 공식 기여했으며, 이는 Microsoft가 Linux 커널에 코드를 기여한 첫 사례입니다.
 
 ```
 GPL v2 위반 흐름:
@@ -98,16 +98,16 @@ Hyper-V LIS (GPL v2 코드 포함)
     → 20,000줄 소스코드 Linux 커널에 공개 기여
 ```
 
-⚠️ 이 사례는 GPL v2 기반이며, 현재 섹션의 GPL v3와 조항 구성이 다를 수 있다.
+⚠️ 이 사례는 GPL v2 기반이며, 현재 섹션의 GPL v3와 조항 구성이 다를 수 있습니다.
 
 > — [Linux Kernel Mailing List, 2009](https://lkml.org/lkml/2009/7/20/264)
 
 #### Tivoization 방지 조항 (GPL v2 → v3 핵심 변경)
 
-위 Hyper-V 사례처럼 GPL v2는 소스코드 공개만 요구했다. TiVo는 이 허점을 이용했다.
+위 Hyper-V 사례처럼 GPL v2는 소스코드 공개만 요구했습니다. TiVo는 이 허점을 이용했습니다.
 
-TiVo는 GPL v2 Linux 커널을 사용하면서 하드웨어 서명으로 수정된 소프트웨어의 실행을 차단했다.
-소스코드는 공개했지만 실제로 수정해서 실행할 수 없는 구조 — GPL의 취지를 우회한 사례다.
+TiVo는 GPL v2 Linux 커널을 사용하면서 하드웨어 서명으로 수정된 소프트웨어의 실행을 차단했습니다.
+소스코드는 공개했지만 실제로 수정해서 실행할 수 없는 구조 — GPL의 취지를 우회한 사례입니다.
 
 ```
 GPL v2 허점 (Tivoization):
@@ -118,8 +118,8 @@ GPL v3 대응:
 소스코드 공개 ✅  +  설치 정보(서명 키 등) 제공 ✅  →  GPL v3 준수
 ```
 
-GPL v3는 이를 막기 위해 **설치 정보 제공 의무**를 추가했다.
-소스코드뿐 아니라 수정된 소프트웨어를 실제로 설치·실행할 수 있는 정보(서명 키 등)도 함께 제공해야 한다.
+GPL v3는 이를 막기 위해 **설치 정보 제공 의무**를 추가했습니다.
+소스코드뿐 아니라 수정된 소프트웨어를 실제로 설치·실행할 수 있는 정보(서명 키 등)도 함께 제공해야 합니다.
 
 > — [FSF: Why Upgrade to GPL v3](https://www.gnu.org/licenses/rms-why-gplv3.html)
 
@@ -148,10 +148,10 @@ modification, are permitted provided that the following conditions are met:
 #### 광고 조항 이슈 (4-Clause → 2-Clause)
 
 원래 BSD는 4-Clause로 "광고 자료에 UC Berkeley 출처 표시 의무" 조항이 포함되어 있었다.
-이 조항이 GPL과 호환되지 않아 FSF로부터 비호환 판정을 받았고, 수백 개 기여자 각각의 출처를 광고에 표시해야 하는 현실적 문제가 발생했다.
+이 조항이 GPL과 호환되지 않아 FSF로부터 비호환 판정을 받았으며, 수백 개 기여자 각각의 출처를 광고에 표시해야 하는 현실적 문제가 발생했습니다.
 
-1999년 UC Berkeley가 공식적으로 광고 조항(3번째 조항)을 삭제하여 현재의 3-Clause(New BSD)가 됐다.
-이후 보증 부인 조항만 남긴 2-Clause(Simplified BSD)도 널리 사용된다.
+1999년 UC Berkeley가 공식적으로 광고 조항(3번째 조항)을 삭제하여 현재의 3-Clause(New BSD)가 됐습니다.
+이후 보증 부인 조항만 남긴 2-Clause(Simplified BSD)도 널리 사용됩니다.
 
 > BSD 4-Clause는 GPL 비호환으로 FSF가 공식 비권장 판정. 신규 프로젝트는 2-Clause 또는 3-Clause 사용 권장.
 > — [FSF License List](https://www.gnu.org/licenses/license-list.html#OriginalBSD)
