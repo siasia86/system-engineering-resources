@@ -2,11 +2,11 @@
 
 ## 목차
 
-| 단계   | 섹션                                                                                                                              |
-|--------|-----------------------------------------------------------------------------------------------------------------------------------|
-| 기본   | [1. $- 변수](#1--변수) / [2. Interactive vs Non-interactive](#2-interactive-vs-non-interactive)                                   |
-| 실전   | [3. 동작 차이](#3-동작-차이) / [4. /etc/profile.d 로딩 원리](#4-etcprofiled-로딩-원리) / [5. 실무 패턴](#5-실무-패턴)            |
-| 참고   | [6. Tips](#6-tips)                                                                                                                |
+| 단계   | 섹션                                                                                                                           |
+|--------|--------------------------------------------------------------------------------------------------------------------------------|
+| 기본   | [1. $- 변수](#1--변수) / [2. Interactive vs Non-interactive](#2-interactive-vs-non-interactive)                                |
+| 실전   | [3. 동작 차이](#3-동작-차이) / [4. /etc/profile.d 로딩 원리](#4-etcprofiled-로딩-원리) / [5. 실무 패턴](#5-실무-패턴)         |
+| 참고   | [6. Tips](#6-tips)                                                                                                             |
 
 ---
 
@@ -22,15 +22,15 @@ echo $-
 
 ### 주요 플래그
 
-| 플래그 | 의미                        |
-|--------|-----------------------------|
-| `i`    | interactive shell           |
-| `h`    | hashall (명령어 경로 캐싱)  |
-| `m`    | monitor (job control)       |
-| `B`    | brace expansion 활성화      |
-| `H`    | history expansion 활성화    |
-| `e`    | 오류 시 즉시 종료 (`set -e`) |
-| `x`    | 명령어 trace 출력 (`set -x`) |
+| 플래그 | 의미                          |
+|--------|-------------------------------|
+| `i`    | interactive shell             |
+| `h`    | hashall (명령어 경로 캐싱)    |
+| `m`    | monitor (job control)         |
+| `B`    | brace expansion 활성화        |
+| `H`    | history expansion 활성화      |
+| `e`    | 오류 시 즉시 종료 (`set -e`)  |
+| `x`    | 명령어 trace 출력 (`set -x`)  |
 
 ### interactive 여부 확인
 
@@ -59,24 +59,24 @@ fi
 
 ## 2. Interactive vs Non-interactive
 
-| 구분              | Interactive                        | Non-interactive                     |
-|-------------------|------------------------------------|-------------------------------------|
-| 정의              | 사용자가 직접 입력하는 쉘          | 자동으로 실행되는 쉘                |
-| 예시              | SSH 접속, 터미널                   | 쉘 스크립트, cron, `bash script.sh` |
-| 프롬프트          | `$`, `#` 표시                      | 없음                                |
-| `~/.bashrc` 로드  | ✅                                  | ❌                                   |
-| `/etc/profile` 로드 | ✅ (login shell)                  | ❌                                   |
-| job control       | ✅ (`Ctrl+Z`, `fg`, `bg`)          | ❌                                   |
-| alias 사용        | ✅                                  | ❌ (별도 source 필요)               |
-| `$-` 의 `i` 플래그 | 포함                              | 미포함                              |
+| 구분                  | Interactive                         | Non-interactive                     |
+|-----------------------|-------------------------------------|-------------------------------------|
+| 정의                  | 사용자가 직접 입력하는 쉘           | 자동으로 실행되는 쉘                |
+| 예시                  | SSH 접속, 터미널                    | 쉘 스크립트, cron, `bash script.sh` |
+| 프롬프트              | `$`, `#` 표시                       | 없음                                |
+| `~/.bashrc` 로드      | ✅                                   | ❌                                   |
+| `/etc/profile` 로드   | ✅ (login shell)                     | ❌                                   |
+| job control           | ✅ (`Ctrl+Z`, `fg`, `bg`)           | ❌                                   |
+| alias 사용            | ✅                                   | ❌ (별도 source 필요)               |
+| `$-` 의 `i` 플래그   | 포함                                | 미포함                              |
 
 ### 쉘 종류 조합
 
 ```
-login + interactive    : SSH 접속, su - user
-login + non-interactive: ssh user@host 'command'
-non-login + interactive: 터미널에서 bash 실행
-non-login + non-interactive: bash script.sh, cron
+login + interactive     : SSH 접속, su - user
+login + non-interactive : ssh user@host 'command'
+non-login + interactive : 터미널에서 bash 실행
+non-login + non-interactive : bash script.sh, cron
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -118,8 +118,8 @@ echo $MY_VAR   # (빈 값)
 echo $PATH
 # /usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin
 
-# cron 기본 PATH
-# /usr/bin:/bin  ← 매우 제한적
+# cron 기본 PATH (매우 제한적)
+# /usr/bin:/bin
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -135,7 +135,7 @@ echo $PATH
 for i in /etc/profile.d/*.sh /etc/profile.d/sh.local; do
     if [ -r "$i" ]; then
         if [ "${-#*i}" != "$-" ]; then
-            . "$i"           # interactive: 출력 그대로
+            . "$i"             # interactive: 출력 그대로
         else
             . "$i" >/dev/null  # non-interactive: 출력 숨김
         fi
@@ -188,10 +188,28 @@ export PATH=$PATH:/usr/local/bin
 ### cron PATH 직접 지정
 
 ```bash
-# crontab -e
+# crontab -e 상단에 PATH 선언
 PATH=/usr/local/bin:/usr/bin:/bin
 0 2 * * * /opt/scripts/backup.sh
 ```
+
+### su - 로 login shell 환경 로드
+
+`su -` (또는 `su -l`) 는 login shell 을 시작하므로 `/etc/profile`, `~/.bash_profile`, `~/.bashrc` 가 모두 로드됩니다.
+
+```bash
+# crontab -e
+# su - root 로 실행하면 root 의 login shell 환경 전체 로드
+0 2 * * * su - root -c '/opt/scripts/backup.sh'
+
+# 특정 사용자로 실행
+0 2 * * * su - deploy -c '/opt/scripts/deploy.sh'
+```
+
+주의사항:
+- root crontab(`sudo crontab -e`)에서는 `su -` 없이도 root 권한으로 실행됨
+- `su -` 는 PAM 인증을 거치므로 환경에 따라 추가 설정 필요할 수 있음
+- 보안상 불필요한 `su -` 사용은 지양
 
 ### non-interactive에서 alias 강제 로드
 
@@ -226,7 +244,7 @@ ssh user@host 'export MY_VAR=value; your_command'
 ```bash
 #!/bin/bash
 if [[ $- == *i* ]]; then
-    # interactive: 컬러 출력, 프롬프트 등
+    # interactive: 컬러 출력
     RED='\033[0;31m'
     NC='\033[0m'
     echo -e "${RED}Warning${NC}"
@@ -266,11 +284,11 @@ cat /tmp/cron_env.txt
 
 ### source vs sh 실행 차이
 
-| 실행 방식 | 프로세스 | 환경변수 적용 |
-|-----------|----------|---------------|
-| `bash script.sh` | 자식 프로세스 | 부모에 미적용 |
-| `source script.sh` | 현재 프로세스 | 현재 쉘에 적용 |
-| `. script.sh` | 현재 프로세스 | 현재 쉘에 적용 |
+| 실행 방식          | 프로세스       | 환경변수 적용    |
+|--------------------|----------------|------------------|
+| `bash script.sh`   | 자식 프로세스  | 부모에 미적용    |
+| `source script.sh` | 현재 프로세스  | 현재 쉘에 적용   |
+| `. script.sh`      | 현재 프로세스  | 현재 쉘에 적용   |
 
 `export`, `cd`, `alias` 처럼 현재 쉘 환경을 바꾸는 명령은 반드시 `source` 로 실행합니다.
 
@@ -283,7 +301,7 @@ export MY_VAR="value"
 export PATH=$PATH:/usr/local/bin
 EOF
 
-# 제거 (간단)
+# 제거
 sudo rm /etc/profile.d/my_setting.sh
 
 # /etc/profile 직접 수정은 비권장
