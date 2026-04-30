@@ -1,7 +1,24 @@
 # Root 패스워드 복구
 
+## 목차
+
+| 섹션 |
+|------|
+| [사전 확인: SELinux 상태](#사전-확인-selinux-상태) |
+| [CentOS 5 (EOL: 2017-03)](#centos-5-eol-2017-03) |
+| [CentOS 7 (EOL: 2024-06)](#centos-7-eol-2024-06) |
+| [Rocky Linux 9 / Rocky Linux 10](#rocky-linux-9-rocky-linux-10) |
+| [Ubuntu 14.04 / 16.04 / 18.04 / 20.04 / 22.04 / 24.04](#ubuntu-1404-1604-1804-2004-2204-2404) |
+| [요약 비교](#요약-비교) |
+| [주의사항](#주의사항) |
+
+---
+
+
 각 OS별 root 패스워드 분실 시 복구 절차.
 모든 작업은 물리 콘솔 또는 IPMI/iLO/iDRAC 등 원격 콘솔 접근이 필요하다.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -18,6 +35,8 @@ cat /etc/selinux/config  # 설정 파일 직접 확인
 
 - `Enforcing` → 복구 후 `touch /.autorelabel` 필수
 - `Permissive` / `Disabled` → `touch /.autorelabel` 생략 가능
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -37,6 +56,8 @@ reboot
 ```
 
 > **참고:** GRUB 자체에 패스워드가 걸려있으면 rescue CD로 부팅 필요.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -61,6 +82,8 @@ exit
 
 > **중요:** SELinux enforcing 환경이면 `touch /.autorelabel` 필수. 빠뜨리면 로그인 불가.
 > SELinux가 disabled 또는 permissive면 `touch /.autorelabel` 생략 가능.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -87,6 +110,8 @@ exit
 
 > **중요:** SELinux enforcing 환경이면 `touch /.autorelabel` 필수. 빠뜨리면 로그인 불가.
 > SELinux가 disabled 또는 permissive면 `touch /.autorelabel` 생략 가능.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -116,6 +141,8 @@ reboot -f
 
 > Ubuntu는 SELinux를 사용하지 않으므로 relabel 불필요.
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 요약 비교
@@ -127,6 +154,8 @@ reboot -f
 | Rocky 9        | GRUB2       | `rd.break`          | enforcing일 때만 `touch /.autorelabel` |
 | Rocky 10       | GRUB2       | `rd.break`          | enforcing일 때만 `touch /.autorelabel` |
 | Ubuntu 전 버전 | GRUB2       | `rw init=/bin/bash` | 불필요                                 |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
