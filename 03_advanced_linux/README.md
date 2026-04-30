@@ -2,10 +2,16 @@
 
 고급 Linux 시스템 관리, 성능 튜닝, eBPF 기반 추적 도구에 대한 문서입니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 문서 목록
 
 ### eBPF & 추적
 - **[bpftrace](bpftrace.md)** - eBPF 기반 동적 추적 도구
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -32,6 +38,8 @@ sudo bpftrace -e 'tracepoint:syscalls:sys_enter_* { @[probe] = count(); }'
 # 파일 열기 추적
 sudo bpftrace -e 'tracepoint:syscalls:sys_enter_openat { printf("%s %s\n", comm, str(args->filename)); }'
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 

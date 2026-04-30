@@ -23,6 +23,8 @@
 - [성능 튜닝](#성능-튜닝)
 - [보안 체크리스트](#보안-체크리스트)
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 도구 개요
@@ -35,6 +37,8 @@
 | **AWS CLI**    | 전송   | AWS S3 전송     | Linux, macOS, Windows |
 | **Duplicity**  | 백업   | 암호화 백업     | Linux, macOS          |
 | **rsync**      | 동기화 | 로컬/SSH 동기화 | Linux, macOS          |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -61,6 +65,8 @@
 | **Rclone**     | 10%    | 100MB  | 5GB (파일 단위)   | 5분       |
 | **Duplicity**  | 40-50% | 400MB  | 1GB (압축)        | 3분       |
 | **rsync**      | 10%    | 50MB   | 500MB (델타)      | 2분       |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -99,6 +105,8 @@
 | **Rclone**     | ❌            | 낮음        | 낮음        |
 | **Duplicity**  | ⚠️ 선택적     | 높음        | 높음        |
 | **rsync**      | ✅ (SSH 서버) | 중간        | 중간        |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -381,6 +389,8 @@ CPU: ██████░░░░ 8%
 + 새벽 Restic 백업 (장기 보관)
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 기능 비교표
@@ -398,6 +408,8 @@ CPU: ██████░░░░ 8%
 | **설정**      | 쉬움    | 쉬움   | 어려움     | 보통    | 어려움    | 쉬움   | 보통       |
 | **실시간**    | ❌      | ❌     | ❌         | ❌      | ❌        | ❌     | ✅         |
 | **버퍼링**    | ❌      | ❌     | ❌         | ❌      | ❌        | ❌     | ✅         |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -532,6 +544,8 @@ borg create /mnt/backup::dev-{now} ~
 # 빠른 속도
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 비용 최적화 전략
@@ -572,6 +586,8 @@ BorgBackup (lz4): 20GB/일
 restic forget --keep-daily 7
 # + S3 Lifecycle 정책
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -615,6 +631,8 @@ borg create --remote-ratelimit 10240 /backup::data /data
 0 4 * * * borg create /backup::daily /data
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 모니터링 및 알림
@@ -651,6 +669,8 @@ aws cloudwatch put-metric-data \
   --value 1
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 복원 시간 비교 (50GB 전체 복원)
@@ -663,6 +683,8 @@ aws cloudwatch put-metric-data \
 | **Rclone**     | 30분      | 50GB     | 단순 다운로드   |
 | **Duplicity**  | 60분      | 20GB     | GPG 복호화 느림 |
 | **rsync**      | 30분      | 50GB     | 로컬/SSH만      |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -687,6 +709,8 @@ aws cloudwatch put-metric-data \
 속도 최우선: BorgBackup > rsync > Rclone
 편의성 최우선: Restic > AWS CLI > Rclone
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -714,6 +738,8 @@ restic -r s3:backup backup /data
 # 백업: AWS Backup 또는 자체 시스템
 # 아카이브: S3 Lifecycle → Glacier
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -773,6 +799,8 @@ restic backup /data 2>&1 | tee -a /var/log/backup.log
 # 로그 로테이션
 logrotate /etc/logrotate.d/backup
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -834,6 +862,8 @@ restic snapshots --tag server1
 4. 압축 활성화
 5. 불필요한 파일 제외 (`--exclude`)
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 트러블슈팅
@@ -892,6 +922,8 @@ aws s3 cp large-file.zip s3://bucket/ \
   --multipart-chunk-size-mb 100
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 성능 튜닝
@@ -927,6 +959,8 @@ rclone sync /data remote: --checksum=false
 # 버퍼 크기 증가
 rclone sync /data remote: --buffer-size 256M
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 

@@ -1,8 +1,37 @@
 # valgrind - 메모리 디버깅 및 프로파일링 도구
 
+## 목차
+
+| 섹션 |
+|------|
+| [valgrind란?](#valgrind란) |
+| [주요 기능](#주요-기능) |
+| [설치](#설치) |
+| [주요 도구](#주요-도구) |
+| [실전 예제](#실전-예제) |
+| [유용한 옵션](#유용한-옵션) |
+| [메모리 누수 종류](#메모리-누수-종류) |
+| [억제 파일 (Suppression)](#억제-파일-suppression) |
+| [성능 오버헤드](#성능-오버헤드) |
+| [트러블슈팅](#트러블슈팅) |
+| [실무 팁](#실무-팁) |
+| [관련 도구](#관련-도구) |
+| [요약](#요약) |
+
+---
+
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## valgrind란?
 
 **Memory Debugging and Profiling Tool** - 메모리 누수, 버퍼 오버플로우, 초기화되지 않은 메모리 사용 등을 감지하는 도구입니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 주요 기능
 
@@ -12,6 +41,10 @@
 - 캐시 프로파일링
 - 힙 프로파일링
 - 스레드 에러 감지
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 설치
 
@@ -25,6 +58,10 @@ sudo yum install valgrind
 # 버전 확인
 valgrind --version
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 주요 도구
 
@@ -114,6 +151,10 @@ callgrind_annotate callgrind.out.12345
 # GUI 분석
 kcachegrind callgrind.out.12345
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 실전 예제
 
@@ -239,6 +280,10 @@ valgrind ./double_free
 # ==12345==    by 0x...: main (double_free.c:6)
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 유용한 옵션
 
 ### Memcheck 옵션
@@ -268,6 +313,10 @@ valgrind --leak-check=summary ./myapp
 # 상세 검사 (느림)
 valgrind --leak-check=full --track-origins=yes ./myapp
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 메모리 누수 종류
 
@@ -299,6 +348,10 @@ valgrind --leak-check=full --track-origins=yes ./myapp
 일반적으로 문제 없음
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 억제 파일 (Suppression)
 
 **생성:**
@@ -325,6 +378,10 @@ valgrind --suppressions=myapp.supp ./myapp
 }
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 성능 오버헤드
 
 ```bash
@@ -344,6 +401,10 @@ time valgrind --tool=cachegrind ./myapp
 **권장:**
 - 개발/테스트 환경에서만 사용
 - 프로덕션에서는 사용 금지
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 트러블슈팅
 
@@ -371,6 +432,10 @@ valgrind --show-error-list=yes ./myapp
 # 라이브러리 에러 무시
 valgrind --suppressions=/usr/share/valgrind/default.supp ./myapp
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 실무 팁
 
@@ -412,6 +477,10 @@ grep "definitely lost" valgrind.log
 grep "ERROR SUMMARY" valgrind.log
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 관련 도구
 
 | 도구                 | 용도             |
@@ -421,6 +490,10 @@ grep "ERROR SUMMARY" valgrind.log
 | **LeakSanitizer**    | 누수 검사        |
 | **MemorySanitizer**  | 초기화 검사      |
 | **gdb**              | 소스 디버깅      |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 요약
 

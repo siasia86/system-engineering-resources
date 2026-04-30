@@ -18,6 +18,10 @@ RDBMS 설계, 운영, 최적화 관련 문서 모음.
 | **운영** | [Partition](rdbms_partition.md) | Range/List/Hash 파티셔닝, 프루닝 |
 | **운영** | [Schema Migration](rdbms_schema_migration.md) | pt-osc, gh-ost, 무중단 마이그레이션 |
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 학습 순서
 
 ```

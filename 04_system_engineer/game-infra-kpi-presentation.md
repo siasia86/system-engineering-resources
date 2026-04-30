@@ -14,6 +14,8 @@
 4. [리소스 사용률 (Resource Utilization)](#4-리소스-사용률-resource-utilization)
 5. [보안 지표 (Security Metrics)](#5-보안-지표-security-metrics)
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 1. 서비스 가용성 (Availability)
@@ -185,6 +187,8 @@ systeminfo | findstr "부팅 시간"
 - [Uptime 비율별 허용 다운타임 계산](https://onlineornot.com/uptime-calculator) ★
 - [SLA Uptime 계산기 및 등급별 다운타임 산출](https://devopsprojectshq.com/tools/sla-tool/) ★
 - [SLA Uptime 산출 공식 및 활용 방법](https://deadly.hostingpost.com/) ★
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -471,6 +475,8 @@ sudo mtr --report --report-cycles 10 --tcp --port 443 google.com
 
 
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 3. 동시 접속자 수 (CCU)
@@ -625,6 +631,10 @@ TimeoutSec=infinity
 Restart=on-failure
 RuntimeDirectory=mysqld
 RuntimeDirectoryMode=755
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 아래 부분 수정 후 systemd restart 또는 systemd daemon-reload
 LimitNOFILE=10000
 
@@ -715,6 +725,8 @@ CloudWatch에 커스텀 메트릭을 게시하면 어떤 값이든 스케일링 
 - [200만 CCU 스케일 테스트 사례](https://codewizards.io/case-study/2m-ccu-scale-test/)
 - [Linux 커널 TCP 튜닝 (대규모 동시 접속 처리)](https://cubepath.com/docs/advanced-topics/advanced-tcp-ip-tuning-with-sysctl)
 - [고성능 네트워킹을 위한 Linux 커널 튜닝](https://levelup.gitconnected.com/linux-kernel-tuning-for-high-performance-networking-high-volume-incoming-connections-196e863d458a)
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -833,6 +845,8 @@ du -ah /var/log/ | sort -rh | head -10
 
 ### 4-8. 추가 자료
 - [[개인자료]resource utilization monitoring.md](./resource_utilization_monitoring.md) ★★★
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 5. 보안 지표 (Security Metrics)
@@ -959,6 +973,8 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 
 ### 5-8. DDoS 관련 추가 자료
 - [[개인자료]ASN 운영 및 IDC DDoS 대응 가이드](./asn_and_cloudflare_ddos.md) ★★★
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 종합 대시보드 구성
@@ -968,6 +984,8 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 ![zabbix main page](../98_image/resource-utilization-monitoring/zabbix_main_page.png)
 
 
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 

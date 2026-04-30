@@ -1,5 +1,22 @@
 # LSP (Language Server Protocol) 가이드
 
+## 목차
+
+| 섹션 |
+|------|
+| [1. 개념과 정의](#1-개념과-정의) |
+| [2. 인프라 관련 주요 LSP](#2-인프라-관련-주요-lsp) |
+| [3. 에디터별 LSP 설정](#3-에디터별-lsp-설정) |
+| [4. 주요 팁 정리](#4-주요-팁-정리) |
+| [5. 참고 링크](#5-참고-링크) |
+
+---
+
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 1. 개념과 정의
 
 ### LSP란?
@@ -44,6 +61,8 @@ Emacs  ─┘
 | 오류 진단      | 타입 오류, 미정의 변수 실시간 표시 |
 | 타입 정보      | 커서 위치의 타입/문서 표시         |
 | 심볼 이름 변경 | 코드베이스 전체 일괄 변경          |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -257,6 +276,8 @@ response = ec2.describe_instances(
   pip install boto3-stubs[ec2,s3,iam]
   ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 3. 에디터별 LSP 설정
@@ -291,6 +312,8 @@ require('lspconfig').yamlls.setup{
 require('lspconfig').pyright.setup{}
 require('lspconfig').ansiblels.setup{}
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -329,6 +352,8 @@ require('lspconfig').ansiblels.setup{}
   "pythonVersion": "3.11"
 }
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 

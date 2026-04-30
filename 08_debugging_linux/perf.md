@@ -1,8 +1,36 @@
 # perf - Linux 성능 분석 도구
 
+## 목차
+
+| 섹션 |
+|------|
+| [perf란?](#perf란) |
+| [주요 특징](#주요-특징) |
+| [설치](#설치) |
+| [기본 명령어](#기본-명령어) |
+| [고급 사용법](#고급-사용법) |
+| [실전 예제](#실전-예제) |
+| [성능 메트릭 해석](#성능-메트릭-해석) |
+| [트러블슈팅](#트러블슈팅) |
+| [최적화 팁](#최적화-팁) |
+| [실무 워크플로우](#실무-워크플로우) |
+| [관련 도구](#관련-도구) |
+| [요약](#요약) |
+
+---
+
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## perf란?
 
 **Performance Analysis Tool** - Linux 커널에 내장된 성능 분석 도구로, CPU 프로파일링과 성능 카운터를 사용하여 시스템 성능을 분석합니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 주요 특징
 
@@ -11,6 +39,10 @@
 - 낮은 오버헤드 (1-5%)
 - 샘플링 기반 프로파일링
 - 콜 그래프 지원
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 설치
 
@@ -24,6 +56,10 @@ sudo yum install perf
 # 현재 커널 버전용
 sudo apt-get install linux-tools-$(uname -r)
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 기본 명령어
 
@@ -123,6 +159,10 @@ perf top -K
 perf top -U
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 고급 사용법
 
 ### CPU 프로파일링
@@ -197,6 +237,10 @@ perf record -C 0 sleep 10
 perf record -C 0-2 sleep 10
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 실전 예제
 
 ### 예제 1: 느린 프로그램 분석
@@ -250,6 +294,10 @@ perf record -e probe:function_name ./myapp
 perf script
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 성능 메트릭 해석
 
 ### CPU 사용률
@@ -279,6 +327,10 @@ perf stat -e cache-misses,cache-references ./myapp
 # Miss Rate = cache-misses / cache-references
 # 낮을수록 좋음 (일반적으로 < 5%)
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 트러블슈팅
 
@@ -317,6 +369,10 @@ sudo apt-get install libc6-dbg
 sudo chown $USER perf.data
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 최적화 팁
 
 ### 1. 샘플링 주파수 조정
@@ -349,6 +405,10 @@ perf record --call-graph dwarf,8192 ./myapp
 perf record -m 128 ./myapp
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 실무 워크플로우
 
 ### 성능 문제 진단
@@ -380,6 +440,10 @@ perf stat -r 10 ./myapp_new > after.txt
 diff before.txt after.txt
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 관련 도구
 
 | 도구           | 용도              |
@@ -389,6 +453,10 @@ diff before.txt after.txt
 | **hotspot**    | GUI 프로파일러    |
 | **gprof**      | 함수 프로파일링   |
 | **valgrind**   | 메모리 프로파일링 |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 요약
 

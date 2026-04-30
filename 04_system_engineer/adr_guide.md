@@ -1,6 +1,41 @@
 # ADR (Architecture Decision Record) 가이드
 
+## 목차
+
+| 섹션 |
+|------|
+| [1. ADR 이란](#1-adr-이란) |
+| [2. 디렉토리 구조](#2-디렉토리-구조) |
+| [3. 템플릿](#3-템플릿) |
+| [Context](#context) |
+| [Decision](#decision) |
+| [Alternatives Considered](#alternatives-considered) |
+| [Consequences](#consequences) |
+| [References](#references) |
+| [4. ADR 작성 대상](#4-adr-작성-대상) |
+| [5. 인프라 ADR 예시](#5-인프라-adr-예시) |
+| [Context](#context) |
+| [Decision](#decision) |
+| [Alternatives Considered](#alternatives-considered) |
+| [Consequences](#consequences) |
+| [References](#references) |
+| [Context](#context) |
+| [Decision](#decision) |
+| [Alternatives Considered](#alternatives-considered) |
+| [Consequences](#consequences) |
+| [References](#references) |
+| [6. 작성 규칙](#6-작성-규칙) |
+| [7. 팀 운영](#7-팀-운영) |
+| [8. AI 에이전트와 ADR](#8-ai-에이전트와-adr) |
+| [When triggered](#when-triggered) |
+| [Workflow](#workflow) |
+
+---
+
+
 인프라/시스템 엔지니어링 관점에서 ADR을 작성하고 관리하는 방법을 정리합니다.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -17,6 +52,8 @@ ADR은 중요한 기술 결정을 "왜 그렇게 했는지" 기록하는 경량 
 | "왜 zabbix 쓰지 Prometheus 안 쓰지?" | 회의록 뒤져야 함     | ADR-003에 비교표 있음  |
 | 같은 논의 반복                       | 매번 처음부터        | "ADR-005 참고" 로 종결 |
 | 신규 입사자 온보딩                   | 구전으로 전달        | docs/adr/ 읽으면 됨    |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -46,6 +83,8 @@ project/
 | ADR-003 | 모니터링 스택 선택            | Proposed | 2026-03-20 |
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 3. 템플릿
@@ -60,13 +99,25 @@ project/
 - **Deciders**: 담당자, 참여자
 - **Tags**: infra, network, database, monitoring, security, deploy
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## Context
 
 왜 이 결정이 필요한가? 현재 상황과 문제점을 기술합니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## Decision
 
 무엇을 선택했는가? 핵심 결정 사항을 명확히 기술합니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## Alternatives Considered
 
@@ -75,6 +126,10 @@ project/
 | Option A          |                       |                       |
 | Option B          |                       |                       |
 | Option C          |                       |                       |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## Consequences
 
@@ -86,6 +141,10 @@ project/
 
 ### 리스크
 -
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## References
 
@@ -99,6 +158,8 @@ Proposed → Accepted → (운영 중)
                    ↘ Deprecated (더 이상 유효하지 않음)
                    ↘ Superseded by ADR-NNN (새 결정으로 대체)
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -134,6 +195,8 @@ Proposed → Accepted → (운영 중)
 - [ ] 6개월 후 "왜?" 라고 물을 가능성이 있는가?
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 5. 인프라 ADR 예시
@@ -148,15 +211,27 @@ Proposed → Accepted → (운영 중)
 - **Deciders**: 인프라팀
 - **Tags**: infra, os
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## Context
 
 신규 게임 프로젝트의 서버 OS를 선정해야 합니다.
 기존 CentOS 7 EOL(2024-06)로 대체 OS가 필요합니다.
 게임 서버는 RHEL 계열 의존성이 높고, SELinux 정책 운영 경험이 있습니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## Decision
 
 Rocky Linux 10을 표준 OS로 선정합니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## Alternatives Considered
 
@@ -166,6 +241,10 @@ Rocky Linux 10을 표준 OS로 선정합니다.
 | Ubuntu 24.04 LTS  | 넓은 생태계, 문서 풍부   | RHEL 패키지 호환성 문제   |
 | AlmaLinux 10      | RHEL 호환, 안정적        | Rocky 대비 커뮤니티 작음  |
 | RHEL 10           | 공식 지원                 | 라이선스 비용             |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## Consequences
 
@@ -182,6 +261,10 @@ Rocky Linux 10을 표준 OS로 선정합니다.
 - Rocky Linux 프로젝트 지속성 (CentOS 전례)
   → AlmaLinux를 백업 플랜으로 유지
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## References
 - CentOS EOL 공지: https://blog.centos.org/
 - Rocky Linux 10 릴리스 노트
@@ -197,14 +280,26 @@ Rocky Linux 10을 표준 OS로 선정합니다.
 - **Deciders**: 인프라팀
 - **Tags**: infra, automation
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## Context
 
 수십 대 서버의 설정 관리를 수동으로 하고 있어
 일관성 유지가 어렵고 휴먼 에러가 발생합니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## Decision
 
 Ansible을 Configuration Management 도구로 선정합니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## Alternatives Considered
 
@@ -214,6 +309,10 @@ Ansible을 Configuration Management 도구로 선정합니다.
 | Puppet  | 선언적, 대규모 안정적               | Ruby DSL 학습 비용           |
 | Chef    | 유연한 Ruby 기반                    | 복잡도 높음, 에이전트 필요   |
 | Salt    | 빠른 실행, 이벤트 드리븐            | 커뮤니티 축소 추세           |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## Consequences
 
@@ -229,10 +328,16 @@ Ansible을 Configuration Management 도구로 선정합니다.
 ### 리스크
 - 규모 확장 시 성능 → Mitogen 플러그인 또는 AWX 분산 실행
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## References
 - ADR-001 (Rocky Linux 선정 → RHEL 계열 Ansible 호환성 확인)
 - Ansible 공식 문서: https://docs.ansible.com/
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -257,6 +362,8 @@ Ansible을 Configuration Management 도구로 선정합니다.
 | 사후에 몰아서 작성     | 결정 당시 맥락 왜곡             |
 | Status 업데이트 안 함  | 현재 유효한 결정을 알 수 없음   |
 | 모든 결정을 ADR로 작성 | 노이즈 증가, 중요한 결정이 묻힘 |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -298,6 +405,8 @@ PR 리뷰 시 확인 사항:
 5. 분기별 ADR 인덱스 정리
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 8. AI 에이전트와 ADR
@@ -316,10 +425,18 @@ description: >
 
 # ADR Writer
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## When triggered
 - User compares technology options
 - User asks "why did we choose X?"
 - User requests decision documentation
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## Workflow
 1. Ask for context and constraints

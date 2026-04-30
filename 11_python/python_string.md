@@ -12,6 +12,8 @@
 - [요약](#요약)
 - [실전 예제](#실전-예제)
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 문자열 메서드
@@ -87,6 +89,8 @@ s.strip('! ')   # 'Hello, World' (지정 문자 제거)
 "hello".islower()    # True
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## f-string 포맷팅
@@ -139,6 +143,8 @@ f"{x + y=}"            # 'x + y=30'
 f"{name=!r}"           # "name='홍길동'"
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## format() 메서드
@@ -156,6 +162,8 @@ data = {'name': '홍길동', 'age': 30}
 "{name}은 {age}세".format(**data)
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 슬라이싱
@@ -170,6 +178,8 @@ s[-6:]     # 'orld!'
 s[::2]     # 'Hlo ol!'
 s[::-1]    # '!dlroW ,olleH' (역순)
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -194,6 +204,8 @@ with open('file.txt', 'r', encoding='utf-8') as f:
 b'\xff\xfe'.decode('utf-8', errors='ignore')    # 무시
 b'\xff\xfe'.decode('utf-8', errors='replace')   # '��' 대체
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -226,6 +238,8 @@ text = textwrap.dedent("""\
     두 번째 줄
     세 번째 줄""")
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -273,6 +287,8 @@ print(parts[1])   # 'access.log'
 name = 'access.log'
 stem = name.rsplit('.', 1)[0]  # 'access'
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 

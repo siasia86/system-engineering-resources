@@ -12,6 +12,10 @@
 - [실전 예제](#실전-디버깅-시나리오)
 - [프로덕션 주의사항](#성능-오버헤드-비교)
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 빠른 참조
 
 ```bash
@@ -24,6 +28,10 @@ strace -o output.log ./myapp      # 파일로 저장
 strace -T ./myapp                 # 시간 측정
 strace -f ./myapp                 # 자식 프로세스 포함
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## strace란?
 
@@ -48,11 +56,19 @@ Linux Kernel
 Hardware
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## strace ls 실행
 
 ```bash
 strace ls
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 출력 분석
 
@@ -363,6 +379,10 @@ exit_group(0) = ?
 ```
 - **의미**: 프로그램 정상 종료
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 전체 실행 흐름
 
 ```
@@ -400,6 +420,10 @@ exit_group(0) = ?
    ├─ write() - 파일 목록 출력
    └─ exit_group() - 프로세스 종료
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## strace 유용한 옵션
 
@@ -484,6 +508,10 @@ strace -v ls
 strace -e signal=all ls
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 실용 예제
 
 ### 1. 파일 접근 추적
@@ -521,6 +549,10 @@ strace -e trace=memory ls
 strace -e trace=ipc myapp
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 시스템 콜 카테고리
 
 | 카테고리     | 시스템 콜 예시                         |
@@ -532,6 +564,10 @@ strace -e trace=ipc myapp
 | **IPC**      | pipe, msgget, semget, shmget           |
 | **시그널**   | signal, sigaction, kill, sigprocmask   |
 | **디렉토리** | openat, getdents, mkdir, rmdir         |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 트러블슈팅
 
@@ -562,6 +598,10 @@ strace -b ls
 strace -f bash -c "ls | grep test"
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## strace 내부 동작
 
 **strace는 어떻게 작동하나?**
@@ -578,6 +618,10 @@ strace -f bash -c "ls | grep test"
    - SIGTRAP 시그널 사용
    - 프로세스 상태 확인
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 제한사항
 
 **strace가 추적하지 못하는 것:**
@@ -592,6 +636,10 @@ strace -f bash -c "ls | grep test"
    - vDSO (virtual Dynamic Shared Object)
    - 일부 시스템 콜은 커널 진입 없이 실행
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 관련 도구
 
 | 도구         | 용도                 |
@@ -601,6 +649,10 @@ strace -f bash -c "ls | grep test"
 | **ftrace**   | 커널 함수 추적       |
 | **bpftrace** | eBPF 기반 추적       |
 | **lsof**     | 열린 파일 확인       |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 실무 활용
 
@@ -629,6 +681,10 @@ strace -e trace=file myapp 2>&1 | grep EACCES
 strace -e trace=memory myapp
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 요약
 
 **strace ls는 다음을 보여줍니다:**
@@ -651,6 +707,10 @@ strace -e trace=memory myapp
 - 성능 병목 찾기
 - 시스템 콜 에러 확인
 - 프로그램 동작 이해
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## ltrace vs strace 실전 선택 가이드
 
@@ -712,6 +772,10 @@ strace -e trace=network myapp
 strace -tt -T myapp > strace.log
 ltrace -tt -T myapp > ltrace.log
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 실전 디버깅 시나리오
 
@@ -834,6 +898,10 @@ sudo chmod 666 /var/log/myapp.log
 # 로그를 /tmp나 홈 디렉토리에 저장
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 성능 오버헤드 비교
 
 ### 실행 시간 비교
@@ -857,6 +925,10 @@ time strace ls -R /usr > /dev/null 2>&1
 - **strace**: 5-10배 느림 (시스템 콜마다 중단)
 - **프로덕션**: 짧은 시간만 사용 권장
 - **개발/테스트**: 자유롭게 사용
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 자주 발생하는 문제와 해결책
 
@@ -944,6 +1016,10 @@ strace -o output.log myapp
 unbuffer strace myapp | tee output.log
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 에러 코드 해석 가이드
 
 ### 파일 관련 에러
@@ -980,6 +1056,10 @@ unbuffer strace myapp | tee output.log
 | **ETIMEDOUT**    | Connection timed out   | 네트워크/방화벽 확인 |
 | **ENETUNREACH**  | Network is unreachable | 라우팅 확인          |
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 전체 출력 예시
 
 ### strace ls 전체 흐름 (요약)
@@ -1008,6 +1088,10 @@ write(1, "file1\nfile2\nfile3\n", 18) = 18
 exit_group(0) = ?
 +++ exited with 0 +++
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 고급 활용 팁
 
@@ -1047,6 +1131,10 @@ strace -T myapp 2>&1 | awk '$NF > 0.1'
 strace -e trace=file -p $(pgrep myapp) 2>&1 | grep --line-buffered openat
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 추가 학습 자료
 
 **공식 문서:**
@@ -1065,6 +1153,8 @@ strace -e trace=file -p $(pgrep myapp) 2>&1 | grep --line-buffered openat
 - strace GitHub: https://github.com/strace/strace
 - Linux man pages: https://man7.org/
 - System call table: https://syscalls.kernelgrok.com/
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -1102,6 +1192,8 @@ timeout 300 strace -o /tmp/trace.log -p <PID>
 # 4. 로그 크기 제한
 strace -o /tmp/trace.log -s 128 -p <PID>
 ```
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
