@@ -248,6 +248,8 @@ aws s3 cp test.txt s3://b-account-bucket/test.txt --region us-east-1
 
 ---
 
+**작성일**: 2026-04-08
+
 **마지막 업데이트**: 2026-04-11
 
 © 2026 siasia86. Licensed under CC BY 4.0.
