@@ -186,8 +186,8 @@ Restic 후: 200GB/월
 ### 3. BorgBackup
 
 #### 장점
-- ✅ **최고 성능** (가장 빠른 백업/복원)
-- ✅ **최고 중복 제거** (chunk-level)
+- ✅ **빠른 백업/복원 속도**
+- ✅ **chunk-level 중복 제거**
 - ✅ **강력한 압축** (lz4, zstd, lzma)
 - ✅ **암호화 + 압축** 동시 지원
 - ✅ **원자적 백업** (중단되어도 안전)
@@ -388,7 +388,7 @@ CPU: ██████░░░░ 8%
 | 기능          | AWS CLI | Restic | BorgBackup | Rclone  | Duplicity | rsync  | Fluent Bit |
 |---------------|---------|--------|------------|---------|-----------|--------|------------|
 | **스냅샷**    | ❌      | ✅     | ✅         | ❌      | ✅        | ❌     | ❌         |
-| **중복 제거** | ❌      | ✅     | ✅ 최고    | ❌      | ❌        | ❌     | ❌         |
+| **중복 제거** | ❌      | ✅     | ✅ chunk-level    | ❌      | ❌        | ❌     | ❌         |
 | **압축**      | ❌      | 제한적 | ✅ 강력    | ❌      | ✅        | 제한적 | ✅         |
 | **암호화**    | 서버측  | ✅     | ✅         | ✅      | ✅ GPG    | SSH    | TLS        |
 | **클라우드**  | S3만    | ✅     | ❌         | ✅ 최다 | ✅        | ❌     | ✅         |
@@ -434,7 +434,7 @@ aws s3 sync /var/log s3://bucket/realtime/
 rclone mount s3:bucket /mnt/s3 &
 borg create /mnt/s3::backup-{now} /data
 
-# 최고 압축률 + 중복 제거
+# 높은 압축률 + 중복 제거
 # 비용 절감: 90%+
 ```
 
@@ -450,13 +450,13 @@ restic -r s3:bucket backup /data
 
 ### 3. 로컬 NAS 백업
 
-#### 최고 성능 필요
+#### 고성능 필요
 ```bash
 # BorgBackup
 borg create /mnt/nas/backup::daily-{now} /home
 
 # 가장 빠른 속도
-# 최고 압축률
+# 높은 압축률
 ```
 
 #### 간단한 백업
@@ -529,7 +529,7 @@ restic -r /mnt/backup backup ~
 # BorgBackup (Linux/Mac)
 borg create /mnt/backup::dev-{now} ~
 
-# 최고 속도
+# 빠른 속도
 ```
 
 ---
@@ -673,7 +673,7 @@ aws cloudwatch put-metric-data \
 | 용도                | 추천 도구        | 이유               |
 |---------------------|------------------|--------------------|
 | **클라우드 백업**   | Restic           | 기능 + 편의성 균형 |
-| **로컬 백업**       | BorgBackup       | 최고 성능          |
+| **로컬 백업**       | BorgBackup       | 빠른 성능          |
 | **클라우드 동기화** | Rclone           | 최다 지원          |
 | **단순 전송**       | AWS CLI          | 최소 리소스        |
 | **게임 서버**       | AWS CLI + Restic | 하이브리드         |
@@ -910,7 +910,7 @@ export RESTIC_CACHE_DIR=/ssd/restic-cache
 # 압축 알고리즘 선택
 borg create --compression lz4 /backup::data /data      # 빠름
 borg create --compression zstd,3 /backup::data /data   # 균형
-borg create --compression lzma,6 /backup::data /data   # 최고 압축
+borg create --compression lzma,6 /backup::data /data   # 높은 압축률
 
 # SSH 압축 비활성화 (이미 압축된 경우)
 borg create -e ssh user@server:/backup::data /data

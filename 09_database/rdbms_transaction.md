@@ -62,7 +62,7 @@ COMMIT;
 
 | 격리 수준 | Dirty Read | Non-Repeatable Read | Phantom Read | 성능 |
 |-----------|:----------:|:-------------------:|:------------:|------|
-| READ UNCOMMITTED | ✅ 발생 | ✅ 발생 | ✅ 발생 | 최고 |
+| READ UNCOMMITTED | ✅ 발생 | ✅ 발생 | ✅ 발생 | 가장 높음 |
 | READ COMMITTED | ❌ 방지 | ✅ 발생 | ✅ 발생 | 높음 |
 | REPEATABLE READ | ❌ 방지 | ❌ 방지 | ✅ 발생 (InnoDB는 방지) | 중간 |
 | SERIALIZABLE | ❌ 방지 | ❌ 방지 | ❌ 방지 | 최저 |
