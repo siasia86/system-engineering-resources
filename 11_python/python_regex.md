@@ -355,3 +355,22 @@ def mask_sensitive(text):
 - [문자열 처리](./python_string.md) - 문자열 메서드
 - [파일 입출력](./python_file_io.md) - 파일 읽기
 - [로깅](./python_logging.md) - 로그 처리
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-04-20
+
+**마지막 업데이트**: 2026-04-20
+
+© 2026 siasia86. Licensed under CC BY 4.0.

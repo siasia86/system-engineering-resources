@@ -85,3 +85,21 @@ docker compose up -d
 - 네트워크 확인: `docker network inspect <project>_default`
 - 컨테이너 연결 테스트: `docker compose exec <서비스> ping <다른서비스>`
 
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-03-25
+
+**마지막 업데이트**: 2026-03-25
+
+© 2026 siasia86. Licensed under CC BY 4.0.
