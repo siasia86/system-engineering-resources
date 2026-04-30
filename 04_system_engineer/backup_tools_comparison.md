@@ -973,20 +973,20 @@ rclone sync /data remote: --buffer-size 256M
 ## 참고 자료
 
 ### 공식 문서
-- [Restic 공식 문서](https://restic.readthedocs.io/)
-- [BorgBackup 공식 문서](https://borgbackup.readthedocs.io/)
-- [Rclone 공식 문서](https://rclone.org/docs/)
-- [AWS CLI S3 명령어](https://docs.aws.amazon.com/cli/latest/reference/s3/)
+- [Restic 공식 문서](https://restic.readthedocs.io/) — ★★☆☆☆
+- [BorgBackup 공식 문서](https://borgbackup.readthedocs.io/) — ★★☆☆☆
+- [Rclone 공식 문서](https://rclone.org/docs/) — ★★☆☆☆
+- [AWS CLI S3 명령어](https://docs.aws.amazon.com/cli/latest/reference/s3/) — ★★★☆☆
 
 ### 커뮤니티
-- [Restic Forum](https://forum.restic.net/)
-- [BorgBackup GitHub](https://github.com/borgbackup/borg)
-- [Rclone Forum](https://forum.rclone.org/)
+- [Restic Forum](https://forum.restic.net/) — ★★☆☆☆
+- [BorgBackup GitHub](https://github.com/borgbackup/borg) — ★★☆☆☆
+- [Rclone Forum](https://forum.rclone.org/) — ★★☆☆☆
 
 ### 관련 도구
-- [Fluent Bit](https://fluentbit.io/) - 로그 수집기
-- [Autorestic](https://autorestic.vercel.app/) - Restic 래퍼
-- [Borgmatic](https://torsion.org/borgmatic/) - BorgBackup 래퍼
+- [Fluent Bit](https://fluentbit.io/) - 로그 수집기 — ★★☆☆☆
+- [Autorestic](https://autorestic.vercel.app/) - Restic 래퍼 — ★★☆☆☆
+- [Borgmatic](https://torsion.org/borgmatic/) - BorgBackup 래퍼 — ★★☆☆☆
 
 ---
 

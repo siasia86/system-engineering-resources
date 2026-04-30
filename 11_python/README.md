@@ -216,8 +216,8 @@ logging.info("작업 시작")
 
 ## 참고 자료
 
-- Python Documentation: [docs.python.org](https://docs.python.org/3/)
-- Python Tutorial: [Python Tutorial](https://docs.python.org/3/tutorial/index.html)
+- Python Documentation: [docs.python.org](https://docs.python.org/3/) — ★★★☆☆
+- Python Tutorial: [Python Tutorial](https://docs.python.org/3/tutorial/index.html) — ★★★☆☆
 
 ---
 

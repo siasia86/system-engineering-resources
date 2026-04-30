@@ -248,7 +248,7 @@ def heap_sort(arr):
 ## 참고 자료
 
 - Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
-- Python Documentation: [heapq](https://docs.python.org/3/library/heapq.html)
+- Python Documentation: [heapq](https://docs.python.org/3/library/heapq.html) — ★★★☆☆
 
 ---
 

@@ -42,9 +42,9 @@ RDBMS 설계, 운영, 최적화 관련 문서 모음.
 
 ## 참고 자료
 
-- MySQL Documentation: [dev.mysql.com](https://dev.mysql.com/doc/refman/8.0/en/)
-- PostgreSQL Documentation: [postgresql.org/docs](https://www.postgresql.org/docs/current/)
-- Use The Index, Luke: [use-the-index-luke.com](https://use-the-index-luke.com/)
+- MySQL Documentation: [dev.mysql.com](https://dev.mysql.com/doc/refman/8.0/en/) — ★★★☆☆
+- PostgreSQL Documentation: [postgresql.org/docs](https://www.postgresql.org/docs/current/) — ★★★☆☆
+- Use The Index, Luke: [use-the-index-luke.com](https://use-the-index-luke.com/) — ★★★☆☆
 
 ---
 

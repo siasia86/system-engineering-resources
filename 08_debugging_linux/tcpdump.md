@@ -607,8 +607,8 @@ sudo tcpdump -r capture.pcap -w capture.pcapng
 
 ## 참고 자료
 
-- tcpdump Manual: [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html)
-- tcpdump Filters: [tcpdump.org](https://www.tcpdump.org/manpages/pcap-filter.7.html)
+- tcpdump Manual: [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) — ★★☆☆☆
+- tcpdump Filters: [tcpdump.org](https://www.tcpdump.org/manpages/pcap-filter.7.html) — ★★☆☆☆
 
 ---
 

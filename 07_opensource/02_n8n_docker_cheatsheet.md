@@ -134,8 +134,8 @@ docker compose up -d
 
 ## 참고 자료
 
-- n8n Documentation: [docs.n8n.io](https://docs.n8n.io/)
-- n8n Docker Installation: [docs.n8n.io/hosting/installation/docker](https://docs.n8n.io/hosting/installation/docker/)
+- n8n Documentation: [docs.n8n.io](https://docs.n8n.io/) — ★★☆☆☆
+- n8n Docker Installation: [docs.n8n.io/hosting/installation/docker](https://docs.n8n.io/hosting/installation/docker/) — ★★☆☆☆
 
 ---
 

@@ -1299,8 +1299,8 @@ SE → IT Manager
 
 ## 참고 자료
 
-- roadmap.sh DevOps: [roadmap.sh/devops](https://roadmap.sh/devops)
-- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/)
+- roadmap.sh DevOps: [roadmap.sh/devops](https://roadmap.sh/devops) — ★★★☆☆
+- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/) — ★★★☆☆
 
 ---
 

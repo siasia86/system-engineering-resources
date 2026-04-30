@@ -392,8 +392,8 @@ END;
 
 ## 참고 자료
 
-- MySQL Documentation: [Stored Procedures](https://dev.mysql.com/doc/refman/8.0/en/stored-programs-defining.html)
-- PostgreSQL Documentation: [PL/pgSQL](https://www.postgresql.org/docs/current/plpgsql.html)
+- MySQL Documentation: [Stored Procedures](https://dev.mysql.com/doc/refman/8.0/en/stored-programs-defining.html) — ★★★☆☆
+- PostgreSQL Documentation: [PL/pgSQL](https://www.postgresql.org/docs/current/plpgsql.html) — ★★★☆☆
 - Oracle Documentation: PL/SQL Stored Procedures
 
 ---

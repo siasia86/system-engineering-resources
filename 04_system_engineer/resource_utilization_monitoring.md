@@ -369,8 +369,8 @@ zabbix → 30% (10:00에 수집했다면) 또는 95% (10:03에 수집했다면)
 
 ## 참고 자료
 
-- Linux man pages: [man7.org](https://man7.org/linux/man-pages/)
-- Brendan Gregg - Linux Performance: [brendangregg.com](https://www.brendangregg.com/linuxperf.html)
+- Linux man pages: [man7.org](https://man7.org/linux/man-pages/) — ★★☆☆☆
+- Brendan Gregg - Linux Performance: [brendangregg.com](https://www.brendangregg.com/linuxperf.html) — ★★★☆☆
 
 ---
 

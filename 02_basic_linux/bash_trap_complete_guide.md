@@ -1615,8 +1615,8 @@ done
 
 ## 참고 자료
 
-- GNU Bash Manual - Signals: [bash.info](https://www.gnu.org/software/bash/manual/bash.html#Signals)
-- Linux man pages - signal: [man7.org](https://man7.org/linux/man-pages/man7/signal.7.html)
+- GNU Bash Manual - Signals: [bash.info](https://www.gnu.org/software/bash/manual/bash.html#Signals) — ★★★☆☆
+- Linux man pages - signal: [man7.org](https://man7.org/linux/man-pages/man7/signal.7.html) — ★★☆☆☆
 
 ---
 

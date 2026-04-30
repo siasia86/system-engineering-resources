@@ -247,8 +247,8 @@ SELECT * FROM inventory WHERE product_id = 1 FOR SHARE;
 
 ## 참고 자료
 
-- MySQL Documentation: [InnoDB Transaction Model](https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-model.html)
-- PostgreSQL Documentation: [Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
+- MySQL Documentation: [InnoDB Transaction Model](https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-model.html) — ★★★☆☆
+- PostgreSQL Documentation: [Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html) — ★★★☆☆
 - RFC 그 외: Bernstein, Philip A. "Concurrency Control and Recovery in Database Systems"
 
 ---

@@ -104,8 +104,8 @@ main "$@"
 
 ## 참고 자료
 
-- GNU Bash Manual: [bash.info](https://www.gnu.org/software/bash/manual/bash.html)
-- Linux man pages: [man7.org](https://man7.org/linux/man-pages/)
+- GNU Bash Manual: [bash.info](https://www.gnu.org/software/bash/manual/bash.html) — ★★★☆☆
+- Linux man pages: [man7.org](https://man7.org/linux/man-pages/) — ★★☆☆☆
 
 ---
 

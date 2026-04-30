@@ -550,7 +550,7 @@ done
 
 ## 참고 자료
 
-- Linux man pages - lsof: [man7.org](https://man7.org/linux/man-pages/man8/lsof.8.html)
+- Linux man pages - lsof: [man7.org](https://man7.org/linux/man-pages/man8/lsof.8.html) — ★★☆☆☆
 
 ---
 

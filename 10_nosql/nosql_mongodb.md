@@ -410,9 +410,9 @@ db.orders.stats();
 
 ## 참고 자료
 
-- MongoDB Documentation: [docs.mongodb.com](https://www.mongodb.com/docs/)
-- MongoDB Aggregation: [Aggregation Pipeline](https://www.mongodb.com/docs/manual/core/aggregation-pipeline/)
-- MongoDB Schema Design: [Schema Design Patterns](https://www.mongodb.com/blog/post/building-with-patterns-a-summary)
+- MongoDB Documentation: [docs.mongodb.com](https://www.mongodb.com/docs/) — ★★☆☆☆
+- MongoDB Aggregation: [Aggregation Pipeline](https://www.mongodb.com/docs/manual/core/aggregation-pipeline/) — ★★☆☆☆
+- MongoDB Schema Design: [Schema Design Patterns](https://www.mongodb.com/blog/post/building-with-patterns-a-summary) — ★★☆☆☆
 
 ---
 

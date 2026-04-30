@@ -296,9 +296,9 @@ GROUP BY 1;
 
 ## 참고 자료
 
-- PostgreSQL Documentation: [CREATE VIEW](https://www.postgresql.org/docs/current/sql-createview.html)
-- PostgreSQL Documentation: [CREATE MATERIALIZED VIEW](https://www.postgresql.org/docs/current/sql-creatematerializedview.html)
-- MySQL Documentation: [CREATE VIEW Statement](https://dev.mysql.com/doc/refman/8.0/en/create-view.html)
+- PostgreSQL Documentation: [CREATE VIEW](https://www.postgresql.org/docs/current/sql-createview.html) — ★★★☆☆
+- PostgreSQL Documentation: [CREATE MATERIALIZED VIEW](https://www.postgresql.org/docs/current/sql-creatematerializedview.html) — ★★★☆☆
+- MySQL Documentation: [CREATE VIEW Statement](https://dev.mysql.com/doc/refman/8.0/en/create-view.html) — ★★★☆☆
 - Oracle Documentation: Materialized Views
 
 ---

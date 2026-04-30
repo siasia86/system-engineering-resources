@@ -287,9 +287,9 @@ START REPLICA;
 
 ## 참고 자료
 
-- MySQL Documentation: [Replication](https://dev.mysql.com/doc/refman/8.0/en/replication.html)
-- MySQL Documentation: [GTID-Based Replication](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html)
-- AWS Documentation: [RDS Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html)
+- MySQL Documentation: [Replication](https://dev.mysql.com/doc/refman/8.0/en/replication.html) — ★★★☆☆
+- MySQL Documentation: [GTID-Based Replication](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html) — ★★★☆☆
+- AWS Documentation: [RDS Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html) — ★★★☆☆
 
 ---
 

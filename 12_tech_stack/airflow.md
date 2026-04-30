@@ -805,8 +805,8 @@ airflow tasks states-for-dag-run my_dag manual__2026-04-27T00:00:00+00:00
 
 ## 참고 자료
 
-- Apache Airflow Documentation: [airflow.apache.org](https://airflow.apache.org/docs/)
-- Airflow Concepts: [Concepts](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/index.html)
+- Apache Airflow Documentation: [airflow.apache.org](https://airflow.apache.org/docs/) — ★★★☆☆
+- Airflow Concepts: [Concepts](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/index.html) — ★★★☆☆
 
 ---
 

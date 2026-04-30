@@ -278,7 +278,7 @@ $ python sysadmin.py disk -t 80
 
 ## 참고 자료
 
-- Python Documentation: [argparse](https://docs.python.org/3/library/argparse.html)
+- Python Documentation: [argparse](https://docs.python.org/3/library/argparse.html) — ★★★☆☆
 
 ---
 

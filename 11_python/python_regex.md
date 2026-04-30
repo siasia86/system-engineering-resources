@@ -374,8 +374,8 @@ def mask_sensitive(text):
 
 ## 참고 자료
 
-- Python Documentation: [re](https://docs.python.org/3/library/re.html)
-- Python Regex HOWTO: [Regular Expression HOWTO](https://docs.python.org/3/howto/regex.html)
+- Python Documentation: [re](https://docs.python.org/3/library/re.html) — ★★★☆☆
+- Python Regex HOWTO: [Regular Expression HOWTO](https://docs.python.org/3/howto/regex.html) — ★★★☆☆
 
 ---
 

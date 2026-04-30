@@ -580,9 +580,9 @@ profile:hz:999 # 높은 주파수 (높은 정확도)
 
 ## 참고 자료
 
-- bpftrace GitHub: [bpftrace](https://github.com/bpftrace/bpftrace)
-- bpftrace Reference Guide: [bpftrace reference](https://github.com/bpftrace/bpftrace/blob/master/docs/reference_guide.md)
-- Brendan Gregg - BPF Performance Tools: [brendangregg.com](https://www.brendangregg.com/bpf-performance-tools-book.html)
+- bpftrace GitHub: [bpftrace](https://github.com/bpftrace/bpftrace) — ★★☆☆☆
+- bpftrace Reference Guide: [bpftrace reference](https://github.com/bpftrace/bpftrace/blob/master/docs/reference_guide.md) — ★★☆☆☆
+- Brendan Gregg - BPF Performance Tools: [brendangregg.com](https://www.brendangregg.com/bpf-performance-tools-book.html) — ★★★☆☆
 
 ---
 

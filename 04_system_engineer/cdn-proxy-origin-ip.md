@@ -696,8 +696,8 @@ LIMIT 20;
 
 ## 참고 자료
 
-- Cloudflare IP Ranges: [cloudflare.com](https://www.cloudflare.com/ips/)
-- RFC 7239: Forwarded HTTP Extension: [RFC 7239](https://datatracker.ietf.org/doc/html/rfc7239)
+- Cloudflare IP Ranges: [cloudflare.com](https://www.cloudflare.com/ips/) — ★★☆☆☆
+- RFC 7239: Forwarded HTTP Extension: [RFC 7239](https://datatracker.ietf.org/doc/html/rfc7239) — ★★☆☆☆
 
 ---
 

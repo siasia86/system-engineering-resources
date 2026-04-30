@@ -111,34 +111,34 @@ SRE 핵심 역량
 
 ### 로드맵 & 커리어
 
-- roadmap.sh DevOps: [roadmap.sh/devops](https://roadmap.sh/devops) — ★★★★★
-- roadmap.sh SRE: [roadmap.sh/sre](https://roadmap.sh/sre) — ★★☆☆☆
-- roadmap.sh System Design: [roadmap.sh/system-design](https://roadmap.sh/system-design) — ★★★★☆
-- roadmap.sh Linux: [roadmap.sh/linux](https://roadmap.sh/linux) — ★★★★★
+- roadmap.sh DevOps: [roadmap.sh/devops](https://roadmap.sh/devops) — ★★★☆☆
+- roadmap.sh SRE: [roadmap.sh/sre](https://roadmap.sh/sre) — ★☆☆☆☆
+- roadmap.sh System Design: [roadmap.sh/system-design](https://roadmap.sh/system-design) — ★★★☆☆
+- roadmap.sh Linux: [roadmap.sh/linux](https://roadmap.sh/linux) — ★★★☆☆
 
 ### SRE & 운영
 
-- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/) — ★★★★★
-- Google SRE Workbook: [sre.google/workbook](https://sre.google/workbook/table-of-contents/) — ★★☆☆☆
-- The Phoenix Project (책): Kim, Gene et al. "The Phoenix Project" — ★★★★★
+- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/) — ★★★☆☆
+- Google SRE Workbook: [sre.google/workbook](https://sre.google/workbook/table-of-contents/) — ★★★☆☆
+- The Phoenix Project (책): Kim, Gene et al. "The Phoenix Project" — ★★☆☆☆
 - The DevOps Handbook (책): Kim, Gene et al. "The DevOps Handbook" — ★★☆☆☆
 
 ### 인프라 & 클라우드
 
-- AWS Architecture Center: [aws.amazon.com/architecture](https://aws.amazon.com/architecture/) — ★★★☆☆
-- AWS Well-Architected Framework: [docs.aws.amazon.com/wellarchitected](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) — ★★★★☆
-- Terraform Documentation: [developer.hashicorp.com/terraform](https://developer.hashicorp.com/terraform/docs) — ★★★☆☆
+- AWS Architecture Center: [aws.amazon.com/architecture](https://aws.amazon.com/architecture/) — ★★☆☆☆
+- AWS Well-Architected Framework: [docs.aws.amazon.com/wellarchitected](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) — ★★★☆☆
+- Terraform Documentation: [developer.hashicorp.com/terraform](https://developer.hashicorp.com/terraform/docs) — ★★☆☆☆
 
 ### 시스템 설계
 
-- System Design Primer: [github.com/donnemartin](https://github.com/donnemartin/system-design-primer) — ★★★★★
-- High Scalability: [highscalability.com](http://highscalability.com/) — ★★★☆☆
+- System Design Primer: [github.com/donnemartin](https://github.com/donnemartin/system-design-primer) — ★★★☆☆
+- High Scalability: [highscalability.com](http://highscalability.com/) — ★★☆☆☆
 
 ### 모니터링 & 성능
 
-- Brendan Gregg - Linux Performance: [brendangregg.com](https://www.brendangregg.com/linuxperf.html) — ★★★★★
-- USE Method: [brendangregg.com/usemethod](https://www.brendangregg.com/usemethod.html) — ★★★★☆
-- Prometheus Documentation: [prometheus.io/docs](https://prometheus.io/docs/introduction/overview/) — ★★★★☆
+- Brendan Gregg - Linux Performance: [brendangregg.com](https://www.brendangregg.com/linuxperf.html) — ★★★☆☆
+- USE Method: [brendangregg.com/usemethod](https://www.brendangregg.com/usemethod.html) — ★★★☆☆
+- Prometheus Documentation: [prometheus.io/docs](https://prometheus.io/docs/introduction/overview/) — ★★☆☆☆
 
 
 ---

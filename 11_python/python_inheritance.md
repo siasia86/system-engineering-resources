@@ -1294,7 +1294,7 @@ class Child(Parent):
 
 ## 참고 자료
 
-- Python Documentation: [Inheritance](https://docs.python.org/3/tutorial/classes.html#inheritance)
+- Python Documentation: [Inheritance](https://docs.python.org/3/tutorial/classes.html#inheritance) — ★★★☆☆
 
 ---
 

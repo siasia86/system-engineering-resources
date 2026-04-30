@@ -918,8 +918,8 @@ Security (선택, 고가치)
 
 ## 참고 자료
 
-- roadmap.sh: [roadmap.sh](https://roadmap.sh/)
-- TIOBE Index: [tiobe.com](https://www.tiobe.com/tiobe-index/)
+- roadmap.sh: [roadmap.sh](https://roadmap.sh/) — ★★★☆☆
+- TIOBE Index: [tiobe.com](https://www.tiobe.com/tiobe-index/) — ★★☆☆☆
 
 ---
 

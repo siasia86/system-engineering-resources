@@ -324,9 +324,9 @@ WHERE table_name = 'orders';
 
 ## 참고 자료
 
-- Percona pt-online-schema-change: [percona.com](https://docs.percona.com/percona-toolkit/pt-online-schema-change.html)
-- gh-ost GitHub: [gh-ost](https://github.com/github/gh-ost)
-- MySQL Documentation: [Online DDL Operations](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html)
+- Percona pt-online-schema-change: [percona.com](https://docs.percona.com/percona-toolkit/pt-online-schema-change.html) — ★★★☆☆
+- gh-ost GitHub: [gh-ost](https://github.com/github/gh-ost) — ★★☆☆☆
+- MySQL Documentation: [Online DDL Operations](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html) — ★★★☆☆
 
 ---
 

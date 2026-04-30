@@ -915,7 +915,7 @@ ltrace -c -p <PID>
 
 ## 참고 자료
 
-- ltrace man page: [man7.org](https://man7.org/linux/man-pages/man1/ltrace.1.html)
+- ltrace man page: [man7.org](https://man7.org/linux/man-pages/man1/ltrace.1.html) — ★★☆☆☆
 
 ---
 

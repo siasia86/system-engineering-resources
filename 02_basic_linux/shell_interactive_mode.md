@@ -317,8 +317,8 @@ sudo rm /etc/profile.d/my_setting.sh
 
 ## 참고 자료
 
-- GNU Bash Manual - Interactive Shells: [bash.info](https://www.gnu.org/software/bash/manual/bash.html#Interactive-Shells)
-- Linux man pages - bash: [man7.org](https://man7.org/linux/man-pages/man1/bash.1.html)
+- GNU Bash Manual - Interactive Shells: [bash.info](https://www.gnu.org/software/bash/manual/bash.html#Interactive-Shells) — ★★★☆☆
+- Linux man pages - bash: [man7.org](https://man7.org/linux/man-pages/man1/bash.1.html) — ★★☆☆☆
 
 ---
 

@@ -269,8 +269,8 @@ config = load_config('prd')
 
 ## 참고 자료
 
-- Python Documentation: [json](https://docs.python.org/3/library/json.html)
-- PyYAML Documentation: [pyyaml.org](https://pyyaml.org/wiki/PyYAMLDocumentation)
+- Python Documentation: [json](https://docs.python.org/3/library/json.html) — ★★★☆☆
+- PyYAML Documentation: [pyyaml.org](https://pyyaml.org/wiki/PyYAMLDocumentation) — ★★☆☆☆
 
 ---
 

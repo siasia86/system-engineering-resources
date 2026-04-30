@@ -1079,9 +1079,9 @@ Kernel:      Linux Kernel (기반)
 
 ## 참고 자료
 
-- OCI Runtime Specification: [opencontainers.org](https://opencontainers.org/)
-- Linux Namespaces: [man7.org](https://man7.org/linux/man-pages/man7/namespaces.7.html)
-- Linux Cgroups: [kernel.org](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html)
+- OCI Runtime Specification: [opencontainers.org](https://opencontainers.org/) — ★★☆☆☆
+- Linux Namespaces: [man7.org](https://man7.org/linux/man-pages/man7/namespaces.7.html) — ★★☆☆☆
+- Linux Cgroups: [kernel.org](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html) — ★★☆☆☆
 
 ---
 

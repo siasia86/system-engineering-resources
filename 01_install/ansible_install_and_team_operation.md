@@ -638,8 +638,8 @@ git push -u origin main
 
 ## 참고 자료
 
-- Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/)
-- Ansible Installation Guide: [Installing Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html)
+- Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/) — ★★★☆☆
+- Ansible Installation Guide: [Installing Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html) — ★★★☆☆
 
 ---
 

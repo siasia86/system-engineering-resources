@@ -215,7 +215,7 @@ class HashTable:
 ## 참고 자료
 
 - Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
-- Python Documentation: [dict](https://docs.python.org/3/library/stdtypes.html#mapping-types-dict)
+- Python Documentation: [dict](https://docs.python.org/3/library/stdtypes.html#mapping-types-dict) — ★★★☆☆
 
 ---
 

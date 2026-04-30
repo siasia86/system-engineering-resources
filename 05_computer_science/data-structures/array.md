@@ -184,7 +184,7 @@ def rotate(nums, k):
 ## 참고 자료
 
 - Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
-- Python Documentation: [list](https://docs.python.org/3/tutorial/datastructures.html)
+- Python Documentation: [list](https://docs.python.org/3/tutorial/datastructures.html) — ★★★☆☆
 
 ---
 

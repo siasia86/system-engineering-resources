@@ -461,7 +461,7 @@ def find_product():
 
 ## 참고 자료
 
-- Python Documentation: [Control Flow](https://docs.python.org/3/tutorial/controlflow.html)
+- Python Documentation: [Control Flow](https://docs.python.org/3/tutorial/controlflow.html) — ★★★☆☆
 
 ---
 

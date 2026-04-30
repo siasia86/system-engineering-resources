@@ -500,7 +500,7 @@ export PYTHONPYCACHEPREFIX=/tmp/pycache
 
 ## 참고 자료
 
-- Python Documentation: [Data Model](https://docs.python.org/3/reference/datamodel.html)
+- Python Documentation: [Data Model](https://docs.python.org/3/reference/datamodel.html) — ★★★☆☆
 
 ---
 

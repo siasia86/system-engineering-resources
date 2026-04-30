@@ -256,12 +256,12 @@ Sharding (수평 확장)
 
 ## 참고 자료
 
-- roadmap.sh DBA: [roadmap.sh/postgresql-dba](https://roadmap.sh/postgresql-dba) — ★★★★★
-- Use The Index, Luke: [use-the-index-luke.com](https://use-the-index-luke.com/) — ★★★★★
-- Percona Blog: [percona.com/blog](https://www.percona.com/blog/) — ★★★★☆
-- Planet MySQL: [planet.mysql.com](https://planet.mysql.com/) — ★★★☆☆
-- PostgreSQL Documentation: [postgresql.org/docs](https://www.postgresql.org/docs/current/) — ★★★★☆
-- AWS Database Blog: [aws.amazon.com/blogs/database](https://aws.amazon.com/blogs/database/) — ★★★☆☆
+- roadmap.sh DBA: [roadmap.sh/postgresql-dba](https://roadmap.sh/postgresql-dba) — ★★★☆☆
+- Use The Index, Luke: [use-the-index-luke.com](https://use-the-index-luke.com/) — ★★★☆☆
+- Percona Blog: [percona.com/blog](https://www.percona.com/blog/) — ★★☆☆☆
+- Planet MySQL: [planet.mysql.com](https://planet.mysql.com/) — ★★☆☆☆
+- PostgreSQL Documentation: [postgresql.org/docs](https://www.postgresql.org/docs/current/) — ★★★☆☆
+- AWS Database Blog: [aws.amazon.com/blogs/database](https://aws.amazon.com/blogs/database/) — ★★☆☆☆
 
 ---
 

@@ -237,7 +237,7 @@ def middle(head):
 ## 참고 자료
 
 - Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
-- Python Documentation: [collections.deque](https://docs.python.org/3/library/collections.html#collections.deque)
+- Python Documentation: [collections.deque](https://docs.python.org/3/library/collections.html#collections.deque) — ★★★☆☆
 
 ---
 

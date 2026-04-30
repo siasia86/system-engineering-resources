@@ -204,7 +204,7 @@ FOR EACH ROW
 
 - Codd, E.F. "A Relational Model of Data for Large Shared Data Banks" (1970)
 - Date, C.J. "An Introduction to Database Systems"
-- MySQL Documentation: [Database Design](https://dev.mysql.com/doc/refman/8.0/en/database-use.html)
+- MySQL Documentation: [Database Design](https://dev.mysql.com/doc/refman/8.0/en/database-use.html) — ★★★☆☆
 
 ---
 
