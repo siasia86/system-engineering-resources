@@ -2,12 +2,12 @@
 
 ## 목차
 
-| 단계 | 섹션                                                                                                                    |
-|------|-------------------------------------------------------------------------------------------------------------------------|
-| 연결 | [1. TCP 3-Way Handshake](#1-tcp-3-way-handshake-연결-설정) / [2. TCP 4-Way Handshake](#2-tcp-4-way-handshake-연결-종료) |
-| 상태 | [3. 상태 전이도](#3-tcp-상태-전이도-state-diagram) / [4. 주요 상태 설명](#4-주요-tcp-상태-설명)                         |
-| 심화 | [5. TIME_WAIT](#5-time_wait-상태) / [6. 비정상 종료](#6-비정상-종료-rst) / [7. CLOSE_WAIT](#7-close_wait-문제)          |
-| 실전 | [8. 상태 확인 명령어](#8-tcp-상태-확인-명령어) / [9. DDoS 방어](#9-ddos-방어와-tcp-상태)                                |
+| 섹션 |
+|------|
+| [1. TCP 3-Way Handshake (연결 설정)](#1-tcp-3-way-handshake-연결-설정) / [2. TCP 4-Way Handshake (연결 종료)](#2-tcp-4-way-handshake-연결-종료) / [3. TCP 상태 전이도 (State Diagram)](#3-tcp-상태-전이도-state-diagram) |
+| [4. 주요 TCP 상태 설명](#4-주요-tcp-상태-설명) / [5. TIME_WAIT 상태](#5-time_wait-상태) / [6. 비정상 종료 (RST)](#6-비정상-종료-rst) |
+| [7. CLOSE_WAIT 문제](#7-close_wait-문제) / [8. TCP 상태 확인 명령어](#8-tcp-상태-확인-명령어) / [9. DDoS 방어와 TCP 상태](#9-ddos-방어와-tcp-상태) |
+
 
 ---
 

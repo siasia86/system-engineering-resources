@@ -4,13 +4,10 @@
 
 | 섹션 |
 |------|
-| [Straightforward customization](#straightforward-customization) |
-| [Themes](#themes) |
-| [Automatic truncation](#automatic-truncation) |
-| [Smarter tab line](#smarter-tab-line) |
-| [Seamless integration](#seamless-integration) |
-| [Extras](#extras) |
+| [Straightforward customization](#straightforward-customization) / [Themes](#themes) / [Automatic truncation](#automatic-truncation) |
+| [Smarter tab line](#smarter-tab-line) / [Seamless integration](#seamless-integration) / [Extras](#extras) |
 | [Configurable and extensible](#configurable-and-extensible) |
+
 
 ---
 

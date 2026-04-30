@@ -4,16 +4,11 @@
 
 | 섹션 |
 |------|
-| [1. ASN (Autonomous System Number) 개요](#1-asn-autonomous-system-number-개요) |
-| [2. ASN 등록 장단점](#2-asn-등록-장단점) |
-| [3. ASN 비용 (환율 1,500원 기준)](#3-asn-비용-환율-1500원-기준) |
-| [4. IDC에서의 DDoS 대응 — Cloudflare 서비스 비교](#4-idc에서의-ddos-대응-cloudflare-서비스-비교) |
-| [5. 서비스 선택 가이드](#5-서비스-선택-가이드) |
-| [6. ASN 보유 시 DDoS 대응 추가 옵션](#6-asn-보유-시-ddos-대응-추가-옵션) |
-| [7. Cloudflare 외 DDoS 방어 서비스 비교](#7-cloudflare-외-ddos-방어-서비스-비교) |
-| [8. 결론](#8-결론) |
-| [9. ISP/ASN 업체의 BFD 지원 현황](#9-ispasn-업체의-bfd-지원-현황) |
+| [1. ASN (Autonomous System Number) 개요](#1-asn-autonomous-system-number-개요) / [2. ASN 등록 장단점](#2-asn-등록-장단점) / [3. ASN 비용 (환율 1,500원 기준)](#3-asn-비용-환율-1500원-기준) |
+| [4. IDC에서의 DDoS 대응 — Cloudflare 서비스 비교](#4-idc에서의-ddos-대응-cloudflare-서비스-비교) / [5. 서비스 선택 가이드](#5-서비스-선택-가이드) / [6. ASN 보유 시 DDoS 대응 추가 옵션](#6-asn-보유-시-ddos-대응-추가-옵션) |
+| [7. Cloudflare 외 DDoS 방어 서비스 비교](#7-cloudflare-외-ddos-방어-서비스-비교) / [8. 결론](#8-결론) / [9. ISP/ASN 업체의 BFD 지원 현황](#9-ispasn-업체의-bfd-지원-현황) |
 | [10. References](#10-references) |
+
 
 ---
 

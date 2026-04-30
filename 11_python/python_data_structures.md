@@ -3,15 +3,13 @@
 Python 내장 자료구조와 collections 모듈 가이드입니다.
 
 ## 목차
-- [리스트 (list)](#리스트-list)
-- [딕셔너리 (dict)](#딕셔너리-dict)
-- [튜플 (tuple)](#튜플-tuple)
-- [집합 (set)](#집합-set)
-- [collections 모듈](#collections-모듈)
-- [요약](#요약)
-- [실전 예제](#실전-예제)
 
-[⬆ 목차로 돌아가기](#목차)
+| 섹션 |
+|------|
+| [리스트 (list)](#리스트-list) / [딕셔너리 (dict)](#딕셔너리-dict) / [튜플 (tuple)](#튜플-tuple) |
+| [집합 (set)](#집합-set) / [collections 모듈](#collections-모듈) / [실전 예제](#실전-예제) |
+| [요약](#요약) |
+
 
 ---
 
