@@ -81,7 +81,7 @@ Client                Server
 
 - Tanenbaum, Andrew S. "Computer Networks"
 - Stevens, W. Richard. "TCP/IP Illustrated, Volume 1"
-- Cisco Networking Academy: [netacad.com](https://www.netacad.com/)
+- Cisco Networking Academy: [netacad.com](https://www.netacad.com/) — ★★☆☆☆
 
 ---
 

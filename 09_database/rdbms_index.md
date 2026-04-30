@@ -395,8 +395,8 @@ ORDER BY pg_relation_size(indexrelid) DESC;
 
 ## 참고 자료
 
-- MySQL Documentation: [Optimization and Indexes](https://dev.mysql.com/doc/refman/8.0/en/optimization-indexes.html)
-- PostgreSQL Documentation: [Indexes](https://www.postgresql.org/docs/current/indexes.html)
+- MySQL Documentation: [Optimization and Indexes](https://dev.mysql.com/doc/refman/8.0/en/optimization-indexes.html) — ★★★☆☆
+- PostgreSQL Documentation: [Indexes](https://www.postgresql.org/docs/current/indexes.html) — ★★★☆☆
 - Use The Index, Luke: https://use-the-index-luke.com
 
 ---

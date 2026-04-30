@@ -542,8 +542,8 @@ awk '/Total DISK READ/ {read+=$4; write+=$10; count++}
 
 ## 참고 자료
 
-- iotop GitHub: [iotop](https://github.com/Tomas-M/iotop)
-- Linux man pages - iotop: [man7.org](https://man7.org/linux/man-pages/man8/iotop.8.html)
+- iotop GitHub: [iotop](https://github.com/Tomas-M/iotop) — ★★☆☆☆
+- Linux man pages - iotop: [man7.org](https://man7.org/linux/man-pages/man8/iotop.8.html) — ★★☆☆☆
 
 ---
 

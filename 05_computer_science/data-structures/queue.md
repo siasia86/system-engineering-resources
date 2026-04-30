@@ -216,7 +216,7 @@ print(heapq.heappop(pq))  # (1, 'high') ← 우선순위 높은 것 먼저
 ## 참고 자료
 
 - Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
-- Python Documentation: [queue](https://docs.python.org/3/library/queue.html)
+- Python Documentation: [queue](https://docs.python.org/3/library/queue.html) — ★★★☆☆
 
 ---
 

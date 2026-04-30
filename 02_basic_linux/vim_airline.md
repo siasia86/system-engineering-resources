@@ -398,7 +398,7 @@ If you are interested in becoming a maintainer (we always welcome more maintaine
 
 ## 참고 자료
 
-- vim-airline GitHub: [vim-airline](https://github.com/vim-airline/vim-airline)
+- vim-airline GitHub: [vim-airline](https://github.com/vim-airline/vim-airline) — ★★☆☆☆
 
 ---
 

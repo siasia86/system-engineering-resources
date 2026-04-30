@@ -313,7 +313,7 @@ ansible localhost -m debug -a "var=db_password" \
 
 ## 참고 자료
 
-- Ansible Vault Documentation: [Ansible Vault](https://docs.ansible.com/ansible/latest/vault_guide/index.html)
+- Ansible Vault Documentation: [Ansible Vault](https://docs.ansible.com/ansible/latest/vault_guide/index.html) — ★★★☆☆
 
 ---
 

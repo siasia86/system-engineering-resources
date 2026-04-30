@@ -831,8 +831,8 @@ class GoodContext:
 
 ## 참고 자료
 
-- Python Documentation: [contextlib](https://docs.python.org/3/library/contextlib.html)
-- PEP 343: [The "with" Statement](https://peps.python.org/pep-0343/)
+- Python Documentation: [contextlib](https://docs.python.org/3/library/contextlib.html) — ★★★☆☆
+- PEP 343: [The "with" Statement](https://peps.python.org/pep-0343/) — ★★☆☆☆
 
 ---
 
