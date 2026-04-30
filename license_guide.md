@@ -8,7 +8,7 @@
 |------|
 | [1. 소프트웨어 라이선스](#1-소프트웨어-라이선스) / [2. Creative Commons 라이선스](#2-creative-commons-라이선스) / [3. 라이선스 비교](#3-라이선스-비교) |
 | [4. 선택 가이드](#4-선택-가이드) / [5. 실무 적용](#5-실무-적용) / [6. 주의사항 & FAQ](#6-주의사항--faq) |
-| [7. 실전 팁](#7-실전-팁) |
+| [7. 실전 팁](#7-실전-팁) / [8. 라이선스 목록](#8-라이선스-목록) |
 
 ---
 
@@ -60,6 +60,7 @@ worldwide, patent license to make, use, sell the Work.
 
 > 상업적 사용 ✅ / 수정 ✅ / 배포 ✅ / 특허 ✅ / 출처 표시 의무 ✅ → [비교표](#3-라이선스-비교)
 
+
 ### GNU GPL v3
 
 > 1989년 Richard Stallman이 GNU 프로젝트를 위해 작성. v2(1991) → v3(2007)로 특허 및 DRM 조항 강화.
@@ -77,6 +78,27 @@ be made available under the GPL along with build & install instructions.
 ```
 
 > 상업적 사용 ✅ / 수정 ✅ / 배포 ✅ / 특허 ✅ / 동일 라이선스 의무 ✅ (강제) → [비교표](#3-라이선스-비교)
+
+#### Tivoization 방지 조항 (GPL v2 → v3 핵심 변경)
+
+TiVo는 GPL v2 Linux 커널을 사용하면서 하드웨어 서명으로 수정된 소프트웨어의 실행을 차단했다.
+소스코드는 공개했지만 실제로 수정해서 실행할 수 없는 구조 — GPL의 취지를 우회한 사례다.
+
+GPL v3는 이를 막기 위해 **설치 정보 제공 의무**를 추가했다.
+소스코드뿐 아니라 수정된 소프트웨어를 실제로 설치·실행할 수 있는 정보(서명 키 등)도 함께 제공해야 한다.
+
+> — [FSF: Why Upgrade to GPL v3](https://www.gnu.org/licenses/rms-why-gplv3.html)
+
+#### GPL v2 강제 공개 사례 — Microsoft Hyper-V (2009)
+
+Linux 커널은 GPL v2를 사용한다. GPL v2 코드를 포함한 소프트웨어를 바이너리로만 배포하면 소스코드 공개 의무를 위반한다.
+
+2009년 Microsoft의 Hyper-V Linux Integration Services(LIS) 드라이버가 GPL v2 Linux 커널 코드를 포함한 채 바이너리로만 배포된 사실이 확인됐다.
+Microsoft는 이후 약 20,000줄의 Hyper-V 드라이버 코드를 Linux 커널에 공식 기여했으며, 이는 Microsoft가 Linux 커널에 코드를 기여한 첫 사례다.
+
+⚠️ 이 사례는 GPL v2 기반이며, 현재 섹션의 GPL v3와 조항 구성이 다를 수 있다.
+
+> — [Linux Kernel Mailing List, 2009](https://lkml.org/lkml/2009/7/20/264)
 
 ### BSD License
 
@@ -97,6 +119,17 @@ modification, are permitted provided that the following conditions are met:
 
 - **2-Clause**: 출처 표시 + 보증 부인
 - **3-Clause**: 2-Clause + 프로젝트 이름 광고 금지
+
+#### 광고 조항 이슈 (4-Clause → 2-Clause)
+
+원래 BSD는 4-Clause로 "광고 자료에 UC Berkeley 출처 표시 의무" 조항이 포함되어 있었다.
+이 조항이 GPL과 호환되지 않아 FSF로부터 비호환 판정을 받았고, 수백 개 기여자 각각의 출처를 광고에 표시해야 하는 현실적 문제가 발생했다.
+
+1999년 UC Berkeley가 공식적으로 광고 조항(3번째 조항)을 삭제하여 현재의 3-Clause(New BSD)가 됐다.
+이후 보증 부인 조항만 남긴 2-Clause(Simplified BSD)도 널리 사용된다.
+
+> BSD 4-Clause는 GPL 비호환으로 FSF가 공식 비권장 판정. 신규 프로젝트는 2-Clause 또는 3-Clause 사용 권장.
+> — [FSF License List](https://www.gnu.org/licenses/license-list.html#OriginalBSD)
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -387,6 +420,47 @@ jobs:
 
 대규모 오픈소스 프로젝트에서 라이선스 변경 유연성 확보를 위해 사용.
 GitHub CLA Assistant 등 도구로 자동화 가능.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 8. 라이선스 목록
+
+주요 오픈소스 및 콘텐츠 라이선스 이름 목록. 상세 내용은 [SPDX License List](https://spdx.org/licenses/) 참고.
+
+### 소프트웨어 — Permissive (허용적)
+
+`MIT` `Apache-2.0` `BSD-2-Clause` `BSD-3-Clause` `ISC` `Zlib` `Unlicense` `0BSD`
+`BSD-4-Clause` `MIT-0` `BlueOak-1.0.0` `PostgreSQL` `Python-2.0`
+
+### 소프트웨어 — Copyleft (상호 라이선스)
+
+`GPL-2.0-only` `GPL-2.0-or-later` `GPL-3.0-only` `GPL-3.0-or-later`
+`LGPL-2.0` `LGPL-2.1` `LGPL-3.0` `AGPL-3.0` `MPL-2.0` `EUPL-1.2`
+
+### 소프트웨어 — 기타
+
+`CDDL-1.0` `EPL-1.0` `EPL-2.0` `CPAL-1.0` `OSL-3.0`
+`Artistic-2.0` `Perl` `Ruby` `PHP-3.0`
+
+### 폰트
+
+`OFL-1.1` (SIL Open Font License) `GPL-2.0 with font exception`
+
+### 콘텐츠 — Creative Commons
+
+`CC-BY-4.0` `CC-BY-SA-4.0` `CC-BY-NC-4.0` `CC-BY-ND-4.0`
+`CC-BY-NC-SA-4.0` `CC-BY-NC-ND-4.0` `CC0-1.0`
+
+### 데이터 / 데이터베이스
+
+`ODbL-1.0` (Open Database License) `PDDL-1.0` `DbCL-1.0`
+
+### 하드웨어 / 문서
+
+`CERN-OHL-S-2.0` `CERN-OHL-W-2.0` `CERN-OHL-P-2.0`
+`GFDL-1.3` (GNU Free Documentation License)
 
 [⬆ 목차로 돌아가기](#목차)
 
