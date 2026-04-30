@@ -593,7 +593,7 @@ interface range FastEthernet0/20-24
 
 ## 참고 자료
 
-- Cisco IOS Configuration Guide: [VLAN Configuration](https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9300/software/release/17-9/configuration_guide/vlan/b_179_vlan_9300_cg.html)
+- Cisco IOS Configuration Guide: [VLAN Configuration](https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9300/software/release/17-9/configuration_guide/vlan/b_179_vlan_9300_cg.html) — ★★☆☆☆
 - IEEE 802.1Q: Virtual Bridged Local Area Networks
 - RFC 5517: Cisco Systems' Private VLANs
 

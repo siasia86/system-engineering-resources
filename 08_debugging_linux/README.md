@@ -194,7 +194,7 @@ valgrind --leak-check=full ./myapp
 
 ## 참고 자료
 
-- Brendan Gregg - Linux Performance: [brendangregg.com](https://www.brendangregg.com/linuxperf.html)
+- Brendan Gregg - Linux Performance: [brendangregg.com](https://www.brendangregg.com/linuxperf.html) — ★★★☆☆
 
 ---
 

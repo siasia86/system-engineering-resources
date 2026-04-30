@@ -425,9 +425,9 @@ PUT /korean_index
 
 ## 참고 자료
 
-- Elasticsearch Documentation: [elastic.co/docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
-- Elasticsearch Query DSL: [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
-- Elastic Stack (ELK): [elastic.co/elastic-stack](https://www.elastic.co/elastic-stack)
+- Elasticsearch Documentation: [elastic.co/docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html) — ★★☆☆☆
+- Elasticsearch Query DSL: [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) — ★★☆☆☆
+- Elastic Stack (ELK): [elastic.co/elastic-stack](https://www.elastic.co/elastic-stack) — ★★☆☆☆
 
 ---
 

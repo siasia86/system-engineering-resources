@@ -57,8 +57,8 @@ docker-compose logs -f
 
 ## 참고 자료
 
-- Docker Documentation: [docs.docker.com](https://docs.docker.com/)
-- Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/)
+- Docker Documentation: [docs.docker.com](https://docs.docker.com/) — ★★★☆☆
+- Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/) — ★★★☆☆
 
 ---
 

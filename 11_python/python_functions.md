@@ -787,7 +787,7 @@ print(greet.__name__)  # greet
 
 ## 참고 자료
 
-- Python Documentation: [Defining Functions](https://docs.python.org/3/tutorial/controlflow.html#defining-functions)
+- Python Documentation: [Defining Functions](https://docs.python.org/3/tutorial/controlflow.html#defining-functions) — ★★★☆☆
 
 ---
 

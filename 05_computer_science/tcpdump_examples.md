@@ -256,8 +256,8 @@ parse_proxy_v2_from_tcpdump(hex_data)
 
 ## 참고 자료
 
-- tcpdump Manual: [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html)
-- PROXY Protocol v2 Specification: [proxy-protocol.txt](https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt)
+- tcpdump Manual: [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) — ★★☆☆☆
+- PROXY Protocol v2 Specification: [proxy-protocol.txt](https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt) — ★★☆☆☆
 
 ---
 

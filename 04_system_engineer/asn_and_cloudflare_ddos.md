@@ -354,9 +354,9 @@ Router A ----X---- Router B
 
 ## 참고 자료
 
-- Cloudflare DDoS Protection: [cloudflare.com](https://www.cloudflare.com/ddos/)
-- ARIN ASN Registration: [arin.net](https://www.arin.net/resources/guide/asn/)
-- RFC 4271: BGP-4: [RFC 4271](https://datatracker.ietf.org/doc/html/rfc4271)
+- Cloudflare DDoS Protection: [cloudflare.com](https://www.cloudflare.com/ddos/) — ★★☆☆☆
+- ARIN ASN Registration: [arin.net](https://www.arin.net/resources/guide/asn/) — ★★☆☆☆
+- RFC 4271: BGP-4: [RFC 4271](https://datatracker.ietf.org/doc/html/rfc4271) — ★★☆☆☆
 
 ---
 

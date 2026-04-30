@@ -332,9 +332,9 @@ ON orders (order_id, created_at);  -- created_at(파티션 키) 포함
 
 ## 참고 자료
 
-- MySQL Documentation: [Partitioning](https://dev.mysql.com/doc/refman/8.0/en/partitioning.html)
-- PostgreSQL Documentation: [Table Partitioning](https://www.postgresql.org/docs/current/ddl-partitioning.html)
-- MySQL Documentation: [Partition Pruning](https://dev.mysql.com/doc/refman/8.0/en/partitioning-pruning.html)
+- MySQL Documentation: [Partitioning](https://dev.mysql.com/doc/refman/8.0/en/partitioning.html) — ★★★☆☆
+- PostgreSQL Documentation: [Table Partitioning](https://www.postgresql.org/docs/current/ddl-partitioning.html) — ★★★☆☆
+- MySQL Documentation: [Partition Pruning](https://dev.mysql.com/doc/refman/8.0/en/partitioning-pruning.html) — ★★★☆☆
 
 ---
 

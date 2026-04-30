@@ -808,8 +808,8 @@ stage('Integration Test') {
 
 ## 참고 자료
 
-- Jenkins Pipeline Documentation: [jenkins.io](https://www.jenkins.io/doc/book/pipeline/)
-- Jenkins Pipeline Syntax: [Pipeline Syntax](https://www.jenkins.io/doc/book/pipeline/syntax/)
+- Jenkins Pipeline Documentation: [jenkins.io](https://www.jenkins.io/doc/book/pipeline/) — ★★★☆☆
+- Jenkins Pipeline Syntax: [Pipeline Syntax](https://www.jenkins.io/doc/book/pipeline/syntax/) — ★★★☆☆
 
 ---
 

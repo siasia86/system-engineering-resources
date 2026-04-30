@@ -287,8 +287,8 @@ aws s3 cp test.txt s3://b-account-bucket/test.txt --region us-east-1
 
 ## 참고 자료
 
-- AWS S3 Gateway Endpoint: [docs.aws.amazon.com](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html)
-- AWS Cross-Account S3 Access: [docs.aws.amazon.com](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-walkthroughs-managing-access-example2.html)
+- AWS S3 Gateway Endpoint: [docs.aws.amazon.com](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html) — ★★★☆☆
+- AWS Cross-Account S3 Access: [docs.aws.amazon.com](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-walkthroughs-managing-access-example2.html) — ★★★☆☆
 
 ---
 

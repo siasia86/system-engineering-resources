@@ -300,7 +300,7 @@ def search_log(log_file, pattern, lines=10):
 
 ## 참고 자료
 
-- Python Documentation: [subprocess](https://docs.python.org/3/library/subprocess.html)
+- Python Documentation: [subprocess](https://docs.python.org/3/library/subprocess.html) — ★★★☆☆
 
 ---
 

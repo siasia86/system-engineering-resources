@@ -2361,7 +2361,7 @@ kiro-cli chat --delete-session <ID>   # 대화 삭제
 
 ## 참고 자료
 
-- Kiro CLI Documentation: [kiro.dev](https://kiro.dev/docs/cli/)
+- Kiro CLI Documentation: [kiro.dev](https://kiro.dev/docs/cli/) — ★★☆☆☆
 
 ---
 

@@ -63,9 +63,9 @@ tracepoint:block:block_rq_complete /@start[args->dev, args->sector]/ {
 
 ## 참고 자료
 
-- [bpftrace GitHub](https://github.com/iovisor/bpftrace)
-- [eBPF 공식 문서](https://ebpf.io/)
-- [BPF Performance Tools](http://www.brendangregg.com/bpf-performance-tools-book.html)
+- [bpftrace GitHub](https://github.com/iovisor/bpftrace) — ★★☆☆☆
+- [eBPF 공식 문서](https://ebpf.io/) — ★★☆☆☆
+- [BPF Performance Tools](http://www.brendangregg.com/bpf-performance-tools-book.html) — ★★★☆☆
 
 ---
 

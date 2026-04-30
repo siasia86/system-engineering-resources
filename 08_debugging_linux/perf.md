@@ -482,8 +482,8 @@ diff before.txt after.txt
 
 ## 참고 자료
 
-- Linux perf wiki: [perf.wiki.kernel.org](https://perf.wiki.kernel.org/)
-- Brendan Gregg - perf Examples: [brendangregg.com](https://www.brendangregg.com/perf.html)
+- Linux perf wiki: [perf.wiki.kernel.org](https://perf.wiki.kernel.org/) — ★★☆☆☆
+- Brendan Gregg - perf Examples: [brendangregg.com](https://www.brendangregg.com/perf.html) — ★★★☆☆
 
 ---
 

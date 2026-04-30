@@ -142,8 +142,8 @@ q        " 녹화 종료
 
 ## 참고 자료
 
-- Vim Documentation: [vimdoc.sourceforge.net](http://vimdoc.sourceforge.net/)
-- Vim Cheat Sheet: [vim.rtorr.com](https://vim.rtorr.com/)
+- Vim Documentation: [vimdoc.sourceforge.net](http://vimdoc.sourceforge.net/) — ★★☆☆☆
+- Vim Cheat Sheet: [vim.rtorr.com](https://vim.rtorr.com/) — ★★☆☆☆
 
 ---
 
