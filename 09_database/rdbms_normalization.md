@@ -15,12 +15,12 @@
 정규화는 **데이터 중복을 제거**하고 **이상 현상을 방지**하기 위해 테이블을 분리하는 설계 과정이다.
 
 ```
-비정규화 테이블 (문제 있음)
+Denormalized Table
 ┌──────────┬──────────┬──────────┬──────────┬──────────┐
 │ order_id │ user_id  │ username │ product  │ category │
 ├──────────┼──────────┼──────────┼──────────┼──────────┤
 │ 1        │ 101      │ Alice    │ Laptop   │ IT       │
-│ 2        │ 101      │ Alice    │ Mouse    │ IT       │  ← username 중복
+│ 2        │ 101      │ Alice    │ Mouse    │ IT       │  ← username duplicated
 │ 3        │ 102      │ Bob      │ Desk     │ Furniture│
 └──────────┴──────────┴──────────┴──────────┴──────────┘
 ```
@@ -46,14 +46,14 @@
 **원자값(Atomic Value)**: 각 컬럼은 하나의 값만 가져야 한다.
 
 ```
-위반 예시:
+Violation:
 ┌──────────┬──────────────────────┐
 │ order_id │ products             │
 ├──────────┼──────────────────────┤
-│ 1        │ Laptop, Mouse, Desk  │  ← 다중값
+│ 1        │ Laptop, Mouse, Desk  │  ← multi-value
 └──────────┴──────────────────────┘
 
-1NF 적용:
+1NF Applied:
 ┌──────────┬──────────┐
 │ order_id │ product  │
 ├──────────┼──────────┤
@@ -62,7 +62,6 @@
 │ 1        │ Desk     │
 └──────────┴──────────┘
 ```
-
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -72,16 +71,16 @@
 **부분 함수 종속 제거**: 복합 기본키에서 일부 키에만 종속된 컬럼을 분리한다.
 
 ```
-위반 예시 (PK: order_id + product_id):
+Violation (PK: order_id + product_id):
 ┌──────────┬────────────┬──────────────┬───────────────┐
 │ order_id │ product_id │ product_name │ quantity      │
 │ (PK)     │ (PK)       │              │               │
 ├──────────┼────────────┼──────────────┼───────────────┤
 │ 1        │ 10         │ Laptop       │ 2             │
 └──────────┴────────────┴──────────────┴───────────────┘
-product_name은 product_id에만 종속 → 부분 종속
+product_name depends only on product_id → partial dependency
 
-2NF 적용:
+2NF Applied:
 order_items (order_id PK, product_id PK, quantity)
 products    (product_id PK, product_name)
 ```
@@ -95,15 +94,15 @@ products    (product_id PK, product_name)
 **이행 함수 종속 제거**: 기본키 → A → B 형태의 이행 종속을 분리한다.
 
 ```
-위반 예시 (PK: order_id):
+Violation (PK: order_id):
 ┌──────────┬─────────┬──────────────┐
 │ order_id │ user_id │ user_city    │
 ├──────────┼─────────┼──────────────┤
 │ 1        │ 101     │ Seoul        │
 └──────────┴─────────┴──────────────┘
-order_id → user_id → user_city (이행 종속)
+order_id → user_id → user_city (transitive dependency)
 
-3NF 적용:
+3NF Applied:
 orders (order_id PK, user_id FK)
 users  (user_id PK, user_city)
 ```
@@ -117,16 +116,16 @@ users  (user_id PK, user_city)
 **모든 결정자가 후보키**: 3NF를 만족하지만 결정자가 후보키가 아닌 경우를 분리한다.
 
 ```
-위반 예시 (PK: student_id + course):
+Violation (PK: student_id + course):
 ┌────────────┬────────┬──────────┐
 │ student_id │ course │ teacher  │
 ├────────────┼────────┼──────────┤
 │ 1          │ Math   │ Kim      │
 │ 2          │ Math   │ Kim      │
 └────────────┴────────┴──────────┘
-teacher → course (teacher가 후보키가 아님에도 결정자)
+teacher → course (teacher is a determinant but not a candidate key)
 
-BCNF 적용:
+BCNF Applied:
 student_course (student_id PK, teacher FK)
 teacher_course (teacher PK, course)
 ```
@@ -202,8 +201,8 @@ FOR EACH ROW
 
 ## 참고 자료
 
-- Codd, E.F. "A Relational Model of Data for Large Shared Data Banks" (1970)
-- Date, C.J. "An Introduction to Database Systems"
+- Codd, E.F. "A Relational Model of Data for Large Shared Data Banks" (1970) — ★★★★☆
+- Date, C.J. "An Introduction to Database Systems" — ★★★★☆
 - MySQL Documentation: [Database Design](https://dev.mysql.com/doc/refman/8.0/en/database-use.html) — ★★★☆☆
 
 ---
