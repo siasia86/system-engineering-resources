@@ -836,7 +836,7 @@ count = sum(1 for _ in gen)
 ## 참고 자료
 
 - Python Documentation: [Generators](https://docs.python.org/3/tutorial/classes.html#generators) — ★★★☆☆
-- PEP 255: [Simple Generators](https://peps.python.org/pep-0255/) — ★★☆☆☆
+- PEP 255: [Simple Generators](https://peps.python.org/pep-0255/) — ★★★★☆
 
 ---
 
