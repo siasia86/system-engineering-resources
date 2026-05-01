@@ -514,9 +514,9 @@ sudo chown -R $(whoami):$(whoami) /path/to/repo
 
 ## 참고 자료
 
-- Git Documentation: https://git-scm.com/doc
-- Pro Git Book: https://git-scm.com/book/ko/v2
-- Git safe.directory: https://git-scm.com/docs/git-config#Documentation/git-config.txt-safedirectory
+- Git Documentation: [git-scm.com/doc](https://git-scm.com/doc) — ★★★☆☆
+- Pro Git Book: [git-scm.com/book](https://git-scm.com/book/ko/v2) — ★★★★☆
+- Git safe.directory: [git-scm.com/docs](https://git-scm.com/docs/git-config#Documentation/git-config.txt-safedirectory) — ★★★☆☆
 
 ---
 
