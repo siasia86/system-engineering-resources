@@ -21,14 +21,14 @@
 
 ```
 ┌──────────────────────────────────────────────┐
-│        사용자 / 애플리케이션                 │  ← 최상위
+│        User / Application                    │  ← Top
 └──────────────────────────────────────────────┘
                      v
 ┌──────────────────────────────────────────────┐
-│   High-Level Tools (사용자 친화적)           │
+│   High-Level Tools (User-friendly)           │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐    │
 │  │   LXD    │  │  Docker  │  │  Podman  │    │
-│  │ (시스템) │  │  (앱)    │  │  (앱)    │    │
+│  │ (system) │  │  (app)   │  │  (app)   │    │
 │  └──────────┘  └──────────┘  └──────────┘    │
 └──────────────────────────────────────────────┘
                      v
@@ -44,16 +44,16 @@
 │   Low-Level Kernel Features                  │
 │  ┌──────────────┐  ┌──────────────────────┐  │
 │  │  Namespaces  │  │     Cgroups          │  │
-│  │   (격리)     │  │   (리소스 제한)      │  │
+│  │ (isolation) │  │  (resource limit)  │  │
 │  └──────────────┘  └──────────────────────┘  │
 │  ┌──────────────┐  ┌──────────────────────┐  │
 │  │ Capabilities │  │     Seccomp          │  │
-│  │   (권한)     │  │   (시스템콜)         │  │
+│  │ (privilege) │  │  (syscall filter)  │  │
 │  └──────────────┘  └──────────────────────┘  │
 └──────────────────────────────────────────────┘
                      v
 ┌──────────────────────────────────────────────┐
-│        Linux Kernel                          │  ← 최하위
+│        Linux Kernel                          │  ← Bottom
 └──────────────────────────────────────────────┘
 ```
 
@@ -207,7 +207,7 @@ lxc launch ubuntu:22.04 web  ← LXD (High-level)
   v
 LXD Daemon (REST API)
   v
-liblxc (라이브러리)           ← LXC (Mid-level)
+liblxc (library)              ← LXC (Mid-level)
   v
 ┌─────────────────────────┐
 │ Namespaces + Cgroups    │  ← Kernel Features (Low-level)
@@ -777,17 +777,17 @@ cat /proc/$PID/gid_map
 ```
 High-level (추상화 높음, 사용 쉬움):
 ┌──────────────────────────┐
-│  LXD, Docker, Podman     │  ← 사용자가 주로 사용
+│  LXD, Docker, Podman     │  ← mainly used by users
 └──────────────────────────┘
 
 Mid-level (중간 추상화):
 ┌──────────────────────────┐
-│  LXC, containerd, runc   │  ← 도구가 내부적으로 사용
+│  LXC, containerd, runc   │  ← used internally by tools
 └──────────────────────────┘
 
 Low-level (추상화 낮음, 직접 사용 어려움):
 ┌──────────────────────────┐
-│  Namespaces, Cgroups     │  ← 커널 기능, 트러블슈팅 시 사용
+│  Namespaces, Cgroups     │  ← kernel features, used for troubleshooting
 └──────────────────────────┘
 ```
 
@@ -1066,22 +1066,13 @@ Kernel:      Linux Kernel (기반)
 
 ---
 
-**참고 자료:**
-- Linux Kernel Documentation: https://www.kernel.org/doc/
-- Docker Documentation: https://docs.docker.com/
-- LXD Documentation: https://linuxcontainers.org/lxd/
-- OCI Specification: https://opencontainers.org/
-
-**업데이트:**
-- 2026-01-29: 초안 작성
-
----
-
 ## 참고 자료
 
-- OCI Runtime Specification: [opencontainers.org](https://opencontainers.org/) — ★★☆☆☆
+- OCI Runtime Specification: [opencontainers.org](https://opencontainers.org/) — ★★★☆☆
 - Linux Namespaces: [man7.org](https://man7.org/linux/man-pages/man7/namespaces.7.html) — ★★☆☆☆
-- Linux Cgroups: [kernel.org](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html) — ★★☆☆☆
+- Linux Cgroups: [kernel.org](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html) — ★★★☆☆
+- Docker Documentation: [docs.docker.com](https://docs.docker.com/) — ★★★☆☆
+- LXD Documentation: [linuxcontainers.org](https://linuxcontainers.org/lxd/) — ★★★☆☆
 
 ---
 
