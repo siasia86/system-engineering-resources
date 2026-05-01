@@ -922,7 +922,7 @@ from .module import func1, func2
 ## 참고 자료
 
 - Python Documentation: [Packages](https://docs.python.org/3/tutorial/modules.html#packages) — ★★★☆☆
-- PyPA - Python Packaging: [packaging.python.org](https://packaging.python.org/) — ★★☆☆☆
+- PyPA - Python Packaging: [packaging.python.org](https://packaging.python.org/) — ★★★☆☆
 
 ---
 

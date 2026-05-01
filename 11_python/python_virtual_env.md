@@ -300,7 +300,7 @@ uv pip freeze > requirements.txt
 ## 참고 자료
 
 - Python Documentation: [venv](https://docs.python.org/3/library/venv.html) — ★★★☆☆
-- pip Documentation: [pip.pypa.io](https://pip.pypa.io/en/stable/) — ★★☆☆☆
+- pip Documentation: [pip.pypa.io](https://pip.pypa.io/en/stable/) — ★★★☆☆
 
 ---
 
