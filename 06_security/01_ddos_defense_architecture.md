@@ -16,18 +16,13 @@
 
 ---
 
-
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 전체 구조도
 
 ```
 인터넷
   v
 ┌─────────────────────────────────────────────────────────────┐
-│                     글로벌 DNS 레이어                       │
+│                     Global DNS Layer                       │
 └─────────────────────────────────────────────────────────────┘
 Route 53 (DNS)
 ├─ Health Check
@@ -36,121 +31,121 @@ Route 53 (DNS)
 
   v
 ┌─────────────────────────────────────────────────────────────┐
-│                  VPC 경계 방어 레이어                       │
+│                  VPC Border Defense Layer                       │
 └─────────────────────────────────────────────────────────────┘
 AWS Network Firewall (Suricata 기반 IPS/IDS)
-├─ DDoS 패턴 탐지
-├─ 악성 트래픽 차단
-├─ 상태 기반 검사
-├─ 지리적 차단 (GeoIP)
-└─ CloudWatch Logs 연동
+├─ DDoS pattern detection
+├─ Malicious traffic blocking
+├─ Stateful inspection
+├─ Geo blocking (GeoIP)
+└─ CloudWatch Logs integration
 
   v
 ┌─────────────────────────────────────────────────────────────┐
-│                  로드밸런싱 레이어                          │
+│                  Load Balancing Layer                          │
 └─────────────────────────────────────────────────────────────┘
 NLB (Network Load Balancer)
-├─ Cross-AZ 고가용성
+├─ Cross-AZ high availability
 ├─ Connection Tracking
 ├─ Health Check
-└─ PROXY Protocol v2 전송
+└─ PROXY Protocol v2 forwarding
 
   v
 ┌─────────────────────────────────────────────────────────────┐
-│         Linux Proxy 레이어 (Auto Scaling Group)             │
+│         Linux Proxy Layer (Auto Scaling Group)             │
 └─────────────────────────────────────────────────────────────┘
 Linux Proxy (3-5대, Auto Scaling)
 │
-├─ [L2 레이어] XDP/eBPF (커널 진입 전)
-│  ├─ 초고속 패킷 드롭 (수백만 pps)
-│  ├─ Redis 동기화 (10초) ─────────────┐
-│  ├─ BPF Map (메모리 기반)            │
-│  └─ 멀티코어 병렬 처리               │
+├─ [Pre-kernel] XDP/eBPF
+│  ├─ Ultra-fast packet drop (millions pps)
+│  ├─ Redis sync (10s) ─────────────────┐
+│  ├─ BPF Map (memory-based)            │
+│  └─ Multi-core parallel processing               │
 │                                      │
-├─ [L3/L4 레이어] nftables (커널)      │
-│  ├─ CrowdSec Bouncer 연동 ──────┐    │
-│  ├─ 상태 기반 방화벽            │    │
+├─ [L3/L4] nftables (kernel)      │
+│  ├─ CrowdSec Bouncer ────────────┐    │
+│  ├─ Stateful firewall            │    │
 │  ├─ Rate Limiting               │    │
 │  ├─ Connection Tracking         │    │
-│  └─ 해시 테이블 (O(1) 조회)     │    │
+│  └─ Hash table (O(1) lookup)     │    │
 │                                 │    │
-├─ [커널 레벨] Kernel Tuning      │    │
+├─ [Kernel] Kernel Tuning      │    │
 │  ├─ TCP SYN Cookies             │    │
-│  ├─ TCP/IP Stack 최적화         │    │
-│  ├─ Connection Backlog 증가     │    │
-│  └─ File Descriptor 제한 해제   │    │
+│  ├─ TCP/IP Stack optimization         │    │
+│  ├─ Connection Backlog increase     │    │
+│  └─ File Descriptor limit increase   │    │
 │                                 │    │
-├─ [탐지 레이어] CrowdSec Agent   │    │
-│  ├─ 로그 분석 (실시간)          │    │
-│  ├─ 시나리오 기반 탐지          │    │
-│  ├─ LAPI 연동 ──────────────────┼────┼──┐
-│  └─ 자동 차단 결정              │    │  │
+├─ [Detection] CrowdSec Agent   │    │
+│  ├─ Log analysis (realtime)          │    │
+│  ├─ Scenario-based detection          │    │
+│  ├─ LAPI integration ───────────┼────┼──┐
+│  └─ Auto block decision              │    │  │
 │                                 │    │  │
-├─ [L7 레이어] HAProxy            │    │  │
-│  ├─ 백엔드 로드밸런싱           │    │  │
+├─ [L7] HAProxy            │    │  │
+│  ├─ Backend load balancing           │    │  │
 │  ├─ Health Check                │    │  │
 │  ├─ Connection Pooling          │    │  │
-│  ├─ PROXY Protocol v2 파싱      │    │  │
-│  └─ 세션 관리                   │    │  │
+│  ├─ PROXY Protocol v2 parsing      │    │  │
+│  └─ Session management                   │    │  │
 │                                 │    │  │
-└─ [모니터링] Zabbix Agent        │    │  │
-   ├─ CPU/메모리/네트워크 ────────┼────┼──┼──┐
-   ├─ XDP/nftables 통계           │    │  │  │
-   ├─ CrowdSec 메트릭             │    │  │  │
-   └─ HAProxy 상태                │    │  │  │
+└─ [Monitoring] Zabbix Agent        │    │  │
+   ├─ CPU/Memory/Network ──────────┼────┼──┼──┐
+   ├─ XDP/nftables stats           │    │  │  │
+   ├─ CrowdSec metrics             │    │  │  │
+   └─ HAProxy status                │    │  │  │
                                   │    │  │  │
   v                               │    │  │  │
 ┌─────────────────────────────────────────────────────────────┐
-│                  백엔드 애플리케이션                        │
+│                  Backend Application                        │
 └─────────────────────────────────────────────────────────────┘
-Windows 게임서버 (Auto Scaling)
-├─ 게임 로직
-├─ 플레이어 세션 관리
-└─ 데이터베이스 연동
+Windows Game Server (Auto Scaling)
+├─ Game logic
+├─ Player session management
+└─ Database integration
 
 
 ===============================================================
-                    중앙 관리 레이어 (별도)
+                    Central Management Layer (Separate)
 ===============================================================
 
 ┌─────────────────────────────────────┐    │    │  │  │
 │  CrowdSec LAPI Server               │    │    │  │  │
-│  (별도 EC2 t3.micro)                │ <──┘    │  │  │
+│  (Separate EC2 t3.micro)                │ <──┘    │  │  │
 │  ├─ MySQL/PostgreSQL (RDS)          │         │  │  │
-│  ├─ AI 기반 탐지 엔진               │         │  │  │
-│  ├─ 커뮤니티 블랙리스트             │         │  │  │
-│  └─ 차단 결정 관리                  │         │  │  │
+│  ├─ AI-based detection engine               │         │  │  │
+│  ├─ Community blocklist             │         │  │  │
+│  └─ Block decision management                  │         │  │  │
 └─────────────────────────────────────┘         │  │  │
                                                 │  │  │
 ┌─────────────────────────────────────┐         │  │  │
 │  Redis (ElastiCache)                │ <───────┘  │  │
-│  ├─ XDP BPF Map 동기화              │            │  │
-│  ├─ 실시간 차단 IP 공유             │            │  │
-│  └─ 10초 주기 업데이트              │            │  │
+│  ├─ XDP BPF Map sync              │            │  │
+│  ├─ Realtime blocked IP sharing             │            │  │
+│  └─ 10s interval update              │            │  │
 └─────────────────────────────────────┘            │  │
                                                    │  │
 ┌─────────────────────────────────────┐            │  │
-│  Zabbix Server (중앙 모니터링)      │ <──────────┘  │
-│  ├─ 실시간 대시보드                 │               │
-│  ├─ 알람 (Slack/Email)              │               │
-│  ├─ 트래픽 그래프                   │               │
-│  └─ 공격 패턴 분석                  │               │
+│  Zabbix Server (Central Monitoring)      │ <──────────┘  │
+│  ├─ Realtime dashboard                 │               │
+│  ├─ Alert (Slack/Email)              │               │
+│  ├─ Traffic graph                   │               │
+│  └─ Attack pattern analysis                  │               │
 └─────────────────────────────────────┘               │
                                                       │
 ┌─────────────────────────────────────┐               │
 │  CloudWatch                         │ <─────────────┘
-│  ├─ Network Firewall 로그           │
-│  ├─ NLB 메트릭                      │
-│  ├─ Auto Scaling 이벤트             │
-│  └─ Lambda 트리거                   │
+│  ├─ Network Firewall logs           │
+│  ├─ NLB metrics                      │
+│  ├─ Auto Scaling events             │
+│  └─ Lambda triggers                   │
 └─────────────────────────────────────┘
 
 ┌─────────────────────────────────────┐
-│  S3 (로그 저장소)                   │
-│  ├─ Network Firewall 로그           │
+│  S3 (Log storage)                   │
+│  ├─ Network Firewall logs           │
 │  ├─ VPC Flow Logs                   │
-│  ├─ HAProxy 액세스 로그             │
-│  └─ 장기 보관 (Glacier)             │
+│  ├─ HAProxy access logs             │
+│  └─ Long-term storage (Glacier)             │
 └─────────────────────────────────────┘
 ```
 
@@ -163,7 +158,7 @@ Windows 게임서버 (Auto Scaling)
 ### 정상 트래픽 (메인 플로우)
 
 ```
-클라이언트
+Client
   v
 Route 53 (DNS 조회)
   v
@@ -172,18 +167,18 @@ AWS Network Firewall (검사 통과)
 NLB (로드밸런싱)
   v
 Linux Proxy
-  ├─ XDP (통과)
-  ├─ nftables (통과)
-  ├─ CrowdSec (로그 분석)
-  └─ HAProxy (백엔드 전달)
+  ├─ XDP (pass)
+  ├─ nftables (pass)
+  ├─ CrowdSec (log analysis)
+  └─ HAProxy (backend forward)
   v
-Windows 게임서버
+Windows Game Server
 ```
 
 ### 공격 트래픽 (차단 플로우)
 
 ```
-공격자
+Attacker
   v
 Route 53
   v
@@ -192,33 +187,33 @@ AWS Network Firewall (일부 차단)
 NLB
   v
 Linux Proxy
-  ├─ XDP (Redis 차단 목록 확인) → DROP
-  ├─ nftables (CrowdSec 차단 목록) → DROP
-  └─ CrowdSec (실시간 탐지) → 새 공격 학습
+  ├─ XDP (check Redis blocklist) → DROP
+  ├─ nftables (CrowdSec blocklist) → DROP
+  └─ CrowdSec (realtime detection) → learn new attack
   v
-차단 완료
+Blocked
 ```
 
 ### 관리 플로우 (별도)
 
 ```
 Linux Proxy (CrowdSec Agent)
-  v (차단 결정 요청)
+  v (Block decision request)
 CrowdSec LAPI Server
-  v (차단 IP 목록 응답)
+  v (Blocked IP list response)
 Linux Proxy (nftables 업데이트)
 
 Linux Proxy (XDP 동기화 스크립트)
-  v (차단 IP 조회)
+  v (Blocked IP query)
 Redis (ElastiCache)
-  v (차단 IP 목록 응답)
+  v (Blocked IP list response)
 Linux Proxy (XDP BPF Map 업데이트)
 
 Linux Proxy (Zabbix Agent)
-  v (메트릭 전송)
+  v (Metrics push)
 Zabbix Server
-  v (알람 발송)
-관리자
+  v (Alert sent)
+Admin
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -240,7 +235,7 @@ VPC (10.0.0.0/16)
 │  └─ Linux Proxy (Auto Scaling)
 │
 ├─ Private Subnet - Backend (10.0.20.0/24)
-│  └─ Windows 게임서버
+│  └─ Windows Game Server
 │
 └─ Private Subnet - Management (10.0.100.0/24)
    ├─ CrowdSec LAPI Server
@@ -310,7 +305,7 @@ Protocol: TCP/UDP
 ### L3/L4 레이어 (nftables)
 
 **역할:**
-- 상태 기반 방화벽
+- Stateful firewall
 - Rate Limiting
 - Connection Tracking
 
@@ -328,7 +323,7 @@ Protocol: TCP/UDP
 **역할:**
 - 실시간 로그 분석
 - AI 기반 공격 탐지
-- 자동 차단 결정
+- Auto block decision
 
 **연동:**
 - LAPI Server (중앙 관리)
@@ -339,7 +334,7 @@ Protocol: TCP/UDP
 ### L7 레이어 (HAProxy)
 
 **역할:**
-- 백엔드 로드밸런싱
+- Backend load balancing
 - Health Check
 - PROXY Protocol v2 파싱
 
@@ -391,23 +386,23 @@ done
 ### Zabbix 대시보드
 
 ```
-실시간 메트릭:
-├─ 초당 패킷 수 (pps)
-├─ XDP 차단 통계
-├─ nftables 차단 통계
-├─ CrowdSec 탐지 건수
-├─ HAProxy 연결 수
-└─ 게임서버 상태
+Realtime metrics:
+├─ Packets per second (pps)
+├─ XDP block stats
+├─ nftables block stats
+├─ CrowdSec detection count
+├─ HAProxy connection count
+└─ Game server status
 ```
 
 ### CloudWatch 알람
 
 ```
-알람 조건:
+Alert conditions:
 ├─ NLB Unhealthy Host > 1
-├─ Network Firewall 차단 > 10000/min
-├─ CPU 사용률 > 80%
-└─ 네트워크 In > 1Gbps
+├─ Network Firewall blocks > 10000/min
+├─ CPU usage > 80%
+└─ Network In > 1Gbps
 ```
 
 ### 로그 분석
