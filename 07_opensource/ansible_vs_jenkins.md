@@ -16,11 +16,6 @@
 
 ---
 
-
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 핵심 차이
 
 ```
@@ -654,10 +649,10 @@ pipeline {
 
 ## 참고 자료
 
-- Ansible 공식 문서: https://docs.ansible.com
-- Jenkins 공식 문서: https://www.jenkins.io/doc
-- Ansible Galaxy (공유 Role): https://galaxy.ansible.com
-- Jenkins Plugins: https://plugins.jenkins.io
+- Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/) — ★★★☆☆
+- Jenkins Documentation: [jenkins.io/doc](https://www.jenkins.io/doc/) — ★★★☆☆
+- Ansible Galaxy: [galaxy.ansible.com](https://galaxy.ansible.com/) — ★★☆☆☆
+- Jenkins Plugins: [plugins.jenkins.io](https://plugins.jenkins.io/) — ★★☆☆☆
 
 ---
 

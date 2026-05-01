@@ -19,11 +19,6 @@
 
 ---
 
-
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## perf란?
 
 **Performance Analysis Tool** - Linux 커널에 내장된 성능 분석 도구로, CPU 프로파일링과 성능 카운터를 사용하여 시스템 성능을 분석합니다.
@@ -482,8 +477,8 @@ diff before.txt after.txt
 
 ## 참고 자료
 
-- Linux perf wiki: [perf.wiki.kernel.org](https://perf.wiki.kernel.org/) — ★★☆☆☆
-- Brendan Gregg - perf Examples: [brendangregg.com](https://www.brendangregg.com/perf.html) — ★★★☆☆
+- Linux perf wiki: [perf.wiki.kernel.org](https://perf.wiki.kernel.org/) — ★★★☆☆
+- Brendan Gregg - perf Examples: [brendangregg.com](https://www.brendangregg.com/perf.html) — ★★☆☆☆
 
 ---
 

@@ -20,11 +20,6 @@
 
 ---
 
-
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## valgrind란?
 
 **Memory Debugging and Profiling Tool** - 메모리 누수, 버퍼 오버플로우, 초기화되지 않은 메모리 사용 등을 감지하는 도구입니다.
@@ -518,8 +513,8 @@ grep "ERROR SUMMARY" valgrind.log
 
 ## 참고 자료
 
-- Valgrind Documentation: [valgrind.org](https://valgrind.org/docs/manual/manual.html) — ★★☆☆☆
-- Valgrind Quick Start: [valgrind.org](https://valgrind.org/docs/manual/quick-start.html) — ★★☆☆☆
+- Valgrind Documentation: [valgrind.org](https://valgrind.org/docs/manual/manual.html) — ★★★☆☆
+- Valgrind Quick Start: [valgrind.org](https://valgrind.org/docs/manual/quick-start.html) — ★★★☆☆
 
 ---
 

@@ -358,9 +358,9 @@ rank = r.zrevrank("leaderboard:daily", user_id)
 
 ## 참고 자료
 
-- Redis Documentation: [redis.io/docs](https://redis.io/docs/) — ★★☆☆☆
-- Redis Commands: [redis.io/commands](https://redis.io/commands/) — ★★☆☆☆
-- Redis Patterns: [redis.io/docs/manual/patterns](https://redis.io/docs/manual/patterns/) — ★★☆☆☆
+- Redis Documentation: [redis.io/docs](https://redis.io/docs/) — ★★★☆☆
+- Redis Commands: [redis.io/commands](https://redis.io/commands/) — ★★★☆☆
+- Redis Patterns: [redis.io/docs/manual/patterns](https://redis.io/docs/manual/patterns/) — ★★★☆☆
 
 ---
 

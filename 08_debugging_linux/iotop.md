@@ -22,11 +22,6 @@
 
 ---
 
-
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## iotop이란?
 
 **I/O Monitoring Tool** - 프로세스별 디스크 I/O 사용량을 실시간으로 모니터링하는 top과 유사한 도구입니다.
@@ -352,7 +347,7 @@ END {
 # io_monitor.sh
 
 THRESHOLD=500  # MB/s
-EMAIL="siasia.linux@gmail.com"
+EMAIL="user@example.com"
 
 while true; do
     TOTAL_WRITE=$(sudo iotop -b -n 1 | awk '/Total DISK WRITE/ {print $10}')

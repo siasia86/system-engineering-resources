@@ -1,10 +1,5 @@
 # ltrace - 라이브러리 함수 추적 도구
 
-> **내부 공유 자료**  
-> 작성일: 2026-01-29  
-> 버전: 1.0  
-> 대상: 개발자, SRE, 시스템 엔지니어
-
 ## 목차
 
 | 섹션 |
@@ -857,8 +852,8 @@ closedir(0x...) = 0
 - `perf` - 성능 프로파일링
 
 **온라인 리소스:**
-- ltrace GitHub: https://github.com/dkogan/ltrace
-- Linux man pages: https://man7.org/
+- ltrace GitHub: [github.com/dkogan/ltrace](https://github.com/dkogan/ltrace) — ★★☆☆☆
+- Linux man pages: [man7.org](https://man7.org/) — ★★☆☆☆
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -899,17 +894,6 @@ ltrace -c -p <PID>
 [⬆ 목차로 돌아가기](#목차)
 
 ---
-
-## 문서 변경 이력
-
-| 버전 | 날짜       | 변경 내용 |
-|------|------------|-----------|
-| 1.0  | 2026-01-29 | 초기 작성 |
-
----
-
-**문서 관리자:** SRE Team  
-**피드백:** siasia.linux@gmail.com
 
 ---
 

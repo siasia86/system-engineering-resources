@@ -73,9 +73,9 @@ fi
 ### 쉘 종류 조합
 
 ```
-login + interactive     : SSH 접속, su - user
+login + interactive     : SSH login, su - user
 login + non-interactive : ssh user@host 'command'
-non-login + interactive : 터미널에서 bash 실행
+non-login + interactive : run bash in terminal
 non-login + non-interactive : bash script.sh, cron
 ```
 

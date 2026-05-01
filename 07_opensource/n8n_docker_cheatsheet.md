@@ -15,13 +15,8 @@
 
 ---
 
-
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 1. 컨테이너 관리
-```
+```bash
 docker compose up -d                # 모든 서비스 시작 (백그라운드)
 docker compose up                    # 모든 서비스 시작 (포그라운드)
 docker compose down                  # 모든 서비스 중지 + 네트워크 제거
@@ -38,7 +33,7 @@ docker compose logs -f n8n           # 특정 서비스 실시간 로그
 ---
 
 ## 2. 컨테이너 내부 접속
-```
+```bash
 docker compose exec n8n bash        # n8n 컨테이너 내부 bash 접속
 docker compose exec mysql bash       # MySQL 컨테이너 내부 bash 접속
 ```
@@ -48,7 +43,7 @@ docker compose exec mysql bash       # MySQL 컨테이너 내부 bash 접속
 ---
 
 ## 3. 이미지 관리
-```
+```bash
 docker compose pull                  # docker-compose.yml 기준 이미지 다운로드
 docker compose build                 # Dockerfile 빌드
 docker compose images                # 서비스별 이미지 확인
@@ -59,7 +54,7 @@ docker compose images                # 서비스별 이미지 확인
 ---
 
 ## 4. 데이터 초기화 / 볼륨 관리
-```
+```bash
 docker compose down
 # n8n + MySQL 볼륨 초기화 후 재시작
 docker volume rm $(docker volume ls -q | grep -E '(_data_n8n_|_data_mysql_)')
@@ -78,7 +73,7 @@ docker volume prune -f
 ---
 
 ## 5. n8n 관리 명령어
-```
+```bash
 docker compose exec n8n n8n --version                                   # 실행 중 n8n 버전 확인
 docker compose exec n8n n8n export:workflow --all --output=/home/node/.n8n/workflows/backup.json  # 모든 워크플로우 백업
 docker compose exec n8n n8n export:credentials --all --output=/home/node/.n8n/credentials/backup.json  # 모든 credentials 백업
@@ -97,14 +92,14 @@ environment:
   DB_MYSQLDB_HOST: mysql
   DB_MYSQLDB_PORT: 3306
   DB_MYSQLDB_DATABASE: n8n
-  DB_MYSQLDB_USER: n8nuser
-  DB_MYSQLDB_PASSWORD: n8npass
-  N8N_HOST: sjyun-n8n.siasia.com
+  DB_MYSQLDB_USER: Secureuser123
+  DB_MYSQLDB_PASSWORD: SecurePassword123
+  N8N_HOST: example.com
   N8N_PORT: 5678
   N8N_PROTOCOL: http           # http / https
   N8N_BASIC_AUTH_ACTIVE: "true"
-  N8N_BASIC_AUTH_USER: admin
-  N8N_BASIC_AUTH_PASSWORD: admin123
+  N8N_BASIC_AUTH_USER: Secureuser123
+  N8N_BASIC_AUTH_PASSWORD: SecurePassword123
   N8N_SECURE_COOKIE: "false"   # HTTP 환경에서는 false, HTTPS 환경에서는 true
 ```
 
@@ -113,7 +108,7 @@ environment:
 ---
 
 ## 7. MySQL 연결 확인
-```
+```bash
 docker compose exec n8n bash
 mysql -h $DB_MYSQLDB_HOST -u $DB_MYSQLDB_USER -p$DB_MYSQLDB_PASSWORD $DB_MYSQLDB_DATABASE
 ```
@@ -123,7 +118,7 @@ mysql -h $DB_MYSQLDB_HOST -u $DB_MYSQLDB_USER -p$DB_MYSQLDB_PASSWORD $DB_MYSQLDB
 ---
 
 ## 8. 전체 초기화 (컨테이너 + 볼륨 + 네트워크)
-```
+```bash
 docker compose down
 docker volume rm $(docker volume ls -q | grep -E '(_data_n8n_|_data_mysql_|_data_portainer_)')
 docker compose up -d

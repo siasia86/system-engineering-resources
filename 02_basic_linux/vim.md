@@ -36,14 +36,14 @@
 ## 커서 이동
 
 ```
-h ← 왼쪽    j v 아래    k ^ 위    l → 오른쪽
+h ← left    j v down    k ^ up    l → right
 
-w   다음 단어 시작
-b   이전 단어 시작
-0   줄 처음
-$   줄 끝
-gg  파일 처음
-G   파일 끝
+w   next word start
+b   prev word start
+0   line start
+$   line end
+gg  file start
+G   file end
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -131,18 +131,18 @@ Ctrl+w =           " 창 크기 균등 분배
 ## 매크로
 
 ```
-qa       " 매크로 a 녹화 시작
-(작업)   " 반복할 작업 수행
-q        " 녹화 종료
-@a       " 매크로 a 실행
-10@a     " 매크로 a 10회 반복
+qa       " start recording macro a
+(actions) " perform actions to repeat
+q        " stop recording
+@a       " run macro a
+10@a     " run macro a 10 times
 ```
 
 ---
 
 ## 참고 자료
 
-- Vim Documentation: [vimdoc.sourceforge.net](http://vimdoc.sourceforge.net/) — ★★☆☆☆
+- Vim Documentation: [vimdoc.sourceforge.net](http://vimdoc.sourceforge.net/) — ★★★☆☆
 - Vim Cheat Sheet: [vim.rtorr.com](https://vim.rtorr.com/) — ★★☆☆☆
 
 ---

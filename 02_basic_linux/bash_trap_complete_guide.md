@@ -11,13 +11,13 @@
 | [trap 해제](#trap-해제) |
 | [현재 설정된 trap 확인](#현재-설정된-trap-확인) |
 | [고급 패턴](#고급-패턴) |
+| [고급 패턴 2](#고급-패턴-2) |
 | [실전 팁](#실전-팁) |
 | [실전 템플릿](#실전-템플릿) |
 | [시그널 상세 정보](#시그널-상세-정보) |
 | [trap 동작 원리](#trap-동작-원리) |
 | [서브셸과 trap](#서브셸과-trap) |
 | [set 옵션과 trap 조합](#set-옵션과-trap-조합) |
-| [고급 패턴](#고급-패턴) |
 | [일반적인 실수와 해결책](#일반적인-실수와-해결책) |
 | [성능 고려사항](#성능-고려사항) |
 | [실전 팁 모음](#실전-팁-모음) |
@@ -906,7 +906,7 @@ false  # ERR trap 실행 후 스크립트 종료
 
 ---
 
-## 고급 패턴
+## 고급 패턴 2
 
 ### 1. 롤백 메커니즘
 
@@ -1080,37 +1080,33 @@ sleep 10
 
 ## 일반적인 실수와 해결책
 
-### 실수 1: trap 내에서 exit 호출 시 무한 루프
+### 실수 1: trap 내에서 exit 호출
+
+Bash는 EXIT trap 내에서 `exit`을 호출해도 무한 루프가 발생하지 않는다.
+단, trap 내에서 `exit`을 명시적으로 호출하면 종료 코드가 덮어써지므로 주의가 필요하다.
 
 ```bash
 #!/bin/bash
 
-# 잘못된 예
+# exit 코드 덮어쓰기 주의
 trap 'echo "Exiting..."; exit 1' EXIT
 exit 0
-# "Exiting..."이 무한 반복될 수 있음
+# 종료 코드가 0이 아닌 1로 덮어써짐
 ```
 
-**해결책:**
+**권장 패턴: 종료 코드 보존**
 ```bash
 #!/bin/bash
 
-# 올바른 예
-EXITING=false
-
 cleanup() {
-    if [ "$EXITING" = true ]; then
-        return
-    fi
-    EXITING=true
-    
+    local exit_code=$?   # 원래 종료 코드 보존
     echo "Cleaning up..."
     # cleanup 작업
+    exit $exit_code      # 원래 코드로 종료
 }
 
 trap cleanup EXIT
 ```
-
 ### 실수 2: 변수 스코프 문제
 
 ```bash

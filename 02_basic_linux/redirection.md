@@ -32,9 +32,9 @@
 | 2   | stderr | 에러 출력 | 터미널    |
 
 ```
-┌──────────┐     FD 0 (stdin)  ← 키보드
-│ process  │ →   FD 1 (stdout) → 터미널
-│          │ →   FD 2 (stderr) → 터미널
+┌──────────┐     FD 0 (stdin)  ← keyboard
+│ process  │ →   FD 1 (stdout) → terminal
+│          │ →   FD 2 (stderr) → terminal
 └──────────┘
 ```
 
@@ -221,7 +221,7 @@ command > file 2>&1
 
 # ❌ stderr→stdout(=터미널), stdout→file
 command 2>&1 > file
-# 결과: stdout만 file, stderr는 터미널
+# result: stdout → file, stderr → terminal
 ```
 
 처리 순서 도식:
@@ -229,27 +229,27 @@ command 2>&1 > file
 ```
 # command > file 2>&1
 ┌──────────┐
-│ 초기 상태│  FD 1 → 터미널    FD 2 → 터미널
+│ Initial  │  FD 1 → terminal    FD 2 → terminal
 └──────────┘
       |
-  > file        FD 1 → file      FD 2 → 터미널
+  > file        FD 1 → file      FD 2 → terminal
       |
-  2>&1          FD 1 → file      FD 2 → file     ← FD 1이 가리키는 곳
+  2>&1          FD 1 → file      FD 2 → file     ← FD 1 points here
       |
-  결과: 둘 다 file
+  result: both → file
 ```
 
 ```
 # command 2>&1 > file
 ┌──────────┐
-│ 초기 상태│  FD 1 → 터미널    FD 2 → 터미널
+│ Initial  │  FD 1 → terminal    FD 2 → terminal
 └──────────┘
       |
-  2>&1          FD 1 → 터미널    FD 2 → 터미널   ← FD 1이 가리키는 곳(터미널)
+  2>&1          FD 1 → terminal    FD 2 → terminal   ← FD 1 points to terminal
       |
-  > file        FD 1 → file      FD 2 → 터미널
+  > file        FD 1 → file      FD 2 → terminal
       |
-  결과: stdout만 file, stderr는 터미널
+  result: stdout → file, stderr → terminal
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -331,7 +331,7 @@ tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 32
 ### 기본 형식
 
 ```
-분 시 일 월 요일 명령
+min hour day month weekday command
 ```
 
 ### 출력 처리 패턴
