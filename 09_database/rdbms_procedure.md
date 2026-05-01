@@ -394,7 +394,7 @@ END;
 
 - MySQL Documentation: [Stored Procedures](https://dev.mysql.com/doc/refman/8.0/en/stored-programs-defining.html) — ★★★☆☆
 - PostgreSQL Documentation: [PL/pgSQL](https://www.postgresql.org/docs/current/plpgsql.html) — ★★★☆☆
-- Oracle Documentation: PL/SQL Stored Procedures
+- Oracle Documentation: [PL/SQL Subprograms](https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/plsql-subprograms.html) — ★★★☆☆
 
 ---
 
