@@ -2,18 +2,27 @@
 
 Docker, 컨테이너 기술, 워크플로우 자동화 도구에 대한 가이드입니다.
 
-[⬆ 목차로 돌아가기](#목차)
+## 목차
+
+| 섹션 |
+|------|
+| [문서 목록](#문서-목록) / [빠른 시작](#빠른-시작) |
+
 
 ---
 
 ## 문서 목록
 
 ### 컨테이너
-- **[Docker & Docker Compose 치트시트](01_docker_docker_compose_cheatsheet.md)** - 자주 사용하는 Docker 명령어
-- **[컨테이너 아키텍처](03_container_architecture.md)** - 컨테이너 내부 구조 및 원리
+- **[Docker & Docker Compose 치트시트](docker_docker_compose_cheatsheet.md)** - 자주 사용하는 Docker 명령어
+- **[컨테이너 아키텍처](container_architecture.md)** - 컨테이너 내부 구조 및 원리
 
 ### 자동화 도구
-- **[n8n Docker 치트시트](02_n8n_docker_cheatsheet.md)** - n8n 워크플로우 자동화 도구
+- **[n8n Docker 치트시트](n8n_docker_cheatsheet.md)** - n8n 워크플로우 자동화 도구
+- **[Ansible vs Jenkins](ansible_vs_jenkins.md)** - 자동화 도구 비교
+
+### 데이터베이스 백업
+- **[Percona XtraBackup 가이드](percona_xtrabackup_guide.md)** - MySQL/MariaDB 물리적 백업
 
 [⬆ 목차로 돌아가기](#목차)
 

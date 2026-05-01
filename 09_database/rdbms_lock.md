@@ -163,20 +163,15 @@ WHERE blocked.wait_event_type = 'Lock';
 ### MySQL
 
 ```sql
--- 현재 Lock 대기 목록
-SELECT
-    r.trx_id AS waiting_trx,
-    r.trx_mysql_thread_id AS waiting_thread,
-    r.trx_query AS waiting_query,
-    b.trx_id AS blocking_trx,
-    b.trx_mysql_thread_id AS blocking_thread
-FROM information_schema.innodb_lock_waits w
-JOIN information_schema.innodb_trx b ON b.trx_id = w.blocking_trx_id
-JOIN information_schema.innodb_trx r ON r.trx_id = w.requesting_trx_id;
-
--- MySQL 8.0+
+-- MySQL 8.0+ (권장)
 SELECT * FROM performance_schema.data_lock_waits;
 SELECT * FROM performance_schema.data_locks;
+
+-- MySQL 5.7 이하 (8.0에서 innodb_lock_waits 뷰 제거됨)
+-- SELECT r.trx_id AS waiting_trx, b.trx_id AS blocking_trx
+-- FROM information_schema.innodb_lock_waits w
+-- JOIN information_schema.innodb_trx b ON b.trx_id = w.blocking_trx_id
+-- JOIN information_schema.innodb_trx r ON r.trx_id = w.requesting_trx_id;
 
 -- 오래된 트랜잭션 확인
 SELECT trx_id, trx_started, trx_query

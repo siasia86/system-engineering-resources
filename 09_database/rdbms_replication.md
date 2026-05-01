@@ -218,7 +218,7 @@ aws rds create-db-instance-read-replica \
 | 항목 | 설명 |
 |------|------|
 | 복제 방식 | 비동기 (MySQL binlog 기반) |
-| 최대 Replica 수 | 5개 (MySQL), 15개 (Aurora) |
+| 최대 Replica 수 | 15개 (MySQL), 15개 (Aurora) |
 | Failover 승격 | 수동 (`promote-read-replica`) |
 | Cross-Region | 지원 (추가 비용) |
 | 스토리지 | Primary와 독립 |

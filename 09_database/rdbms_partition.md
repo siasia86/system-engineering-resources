@@ -301,13 +301,23 @@ ALTER TABLE orders REORGANIZE PARTITION p2023, p2024 INTO (
 
 ```sql
 -- 매월 새 파티션 추가 (이벤트 스케줄러)
+-- 파티션 이름을 동적으로 생성하려면 Stored Procedure 사용
+DELIMITER $$
+CREATE PROCEDURE add_next_partition()
+BEGIN
+    SET @pname = CONCAT("p", DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 2 MONTH), "%Y%m"));
+    SET @ts    = UNIX_TIMESTAMP(DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 3 MONTH), "%Y-%m-01"));
+    SET @sql   = CONCAT("ALTER TABLE logs ADD PARTITION (PARTITION ", @pname, " VALUES LESS THAN (", @ts, "))");
+    PREPARE stmt FROM @sql;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
 CREATE EVENT add_monthly_partition
 ON SCHEDULE EVERY 1 MONTH
 STARTS '2026-12-01 00:00:00'
-DO
-    ALTER TABLE logs ADD PARTITION (
-        PARTITION p_next VALUES LESS THAN (UNIX_TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 2 MONTH)))
-    );
+DO CALL add_next_partition();
 ```
 
 ### Tip 2: 파티션 키 선택 기준

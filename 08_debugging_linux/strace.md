@@ -1,10 +1,5 @@
 # strace - 시스템 콜 추적 도구
 
-> **내부 공유 자료**  
-> 작성일: 2026-01-29  
-> 버전: 1.0  
-> 대상: 개발자, SRE, 시스템 엔지니어
-
 ## 목차
 
 | 섹션 |
@@ -593,8 +588,8 @@ sudo strace -p <PID>
 
 ### 문제 3: 프로그램이 느려짐
 ```bash
-# 버퍼링 사용
-strace -b ls
+# 특정 시스템 콜만 추적하여 오버헤드 감소
+strace -e trace=file ls
 ```
 
 ### 문제 4: 자식 프로세스 추적 안 됨
@@ -1155,9 +1150,9 @@ strace -e trace=file -p $(pgrep myapp) 2>&1 | grep --line-buffered openat
 - `ftrace` - 커널 함수 추적
 
 **온라인 리소스:**
-- strace GitHub: https://github.com/strace/strace
-- Linux man pages: https://man7.org/
-- System call table: https://syscalls.kernelgrok.com/
+- strace GitHub: [github.com/strace/strace](https://github.com/strace/strace) — ★★☆☆☆
+- Linux man pages: [man7.org](https://man7.org/) — ★★☆☆☆
+- System call table: [syscalls.kernelgrok.com](https://syscalls.kernelgrok.com/) — ★★☆☆☆
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -1202,16 +1197,6 @@ strace -o /tmp/trace.log -s 128 -p <PID>
 
 ---
 
-## 문서 변경 이력
-
-| 버전 | 날짜       | 변경 내용 |
-|------|------------|-----------|
-| 1.0  | 2026-01-29 | 초기 작성 |
-
----
-
-**문서 관리자:** siasia86
-**피드백:** siasia.linux@gmail.com
 ---
 
 ## 참고 자료
