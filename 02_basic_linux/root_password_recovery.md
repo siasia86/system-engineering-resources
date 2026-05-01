@@ -122,7 +122,7 @@ exit
 | 버전  | Init System | 비고                           |
 |-------|-------------|--------------------------------|
 | 14.04 | Upstart     | EOL (2019-04)                  |
-| 16.04 | systemd     | EOL (2021-04, ESM 2026-04)     |
+| 16.04 | systemd     | EOL (2021-04, ESM 2026-04, 만료됨)     |
 | 18.04 | systemd     | EOL (2023-05, ESM 2028-04)     |
 | 20.04 | systemd     | LTS (2025-04까지, ESM 2030-04) |
 | 22.04 | systemd     | LTS (2027-04까지)              |
@@ -170,7 +170,7 @@ reboot -f
 
 ## 참고 자료
 
-- Red Hat Documentation - Root Password Reset: [access.redhat.com](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_basic_system_settings/assembly_changing-and-resetting-the-root-password_configuring-basic-system-settings) — ★★☆☆☆
+- Red Hat Documentation - Root Password Reset: [access.redhat.com](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_basic_system_settings/assembly_changing-and-resetting-the-root-password_configuring-basic-system-settings) — ★★★☆☆
 
 ---
 

@@ -1,22 +1,13 @@
 # Site Reliability Engineer (SRE) 커리어 로드맵
 
-> **내부 공유 자료**  
-> 작성일: 2026-01-29  
-> 버전: 1.0  
-> 대상: SRE 지망생, Junior SRE
-
 ## 목차
 
 | 섹션 |
 |------|
 | [전체 로드맵](#전체-로드맵) / [SRE 핵심 원칙](#sre-핵심-원칙) / [Junior SRE (0-2년)](#junior-sre-0-2년) |
-| [Mid-level SRE (2-5년)](#mid-level-sre-2-5년) / [Senior SRE (5-8년)](#senior-sre-5-8년) / [요약](#요약) |
-| [타임라인](#타임라인) / [근본 원인](#근본-원인) / [해결 방법](#해결-방법) |
-| [액션 아이템](#액션-아이템) / [교훈](#교훈) / [Staff/Principal SRE (8년+)](#staffprincipal-sre-8년) |
-| [배포 표준](#배포-표준) / [모니터링 표준](#모니터링-표준) / [인시던트 표준](#인시던트-표준) |
+| [Mid-level SRE (2-5년)](#mid-level-sre-2-5년) / [Senior SRE (5-8년)](#senior-sre-5-8년) |
 | [필수 기술 스택](#필수-기술-스택) / [학습 자료](#학습-자료) / [실전 프로젝트](#실전-프로젝트) |
 | [커리어 팁](#커리어-팁) / [마무리](#마무리) |
-
 
 ---
 
@@ -1019,10 +1010,10 @@ class CapacityPlanner:
 ---
 
 ## 액션 아이템
-- [ ] 연결 풀 모니터링 추가 (@john, 2026-02-05)
-- [ ] Auto Scaling 정책 수정 (@jane, 2026-02-10)
-- [ ] 부하 테스트 실시 (@team, 2026-02-15)
-- [ ] 런북 업데이트 (@alice, 2026-02-01)
+- [ ] 연결 풀 모니터링 추가
+- [ ] Auto Scaling 정책 수정
+- [ ] 부하 테스트 실시
+- [ ] 런북 업데이트
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -2112,28 +2103,12 @@ Staff/Principal (8년+):
 
 ---
 
-**작성자 노트:**
-이 로드맵은 실제 SRE 현업 경험을 바탕으로 작성되었습니다. 각자의 상황에 맞게 조정하여 사용하시기 바랍니다.
-
-**참고 자료:**
-- Google SRE Book: https://sre.google/books/
-- SRE Weekly: https://sreweekly.com/
-- AWS Well-Architected Framework: https://aws.amazon.com/architecture/well-architected/
-
-**업데이트:**
-- 2026-01-29: 초안 작성
-- 정기 업데이트 예정 (분기별)
-
-**피드백:**
-이 문서에 대한 피드백이나 제안사항이 있으시면 언제든지 공유해주세요.
-
-
----
-
 ## 참고 자료
 
-- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/) — ★★★☆☆
-- roadmap.sh SRE: [roadmap.sh/sre](https://roadmap.sh/sre) — ★★★☆☆
+- Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/) — ★★★★☆
+- The Site Reliability Workbook: [sre.google](https://sre.google/workbook/table-of-contents/) — ★★★★☆
+- roadmap.sh SRE: [roadmap.sh/sre](https://roadmap.sh/sre) — ★★☆☆☆
+- AWS Well-Architected Framework: [aws.amazon.com](https://aws.amazon.com/architecture/well-architected/) — ★★★☆☆
 
 ---
 

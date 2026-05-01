@@ -507,11 +507,11 @@ redis-cli -h redis.xxxxx.cache.amazonaws.com SMEMBERS blocked_ips
 
 ## 참고 자료
 
-- AWS Network Firewall: https://docs.aws.amazon.com/network-firewall/
-- CrowdSec Documentation: https://docs.crowdsec.net/
-- XDP Tutorial: https://github.com/xdp-project/xdp-tutorial
-- nftables Wiki: https://wiki.nftables.org/
-- HAProxy Documentation: https://www.haproxy.org/
+- AWS Network Firewall: [docs.aws.amazon.com](https://docs.aws.amazon.com/network-firewall/) — ★★★☆☆
+- CrowdSec Documentation: [docs.crowdsec.net](https://docs.crowdsec.net/) — ★★★☆☆
+- XDP Tutorial: [github.com/xdp-project](https://github.com/xdp-project/xdp-tutorial) — ★★☆☆☆
+- nftables Wiki: [wiki.nftables.org](https://wiki.nftables.org/) — ★★★☆☆
+- HAProxy Documentation: [haproxy.org](https://www.haproxy.org/) — ★★★☆☆
 
 ---
 
