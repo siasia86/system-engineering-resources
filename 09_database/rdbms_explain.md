@@ -291,7 +291,7 @@ VACUUM ANALYZE orders;         -- PostgreSQL
 
 - MySQL Documentation: [EXPLAIN Statement](https://dev.mysql.com/doc/refman/8.0/en/explain.html) — ★★★☆☆
 - PostgreSQL Documentation: [EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) — ★★★☆☆
-- Use The Index, Luke: [Execution Plans](https://use-the-index-luke.com/sql/explain-plan) — ★★★☆☆
+- Use The Index, Luke: [Execution Plans](https://use-the-index-luke.com/sql/explain-plan) — ★★☆☆☆
 
 ---
 

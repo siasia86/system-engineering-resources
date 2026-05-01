@@ -45,7 +45,7 @@ Primary                          Replica
 └─────────────┘                 └──────┬──────┘
                                        │ SQL Thread
                                        v
-                                  데이터 적용
+                                  Data Applied
 ```
 
 ### Binary Log 형식
@@ -177,7 +177,7 @@ Primary ──> Replica 1 ──> Replica 2
 
 ```
 Primary A ──┐
-            ├──> Replica (집계용)
+            ├──> Replica (aggregation)
 Primary B ──┘
 ```
 
@@ -186,7 +186,7 @@ Primary B ──┘
 ```
 ┌─────────────────────────────┐
 │  Node 1 (Primary)           │
-│  Node 2 (Secondary)  ◄────► │  Paxos 합의
+│  Node 2 (Secondary)  ◄────► │  Paxos consensus
 │  Node 3 (Secondary)         │
 └─────────────────────────────┘
 ```
@@ -200,8 +200,8 @@ Primary B ──┘
 ```
 RDS Primary (Multi-AZ)
     │
-    ├──> Read Replica (같은 리전)
-    └──> Read Replica (다른 리전, Cross-Region)
+    ├──> Read Replica (same region)
+    └──> Read Replica (cross-region)
 ```
 
 ### 생성

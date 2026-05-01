@@ -142,19 +142,19 @@ SELECT order_date, amount FROM orders WHERE user_id = 1;
 ```
 Clustered Index (InnoDB Primary Key)
 ┌──────────────────────────────────────┐
-│ Leaf Node = 실제 데이터 행           │
+│ Leaf Node = Actual Data Row          │
 │ [PK=1 | name='Alice' | email='...']  │
 │ [PK=2 | name='Bob'   | email='...']  │
 └──────────────────────────────────────┘
 
 Non-Clustered Index (Secondary Index)
 ┌──────────────────────────────────────┐
-│ Leaf Node = 인덱스 키 + PK 값        │
+│ Leaf Node = Index Key + PK Value     │
 │ [email='alice@...' | PK=1]           │
 │ [email='bob@...'   | PK=2]           │
 └──────────────────────────────────────┘
          │
-         └─> PK로 Clustered Index 재탐색 (Double Lookup)
+         └─> Double Lookup via PK on Clustered Index
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -397,7 +397,7 @@ ORDER BY pg_relation_size(indexrelid) DESC;
 
 - MySQL Documentation: [Optimization and Indexes](https://dev.mysql.com/doc/refman/8.0/en/optimization-indexes.html) — ★★★☆☆
 - PostgreSQL Documentation: [Indexes](https://www.postgresql.org/docs/current/indexes.html) — ★★★☆☆
-- Use The Index, Luke: https://use-the-index-luke.com
+- Use The Index, Luke: [use-the-index-luke.com](https://use-the-index-luke.com/) — ★★☆☆☆
 
 ---
 

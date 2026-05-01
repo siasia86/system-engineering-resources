@@ -293,7 +293,7 @@ SELECT * FROM category_tree ORDER BY depth, id;
 
 - MySQL Documentation: [JOIN Syntax](https://dev.mysql.com/doc/refman/8.0/en/join.html) — ★★★☆☆
 - PostgreSQL Documentation: [Joins Between Tables](https://www.postgresql.org/docs/current/tutorial-join.html) — ★★★☆☆
-- Use The Index, Luke: [Join](https://use-the-index-luke.com/sql/join) — ★★★☆☆
+- Use The Index, Luke: [Join](https://use-the-index-luke.com/sql/join) — ★★☆☆☆
 
 ---
 

@@ -189,6 +189,21 @@ CREATE TABLE users_asia    PARTITION OF users FOR VALUES IN ('KR', 'JP', 'CN');
 CREATE TABLE users_america PARTITION OF users FOR VALUES IN ('US', 'CA', 'MX');
 ```
 
+### Hash 파티셔닝
+
+```sql
+CREATE TABLE logs (
+    log_id  BIGINT NOT NULL,
+    user_id INT NOT NULL,
+    message TEXT
+) PARTITION BY HASH (user_id);
+
+CREATE TABLE logs_p0 PARTITION OF logs FOR VALUES WITH (MODULUS 4, REMAINDER 0);
+CREATE TABLE logs_p1 PARTITION OF logs FOR VALUES WITH (MODULUS 4, REMAINDER 1);
+CREATE TABLE logs_p2 PARTITION OF logs FOR VALUES WITH (MODULUS 4, REMAINDER 2);
+CREATE TABLE logs_p3 PARTITION OF logs FOR VALUES WITH (MODULUS 4, REMAINDER 3);
+```
+
 ### 파티션 인덱스
 
 ```sql
@@ -351,6 +366,6 @@ ON orders (order_id, created_at);  -- created_at(파티션 키) 포함
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-05-01
 
 © 2026 siasia86. Licensed under CC BY 4.0.
