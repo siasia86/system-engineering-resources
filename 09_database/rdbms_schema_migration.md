@@ -220,13 +220,13 @@ ALTER TABLE users RENAME COLUMN email_new TO email;
 ### 패턴 3: Blue-Green 마이그레이션
 
 ```
-Blue (현재 운영)          Green (새 스키마)
+Blue (Current)            Green (New Schema)
 ┌─────────────┐           ┌─────────────┐
-│  DB v1      │ ──복제──> │  DB v2      │
-│  (구 스키마) │           │  (신 스키마) │
+│  DB v1      │ ─ repl ─> │  DB v2      │
+│  (old)      │           │  (new)      │
 └─────────────┘           └─────────────┘
         │                         │
-        └──── 트래픽 전환 ─────────┘
+        └──── traffic switch ─────┘
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -324,7 +324,7 @@ WHERE table_name = 'orders';
 
 ## 참고 자료
 
-- Percona pt-online-schema-change: [percona.com](https://docs.percona.com/percona-toolkit/pt-online-schema-change.html) — ★★★☆☆
+- Percona pt-online-schema-change: [percona.com](https://docs.percona.com/percona-toolkit/pt-online-schema-change.html) — ★★☆☆☆
 - gh-ost GitHub: [gh-ost](https://github.com/github/gh-ost) — ★★☆☆☆
 - MySQL Documentation: [Online DDL Operations](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html) — ★★★☆☆
 
