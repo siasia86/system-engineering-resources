@@ -14,7 +14,6 @@
 | [19. Model (모델 선택)](#19-model-모델-선택) / [20. 대화 관리 (Chat Save/Load)](#20-대화-관리-chat-saveload) / [21. 인프라 엔지니어 활용도 요약](#21-인프라-엔지니어-활용도-요약) |
 | [22. 참고 URL](#22-참고-url) |
 
-
 ## 1. 명령어 전체 목록
 
 ### 대화 관리
@@ -716,6 +715,91 @@ kiro-cli chat --trust-tools=
 | `report_issue` | GitHub 이슈 생성          | `report`     |
 | `introspect`   | Kiro CLI 문서 검색        |              |
 
+#### 도구별 상세
+
+##### `execute_bash` — 쉘 명령어 실행
+
+```bash
+# AI가 자동 생성하는 명령어 예시
+ls -la /etc/nginx/
+systemctl status nginx
+df -h
+```
+
+- `autoAllowReadonly: true` 설정 시 읽기 전용 명령어(`ls`, `cat`, `grep` 등)는 확인 없이 자동 실행
+- 쓰기/변경 명령어는 `allowedTools`에 있어도 AI 판단 후 호출, 없으면 `y/n` 확인
+
+```json
+"toolsSettings": {
+  "execute_bash": {
+    "autoAllowReadonly": true
+  }
+}
+```
+
+##### `fs_write` — 파일 생성/수정
+
+```json
+"toolsSettings": {
+  "fs_write": {
+    "allowedPaths": ["~/ansible/**", "~/terraform/**"]
+  }
+}
+```
+
+- `allowedPaths` 로 쓰기 가능한 경로를 제한할 수 있음
+- 경로 외 파일 수정 시 차단됨
+
+##### `use_aws` — AWS CLI 호출
+
+AI가 AWS CLI를 직접 호출합니다. IAM 권한 범위 내에서만 동작합니다.
+
+```bash
+# AI가 내부적으로 실행하는 예시
+aws ec2 describe-instances --region ap-northeast-2
+aws s3 ls s3://my-bucket
+aws cloudwatch get-metric-statistics ...
+```
+
+- `allowedTools`에 `use_aws` 추가 시 확인 없이 자동 실행
+- 인프라 변경 작업(`terminate-instances` 등)은 `allowedTools`에서 제외 권장
+- 실행 전 `hooks.preToolUse`로 위험 명령어 차단 가능
+
+##### `web_search` — 웹 검색
+
+AI가 필요하다고 판단할 때만 호출됩니다. 자동 실행되지 않습니다.
+
+호출 조건:
+- 명시적 요청: "검색해줘", "최신 버전 확인해줘"
+- 최신 정보 필요: 릴리스 노트, CVE, 현재 가격 등
+- 학습 데이터 이후 정보
+
+```
+> nginx 최신 stable 버전이 뭐야?
+→ web_search 호출 → 결과 요약
+```
+
+##### `web_fetch` — 웹 페이지 내용 가져오기
+
+URL을 직접 지정하거나 AI가 판단 시 호출합니다.
+
+```
+> https://nginx.org/en/CHANGES 내용 요약해줘
+→ web_fetch 호출 → 내용 파싱 후 요약
+```
+
+- `web_search`와 달리 특정 URL의 전체 내용을 가져옴
+- 공식 문서, 릴리스 노트, API 레퍼런스 확인에 유용
+
+##### `use_subagent` — 서브에이전트 실행
+
+병렬 작업 분배에 사용됩니다. 상세는 [섹션 14. 병렬 처리](#14-병렬-처리-parallel-execution) 참고.
+
+##### `introspect` — Kiro CLI 문서 검색
+
+Kiro CLI 자체 기능/명령어를 AI가 내부적으로 조회할 때 사용합니다.
+사용자가 직접 호출하지 않으며, AI가 Kiro 관련 질문에 답할 때 자동으로 사용합니다.
+
 #### MCP 서버 도구
 
 MCP 도구는 `@서버명/도구명` 형식으로 지정합니다:
@@ -889,6 +973,38 @@ Plan 에이전트 출력 예시:
 | `allowedTools` | 사용자 확인 없이 자동 승인할 도구 | 실제 도구명 (`execute_bash` 등) | 매번 `y/n` 확인 프롬프트 |
 | `prompt`       | 에이전트 페르소나/정체성 정의     | 자유 텍스트                     | 기본 에이전트 동작       |
 | `resources`    | 스킬(행동 규칙) 또는 파일 참조    | `skill://xxx`, `file://xxx`     | 추가 규칙 없음           |
+
+#### `resources` 자동 적용
+
+에이전트 JSON의 `resources` 필드에 등록된 항목은 세션 시작 시 자동으로 컨텍스트에 로드됩니다.
+별도 언급 없이 처음부터 적용됩니다.
+
+```json
+"resources": [
+  "skill://work-rules",        // 세션 시작 시 자동 로드
+  "file://~/.kiro/markdown/STYLE.md"  // 세션 시작 시 자동 로드
+]
+```
+
+| 리소스 타입 | 로드 시점 | 특징 |
+|-------------|-----------|------|
+| `file://` | 에이전트 시작 시 항상 로드 | 항상 컨텍스트에 포함 |
+| `skill://` | AI가 필요하다고 판단할 때 | Context Window 절약 |
+
+#### `allowedTools` 동작 방식
+
+`allowedTools`에 등록된 도구는 **허용**이지 **자동 실행이 아닙니다**.
+AI가 필요하다고 판단할 때만 호출하며, 사용자 확인 없이 바로 실행됩니다.
+
+```
+allowedTools에 있음 → AI가 판단 후 호출 → 확인 없이 자동 실행
+allowedTools에 없음 → AI가 판단 후 호출 → y/n 확인 프롬프트
+tools에 없음        → 호출 자체 불가
+```
+
+`allowedTools`의 모든 도구(`execute_bash`, `fs_write`, `use_aws`, `web_search` 등)가 동일하게 동작합니다.
+AI가 필요하다고 판단할 때만 호출되며, 자동으로 실행되지 않습니다.
+예를 들어 `web_search`는 명시적으로 "검색해줘" 요청하거나 최신 정보가 필요한 질문일 때만 호출됩니다.
 
 `tools` 카테고리 → 실제 도구 매핑:
 
@@ -2361,7 +2477,7 @@ kiro-cli chat --delete-session <ID>   # 대화 삭제
 
 ## 참고 자료
 
-- Kiro CLI Documentation: [kiro.dev](https://kiro.dev/docs/cli/) — ★★☆☆☆
+- Kiro CLI Documentation: [kiro.dev](https://kiro.dev/docs/cli/) — ★★★☆☆
 
 ---
 
