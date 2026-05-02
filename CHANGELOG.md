@@ -6,6 +6,47 @@
 
 ---
 
+## [2.1.0] - 2026-05-01
+
+### Added
+- `12_tech_stack/README.md` 신규 생성 — 6개 문서 링크 표, 참고 자료, 푸터
+- `10_nosql/README.md` 문서 목록 섹션 추가 (Redis, MongoDB, Elasticsearch 링크 표)
+- `11_python/README.md` 목차 섹션 추가
+- `06_security/README.md` 목차 섹션 추가
+- `02_basic_linux/README.md` 목차 섹션 추가, `shell_interactive_mode.md` 문서 목록 추가
+- `09_database/rdbms_partition.md` PostgreSQL Hash 파티셔닝 예제 추가
+
+### Changed
+- `07_opensource/` 파일명 앞 숫자 접두사 제거 (`01_docker_...` → `docker_...` 등 4개)
+- `08_debugging_linux/` 내부 공유 자료 헤더 제거 (strace, ltrace), 문서 변경 이력/관리자 섹션 제거
+- `04_system_engineer/01_roadmap/sre_roadmap.md` 내부 공유 자료 헤더, 실명, 작성자 노트 제거
+- 전체 참고 자료 별점 STYLE.md 기준 재적용
+  - 공식 문서: ★★★☆☆, 서드파티/블로그: ★★☆☆☆, seminal 도서/PEP: ★★★★☆
+  - Use The Index Luke: ★★☆☆☆ (서드파티)
+- `09_database/` 다이어그램 내 한글 영문화 (4개 파일)
+- `07_opensource/container_architecture.md` 다이어그램 내 한글 영문화, 중복 참고 자료 제거
+- `06_security/01_ddos_defense_architecture.md` 다이어그램 내 한글 영문화, 참고 자료 형식 수정
+- `02_basic_linux/` 다이어그램 내 한글 영문화 (redirection, vim, shell_interactive_mode)
+- `10_nosql/nosql_elasticsearch.md` REST API 코드블록 `bash` 태그 제거, JSON 내 `#` 주석 → `//`
+- `n8n_docker_cheatsheet.md` 자격증명 실제값 → 표준 플레이스홀더 적용
+- `12_tech_stack/git_guide.md` bare URL → 마크다운 형식 + 별점 추가
+- `README.md` `07_opensource` 링크 파일명 수정 (접두사 제거 반영), 마지막 업데이트 갱신
+
+### Fixed
+- `09_database/rdbms_lock.md` `information_schema.innodb_lock_waits` MySQL 8.0 제거 반영 (8.0+ 쿼리 우선)
+- `09_database/rdbms_join.md` INNER JOIN 다이어그램 값 오류 수정 (`│2│3│` → `│1│3│`)
+- `09_database/rdbms_replication.md` RDS MySQL Read Replica 최대 수 수정 (5개 → 15개)
+- `09_database/rdbms_partition.md` 이벤트 스케줄러 파티션 이름 충돌 수정 (동적 이름 생성으로 변경)
+- `09_database/rdbms_procedure.md` `SQL_CALC_FOUND_ROWS` deprecated 주석 추가
+- `09_database/rdbms_transaction.md` `FOR UPDATE` 설명 정정 (일반 SELECT는 MVCC로 허용)
+- `08_debugging_linux/strace.md` `strace -b` 오류 수정 (strace에 없는 옵션)
+- `02_basic_linux/README.md` 리소스 모니터링 링크 경로 수정 (`04_system_engineer/02_operations/` 누락)
+- 전체 README.md 링크 유효성 검증 완료 (12개 파일 전체 OK)
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## [2.0.0] - 2026-04-30
 
 ### Added
@@ -118,6 +159,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-05-01
 
 © 2026 siasia86. Licensed under CC BY 4.0.
