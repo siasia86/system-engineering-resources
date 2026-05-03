@@ -1,62 +1,46 @@
-# 보안 - DDoS 방어 및 시스템 보안
+# 보안
 
-시스템 보안, DDoS 공격 방어, 보안 아키텍처에 대한 문서입니다.
+시스템 보안, 방화벽, 인증, 취약점 관리 문서 모음.
 
 ## 목차
 
 | 섹션 |
 |------|
-| [문서 목록](#문서-목록) / [보안 기초](#보안-기초) / [방어 전략](#방어-전략) |
-
+| [1. 문서 목록](#1-문서-목록) / [2. 상황별 선택 가이드](#2-상황별-선택-가이드) |
 
 ---
 
-## 문서 목록
+## 1. 문서 목록
 
-### DDoS 방어
-- **[DDoS 방어 아키텍처](01_ddos_defense_architecture.md)** - DDoS 공격 유형 및 방어 전략
+| 문서                                                          | 설명                                              |
+|---------------------------------------------------------------|---------------------------------------------------|
+| [DDoS 방어 아키텍처](ddos_defense_architecture.md)           | XDP/nftables/CrowdSec/HAProxy 계층별 방어 전략   |
+| [Linux 서버 보안 강화](linux_hardening.md)                   | sysctl, auditd, 불필요 서비스 제거, umask         |
+| [방화벽 - iptables/nftables](firewall_iptables_nftables.md)  | 체인/규칙, nftables 문법, 실전 룰셋               |
+| [SSH 보안](ssh_security.md)                                   | 키 기반 인증, sshd_config 강화, fail2ban          |
+| [TLS/SSL 가이드](tls_ssl_guide.md)                           | 인증서 구조, Let's Encrypt, openssl, mTLS         |
+| [시크릿 관리](secret_management.md)                          | Ansible Vault, AWS Secrets Manager, Vault 비교    |
+| [AWS 보안](aws_security.md)                                   | IAM, Security Group, WAF, GuardDuty, CloudTrail   |
+| [취약점 스캔](vulnerability_scanning.md)                     | nmap, trivy, lynis, CVE 대응 흐름                 |
 
 [⬆ 목차로 돌아가기](#목차)
 
 ---
 
-## 보안 기초
+## 2. 상황별 선택 가이드
 
-### 보안의 3요소 (CIA Triad)
-
-- **기밀성 (Confidentiality)** - 인가된 사용자만 접근
-- **무결성 (Integrity)** - 데이터 변조 방지
-- **가용성 (Availability)** - 서비스 지속성 보장
-
-### DDoS 공격 유형
-
-1. **Volume-based** - 대역폭 소진 (UDP Flood, ICMP Flood)
-2. **Protocol-based** - 프로토콜 취약점 (SYN Flood, Ping of Death)
-3. **Application-based** - 애플리케이션 리소스 소진 (HTTP Flood, Slowloris)
+| 상황                          | 문서                                                                              |
+|-------------------------------|-----------------------------------------------------------------------------------|
+| 대규모 DDoS 공격 대응         | [DDoS 방어 아키텍처](ddos_defense_architecture.md)                               |
+| 신규 서버 보안 기본 설정      | [Linux 서버 보안 강화](linux_hardening.md)                                       |
+| 방화벽 규칙 작성              | [방화벽 - iptables/nftables](firewall_iptables_nftables.md)                      |
+| SSH 접근 제어 강화            | [SSH 보안](ssh_security.md)                                                       |
+| HTTPS/인증서 설정             | [TLS/SSL 가이드](tls_ssl_guide.md)                                               |
+| 패스워드/키 안전하게 관리     | [시크릿 관리](secret_management.md)                                              |
+| AWS 인프라 보안 점검          | [AWS 보안](aws_security.md)                                                       |
+| 서버/컨테이너 취약점 점검     | [취약점 스캔](vulnerability_scanning.md)                                         |
 
 [⬆ 목차로 돌아가기](#목차)
-
----
-
-## 방어 전략
-
-### 기본 방어
-
-```bash
-# SYN Flood 방어
-sysctl -w net.ipv4.tcp_syncookies=1
-sysctl -w net.ipv4.tcp_max_syn_backlog=2048
-
-# Rate Limiting (iptables)
-iptables -A INPUT -p tcp --dport 80 -m limit --limit 25/minute --limit-burst 100 -j ACCEPT
-```
-
-### 고급 방어
-
-- CDN 사용 (Cloudflare, AWS CloudFront)
-- WAF (Web Application Firewall)
-- Load Balancer
-- Auto Scaling
 
 ---
 
@@ -66,8 +50,9 @@ iptables -A INPUT -p tcp --dport 80 -m limit --limit 25/minute --limit-burst 100
 
 ## 참고 자료
 
-- Cloudflare DDoS Protection: [cloudflare.com](https://www.cloudflare.com/ddos/) — ★★☆☆☆
 - OWASP: [owasp.org](https://owasp.org/) — ★★★☆☆
+- CIS Benchmarks: [cisecurity.org/cis-benchmarks](https://www.cisecurity.org/cis-benchmarks) — ★★★☆☆
+- Cloudflare DDoS Protection: [cloudflare.com/ddos](https://www.cloudflare.com/ddos/) — ★★☆☆☆
 
 ---
 
@@ -82,8 +67,8 @@ iptables -A INPUT -p tcp --dport 80 -m limit --limit 25/minute --limit-burst 100
 
 ---
 
-**작성일**: 2026-03-11
+**작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-05-03
 
 © 2026 siasia86. Licensed under CC BY 4.0.

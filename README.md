@@ -135,11 +135,18 @@ SE/SRE/DBA 로드맵, 실무 운영, 도구, AI 활용, 법률.
 
 ## 6. 보안
 
-시스템 보안 및 DDoS 방어.
+시스템 보안, 방화벽, 인증, 취약점 관리.
 
-| 문서 | 설명 |
-|------|------|
-| [DDoS 방어 아키텍처](06_security/01_ddos_defense_architecture.md) | 계층별 방어 전략 |
+| 문서                                                                    | 설명                                              |
+|-------------------------------------------------------------------------|---------------------------------------------------|
+| [DDoS 방어 아키텍처](06_security/ddos_defense_architecture.md)         | XDP/nftables/CrowdSec/HAProxy 계층별 방어 전략   |
+| [Linux 서버 보안 강화](06_security/linux_hardening.md)                 | sysctl, auditd, 불필요 서비스 제거, umask         |
+| [방화벽 - iptables/nftables](06_security/firewall_iptables_nftables.md) | 체인/규칙, nftables 문법, 실전 룰셋               |
+| [SSH 보안](06_security/ssh_security.md)                                 | 키 기반 인증, sshd_config 강화, fail2ban          |
+| [TLS/SSL 가이드](06_security/tls_ssl_guide.md)                         | 인증서 구조, Let's Encrypt, openssl, mTLS         |
+| [시크릿 관리](06_security/secret_management.md)                        | Ansible Vault, AWS Secrets Manager, Vault 비교    |
+| [AWS 보안](06_security/aws_security.md)                                 | IAM, Security Group, WAF, GuardDuty, CloudTrail   |
+| [취약점 스캔](06_security/vulnerability_scanning.md)                   | nmap, trivy, lynis, CVE 대응 흐름                 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -326,7 +333,9 @@ Python 프로그래밍 가이드.
     - [linked-list.md](05_computer_science/01_data_structures/linked_list.md) / [binary-tree.md](05_computer_science/01_data_structures/binary_tree.md) / [graph.md](05_computer_science/01_data_structures/graph.md)
     - [heap.md](05_computer_science/01_data_structures/heap.md) / [hash-table.md](05_computer_science/01_data_structures/hash_table.md)
 - 06_security/
-  - [01_ddos_defense_architecture.md](06_security/01_ddos_defense_architecture.md)
+  - [ddos_defense_architecture.md](06_security/ddos_defense_architecture.md) / [linux_hardening.md](06_security/linux_hardening.md) / [firewall_iptables_nftables.md](06_security/firewall_iptables_nftables.md)
+  - [ssh_security.md](06_security/ssh_security.md) / [tls_ssl_guide.md](06_security/tls_ssl_guide.md) / [secret_management.md](06_security/secret_management.md)
+  - [aws_security.md](06_security/aws_security.md) / [vulnerability_scanning.md](06_security/vulnerability_scanning.md)
 - 07_opensource/
   - [docker_docker_compose_cheatsheet.md](07_opensource/docker_docker_compose_cheatsheet.md) / [n8n_docker_cheatsheet.md](07_opensource/n8n_docker_cheatsheet.md)
   - [container_architecture.md](07_opensource/container_architecture.md) / [percona_xtrabackup_guide.md](07_opensource/percona_xtrabackup_guide.md)
