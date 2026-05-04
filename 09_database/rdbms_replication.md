@@ -148,7 +148,7 @@ SHOW REPLICA STATUS\G
 
 ## 4. GTID 복제
 
-GTID(Global Transaction Identifier)는 각 트랜잭션에 고유 ID를 부여하여 복제 위치를 명확히 추적한다.
+GTID(Global Transaction Identifier)는 각 트랜잭션에 고유 ID를 부여하여 복제 위치를 명확히 추적합니다.
 
 ```
 GTID 형식: source_id:transaction_id
@@ -193,8 +193,8 @@ START REPLICA;
 
 ## 5. 반동기 복제
 
-Primary가 커밋 후 최소 1개 Replica의 수신 확인(ACK)을 받은 뒤 클라이언트에 응답한다.
-Replica 장애 시 `rpl_semi_sync_source_timeout` 초과 후 비동기로 자동 전환된다.
+Primary가 커밋 후 최소 1개 Replica의 수신 확인(ACK)을 받은 뒤 클라이언트에 응답합니다.
+Replica 장애 시 `rpl_semi_sync_source_timeout` 초과 후 비동기로 자동 전환됩니다.
 
 ```
 Primary                              Replica
@@ -300,7 +300,7 @@ START REPLICA;
 
 ### 수동 Failover (GTID)
 
-GTID 환경에서는 binlog 위치 계산이 불필요하다.
+GTID 환경에서는 binlog 위치 계산이 불필요합니다.
 
 ```sql
 -- 새 Primary 승격
@@ -330,7 +330,7 @@ START REPLICA;
 
 ## 8. 복제 필터링
 
-특정 DB/테이블만 복제하거나 제외할 때 사용한다.
+특정 DB/테이블만 복제하거나 제외할 때 사용합니다.
 
 ### Primary 측 필터 (binlog 기록 제어)
 
@@ -352,9 +352,9 @@ replicate_wild_do_table    = mydb.order%
 replicate_wild_ignore_table = mydb.tmp%
 ```
 
-⚠️ `binlog_do_db` / `replicate_do_db`는 기본 DB(`USE db`) 기준으로 동작한다.
+⚠️ `binlog_do_db` / `replicate_do_db`는 기본 DB(`USE db`) 기준으로 동작합니다.
 크로스 DB 쿼리(`INSERT INTO other_db.table`)는 필터링이 의도대로 동작하지 않을 수 있다.
-ROW 형식 binlog + Replica 측 필터 조합을 권장한다.
+ROW 형식 binlog + Replica 측 필터 조합을 권장합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

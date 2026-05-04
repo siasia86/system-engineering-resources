@@ -1082,8 +1082,8 @@ sleep 10
 
 ### 실수 1: trap 내에서 exit 호출
 
-Bash는 EXIT trap 내에서 `exit`을 호출해도 무한 루프가 발생하지 않는다.
-단, trap 내에서 `exit`을 명시적으로 호출하면 종료 코드가 덮어써지므로 주의가 필요하다.
+Bash는 EXIT trap 내에서 `exit`을 호출해도 무한 루프가 발생하지 않습니다.
+단, trap 내에서 `exit`을 명시적으로 호출하면 종료 코드가 덮어써지므로 주의가 필요합니다.
 
 ```bash
 #!/bin/bash

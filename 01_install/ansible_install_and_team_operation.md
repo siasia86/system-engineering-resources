@@ -586,7 +586,7 @@ sudo chown ansible-admin:ansible-team /var/log/ansible
 sudo chmod 2775 /var/log/ansible
 ```
 
-로그 기록 형식:
+로그 기록 형식.
 ```
 2026-03-24 15:00:00 [user-kim] ansible-playbook -i inventory/prd playbooks/deploy.yml
 2026-03-24 15:10:00 [user-park] ansible-playbook -i inventory/dev playbooks/test.yml

@@ -20,7 +20,7 @@
 
 ## 1. Origin IP란?
 
-Origin IP는 웹사이트나 서비스의 실제 서버 IP 주소를 의미한다. CDN이나 프록시 뒤에 숨겨진 "원본 서버"의 IP이다.
+Origin IP는 웹사이트나 서비스의 실제 서버 IP 주소를 의미합니다. CDN이나 프록시 뒤에 숨겨진 "원본 서버"의 IP입니다.
 
 ### DNS와 Origin IP의 관계
 
@@ -151,7 +151,7 @@ CDN은 "전 세계에 분산된 Reverse Proxy + 캐싱"이라고 볼 수 있다.
 
 ## 3. Origin IP 노출 확인 방법
 
-Origin IP가 실수로 노출되면 CDN/WAF를 우회한 직접 공격이 가능해진다.
+Origin IP가 실수로 노출되면 CDN/WAF를 우회한 직접 공격이 가능해집니다.
 
 ### 흔한 노출 경로
 
@@ -303,7 +303,7 @@ real_ip_recursive on;
 
 ## 7. 캐시 무효화 (Invalidation)
 
-CDN에 캐싱된 콘텐츠를 강제로 갱신하는 방법이다.
+CDN에 캐싱된 콘텐츠를 강제로 갱신하는 방법입니다.
 
 ### AWS CloudFront 예시
 
@@ -339,7 +339,7 @@ aws cloudfront create-invalidation \
 
 ## 8. TTL 설정 가이드
 
-콘텐츠 유형별 권장 캐시 TTL(Time To Live) 설정이다.
+콘텐츠 유형별 권장 캐시 TTL(Time To Live) 설정입니다.
 
 ### 권장 TTL
 
@@ -389,7 +389,7 @@ location /api/ {
 
 ## 9. CDN 장애 대응 (Failover)
 
-CDN 자체 또는 Origin 서버 장애 시 서비스 연속성을 확보하는 방법이다.
+CDN 자체 또는 Origin 서버 장애 시 서비스 연속성을 확보하는 방법입니다.
 
 ### CloudFront Origin Failover 구성
 
@@ -437,7 +437,7 @@ S3 정적 에러 페이지 반환 (maintenance.html)
 
 ## 10. CORS와 CDN
 
-CDN을 경유하면 CORS 관련 문제가 자주 발생한다.
+CDN을 경유하면 CORS 관련 문제가 자주 발생합니다.
 
 ### 문제 상황
 
@@ -451,7 +451,7 @@ CDN을 경유하면 CORS 관련 문제가 자주 발생한다.
 
 #### 1. Origin 헤더를 캐시 키에 포함
 
-CloudFront에서 `Origin` 헤더를 Origin으로 전달하고 캐시 키에 포함시킨다.
+CloudFront에서 `Origin` 헤더를 Origin으로 전달하고 캐시 키에 포함시킵니다.
 
 ```
 Cache Policy:
@@ -484,7 +484,7 @@ location /api/ {
 
 ## 11. CDN 비용 최적화
 
-CDN 비용의 대부분은 데이터 전송(Bandwidth)에서 발생한다.
+CDN 비용의 대부분은 데이터 전송(Bandwidth)에서 발생합니다.
 
 ### 비용 절감 방법
 
@@ -536,7 +536,7 @@ CloudFront에서 자동 압축 활성화:
 
 ## 12. SSL/TLS 인증서 구성
 
-CDN 사용 시 인증서가 두 구간에 필요하다.
+CDN 사용 시 인증서가 두 구간에 필요합니다.
 
 ### 두 구간의 인증서
 
@@ -625,7 +625,7 @@ awk '!/^#/ {print $5}' cloudfront-log.tsv | sort | uniq -c | sort -rn | head -20
 
 ### Athena를 활용한 분석
 
-대량 로그는 S3 + Athena 조합으로 SQL 쿼리가 효율적이다.
+대량 로그는 S3 + Athena 조합으로 SQL 쿼리가 효율적입니다.
 
 ```sql
 -- 캐시 적중률 일별 추이

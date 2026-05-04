@@ -23,7 +23,7 @@
 
 ## 파일 디스크립터 (File Descriptor)
 
-프로세스가 열어둔 I/O 채널의 번호. 커널이 프로세스별로 관리한다.
+프로세스가 열어둔 I/O 채널의 번호. 커널이 프로세스별로 관리합니다.
 
 | FD  | 이름   | 용도      | 기본 대상 |
 |-----|--------|-----------|-----------|
@@ -58,7 +58,7 @@ ls /nonexistent            # → 터미널 (에러 메시지)
 read -p "name: " name      # ← 키보드
 ```
 
-stdout과 stderr는 둘 다 터미널에 출력되지만 별개의 스트림이다.
+stdout과 stderr는 둘 다 터미널에 출력되지만 별개의 스트림입니다.
 
 ```bash
 # 확인: stderr만 빨간색으로 보기
@@ -161,7 +161,7 @@ read a b c <<< "1 2 3"
 
 ## 파이프 (Pipe)
 
-앞 명령의 stdout을 뒤 명령의 stdin으로 연결한다.
+앞 명령의 stdout을 뒤 명령의 stdin으로 연결합니다.
 
 ```bash
 # 기본
@@ -212,7 +212,7 @@ echo $count                    # 3
 
 ## FD 조합과 순서
 
-리다이렉션은 왼쪽에서 오른쪽으로 순서대로 처리된다.
+리다이렉션은 왼쪽에서 오른쪽으로 순서대로 처리됩니다.
 
 ```bash
 # ✅ stdout→file, stderr→stdout(=file)
@@ -360,8 +360,7 @@ min hour day month weekday command
 
 ### 출력을 안 버리면?
 
-cron은 명령의 stdout/stderr 출력이 있으면 `MAILTO`에 설정된 주소로 메일을 보낸다. 미설정 시 crontab 소유자에게 발송.
-
+cron은 명령의 stdout/stderr 출력이 있으면 `MAILTO`에 설정된 주소로 메일을 보냅니다. 미설정 시 crontab 소유자에게 발송합니다. 
 ```bash
 # 메일 수신 설정
 MAILTO="admin@example.com"

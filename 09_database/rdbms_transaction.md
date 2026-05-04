@@ -12,7 +12,7 @@
 
 ## 1. 트랜잭션 개념
 
-트랜잭션은 **하나의 논리적 작업 단위**로 처리되어야 하는 SQL 집합이다.
+트랜잭션은 **하나의 논리적 작업 단위**로 처리되어야 하는 SQL 집합입니다.
 전부 성공하거나 전부 실패해야 한다.
 
 ```sql
@@ -26,7 +26,7 @@ ROLLBACK;
 
 ### SAVEPOINT
 
-트랜잭션 내 부분 롤백 지점을 설정한다.
+트랜잭션 내 부분 롤백 지점을 설정합니다.
 
 ```sql
 START TRANSACTION;
@@ -124,7 +124,7 @@ T1: SELECT COUNT(*) WHERE age > 20 → 6건  ← Phantom
 
 ### InnoDB REPEATABLE READ에서 Phantom Read 방지
 
-InnoDB는 REPEATABLE READ에서 **Gap Lock**으로 Phantom Read를 방지한다.
+InnoDB는 REPEATABLE READ에서 **Gap Lock**으로 Phantom Read를 방지합니다.
 
 ```sql
 -- T1
@@ -181,7 +181,7 @@ UPDATE orders SET ... WHERE user_id = 1;
 
 ## 6. MVCC
 
-Multi-Version Concurrency Control. 읽기와 쓰기가 서로 블로킹하지 않도록 데이터의 여러 버전을 유지한다.
+Multi-Version Concurrency Control. 읽기와 쓰기가 서로 블로킹하지 않도록 데이터의 여러 버전을 유지합니다.
 
 ```
 Undo Log (버전 체인):

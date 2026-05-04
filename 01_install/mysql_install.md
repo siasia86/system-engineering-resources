@@ -54,14 +54,14 @@ sudo apt update && sudo apt upgrade -y
 
 ### 2-2. 설치 방법 A: APT (Ubuntu 기본 저장소)
 
-Ubuntu 22.04 / 24.04 모두 동일하게 적용된다.
+Ubuntu 22.04 / 24.04 모두 동일하게 적용됩니다.
 
 ```bash
 sudo apt install mysql-server -y
 sudo systemctl enable --now mysql
 ```
 
-⚠️ Ubuntu 기본 저장소의 MySQL 버전은 최신이 아닐 수 있다. 특정 버전이 필요하면 방법 B 사용.
+⚠️ Ubuntu 기본 저장소의 MySQL 버전은 최신이 아닐 수 있습니다. 특정 버전이 필요하면 방법 B를 사용합니다.
 
 ### 2-3. 설치 방법 B: MySQL 공식 저장소
 
@@ -78,7 +78,7 @@ sudo systemctl enable --now mysql
 
 ### 2-4. Ubuntu 24.04 특이사항
 
-Ubuntu 24.04는 `auth_socket` 플러그인이 기본값이므로 `sudo mysql -u root`로 접속한다.
+Ubuntu 24.04는 `auth_socket` 플러그인이 기본값이므로 `sudo mysql -u root`로 접속합니다.
 패스워드 인증이 필요하면 섹션 4-4 참고.
 
 ```bash
@@ -100,7 +100,7 @@ sudo systemctl status mysql
 
 ## 3. RHEL 계열 설치
 
-Rocky Linux, AlmaLinux, RHEL, CentOS Stream에서 동일하게 적용된다.
+Rocky Linux, AlmaLinux, RHEL, CentOS Stream에서 동일하게 적용됩니다.
 
 ### 배포판별 EL 버전 대응
 
@@ -118,7 +118,7 @@ sudo dnf update -y
 
 ### 3-2. 설치 방법 A: DNF (AppStream)
 
-AppStream 저장소에 포함된 버전을 사용한다. 최신 버전이 필요하면 방법 B 사용.
+AppStream 저장소에 포함된 버전을 사용합니다. 최신 버전이 필요하면 방법 B를 사용합니다.
 
 ```bash
 # 사용 가능한 MySQL 모듈 확인
@@ -145,7 +145,7 @@ sudo systemctl enable --now mysqld
 
 ### 3-4. 임시 root 패스워드 확인
 
-MySQL 최초 시작 시 임시 패스워드가 생성된다.
+MySQL 최초 시작 시 임시 패스워드가 생성됩니다.
 
 ```bash
 sudo grep 'temporary password' /var/log/mysqld.log
@@ -154,7 +154,7 @@ sudo grep 'temporary password' /var/log/mysqld.log
 
 ### 3-5. SELinux 설정
 
-RHEL 계열은 SELinux가 기본 활성화되어 있다. 비표준 포트 사용 시 설정이 필요하다.
+RHEL 계열은 SELinux가 기본 활성화되어 있습니다. 비표준 포트 사용 시 설정이 필요합니다.
 
 ```bash
 # SELinux 상태 확인
