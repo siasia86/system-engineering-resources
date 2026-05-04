@@ -468,8 +468,8 @@ git config --global alias.undo "reset --soft HEAD~1"
 
 ## 10. safe.directory
 
-Git 2.35.2부터 추가된 **소유권 보안 검사** 설정이다.
-현재 사용자와 `.git` 디렉토리 소유자가 다르면 아래 오류가 발생한다.
+Git 2.35.2부터 추가된 **소유권 보안 검사** 설정입니다.
+현재 사용자와 `.git` 디렉토리 소유자가 다르면 아래 오류가 발생합니다.
 
 ```
 fatal: detected dubious ownership in repository at '/path/to/repo'

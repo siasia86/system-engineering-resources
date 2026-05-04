@@ -13,7 +13,7 @@
 ## 1. View 개념
 
 View는 하나 이상의 테이블에서 파생된 **가상 테이블(Virtual Table)**이다.
-실제 데이터를 저장하지 않고, 정의된 SELECT 쿼리를 실행한 결과를 테이블처럼 사용한다.
+실제 데이터를 저장하지 않고, 정의된 SELECT 쿼리를 실행한 결과를 테이블처럼 사용합니다.
 
 ### 특징
 
@@ -95,7 +95,7 @@ FROM users;
 
 ### WITH CHECK OPTION
 
-View를 통한 DML 시 View 조건을 벗어나는 데이터 변경을 차단한다.
+View를 통한 DML 시 View 조건을 벗어나는 데이터 변경을 차단합니다.
 
 ```sql
 CREATE VIEW active_users AS
@@ -143,7 +143,7 @@ VALUES (NEW.user_id, NEW.product_id, NEW.amount);
 ## 5. Materialized View
 
 일반 View와 달리 **쿼리 결과를 실제 디스크에 저장**한다.
-조회 성능이 중요하고 데이터 실시간성이 덜 중요한 경우에 사용한다.
+조회 성능이 중요하고 데이터 실시간성이 덜 중요한 경우에 사용합니다.
 
 ### 일반 View vs Materialized View
 
@@ -214,8 +214,8 @@ SELECT ... FROM base_table WHERE ... AND ... AND ...;
 
 ### Tip 2: View Merging 확인
 
-DBMS 옵티마이저는 View를 인라인으로 병합(merge)하여 실행한다.
-병합이 안 되면 임시 테이블로 처리되어 성능 저하가 발생한다.
+DBMS 옵티마이저는 View를 인라인으로 병합(merge)하여 실행합니다.
+병합이 안 되면 임시 테이블로 처리되어 성능 저하가 발생합니다.
 
 ```sql
 -- MySQL: EXPLAIN으로 View 병합 여부 확인
