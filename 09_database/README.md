@@ -6,6 +6,8 @@ RDBMS 설계, 운영, 최적화 관련 문서 모음.
 
 | 분류 | 문서 | 설명 |
 |------|------|------|
+| **설치** | [MySQL 설치](../01_install/mysql_install.md) | Ubuntu/Rocky, 초기 설정, 보안 |
+| **설치** | [PostgreSQL 설치](../01_install/postgresql_install.md) | Ubuntu/Rocky, pg_hba.conf, 보안 |
 | **설계** | [정규화](rdbms_normalization.md) | 1NF~BCNF, 반정규화 판단 기준 |
 | **쿼리** | [JOIN](rdbms_join.md) | JOIN 종류, 실행 방식, 최적화 |
 | **쿼리** | [View](rdbms_view.md) | View, Materialized View |
@@ -61,6 +63,6 @@ RDBMS 설계, 운영, 최적화 관련 문서 모음.
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-05-04
 
 © 2026 siasia86. Licensed under CC BY 4.0.
