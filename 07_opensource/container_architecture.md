@@ -152,7 +152,7 @@ CAP_CHOWN:        파일 소유권 변경
 - 이미지 관리
 
 특징:
-- 완전한 OS 실행
+- 완전한 OS 실행(Full OS Virtualization)
 - VM처럼 사용
 - systemd 지원
 

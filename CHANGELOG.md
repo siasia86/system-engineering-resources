@@ -6,6 +6,51 @@
 
 ---
 
+## [2.2.0] - 2026-05-04
+
+### Added
+
+#### 01_install — 신규 설치 가이드 13개
+- `mysql_install.md` — Ubuntu/RHEL 설치, 초기 보안 설정, my.cnf, 복제 계정, 기본 사용법
+- `postgresql_install.md` — Ubuntu/RHEL 설치, pg_hba.conf, LOCALE 'C.UTF-8' 이슈 대응, 기본 사용법
+- `docker_install_and_compose.md` — Ubuntu/RHEL 설치, daemon.json, Compose 운영, 실무 팁 7가지
+- `kubernetes_install.md` — k3s(단일 명령), kubeadm(멀티 노드), kubectl, Deployment/Service YAML
+- `nginx_install.md` — 설치, 가상 호스트, 리버스 프록시, upstream LB, SSL/Let's Encrypt
+- `apache_install.md` — 설치, MPM(prefork/worker/event) 상세 비교 및 튜닝, SSL
+- `redis_install.md` — 설치, requirepass, 위험 명령 비활성화, 자료형 CRUD, Slow Log
+- `prometheus_grafana_install.md` — 바이너리/APT 설치, Node Exporter, PromQL, 알림 규칙, Compose
+- `elasticsearch_install.md` — ELK 구조, 8.x 보안 설정, ILM, Compose
+- `haproxy_install.md` — L4/L7 LB, upstream 알고리즘, SSL 터미네이션, 소켓 런타임 제어
+- `vault_install.md` — KV/Database 시크릿 엔진, AppRole, Auto Unseal(AWS KMS), 감사 로그
+- `mongodb_install.md` — 8.0 설치, 인증 활성화, CRUD, 인덱스, 프로파일링, 백업
+- `jenkins_install.md` — JDK 21, Declarative Pipeline, Shared Library, Compose
+
+#### 09_database — rdbms_replication.md 개선
+- MySQL 복제 전체 설정 절차 추가 (Primary 계정 생성, mysqldump 초기 동기화, binlog position 기반 설정)
+- 반동기 복제 섹션 추가 (플러그인 설치, ACK 흐름, 상태 확인)
+- Failover 섹션 추가 (전통/GTID 수동 Failover, MHA·Orchestrator 자동화 도구 비교)
+- 복제 필터링 섹션 추가 (binlog_do_db, replicate_do_table 등)
+- PostgreSQL Streaming Replication 전체 설정 추가 (pg_basebackup, pg_stat_replication, 동기 복제, Failover)
+- MySQL RDS vs Aurora 비교표 추가
+
+### Changed
+- `01_install/README.md` 신규 생성 — 14개 문서 목차
+- `09_database/README.md` 목차에 설치 문서 링크 추가 (mysql_install, postgresql_install)
+- `README.md` `01_install` 섹션 표에 신규 13개 파일 추가, 문서 트리 업데이트, 마지막 업데이트 갱신
+- `README.md` 문서 트리 링크 텍스트 오류 6건 수정 (하이픈 → 언더스코어)
+- `/home/sjyun/.kiro/markdown/STYLE.md` 규칙 10 보강 — 반말체 종결어미 금지 패턴 명시 (`~이다.` `~한다.` 등)
+
+### Fixed
+- `mysql_install.md` `mysqldump` 명령에 `sudo` 누락 수정 (Ubuntu auth_socket 환경)
+- `postgresql_install.md` DB 생성 구문 수정 (`LC_COLLATE 'en_US.UTF-8'` → `LOCALE 'C.UTF-8'`, PostgreSQL 17 + Ubuntu 24.04 ICU 환경)
+- `postgresql_install.md` 계정명 대소문자 수정 (`Secureuser123` → `secureuser123`, PostgreSQL 소문자 저장 규칙)
+- 전체 `.md` 반말체 종결어미 수정 — `01_install` 8개 파일 19건, `09_database` 8개 파일 30건, 기타 12개 파일 33건 (총 82건)
+  - `~이다.` `~한다.` `~된다.` `~있다.` `~없다.` `~않는다.` `~아니다.` → 합니다체 통일
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## [2.1.0] - 2026-05-01
 
 ### Added
@@ -159,6 +204,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-05-01
+**마지막 업데이트**: 2026-05-04
 
 © 2026 siasia86. Licensed under CC BY 4.0.
