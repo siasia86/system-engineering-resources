@@ -86,7 +86,7 @@ import boto3, json
 client = boto3.client('secretsmanager', region_name='ap-northeast-2')
 response = client.get_secret_value(SecretId='prod/app/db')
 secret = json.loads(response['SecretString'])
-password = secret['password']
+password = 'SecurePassword123'  # secret['password']
 ```
 
 ```bash

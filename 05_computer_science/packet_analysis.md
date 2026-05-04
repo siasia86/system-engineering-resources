@@ -594,7 +594,7 @@ parse_proxy_v2_from_tcpdump(hex_data)
 | **크기**      | 가변 (최대 107 bytes) | 고정 (최소 16 bytes) |
 | **파싱**      | 느림 (문자열 파싱)    | 빠름 (바이너리)      |
 | **확장성**    | 제한적                | TLV 확장 가능        |
-| **IPv6 지원** | 제한적                | 완전 지원            |
+| **IPv6 지원** | 제한적                | 완전 지원(Full Support)            |
 
 **PROXY Protocol v1 예시:**
 ```
