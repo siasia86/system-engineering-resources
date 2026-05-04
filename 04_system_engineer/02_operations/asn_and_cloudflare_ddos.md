@@ -20,7 +20,7 @@
 ## 1. ASN (Autonomous System Number) 개요
 
 ASN은 인터넷에서 독립적인 네트워크를 식별하는 번호.
-BGP(Border Gateway Protocol)로 다른 네트워크와 라우팅 정보를 교환할 때 사용한다.
+BGP(Border Gateway Protocol)로 다른 네트워크와 라우팅 정보를 교환할 때 사용합니다.
 
 > ASN이 있어도 ISP 회선은 필수. 물리적 회선 없이 인터넷 연결 불가.
 > ASN은 ISP에 종속되지 않고 여러 ISP를 자유롭게 선택/전환할 수 있게 해주는 것.

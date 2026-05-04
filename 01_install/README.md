@@ -10,6 +10,16 @@
 | **데이터베이스** | [MySQL 설치](mysql_install.md)                                       | Ubuntu/Rocky, 초기 설정, 보안           |
 | **데이터베이스** | [PostgreSQL 설치](postgresql_install.md)                             | Ubuntu/Rocky, pg_hba.conf, 보안         |
 | **컨테이너**     | [Docker + Compose](docker_install_and_compose.md)                    | 설치, Compose 운영, 실무 팁             |
+| **컨테이너**     | [Kubernetes](kubernetes_install.md)                                  | k3s, kubeadm, kubectl 기본 사용법       |
+| **웹 서버**      | [Nginx](nginx_install.md)                                            | 설치, 가상 호스트, 리버스 프록시, SSL   |
+| **웹 서버**      | [Apache](apache_install.md)                                          | 설치, MPM(prefork/worker/event), SSL    |
+| **캐시**         | [Redis](redis_install.md)                                            | 설치, 보안 설정, 자료형, 실무 팁        |
+| **모니터링**     | [Prometheus + Grafana](prometheus_grafana_install.md)                | 설치, Node Exporter, 알림, Compose      |
+| **검색/로그**    | [Elasticsearch](elasticsearch_install.md)                            | 설치, ELK 스택, ILM, Compose            |
+| **로드 밸런서**  | [HAProxy](haproxy_install.md)                                        | L4/L7 LB, SSL 터미네이션, 통계          |
+| **시크릿 관리**  | [Vault](vault_install.md)                                            | 설치, KV/DB 엔진, AppRole, Auto Unseal  |
+| **데이터베이스** | [MongoDB](mongodb_install.md)                                        | 설치, 보안 설정, CRUD, 백업             |
+| **CI/CD**        | [Jenkins](jenkins_install.md)                                        | 설치, Pipeline, Docker Compose          |
 
 ---
 

@@ -13,7 +13,7 @@
 ## 1. Procedure 개념
 
 Stored Procedure는 **데이터베이스 서버에 저장된 SQL 코드 블록**이다.
-이름을 지정하고 필요할 때 호출하여 실행한다.
+이름을 지정하고 필요할 때 호출하여 실행합니다.
 
 ### 특징
 
@@ -145,7 +145,7 @@ END LOOP my_loop;
 
 ## 4. 커서 (Cursor)
 
-SELECT 결과를 **행 단위로 순회**할 때 사용한다.
+SELECT 결과를 **행 단위로 순회**할 때 사용합니다.
 
 ```sql
 -- MySQL 커서 전체 패턴
@@ -293,7 +293,7 @@ WHERE status = 'pending' AND created_at >= CURDATE();
 
 ### Tip 3: Procedure 캐시 활용
 
-DBMS는 Procedure를 파싱/컴파일한 결과를 캐시한다.
+DBMS는 Procedure를 파싱/컴파일한 결과를 캐시합니다.
 동적 SQL(`PREPARE` / `EXECUTE`)은 캐시 효율이 낮으므로 정적 SQL 우선 사용.
 
 ```sql
@@ -309,7 +309,7 @@ SELECT * FROM orders WHERE status = p_status;
 ### Tip 4: 불필요한 COMMIT 최소화
 
 루프 내 매 행마다 COMMIT하면 I/O 오버헤드가 크다.
-배치 단위(예: 1000건)로 COMMIT하는 것이 효율적이다.
+배치 단위(예: 1000건)로 COMMIT하는 것이 효율적입니다.
 
 ```sql
 SET batch_count = 0;

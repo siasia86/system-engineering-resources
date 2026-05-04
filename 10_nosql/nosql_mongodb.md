@@ -13,7 +13,7 @@
 ## 1. MongoDB 개념
 
 MongoDB는 **문서(Document) 기반 NoSQL 데이터베이스**다.
-JSON 형태의 BSON 문서를 컬렉션에 저장한다.
+JSON 형태의 BSON 문서를 컬렉션에 저장합니다.
 
 ### RDBMS vs MongoDB
 
@@ -257,7 +257,7 @@ db.users.find({ email: "alice@example.com" }).explain("executionStats");
 
 ## 6. Aggregation Pipeline
 
-여러 단계를 파이프라인으로 연결하여 데이터를 변환/집계한다.
+여러 단계를 파이프라인으로 연결하여 데이터를 변환/집계합니다.
 
 ```javascript
 db.orders.aggregate([
