@@ -92,7 +92,7 @@ sudo docker run --rm hello-world
 
 ## 3. RHEL 계열 설치
 
-Rocky Linux, AlmaLinux, RHEL, CentOS Stream에서 동일하게 적용된다.
+Rocky Linux, AlmaLinux, RHEL, CentOS Stream에서 동일하게 적용됩니다.
 
 ### 3-1. 시스템 업데이트
 
@@ -122,8 +122,8 @@ sudo systemctl enable --now docker
 
 ### 3-4. SELinux 설정
 
-RHEL 계열은 SELinux가 기본 활성화되어 있다.
-볼륨 마운트 시 컨텍스트 레이블이 필요하다.
+RHEL 계열은 SELinux가 기본 활성화되어 있습니다.
+볼륨 마운트 시 컨텍스트 레이블이 필요합니다.
 
 ```bash
 # SELinux 상태 확인
@@ -161,7 +161,7 @@ newgrp docker
 docker ps
 ```
 
-⚠️ 로그아웃 후 재로그인해야 완전히 적용된다.
+⚠️ 로그아웃 후 재로그인해야 완전히 적용됩니다.
 
 ### 4-2. daemon.json 설정
 
@@ -193,7 +193,7 @@ sudo docker info --format '{{.LoggingDriver}}'
 
 ### 4-3. 방화벽 설정
 
-Docker는 `iptables`를 직접 조작하므로 `ufw` / `firewalld` 규칙을 우회할 수 있다.
+Docker는 `iptables`를 직접 조작하므로 `ufw` / `firewalld` 규칙을 우회할 수 있습니다.
 
 ```bash
 # Ubuntu (ufw)
@@ -330,7 +330,7 @@ volumes:
 
 ### 환경 변수 분리 (.env)
 
-민감 정보는 `.env` 파일로 분리하고 `.gitignore`에 추가한다.
+민감 정보는 `.env` 파일로 분리하고 `.gitignore`에 추가합니다.
 
 ```bash
 # .env
@@ -395,7 +395,7 @@ services:
 
 ### Tip 1: 내부 서비스는 127.0.0.1에 바인딩
 
-외부에 노출하지 않을 서비스는 루프백에만 바인딩한다.
+외부에 노출하지 않을 서비스는 루프백에만 바인딩합니다.
 
 ```yaml
 services:
@@ -424,7 +424,7 @@ volumes:
 
 ### Tip 3: healthcheck로 의존성 순서 보장
 
-`depends_on`만으로는 서비스 준비 완료를 보장하지 않는다.
+`depends_on`만으로는 서비스 준비 완료를 보장하지 않습니다.
 
 ```yaml
 services:

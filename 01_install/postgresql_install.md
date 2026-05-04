@@ -47,8 +47,8 @@
 | 설정 파일 경로          | `/etc/postgresql/14/main/`              | `/etc/postgresql/17/main/`              |
 | 로그 경로               | `/var/log/postgresql/`                  | `/var/log/postgresql/`                  |
 
-⚠️ Ubuntu 24.04는 PostgreSQL 17 기준으로 ICU 로케일을 사용한다.
-`LC_COLLATE 'en_US.UTF-8'` 방식으로 DB 생성 시 오류가 발생하므로 `LOCALE 'C.UTF-8'`을 사용한다.
+⚠️ Ubuntu 24.04는 PostgreSQL 17 기준으로 ICU 로케일을 사용합니다.
+`LC_COLLATE 'en_US.UTF-8'` 방식으로 DB 생성 시 오류가 발생하므로 `LOCALE 'C.UTF-8'`을 사용합니다.
 
 ### 2-1. 시스템 업데이트
 
@@ -58,18 +58,18 @@ sudo apt update && sudo apt upgrade -y
 
 ### 2-2. 설치 방법 A: APT (Ubuntu 기본 저장소)
 
-Ubuntu 22.04 / 24.04 모두 동일하게 적용된다.
+Ubuntu 22.04 / 24.04 모두 동일하게 적용됩니다.
 
 ```bash
 sudo apt install postgresql postgresql-contrib -y
 sudo systemctl enable --now postgresql
 ```
 
-⚠️ Ubuntu 기본 저장소 버전은 최신이 아닐 수 있다. 특정 버전이 필요하면 방법 B 사용.
+⚠️ Ubuntu 기본 저장소 버전은 최신이 아닐 수 있습니다. 특정 버전이 필요하면 방법 B를 사용합니다.
 
 ### 2-3. 설치 방법 B: PostgreSQL 공식 저장소 (PGDG)
 
-Ubuntu 22.04 / 24.04 모두 동일하게 적용된다.
+Ubuntu 22.04 / 24.04 모두 동일하게 적용됩니다.
 
 ```bash
 # 저장소 키 및 소스 추가
@@ -117,7 +117,7 @@ sudo systemctl status postgresql
 
 ## 3. RHEL 계열 설치
 
-Rocky Linux, AlmaLinux, RHEL, CentOS Stream에서 동일하게 적용된다.
+Rocky Linux, AlmaLinux, RHEL, CentOS Stream에서 동일하게 적용됩니다.
 
 ### 배포판별 EL 버전 대응
 
@@ -156,7 +156,7 @@ sudo systemctl enable --now postgresql-17
 
 ### 3-3. SELinux 설정
 
-RHEL 계열은 SELinux가 기본 활성화되어 있다.
+RHEL 계열은 SELinux가 기본 활성화되어 있습니다.
 
 ```bash
 # SELinux 상태 확인
@@ -186,7 +186,7 @@ sudo systemctl status postgresql-17
 
 ### 4-1. postgres 계정으로 접속
 
-PostgreSQL 설치 시 OS 계정 `postgres`와 DB 슈퍼유저 `postgres`가 자동 생성된다.
+PostgreSQL 설치 시 OS 계정 `postgres`와 DB 슈퍼유저 `postgres`가 자동 생성됩니다.
 
 ```bash
 sudo -u postgres psql
