@@ -133,7 +133,7 @@ vault status
 
 ```bash
 export VAULT_ADDR='http://127.0.0.1:8200'
-export VAULT_TOKEN='hvs.xxxx'   # Root Token 또는 발급된 Token
+export VAULT_TOKEN='SecureToken123'   # Root Token 또는 발급된 Token
 ```
 
 ### 로그인
