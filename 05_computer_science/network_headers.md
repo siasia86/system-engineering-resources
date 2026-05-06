@@ -388,7 +388,7 @@ Response:
 Transaction ID: 0x1234
 Flags: 0x8180 (Standard response, No error)
 Answers: 1
-Answer: www.example.com, Type A, Class IN, TTL 300, Address 93.184.216.34
+Answer: www.example.com, Type A, Class IN, TTL 300, Address 192.0.2.10
 ```
 
 ### DNS 터널링 탐지
