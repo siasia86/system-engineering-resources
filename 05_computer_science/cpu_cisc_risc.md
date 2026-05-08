@@ -213,18 +213,18 @@ x86 instruction (CISC)
         |
         v
   ┌───────────────┐
-  │  Decoder      │  --> CISC to micro-op translation
+  │  Decoder      │  ──> CISC to micro-op translation
   └───────────────┘
         |
         v
   ┌───────────────┐
-  │  micro-ops    │  --> RISC-like execution
+  │  micro-ops    │  ──> RISC-like execution
   │  (internal)   │
   └───────────────┘
         |
         v
   ┌───────────────┐
-  │  Out-of-Order │  --> superscalar pipeline
+  │  Out-of-Order │  ──> superscalar pipeline
   │  Execution    │
   └───────────────┘
 ```
