@@ -1,26 +1,37 @@
 # TCP 상태 전이 (TCP State Transition)
 
-## TCP 3-Way Handshake (연결 설정)
+## 목차
+
+| 섹션 |
+|------|
+| [1. TCP 3-Way Handshake (연결 설정)](#1-tcp-3-way-handshake-연결-설정) / [2. TCP 4-Way Handshake (연결 종료)](#2-tcp-4-way-handshake-연결-종료) / [3. TCP 상태 전이도 (State Diagram)](#3-tcp-상태-전이도-state-diagram) |
+| [4. 주요 TCP 상태 설명](#4-주요-tcp-상태-설명) / [5. TIME_WAIT 상태](#5-time_wait-상태) / [6. 비정상 종료 (RST)](#6-비정상-종료-rst) |
+| [7. CLOSE_WAIT 문제](#7-close_wait-문제) / [8. TCP 상태 확인 명령어](#8-tcp-상태-확인-명령어) / [9. DDoS 방어와 TCP 상태](#9-ddos-방어와-tcp-상태) |
+
+
+---
+
+## 1. TCP 3-Way Handshake (연결 설정)
 
 ```
 Client                                            Server
 [CLOSED]                                          [LISTEN]
     │                                                 │
-    ├── SYN ═══════════════════════════════════▶      │  1. SYN
+    ├── SYN ═══════════════════════════════════>      │  1. SYN
     │   (seq=100)                                     │
 [SYN_SENT]                                            │
     │                                                 │
     │                                          [SYN_RECEIVED]
     │                                                 │
-    │       ◀═══════════════════════ SYN + ACK ───────┤  2. 연결 수락 + 확인
+    │       <═══════════════════════ SYN + ACK ───────┤  2. SYN+ACK          
     │   (seq=200, ack=101)                            │
     │                                                 │
-    ├── ACK ═══════════════════════════════════▶      │  3. ACK
+    ├── ACK ═══════════════════════════════════>      │  3. ACK
     │   (ack=201)                                     │
     │                                                 │
 [ESTABLISHED] ════════════════════════════════ [ESTABLISHED]
     │                                                 │
-    └── Data Transfer Ready ────────────────────────┘
+    └── Data Transfer Ready ──────────────────────────┘
 ```
 
 ### 각 단계 설명
@@ -41,33 +52,35 @@ Client                                            Server
    - 연결 성립
    - 상태: SYN_SENT → ESTABLISHED, SYN_RECEIVED → ESTABLISHED
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## TCP 4-Way Handshake (연결 종료)
+## 2. TCP 4-Way Handshake (연결 종료)
 
 ```
 Client                                            Server
 [ESTABLISHED]                                [ESTABLISHED]
     │                                                 │
-    ├── FIN ═══════════════════════════════════▶      │  1. Close Request
+    ├── FIN ═══════════════════════════════════>      │  1. Close Request
     │   (seq=300)                                     │
 [FIN_WAIT_1]                                          │
     │                                                 │
     │                                          [CLOSE_WAIT]
     │                                                 │
-    │       ◀══════════════════════════ ACK ──────────┤  2. 종료 요청 확인
+    │       <══════════════════════════ ACK ──────────┤  2. Close ACK        
     │   (ack=301)                                     │
     │                                                 │
 [FIN_WAIT_2]                                          │
     │                                                 │
-    │   (서버가 남은 데이터 전송 완료)                │
+    │   (Server finishes remaining data)              │
     │                                                 │
     │                                          [LAST_ACK]
     │                                                 │
-    │       ◀══════════════════════════ FIN ──────────┤  3. 서버도 종료 요청
+    │       <══════════════════════════ FIN ──────────┤  3. Server Close     
     │   (seq=400)                                     │
     │                                                 │
-    ├── ACK ═══════════════════════════════════▶      │  4. Final ACK
+    ├── ACK ═══════════════════════════════════>      │  4. Final ACK
     │   (ack=401)                                     │
     │                                                 │
 [TIME_WAIT]                                      [CLOSED]
@@ -76,7 +89,7 @@ Client                                            Server
     │                                                 │
 [CLOSED]                                              │
     │                                                 │
-    └── Connection Fully Closed ─────────────────────┘
+    └── Connection Fully Closed ──────────────────────┘
 ```
 
 ### 각 단계 설명
@@ -99,9 +112,11 @@ Client                                            Server
    - 상태: FIN_WAIT_2 → TIME_WAIT (클라이언트)
    - 상태: LAST_ACK → CLOSED (서버)
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## TCP 상태 전이도 (State Diagram)
+## 3. TCP 상태 전이도 (State Diagram)
 
 ### 연결 설정
 ```
@@ -118,9 +133,11 @@ ESTABLISHED ---> FIN_WAIT_1 ---> FIN_WAIT_2 ---> TIME_WAIT ---> CLOSED
 ESTABLISHED ---> CLOSE_WAIT ---> LAST_ACK ---> CLOSED
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## 주요 TCP 상태 설명
+## 4. 주요 TCP 상태 설명
 
 | 구분                | 상태             | 설명                              | 위치         | 지속 시간         |
 |---------------------|------------------|-----------------------------------|--------------|-------------------|
@@ -136,9 +153,11 @@ ESTABLISHED ---> CLOSE_WAIT ---> LAST_ACK ---> CLOSED
 |                     | **TIME_WAIT**    | 연결 종료 후 2*MSL 대기           | 능동 종료 측 | 30초 ~ 2분        |
 |                     | **CLOSING**      | 양쪽 동시 FIN 전송, ACK 대기      | 양쪽         | 수 ms             |
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## TIME_WAIT 상태
+## 5. TIME_WAIT 상태
 
 ### 목적
 1. **지연 패킷 처리**: 네트워크에 남아있는 패킷이 소멸할 때까지 대기
@@ -173,19 +192,21 @@ sysctl -w net.ipv4.tcp_tw_reuse=1
 sysctl -w net.ipv4.tcp_tw_recycle=1  # 주의: 최신 커널에서 제거됨
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## 비정상 종료 (RST)
+## 6. 비정상 종료 (RST)
 
 ```
 Client                                            Server
 [ESTABLISHED]                                [ESTABLISHED]
     │                                                 │
-    ├── RST ═══════════════════════════════════▶      │  Immediate Close
+    ├── RST ═══════════════════════════════════>      │  Immediate Close
     │                                                 │
 [CLOSED]                                         [CLOSED]
     │                                                 │
-    └── Immediate Close (No TIME_WAIT) ───────────────┘
+    └── Immediate Close (No TIME_WAIT)   ─────────────┘
 ```
 
 ### RST 발생 경우
@@ -200,9 +221,11 @@ Client                                            Server
 - TIME_WAIT 상태 없음
 - 버퍼의 데이터 손실 가능
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## CLOSE_WAIT 문제
+## 7. CLOSE_WAIT 문제
 
 ### 증상
 ```bash
@@ -224,9 +247,11 @@ finally:
     sock.close()  # 반드시 close() 호출
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## TCP 상태 확인 명령어
+## 8. TCP 상태 확인 명령어
 
 ### netstat 주요 옵션
 
@@ -264,13 +289,15 @@ ESTAB       0      0      10.0.1.5:22      10.0.1.100:54321
 TIME-WAIT   0      0      10.0.1.5:80      10.0.1.200:12345
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## DDoS 방어와 TCP 상태
+## 9. DDoS 방어와 TCP 상태
 
 ### SYN Flood 공격
 ```
-공격자 ---> SYN ---> 서버 (SYN_RECEIVED 상태 누적)
+공격자 ---> SYN ---> Server (SYN_RECEIVED 상태 누적)
 ```
 
 **방어:**
@@ -287,7 +314,7 @@ sysctl -w net.ipv4.tcp_synack_retries=2
 
 ### TIME_WAIT 고갈 공격
 ```
-공격자 ---> 대량 연결 ---> 서버 (TIME_WAIT 상태 누적)
+공격자 ---> 대량 연결 ---> Server (TIME_WAIT 상태 누적)
 ```
 
 **방어:**
@@ -299,6 +326,8 @@ sysctl -w net.ipv4.tcp_tw_reuse=1
 sysctl -w net.ipv4.ip_local_port_range="10000 65535"
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 참고 자료
@@ -307,3 +336,22 @@ sysctl -w net.ipv4.ip_local_port_range="10000 65535"
 - RFC 1122: Requirements for Internet Hosts
 - Linux Kernel Documentation: tcp.txt
 - Stevens, W. Richard. "TCP/IP Illustrated, Volume 1"
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
+**작성일**: 2026-04-14
+
+**마지막 업데이트**: 2026-04-22
+
+© 2026 siasia86. Licensed under CC BY 4.0.
