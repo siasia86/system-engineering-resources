@@ -39,7 +39,7 @@
   └────────┘ <────────────────── └────────┘
        ^         timeout/logout       │
        │                              │ 3 failures
-       │         lock                 v
+       │         3 failures            v
        └───────────────────── ┌──────────┐
                               │ Suspended│
                               └──────────┘
@@ -53,7 +53,7 @@
 | Locked     | login_fail      | Locked     | 실패 카운트 +1  |
 | Active     | logout          | Locked     | 세션 삭제       |
 | Active     | timeout         | Locked     | 세션 만료       |
-| Active     | 3 failures      | Suspended  | 계정 잠금       |
+| Active     | login_fail [>=3]| Suspended  | 계정 잠금       |
 | Suspended  | admin_unlock    | Locked     | 카운트 초기화   |
 
 ## 4. 테스트 설계
@@ -102,7 +102,7 @@ CLOSED → SYN_SENT → ESTABLISHED → FIN_WAIT_1 → FIN_WAIT_2 → TIME_WAIT 
 | 결제완료  | 배송시작   | 배송중    |
 | 배송중    | 배송완료   | 완료      |
 | 결제완료  | 취소요청   | 취소      |
-| 배송중    | 취소요청   | 거부      |
+| 배송중    | 취소요청   | 배송중 (거부) |
 
 ### 예시 3: ATM
 
