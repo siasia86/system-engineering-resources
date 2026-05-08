@@ -1,18 +1,20 @@
 # 네트워크 헤더 구조 (Network Headers)
 
 ## 목차
-
-| 섹션 |
-|------|
-| [1. Ethernet 헤더 (Layer 2)](#1-ethernet-헤더-layer-2) / [2. ARP 헤더](#2-arp-헤더) / [3. IPv6 헤더](#3-ipv6-헤더) |
-| [4. ICMP 헤더](#4-icmp-헤더) / [5. DNS 헤더](#5-dns-헤더) / [6. HTTP 헤더](#6-http-헤더) |
-| [7. TLS/SSL 헤더](#7-tlsssl-헤더) / [8. GRE 헤더](#8-gre-헤더) / [9. VXLAN 헤더](#9-vxlan-헤더) |
-| [10. QUIC 헤더](#10-quic-헤더) / [11. 패킷 캡슐화 예시](#11-패킷-캡슐화-예시) / [12. 패킷 분석 명령어](#12-패킷-분석-명령어) |
-
+1. [Ethernet 헤더 (Layer 2)](#ethernet-헤더-layer-2)
+2. [ARP 헤더](#arp-헤더)
+3. [IPv6 헤더](#ipv6-헤더)
+4. [ICMP 헤더](#icmp-헤더)
+5. [DNS 헤더](#dns-헤더)
+6. [HTTP 헤더](#http-헤더)
+7. [TLS/SSL 헤더](#tlsssl-헤더)
+8. [GRE 헤더](#gre-헤더)
+9. [VXLAN 헤더](#vxlan-헤더)
+10. [QUIC 헤더](#quic-헤더)
 
 ---
 
-## 1. Ethernet 헤더 (Layer 2)
+## Ethernet 헤더 (Layer 2)
 
 ### 구조 (14-18 bytes)
 
@@ -63,9 +65,9 @@
 │                  Destination MAC Address                      │
 ├───────────────────────────────────────────────────────────────┤
 │                    Source MAC Address                         │
-├───────────────────────────┬───────────────────────────────────┤
-│    TPID (0x8100)          │  TCI (PCP│DEI│VLAN ID)            │
 ├───────────────────────────┴───┬───────────────────────────────┤
+│    TPID (0x8100)          │  TCI (PCP│DEI│VLAN ID)            │
+├───────────────────────────────┬───────────────────────────────┤
 │         EtherType             │          Payload              │
 └───────────────────────────────┴───────────────────────────────┘
 ```
@@ -81,11 +83,9 @@
 14:30:15.123456 aa:bb:cc:dd:ee:ff > 00:11:22:33:44:55, ethertype IPv4 (0x0800)
 ```
 
-[⬆ 목차로 돌아가기](#목차)
-
 ---
 
-## 2. ARP 헤더
+## ARP 헤더
 
 ### 구조 (28 bytes for IPv4)
 
@@ -156,11 +156,9 @@ Target IP: 192.168.1.100
 결과: 피해자의 트래픽이 공격자를 거쳐감 (MITM)
 ```
 
-[⬆ 목차로 돌아가기](#목차)
-
 ---
 
-## 3. IPv6 헤더
+## IPv6 헤더
 
 ### 구조 (40 bytes, 고정)
 
@@ -228,11 +226,9 @@ fe80::1
 ff02::1 (모든 노드)
 ```
 
-[⬆ 목차로 돌아가기](#목차)
-
 ---
 
-## 4. ICMP 헤더
+## ICMP 헤더
 
 ### 구조 (8+ bytes)
 
@@ -306,11 +302,9 @@ iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 1/s -j ACCEP
 iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
 ```
 
-[⬆ 목차로 돌아가기](#목차)
-
 ---
 
-## 5. DNS 헤더
+## DNS 헤더
 
 ### 구조 (12+ bytes)
 
@@ -344,10 +338,10 @@ iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
 ### Flags 상세
 
 ```
- 0  1 2 3 4  5  6  7  8  9  0  1  2 3 4 5
-┌──┬────────┬──┬──┬──┬──┬──┬──┬──┬────────┐
-│QR│ Opcode │AA│TC│RD│RA│AD│CD│Z │ RCODE  │
-└──┴────────┴──┴──┴──┴──┴──┴──┴──┴────────┘
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
+┌───┬───────┬───┬───┬───┬───┬───────┐
+│QR │Opcode │AA │TC │RD │RA │  RCODE│
+└───┴───────┴───┴───┴───┴───┴───────┘
 ```
 
 | 필드       | 크기   | 설명                                     |
@@ -358,9 +352,6 @@ iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
 | **TC**     | 1 bit  | Truncated                                |
 | **RD**     | 1 bit  | Recursion Desired                        |
 | **RA**     | 1 bit  | Recursion Available                      |
-| **AD**     | 1 bit  | Authenticated Data (DNSSEC, RFC 4035)    |
-| **CD**     | 1 bit  | Checking Disabled (DNSSEC, RFC 4035)     |
-| **Z**      | 1 bit  | Reserved (must be 0)                     |
 | **RCODE**  | 4 bits | Response Code (0=No Error, 3=Name Error) |
 
 ### DNS 레코드 타입
@@ -388,7 +379,7 @@ Response:
 Transaction ID: 0x1234
 Flags: 0x8180 (Standard response, No error)
 Answers: 1
-Answer: www.example.com, Type A, Class IN, TTL 300, Address 192.0.2.10
+Answer: www.example.com, Type A, Class IN, TTL 300, Address 93.184.216.34
 ```
 
 ### DNS 터널링 탐지
@@ -402,11 +393,9 @@ tcpdump -i eth0 -n port 53 | awk '{print $5}' | cut -d. -f1-4 | sort | uniq -c |
 ```
 
 
-[⬆ 목차로 돌아가기](#목차)
-
 ---
 
-## 6. HTTP 헤더
+## HTTP 헤더
 
 ### 구조 (텍스트 기반)
 
@@ -449,9 +438,9 @@ X-Real-IP: 192.168.1.100
 ### X-Forwarded-For 예시
 
 ```
-Client     (1.2.3.4) → Proxy1 (10.0.0.1) → Proxy2 (10.0.0.2) → Server
+클라이언트 (1.2.3.4) → Proxy1 (10.0.0.1) → Proxy2 (10.0.0.2) → 서버
 
-Server가 받는 헤더:
+서버가 받는 헤더:
 X-Forwarded-For: 1.2.3.4, 10.0.0.1
 ```
 
@@ -474,35 +463,33 @@ X-Forwarded-For: 1.2.3.4, 10.0.0.1
 | **X-Frame-Options**           | 클릭재킹 방어     |
 | **X-Content-Type-Options**    | MIME 스니핑 방지  |
 
-[⬆ 목차로 돌아가기](#목차)
-
 ---
 
-## 7. TLS/SSL 헤더
+## TLS/SSL 헤더
 
 ### TLS Handshake 구조
 
 ```
 Client                                              Server
     │                                                  │
-    ├── ClientHello ═══════════════════════════>       │
+    ├── ClientHello ═══════════════════════════▶       │
     │   - TLS Version                                  │
     │   - Supported Cipher Suites                      │
     │   - Random Data                                  │
     │                                                  │
-    │       <═══════════════════ ServerHello ──────────┤
+    │       ◀═══════════════════ ServerHello ──────────┤
     │         - Selected Cipher Suite                  │
-    │         - Server Certificate                     │
+    │         - Server Certificate                    │
     │         - Random Data                            │
     │                                                  │
-    ├── ClientKeyExchange ════════════════════>        │
-    ├── ChangeCipherSpec ═════════════════════>        │
-    ├── Finished ═════════════════════════════>        │
+    ├── ClientKeyExchange ════════════════════▶        │
+    ├── ChangeCipherSpec ═════════════════════▶        │
+    ├── Finished ═════════════════════════════▶        │
     │                                                  │
-    │       <═══════════════ ChangeCipherSpec ─────────┤
-    │       <═══════════════════════ Finished ─────────┤
+    │       ◀═══════════════ ChangeCipherSpec ─────────┤
+    │       ◀═══════════════════════ Finished ─────────┤
     │                                                  │
-    └── Encrypted Communication Start ─────────────────┘
+    └── Encrypted Communication Start ────────────────┘
 ```
 
 ### TLS Record 헤더 (5 bytes)
@@ -549,20 +536,18 @@ Extension: server_name
 - 하나의 IP에 여러 도메인 호스팅
 - 프록시/방화벽에서 도메인 기반 필터링
 
-[⬆ 목차로 돌아가기](#목차)
-
 ---
 
-## 8. GRE 헤더
+## GRE 헤더
 
 ### 구조 (4-16 bytes)
 
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-┌─┬─┬─┬─┬─┬─────┬─────────┬─────┬───────────────────────────────┐
+┌───────────────────────────────────────────────────────────────┐
 │C│R│K│S│s│Recur│  Flags  │ Ver │       Protocol Type           │
-├─┴─┴─┴─┴─┴─────┴─────────┴─────┼───────────────────────────────┤
+├───────────────────────────────┼───────────────────────────────┤
 │      Checksum (optional)      │       Reserved1 (optional)    │
 ├───────────────────────────────┴───────────────────────────────┤
 │                         Key (optional)                        │
@@ -575,19 +560,15 @@ Extension: server_name
 
 | 필드                | 크기    | 설명                                         |
 |---------------------|---------|----------------------------------------------|
-| **C (Checksum)**    | 1 bit   | 1=Checksum 필드 존재                         |
-| **R (Routing)**     | 1 bit   | 1=Routing 정보 존재 (deprecated)             |
-| **K (Key)**         | 1 bit   | 1=Key 필드 존재                              |
-| **S (Sequence)**    | 1 bit   | 1=Sequence Number 필드 존재                  |
-| **s (Strict)**      | 1 bit   | Strict Source Route (deprecated)             |
-| **Recur**           | 3 bits  | Recursion Control (deprecated, must be 0)    |
-| **Flags**           | 5 bits  | Reserved flags (must be 0)                   |
-| **Ver (Version)**   | 3 bits  | GRE 버전 (0=GRE, 1=PPTP 등)                  |
+| **C (Checksum)**    | 1 bit   | Checksum 존재 여부                           |
+| **R (Routing)**     | 1 bit   | Routing 정보 존재 여부                       |
+| **K (Key)**         | 1 bit   | Key 필드 존재 여부                           |
+| **S (Sequence)**    | 1 bit   | Sequence Number 존재 여부                    |
+| **Version**         | 3 bits  | GRE 버전 (0)                                 |
 | **Protocol Type**   | 16 bits | 캡슐화된 프로토콜 (0x0800=IPv4, 0x86DD=IPv6) |
-| **Checksum**        | 16 bits | 선택적 체크섬 (C=1일 때 존재)                |
-| **Reserved1**       | 16 bits | 예약 필드 (C=1일 때 존재, must be 0)         |
-| **Key**             | 32 bits | 터널 식별자 (K=1일 때 존재)                  |
-| **Sequence Number** | 32 bits | 패킷 순서 번호 (S=1일 때 존재)               |
+| **Checksum**        | 16 bits | 선택적 체크섬                                |
+| **Key**             | 32 bits | 터널 식별자                                  |
+| **Sequence Number** | 32 bits | 패킷 순서 번호                               |
 
 ### 사용 사례
 
@@ -602,11 +583,9 @@ GRE 캡슐화: [외부 IP][GRE][원본 IP][TCP][Data]
 온프레미스 ←→ GRE 터널 ←→ AWS VPC
 ```
 
-[⬆ 목차로 돌아가기](#목차)
-
 ---
 
-## 9. VXLAN 헤더
+## VXLAN 헤더
 
 ### 구조 (8 bytes)
 
@@ -655,24 +634,22 @@ VNI 200: 고객 B 네트워크
 VNI 300: 고객 C 네트워크
 ```
 
-[⬆ 목차로 돌아가기](#목차)
-
 ---
 
-## 10. QUIC 헤더
+## QUIC 헤더
 
 ### 구조 (Long Header)
 
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-┌─┬───────┬───────────┬─────────┬───────────────────────────────┐
+┌───────────────────────────────┬───────────────────────────────┐
 │1│  Type │  Reserved │ PKN Len │          Version              │
-├─┴───────┴─┬─────────┴─────────┴───────────────────────────────┤
+├───────────────────────────────┴───────────────────────────────┤
 │ DCID Len  │   Destination Connection ID (0-160 bits)          │
-├───────────┼───────────────────────────────────────────────────┤
+├───────────────────────────────────────────────────────────────┤
 │ SCID Len  │   Source Connection ID (0-160 bits)               │
-├───────────┴───────────────────────────────────────────────────┤
+├───────────────────────────────────────────────────────────────┤
 │                       Packet Number                           │
 ├───────────────────────────────────────────────────────────────┤
 │                         Payload                               │
@@ -704,11 +681,11 @@ VNI 300: 고객 C 네트워크
 
 ```
 HTTP/3
-    v
+    ↓
 QUIC (전송 + 암호화)
-    v
+    ↓
 UDP
-    v
+    ↓
 IP
 ```
 
@@ -717,19 +694,17 @@ IP
 ```
 Client                                              Server
     │                                                  │
-    ├── ClientHello + Data ────────────────────>       │
+    ├── ClientHello + Data ════════════════════▶       │
     │   (Reuse previous session)                       │
     │                                                  │
-    │       <──────────────────── ServerHello + Data ──┤
+    │       ◀════════════════════ ServerHello + Data ──┤
     │                                                  │
-    └── Immediate Data Transfer ───────────────────────┘
+    └── 즉시 데이터 전송 ──────────────────────────────
 ```
-
-[⬆ 목차로 돌아가기](#목차)
 
 ---
 
-## 11. 패킷 캡슐화 예시
+## 패킷 캡슐화 예시
 
 ### 일반 웹 트래픽
 
@@ -755,11 +730,9 @@ Client                                              Server
 [Ethernet][IP][UDP][QUIC][HTTP/3][Data]
 ```
 
-[⬆ 목차로 돌아가기](#목차)
-
 ---
 
-## 12. 패킷 분석 명령어
+## 패킷 분석 명령어
 
 ### 특정 헤더 필터링
 
@@ -832,32 +805,18 @@ vxlan.vni == 100
 quic
 ```
 
-[⬆ 목차로 돌아가기](#목차)
-
 ---
 
 ## 참고 자료
 
-- RFC 894: Ethernet / RFC 826: ARP / RFC 2460: IPv6
-- RFC 792: ICMP / RFC 1035: DNS / RFC 2616: HTTP/1.1
-- RFC 7540: HTTP/2 / RFC 8446: TLS 1.3
-- RFC 2784: GRE / RFC 7348: VXLAN / RFC 9000: QUIC
-
----
-
-## 통계
-
-![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
-![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
-![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
-![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
-![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
-
----
-
-**작성일**: 2026-04-14
-
-**마지막 업데이트**: 2026-04-22
-
-© 2026 siasia86. Licensed under CC BY 4.0.
+- RFC 894: Ethernet
+- RFC 826: ARP
+- RFC 2460: IPv6
+- RFC 792: ICMP
+- RFC 1035: DNS
+- RFC 2616: HTTP/1.1
+- RFC 7540: HTTP/2
+- RFC 8446: TLS 1.3
+- RFC 2784: GRE
+- RFC 7348: VXLAN
+- RFC 9000: QUIC
