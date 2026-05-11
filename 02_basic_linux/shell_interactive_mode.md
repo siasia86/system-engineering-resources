@@ -4,7 +4,7 @@
 
 | 단계   | 섹션                                                                                                                           |
 |--------|--------------------------------------------------------------------------------------------------------------------------------|
-| 기본   | [1. $- 변수](#1--변수) / [2. Interactive vs Non-interactive](#2-interactive-vs-non-interactive)                                |
+| 기본   | [1. $- 변수](#1---변수) / [2. Interactive vs Non-interactive](#2-interactive-vs-non-interactive)                                |
 | 실전   | [3. 동작 차이](#3-동작-차이) / [4. /etc/profile.d 로딩 원리](#4-etcprofiled-로딩-원리) / [5. 실무 패턴](#5-실무-패턴)         |
 | 참고   | [6. Tips](#6-tips)                                                                                                             |
 
