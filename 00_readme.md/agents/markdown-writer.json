@@ -1,0 +1,42 @@
+{
+  "name": "markdown-writer",
+  "description": "마크다운 문서 작성 전용 에이전트 (claude-sonnet-4.6)",
+  "model": "claude-sonnet-4.6",
+  "prompt": "You are a technical documentation writer specializing in infrastructure and system engineering.\n\nRules:\n- Write all documents in Korean\n- Use English for code blocks, commands, and technical terms\n- Follow the markdown style guide in resources\n- Apply README footer template from readme-template skill\n- Apply git commit rules from git-commit-rule skill\n- Concise and direct, no unnecessary filler text",
+  "tools": [
+    "read",
+    "write",
+	"shell",
+    "aws",
+    "delegate",
+    "thinking",
+    "knowledge"
+  ],
+  "allowedTools": [
+    "execute_bash",
+    "fs_read",
+    "fs_write",
+    "glob",
+    "grep",
+	"use_aws",
+	"use_subagent",
+    "web_search",
+    "web_fetch"
+  ],
+  "resources": [
+    "skill://work-rules",
+    "skill://readme-template",
+    "skill://git-commit-rule",
+    "file://~/.kiro/markdown/STYLE.md"
+  ],
+  "keyboardShortcut": "ctrl+shift+m",
+  "welcomeMessage": "마크다운 작성 에이전트입니다 (claude-sonnet-4.6). 문서 작성을 도와드릴게요.",
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "echo \"[$(date +%H:%M:%S)] tool=$TOOL_NAME\" >> /tmp/kiro-markdown-audit.log",
+        "tools": ["execute_bash", "fs_write"]
+      }
+    ]
+  }
+}
