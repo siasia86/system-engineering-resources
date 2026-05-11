@@ -6,13 +6,13 @@
 
 | 섹션 |
 |------|
-| [subprocess.run()](#subprocessrun) / [입출력 캡처](#입출력-캡처) / [shell 옵션](#shell-옵션) |
-| [Popen](#popen) / [실전 예제](#실전-예제) / [요약](#요약) |
+| [subprocess.run()](#1-subprocessrun) / [입출력 캡처](#2-입출력-캡처) / [shell 옵션](#3-shell-옵션) |
+| [Popen](#4-popen) / [실전 예제](#5-실전-예제) / [요약](#6-요약) |
 
 
 ---
 
-## subprocess.run()
+## 1. subprocess.run()
 
 ### 기본 사용법
 
@@ -59,7 +59,7 @@ else:
 
 ---
 
-## 입출력 캡처
+## 2. 입출력 캡처
 
 ### stdout / stderr
 
@@ -102,7 +102,7 @@ print(result.stdout)  # error found
 
 ---
 
-## shell 옵션
+## 3. shell 옵션
 
 ### shell=True vs shell=False
 
@@ -139,7 +139,7 @@ output = p2.communicate()[0]
 
 ---
 
-## Popen
+## 4. Popen
 
 ### 기본 사용법
 
@@ -215,7 +215,7 @@ except subprocess.CalledProcessError as e:
 
 ---
 
-## 실전 예제
+## 5. 실전 예제
 
 ### 디스크 사용량 확인
 
@@ -278,7 +278,7 @@ def search_log(log_file, pattern, lines=10):
 
 ---
 
-## 요약
+## 6. 요약
 
 | 함수                 | 용도                   | 동기/비동기 |
 |----------------------|------------------------|-------------|

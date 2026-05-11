@@ -6,14 +6,14 @@
 
 | 섹션 |
 |------|
-| [기본 함수](#기본-함수) / [패턴 문법](#패턴-문법) / [그룹](#그룹) |
-| [Greedy vs Lazy](#greedy-vs-lazy) / [Lookahead / Lookbehind](#lookahead--lookbehind) / [re.compile()](#recompile) |
-| [공통 패턴](#공통-패턴) / [실전 예제](#실전-예제) / [요약](#요약) |
+| [기본 함수](#1-기본-함수) / [패턴 문법](#2-패턴-문법) / [그룹](#3-그룹) |
+| [Greedy vs Lazy](#4-greedy-vs-lazy) / [Lookahead / Lookbehind](#5-lookahead--lookbehind) / [re.compile()](#6-recompile) |
+| [공통 패턴](#7-공통-패턴) / [실전 예제](#8-실전-예제) / [요약](#9-요약) |
 
 
 ---
 
-## 기본 함수
+## 1. 기본 함수
 
 ### re.match() - 문자열 시작부터 매칭
 
@@ -77,7 +77,7 @@ print(result)  # ['a', 'b', 'c', 'd']
 
 ---
 
-## 패턴 문법
+## 2. 패턴 문법
 
 ### 문자 클래스
 
@@ -124,7 +124,7 @@ r'[a-zA-Z]' # 모든 영문자
 
 ---
 
-## 그룹
+## 3. 그룹
 
 ### 기본 그룹
 
@@ -167,7 +167,7 @@ print(result)  # [('10', '20'), ('30', '40')]
 
 ---
 
-## Greedy vs Lazy
+## 4. Greedy vs Lazy
 
 ```python
 text = '<div>hello</div><div>world</div>'
@@ -193,7 +193,7 @@ r'{m,n}?'  # m~n회 (최소)
 
 ---
 
-## Lookahead / Lookbehind
+## 5. Lookahead / Lookbehind
 
 ### Lookahead (전방 탐색)
 
@@ -229,7 +229,7 @@ print(result)  # ['200', '400']
 
 ---
 
-## re.compile()
+## 6. re.compile()
 
 ```python
 # 패턴을 미리 컴파일 (반복 사용 시 성능 향상)
@@ -256,7 +256,7 @@ pattern = re.compile(r'a.b', re.DOTALL)         # .이 줄바꿈도 매칭
 
 ---
 
-## 공통 패턴
+## 7. 공통 패턴
 
 ```python
 # IPv4 주소
@@ -285,7 +285,7 @@ r'[가-힣]+'
 
 ---
 
-## 실전 예제
+## 8. 실전 예제
 
 ### 로그 파싱
 
@@ -354,7 +354,7 @@ def mask_sensitive(text):
 
 ---
 
-## 요약
+## 9. 요약
 
 | 함수            | 용도             | 반환            |
 |-----------------|------------------|-----------------|
