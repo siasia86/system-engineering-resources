@@ -89,7 +89,7 @@ GPL v2 준수 (소스 공개) + 하드웨어 서명 (수정 실행 차단)
 
 ### GPL v3의 대응 — 설치 정보 제공 의무
 
-GPL v3 Section 6은 소스코드뿐 아니라 **설치 정보(Installation Information)**도 제공하도록 요구합니다.
+GPL v3 Section 6은 소스코드뿐 아니라 **설치 정보(Installation Information)** 도 제공하도록 요구합니다.
 수정된 소프트웨어를 실제로 설치·실행할 수 있는 서명 키, 인증 코드 등을 포함해야 한다.
 
 ```
