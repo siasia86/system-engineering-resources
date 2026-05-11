@@ -924,17 +924,113 @@ Plan 에이전트 출력 예시:
 #### 예시 2: 모니터링 시스템 구축 설계
 
 ```
+> /plan
+✔ Switched to agent: planner
+
 [plan] > 게임 서버 100대 모니터링 시스템 구축 계획.
          요구사항: CPU/Memory/Disk/Network 실시간 모니터링,
          장애 알림 (Slack), 대시보드, 로그 수집.
+
+## 모니터링 시스템 구축 계획
+
+### 구성 요소
+
+| 역할          | 도구                        |
+|---------------|-----------------------------|
+| 메트릭 수집   | Prometheus + Node Exporter  |
+| 로그 수집     | Promtail + Loki             |
+| 대시보드      | Grafana                     |
+| 알림          | Alertmanager + Slack        |
+
+### Phase 1: 인프라 설계 (3일)
+- 모니터링 서버 사양 결정 (Prometheus 100대 기준 권장: 8 Core / 32GB / 500GB SSD)
+- 네트워크 방화벽 정책 수립 (9090/9100/3000 포트)
+- 데이터 보존 기간 결정 (권장: 메트릭 30일, 로그 14일)
+
+### Phase 2: 수집 에이전트 배포 (2일)
+- Ansible 로 Node Exporter 100대 일괄 배포
+- Promtail 설정 (syslog, game-server 로그 경로 지정)
+- 배포 후 수집 확인 (prometheus targets 페이지)
+
+### Phase 3: 대시보드 구성 (2일)
+- Grafana Node Exporter Full 대시보드 import (ID: 1860)
+- 게임 서버 전용 패널 추가 (접속자 수, 패킷 손실률)
+- 알림 규칙 작성 (CPU > 80%, Disk > 90%, 서버 다운)
+
+### Phase 4: 알림 연동 (1일)
+- Alertmanager Slack webhook 설정
+- 알림 라우팅 규칙 (severity: critical → #ops-alert, warning → #ops-warn)
+- 테스트 알림 발송 확인
+
+Does this plan look good, or would you like me to adjust anything?
+> 좋아, 진행해줘.
+
+Ready to exit [plan] agent to start your implementation? [y/n]: y
+
+[default] > 위 계획대로 Phase 2 Ansible Playbook 먼저 만들어줘
 ```
 
 #### 예시 3: Ansible 자동화 설계
 
 ```
+> /plan
+✔ Switched to agent: planner
+
 [plan] > 신규 게임 서버 초기 세팅 자동화.
          OS 튜닝, 보안 설정, 모니터링 에이전트,
          게임 바이너리 배포까지 Ansible 로 자동화 설계해줘.
+
+## 신규 게임 서버 초기 세팅 자동화 계획
+
+### Playbook 구조
+
+  site.yml
+  roles/
+  ├── os_tuning/        ← 커널 파라미터, ulimit, 타임존
+  ├── security/         ← sshd 설정, firewalld, fail2ban
+  ├── monitoring/       ← Node Exporter, Promtail 설치
+  └── game_deploy/      ← 바이너리 배포, systemd 서비스 등록
+
+### Task 1: os_tuning role (OS 튜닝)
+- /etc/sysctl.conf — net.core.somaxconn, tcp_tw_reuse, file-max 설정
+- /etc/security/limits.conf — nofile 65535, nproc 65535
+- 타임존 Asia/Seoul 설정
+- Demo: sysctl -a 로 파라미터 적용 확인
+
+### Task 2: security role (보안 설정)
+- sshd_config — PasswordAuthentication no, PermitRootLogin no, Port 변경
+- firewalld — 게임 포트(UDP 7000-8000), 모니터링 포트(9100) 허용
+- fail2ban — SSH brute-force 차단 (maxretry: 5, bantime: 1h)
+- Demo: firewall-cmd --list-all 로 정책 확인
+
+### Task 3: monitoring role (모니터링 에이전트)
+- Node Exporter 설치 및 systemd 서비스 등록
+- Promtail 설치 및 로그 경로 설정
+- Demo: systemctl status node_exporter 정상 기동 확인
+
+### Task 4: game_deploy role (게임 바이너리 배포)
+- S3 에서 바이너리 다운로드 (aws s3 cp)
+- 배포 디렉토리 권한 설정 (game:game 750)
+- systemd 서비스 파일 생성 및 enable
+- Demo: systemctl status game-server 정상 기동 확인
+
+### 실행 순서
+
+  # 각 role 의 tasks/main.yml 에 tags: [role명] 선언 필요
+  ansible-playbook site.yml -i inventory/prod --tags "os_tuning"
+  ansible-playbook site.yml -i inventory/prod --tags "security"
+  ansible-playbook site.yml -i inventory/prod --tags "monitoring"
+  ansible-playbook site.yml -i inventory/prod --tags "game_deploy"
+
+  # 전체 실행 (순서 보장)
+  ansible-playbook site.yml -i inventory/prod
+
+Does this plan look good, or would you like me to adjust anything?
+> 좋아, 진행해줘.
+
+Ready to exit [plan] agent to start your implementation? [y/n]: y
+
+[default] > 위 계획대로 roles/ 디렉토리 구조와 os_tuning role 먼저 만들어줘
 ```
 
 ⚠️ Plan 에이전트는 계획만 세우고, 실제 파일 생성/명령 실행은 기본 에이전트로 복귀 후 수행합니다.
