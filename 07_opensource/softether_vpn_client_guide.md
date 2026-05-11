@@ -97,10 +97,18 @@ cd /opt/vpnclient
 ```
 
 ```
-# 진입 후 선택
-1                    ← VPN Client 관리 선택
+# 진입 후 선택지 3개
+1. VPN Server 관리   ← 서버 명령어 (HubCreate, UserCreate 등)
+2. VPN Bridge 관리
+3. VPN Client 관리   ← 클라이언트 명령어 (AccountCreate, NicCreate 등)
+
+선택: 3
 (서버 주소 Enter 생략 — 로컬 클라이언트 관리)
 ```
+
+> `AccountCreate` 는 클라이언트에서 실행합니다.
+> "이 클라이언트가 어느 서버에, 어떤 계정으로 접속할지" 를 로컬에 등록하는 명령어입니다.
+> `/SERVER`, `/USERNAME` 은 서버에 미리 생성된 계정 정보를 클라이언트에 등록하는 것입니다.
 
 ### 가상 NIC 생성
 
@@ -263,6 +271,25 @@ VPN Client> AccountPasswordSet myconn /PASSWORD:SecurePassword123 /TYPE:standard
 ```
 
 > 서버 인증 방식이 RADIUS 인 경우 `/TYPE:radius` 로 변경
+
+### Google OTP (TOTP) 연동 서버 접속
+
+서버가 RADIUS + Google Authenticator 인증을 사용하는 경우,
+패스워드를 `고정패스워드 + OTP 6자리` 를 붙여서 입력합니다.
+
+```
+VPN Client> AccountPasswordSet myconn /PASSWORD:SecurePassword123456789 /TYPE:radius
+```
+
+> 예: 고정 패스워드 `SecurePassword123`, OTP `456789` → `SecurePassword123456789`
+
+| 확인 항목     | 내용                                        |
+|---------------|---------------------------------------------|
+| 인증 타입     | `/TYPE:radius`                              |
+| 패스워드 형식 | `고정패스워드` + `OTP 6자리` 연속 입력      |
+| OTP 유효시간  | 30초 — 만료 전 입력 필요                    |
+
+⚠️ 정확한 패스워드 형식은 서버 관리자에게 확인합니다. 서버 설정에 따라 OTP 단독 입력 방식일 수 있습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
