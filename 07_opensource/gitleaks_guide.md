@@ -46,12 +46,15 @@ VERSION="go1.24.3"
 curl -sSL "https://dl.google.com/go/${VERSION}.linux-amd64.tar.gz" \
   | sudo tar -xz -C /usr/local
 
-# 환경 변수 설정 (~/.bashrc 또는 ~/.profile)
+# 환경 변수 설정 (~/.bash_aliases)
 export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
 source ~/.bashrc
+
+## link 방식
+ln -s /usr/local/go/bin/go /usr/local/bin/
 
 # 설치 확인
 go version
