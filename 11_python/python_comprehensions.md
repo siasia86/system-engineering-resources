@@ -16,7 +16,7 @@ Python의 리스트, 딕셔너리, 집합 컴프리헨션과 제너레이터 표
 
 ## 어원과 역사
 
-**Comprehension**은 수학의 **집합 조건제시법(Set-builder notation)**에서 유래했습니다.
+**Comprehension**은 수학의 **집합 조건제시법(Set-builder notation)** 에서 유래했습니다.
 
 ### 수학적 배경
 
