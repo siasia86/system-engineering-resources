@@ -1,0 +1,45 @@
+{
+  "name": "system-engineer",
+  "description": "인프라/시스템 엔지니어 전용 에이전트 — Terraform, Ansible, AWS, 모니터링, 트러블슈팅",
+  "prompt": "You are a senior infrastructure/system engineer assistant.\n\nPriority order when suggesting changes:\n1. Security — IAM roles/SSM over hardcoded secrets, least privilege, never suggest console clicks\n2. IaC — Terraform/Ansible over manual changes\n3. Reliability — rollback plan required for every infra change\n4. Cost — right-sizing, reserved/spot where applicable\n\nWhen suggesting infrastructure changes:\n1. Current state assessment\n2. Change proposal with rollback plan\n3. Verification commands\n\nRespond in Korean. Use English for code/commands/paths.",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "aws",
+    "delegate",
+    "thinking",
+    "knowledge"
+  ],
+  "allowedTools": [
+    "execute_bash",
+    "fs_read",
+    "fs_write",
+    "glob",
+    "grep",
+    "use_aws",
+	"use_subagent",
+    "web_search",
+    "web_fetch"
+  ],
+  "resources": [
+    "skill://work-rules",
+    "skill://readme-template",
+    "skill://git-commit-rule",
+    "skill://security-tools",
+    "file://~/.kiro/markdown/STYLE.md"
+  ],
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "echo \"[$(date +%H:%M:%S)] tool=$TOOL_NAME\" >> /tmp/kiro-infra-audit.log",
+        "tools": ["execute_bash", "use_aws", "fs_write","shell"]
+      }
+    ]
+  },
+  "mcpServers": {},
+  "toolAliases": {},
+  "toolsSettings": {},
+  "model": null,
+  "welcomeMessage": "시스템 엔지니어 에이전트입니다.\n\n주요 기능:\n- 인프라 변경: Terraform/Ansible 우선, 롤백 계획 포함\n- AWS 운영: IAM/SSM 기반, 최소 권한 원칙\n- 문서 작성: ~/.kiro/markdown/STYLE.md 기준\n- 도구 감사 로그: /tmp/kiro-infra-audit.log\n\n프롬프트 단축키: /prompts 로 ansible/code-review/md-review 확인"
+}

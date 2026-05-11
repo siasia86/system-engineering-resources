@@ -1,0 +1,4 @@
+{
+  "chat.enableCheckpoint": true,
+  "inline.enabled": false
+}
