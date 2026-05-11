@@ -4,24 +4,24 @@
 
 | 섹션 |
 |------|
-| [파일 디스크립터 (File Descriptor)](#파일-디스크립터-file-descriptor) |
-| [표준 입출력](#표준-입출력) |
-| [출력 리다이렉션](#출력-리다이렉션) |
-| [입력 리다이렉션](#입력-리다이렉션) |
-| [Here Document / Here String](#here-document--here-string) |
-| [파이프 (Pipe)](#파이프-pipe) |
-| [FD 조합과 순서](#fd-조합과-순서) |
-| [축약 문법 (bash 전용)](#축약-문법-bash-전용) |
-| [고급: FD 3 이상 사용](#고급-fd-3-이상-사용) |
-| [/dev/null, /dev/zero, /dev/urandom](#devnull-devzero-devurandom) |
-| [crontab 리다이렉션 패턴](#crontab-리다이렉션-패턴) |
-| [실전 패턴](#실전-패턴) |
+| [파일 디스크립터 (File Descriptor)](#1-파일-디스크립터-file-descriptor) |
+| [표준 입출력](#2-표준-입출력) |
+| [출력 리다이렉션](#3-출력-리다이렉션) |
+| [입력 리다이렉션](#4-입력-리다이렉션) |
+| [Here Document / Here String](#5-here-document--here-string) |
+| [파이프 (Pipe)](#6-파이프-pipe) |
+| [FD 조합과 순서](#7-fd-조합과-순서) |
+| [축약 문법 (bash 전용)](#8-축약-문법-bash-전용) |
+| [고급: FD 3 이상 사용](#9-고급-fd-3-이상-사용) |
+| [/dev/null, /dev/zero, /dev/urandom](#10-devnull-devzero-devurandom) |
+| [crontab 리다이렉션 패턴](#11-crontab-리다이렉션-패턴) |
+| [실전 패턴](#12-실전-패턴) |
 
 [⬆ 목차로 돌아가기](#목차)
 
 ---
 
-## 파일 디스크립터 (File Descriptor)
+## 1. 파일 디스크립터 (File Descriptor)
 
 프로세스가 열어둔 I/O 채널의 번호. 커널이 프로세스별로 관리합니다.
 
@@ -45,7 +45,7 @@
 
 ---
 
-## 표준 입출력
+## 2. 표준 입출력
 
 ```bash
 # stdout (FD 1) - 일반 출력
@@ -69,7 +69,7 @@ ls /nonexistent 2> >(while read l; do echo -e "\e[31m$l\e[0m"; done)
 
 ---
 
-## 출력 리다이렉션
+## 3. 출력 리다이렉션
 
 ### 덮어쓰기 (`>`)
 
@@ -104,7 +104,7 @@ set +o noclobber              # 해제
 
 ---
 
-## 입력 리다이렉션
+## 4. 입력 리다이렉션
 
 ### 파일에서 입력 (`<`)
 
@@ -126,7 +126,7 @@ exec 3<&-                     # FD 3 닫기
 
 ---
 
-## Here Document / Here String
+## 5. Here Document / Here String
 
 ### Here Document (`<<`)
 
@@ -159,7 +159,7 @@ read a b c <<< "1 2 3"
 
 ---
 
-## 파이프 (Pipe)
+## 6. 파이프 (Pipe)
 
 앞 명령의 stdout을 뒤 명령의 stdin으로 연결합니다.
 
@@ -210,7 +210,7 @@ echo $count                    # 3
 
 ---
 
-## FD 조합과 순서
+## 7. FD 조합과 순서
 
 리다이렉션은 왼쪽에서 오른쪽으로 순서대로 처리됩니다.
 
@@ -256,7 +256,7 @@ command 2>&1 > file
 
 ---
 
-## 축약 문법 (bash 전용)
+## 8. 축약 문법 (bash 전용)
 
 ```bash
 command &> file          # > file 2>&1 과 동일
@@ -270,7 +270,7 @@ command |& next          # 2>&1 | next 와 동일
 
 ---
 
-## 고급: FD 3 이상 사용
+## 9. 고급: FD 3 이상 사용
 
 ```bash
 # FD 3을 파일에 연결
@@ -299,7 +299,7 @@ echo "이건 터미널로"
 
 ---
 
-## /dev/null, /dev/zero, /dev/urandom
+## 10. /dev/null, /dev/zero, /dev/urandom
 
 | 장치           | 용도                           |
 |----------------|--------------------------------|
@@ -326,7 +326,7 @@ tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 32
 
 ---
 
-## crontab 리다이렉션 패턴
+## 11. crontab 리다이렉션 패턴
 
 ### 기본 형식
 
@@ -375,7 +375,7 @@ MAILTO=""
 
 ---
 
-## 실전 패턴
+## 12. 실전 패턴
 
 ```bash
 # 로그 분리 (stdout → 일반 로그, stderr → 에러 로그)
