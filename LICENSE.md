@@ -8,7 +8,7 @@
 
 ## 문서 라이선스
 
-모든 마크다운 문서 (`.md` 파일)는 **Creative Commons Attribution 4.0 International License (CC BY 4.0)**를 따릅니다.
+모든 마크다운 문서 (`.md` 파일)는 **Creative Commons Attribution 4.0 International License (CC BY 4.0)** 를 따릅니다.
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
