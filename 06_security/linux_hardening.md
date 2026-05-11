@@ -5,7 +5,7 @@
 | 섹션 |
 |------|
 | [1. sysctl 보안 파라미터](#1-sysctl-보안-파라미터) / [2. 불필요 서비스 제거](#2-불필요-서비스-제거) / [3. 파일 권한 및 umask](#3-파일-권한-및-umask) |
-| [4. auditd 감사 로그](#4-auditd-감사-로그) / [5. PAM 및 계정 정책](#5-pam-및-계정-정책) / [6. SELinux / AppArmor](#6-selinux-apparmor) |
+| [4. auditd 감사 로그](#4-auditd-감사-로그) / [5. PAM 및 계정 정책](#5-pam-및-계정-정책) / [6. SELinux / AppArmor](#6-selinux--apparmor) |
 
 ---
 

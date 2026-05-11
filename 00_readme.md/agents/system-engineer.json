@@ -27,6 +27,7 @@
     "skill://readme-template",
     "skill://git-commit-rule",
     "skill://security-tools",
+    "skill://md-link-check",
     "file://~/.kiro/markdown/STYLE.md"
   ],
   "hooks": {

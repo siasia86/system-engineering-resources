@@ -8,6 +8,7 @@
 | [Mid-level SRE (2-5년)](#mid-level-sre-2-5년) / [Senior SRE (5-8년)](#senior-sre-5-8년) |
 | [필수 기술 스택](#필수-기술-스택) / [학습 자료](#학습-자료) / [실전 프로젝트](#실전-프로젝트) |
 | [커리어 팁](#커리어-팁) / [마무리](#마무리) |
+| [Staff/Principal SRE (8년+)](#staffprincipal-sre-8년) / [SRE vs DevOps vs SE](#sre-vs-devops-vs-se) |
 
 ---
 

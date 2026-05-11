@@ -7,8 +7,8 @@
 | [사전 확인: SELinux 상태](#사전-확인-selinux-상태) |
 | [CentOS 5 (EOL: 2017-03)](#centos-5-eol-2017-03) |
 | [CentOS 7 (EOL: 2024-06)](#centos-7-eol-2024-06) |
-| [Rocky Linux 9 / Rocky Linux 10](#rocky-linux-9-rocky-linux-10) |
-| [Ubuntu 14.04 / 16.04 / 18.04 / 20.04 / 22.04 / 24.04](#ubuntu-1404-1604-1804-2004-2204-2404) |
+| [Rocky Linux 9 / Rocky Linux 10](#rocky-linux-9--rocky-linux-10) |
+| [Ubuntu 14.04 / 16.04 / 18.04 / 20.04 / 22.04 / 24.04](#ubuntu-1404--1604--1804--2004--2204--2404) |
 | [요약 비교](#요약-비교) |
 | [주의사항](#주의사항) |
 

@@ -11,7 +11,7 @@
 | 섹션 |
 |------|
 | [1. 서비스 가용성 (Availability)](#1-서비스-가용성-availability) / [2. 응답 시간 (Latency)](#2-응답-시간-latency) / [3. 동시 접속자 수 (CCU)](#3-동시-접속자-수-ccu) |
-| [아래 부분 수정 후 systemd restart 또는 systemd daemon-reload](#아래-부분-수정-후-systemd-restart-또는-systemd-daemon-reload) / [4. 리소스 사용률 (Resource Utilization)](#4-리소스-사용률-resource-utilization) / [5. 보안 지표 (Security Metrics)](#5-보안-지표-security-metrics) |
+| [4. 리소스 사용률 (Resource Utilization)](#4-리소스-사용률-resource-utilization) / [5. 보안 지표 (Security Metrics)](#5-보안-지표-security-metrics) |
 | [종합 대시보드 구성](#종합-대시보드-구성) / [참고 도구](#참고-도구) |
 
 
