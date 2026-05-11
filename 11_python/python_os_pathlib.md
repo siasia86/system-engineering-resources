@@ -6,7 +6,7 @@
 
 | 섹션 |
 |------|
-| [pathlib (권장)](#pathlib-권장) / [os / os.path](#os-ospath) / [shutil](#shutil) |
+| [pathlib (권장)](#pathlib-권장) / [os / os.path](#os--ospath) / [shutil](#shutil) |
 | [glob 패턴](#glob-패턴) / [권한 관리](#권한-관리) / [실전 예제](#실전-예제) |
 | [요약](#요약) |
 
