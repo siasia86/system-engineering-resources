@@ -5,7 +5,7 @@
 | 섹션 |
 |------|
 | [1. Origin IP란?](#1-origin-ip란) / [2. CDN과 Proxy의 차이](#2-cdn과-proxy의-차이) / [3. Origin IP 노출 확인 방법](#3-origin-ip-노출-확인-방법) |
-| [4. CDN 캐시 디버깅](#4-cdn-캐시-디버깅) / [5. CDN 우회 문제 사례](#5-cdn-우회-문제-사례) / [6. Proxy Protocol / X-Forwarded-For](#6-proxy-protocol-x-forwarded-for) |
+| [4. CDN 캐시 디버깅](#4-cdn-캐시-디버깅) / [5. CDN 우회 문제 사례](#5-cdn-우회-문제-사례) / [6. Proxy Protocol / X-Forwarded-For](#6-proxy-protocol--x-forwarded-for) |
 | [7. 캐시 무효화 (Invalidation)](#7-캐시-무효화-invalidation) / [8. TTL 설정 가이드](#8-ttl-설정-가이드) / [9. CDN 장애 대응 (Failover)](#9-cdn-장애-대응-failover) |
 | [10. CORS와 CDN](#10-cors와-cdn) / [11. CDN 비용 최적화](#11-cdn-비용-최적화) / [12. SSL/TLS 인증서 구성](#12-ssltls-인증서-구성) |
 | [13. CDN 로그 분석](#13-cdn-로그-분석) / [14. Multi-CDN 전략](#14-multi-cdn-전략) |

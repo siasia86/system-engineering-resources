@@ -8,7 +8,7 @@
 | [4. Declarative Pipeline](#4-declarative-pipeline) / [5. Scripted Pipeline](#5-scripted-pipeline) / [6. 공유 라이브러리](#6-공유-라이브러리) |
 | [7. 에이전트/노드](#7-에이전트노드) / [8. 플러그인](#8-플러그인) / [9. 보안](#9-보안) |
 | [10. 모니터링](#10-모니터링) / [11. Tips](#11-tips) / [12. 멀티브랜치 Pipeline](#12-멀티브랜치-pipeline) |
-| [13. Docker 빌드 / ECR](#13-docker-빌드-ecr) / [14. 테스트 리포트 / 아티팩트](#14-테스트-리포트-아티팩트) |
+| [13. Docker 빌드 / ECR](#13-docker-빌드--ecr) / [14. 테스트 리포트 / 아티팩트](#14-테스트-리포트--아티팩트) |
 
 
 ---
