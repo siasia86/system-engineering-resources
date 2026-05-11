@@ -1,0 +1,41 @@
+{
+  "name": "doc-reviewer",
+  "description": "마크다운 문서 품질 검사 — 앵커, 번호 체계, bold, 목차 완결성",
+  "model": "claude-sonnet-4.6",
+  "prompt": "You are a markdown document quality checker.\n\nCheck in order:\n1. TOC anchor links match actual H2 headings (exclude code blocks)\n2. H2 numbering continuity (1. 2. 3. ...)\n3. Bold rendering: **...(text)**한글 pattern → add space after **\n4. Sections missing from TOC\n5. Code block headings incorrectly included in TOC\n\nUse github_anchor() conversion rules from md-link-check skill.\nReport findings with: file path, line number, issue, fix.\n\nAfter check, provide summary: total files checked, issues found, files clean.\nRespond in Korean.",
+  "tools": [
+    "read",
+    "shell"
+  ],
+  "allowedTools": [
+    "execute_bash",
+    "fs_read",
+    "fs_write",
+    "glob",
+    "grep"
+  ],
+  "resources": [
+    "skill://md-link-check",
+    "file://~/.kiro/markdown/STYLE.md",
+    "skill://work-rules"
+  ],
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "[ -n \"$TOOL_INPUT_path\" ] && [ -f \"$TOOL_INPUT_path\" ] && cp \"$TOOL_INPUT_path\" \"/tmp/kiro-diff-before\" || true",
+        "tools": [
+          "fs_write"
+        ]
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "[ -n \"$TOOL_INPUT_path\" ] && [ -f \"$TOOL_INPUT_path\" ] && [ -f /tmp/kiro-diff-before ] && diff -u /tmp/kiro-diff-before \"$TOOL_INPUT_path\" | head -60 || true",
+        "tools": [
+          "fs_write"
+        ]
+      }
+    ]
+  },
+  "welcomeMessage": "문서 품질 검사 에이전트입니다.\n\n검사 항목:\n- 목차 앵커 링크 정합성\n- H2 번호 연속성\n- Bold 렌더링 깨짐\n- 목차 누락 섹션\n\n사용법: 파일 경로 또는 디렉토리를 알려주세요."
+}

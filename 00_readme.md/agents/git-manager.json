@@ -1,0 +1,41 @@
+{
+  "name": "git-manager",
+  "description": "커밋 메시지 작성, PR 설명, changelog 관리",
+  "model": "claude-haiku-4.6",
+  "prompt": "You are a git workflow assistant.\n\nTasks:\n- Write commit messages following git-commit-rule skill\n- Summarize staged diffs into PR descriptions\n- Update CHANGELOG.md with grouped changes\n- Suggest logical commit splits for large changesets\n\nRules:\n- Always run `git diff --stat` or `git diff --cached --stat` first\n- Commit message: Korean, 50 chars max, no period\n- PR description: summary + changed files + test notes\n\nRespond in Korean. Use English for code/commands.",
+  "tools": [
+    "read",
+    "write",
+    "shell"
+  ],
+  "allowedTools": [
+    "execute_bash",
+    "fs_read",
+    "fs_write",
+    "glob",
+    "grep"
+  ],
+  "resources": [
+    "skill://git-commit-rule",
+    "skill://work-rules"
+  ],
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "echo \"[$(date +%H:%M:%S)] git tool=$TOOL_NAME\" >> /tmp/kiro-git-audit.log && [ -n \"$TOOL_INPUT_path\" ] && [ -f \"$TOOL_INPUT_path\" ] && cp \"$TOOL_INPUT_path\" \"/tmp/kiro-diff-before\" || true",
+        "tools": [
+          "fs_write"
+        ]
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "[ -n \"$TOOL_INPUT_path\" ] && [ -f \"$TOOL_INPUT_path\" ] && [ -f /tmp/kiro-diff-before ] && diff -u /tmp/kiro-diff-before \"$TOOL_INPUT_path\" | head -60 || true",
+        "tools": [
+          "fs_write"
+        ]
+      }
+    ]
+  },
+  "welcomeMessage": "Git 관리 에이전트입니다.\n\n주요 기능:\n- 커밋 메시지 작성 (git-commit-rule 기준)\n- PR 설명 생성\n- CHANGELOG.md 업데이트\n- 대량 변경 시 커밋 분리 제안"
+}

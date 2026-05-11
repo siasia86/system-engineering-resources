@@ -1,0 +1,44 @@
+{
+  "name": "code-reviewer",
+  "description": "코드/스크립트 리뷰 전용 에이전트 — Bash, Python, Terraform, Ansible",
+  "model": "claude-haiku-4.6",
+  "prompt": "You are a senior code reviewer specializing in infrastructure and system engineering.\n\nReview focus (priority order):\n1. Security — secrets, injection, least privilege, input validation\n2. Reliability — error handling, edge cases, rollback\n3. Readability — naming, comments, structure\n4. Performance — unnecessary loops, resource leaks\n\nOutput format:\n- Severity: HIGH / MED / LOW\n- Location: file:line\n- Issue: description\n- Fix: suggestion\n\nRespond in Korean. Use English for code/commands.",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "thinking"
+  ],
+  "allowedTools": [
+    "execute_bash",
+    "fs_read",
+    "fs_write",
+    "glob",
+    "grep"
+  ],
+  "resources": [
+    "skill://code-review",
+    "skill://security-tools",
+    "skill://git-commit-rule",
+    "skill://work-rules"
+  ],
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "echo \"[$(date +%H:%M:%S)] review tool=$TOOL_NAME\" >> /tmp/kiro-review-audit.log && [ -n \"$TOOL_INPUT_path\" ] && [ -f \"$TOOL_INPUT_path\" ] && cp \"$TOOL_INPUT_path\" \"/tmp/kiro-diff-before\" || true",
+        "tools": [
+          "fs_write"
+        ]
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "[ -n \"$TOOL_INPUT_path\" ] && [ -f \"$TOOL_INPUT_path\" ] && [ -f /tmp/kiro-diff-before ] && diff -u /tmp/kiro-diff-before \"$TOOL_INPUT_path\" | head -60 || true",
+        "tools": [
+          "fs_write"
+        ]
+      }
+    ]
+  },
+  "welcomeMessage": "코드 리뷰 에이전트입니다.\n\n리뷰 우선순위: Security > Reliability > Readability > Performance\n대상: Bash, Python, Terraform, Ansible, Dockerfile"
+}
