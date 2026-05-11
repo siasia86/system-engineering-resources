@@ -4,23 +4,23 @@
 
 | 섹션 |
 |------|
-| [valgrind란?](#valgrind란) |
-| [주요 기능](#주요-기능) |
-| [설치](#설치) |
-| [주요 도구](#주요-도구) |
-| [실전 예제](#실전-예제) |
-| [유용한 옵션](#유용한-옵션) |
-| [메모리 누수 종류](#메모리-누수-종류) |
-| [억제 파일 (Suppression)](#억제-파일-suppression) |
-| [성능 오버헤드](#성능-오버헤드) |
-| [트러블슈팅](#트러블슈팅) |
-| [실무 팁](#실무-팁) |
-| [관련 도구](#관련-도구) |
-| [요약](#요약) |
+| [valgrind란?](#1-valgrind란) |
+| [주요 기능](#2-주요-기능) |
+| [설치](#3-설치) |
+| [주요 도구](#4-주요-도구) |
+| [실전 예제](#5-실전-예제) |
+| [유용한 옵션](#6-유용한-옵션) |
+| [메모리 누수 종류](#7-메모리-누수-종류) |
+| [억제 파일 (Suppression)](#8-억제-파일-suppression) |
+| [성능 오버헤드](#9-성능-오버헤드) |
+| [트러블슈팅](#10-트러블슈팅) |
+| [실무 팁](#11-실무-팁) |
+| [관련 도구](#12-관련-도구) |
+| [요약](#13-요약) |
 
 ---
 
-## valgrind란?
+## 1. valgrind란?
 
 **Memory Debugging and Profiling Tool** - 메모리 누수, 버퍼 오버플로우, 초기화되지 않은 메모리 사용 등을 감지하는 도구입니다.
 
@@ -28,7 +28,7 @@
 
 ---
 
-## 주요 기능
+## 2. 주요 기능
 
 - 메모리 누수 감지
 - 잘못된 메모리 접근 감지
@@ -41,7 +41,7 @@
 
 ---
 
-## 설치
+## 3. 설치
 
 ```bash
 # Ubuntu/Debian
@@ -58,7 +58,7 @@ valgrind --version
 
 ---
 
-## 주요 도구
+## 4. 주요 도구
 
 ### 1. Memcheck (메모리 검사)
 
@@ -151,7 +151,7 @@ kcachegrind callgrind.out.12345
 
 ---
 
-## 실전 예제
+## 5. 실전 예제
 
 ### 예제 1: 메모리 누수 감지
 
@@ -279,7 +279,7 @@ valgrind ./double_free
 
 ---
 
-## 유용한 옵션
+## 6. 유용한 옵션
 
 ### Memcheck 옵션
 
@@ -313,7 +313,7 @@ valgrind --leak-check=full --track-origins=yes ./myapp
 
 ---
 
-## 메모리 누수 종류
+## 7. 메모리 누수 종류
 
 ### 1. Definitely Lost
 
@@ -347,7 +347,7 @@ valgrind --leak-check=full --track-origins=yes ./myapp
 
 ---
 
-## 억제 파일 (Suppression)
+## 8. 억제 파일 (Suppression)
 
 **생성:**
 ```bash
@@ -377,7 +377,7 @@ valgrind --suppressions=myapp.supp ./myapp
 
 ---
 
-## 성능 오버헤드
+## 9. 성능 오버헤드
 
 ```bash
 # 일반 실행
@@ -401,7 +401,7 @@ time valgrind --tool=cachegrind ./myapp
 
 ---
 
-## 트러블슈팅
+## 10. 트러블슈팅
 
 ### 문제 1: "Cannot execute binary file"
 
@@ -432,7 +432,7 @@ valgrind --suppressions=/usr/share/valgrind/default.supp ./myapp
 
 ---
 
-## 실무 팁
+## 11. 실무 팁
 
 ### 1. CI/CD 통합
 
@@ -476,7 +476,7 @@ grep "ERROR SUMMARY" valgrind.log
 
 ---
 
-## 관련 도구
+## 12. 관련 도구
 
 | 도구                 | 용도             |
 |----------------------|------------------|
@@ -490,7 +490,7 @@ grep "ERROR SUMMARY" valgrind.log
 
 ---
 
-## 요약
+## 13. 요약
 
 **valgrind의 강점:**
 - 메모리 문제 정확한 감지
