@@ -6,14 +6,14 @@
 
 | 섹션 |
 |------|
-| [pathlib (권장)](#pathlib-권장) / [os / os.path](#os--ospath) / [shutil](#shutil) |
-| [glob 패턴](#glob-패턴) / [권한 관리](#권한-관리) / [실전 예제](#실전-예제) |
-| [요약](#요약) |
+| [pathlib (권장)](#1-pathlib-권장) / [os / os.path](#2-os--ospath) / [shutil](#3-shutil) |
+| [glob 패턴](#4-glob-패턴) / [권한 관리](#5-권한-관리) / [실전 예제](#6-실전-예제) |
+| [요약](#7-요약) |
 
 
 ---
 
-## pathlib (권장)
+## 1. pathlib (권장)
 
 ### Path 객체 기본
 
@@ -107,7 +107,7 @@ for log in Path('/var/log').rglob('*.log'):
 
 ---
 
-## os / os.path
+## 2. os / os.path
 
 ### 경로 처리
 
@@ -154,7 +154,7 @@ os.getenv('PATH')                     # get과 동일
 
 ---
 
-## shutil
+## 3. shutil
 
 ### 복사
 
@@ -202,7 +202,7 @@ shutil.unpack_archive('backup.zip', '/tmp/extracted')
 
 ---
 
-## glob 패턴
+## 4. glob 패턴
 
 ```python
 import glob
@@ -216,7 +216,7 @@ glob.glob('/etc/nginx/conf.d/*.conf')
 
 ---
 
-## 권한 관리
+## 5. 권한 관리
 
 ```python
 import os
@@ -269,7 +269,7 @@ p.resolve()       # 실제 경로 반환
 
 ---
 
-## 실전 예제
+## 6. 실전 예제
 
 ### 로그 로테이션
 
@@ -318,7 +318,7 @@ def backup_config(config_path):
 
 ---
 
-## 요약
+## 7. 요약
 
 | 모듈      | 용도                      | 권장도            |
 |-----------|---------------------------|-------------------|
