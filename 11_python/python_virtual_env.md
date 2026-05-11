@@ -6,14 +6,14 @@ venv, pip, 프로젝트 환경 관리 가이드입니다.
 
 | 섹션 |
 |------|
-| [venv](#venv) / [pip](#pip) / [requirements.txt](#requirementstxt) |
-| [pyenv](#pyenv) / [프로젝트 구조](#프로젝트-구조) / [실전 팁](#실전-팁) |
-| [요약](#요약) |
+| [venv](#1-venv) / [pip](#2-pip) / [requirements.txt](#3-requirementstxt) |
+| [pyenv](#4-pyenv) / [프로젝트 구조](#5-프로젝트-구조) / [실전 팁](#6-실전-팁) |
+| [요약](#7-요약) |
 
 
 ---
 
-## venv
+## 1. venv
 
 ### 생성/활성화/비활성화
 
@@ -54,7 +54,7 @@ rm -rf .venv
 
 ---
 
-## pip
+## 2. pip
 
 ### 기본 명령
 
@@ -94,7 +94,7 @@ pip freeze > requirements.txt
 
 ---
 
-## requirements.txt
+## 3. requirements.txt
 
 ### 형식
 
@@ -141,7 +141,7 @@ mypy==1.8.0
 
 ---
 
-## pyenv
+## 4. pyenv
 
 ### 설치 및 사용
 
@@ -172,7 +172,7 @@ pyenv version
 
 ---
 
-## 프로젝트 구조
+## 5. 프로젝트 구조
 
 ### 기본 구조
 
@@ -218,7 +218,7 @@ build/
 
 ---
 
-## 실전 팁
+## 6. 실전 팁
 
 ### 새 프로젝트 시작
 
@@ -280,7 +280,7 @@ uv pip freeze > requirements.txt
 
 ---
 
-## 요약
+## 7. 요약
 
 | 도구               | 용도                     |
 |--------------------|--------------------------|
