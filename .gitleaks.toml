@@ -1,0 +1,19 @@
+title = "gitleaks config"
+
+[allowlist]
+description = "global allowlist"
+regexes = [
+    # placeholder values
+    '''Secureuser123''',
+    '''SecurePassword123''',
+    '''SecureKey123''',
+    '''SecureToken123''',
+    '''SecureDbName123''',
+    # RFC 5737 documentation IP ranges
+    '''192\.0\.2\.\d+''',
+    '''198\.51\.100\.\d+''',
+    '''203\.0\.113\.\d+''',
+]
+paths = [
+    '''12_tech_stack/kubernetes_basic\.md''',
+]
