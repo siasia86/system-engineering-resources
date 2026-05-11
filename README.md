@@ -282,6 +282,13 @@ Python 프로그래밍 가이드.
 | [Apache Airflow](12_tech_stack/airflow.md) | DAG, Operator, 스케줄링 |
 | [AWS Step Functions](12_tech_stack/aws_step_functions.md) | 상태 머신, 워크플로우 |
 | [Git 실무 가이드](12_tech_stack/git_guide.md) | diff, log, fetch, stash, rebase |
+| [ArgoCD](12_tech_stack/argocd.md) | GitOps CD, Application 동기화 |
+| [GitHub Actions](12_tech_stack/github_actions.md) | 워크플로우 자동화, Runner |
+| [Helm](12_tech_stack/helm.md) | Kubernetes 패키지 매니저, Chart |
+| [Apache Kafka](12_tech_stack/kafka.md) | 분산 메시지 스트리밍, Topic |
+| [Kubernetes 기본](12_tech_stack/kubernetes_basic.md) | Pod/Deployment/Service, kubectl |
+| [Prometheus & Grafana](12_tech_stack/prometheus_grafana.md) | 메트릭 수집, PromQL, 대시보드 |
+| [Terraform](12_tech_stack/terraform.md) | IaC, HCL, State 관리, Module |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -381,6 +388,9 @@ Python 프로그래밍 가이드.
 - 12_tech_stack/
   - [ansible_basic_guide.md](12_tech_stack/ansible_basic_guide.md) / [ansible_vault.md](12_tech_stack/ansible_vault.md) / [jenkins_pipeline.md](12_tech_stack/jenkins_pipeline.md)
   - [airflow.md](12_tech_stack/airflow.md) / [aws_step_functions.md](12_tech_stack/aws_step_functions.md) / [git_guide.md](12_tech_stack/git_guide.md)
+  - [argocd.md](12_tech_stack/argocd.md) / [github_actions.md](12_tech_stack/github_actions.md) / [helm.md](12_tech_stack/helm.md)
+  - [kafka.md](12_tech_stack/kafka.md) / [kubernetes_basic.md](12_tech_stack/kubernetes_basic.md) / [prometheus_grafana.md](12_tech_stack/prometheus_grafana.md)
+  - [terraform.md](12_tech_stack/terraform.md)
 - [license_guide.md](license_guide.md)
 - [CHANGELOG.md](CHANGELOG.md)
 
