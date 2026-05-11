@@ -35,8 +35,14 @@
   "hooks": {
     "preToolUse": [
       {
-        "command": "echo \"[$(date +%H:%M:%S)] tool=$TOOL_NAME\" >> /tmp/kiro-markdown-audit.log",
+        "command": "echo \"[$(date +%H:%M:%S)] tool=$TOOL_NAME\" >> /tmp/kiro-markdown-audit.log && [ -n \"$TOOL_INPUT_path\" ] && [ -f \"$TOOL_INPUT_path\" ] && cp \"$TOOL_INPUT_path\" \"/tmp/kiro-diff-before\" || true",
         "tools": ["execute_bash", "fs_write"]
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "[ -n \"$TOOL_INPUT_path\" ] && [ -f \"$TOOL_INPUT_path\" ] && [ -f /tmp/kiro-diff-before ] && diff -u /tmp/kiro-diff-before \"$TOOL_INPUT_path\" | head -60 || true",
+        "tools": ["fs_write"]
       }
     ]
   }

@@ -18,7 +18,7 @@
     "glob",
     "grep",
     "use_aws",
-	"use_subagent",
+    "use_subagent",
     "web_search",
     "web_fetch"
   ],
@@ -33,14 +33,27 @@
   "hooks": {
     "preToolUse": [
       {
-        "command": "echo \"[$(date +%H:%M:%S)] tool=$TOOL_NAME\" >> /tmp/kiro-infra-audit.log",
-        "tools": ["execute_bash", "use_aws", "fs_write","shell"]
+        "command": "echo \"[$(date +%H:%M:%S)] tool=$TOOL_NAME\" >> /tmp/kiro-infra-audit.log && [ -n \"$TOOL_INPUT_path\" ] && [ -f \"$TOOL_INPUT_path\" ] && cp \"$TOOL_INPUT_path\" \"/tmp/kiro-diff-before\" || true",
+        "tools": [
+          "execute_bash",
+          "use_aws",
+          "fs_write",
+          "shell"
+        ]
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "[ -n \"$TOOL_INPUT_path\" ] && [ -f \"$TOOL_INPUT_path\" ] && [ -f /tmp/kiro-diff-before ] && diff -u /tmp/kiro-diff-before \"$TOOL_INPUT_path\" | head -60 || true",
+        "tools": [
+          "fs_write"
+        ]
       }
     ]
   },
   "mcpServers": {},
   "toolAliases": {},
   "toolsSettings": {},
-  "model": null,
+  "model": "claude-sonnet-4.6",
   "welcomeMessage": "시스템 엔지니어 에이전트입니다.\n\n주요 기능:\n- 인프라 변경: Terraform/Ansible 우선, 롤백 계획 포함\n- AWS 운영: IAM/SSM 기반, 최소 권한 원칙\n- 문서 작성: ~/.kiro/markdown/STYLE.md 기준\n- 도구 감사 로그: /tmp/kiro-infra-audit.log\n\n프롬프트 단축키: /prompts 로 ansible/code-review/md-review 확인"
 }
