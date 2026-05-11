@@ -4,15 +4,15 @@
 
 | 섹션 |
 |------|
-| [전체 로드맵](#전체-로드맵) / [SRE 핵심 원칙](#sre-핵심-원칙) / [Junior SRE (0-2년)](#junior-sre-0-2년) |
-| [Mid-level SRE (2-5년)](#mid-level-sre-2-5년) / [Senior SRE (5-8년)](#senior-sre-5-8년) |
-| [필수 기술 스택](#필수-기술-스택) / [학습 자료](#학습-자료) / [실전 프로젝트](#실전-프로젝트) |
-| [커리어 팁](#커리어-팁) / [마무리](#마무리) |
-| [Staff/Principal SRE (8년+)](#staffprincipal-sre-8년) / [SRE vs DevOps vs SE](#sre-vs-devops-vs-se) |
+| [전체 로드맵](#1-전체-로드맵) / [SRE 핵심 원칙](#2-sre-핵심-원칙) / [Junior SRE (0-2년)](#3-junior-sre-0-2년) |
+| [Mid-level SRE (2-5년)](#4-mid-level-sre-2-5년) / [Senior SRE (5-8년)](#5-senior-sre-5-8년) |
+| [필수 기술 스택](#7-필수-기술-스택) / [학습 자료](#8-학습-자료) / [실전 프로젝트](#9-실전-프로젝트) |
+| [커리어 팁](#10-커리어-팁) / [마무리](#12-마무리) |
+| [Staff/Principal SRE (8년+)](#6-staffprincipal-sre-8년) / [SRE vs DevOps vs SE](#11-sre-vs-devops-vs-se) |
 
 ---
 
-## 전체 로드맵
+## 1. 전체 로드맵
 
 ```
 Junior SRE (0-2년)
@@ -36,7 +36,7 @@ Staff/Principal SRE (8년+)
 
 ---
 
-## SRE 핵심 원칙
+## 2. SRE 핵심 원칙
 
 ### Google SRE 원칙
 
@@ -62,7 +62,7 @@ Staff/Principal SRE (8년+)
 
 ---
 
-## Junior SRE (0-2년)
+## 3. Junior SRE (0-2년)
 
 ### 1단계: 기초 다지기 (0-6개월)
 
@@ -627,7 +627,7 @@ else:
 
 ---
 
-## Mid-level SRE (2-5년)
+## 4. Mid-level SRE (2-5년)
 
 ### 고급 자동화
 
@@ -877,7 +877,7 @@ class ChaosMonkey:
 
 ---
 
-## Senior SRE (5-8년)
+## 5. Senior SRE (5-8년)
 
 ### 시스템 설계
 
@@ -1241,7 +1241,7 @@ gitleaks detect --source .
 
 ---
 
-## Staff/Principal SRE (8년+)
+## 6. Staff/Principal SRE (8년+)
 
 ### 기술 전략
 
@@ -1416,7 +1416,7 @@ func main() {
 
 ---
 
-## 필수 기술 스택
+## 7. 필수 기술 스택
 
 ### 프로그래밍 언어
 
@@ -1603,7 +1603,7 @@ GitOps:
 
 ---
 
-## 학습 자료
+## 8. 학습 자료
 
 ### 책
 
@@ -1674,7 +1674,7 @@ GitOps:
 
 ---
 
-## 실전 프로젝트
+## 9. 실전 프로젝트
 
 ### Junior 레벨
 
@@ -1811,7 +1811,7 @@ GitOps:
 
 ---
 
-## 커리어 팁
+## 10. 커리어 팁
 
 ### 이력서 작성
 
@@ -1986,7 +1986,7 @@ Staff/Principal (8년+):
 
 ---
 
-## SRE vs DevOps vs SE
+## 11. SRE vs DevOps vs SE
 
 ### 역할 비교
 
@@ -2038,7 +2038,7 @@ Staff/Principal (8년+):
 
 ---
 
-## 마무리
+## 12. 마무리
 
 ### SRE 성공을 위한 핵심
 
