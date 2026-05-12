@@ -97,13 +97,13 @@ cd /opt/vpnclient
 ```
 
 ```
-# 진입 후 선택지 3개
-1. VPN Server 관리   ← 서버 명령어 (HubCreate, UserCreate 등)
-2. VPN Bridge 관리
-3. VPN Client 관리   ← 클라이언트 명령어 (AccountCreate, NicCreate 등)
+1. Management of VPN Server or VPN Bridge
+2. Management of VPN Client    ← 클라이언트 명령어 (AccountCreate, NicCreate 등)
+3. Use of VPN Tools (certificate creation and Network Traffic Speed Test Tool)
 
-선택: 3
-(서버 주소 Enter 생략 — 로컬 클라이언트 관리)
+Select 1, 2 or 3: 2
+
+Hostname of IP Address of Destination: (Enter 생략 — 로컬 클라이언트 관리)
 ```
 
 > `AccountCreate` 는 클라이언트에서 실행합니다.
@@ -217,7 +217,10 @@ systemctl status vpnclient
 
 ```bash
 cd /opt/vpnclient && ./vpncmd
+# 진입 후 2 선택 → Hostname Enter 생략
 ```
+
+### 명령어 목록
 
 | 명령어                          | 설명                        |
 |---------------------------------|-----------------------------|
@@ -226,10 +229,70 @@ cd /opt/vpnclient && ./vpncmd
 | `NicDelete <name>`              | 가상 NIC 삭제               |
 | `AccountCreate <name> ...`      | VPN 계정 생성               |
 | `AccountList`                   | 계정 목록                   |
+| `AccountGet <name>`             | 계정 상세 확인              |
+| `AccountPasswordSet <name> ...` | 패스워드 설정               |
 | `AccountConnect <name>`         | VPN 연결                    |
 | `AccountDisconnect <name>`      | VPN 연결 해제               |
 | `AccountStatusGet <name>`       | 연결 상태 확인              |
 | `AccountDelete <name>`          | 계정 삭제                   |
+
+### 계정 생성 ~ 삭제 전체 흐름
+
+#### 생성
+
+```
+# 가상 NIC 생성 (최초 1회)
+VPN Client> NicCreate vpn0
+
+# 계정 생성 (대화형)
+VPN Client> AccountCreate my_vpn
+Destination VPN Server Host Name and Port Number: mv-live-update.masangsoft.com:80
+Destination Virtual HUB Name: VPN
+Connecting User Name: siasia
+Used Virtual Network Adapter Name: vpn0
+
+# 또는 한 줄로
+VPN Client> AccountCreate my_vpn /SERVER:my-live.com:80 /HUB:VPN /USERNAME:siasia /NICNAME:vpn0
+
+# 패스워드 설정 (standard: 일반 / radius: RADIUS+OTP)
+VPN Client> AccountPasswordSet my_vpn /PASSWORD:SecurePassword123456789 /TYPE:radius
+```
+
+#### 확인
+
+```
+VPN Client> AccountList
+VPN Client> AccountGet my_vpn
+```
+
+#### 연결 / 해제
+
+```
+VPN Client> AccountConnect my_vpn
+VPN Client> AccountStatusGet my_vpn
+VPN Client> AccountDisconnect my_vpn
+```
+
+#### 수정 (서버 주소 변경 등)
+
+```
+# 삭제 후 재생성
+VPN Client> AccountDisconnect my_vpn
+VPN Client> AccountDelete my_vpn
+VPN Client> AccountCreate my_vpn /SERVER:new-server.example.com:443 /HUB:VPN /USERNAME:sjyun /NICNAME:vpn0
+VPN Client> AccountPasswordSet my_vpn /PASSWORD:SecurePassword123456789 /TYPE:radius
+```
+
+#### 삭제
+
+```
+# 연결 중이면 먼저 해제
+VPN Client> AccountDisconnect my_vpn
+VPN Client> AccountDelete my_vpn
+
+# NIC 도 삭제할 경우
+VPN Client> NicDelete vpn0
+```
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -278,7 +341,7 @@ VPN Client> AccountPasswordSet myconn /PASSWORD:SecurePassword123 /TYPE:standard
 패스워드를 `고정패스워드 + OTP 6자리` 를 붙여서 입력합니다.
 
 ```
-VPN Client> AccountPasswordSet myconn /PASSWORD:SecurePassword123456789 /TYPE:radius
+VPN Client> AccountPasswordSet my_vpn /PASSWORD:SecurePassword123456789 /TYPE:radius
 ```
 
 > 예: 고정 패스워드 `SecurePassword123`, OTP `456789` → `SecurePassword123456789`
@@ -288,6 +351,27 @@ VPN Client> AccountPasswordSet myconn /PASSWORD:SecurePassword123456789 /TYPE:ra
 | 인증 타입     | `/TYPE:radius`                              |
 | 패스워드 형식 | `고정패스워드` + `OTP 6자리` 연속 입력      |
 | OTP 유효시간  | 30초 — 만료 전 입력 필요                    |
+
+#### 전체 연결 흐름 (Google OTP 서버 기준)
+
+```bash
+# 1. 계정 등록 확인
+VPN Client> AccountList
+
+# 2. RADIUS 패스워드 설정 (고정패스워드 + OTP 6자리)
+VPN Client> AccountPasswordSet my_vpn /PASSWORD:SecurePassword123456789 /TYPE:radius
+
+# 3. 연결
+VPN Client> AccountConnect my_vpn
+
+# 4. 연결 상태 확인
+VPN Client> AccountStatusGet my_vpn
+
+# 5. vpncmd 종료 후 IP 할당
+exit
+dhclient vpn_vpn0
+ip addr show vpn_vpn0
+```
 
 ⚠️ 정확한 패스워드 형식은 서버 관리자에게 확인합니다. 서버 설정에 따라 OTP 단독 입력 방식일 수 있습니다.
 
