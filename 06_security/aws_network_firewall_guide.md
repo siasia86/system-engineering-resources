@@ -43,7 +43,7 @@ Internet Gateway
        v
   ┌─────────────────────────────────────────┐
   │              Public Subnet              │
-  │  (Route: 0.0.0.0/0 → Firewall Endpoint)│
+  │  (Route: 0.0.0.0/0 → Firewall Endpoint) │
   └─────────────────────────────────────────┘
        |
        v
@@ -56,7 +56,7 @@ Internet Gateway
        v
   ┌─────────────────────────────────────────┐
   │           Private Subnet                │
-  │  (Route: 0.0.0.0/0 → Firewall Endpoint)│
+  │  (Route: 0.0.0.0/0 → Firewall Endpoint) │
   │           EC2 Instances                 │
   └─────────────────────────────────────────┘
 ```
@@ -309,8 +309,8 @@ Stateless Rules (Priority 낮을수록 먼저)
 
 ### 로그 유형
 
-| 로그 유형  | 내용                              | 대상                        |
-|------------|-----------------------------------|-----------------------------|
+| 로그 유형  | 내용                              | 대상                            |
+|------------|-----------------------------------|---------------------------------|
 | ALERT      | Stateful ALERT 규칙 매칭 트래픽   | CloudWatch Logs / S3 / Firehose |
 | FLOW       | 모든 허용 트래픽 흐름             | CloudWatch Logs / S3 / Firehose |
 | TLS        | TLS 검사 결과                     | CloudWatch Logs / S3 / Firehose |
