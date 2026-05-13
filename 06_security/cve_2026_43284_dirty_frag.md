@@ -84,10 +84,15 @@ MSG_SPLICE_PAGES → UDP skb (SKBFL_SHARED_FRAG 미설정)
 |------|------|------|
 | 커널 버전 | ❌ 취약 | 6.8.0-101 — 6.12.x 브랜치 취약 범위 |
 | CVE-2026-43284 패치 | ❌ 미적용 | Ubuntu 백포트 미배포 (2026-05-13 기준) |
-| `esp4` 모듈 | ❌ 취약 | 미로드, auto-load 가능, blacklist 없음 |
-| `esp6` 모듈 | ❌ 취약 | 미로드, auto-load 가능, blacklist 없음 |
-| XFRM netlink 소켓 | ❌ 취약 | 비권한 사용자 접근 가능 |
-| AppArmor | ✅ 활성 | 완전 차단은 아님 |
+| `esp4` 모듈 | ⚠️ 미로드 | 모듈 파일 존재, auto-load 가능, blacklist 없음 |
+| `esp6` 모듈 | ⚠️ 미로드 | 모듈 파일 존재, auto-load 가능, blacklist 없음 |
+| XFRM netlink 소켓 | ❌ **취약** | 비권한 사용자 접근 성공 — ESP 익스플로잇 경로 활성 |
+| IPsec SA/정책 | ✅ 없음 | `ip xfrm state/policy` 빈 결과 |
+| AppArmor | ✅ 활성 | XFRM 소켓 차단 안 됨 — 정책 미적용 |
+| blacklist | ❌ 없음 | `/etc/modprobe.d/` dirtyfrag 설정 없음 |
+| 비권한 user namespace | ❌ 활성 | `kernel.unprivileged_userns_clone=1` |
+
+**결론: XFRM netlink 소켓이 비권한 접근 가능 — CVE-2026-43284 익스플로잇 경로 활성 상태**
 
 ### 탐지 명령어
 
