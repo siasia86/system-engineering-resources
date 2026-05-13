@@ -56,7 +56,7 @@ sudo apt update && sudo apt dist-upgrade -y && sudo reboot
 | 영향 | 비권한 로컬 사용자 → root 권한 상승 |
 | PoC | 공개됨 (copy.fail) |
 
-상세 내용은 [섹션 3. CVE 상세](#3-cve-상세) 참고.
+상세 내용은 [섹션 3. CVE 상세](#3-cve-상세) 참고. 임시 완화 조치는 [섹션 5. 대처 방안 — 임시 완화](#5-대처-방안) 참고.
 
 [⬆ 목차로 돌아가기](#목차)
 
