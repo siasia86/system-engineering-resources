@@ -246,9 +246,46 @@ uname -r
 > 출처: [github.com/0xBlackash/CVE-2026-43284](https://github.com/0xBlackash/CVE-2026-43284) — Mitigation & Remediation 섹션
 > 출처: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — Recommended immediate actions 섹션
 
+**Step 1. 모듈 사용 여부 사전 확인**
+
+```bash
+# esp4/esp6: 활성 IPsec SA/정책 확인
+ip xfrm state list
+ip xfrm policy list
+
+# rxrpc: AFS 마운트 확인
+mount | grep afs
+
+# algif_aead: AF_ALG 소켓 사용 프로세스 확인
+ss -A alg 2>/dev/null | head -10
+
+# 현재 로드 상태 확인
+lsmod | grep -E "^esp4|^esp6|^rxrpc|^algif_aead"
+```
+
+| 모듈 | 사용 중인 경우 | 언로드 시 영향 |
+|------|--------------|----------------|
+| `esp4` / `esp6` | IPsec VPN 터널 활성 | 기존 VPN 세션 즉시 끊김, 패킷 드롭 |
+| `esp4` / `esp6` | strongSwan / Libreswan 실행 중 | 데몬이 모듈 재로드 시도 — blacklist 있으면 실패 |
+| `rxrpc` | AFS 마운트 포인트 사용 중 | AFS 파일시스템 접근 불가, I/O 에러 |
+| `algif_aead` | OpenSSL / GnuTLS AF_ALG 엔진 사용 중 | 암호화 연산 실패, 애플리케이션 오류 |
+
+**Step 2. modprobe.d 백업 확인**
+
+```bash
+# 기존 dirtyfrag.conf 확인
+cat /etc/modprobe.d/dirtyfrag.conf 2>/dev/null || echo "파일 없음 — 안전하게 생성 가능"
+
+# 기존 파일이 있으면 백업
+sudo cp /etc/modprobe.d/dirtyfrag.conf /etc/modprobe.d/dirtyfrag.conf.bak 2>/dev/null
+```
+
+**Step 3. blacklist 생성 + 언로드 (원문)**
+
+⚠️ `>` 는 파일을 덮어씁니다. Step 2에서 백업 확인 후 실행합니다.
+
 ```bash
 # ---- 원문 (DirtyFrag-Detector / CVE-2026-43284 PoC 권장) ---- #
-# Dirty Frag 취약 모듈 일괄 차단 (CVE-2026-43284 + CVE-2026-43500)
 sudo sh -c 'printf "install esp4 /bin/false\ninstall esp6 /bin/false\ninstall rxrpc /bin/false\n" \
   > /etc/modprobe.d/dirtyfrag.conf'
 
@@ -260,74 +297,35 @@ echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
 # ---- 원문 끝 ---- #
 ```
 
-⚠️ 원문의 `>` 는 파일을 **덮어씁니다**. `/etc/modprobe.d/dirtyfrag.conf` 가 이미 존재하면 기존 내용이 유실됩니다. 적용 전 확인합니다:
+모듈이 사용 중이면 `rmmod` 가 `Module is in use` 오류로 실패합니다. 이 경우:
 
 ```bash
-# 적용 전 기존 파일 확인
-cat /etc/modprobe.d/dirtyfrag.conf 2>/dev/null || echo "파일 없음 — 안전하게 생성 가능"
-
-# 기존 파일이 있으면 백업 후 적용
-sudo cp /etc/modprobe.d/dirtyfrag.conf /etc/modprobe.d/dirtyfrag.conf.bak 2>/dev/null
-```
-
-⚠️ `esp4` / `esp6` 언로드 시 IPsec VPN 중단됩니다. `rxrpc` 언로드 시 AFS(Andrew File System) 사용 불가합니다.
-
-**모듈이 이미 로드되어 사용 중일 때 발생하는 문제:**
-
-| 모듈 | 사용 중인 경우 | 언로드 시 영향 |
-|------|--------------|----------------|
-| `esp4` / `esp6` | IPsec VPN 터널 활성 상태 | 기존 VPN 세션 즉시 끊김, 패킷 드롭 |
-| `esp4` / `esp6` | strongSwan / Libreswan 데몬 실행 중 | 데몬이 모듈 재로드 시도 — blacklist 있으면 실패 |
-| `rxrpc` | AFS 마운트 포인트 사용 중 | 마운트된 AFS 파일시스템 접근 불가, I/O 에러 |
-| `algif_aead` | OpenSSL / GnuTLS AF_ALG 엔진 사용 중 | 암호화 연산 실패, 애플리케이션 오류 |
-
-```bash
-# 언로드 전 사용 여부 확인
-# esp4/esp6: 활성 IPsec SA 확인
-ip xfrm state list
-ip xfrm policy list
-
-# rxrpc: AFS 마운트 확인
-mount | grep afs
-cat /proc/mounts | grep afs
-
-# algif_aead: AF_ALG 소켓 사용 프로세스 확인
-ss -A alg 2>/dev/null | head -10
-```
-
-모듈이 사용 중이면 `rmmod` 는 `Module is in use` 오류로 실패합니다. 이 경우:
-1. 해당 서비스를 먼저 중지 후 언로드
-2. 또는 재부팅 후 blacklist가 적용된 상태로 부팅
-
-```bash
-# 예: strongSwan 중지 후 esp 모듈 언로드
+# 서비스 중지 후 재시도
 sudo systemctl stop strongswan-starter 2>/dev/null || sudo systemctl stop ipsec 2>/dev/null
 sudo modprobe -r esp4 esp6
-```
 
-모듈이 실제로 로드된 경우 언로드 성공 여부를 확인합니다:
-
-```bash
-# 언로드 후 상태 확인
-lsmod | grep -E "^esp4|^esp6|^rxrpc"
-# 출력 없으면 정상 언로드
-
-# rmmod 실패 시 (다른 모듈이 의존 중인 경우) — 의존 모듈 포함 언로드
-sudo modprobe -r esp4 esp6 rxrpc 2>/dev/null
-
-# 그래도 실패 시 — 사용 중인 프로세스 확인
+# 그래도 실패 시 — 의존 모듈 확인
 for mod in esp4 esp6 rxrpc; do
     if lsmod | grep -q "^${mod} "; then
         echo "[WARN] ${mod} 언로드 실패 — 사용 중:"
         cat /proc/modules | grep "^${mod} " | awk '{print "  used by:", $4}'
     fi
 done
+# → 재부팅 후 blacklist 적용 상태로 부팅
 ```
 
+**Step 4. 언로드 결과 확인**
+
 ```bash
-# algif_aead 모듈 언로드 (CVE-2026-31431)
-# ⚠️ AF_ALG 소켓을 사용하는 애플리케이션 영향 가능
-sudo rmmod algif_aead
+lsmod | grep -E "^esp4|^esp6|^rxrpc"
+# 출력 없으면 정상 언로드
+```
+
+**Step 5. algif_aead 별도 처리 (CVE-2026-31431)**
+
+```bash
+# ⚠️ AF_ALG 소켓을 사용하는 애플리케이션 영향 가능 — Step 1에서 확인 후 실행
+sudo rmmod algif_aead 2>/dev/null || true
 echo "install algif_aead /bin/false" | sudo tee /etc/modprobe.d/disable-algif-aead.conf
 ```
 
