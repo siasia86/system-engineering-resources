@@ -78,8 +78,14 @@ splice() → rxrpc socket → shared frag pages
 |------|------|------|
 | 커널 버전 | ❌ 취약 | 6.8.0-101 — ~6.18 취약 범위 |
 | CVE-2026-43500 패치 | ❌ 미적용 | upstream 패치 2026-05-10, 배포판 백포트 진행 중 |
-| `rxrpc` 모듈 | ❌ 취약 | 미로드, auto-load 가능, blacklist 없음 |
-| AF_RXRPC 소켓 | ✅ 안전 | rxrpc 미로드로 접근 불가 |
+| `rxrpc` 모듈 | ❌ **로드됨** | `lsmod` 확인: `rxrpc 438272 0` — used_by 없음 |
+| AF_RXRPC 소켓 | ✅ BLOCKED | rxrpc 로드됐으나 소켓 접근 차단됨 |
+| AFS 마운트 | ✅ 없음 | AFS 파일시스템 미사용 |
+| blacklist | ❌ 없음 | `/etc/modprobe.d/` dirtyfrag 설정 없음 |
+
+⚠️ `rxrpc` 모듈이 **이미 로드된 상태**입니다. `rmmod rxrpc` 실행 전 사용 여부를 반드시 확인합니다. 현재 `used_by: -` 이므로 언로드 가능합니다.
+
+**결론: rxrpc 로드됨 — 즉시 blacklist 등록 및 언로드 필요**
 
 ### 탐지 명령어
 
