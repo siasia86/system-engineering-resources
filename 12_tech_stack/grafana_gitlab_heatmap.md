@@ -5,7 +5,7 @@
 | 섹션 |
 |------|
 | [1. 개요](#1-개요) / [2. 사전 준비](#2-사전-준비) / [3. Infinity Datasource 설정](#3-infinity-datasource-설정) |
-| [4. 패널 쿼리 설정](#4-패널-쿼리-설정) / [5. Heatmap 패널 구성](#5-heatmap-패널-구성) / [6. 그룹별 분리](#6-그룹별-분리) |
+| [4. 패널 쿼리 설정](#4-패널-쿼리-설정) / [5. 유저별 Bar chart 패널](#5-유저별-bar-chart-패널) / [6. 그룹별 분리](#6-그룹별-분리) |
 | [7. Tips](#7-tips) |
 
 ---
@@ -179,15 +179,66 @@ date        | count
 
 ---
 
-## 5. Heatmap 패널 구성
+## 5. 유저별 Bar chart 패널
 
-패널 타입 → **Heatmap** 선택
+Grafana 12 Heatmap은 table frame 입력 시 호환 문제가 있습니다. **Bar chart** 로 날짜별 커밋 수를 표현하는 것이 안정적입니다.
 
-| 항목      | 값                    |
-|-----------|-----------------------|
-| X축       | `date` (created_at)   |
-| Y축       | `count` (커밋 수)     |
-| Color     | 커밋 밀도 (자동)      |
+### Transform 설정 순서
+
+```
+1. filterByValue   → 특정 author_name만 필터링
+2. convertFieldType → created_at → time
+3. formatTime      → YYYY-MM-DD (하루 단위로 포맷)
+4. groupBy         → created_at: groupby / commit_id: count
+5. sortBy          → created_at 오름차순
+```
+
+⚠️ Infinity 플러그인 내장 Filter는 `(intermediate value).map is not a function` 에러를 유발합니다. 반드시 **Grafana Transform 탭의 `filterByValue`** 를 사용합니다.
+
+### filterByValue 설정
+
+```
+Transform → Add transformation → Filter by value
+  Field name: author_name
+  Filter:     Equals → <author_name>
+  Match:      All
+  Type:       Include
+```
+
+### formatTime 설정 (하루 단위)
+
+```
+Transform → Add transformation → Format time
+  Time field:     created_at
+  Output format:  YYYY-MM-DD
+  Timezone:       Asia/Seoul
+```
+
+### 유저별 패널 구성 예시
+
+프로젝트별로 `author_name`이 다를 수 있습니다 (한글/영문 혼재). API로 실제 값 확인 후 설정합니다.
+
+```bash
+# 프로젝트별 author_name 확인
+curl -s --header "PRIVATE-TOKEN: <admin-token>" \
+  "https://gitlab.example.com/api/v4/projects/<project_id>/repository/commits?per_page=20" \
+  | python3 -c 'import sys,json; [print(c["author_name"]) for c in json.load(sys.stdin)]'
+```
+
+| username | author_name (git config) | 비고 |
+|----------|--------------------------|------|
+| user1    | user1                    | 영문 |
+| user2    | 홍길동                   | 한글 git config |
+
+### Bar chart 패널 옵션
+
+```
+Panel type: Bar chart
+X Field:    created_at
+Bar width:  0.9
+Fill:       80%
+Color:      Fixed → Green
+```
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -234,6 +285,12 @@ Dashboard → Add → Row
 ⚠️ GitLab API는 페이지당 최대 100개 제한입니다. 커밋이 많으면 Infinity 단독으로는 한계가 있으며, 이 경우 Prometheus exporter 방식으로 전환합니다.
 
 ⚠️ Datasource 레벨에 Auth 설정했더라도 패널 URL을 절대경로로 입력하면 Header가 누락될 수 있습니다. 패널 Headers 탭에 `PRIVATE-TOKEN`을 직접 추가합니다.
+
+⚠️ Infinity Datasource `Allowed hosts`에 GitLab 도메인을 반드시 등록합니다 (`https://` 포함). 미등록 시 `requested URL not allowed` 에러가 발생합니다.
+
+⚠️ `author_name`은 git config 기준이므로 GitLab username과 다를 수 있습니다. API로 실제 값을 확인 후 `filterByValue`에 입력합니다.
+
+⚠️ 커밋이 없는 날짜는 API 응답에 포함되지 않아 Bar chart에 표시되지 않습니다. 빈 날짜까지 표시하려면 중간 저장소(InfluxDB/Prometheus) 수집 파이프라인이 필요합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
