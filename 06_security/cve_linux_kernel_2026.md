@@ -4,8 +4,8 @@
 
 | 섹션 |
 |------|
-| [1. 개요](#1-개요) / [2. CVE 상세](#2-cve-상세) / [3. 영향 범위 확인](#3-영향-범위-확인) |
-| [4. 대처 방안](#4-대처-방안) / [5. 사후 검증](#5-사후-검증) |
+| [1. 개요](#1-개요) / [2. 긴급 — CVE-2026-31431 CISA KEV](#2-긴급--cve-2026-31431-cisa-kev) / [3. CVE 상세](#3-cve-상세) |
+| [4. 영향 범위 확인](#4-영향-범위-확인) / [5. 대처 방안](#5-대처-방안) / [6. 사후 검증](#6-사후-검증) |
 
 ---
 
@@ -20,13 +20,49 @@
 
 | CVE | CVSS | 심각도 | CISA KEV | 조치 기한 | 직접 기재 |
 |-----|------|--------|----------|-----------|-----------|
-| ★ CVE-2026-31431 | 7.8 | HIGH | ✅ 등재 | **2026-05-15** | ✅ |
+| ★ CVE-2026-31431 | 7.8 | HIGH | ✅ **등재** | **2026-05-15** | ✅ |
 | ★ CVE-2026-43284 | 8.8 | HIGH | ❌ | — | ✅ |
 | ★ CVE-2026-43500 | 7.8 | HIGH | ❌ | — | ✅ |
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
-## 2. CVE 상세
+## 2. 긴급 — CVE-2026-31431 CISA KEV
+
+> ⚠️ **조치 기한: 2026-05-15** — CISA KEV 등재. 실제 익스플로잇 확인됨. 즉시 패치 또는 완화 조치 필요.
+
+CVE-2026-31431은 Dirty Frag 계열이지만 **별도 CVE**로 CISA KEV에 등재된 독립적인 취약점입니다.
+CVE-2026-43284 / CVE-2026-43500 (xfrm/rxrpc)과 달리 `crypto/algif_aead` 컴포넌트를 통해 익스플로잇됩니다.
+
+```bash
+# 즉시 완화 — algif_aead 모듈 차단
+sudo rmmod algif_aead 2>/dev/null || true
+echo "install algif_aead /bin/false" | sudo tee /etc/modprobe.d/disable-algif-aead.conf
+
+# 즉시 패치 (커널 업데이트)
+# RHEL / CentOS / Amazon Linux
+sudo yum update kernel -y && sudo reboot
+
+# Ubuntu / Debian
+sudo apt update && sudo apt dist-upgrade -y && sudo reboot
+```
+
+| 항목 | 내용 |
+|------|------|
+| CISA KEV 등재 | 2026-05-01 |
+| 조치 기한 | **2026-05-15** |
+| 컴포넌트 | `crypto/algif_aead` |
+| 영향 | 비권한 로컬 사용자 → root 권한 상승 |
+| PoC | 공개됨 (copy.fail) |
+
+상세 내용은 [섹션 3. CVE 상세](#3-cve-상세) 참고.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 3. CVE 상세
 
 ### ★ CVE-2026-31431 — Linux Kernel `crypto/algif_aead` ⚠️ CISA KEV
 
@@ -52,10 +88,12 @@ splice() → UDP socket → shared frag pages
 | 브랜치 | 취약 범위       | 패치 버전      | RHEL/CentOS       | Ubuntu            | Amazon Linux      |
 |--------|-----------------|----------------|-------------------|-------------------|-------------------|
 | 5.10.x | 4.14 ~ 5.10.253 | **5.10.254+**  | RHEL 8 (백포트 확인) | 20.04 LTS (HWE) | AL2 (5.10 kernel) |
-| 5.15.x | ~ 5.15.203      | **5.15.204+**  | RHEL 9.0~9.2      | 22.04 LTS         | AL2023            |
-| 6.1.x  | ~ 6.1.169       | **6.1.170+**   | RHEL 9.3~9.4      | 22.04 LTS (HWE)   | AL2023 (6.1)      |
-| 6.6.x  | ~ 6.6.136       | **6.6.137+**   | RHEL 9.5+         | 24.04 LTS         | AL2023 (6.6)      |
-| 6.12.x | ~ 6.12.84       | **6.12.85+**   | RHEL 10           | 24.10 / 25.04     | —                 |
+| 5.15.x | 5.11 ~ 5.15.203 | **5.15.204+**  | RHEL 9.0~9.2      | 22.04 LTS         | AL2023            |
+| 6.1.x  | 5.16 ~ 6.1.169  | **6.1.170+**   | RHEL 9.3~9.4      | 22.04 LTS (HWE)   | AL2023 (6.1)      |
+| 6.6.x  | 6.2 ~ 6.6.136   | **6.6.137+**   | RHEL 9.5+         | 24.04 LTS         | AL2023 (6.6)      |
+| 6.12.x | 6.7 ~ 6.12.84   | **6.12.85+**   | RHEL 10           | **24.04 LTS** ⚠️  | —                 |
+| 6.18.x | 6.13 ~ 6.18.21  | **6.18.22+**   | —                 | 25.04             | —                 |
+| 6.19.x | 6.19 ~ 6.19.11  | **6.19.12+**   | —                 | 25.10 (예정)      | —                 |
 
 ⚠️ 실제 익스플로잇 공개됨. CISA KEV 등재 (조치 기한: **2026-05-15**).
 
@@ -98,9 +136,9 @@ MSG_SPLICE_PAGES → UDP skb (SKBFL_SHARED_FRAG 미설정)
 | 5.15.x | 5.12 ~ 5.15.204 | **5.15.205+**  | RHEL 9.0~9.2      | 22.04 LTS         | AL2023            |
 | 6.1.x  | 5.16 ~ 6.1.170  | **6.1.171+**   | RHEL 9.3~9.4      | 22.04 LTS (HWE)   | AL2023 (6.1)      |
 | 6.6.x  | 6.2 ~ 6.6.137   | **6.6.138+**   | RHEL 9.5+         | 24.04 LTS         | AL2023 (6.6)      |
-| 6.12.x | 6.7 ~ 6.12.86   | **6.12.87+**   | RHEL 10           | 24.10 / 25.04     | —                 |
-| 6.18.x | 6.13 ~ 6.18.27  | **6.18.28+**   | —                 | 25.10 (예정)      | —                 |
-| 7.0.x  | 7.0 ~ 7.0.4     | **7.0.5+**     | —                 | —                 | —                 |
+| 6.12.x | 6.7 ~ 6.12.86   | **6.12.87+**   | RHEL 10           | **24.04 LTS** ⚠️  | —                 |
+| 6.18.x | 6.13 ~ 6.18.27  | **6.18.28+**   | —                 | 25.04             | —                 |
+| 7.0.x  | 7.0 ~ 7.0.4     | **7.0.5+**     | —                 | 25.10 (예정)      | —                 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -133,10 +171,34 @@ MSG_SPLICE_PAGES → UDP skb (SKBFL_SHARED_FRAG 미설정)
 
 ---
 
-## 3. 영향 범위 확인
+## 4. 영향 범위 확인
+
+### Ubuntu 24.04 실제 테스트 결과 (2026-05-13)
+
+테스트 환경: Ubuntu 24.04.4 LTS / kernel `6.8.0-101-generic`
+
+| 항목 | 결과 | 비고 |
+|------|------|------|
+| 커널 버전 | ❌ 취약 | 6.8.0-101 — CVE-2026-43284/43500 취약 범위 |
+| CVE-2026-43284 패치 | ❌ 미적용 | Ubuntu 백포트 미배포 (2026-05-13 기준) |
+| CVE-2026-43500 패치 | ❌ 미적용 | upstream 패치 2026-05-10, 배포판 백포트 진행 중 |
+| CVE-2026-31431 패치 | ⚠️ 미확인 | `algif_aead` blacklist 적용으로 완화됨 |
+| `esp4` 모듈 | ❌ 취약 | 미로드, auto-load 가능, blacklist 없음 |
+| `esp6` 모듈 | ❌ 취약 | 미로드, auto-load 가능, blacklist 없음 |
+| `rxrpc` 모듈 | ❌ 취약 | 미로드, auto-load 가능, blacklist 없음 |
+| `algif_aead` 모듈 | ✅ 완화 | `/etc/modprobe.d/` blacklist 적용됨 |
+| XFRM netlink 소켓 | ❌ 취약 | 비권한 사용자 접근 가능 |
+| AF_RXRPC 소켓 | ✅ 안전 | rxrpc 미로드로 접근 불가 |
+| AppArmor | ✅ 활성 | 완전 차단은 아님, 정책 확인 필요 |
+| SELinux | ❌ 비활성 | Ubuntu 기본값 |
+| 비권한 user namespace | ❌ 활성 | `kernel.unprivileged_userns_clone=1` |
+
+**결론: CVE-2026-43284 / CVE-2026-43500 즉시 완화 조치 필요**
+
+### 탐지 명령어
 
 ```bash
-# 현재 커널 버전 확인
+# 커널 버전 확인
 uname -r
 
 # RHEL/CentOS 패치 적용 여부
@@ -145,21 +207,24 @@ rpm -q --changelog kernel | grep -E "CVE-2026-31431|CVE-2026-43284|CVE-2026-4350
 # Ubuntu 패치 적용 여부
 apt-get changelog linux-image-$(uname -r) 2>/dev/null | grep -E "CVE-2026-31431|CVE-2026-43284|CVE-2026-43500" | head -5
 
-# IPsec/ESP 사용 여부 확인 (CVE-2026-43284 관련)
-ip xfrm policy list
+# 모듈 로드/blacklist 상태
+lsmod | grep -E "esp4|esp6|rxrpc|algif"
+grep -r "esp4\|esp6\|rxrpc\|algif_aead" /etc/modprobe.d/ 2>/dev/null
 
-# rxrpc 모듈 로드 여부 확인 (CVE-2026-43500 관련)
-lsmod | grep rxrpc
+# XFRM netlink 소켓 비권한 접근 여부
+python3 -c "import socket; s=socket.socket(socket.AF_NETLINK,socket.SOCK_RAW,15); print('XFRM: OPEN (취약)'); s.close()" 2>/dev/null || echo "XFRM: BLOCKED"
 
-# algif_aead 모듈 로드 여부 확인 (CVE-2026-31431 관련)
-lsmod | grep algif
+# DirtyFrag-Detector 실행 (root 불필요)
+curl -sO https://raw.githubusercontent.com/liamromanis101/DirtyFrag-Detector/main/dirty_frag_detect.py
+python3 dirty_frag_detect.py
+rm -f dirty_frag_detect.py
 ```
 
 [⬆ 목차로 돌아가기](#목차)
 
 ---
 
-## 4. 대처 방안
+## 5. 대처 방안
 
 ### 즉시 조치 (CVE-2026-31431 — CISA KEV, 기한 2026-05-15)
 
@@ -178,7 +243,11 @@ uname -r
 
 ### 임시 완화 (패치 적용 전)
 
+> 출처: [github.com/0xBlackash/CVE-2026-43284](https://github.com/0xBlackash/CVE-2026-43284) — Mitigation & Remediation 섹션
+> 출처: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — Recommended immediate actions 섹션
+
 ```bash
+# ---- 원문 (DirtyFrag-Detector / CVE-2026-43284 PoC 권장) ---- #
 # Dirty Frag 취약 모듈 일괄 차단 (CVE-2026-43284 + CVE-2026-43500)
 sudo sh -c 'printf "install esp4 /bin/false\ninstall esp6 /bin/false\ninstall rxrpc /bin/false\n" \
   > /etc/modprobe.d/dirtyfrag.conf'
@@ -186,11 +255,64 @@ sudo sh -c 'printf "install esp4 /bin/false\ninstall esp6 /bin/false\ninstall rx
 # 모듈 즉시 언로드
 sudo rmmod esp4 esp6 rxrpc 2>/dev/null || true
 
-# page cache 즉시 드롭 (익스플로잇 흔적 제거)
+# page cache 즉시 드롭
 echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
+# ---- 원문 끝 ---- #
 ```
 
 ⚠️ `esp4` / `esp6` 언로드 시 IPsec VPN 중단됩니다. `rxrpc` 언로드 시 AFS(Andrew File System) 사용 불가합니다.
+
+**모듈이 이미 로드되어 사용 중일 때 발생하는 문제:**
+
+| 모듈 | 사용 중인 경우 | 언로드 시 영향 |
+|------|--------------|----------------|
+| `esp4` / `esp6` | IPsec VPN 터널 활성 상태 | 기존 VPN 세션 즉시 끊김, 패킷 드롭 |
+| `esp4` / `esp6` | strongSwan / Libreswan 데몬 실행 중 | 데몬이 모듈 재로드 시도 — blacklist 있으면 실패 |
+| `rxrpc` | AFS 마운트 포인트 사용 중 | 마운트된 AFS 파일시스템 접근 불가, I/O 에러 |
+| `algif_aead` | OpenSSL / GnuTLS AF_ALG 엔진 사용 중 | 암호화 연산 실패, 애플리케이션 오류 |
+
+```bash
+# 언로드 전 사용 여부 확인
+# esp4/esp6: 활성 IPsec SA 확인
+ip xfrm state list
+ip xfrm policy list
+
+# rxrpc: AFS 마운트 확인
+mount | grep afs
+cat /proc/mounts | grep afs
+
+# algif_aead: AF_ALG 소켓 사용 프로세스 확인
+ss -A alg 2>/dev/null | head -10
+```
+
+모듈이 사용 중이면 `rmmod` 는 `Module is in use` 오류로 실패합니다. 이 경우:
+1. 해당 서비스를 먼저 중지 후 언로드
+2. 또는 재부팅 후 blacklist가 적용된 상태로 부팅
+
+```bash
+# 예: strongSwan 중지 후 esp 모듈 언로드
+sudo systemctl stop strongswan-starter 2>/dev/null || sudo systemctl stop ipsec 2>/dev/null
+sudo modprobe -r esp4 esp6
+```
+
+모듈이 실제로 로드된 경우 언로드 성공 여부를 확인합니다:
+
+```bash
+# 언로드 후 상태 확인
+lsmod | grep -E "^esp4|^esp6|^rxrpc"
+# 출력 없으면 정상 언로드
+
+# rmmod 실패 시 (다른 모듈이 의존 중인 경우) — 의존 모듈 포함 언로드
+sudo modprobe -r esp4 esp6 rxrpc 2>/dev/null
+
+# 그래도 실패 시 — 사용 중인 프로세스 확인
+for mod in esp4 esp6 rxrpc; do
+    if lsmod | grep -q "^${mod} "; then
+        echo "[WARN] ${mod} 언로드 실패 — 사용 중:"
+        cat /proc/modules | grep "^${mod} " | awk '{print "  used by:", $4}'
+    fi
+done
+```
 
 ```bash
 # algif_aead 모듈 언로드 (CVE-2026-31431)
@@ -212,7 +334,7 @@ echo "install algif_aead /bin/false" | sudo tee /etc/modprobe.d/disable-algif-ae
 
 ---
 
-## 5. 사후 검증
+## 6. 사후 검증
 
 ```bash
 # 패치 적용 후 커널 버전 확인
