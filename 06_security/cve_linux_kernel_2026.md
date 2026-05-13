@@ -260,6 +260,16 @@ echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
 # ---- 원문 끝 ---- #
 ```
 
+⚠️ 원문의 `>` 는 파일을 **덮어씁니다**. `/etc/modprobe.d/dirtyfrag.conf` 가 이미 존재하면 기존 내용이 유실됩니다. 적용 전 확인합니다:
+
+```bash
+# 적용 전 기존 파일 확인
+cat /etc/modprobe.d/dirtyfrag.conf 2>/dev/null || echo "파일 없음 — 안전하게 생성 가능"
+
+# 기존 파일이 있으면 백업 후 적용
+sudo cp /etc/modprobe.d/dirtyfrag.conf /etc/modprobe.d/dirtyfrag.conf.bak 2>/dev/null
+```
+
 ⚠️ `esp4` / `esp6` 언로드 시 IPsec VPN 중단됩니다. `rxrpc` 언로드 시 AFS(Andrew File System) 사용 불가합니다.
 
 **모듈이 이미 로드되어 사용 중일 때 발생하는 문제:**
