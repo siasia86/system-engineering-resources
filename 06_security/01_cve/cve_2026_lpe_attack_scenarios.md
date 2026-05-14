@@ -9,6 +9,10 @@
 
 ---
 
+![Dirty Frag 실제 테스트 화면](../../98_image/cve_dirty_frag.png)
+
+---
+
 ## 1. 개요
 
 CVE-2026-31431 (Copy Fail), CVE-2026-43284 / CVE-2026-43500 (Dirty Frag)은 모두 **비권한 로컬 사용자 → root 권한 상승(LPE)** 취약점입니다.
