@@ -76,23 +76,45 @@ MSG_SPLICE_PAGES → UDP skb (SKBFL_SHARED_FRAG 미설정)
 
 ## 3. 영향 범위 확인
 
-### Ubuntu 24.04 실제 테스트 결과 (2026-05-13)
+### Ubuntu 24.04 실제 테스트 결과 (2026-05-14)
 
 테스트 환경: Ubuntu 24.04.4 LTS / kernel `6.8.0-101-generic`
 
+**PoC 빌드 테스트:**
+
+```bash
+git clone https://github.com/V4bel/dirtyfrag.git
+gcc -O0 -Wall -o exp exp.c -lutil
+```
+
 | 항목 | 결과 | 비고 |
 |------|------|------|
+| PoC 빌드 | ✅ 성공 | `exp` 바이너리 생성 (62,320 bytes) |
 | 커널 버전 | ❌ 취약 | 6.8.0-101 — 6.12.x 브랜치 취약 범위 |
-| CVE-2026-43284 패치 | ❌ 미적용 | Ubuntu 백포트 미배포 (2026-05-13 기준) |
+| CVE-2026-43284 패치 | ❌ 미적용 | Ubuntu 백포트 미배포 (2026-05-14 기준) |
 | `esp4` 모듈 | ⚠️ 미로드 | 모듈 파일 존재, auto-load 가능, blacklist 없음 |
 | `esp6` 모듈 | ⚠️ 미로드 | 모듈 파일 존재, auto-load 가능, blacklist 없음 |
-| XFRM netlink 소켓 | ❌ **취약** | 비권한 사용자 접근 성공 — ESP 익스플로잇 경로 활성 |
-| IPsec SA/정책 | ✅ 없음 | `ip xfrm state/policy` 빈 결과 |
-| AppArmor | ✅ 활성 | XFRM 소켓 차단 안 됨 — 정책 미적용 |
-| blacklist | ❌ 없음 | `/etc/modprobe.d/` dirtyfrag 설정 없음 |
+| XFRM netlink 소켓 | ❌ **OPEN** | 비권한 접근 성공 — ESP 익스플로잇 경로 활성 |
 | 비권한 user namespace | ❌ 활성 | `kernel.unprivileged_userns_clone=1` |
+| blacklist | ❌ 없음 | `/etc/modprobe.d/` dirtyfrag 설정 없음 |
+| AppArmor | ✅ 활성 | XFRM 소켓 차단 안 됨 |
 
-**결론: XFRM netlink 소켓이 비권한 접근 가능 — CVE-2026-43284 익스플로잇 경로 활성 상태**
+**결론: PoC 빌드 성공, XFRM 소켓 비권한 접근 가능 — CVE-2026-43284 익스플로잇 조건 충족**
+
+> PoC 실행은 수행하지 않았습니다. 실행 시 `/usr/bin/su` page cache를 덮어씁니다. 실행 후 반드시 `echo 3 > /proc/sys/vm/drop_caches` 또는 재부팅이 필요합니다.
+
+**원문 테스트 완료 배포판 (github.com/V4bel/dirtyfrag):**
+
+| 배포판 | 커널 버전 |
+|--------|---------|
+| Ubuntu 24.04.4 | 6.17.0-23-generic |
+| RHEL 10.1 | 6.12.0-124.49.1.el10_1.x86_64 |
+| CentOS Stream 10 | 6.12.0-224.el10.x86_64 |
+| AlmaLinux 10 | 6.12.0-124.52.3.el10_1.x86_64 |
+| openSUSE Tumbleweed | 7.0.2-1-default |
+| Fedora 44 | 6.19.14-300.fc44.x86_64 |
+
+⚠️ **Copy Fail 완화(`algif_aead` blacklist)를 적용해도 Dirty Frag는 여전히 취약합니다.** xfrm-ESP 경로는 `algif_aead` 모듈과 무관하게 동작합니다.
 
 ### 탐지 명령어
 
@@ -218,6 +240,7 @@ rm -f dirty_frag_detect.py
 
 - NVD CVE-2026-43284: [nvd.nist.gov](https://nvd.nist.gov/vuln/detail/CVE-2026-43284) — ★★★☆☆
 - Dirty Frag PoC: [github.com/0xBlackash/CVE-2026-43284](https://github.com/0xBlackash/CVE-2026-43284) — ★★☆☆☆
+- Dirty Frag 원본 (V4bel): [github.com/V4bel/dirtyfrag](https://github.com/V4bel/dirtyfrag) — ★★★☆☆
 - DirtyFrag-Detector: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — ★★☆☆☆
 - Linux Kernel Patch: [git.kernel.org](https://git.kernel.org/stable/c/f4c50a4034e62ab75f1d5cdd191dd5f9c77fdff4) — ★★★★☆
 - [cve_2026_31431.md](./cve_2026_31431_copy_fail.md) — CVE-2026-31431 (CISA KEV)
