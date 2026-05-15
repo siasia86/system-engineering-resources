@@ -1228,23 +1228,23 @@ aws s3 sync /backup/ s3://my-backup-bucket/mysql/ \
 #### 다중 백업 보관
 
 ```
-┌─────────────────────────────────────────┐
-│         Backup Retention Strategy (3-2-1)   │
-├─────────────────────────────────────────┤
-│                                         │
+┌─────────────────────────────────────────────┐
+│     Backup Retention Strategy (3-2-1)       │
+├─────────────────────────────────────────────┤
+│                                             │
 │  3 copies                                   │
 │  ├─ Original (production DB)                │
 │  ├─ Local backup (/backup)                  │
 │  └─ Remote backup (backup server or S3)     │
-│                                         │
+│                                             │
 │  2 different media                          │
 │  ├─ Local disk                              │
 │  └─ Cloud storage                           │
-│                                         │
+│                                             │
 │  1 offsite                                  │
 │  └─ S3 or backup server in another region   │
-│                                         │
-└─────────────────────────────────────────┘
+│                                             │
+└─────────────────────────────────────────────┘
 ```
 
 ### 9.6 성능 튜닝

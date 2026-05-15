@@ -41,18 +41,18 @@ Apache Kafka는 분산 이벤트 스트리밍 플랫폼. 대용량 실시간 데
 ┌─────────────────────────────────────────────────────────────────┐
 │                       Kafka Cluster                             │
 │                                                                 │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
-│  │  Broker 1    │  │  Broker 2    │  │  Broker 3    │          │
-│  │              │  │              │  │              │          │
-│  │  Topic A     │  │  Topic A     │  │  Topic A     │          │
-│  │  Partition 0 │  │  Partition 1 │  │  Partition 2 │          │
-│  │  (Leader)    │  │  (Leader)    │  │  (Leader)    │          │
-│  │  Partition 1 │  │  Partition 2 │  │  Partition 0 │          │
-│  │  (Follower)  │  │  (Follower)  │  │  (Follower)  │          │
-│  └──────────────┘  └──────────────┘  └──────────────┘          │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐           │
+│  │  Broker 1    │  │  Broker 2    │  │  Broker 3    │           │
+│  │              │  │              │  │              │           │
+│  │  Topic A     │  │  Topic A     │  │  Topic A     │           │
+│  │  Partition 0 │  │  Partition 1 │  │  Partition 2 │           │
+│  │  (Leader)    │  │  (Leader)    │  │  (Leader)    │           │
+│  │  Partition 1 │  │  Partition 2 │  │  Partition 0 │           │
+│  │  (Follower)  │  │  (Follower)  │  │  (Follower)  │           │
+│  └──────────────┘  └──────────────┘  └──────────────┘           │
 │                              │                                  │
 │                    ZooKeeper / KRaft                            │
-│                    (메타데이터 관리)                             │
+│                    (metadata management)                        │
 └─────────────────────────────────────────────────────────────────┘
          ^                                        |
          │ produce                         consume │
