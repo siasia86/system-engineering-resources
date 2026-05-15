@@ -22,7 +22,7 @@
 인터넷
   v
 ┌─────────────────────────────────────────────────────────────┐
-│                     Global DNS Layer                       │
+│                     Global DNS Layer                        │
 └─────────────────────────────────────────────────────────────┘
 Route 53 (DNS)
 ├─ Health Check
@@ -31,7 +31,7 @@ Route 53 (DNS)
 
   v
 ┌─────────────────────────────────────────────────────────────┐
-│                  VPC Border Defense Layer                       │
+│                  VPC Border Defense Layer                   │
 └─────────────────────────────────────────────────────────────┘
 AWS Network Firewall (Suricata 기반 IPS/IDS)
 ├─ DDoS pattern detection
@@ -42,7 +42,7 @@ AWS Network Firewall (Suricata 기반 IPS/IDS)
 
   v
 ┌─────────────────────────────────────────────────────────────┐
-│                  Load Balancing Layer                          │
+│                  Load Balancing Layer                       │
 └─────────────────────────────────────────────────────────────┘
 NLB (Network Load Balancer)
 ├─ Cross-AZ high availability
@@ -52,92 +52,90 @@ NLB (Network Load Balancer)
 
   v
 ┌─────────────────────────────────────────────────────────────┐
-│         Linux Proxy Layer (Auto Scaling Group)             │
+│         Linux Proxy Layer (Auto Scaling Group)              │
 └─────────────────────────────────────────────────────────────┘
 Linux Proxy (3-5대, Auto Scaling)
 │
 ├─ [Pre-kernel] XDP/eBPF
 │  ├─ Ultra-fast packet drop (millions pps)
-│  ├─ Redis sync (10s) ─────────────────┐
-│  ├─ BPF Map (memory-based)            │
-│  └─ Multi-core parallel processing               │
-│                                      │
-├─ [L3/L4] nftables (kernel)      │
-│  ├─ CrowdSec Bouncer ────────────┐    │
-│  ├─ Stateful firewall            │    │
-│  ├─ Rate Limiting               │    │
-│  ├─ Connection Tracking         │    │
-│  └─ Hash table (O(1) lookup)     │    │
-│                                 │    │
-├─ [Kernel] Kernel Tuning      │    │
-│  ├─ TCP SYN Cookies             │    │
-│  ├─ TCP/IP Stack optimization         │    │
-│  ├─ Connection Backlog increase     │    │
-│  └─ File Descriptor limit increase   │    │
-│                                 │    │
-├─ [Detection] CrowdSec Agent   │    │
-│  ├─ Log analysis (realtime)          │    │
-│  ├─ Scenario-based detection          │    │
-│  ├─ LAPI integration ───────────┼────┼──┐
-│  └─ Auto block decision              │    │  │
-│                                 │    │  │
-├─ [L7] HAProxy            │    │  │
-│  ├─ Backend load balancing           │    │  │
-│  ├─ Health Check                │    │  │
-│  ├─ Connection Pooling          │    │  │
-│  ├─ PROXY Protocol v2 parsing      │    │  │
-│  └─ Session management                   │    │  │
-│                                 │    │  │
-└─ [Monitoring] Zabbix Agent        │    │  │
-   ├─ CPU/Memory/Network ──────────┼────┼──┼──┐
-   ├─ XDP/nftables stats           │    │  │  │
-   ├─ CrowdSec metrics             │    │  │  │
-   └─ HAProxy status                │    │  │  │
-                                  │    │  │  │
-  v                               │    │  │  │
-┌─────────────────────────────────────────────────────────────┐
-│                  Backend Application                        │
-└─────────────────────────────────────────────────────────────┘
-Windows Game Server (Auto Scaling)
-├─ Game logic
-├─ Player session management
-└─ Database integration
+│  ├─ Redis sync (10s interval) ──────────────────────────────────────┐
+│  ├─ BPF Map (memory-based)                                          │
+│  └─ Multi-core parallel processing                                  │
+│                                                                     │
+├─ [L3/L4] nftables (kernel)                                          │
+│  ├─ CrowdSec Bouncer ───────────────────────────────────────┐       │
+│  ├─ Stateful firewall                                       │       │
+│  ├─ Rate Limiting                                           │       │
+│  ├─ Connection Tracking                                     │       │
+│  └─ Hash table (O(1) lookup)                                │       │
+│                                                             │       │
+├─ [Kernel] Kernel Tuning                                     │       │
+│  ├─ TCP SYN Cookies                                         │       │
+│  ├─ TCP/IP Stack optimization                               │       │
+│  ├─ Connection Backlog increase                             │       │
+│  └─ File Descriptor limit increase                          │       │
+│                                                             │       │
+├─ [Detection] CrowdSec Agent                                 │       │
+│  ├─ Log analysis (realtime)                                 │       │
+│  ├─ Scenario-based detection                                │       │
+│  ├─ LAPI integration ───────────────────────────────────────┼───┐   │
+│  └─ Auto block decision                                     │   │   │
+│                                                             │   │   │
+├─ [L7] HAProxy                                               │   │   │
+│  ├─ Backend load balancing                                  │   │   │
+│  ├─ Health Check                                            │   │   │
+│  ├─ Connection Pooling                                      │   │   │
+│  ├─ PROXY Protocol v2 parsing                               │   │   │
+│  └─ Session management                                      │   │   │
+│                                                             │   │   │
+└─ [Monitoring] Zabbix Agent                                  │   │   │
+   ├─ CPU/Memory/Network ─────────────────────────────────────┼───┼───┼──┐
+   ├─ XDP/nftables stats                                      │   │   │  │
+   ├─ CrowdSec metrics                                        │   │   │  │
+   └─ HAProxy status                                          │   │   │  │
+                                                              │   │   │  │
+  v                                                           │   │   │  │
+┌─────────────────────────────────────────────────────────────┐   │   │  │
+│                  Backend Application                        │   │   │  │
+└─────────────────────────────────────────────────────────────┘   │   │  │
+Windows Game Server (Auto Scaling)                                │   │  │
+├─ Game logic                                                     │   │  │
+├─ Player session management                                      │   │  │
+└─ Database integration                                           │   │  │
+                                                                  │   │  │
+===============================================================   │   │  │
+                    Central Management Layer (Separate)           │   │  │
+===============================================================   │   │  │
+                                                                  │   │  │
+┌─────────────────────────────────────┐                           │   │  │
+│  CrowdSec LAPI Server               │ <─────────────────────────┘   │  │
+│  ├─ MySQL/PostgreSQL (RDS)          │                               │  │
+│  ├─ AI-based detection engine       │                               │  │
+│  ├─ Community blocklist             │                               │  │
+│  └─ Block decision management       │                               │  │
+└─────────────────────────────────────┘                               │  │
+                                                                      │  │
+┌─────────────────────────────────────┐                               │  │
+│  Redis (ElastiCache)                │ <─────────────────────────────┘  │
+│  ├─ XDP BPF Map sync                │                                  │
+│  ├─ Realtime blocked IP sharing     │                                  │
+│  └─ 10s interval update             │                                  │
+└─────────────────────────────────────┘                                  │
+                                                                         │
+┌─────────────────────────────────────┐                                  │
+│  Zabbix Server (Central Monitoring) │ <────────────────────────────────┘
+│  ├─ Realtime dashboard              │
+│  ├─ Alert (Slack/Email)             │
+│  ├─ Traffic graph                   │
+│  └─ Attack pattern analysis         │
+└─────────────────────────────────────┘
 
-
-===============================================================
-                    Central Management Layer (Separate)
-===============================================================
-
-┌─────────────────────────────────────┐    │    │  │  │
-│  CrowdSec LAPI Server               │    │    │  │  │
-│  (Separate EC2 t3.micro)                │ <──┘    │  │  │
-│  ├─ MySQL/PostgreSQL (RDS)          │         │  │  │
-│  ├─ AI-based detection engine               │         │  │  │
-│  ├─ Community blocklist             │         │  │  │
-│  └─ Block decision management                  │         │  │  │
-└─────────────────────────────────────┘         │  │  │
-                                                │  │  │
-┌─────────────────────────────────────┐         │  │  │
-│  Redis (ElastiCache)                │ <───────┘  │  │
-│  ├─ XDP BPF Map sync              │            │  │
-│  ├─ Realtime blocked IP sharing             │            │  │
-│  └─ 10s interval update              │            │  │
-└─────────────────────────────────────┘            │  │
-                                                   │  │
-┌─────────────────────────────────────┐            │  │
-│  Zabbix Server (Central Monitoring)      │ <──────────┘  │
-│  ├─ Realtime dashboard                 │               │
-│  ├─ Alert (Slack/Email)              │               │
-│  ├─ Traffic graph                   │               │
-│  └─ Attack pattern analysis                  │               │
-└─────────────────────────────────────┘               │
-                                                      │
-┌─────────────────────────────────────┐               │
-│  CloudWatch                         │ <─────────────┘
+┌─────────────────────────────────────┐
+│  CloudWatch                         │
 │  ├─ Network Firewall logs           │
-│  ├─ NLB metrics                      │
+│  ├─ NLB metrics                     │
 │  ├─ Auto Scaling events             │
-│  └─ Lambda triggers                   │
+│  └─ Lambda triggers                 │
 └─────────────────────────────────────┘
 
 ┌─────────────────────────────────────┐
@@ -145,7 +143,7 @@ Windows Game Server (Auto Scaling)
 │  ├─ Network Firewall logs           │
 │  ├─ VPC Flow Logs                   │
 │  ├─ HAProxy access logs             │
-│  └─ Long-term storage (Glacier)             │
+│  └─ Long-term storage (Glacier)     │
 └─────────────────────────────────────┘
 ```
 

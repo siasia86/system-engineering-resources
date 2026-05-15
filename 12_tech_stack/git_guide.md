@@ -21,7 +21,7 @@ Working Directory    Staging Area (Index)    Local Repo         Remote Repo
       │── git add ──────────>│                   │                   │
       │                      │── git commit ────>│                   │
       │                      │                   │── git push ──────>│
-      │<─────────────────────────── git checkout ─┤                   │
+      │<────────────────────────── git checkout ─┤                   │
       │<──────────────────────────────────────────── git pull ───────┤
       │                      │                   │<── git fetch ─────┤
 ```
@@ -34,7 +34,7 @@ Untracked --> Staged --> Committed --> Modified
     │            │           v              │
     │         git add    git commit      git add
     │                                       │
-    └──────────── git rm --cached <──────────┘
+    └──────────── git rm --cached <─────────┘
 ```
 
 [⬆ 목차로 돌아가기](#목차)
