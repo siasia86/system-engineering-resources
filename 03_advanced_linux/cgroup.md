@@ -57,12 +57,18 @@ cgroup(Control Groups)은 Linux 커널이 프로세스 그룹별로 리소스를
 각 디렉토리 안에 컨트롤 파일이 있습니다:
 
 ```
-/sys/fs/cgroup/system.slice/nginx.service/
+/sys/fs/cgroup/system.slice/cron.service/
 ├── cgroup.procs          # 소속 PID 목록
-├── memory.current        # 현재 메모리 사용량
-├── memory.max            # 메모리 상한
+├── cgroup.controllers    # 사용 가능한 컨트롤러
+├── cpu.max               # CPU 상한 (quota period)
+├── cpu.weight            # CPU 가중치
 ├── cpu.stat              # CPU 사용 통계
-└── cpu.max               # CPU 상한 (quota/period)
+├── memory.max            # 메모리 상한
+├── memory.current        # 현재 메모리 사용량
+├── memory.high           # 소프트 상한 (초과 시 throttle)
+├── io.max                # I/O 속도 상한
+├── pids.max              # 최대 프로세스 수
+└── pids.current          # 현재 프로세스 수
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -104,12 +110,29 @@ mount | grep cgroup
 ### v2 경로 예시
 
 ```
-/sys/fs/cgroup/
-├── cgroup.controllers    # 사용 가능한 컨트롤러 목록
-├── cgroup.procs          # root cgroup PID
-├── memory.max            # 메모리 상한
-└── cpu.max               # CPU 상한
+/sys/fs/cgroup/                          (root cgroup)
+├── cgroup.controllers                   # cpuset cpu io memory hugetlb pids rdma misc
+├── cgroup.procs                         # root 소속 PID
+├── cgroup.subtree_control               # 하위에 위임할 컨트롤러
+├── cgroup.stat                          # cgroup 통계
+├── cpu.stat                             # CPU 통계 (root에도 존재)
+├── cpu.pressure                         # CPU pressure stall info
+├── memory.stat                          # 메모리 통계 (root에도 존재)
+├── memory.pressure                      # 메모리 pressure stall info
+├── io.stat                              # I/O 통계 (root에도 존재)
+├── io.pressure                          # I/O pressure stall info
+├── system.slice/                        # systemd 서비스 그룹
+│   ├── memory.max                       # ← 하위부터 제한 파일 존재
+│   ├── cpu.max
+│   └── cron.service/                    # 개별 서비스
+│       ├── memory.max
+│       ├── cpu.max
+│       └── pids.max
+└── user.slice/                          # 사용자 세션 그룹
+    └── user-1000.slice/                 # UID 1000 사용자
 ```
+
+⚠️ root cgroup에는 `memory.max`, `cpu.max`, `pids.max` 등 **제한 설정 파일이 없습니다**. 통계/pressure 파일만 존재합니다. 제한은 하위 cgroup(`system.slice/`, `user.slice/` 이하)에서만 설정 가능합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -179,38 +202,117 @@ cat /sys/fs/cgroup/mygroup/pids.current
 
 ### cgroup 수동 생성 (v2)
 
+cgroup = 디렉토리입니다. 디렉토리를 만들면 cgroup이 생성되고, 파일에 값을 쓰면 제한이 설정됩니다.
+
+```
+mkdir (cgroup 생성)
+    │
+    v
+subtree_control (컨트롤러 위임 — 이게 없으면 memory.max 파일이 안 나타남)
+    │
+    v
+echo 값 > memory.max (제한 설정)
+    │
+    v
+echo PID > cgroup.procs (프로세스 배치 — 이 순간부터 제한 적용)
+    │
+    v
+echo PID > 상위/cgroup.procs (프로세스 이동)
+    │
+    v
+rmdir (cgroup 삭제)
+```
+
+#### 1단계: cgroup 생성 (디렉토리 생성)
+
 ```bash
-# 1. 그룹 생성
 sudo mkdir /sys/fs/cgroup/mytest
 
-# 2. 컨트롤러 활성화
-echo "+cpu +memory +pids" | sudo tee /sys/fs/cgroup/cgroup.subtree_control
+# 커널이 자동으로 컨트롤 파일 생성
+ls /sys/fs/cgroup/mytest/
+# cgroup.procs  cgroup.controllers  ...
+```
 
-# 3. 메모리 100MB 제한
+#### 2단계: 컨트롤러 위임 (가장 중요)
+
+root cgroup이 하위에 어떤 컨트롤러를 허용할지 결정합니다. 이 설정이 없으면 `memory.max` 파일이 나타나지 않습니다.
+
+```bash
+# 현재 위임 상태 확인
+cat /sys/fs/cgroup/cgroup.subtree_control
+# cpu io memory pids  ← 이것들만 하위에서 사용 가능
+
+# memory가 없으면 추가
+echo "+memory +cpu +pids" | sudo tee /sys/fs/cgroup/cgroup.subtree_control
+
+# 이제 mytest에 memory.max가 나타남
+ls /sys/fs/cgroup/mytest/ | grep memory
+# memory.current  memory.max  memory.high  ...
+```
+
+#### 3단계: 제한 설정
+
+```bash
+# 메모리 100MB 제한
 echo $((100 * 1024 * 1024)) | sudo tee /sys/fs/cgroup/mytest/memory.max
+# 104857600
 
-# 4. 프로세스 추가
+# 확인
+cat /sys/fs/cgroup/mytest/memory.max
+# 104857600
+```
+
+#### 4단계: 프로세스를 cgroup에 배치
+
+```bash
+# 현재 쉘의 PID를 mytest cgroup에 넣기
 echo $$ | sudo tee /sys/fs/cgroup/mytest/cgroup.procs
 
-# 5. 현재 프로세스가 속한 cgroup 확인
+# 확인 — 이 쉘은 이제 메모리 100MB 제한을 받음
 cat /proc/$$/cgroup
+# 0::/mytest
+```
 
-# 6. 프로세스를 root cgroup으로 이동 후 삭제 (프로세스 남아있으면 rmdir 실패)
+#### 5단계: 테스트
+
+```bash
+# 50MB 할당 → 성공
+python3 -c "x = bytearray(50 * 1024 * 1024); print('50MB OK')"
+
+# 150MB 할당 → OOM kill (제한 초과)
+python3 -c "x = bytearray(150 * 1024 * 1024); print('150MB OK')"
+# Killed
+```
+
+#### 6단계: 정리
+
+```bash
+# 프로세스를 root cgroup으로 되돌리기 (안 하면 rmdir 실패)
 echo $$ | sudo tee /sys/fs/cgroup/cgroup.procs
+
+# cgroup 삭제
 sudo rmdir /sys/fs/cgroup/mytest
 ```
 
-### cgexec으로 제한된 환경에서 실행
+⚠️ `rmdir`은 cgroup 안에 프로세스가 남아있으면 실패합니다. 반드시 프로세스를 먼저 이동시킵니다.
+
+### systemd-run으로 간편 실행 (v2 권장)
+
+수동 생성 대신 `systemd-run`을 사용하면 cgroup 생성/삭제를 자동으로 처리합니다.
 
 ```bash
-# cgexec는 cgroupv1 전용 도구
-sudo apt install cgroup-tools
-
-# v1 환경에서만 동작
-sudo cgexec -g cpu,memory:mytest stress --cpu 4 --vm 1 --vm-bytes 512M
-
-# v2 환경에서는 systemd-run 사용
+# 메모리 256MB, CPU 50% 제한으로 stress 실행
 sudo systemd-run --scope -p MemoryMax=256M -p CPUQuota=50% stress --cpu 4
+
+# 종료 시 cgroup 자동 삭제
+```
+
+### cgexec (v1 전용)
+
+```bash
+# cgexec는 cgroupv1 전용 도구 — v2 환경에서는 동작하지 않음
+sudo apt install cgroup-tools
+sudo cgexec -g cpu,memory:mytest stress --cpu 4 --vm 1 --vm-bytes 512M
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -397,17 +499,22 @@ cat /sys/fs/cgroup/mygroup/memory.current
 
 ### 주요 컨트롤 파일
 
-| 파일 | 역할 |
-|------|------|
-| `cgroup.procs` | 소속 PID 목록. 쓰면 프로세스 이동 |
-| `cgroup.controllers` | 사용 가능한 컨트롤러 목록 |
-| `cgroup.subtree_control` | 하위 그룹에 위임할 컨트롤러 |
-| `memory.max` | 메모리 상한 |
-| `memory.current` | 현재 메모리 사용량 |
-| `cpu.max` | CPU quota/period |
-| `cpu.stat` | CPU 사용 통계 |
-| `io.max` | I/O 속도 상한 |
-| `pids.max` | 최대 프로세스 수 |
+| 파일 | 위치 | 역할 |
+|------|------|------|
+| `cgroup.procs` | root + 하위 | 소속 PID 목록. 쓰면 프로세스 이동 |
+| `cgroup.controllers` | root + 하위 | 사용 가능한 컨트롤러 목록 |
+| `cgroup.subtree_control` | root + 하위 | 하위 그룹에 위임할 컨트롤러 |
+| `cpu.stat` | root + 하위 | CPU 사용 통계 |
+| `memory.stat` | root + 하위 | 메모리 사용 통계 |
+| `memory.pressure` | root + 하위 | 메모리 pressure stall info (PSI) |
+| `memory.max` | 하위만 | 메모리 상한 |
+| `memory.current` | 하위만 | 현재 메모리 사용량 |
+| `memory.high` | 하위만 | 소프트 상한 (초과 시 throttle) |
+| `cpu.max` | 하위만 | CPU quota/period |
+| `cpu.weight` | 하위만 | CPU 가중치 (1~10000) |
+| `io.max` | 하위만 | I/O 속도 상한 |
+| `pids.max` | 하위만 | 최대 프로세스 수 |
+| `pids.current` | 하위만 | 현재 프로세스 수 |
 
 ### 영구 설정
 
