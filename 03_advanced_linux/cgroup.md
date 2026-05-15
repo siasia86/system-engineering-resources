@@ -7,7 +7,7 @@
 | [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. v1 vs v2](#3-v1-vs-v2) |
 | [4. 주요 컨트롤러](#4-주요-컨트롤러) / [5. 실습](#5-실습) / [6. Docker와 cgroup](#6-docker와-cgroup) |
 | [7. systemd와 cgroup](#7-systemd와-cgroup) / [8. 트러블슈팅](#8-트러블슈팅) / [9. Tips](#9-tips) |
-
+| [10. cgroup 파일시스템](#10-cgroup-파일시스템) |
 ---
 
 ## 1. 개요
@@ -371,6 +371,56 @@ systemctl show <service> -p ControlGroup
 ⚠️ `/sys/fs/cgroup` 파일을 직접 수정하면 재부팅 시 초기화됩니다. 영구 설정은 systemd unit 파일 또는 `/etc/cgconfig.conf`를 사용합니다.
 
 ⚠️ cgroupv2 환경에서 `--privileged` 없이 systemd 컨테이너를 실행하면 Exit 255로 즉시 종료됩니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 10. cgroup 파일시스템
+
+`/sys/fs/cgroup/`은 디스크에 존재하지 않는 가상 파일시스템입니다. 커널이 런타임에 생성하며 재부팅 시 초기화됩니다.
+
+```bash
+mount | grep cgroup
+# cgroup2 on /sys/fs/cgroup type cgroup2 (rw,nosuid,nodev,noexec,relatime)
+```
+
+### 파일 읽기/쓰기 = 커널 명령
+
+```bash
+# 파일 쓰기 → 커널에 설정 전달
+echo 512M > /sys/fs/cgroup/mygroup/memory.max
+
+# 파일 읽기 → 커널에서 실시간 값 조회
+cat /sys/fs/cgroup/mygroup/memory.current
+```
+
+### 주요 컨트롤 파일
+
+| 파일 | 역할 |
+|------|------|
+| `cgroup.procs` | 소속 PID 목록. 쓰면 프로세스 이동 |
+| `cgroup.controllers` | 사용 가능한 컨트롤러 목록 |
+| `cgroup.subtree_control` | 하위 그룹에 위임할 컨트롤러 |
+| `memory.max` | 메모리 상한 |
+| `memory.current` | 현재 메모리 사용량 |
+| `cpu.max` | CPU quota/period |
+| `cpu.stat` | CPU 사용 통계 |
+| `io.max` | I/O 속도 상한 |
+| `pids.max` | 최대 프로세스 수 |
+
+### 영구 설정
+
+`/sys/fs/cgroup` 직접 수정은 재부팅 시 초기화됩니다. 영구 설정은 systemd unit 파일을 사용합니다.
+
+```ini
+# /etc/systemd/system/nginx.service.d/override.conf
+[Service]
+MemoryMax=512M
+CPUQuota=50%
+```
+
+> 💡 `/proc`, `/sys`, `/sys/fs/cgroup` 상세 비교는 [linux_virtual_fs.md](./linux_virtual_fs.md) 참고
 
 [⬆ 목차로 돌아가기](#목차)
 
