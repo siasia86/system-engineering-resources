@@ -7,7 +7,7 @@
 | [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념) |
 | [4. 설치](#4-설치) / [5. 주요 명령어](#5-주요-명령어) / [6. Dockerfile](#6-dockerfile) |
 | [7. docker-compose](#7-docker-compose) / [8. 네트워크](#8-네트워크) / [9. 볼륨](#9-볼륨) |
-| [10. Tips](#10-tips) |
+| [10. Tips](#10-tips) / [11. cgroup Namespace](#11-cgroup-namespace) |
 
 ---
 
@@ -266,6 +266,68 @@ CMD ["./app"]
 ```
 
 ⚠️ `docker system prune -a`는 중지된 컨테이너와 미사용 이미지를 모두 삭제합니다. 운영 환경에서 주의가 필요합니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 11. cgroup Namespace
+
+### 배경
+
+cgroup v2 환경에서 컨테이너 안에 systemd를 실행하려면 cgroup namespace를 host와 공유해야 합니다. 격리된 cgroup namespace에서는 systemd가 자신의 cgroup 트리를 인식하지 못해 즉시 종료됩니다.
+
+### docker run
+
+```bash
+# --cgroupns host 옵션으로 호스트 cgroup namespace 공유
+sudo docker run -d --name rocky9 --privileged --cgroupns host \
+  -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
+  geerlingguy/docker-rockylinux9-ansible /usr/sbin/init
+```
+
+### docker compose (v5.x)
+
+Compose v5.x에서 `cgroupns_mode` 키가 Compose Spec에서 제거되어 사용 시 오류가 발생합니다.
+
+```
+validating compose.yml: services.rocky9 additional properties 'cgroupns_mode' not allowed
+```
+
+**해결:** Docker daemon 기본 설정을 변경합니다.
+
+```bash
+# /etc/docker/daemon.json
+sudo tee /etc/docker/daemon.json > /dev/null << 'EOF'
+{
+  "default-cgroupns-mode": "host"
+}
+EOF
+
+sudo systemctl restart docker
+```
+
+이후 compose.yml에 `cgroupns_mode` 없이도 모든 컨테이너가 host cgroup namespace로 실행됩니다.
+
+```yaml
+services:
+  rocky9:
+    image: geerlingguy/docker-rockylinux9-ansible
+    privileged: true
+    command: /usr/sbin/init
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+```
+
+### 버전별 정리
+
+| 항목                  | 상태                                          |
+|-----------------------|-----------------------------------------------|
+| `docker run`          | `--cgroupns host` 옵션 사용 가능              |
+| Compose v2.x (구버전) | `cgroupns_mode: host` 키 지원                 |
+| Compose v5.x (최신)  | `cgroupns_mode` 키 제거됨 → `daemon.json` 우회 |
+
+⚠️ `"default-cgroupns-mode": "host"`는 모든 컨테이너에 적용됩니다. 보안 격리가 필요한 환경에서는 `docker run --cgroupns private`로 개별 컨테이너를 격리할 수 있습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
