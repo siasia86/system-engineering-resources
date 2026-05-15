@@ -18,9 +18,9 @@ cgroup(Control Groups)은 Linux 커널이 프로세스 그룹별로 리소스를
 ┌─────────────────────────────────────────────────────────────┐
 │                    cgroup role                              │
 │                                                             │
-│  Process Group A  →  CPU 50% / Memory 1GB / IO 100MB/s     │
-│  Process Group B  →  CPU 20% / Memory 512MB                │
-│  Process Group C  →  no limit                              │
+│  Process Group A  →  CPU 50% / Memory 1GB / IO 100MB/s      │
+│  Process Group B  →  CPU 20% / Memory 512MB                 │
+│  Process Group C  →  no limit                               │
 └─────────────────────────────────────────────────────────────┘
 ```
 
