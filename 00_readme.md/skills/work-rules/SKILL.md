@@ -13,6 +13,15 @@ List targets → show impact → confirm before proceeding
 - diagram: ASCII art (`+`, `-`, `|`)
 - tree: use `├──`, `└──`, `│` style
 - table: align columns considering Korean character width (vi vertical alignment)
+  - Korean char = 2 width, ASCII = 1 width
+  - pad each cell so all rows have equal column display width
+  - separator line `|---|` length = max column width + 2 (one space each side)
+  - auto-align tables after writing with:
+    ```python
+    # quick table align snippet
+    def dw(s): return sum(2 if '\uAC00'<=c<='\uD7A3' else 1 for c in s)
+    # pad cell: ' ' + cell + ' ' * (max_dw - dw(cell) + 1)
+    ```
 - output language: Korean
 
 ## 5. Naming convention
