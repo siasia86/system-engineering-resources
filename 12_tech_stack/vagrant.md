@@ -7,6 +7,7 @@
 | [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념) |
 | [4. 설치](#4-설치) / [5. 주요 명령어](#5-주요-명령어) / [6. Vagrantfile](#6-vagrantfile) |
 | [7. 프로비저닝](#7-프로비저닝) / [8. 멀티 머신](#8-멀티-머신) / [9. Tips](#9-tips) |
+| [10. Ansible + Hyper-V 구성](#10-ansible--hyper-v-구성) |
 
 ---
 
@@ -256,6 +257,91 @@ config.vm.synced_folder ".", "/vagrant", disabled: true
 ```
 
 ⚠️ Windows Guest 사용 시 라이선스가 필요합니다. `gusztavvargadr` box는 평가판(180일)입니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 10. Ansible + Hyper-V 구성
+
+Linux 대상 Ansible 테스트는 Docker(Molecule)로 수행하고, Windows 대상만 Vagrant + Hyper-V를 사용합니다.
+
+### 구성 다이어그램
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  A Server (Linux) — Ansible Control Node                                │
+│                                                                         │
+│  /opt/ansible/                                                          │
+│  ├── playbooks/windows.yml                                              │
+│  ├── inventory/windows_hosts                                            │
+│  └── roles/                                                             │
+│                                                                         │
+│  ansible-playbook -i inventory/windows_hosts playbooks/windows.yml      │
+│         │              │              │                                 │
+└─────────┼──────────────┼──────────────┼─────────────────────────────────┘
+          │ WinRM:5985   │ WinRM:5985   │ WinRM:5985
+          v              v              v
+┌─────────────────────────────────────────────────────────────────────────┐
+│  B Server (Windows + Hyper-V) — VM Host                                 │
+│                                                                         │
+│  Vagrant installed (choco install vagrant)                              │
+│  Vagrantfile: C:\vagrant\ansible-test\Vagrantfile                       │
+│                                                                         │
+│  vagrant up  ──>  Hyper-V  ──>  VM create                               │
+│                                                                         │
+│  ┌───────────────┐  ┌───────────────┐  ┌───────────────┐                │
+│  │  win2019 VM   │  │  win2022 VM   │  │  win2025 VM   │                │
+│  │  DHCP IP      │  │  DHCP IP      │  │  DHCP IP      │                │
+│  │  WinRM:5985   │  │  WinRM:5985   │  │  WinRM:5985   │                │
+│  └───────────────┘  └───────────────┘  └───────────────┘                │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### 운영 흐름
+
+1. B 서버(Windows)에서 `vagrant up` 실행 → Hyper-V VM 생성
+2. VM IP 확인 (`Get-VM | Get-VMNetworkAdapter | Select VMName, IPAddresses`)
+3. A 서버(Linux) inventory에 IP 등록
+4. A 서버에서 `ansible-playbook` 실행 → WinRM으로 VM 프로비저닝
+
+### B 서버 설치 (PowerShell 관리자)
+
+```powershell
+# Hyper-V 활성화
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+
+# Vagrant 설치
+choco install vagrant -y
+
+# 확인
+vagrant --version
+Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V
+```
+
+### A 서버 inventory 예시
+
+```ini
+[windows]
+win2019 ansible_host=172.28.x.11
+win2022 ansible_host=172.28.x.12
+win2025 ansible_host=172.28.x.13
+
+[windows:vars]
+ansible_user=vagrant
+ansible_password=vagrant
+ansible_connection=winrm
+ansible_winrm_transport=ntlm
+ansible_winrm_port=5985
+ansible_winrm_scheme=http
+```
+
+### 역할 분담
+
+| 대상 | 도구 | 실행 위치 |
+|------|------|-----------|
+| Linux (Ubuntu, Rocky, AL2023) | Molecule + Docker | A 서버 (Linux) |
+| Windows (2019, 2022, 2025) | Vagrant + Hyper-V | B 서버 (Windows) |
 
 [⬆ 목차로 돌아가기](#목차)
 
