@@ -24,6 +24,7 @@
   ],
   "resources": [
     "skill://work-rules",
+    "skill://using-skills",
     "skill://readme-template",
     "skill://git-commit-rule",
     "skill://security-tools",
@@ -32,6 +33,8 @@
     "skill://incremental-change",
     "skill://planning-and-breakdown",
     "skill://spec-driven-infra",
+    "skill://doubt-driven-infra",
+    "skill://shipping-checklist",
     "file://~/.kiro/markdown/STYLE.md"
   ],
   "hooks": {
