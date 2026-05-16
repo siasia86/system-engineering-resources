@@ -108,3 +108,11 @@ Apply when: "리뷰", "review", "검토", "코드 리뷰"
 - 🔴 items: must fix before merge
 - ⚠️ items: should fix (technical debt if skipped)
 - 💡 items: optional improvement
+
+## Red Flags
+
+- 리뷰 없이 merge/apply 진행
+- 🔴 항목을 무시하고 진행
+- "나중에 고치겠습니다"로 보안 이슈 보류
+- 리뷰 범위를 임의로 축소 (요청된 파일 일부만 검토)
+- 변경 의도를 이해하지 않고 형식만 검토
