@@ -28,6 +28,10 @@
     "skill://git-commit-rule",
     "skill://security-tools",
     "skill://md-link-check",
+    "skill://debugging-and-recovery",
+    "skill://incremental-change",
+    "skill://planning-and-breakdown",
+    "skill://spec-driven-infra",
     "file://~/.kiro/markdown/STYLE.md"
   ],
   "hooks": {

@@ -1,3 +1,8 @@
+---
+name: security-tools
+description: Documents security masking tools (ip_mask.py, json_mask.py, aws-security-check.sh, git-security-check.sh). Use when masking sensitive data, running security checks, or modifying masking scripts.
+---
+
 # Security Masking Tools
 
 ## 1. 스크립트 목록
@@ -108,3 +113,14 @@ sudo python3 -c "import py_compile; py_compile.compile('/root/sj_del/json_mask.p
 
 - `/root/sj_del/security-check.conf` — EXCLUDE_IPS, EXCLUDE_PASSWORDS, EXCLUDE_KEYWORDS, EXCLUDE_BUCKETS, EXCLUDE_DIRS, EXCLUDE_FILES
 - `/root/sj_del/ip_mask.toml` — 구버전 설정 (사용 안 함, 삭제 가능)
+
+## 12. Dockerfile / Container 보안 체크
+
+수동 검사 항목 (스크립트 미포함):
+
+- `FROM` 이미지에 태그 고정 (`:latest` 금지)
+- `USER root`로 실행하지 않음 (non-root user 지정)
+- 불필요한 패키지 미설치 (`--no-install-recommends`)
+- 시크릿이 레이어에 남지 않음 (multi-stage build 또는 `--secret`)
+- `COPY` 범위 최소화 (`.dockerignore` 활용)
+- health check 정의 (`HEALTHCHECK` instruction)

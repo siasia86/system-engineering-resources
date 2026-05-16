@@ -1,3 +1,8 @@
+---
+name: git-commit-rule
+description: Defines git commit message format and conventions. Use when committing changes — Korean description, type prefix, 50 chars max, no period.
+---
+
 # Git 커밋 메시지 규칙
 
 ## 형식

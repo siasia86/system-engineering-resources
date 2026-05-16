@@ -19,6 +19,7 @@
   "resources": [
     "skill://code-review",
     "skill://security-tools",
+    "skill://testing-guide",
     "skill://git-commit-rule",
     "skill://work-rules"
   ],

@@ -17,7 +17,8 @@
   ],
   "resources": [
     "skill://security-tools",
-    "skill://work-rules"
+    "skill://work-rules",
+    "skill://code-review"
   ],
   "hooks": {
     "preToolUse": [

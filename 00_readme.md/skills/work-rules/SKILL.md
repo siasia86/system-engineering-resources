@@ -1,3 +1,8 @@
+---
+name: work-rules
+description: Defines operating rules for all agents. Use when executing any task — confirms before action, requires rollback plans for dangerous operations, enforces naming conventions and credential placeholders.
+---
+
 # Work Rules
 
 ## 1. Confirm before action
@@ -6,22 +11,18 @@ Print task summary before execution. format: "수행할 작업: - [item]"
 ## 2. Dangerous operations
 terraform apply, infra changes, service restart, deploy → ask "진행할까요?" before execution
 
+For complex infra changes, use `skill://spec-driven-infra` → `skill://planning-and-breakdown` → `skill://incremental-change` workflow.
+
 ## 3. Delete operations
 List targets → show impact → confirm before proceeding
 
 ## 4. Markdown rules
-- diagram: ASCII art (`+`, `-`, `|`)
 - tree: use `├──`, `└──`, `│` style
 - table: align columns considering Korean character width (vi vertical alignment)
   - Korean char = 2 width, ASCII = 1 width
   - pad each cell so all rows have equal column display width
   - separator line `|---|` length = max column width + 2 (one space each side)
-  - auto-align tables after writing with:
-    ```python
-    # quick table align snippet
-    def dw(s): return sum(2 if '\uAC00'<=c<='\uD7A3' else 1 for c in s)
-    # pad cell: ' ' + cell + ' ' * (max_dw - dw(cell) + 1)
-    ```
+- Detailed rules: see `file://~/.kiro/markdown/STYLE.md`
 - output language: Korean
 
 ## 5. Naming convention
@@ -30,7 +31,7 @@ env: dev / qa / stg / prd
 ex: prd-app-web-frontend, dev-db-rds-postgresql
 
 ## 6. Symbols
-Allowed: ✅ ❌ ⚠️ 🟢 🟡 🔴 ★★☆☆☆ 
+Allowed: ✅ ❌ ⚠️ 🟢 🟡 🔴 ★★☆☆☆
 No other emojis allowed (no decorative emojis)
 
 ## 7. sudo
@@ -87,3 +88,12 @@ sudo bash /root/32_system-engineering-resources/md-style-check.sh <path>
 - Run on the specific file or directory modified (not the entire repo unless requested)
 - Fix all reported issues before presenting the result
 - Use `--strict` / `-s` flag to check without whitelist (for full review)
+
+## 12. Post-change verification
+After any infrastructure or code change, verify in order:
+1. Syntax/lint pass (terraform validate, shellcheck, ansible --syntax-check)
+2. Dry-run clean (terraform plan, ansible --check)
+3. Service health (curl health endpoint, aws describe-*)
+4. Monitoring normal (no new alarms)
+
+Skip verification only if explicitly told by user.

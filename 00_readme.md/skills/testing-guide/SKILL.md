@@ -1,3 +1,8 @@
+---
+name: testing-guide
+description: Guides test writing with AAA pattern, BVA, and equivalence partitioning. Use when writing unit tests, integration tests, or infrastructure validation tests.
+---
+
 # Testing Guide
 
 Apply when: "테스트 작성", "테스트 추가", "test", "write test"
@@ -64,3 +69,52 @@ For any range [min, max], always test:
 - [ ] Boundary values (min, max, min-1, max+1)
 - [ ] Empty input (None, "", [])
 - [ ] Idempotency (if applicable)
+
+## Infrastructure Testing
+
+| 대상 | 검증 명령어 |
+|------|-------------|
+| Terraform syntax | `terraform validate` |
+| Terraform format | `terraform fmt -check` |
+| Terraform plan | `terraform plan` (No unexpected changes) |
+| Ansible syntax | `ansible-playbook --syntax-check` |
+| Ansible dry-run | `ansible-playbook --check --diff` |
+| Shell scripts | `shellcheck <script>.sh` |
+| Shell syntax | `bash -n <script>.sh` |
+
+### IaC Test Principles
+- `terraform plan` before every apply
+- `ansible --check` before every run
+- Idempotency: re-run produces no changes
+- Validate after apply: health check, resource state query
+- Test failure → switch to `skill://debugging-and-recovery`
+
+### Container / Docker Testing
+
+| 대상 | 검증 명령어 |
+|------|-------------|
+| Dockerfile lint | `hadolint Dockerfile` |
+| Image build | `docker build --no-cache -t test .` |
+| Container health | `docker inspect --format='{{.State.Health.Status}}'` |
+| Compose syntax | `docker compose config` |
+| Port binding | `ss -tlnp \| grep <port>` |
+
+### Post-Change Verification Pattern
+
+변경 후 반드시 실행하는 검증 순서:
+
+```bash
+# 1. 문법/구문 검증
+terraform validate && terraform fmt -check
+ansible-playbook --syntax-check site.yml
+bash -n script.sh && shellcheck script.sh
+
+# 2. Dry-run
+terraform plan
+ansible-playbook --check --diff site.yml
+
+# 3. 적용 후 상태 확인
+terraform plan  # "No changes" 확인
+curl -f http://endpoint/health
+aws ec2 describe-instance-status --instance-ids <id>
+```
