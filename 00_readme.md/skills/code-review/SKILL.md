@@ -1,3 +1,8 @@
+---
+name: code-review
+description: Provides a structured code review checklist. Use when reviewing code, scripts, or IaC files. Covers correctness, security, error handling, performance, and infrastructure as code.
+---
+
 # Code Review
 
 Apply when: "리뷰", "review", "검토", "코드 리뷰"
@@ -59,6 +64,30 @@ Apply when: "리뷰", "review", "검토", "코드 리뷰"
 - Python version compatibility (f-string 3.6+, match 3.10+, etc.)
 - OS-specific code (path separators, commands)
 - Dependency version constraints
+
+### 9. Infrastructure as Code (Terraform / Ansible)
+- Hardcoded values → variables or locals
+- Missing `description` on variables/outputs
+- Resource naming convention (`[env]-[category]-[service]-[detail]`)
+- Missing tags (Name, Environment, Owner, ManagedBy)
+- Overly permissive IAM (`*` actions or resources)
+- Security Group `0.0.0.0/0` inbound without justification
+- Missing encryption (S3, EBS, RDS `storage_encrypted`)
+- No lifecycle/prevent_destroy on stateful resources
+- Ansible: missing `become`, handler not notified, no `changed_when`
+- State drift risk: manual console changes not reflected in code
+
+### 10. Shell / Bash Scripts
+- Missing `set -euo pipefail` (fail-fast + undefined var detection)
+- Unquoted variables (`$VAR` → `"$VAR"`, prevents word splitting)
+- Missing input validation (argument count, file existence)
+- Hardcoded paths → variables or config file
+- No cleanup trap (`trap cleanup EXIT`)
+- Using `echo` for errors → `>&2` (stderr)
+- Parsing command output instead of using proper tools (awk/jq)
+- Missing `shellcheck` compliance
+- Race condition in temp file creation → `mktemp`
+- Excessive use of `sudo` without justification
 
 ## Output Format
 

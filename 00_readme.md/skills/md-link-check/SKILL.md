@@ -1,3 +1,8 @@
+---
+name: md-link-check
+description: Validates markdown internal links, anchor links, and TOC completeness. Use after creating or modifying any .md file to verify link integrity and heading numbering.
+---
+
 # Markdown Link & TOC Check Rules
 
 ## 목적
@@ -148,7 +153,7 @@ H2 번호는 `1.`부터 시작하여 빠짐없이 연속되어야 합니다.
 
 규칙: `**` 닫힘 태그 바로 뒤에 한글이 오면 반드시 공백 1칸 삽입.
 
-## 5. 문서 작성 후 체크리스트
+## 6. 문서 작성 후 체크리스트
 
 문서를 새로 작성하거나 H2 섹션을 추가/수정/삭제한 경우 반드시 확인합니다.
 
