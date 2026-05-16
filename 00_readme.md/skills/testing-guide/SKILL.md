@@ -118,3 +118,11 @@ terraform plan  # "No changes" 확인
 curl -f http://endpoint/health
 aws ec2 describe-instance-status --instance-ids <id>
 ```
+
+## Red Flags
+
+- 테스트 없이 "동작 확인했습니다" 주장
+- happy path만 테스트하고 에러 케이스 누락
+- terraform plan 미확인 상태에서 apply
+- 테스트 실패를 무시하고 진행
+- "나중에 테스트 추가하겠습니다"로 건너뜀
