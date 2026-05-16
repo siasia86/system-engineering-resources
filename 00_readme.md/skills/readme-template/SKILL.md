@@ -1,3 +1,8 @@
+---
+name: readme-template
+description: Defines the mandatory footer template for all .md files — GitHub badges, dates, and license. Use when creating or modifying any markdown document.
+---
+
 # README 템플릿 규칙
 
 ## 모든 .md 파일 생성/수정 시 필수 푸터
@@ -17,7 +22,7 @@
 ![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
 
 ---
-**작성일**: YYYY-MM-DD 
+**작성일**: YYYY-MM-DD
 
 **마지막 업데이트**: YYYY-MM-DD
 
