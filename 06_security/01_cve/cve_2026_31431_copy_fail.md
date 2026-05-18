@@ -11,7 +11,7 @@
 
 ## 1. 개요
 
-> ⚠️ **CISA KEV 등재 — 조치 기한: 2026-05-15**. 실제 익스플로잇 확인됨. 즉시 패치 또는 완화 조치 필요.
+> ⚠️ **CISA KEV 등재 (조치 기한 2026-05-15 경과)**. 실제 익스플로잇 확인됨. 즉시 패치 필요.
 
 | 항목 | 내용 |
 |------|------|
@@ -28,7 +28,7 @@
 | PoC | 공개됨 (copy.fail — 732바이트 Python 스크립트) |
 | 영향 | 비권한 로컬 사용자 → root 권한 상승 |
 
-> 동일 버그 클래스(page-cache write): [CVE-2026-43284](./cve_2026_43284_dirty_frag.md) / [CVE-2026-43500](./cve_2026_43500_dirty_frag.md) (**Dirty Frag**, 발견자: Hyunwoo Kim @v4bel)
+> 동일 버그 클래스(page-cache write): [CVE-2026-43284](./cve_2026_43284_dirty_frag.md) / [CVE-2026-43500](./cve_2026_43500_dirty_frag.md) (**Dirty Frag**, 발견자: Hyunwoo Kim @v4bel) / [CVE-2026-46300](./cve_2026_46300_fragnesia.md) (**Fragnesia**, 발견자: William Bowling)
 > Copy Fail과 Dirty Frag는 **별개 연구자가 독립적으로 발견**한 별개 취약점입니다. 임시 완화 모듈도 다릅니다 (`algif_aead` vs `esp4/esp6/rxrpc`).
 
 [⬆ 목차로 돌아가기](#목차)
@@ -192,8 +192,9 @@ for v in sorted(linux,key=lambda x:x['dateAdded'],reverse=True)[:5]:
 - Copy Fail PoC: [copy.fail](https://copy.fail/) — ★★☆☆☆
 - CISA KEV Catalog: [cisa.gov/known-exploited-vulnerabilities-catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) — ★★★☆☆
 - Linux Kernel Patch: [git.kernel.org](https://git.kernel.org/stable/c/19d43105a97be0810edbda875f2cd03f30dc130c) — ★★★★☆
-- [cve_2026_43284.md](./cve_2026_43284_dirty_frag.md) — CVE-2026-43284 (Dirty Frag / xfrm ESP)
-- [cve_2026_43500.md](./cve_2026_43500_dirty_frag.md) — CVE-2026-43500 (Dirty Frag / rxrpc)
+- [cve_2026_43284_dirty_frag.md](./cve_2026_43284_dirty_frag.md) — CVE-2026-43284 (Dirty Frag / xfrm ESP)
+- [cve_2026_43500_dirty_frag.md](./cve_2026_43500_dirty_frag.md) — CVE-2026-43500 (Dirty Frag / rxrpc)
+- [cve_2026_46300_fragnesia.md](./cve_2026_46300_fragnesia.md) — CVE-2026-46300 (Fragnesia)
 
 ---
 
@@ -210,6 +211,6 @@ for v in sorted(linux,key=lambda x:x['dateAdded'],reverse=True)[:5]:
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-05-13
+**마지막 업데이트**: 2026-05-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.
