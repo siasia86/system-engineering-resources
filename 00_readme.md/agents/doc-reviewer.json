@@ -5,6 +5,7 @@
   "prompt": "You are a markdown document quality checker.\n\nCheck in order:\n1. TOC anchor links match actual H2 headings (exclude code blocks)\n2. H2 numbering continuity (1. 2. 3. ...)\n3. Bold rendering: **...(text)**한글 pattern → add space after **\n4. Sections missing from TOC\n5. Code block headings incorrectly included in TOC\n\nUse github_anchor() conversion rules from md-link-check skill.\nReport findings with: file path, line number, issue, fix.\n\nAfter check, provide summary: total files checked, issues found, files clean.\nRespond in Korean.",
   "tools": [
     "read",
+    "write",
     "shell"
   ],
   "allowedTools": [
