@@ -15,7 +15,7 @@
 
 ## 1. 개요
 
-CVE-2026-31431 (Copy Fail), CVE-2026-43284 / CVE-2026-43500 (Dirty Frag)은 모두 **비권한 로컬 사용자 → root 권한 상승(LPE)** 취약점입니다.
+CVE-2026-31431 (Copy Fail), CVE-2026-43284 / CVE-2026-43500 (Dirty Frag), CVE-2026-46300 (Fragnesia)은 모두 **비권한 로컬 사용자 → root 권한 상승(LPE)** 취약점입니다.
 
 "일반 계정에서 `sudo`로 root를 취득할 수 있는데 실효성이 있는가?"라는 질문에 대한 답은 **전제가 다르다**는 것입니다.
 
@@ -80,7 +80,7 @@ root          ← 최고 권한
 www-data 쉘 획득 (sudo 없음)
     │
     ▼
-CVE-2026-31431 / CVE-2026-43284+43500 실행
+CVE-2026-31431 / CVE-2026-43284+43500 / CVE-2026-46300 실행
     │
     ▼
 root 권한 획득
@@ -157,19 +157,9 @@ sudo -l -U postgres 2>/dev/null
 
 ---
 
-## 참고 자료
-
-- [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md) — CVE-2026-31431 (Copy Fail)
-- [cve_2026_43284_dirty_frag.md](./cve_2026_43284_dirty_frag.md) — CVE-2026-43284 (Dirty Frag)
-- [cve_2026_43500_dirty_frag.md](./cve_2026_43500_dirty_frag.md) — CVE-2026-43500 (Dirty Frag)
-- Copy Fail: [copy.fail](https://copy.fail/) — ★★☆☆☆
-- Dirty Frag: [github.com/V4bel/dirtyfrag](https://github.com/V4bel/dirtyfrag) — ★★☆☆☆
-
----
-
 ## 6. 임시 조치 후 침해 여부 확인
 
-임시 조치(모듈 blacklist)는 **추가 공격을 막는 것**입니다. CVE 공개일(2026-05-07) 이후 이미 침해됐을 가능성을 별도로 확인해야 합니다.
+임시 조치(모듈 blacklist)는 **추가 공격을 막는 것**입니다. Copy Fail 공개일(2026-04-22) 이후 이미 침해됐을 가능성을 별도로 확인해야 합니다.
 
 ### 비정상 프로세스 / 계정
 
@@ -226,14 +216,14 @@ sudo rpm -V openssh-server sudo bash coreutils 2>/dev/null
 ### 로그 확인 (CVE 공개일 이후)
 
 ```bash
-# 2026-05-07 이후 root 세션
-journalctl --since "2026-05-07" | grep -i "session opened for user root"
+# 2026-04-22 이후 root 세션 (Copy Fail 공개일 기준)
+journalctl --since "2026-04-22" | grep -i "session opened for user root"
 
-# 2026-05-07 이후 SSH 접속
-journalctl --since "2026-05-07" -u ssh | grep -E "Accepted|Failed|Invalid"
+# 2026-04-22 이후 SSH 접속
+journalctl --since "2026-04-22" -u ssh | grep -E "Accepted|Failed|Invalid"
 
 # sudo / su 이력
-grep -E "sudo|su|ROOT" /var/log/auth.log | grep "2026-05" | tail -50
+grep -E "sudo|su|ROOT" /var/log/auth.log | grep "2026-04\|2026-05" | tail -50
 
 # crontab 백도어 확인
 crontab -l 2>/dev/null
@@ -252,6 +242,17 @@ ls -la /etc/cron* /var/spool/cron/crontabs/ 2>/dev/null
 
 ---
 
+## 참고 자료
+
+- [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md) — CVE-2026-31431 (Copy Fail)
+- [cve_2026_43284_dirty_frag.md](./cve_2026_43284_dirty_frag.md) — CVE-2026-43284 (Dirty Frag)
+- [cve_2026_43500_dirty_frag.md](./cve_2026_43500_dirty_frag.md) — CVE-2026-43500 (Dirty Frag)
+- [cve_2026_46300_fragnesia.md](./cve_2026_46300_fragnesia.md) — CVE-2026-46300 (Fragnesia)
+- Copy Fail: [copy.fail](https://copy.fail/) — ★★☆☆☆
+- Dirty Frag: [github.com/V4bel/dirtyfrag](https://github.com/V4bel/dirtyfrag) — ★★☆☆☆
+
+---
+
 ## 통계
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
@@ -265,6 +266,6 @@ ls -la /etc/cron* /var/spool/cron/crontabs/ 2>/dev/null
 
 **작성일**: 2026-05-14
 
-**마지막 업데이트**: 2026-05-14
+**마지막 업데이트**: 2026-05-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.
