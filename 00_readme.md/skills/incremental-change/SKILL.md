@@ -26,9 +26,9 @@ description: Delivers infrastructure changes incrementally. Use when making any 
 ```
 ┌──────────────────────────────────────────┐
 │                                          │
-│   Change ──→ Plan ──→ Apply ──→ Verify ──┐
-│       ^                                  │
-│       └────── Commit <───────────────────┘
+│ Change ──→ Plan ──→ Apply ──→ Verify ──┐ │
+│     ^                                  │ │
+│     └────── Commit <───────────────────┘ │
 │               │                          │
 │               v                          │
 │           Next slice                     │

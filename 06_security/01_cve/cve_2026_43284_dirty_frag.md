@@ -35,9 +35,9 @@
 
 따라서 임시 완화 시 **`esp4`, `esp6`, `rxrpc` 세 모듈을 모두 차단**해야 합니다. 하나만 차단하면 나머지 경로로 우회 가능합니다.
 
-CVE-2026-31431 (`algif_aead`)은 동일한 skb shared frag in-place 복호화 버그 클래스이지만 **독립적인 별개 경로**이며 별도 완화가 필요합니다. → [cve_2026_31431.md](./cve_2026_31431_copy_fail.md)
+CVE-2026-31431 (`algif_aead`)은 동일한 skb shared frag in-place 복호화 버그 클래스이지만 **독립적인 별개 경로**이며 별도 완화가 필요합니다. → [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md)
 
-> 동일 계열 취약점: [CVE-2026-31431](./cve_2026_31431_copy_fail.md) (CISA KEV) / [CVE-2026-43500](./cve_2026_43500_dirty_frag.md) (rxrpc)
+> 동일 계열 취약점: [CVE-2026-31431](./cve_2026_31431_copy_fail.md) (CISA KEV) / [CVE-2026-43500](./cve_2026_43500_dirty_frag.md) (rxrpc) / [CVE-2026-46300](./cve_2026_46300_fragnesia.md) (Fragnesia)
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -243,8 +243,9 @@ rm -f dirty_frag_detect.py
 - Dirty Frag 원본 (V4bel): [github.com/V4bel/dirtyfrag](https://github.com/V4bel/dirtyfrag) — ★★★☆☆
 - DirtyFrag-Detector: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — ★★☆☆☆
 - Linux Kernel Patch: [git.kernel.org](https://git.kernel.org/stable/c/f4c50a4034e62ab75f1d5cdd191dd5f9c77fdff4) — ★★★★☆
-- [cve_2026_31431.md](./cve_2026_31431_copy_fail.md) — CVE-2026-31431 (CISA KEV)
-- [cve_2026_43500.md](./cve_2026_43500_dirty_frag.md) — CVE-2026-43500 (rxrpc)
+- [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md) — CVE-2026-31431 (CISA KEV)
+- [cve_2026_43500_dirty_frag.md](./cve_2026_43500_dirty_frag.md) — CVE-2026-43500 (rxrpc)
+- [cve_2026_46300_fragnesia.md](./cve_2026_46300_fragnesia.md) — CVE-2026-46300 (Fragnesia)
 
 ---
 
@@ -261,6 +262,6 @@ rm -f dirty_frag_detect.py
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-05-13
+**마지막 업데이트**: 2026-05-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.
