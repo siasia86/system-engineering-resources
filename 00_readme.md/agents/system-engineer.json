@@ -44,8 +44,7 @@
         "tools": [
           "execute_bash",
           "use_aws",
-          "fs_write",
-          "shell"
+          "fs_write"
         ]
       }
     ],
