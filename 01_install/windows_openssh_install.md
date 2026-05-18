@@ -114,18 +114,19 @@ Linux에서 공개키 확인:
 cat ~/.ssh/id_ed25519.pub
 ```
 
-Windows에서 등록 (Administrators 그룹 계정 공통):
-
-> ⚠️ Administrators 그룹 계정은 `authorized_keys`가 무시됩니다.
+> ⚠️ Administrators 그룹 계정은 `~/.ssh/authorized_keys`가 무시됩니다.
 > 반드시 `C:\ProgramData\ssh\administrators_authorized_keys`에 등록해야 합니다.
 
+Windows에서 등록:
+
 ```powershell
+# 키를 배열로 관리 — 키 추가 시 기존 키를 포함해서 전체 재작성
 $keys = @(
     "ssh-ed25519 AAAA...key1 user1@host",
     "ssh-ed25519 AAAA...key2 user2@host"
 )
 
-# LF 강제 저장 (CRLF이면 인증 실패)
+# LF 강제 저장 필수 (Set-Content는 CRLF로 저장 → 인증 실패)
 $file = "C:\ProgramData\ssh\administrators_authorized_keys"
 New-Item -Path "C:\ProgramData\ssh" -ItemType Directory -Force
 [System.IO.File]::WriteAllText($file, ($keys -join "`n") + "`n", [System.Text.Encoding]::UTF8)
@@ -163,6 +164,25 @@ ansible_ssh_private_key_file=~/.ssh/id_ed25519
 
 ```bash
 ansible windows -i inventory.ini -m ansible.windows.win_ping
+```
+
+#### UTF-8 출력 (한글 깨짐 방지)
+
+SSH 비대화형 세션에서 Windows 출력이 CP949로 나와 한글이 깨집니다.
+명령 앞에 `chcp 65001`을 붙이면 UTF-8로 출력됩니다.
+
+```bash
+ssh ansibleuser@<Windows_IP> 'chcp 65001; systeminfo'
+```
+
+Ansible playbook에서는:
+
+```yaml
+- name: UTF-8 설정 후 명령 실행
+  ansible.windows.win_shell: |
+    chcp 65001 | Out-Null
+    systeminfo
+  register: result
 ```
 
 #### Playbook 예시
@@ -210,17 +230,36 @@ netsh advfirewall firewall set rule name="OpenSSH-Server-In-TCP" `
 
 | 증상 | 원인 | 조치 |
 |------|------|------|
-| `Connection reset` (인증 직전) | `PubkeyAuthentication` 주석 처리 | `sshd_config`에서 주석 제거 후 재시작 |
+| `Connection reset` (인증 직전) | `PubkeyAuthentication` 주석 처리 | `sshd_config` 주석 제거 후 재시작 |
 | `Connection reset` (Administrator) | OpenSSH 9.5 버그 | 별도 계정 생성 후 Administrators 그룹 추가 |
 | 공개키 인증 실패 | 파일 권한 과다 | `icacls`로 해당 계정/SYSTEM만 허용 |
-| 공개키 인증 실패 (Administrators 그룹 계정) | `authorized_keys` 무시됨 — Administrators 그룹은 `administrators_authorized_keys` 우선 참조 | `C:\ProgramData\ssh\administrators_authorized_keys`에 키 등록 |
-| 공개키 인증 실패 (키 등록했는데 안 됨) | `authorized_keys` CRLF 줄바꿈 | `[System.IO.File]::WriteAllText`로 LF 강제 저장 |
+| 공개키 인증 실패 (Administrators 그룹) | `authorized_keys` 무시 | `administrators_authorized_keys`에 등록 |
+| 공개키 인증 실패 (키 등록 후에도 안 됨) | CRLF 줄바꿈 | `WriteAllText`로 LF 강제 저장 |
 | 접속 후 즉시 종료 | DefaultShell 미설정 | `HKLM:\SOFTWARE\OpenSSH` DefaultShell 등록 |
 | sshd 시작 실패 | `sshd_config` 문법 오류 | `SyslogFacility` 등 Windows 미지원 옵션 제거 |
+| 출력 한글 깨짐 | CP949 인코딩 | 명령 앞에 `chcp 65001` 추가 |
+
+### SSH 클라이언트 config 주의사항
+
+```
+# 틀림 — .pub(공개키)을 지정하면 인증 불가
+IdentityFile ~/.ssh/id_ed25519.pub
+
+# 맞음 — 개인키 경로 지정
+IdentityFile ~/.ssh/id_ed25519
+```
+
+들여쓰기는 탭/스페이스 모두 허용하나 **같은 Host 블록 안에서 혼용 금지**입니다.
+
+```
+# 올바른 예
+Host 10.200.101.*
+    User ansibleuser
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
+```
 
 ### 디버그 모드로 원인 확인
-
-sshd 서비스를 중지하고 포그라운드로 실행하면 상세 로그를 볼 수 있습니다:
 
 ```powershell
 Stop-Service sshd
