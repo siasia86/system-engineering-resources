@@ -147,7 +147,7 @@ ssh ansibleuser@<Windows_IP>
 
 WinRM 없이 SSH로 직접 연결합니다.
 
-#### inventory.ini
+### inventory.ini
 
 ```ini
 [windows]
@@ -160,13 +160,13 @@ ansible_shell_type=powershell
 ansible_ssh_private_key_file=~/.ssh/id_ed25519
 ```
 
-#### 동작 확인
+### 동작 확인
 
 ```bash
 ansible windows -i inventory.ini -m ansible.windows.win_ping
 ```
 
-#### UTF-8 출력 (한글 깨짐 방지)
+### UTF-8 출력 (한글 깨짐 방지)
 
 SSH 비대화형 세션에서 Windows 출력이 CP949로 나와 한글이 깨집니다.
 명령 앞에 `chcp 65001`을 붙이면 UTF-8로 출력됩니다.
@@ -185,7 +185,7 @@ Ansible playbook에서는:
   register: result
 ```
 
-#### Playbook 예시
+### Playbook 예시
 
 ```yaml
 - name: Windows 정보 수집
@@ -241,7 +241,7 @@ netsh advfirewall firewall set rule name="OpenSSH-Server-In-TCP" `
 
 ### SSH 클라이언트 config 주의사항
 
-```
+```text
 # 틀림 — .pub(공개키)을 지정하면 인증 불가
 IdentityFile ~/.ssh/id_ed25519.pub
 
@@ -251,7 +251,7 @@ IdentityFile ~/.ssh/id_ed25519
 
 들여쓰기는 탭/스페이스 모두 허용하나 **같은 Host 블록 안에서 혼용 금지**입니다.
 
-```
+```text
 # 올바른 예
 Host 10.200.101.*
     User ansibleuser
@@ -277,6 +277,13 @@ Get-WinEvent -LogName "OpenSSH/Operational" -MaxEvents 20 | Select TimeCreated, 
 ---
 
 [⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 참고 자료
+
+- Microsoft Docs: [docs.microsoft.com/windows-server/administration/openssh](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse) — ★★★☆☆
+- OpenSSH for Windows: [github.com/PowerShell/Win32-OpenSSH](https://github.com/PowerShell/Win32-OpenSSH) — ★★☆☆☆
 
 ---
 
