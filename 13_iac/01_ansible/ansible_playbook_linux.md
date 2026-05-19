@@ -48,8 +48,10 @@ ansible_remote_tmp=/tmp/.ansible/tmp
 
 ```yaml
 # OS 무관 (자동 감지)
+# ⚠️ curl은 Rocky9/AmazonLinux2023에서 curl-minimal과 충돌 가능
+# 해당 OS에서는 아래 OS별 모듈로 분기 처리 권장
 - ansible.builtin.package:
-    name: curl
+    name: wget           # curl 대신 충돌 없는 패키지로 테스트
     state: present       # present / absent / latest
 
 # Debian 계열 전용
@@ -167,7 +169,8 @@ ansible all -a "free -m"
 ansible all -m shell -a "ps aux | grep sshd"
 
 # 패키지 설치
-ansible all -m ansible.builtin.package -a "name=curl state=present" -b
+ansible all -m ansible.builtin.package -a "name=wget state=present" -b
+# curl은 Rocky9/AmazonLinux2023에서 curl-minimal 충돌 가능 — wget 권장
 
 # 서비스 재시작
 ansible all -m ansible.builtin.service -a "name=nginx state=restarted" -b
@@ -230,9 +233,9 @@ ansible all -m ansible.builtin.copy -a "src=/tmp/test.txt dest=/tmp/test.txt"
     - name: 필수 패키지 설치
       ansible.builtin.package:
         name:
-          - curl
           - wget
           - vim
+          # curl은 Rocky9/AmazonLinux2023에서 curl-minimal과 충돌 — OS별 분기 필요
         state: present
 
     - name: 타임존 설정

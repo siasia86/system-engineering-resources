@@ -1,0 +1,340 @@
+---
+# ============================================================
+# example_linux.yml
+# ansible_playbook_fields.md + ansible_playbook_linux.md
+# 의 주요 필드/모듈을 모두 포함한 참조용 예시 playbook
+# 실행: ansible-playbook -i inventory_docker.ini example_linux.yml
+# ============================================================
+
+# ── Play 레벨 필드 ────────────────────────────────────────────
+- name: Linux 전체 예시 playbook
+  hosts: docker                        # inventory 그룹명
+  become: true                         # 권한 상승 (sudo)
+  become_user: root
+  gather_facts: true                   # ansible_* 변수 수집
+  vars:
+    app_name: myapp
+    app_port: 8080
+    packages:
+      - wget
+      - vim
+  vars_files: []                       # 외부 변수 파일 (예: vars/secrets.yml)
+  environment:
+    PATH: /usr/local/bin:/usr/bin:/bin
+
+  # ── Tasks ──────────────────────────────────────────────────
+  tasks:
+
+    # ── OS 정보 출력 (gather_facts 결과) ──
+    - name: OS 정보 출력
+      ansible.builtin.debug:
+        msg: "{{ ansible_distribution }} {{ ansible_distribution_version }} / {{ ansible_default_ipv4.address | default('N/A') }}"
+
+    # ── 패키지 관리 ──
+    - name: apt 캐시 업데이트 (Debian)
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: safe
+      when: ansible_os_family == "Debian"
+
+    - name: 패키지 설치 (OS 무관)
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ packages }}"
+      tags: packages
+
+    - name: dnf 패키지 설치 (RHEL 8+)
+      ansible.builtin.dnf:
+        name: nginx
+        state: present
+      when:
+        - ansible_os_family == "RedHat"
+        - ansible_distribution_major_version | int >= 8
+      tags: packages
+
+    # ── 서비스 관리 ──
+    - name: sshd 서비스 시작 및 자동 시작 등록
+      ansible.builtin.service:
+        # Ubuntu 22+는 'ssh', 나머지는 'sshd'
+        name: "{{ 'ssh' if ansible_distribution == 'Ubuntu' else 'sshd' }}"
+        state: started
+        enabled: true
+      ignore_errors: true    # 컨테이너 환경에서 직접 실행된 sshd와 충돌 가능
+      tags: service
+
+    # ── 파일/디렉토리 ──
+    - name: 앱 디렉토리 생성
+      ansible.builtin.file:
+        path: /opt/{{ app_name }}
+        state: directory
+        mode: "0755"
+        owner: root
+        group: root
+
+    - name: 설정 파일 복사
+      ansible.builtin.copy:
+        content: |
+          app_name={{ app_name }}
+          app_port={{ app_port }}
+        dest: /opt/{{ app_name }}/app.conf
+        mode: "0644"
+        backup: true
+      notify: restart app
+
+    - name: 템플릿으로 설정 생성
+      ansible.builtin.template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+        mode: "0644"
+      when: ansible_os_family == "Debian"
+      notify: restart nginx
+      ignore_errors: true              # 템플릿 파일 없어도 계속 진행
+
+    # ── 설정 파일 수정 ──
+    - name: SSH root 로그인 비활성화
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PermitRootLogin'
+        line: 'PermitRootLogin no'
+      notify: restart sshd
+      ignore_errors: true    # SSH 미설치 컨테이너 환경 대응
+      tags: hardening
+
+    - name: /etc/hosts 항목 추가
+      ansible.builtin.blockinfile:
+        path: /etc/hosts
+        marker: "# {mark} ANSIBLE MANAGED"
+        block: |
+          10.200.101.151 ubuntu22
+          10.200.101.154 rocky9
+      ignore_errors: true    # 컨테이너에서 /etc/hosts는 read-only
+
+    # ── 사용자 관리 ──
+    - name: ansible 전용 계정 생성
+      ansible.builtin.user:
+        name: ansible
+        shell: /bin/bash
+        groups: "{{ 'sudo' if ansible_os_family == 'Debian' else 'wheel' }}"
+        append: true
+      tags: user
+
+    - name: SSH 공개키 등록
+      ansible.builtin.authorized_key:
+        user: ansible
+        key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+      tags: user
+
+    # ── 명령 실행 ──
+    - name: uptime 확인
+      ansible.builtin.command: uptime
+      register: uptime_result
+      changed_when: false              # 항상 ok (변경 없음)
+
+    - name: uptime 출력
+      ansible.builtin.debug:
+        msg: "{{ uptime_result.stdout_lines }}"
+
+    - name: 프로세스 확인 (shell — 파이프 사용)
+      ansible.builtin.shell: ps aux | grep sshd | grep -v grep | wc -l
+      register: sshd_count
+      changed_when: false
+
+    - name: sshd 프로세스 수 출력
+      ansible.builtin.debug:
+        var: sshd_count.stdout
+
+    # ── register + when 조건 ──
+    - name: /tmp/init_done 존재 확인
+      ansible.builtin.stat:
+        path: /tmp/init_done
+      register: init_flag
+
+    - name: 초기화 (파일 없을 때만)
+      ansible.builtin.file:
+        path: /tmp/init_done
+        state: touch
+        mode: "0644"
+      when: not init_flag.stat.exists
+
+    # ── loop + 딕셔너리 ──
+    - name: 여러 디렉토리 생성
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        mode: "{{ item.mode }}"
+      loop:
+        - { path: /opt/myapp/logs,  mode: "0755" }
+        - { path: /opt/myapp/conf,  mode: "0750" }
+        - { path: /opt/myapp/data,  mode: "0700" }
+
+    # ── block / rescue / always ──
+    - name: 패키지 설치 시도 (에러 처리 포함)
+      block:
+        - name: git 설치
+          ansible.builtin.package:
+            name: git
+            state: present
+      rescue:
+        - name: 설치 실패 알림
+          ansible.builtin.debug:
+            msg: "git 설치 실패 — 수동 확인 필요"
+      always:
+        - name: 완료 로그
+          ansible.builtin.debug:
+            msg: "git 설치 task 완료"
+
+    # ── delegate_to / run_once ──
+    - name: 로컬에서 배포 시작 로그 기록 (1회만)
+      ansible.builtin.shell: echo "deploy started at $(date)" >> /tmp/deploy.log
+      delegate_to: localhost
+      run_once: true
+      changed_when: true
+
+    # ── tags 활용 ──
+    - name: 디스크 사용량 확인
+      ansible.builtin.command: df -h
+      register: disk_result
+      changed_when: false
+      tags: monitoring
+
+    - name: 디스크 사용량 출력
+      ansible.builtin.debug:
+        msg: "{{ disk_result.stdout_lines }}"
+      tags: monitoring
+
+    # ── failed_when / changed_when 커스텀 ──
+    - name: 서비스 상태 확인
+      ansible.builtin.command: systemctl is-active sshd
+      register: svc_status
+      changed_when: false
+      failed_when: svc_status.rc not in [0, 3]  # 0=active, 3=inactive 허용
+      ignore_errors: true    # D-Bus 없는 컨테이너 환경 대응
+
+    - name: 서비스 상태 출력
+      ansible.builtin.debug:
+        msg: "sshd 상태: {{ svc_status.stdout }}"
+
+
+    # ── set_fact — 변수 동적 설정 ──
+    - name: OS별 서비스명 변수 설정
+      ansible.builtin.set_fact:
+        sshd_service: "{{ 'ssh' if ansible_distribution == 'Ubuntu' else 'sshd' }}"
+        app_dir: "/opt/{{ app_name }}"
+
+    - name: set_fact 결과 출력
+      ansible.builtin.debug:
+        msg: "sshd_service={{ sshd_service }}, app_dir={{ app_dir }}"
+
+    # ── assert — 조건 검증 ──
+    - name: OS 버전 검증
+      ansible.builtin.assert:
+        that:
+          - ansible_distribution is defined
+          - ansible_memtotal_mb > 256
+        fail_msg: "메모리 부족 또는 OS 정보 없음"
+        success_msg: "OS 검증 통과: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+
+    # ── get_url — URL에서 파일 다운로드 ──
+    - name: 파일 다운로드 예시
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ansible/ansible/devel/README.rst
+        dest: /tmp/ansible_readme.txt
+        mode: "0644"
+        timeout: 10
+      ignore_errors: true    # 네트워크 없는 환경 대응
+
+    # ── fetch — 원격 파일을 로컬로 가져오기 ──
+    - name: 원격 파일 로컬로 수집
+      ansible.builtin.fetch:
+        src: /etc/os-release
+        dest: /tmp/fetched/
+        flat: false           # flat: true면 호스트명 디렉토리 없이 저장
+
+    # ── wait_for — 포트/파일 대기 ──
+    - name: SSH 포트 응답 대기
+      ansible.builtin.wait_for:
+        host: "{{ ansible_default_ipv4.address | default('127.0.0.1') }}"
+        port: 22
+        timeout: 10
+        state: started
+      ignore_errors: true    # 컨테이너 환경 대응
+
+    # ── cron — crontab 관리 ──
+    - name: 백업 cron 등록
+      ansible.builtin.cron:
+        name: "daily backup"
+        minute: "0"
+        hour: "2"
+        job: "/opt/{{ app_name }}/backup.sh >> /var/log/backup.log 2>&1"
+        state: present
+      ignore_errors: true    # cron 없는 컨테이너 환경 대응
+
+    # ── sysctl — 커널 파라미터 ──
+    - name: 커널 파라미터 설정
+      ansible.builtin.sysctl:
+        name: net.ipv4.ip_forward
+        value: "1"
+        state: present
+        reload: true
+      ignore_errors: true    # 컨테이너 환경 대응
+
+    # ── pre_tasks / post_tasks 패턴 (별도 Play로 시연) ──
+
+  # ── Handlers ───────────────────────────────────────────────
+  handlers:
+    - name: restart sshd
+      ansible.builtin.service:
+        name: "{{ 'ssh' if ansible_distribution == 'Ubuntu' else 'sshd' }}"
+        state: restarted
+
+    - name: restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+      when: ansible_os_family == "Debian"
+
+    - name: restart app
+      ansible.builtin.debug:
+        msg: "앱 재시작 (실제 환경에서는 service 모듈 사용)"
+
+# ============================================================
+# pre_tasks / post_tasks 패턴
+# ============================================================
+- name: pre_tasks / post_tasks 예시
+  hosts: docker_ubuntu
+  become: true
+  gather_facts: false
+
+  pre_tasks:
+    - name: 배포 전 디스크 확인
+      ansible.builtin.command: df -h /
+      register: pre_disk
+      changed_when: false
+
+    - name: 디스크 여유 공간 출력
+      ansible.builtin.debug:
+        msg: "배포 전: {{ pre_disk.stdout_lines[-1] }}"
+
+  tasks:
+    - name: 메인 작업 (예시)
+      ansible.builtin.debug:
+        msg: "메인 task 실행 중"
+
+  post_tasks:
+    - name: 배포 후 서비스 확인
+      ansible.builtin.debug:
+        msg: "배포 완료 — 서비스 상태 확인 필요"
+
+# ============================================================
+# include_vars 패턴
+# ============================================================
+- name: include_vars 예시
+  hosts: docker_ubuntu
+  become: true
+  gather_facts: true
+  tasks:
+    - name: OS별 변수 파일 로드
+      ansible.builtin.include_vars:
+        file: "{{ playbook_dir }}/vars/{{ ansible_os_family | lower }}.yml"
+      ignore_errors: true    # vars 파일 없는 경우 무시
