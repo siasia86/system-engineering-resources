@@ -256,8 +256,6 @@ ansible-playbook playbook.yml --diff     # 변경 전후 diff 출력
 
 ---
 
----
-
 ## 7. Ad-hoc 명령
 
 Playbook 없이 단일 명령을 실행합니다.
@@ -286,7 +284,7 @@ ansible all -m shell -a "ps aux | grep nginx"
 
 # Windows — win_shell 모듈 필수 (Python 불필요)
 ansible all -m ansible.windows.win_shell -a "whoami"
-ansible all -m ansible.windows.win_shell -a "Get-Service | Where-Object Status -eq Running"
+ansible all -m ansible.windows.win_shell -a "Get-Service | Where-Object {$_.Status -eq 'Running'}"
 
 # 파일 전송
 ansible all -m ansible.builtin.copy -a "src=/tmp/test dest=/tmp/test"
@@ -311,6 +309,13 @@ ansible all -m ansible.builtin.service -a "name=nginx state=restarted"
 ---
 
 [⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 참고 자료
+
+- Ansible Docs — Playbook Keywords: [docs.ansible.com](https://docs.ansible.com/ansible/latest/reference_appendices/playbooks_keywords.html) — ★★★☆☆
+- Ansible Docs — Windows Guide: [docs.ansible.com](https://docs.ansible.com/ansible/latest/os_guide/windows_usage.html) — ★★★☆☆
 
 ---
 
