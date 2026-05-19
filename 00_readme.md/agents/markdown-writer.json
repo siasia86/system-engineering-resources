@@ -6,7 +6,7 @@
   "tools": [
     "read",
     "write",
-	"shell",
+    "shell",
     "aws",
     "delegate",
     "thinking",
@@ -18,8 +18,8 @@
     "fs_write",
     "glob",
     "grep",
-	"use_aws",
-	"use_subagent",
+    "use_aws",
+    "use_subagent",
     "web_search",
     "web_fetch"
   ],

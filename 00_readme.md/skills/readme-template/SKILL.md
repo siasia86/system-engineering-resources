@@ -22,6 +22,7 @@ description: Defines the mandatory footer template for all .md files — GitHub 
 ![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
 
 ---
+
 **작성일**: YYYY-MM-DD
 
 **마지막 업데이트**: YYYY-MM-DD

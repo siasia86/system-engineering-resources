@@ -117,6 +117,87 @@ ASSUMPTIONS:
 - [확인 필요한 항목]
 ```
 
+## Ansible Spec Template
+
+Terraform/AWS가 아닌 Ansible role/playbook 설계 시 사용합니다.
+
+```markdown
+# Ansible Spec: [제목]
+
+## 목적
+[무엇을 왜 자동화하는지. 수동 작업 대비 이점.]
+
+## 대상 환경
+
+| 항목          | 내용                                      |
+|---------------|-------------------------------------------|
+| 대상 OS       | Ubuntu 22/24, Rocky 9, AmazonLinux 2023   |
+| 연결 방식     | SSH / docker / winrm                      |
+| 권한 상승     | become: true (sudo/runas)                 |
+| Ansible 버전  | 2.15+                                     |
+
+## Inventory 구조
+
+    [group_name]
+    host1 ansible_host=10.x.x.x
+
+    [group_name:vars]
+    ansible_user=ansible
+    ansible_ssh_private_key_file=~/.ssh/id_ed25519
+
+## Role / Playbook 구조
+
+    playbooks/
+    ├── site.yml              # 전체 진입점
+    ├── vars/
+    │   ├── common.yml        # 평문 변수
+    │   └── secrets.yml       # vault 암호화
+    └── roles/
+        └── role_name/
+            ├── tasks/main.yml
+            ├── handlers/main.yml
+            ├── defaults/main.yml
+            └── templates/
+
+## 멱등성 보장 계획
+
+| Task | 멱등성 방법 |
+|------|-------------|
+| 패키지 설치 | `state: present` |
+| 파일 생성 | `creates:` 또는 `stat` 선행 체크 |
+| 서비스 시작 | `state: started` |
+| 설정 변경 | `lineinfile` / `template` |
+
+## OS별 분기 계획
+
+| 작업 | Debian | RedHat |
+|------|--------|--------|
+| 패키지 | `apt` | `dnf`/`yum` |
+| 서비스명 | `ssh` | `sshd` |
+| 그룹 | `sudo` | `wheel` |
+
+## 시크릿 관리
+- vault 암호화 대상: [목록]
+- vault password 관리 방법: [파일/환경변수/CI Secret]
+
+## 테스트 계획
+- [ ] `--syntax-check` 통과
+- [ ] `--check` dry-run 통과
+- [ ] Molecule 테스트 (대상 OS별)
+- [ ] 실제 환경 적용 후 재실행 → changed=0 확인
+
+## 롤백 계획
+- 설정 파일: `backup: true` 옵션으로 자동 백업
+- 패키지: `state: absent`로 제거
+- 전체 롤백: [방법]
+
+## 성공 기준
+- [ ] 전체 OS `failed=0`
+- [ ] 재실행 시 `changed=0` (멱등성)
+- [ ] `--check` 모드 호환
+- [ ] vault 시크릿 평문 노출 없음
+```
+
 ## Phase 2: Plan
 
 스펙 확정 후 기술 구현 계획을 작성합니다.
