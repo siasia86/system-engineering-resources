@@ -234,6 +234,34 @@ ensure_dir /backup/data
   - 나중에 함수 분리 시 구조 변경 없이 확장 가능
 - `main "$@"` — 인수 없어도 습관적으로 사용 (향후 인수 추가 시 수정 불필요)
 
+## 스크립트 복잡도 기준
+
+| 복잡도 | 기준 | 로깅 함수 | 구조 |
+|--------|------|-----------|------|
+| 간단 | 100줄 이하 또는 단일 패키지 설치 | 사용하지 않음 | 인라인 `echo` + `|| exit` |
+| 보통 | 100~150줄 또는 여러 단계, 설정 변경 포함 | `run_msg_info` / `log_msg_info` | `main()` |
+| 복잡 | 151줄 이상 또는 여러 서비스, 백업/롤백 필요 | 전체 함수 사용 | `main()` + 서비스별 함수 분리 |
+
+### 간단한 스크립트 예시 (로깅 함수 없음)
+
+```bash
+#!/bin/bash
+#### This script was created by sjyun on YYYY-MM-DD. version YY.MM.DD.
+#### Python 3.9 설치 — Ubuntu 20.04
+#
+# 허용 도메인:
+#   archive.ubuntu.com
+
+apt-get update -qq
+apt-get install -y python3.9 || { echo "#### filed error code : $? ####" ; exit 1; }
+
+if [[ ! -e /usr/local/bin/python3 ]]; then
+    ln -s /usr/bin/python3.9 /usr/local/bin/python3
+fi
+
+echo "done: $(python3.9 --version)"
+```
+
 ## 에러 코드 규칙 (순차 번호)
 
 | 방식 | 설명 |
