@@ -201,7 +201,7 @@ remote_user = ansible
 host_key_checking = False
 log_path = /var/log/ansible.log
 forks = 10
-interpreter_python = /usr/bin/python3
+interpreter_python = auto
 
 [privilege_escalation]
 become = True
@@ -211,7 +211,7 @@ become_ask_pass = False
 
 [ssh_connection]
 pipelining = True
-ssh_args = -o ControlMaster=auto -o ControlPersist=60s
+ssh_args = -o ControlMaster=auto -o ControlPersist=600s
 ```
 
 #### 주요 설정 항목 설명
@@ -225,7 +225,7 @@ ssh_args = -o ControlMaster=auto -o ControlPersist=60s
 | `host_key_checking` | `False` | 최초 접속 시 SSH host key 확인 생략. 운영 환경에서는 `True` 권장합니다. |
 | `log_path` | `/var/log/ansible.log` | 실행 로그 저장 경로. 파일이 없으면 자동 생성됩니다. |
 | `forks` | `10` | 동시 접속 호스트 수. 호스트가 많을수록 높게 설정하면 속도가 향상됩니다. |
-| `interpreter_python` | `/usr/bin/python3` | 원격 호스트에서 사용할 Python 경로. 자동 감지 오류 방지용입니다. |
+| `interpreter_python` | `auto` | 원격 호스트에서 Python 자동 탐색. 경로가 다른 호스트는 inventory에서 개별 지정합니다. |
 
 **[privilege_escalation]**
 
@@ -242,7 +242,7 @@ ssh_args = -o ControlMaster=auto -o ControlPersist=60s
 |------|----|------|
 | `pipelining` | `True` | 여러 SSH 명령을 하나의 연결로 처리. 속도가 향상되나 `requiretty` sudoers 설정과 충돌할 수 있습니다. |
 | `ControlMaster=auto` | - | SSH 연결 다중화. 동일 호스트 재접속 시 기존 연결 재사용합니다. |
-| `ControlPersist=60s` | - | 마지막 접속 후 60초간 연결 유지. 반복 실행 시 속도가 향상됩니다. |
+| `ControlPersist=600s` | - | 마지막 접속 후 10분간 연결 유지. 연속 playbook 실행 시 SSH 재연결 없이 속도가 향상됩니다. |
 
 ⚠️ `ansible.cfg` 우선순위: 현재 디렉토리 → 홈 디렉토리 → `/etc/ansible/ansible.cfg` 순으로 적용됩니다. 프로젝트별 설정이 필요하면 프로젝트 디렉토리에 별도 `ansible.cfg`를 생성합니다.
 
@@ -271,7 +271,31 @@ prd-app-game-04 ansible_host=10.0.3.34
 webservers
 dbservers
 gameservers
+
+# ansible_python_interpreter 개별 지정 예시 (ansible.cfg auto 설정 덮어씀)
+# 우선순위: inventory 변수 > ansible.cfg
+# [legacy]
+# old-host ansible_host=10.0.2.1 ansible_python_interpreter=/usr/bin/python2
+#
+# [rhel7:vars]
+# ansible_python_interpreter=/usr/bin/python3.6
+#
+# [custom]
+# host1 ansible_host=10.0.3.1 ansible_python_interpreter=/usr/local/bin/python3.11
 ```
+
+#### Inventory 주요 문법
+
+| 문법 | 예시 | 설명 |
+|------|------|------|
+| 호스트 변수 | `host1 ansible_host=10.0.1.1` | 호스트별 개별 변수 지정 |
+| 그룹 | `[webservers]` | 호스트 묶음 |
+| 그룹 변수 | `[webservers:vars]` | 그룹 전체에 변수 적용 |
+| 중첩 그룹 | `[production:children]` | 그룹을 묶는 상위 그룹 |
+| 포트 지정 | `host1 ansible_host=10.0.1.1 ansible_port=2222` | 기본 22 외 포트 사용 시 |
+| 연결 방식 | `ansible_connection=ssh\|docker\|local` | SSH 외 연결 방식 지정 |
+
+⚠️ inventory 파일은 환경별(dev/qa/stg/prd)로 분리 관리를 권장합니다. 하나의 파일에 모든 환경을 넣으면 실수로 운영 서버에 실행할 위험이 있습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -294,6 +318,8 @@ ansible prd-app-web-01 -m ping
 
 ### 5-2. Ad-hoc 명령 테스트
 
+Ad-hoc 명령은 playbook 없이 단일 모듈을 즉시 실행합니다. 빠른 상태 확인이나 일회성 작업에 사용합니다.
+
 ```bash
 # 전체 서버 uptime 확인
 ansible all -a "uptime"
@@ -304,6 +330,15 @@ ansible gameservers -a "df -h"
 # 웹 서버 nginx 상태 확인
 ansible webservers -m systemd -a "name=nginx"
 ```
+
+| 옵션 | 설명 |
+|------|------|
+| `-m` | 모듈 지정 (생략 시 `command` 모듈 사용) |
+| `-a` | 모듈 인자 |
+| `-b` | become (sudo) 활성화 |
+| `-i` | inventory 파일 지정 |
+| `--limit` | 실행 대상 호스트/그룹 제한 |
+| `-f` | 동시 실행 수 (forks) |
 
 ### 5-3. 정상 출력 예시
 
@@ -351,6 +386,19 @@ prd-app-web-01 | SUCCESS => {
     └── maintenance.yml
 ```
 
+#### 디렉토리 역할 설명
+
+| 디렉토리/파일 | 역할 |
+|---------------|------|
+| `inventory/dev\|qa\|stg\|prd` | 환경별 inventory 파일 분리 |
+| `group_vars/all.yml` | 전체 호스트 공통 변수 |
+| `group_vars/webservers.yml` | webservers 그룹 전용 변수 |
+| `host_vars/hostname.yml` | 특정 호스트 전용 변수 |
+| `roles/` | 재사용 가능한 task 묶음 |
+| `playbooks/site.yml` | 전체 인프라 적용 진입점 |
+
+⚠️ `group_vars/`, `host_vars/`는 inventory 파일과 **같은 디렉토리**에 있어야 자동으로 로드됩니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -388,6 +436,8 @@ ansible-config dump
 
 ### Ansible Vault (민감 정보 암호화)
 
+패스워드, API 키, DB 접속 정보 등 민감 데이터를 암호화하여 Git에 안전하게 저장합니다.
+
 ```bash
 # 파일 암호화
 ansible-vault encrypt vars/secrets.yml
@@ -401,6 +451,19 @@ ansible-vault view vars/secrets.yml
 # 파일 수정
 ansible-vault edit vars/secrets.yml
 ```
+
+vault password를 매번 입력하지 않으려면 파일로 관리합니다:
+
+```bash
+# vault password 파일 생성 (Git 제외 필수)
+echo 'SecurePassword123' > ~/.ansible_vault_pass
+chmod 600 ~/.ansible_vault_pass
+
+# ansible.cfg에 등록
+# vault_password_file = ~/.ansible_vault_pass
+```
+
+⚠️ `vault_password_file` 경로는 절대 Git에 커밋하지 않습니다. `.gitignore`에 추가합니다.
 
 ### 보안 체크리스트
 
@@ -528,7 +591,7 @@ host_key_checking = False
 log_path = /var/log/ansible/ansible.log
 forks = 10
 roles_path = /opt/ansible/roles
-interpreter_python = /usr/bin/python3
+interpreter_python = auto
 display_args_to_stdout = True
 
 [privilege_escalation]
@@ -539,7 +602,7 @@ become_ask_pass = False
 
 [ssh_connection]
 pipelining = True
-ssh_args = -o ControlMaster=auto -o ControlPersist=60s
+ssh_args = -o ControlMaster=auto -o ControlPersist=600s
 ```
 
 ### 10-4. SSH 키 관리
