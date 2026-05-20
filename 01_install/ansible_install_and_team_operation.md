@@ -154,7 +154,7 @@ which ansible
 
 ## 4. 공통 초기 설정
 
-### 4-1. ansible 전용 사용자 생성
+### 4-1. ansible 전용 사용자 생성 (Linux 컨트롤 노드)
 
 ```bash
 # Control Node
@@ -213,6 +213,38 @@ become_ask_pass = False
 pipelining = True
 ssh_args = -o ControlMaster=auto -o ControlPersist=60s
 ```
+
+#### 주요 설정 항목 설명
+
+**[defaults]**
+
+| 항목 | 값 | 설명 |
+|------|----|------|
+| `inventory` | `/etc/ansible/hosts` | 기본 inventory 파일 경로. `-i` 옵션으로 덮어쓸 수 있습니다. |
+| `remote_user` | `ansible` | SSH 접속 시 사용할 원격 계정. 각 호스트에 동일 계정이 있어야 합니다. |
+| `host_key_checking` | `False` | 최초 접속 시 SSH host key 확인 생략. 운영 환경에서는 `True` 권장합니다. |
+| `log_path` | `/var/log/ansible.log` | 실행 로그 저장 경로. 파일이 없으면 자동 생성됩니다. |
+| `forks` | `10` | 동시 접속 호스트 수. 호스트가 많을수록 높게 설정하면 속도가 향상됩니다. |
+| `interpreter_python` | `/usr/bin/python3` | 원격 호스트에서 사용할 Python 경로. 자동 감지 오류 방지용입니다. |
+
+**[privilege_escalation]**
+
+| 항목 | 값 | 설명 |
+|------|----|------|
+| `become` | `True` | 권한 상승 기본 활성화. playbook에서 `become: false`로 개별 비활성화 가능합니다. |
+| `become_method` | `sudo` | 권한 상승 방법. `sudo` / `su` / `pbrun` 등 선택 가능합니다. |
+| `become_user` | `root` | 상승할 대상 계정. |
+| `become_ask_pass` | `False` | sudo 패스워드 입력 생략. `NOPASSWD` sudoers 설정이 필요합니다. |
+
+**[ssh_connection]**
+
+| 항목 | 값 | 설명 |
+|------|----|------|
+| `pipelining` | `True` | 여러 SSH 명령을 하나의 연결로 처리. 속도가 향상되나 `requiretty` sudoers 설정과 충돌할 수 있습니다. |
+| `ControlMaster=auto` | - | SSH 연결 다중화. 동일 호스트 재접속 시 기존 연결 재사용합니다. |
+| `ControlPersist=60s` | - | 마지막 접속 후 60초간 연결 유지. 반복 실행 시 속도가 향상됩니다. |
+
+⚠️ `ansible.cfg` 우선순위: 현재 디렉토리 → 홈 디렉토리 → `/etc/ansible/ansible.cfg` 순으로 적용됩니다. 프로젝트별 설정이 필요하면 프로젝트 디렉토리에 별도 `ansible.cfg`를 생성합니다.
 
 ### 4-4. Inventory 파일 설정
 
