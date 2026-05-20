@@ -20,7 +20,7 @@ tar xzf "${BUILD_DIR}/Python-${PYTHON_VER}.tgz" -C "${BUILD_DIR}"
 
 cd "${BUILD_DIR}/Python-${PYTHON_VER}"
 ./configure --enable-optimizations --quiet 2>/dev/null
-make altinstall -j"$(nproc)" 2>&1 | tail -2 || { echo "#### filed error code : $? ####" ; exit 3; }
+make altinstall -j"$(nproc)" || { echo "#### filed error code : $? ####" ; exit 3; }
 
 if [[ ! -e /usr/local/bin/python3 ]]; then
     ln -s /usr/local/bin/python3.11 /usr/local/bin/python3
