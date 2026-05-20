@@ -31,19 +31,19 @@ MaxMind GeoLite2/GeoIP2 DB를 사용합니다.
 
 ### 허용 도메인 (방화벽/프록시 화이트리스트)
 
-| 도메인                        | 용도                              |
-|-------------------------------|-----------------------------------|
-| `nginx.org`                   | nginx 패키지 레포 및 소스 다운로드 |
-| `github.com`                  | geoip2 모듈 소스 클론             |
-| `objects.githubusercontent.com` | GitHub 파일 다운로드            |
-| `www.maxmind.com`             | GeoLite2 DB 다운로드 (수동 단계)  |
-| `archive.ubuntu.com`          | 빌드 의존성 패키지                |
+| 도메인                          | 용도                                   |
+|---------------------------------|----------------------------------------|
+| `nginx.org`                     | nginx 패키지 레포 및 소스 다운로드     |
+| `github.com`                    | geoip2 모듈 소스 클론                  |
+| `objects.githubusercontent.com` | GitHub 파일 다운로드                   |
+| `archive.ubuntu.com`            | 빌드 의존성 패키지                     |
+| `www.maxmind.com`               | GeoLite2 DB 다운로드 (수동 단계/선택)  |
 
 ---
 
 ## 2. 환경별 설치 방법
 
-### Ubuntu 22.04 — nginx 1.18 (패키지)
+### Ubuntu 22.04 — nginx 1.18 (패키지) // 1.30.x 로 진행 할것 
 
 ```bash
 apt-get update
