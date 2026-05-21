@@ -200,10 +200,65 @@ command < input.txt
 
 ### `<<` — Here Document
 
+여러 줄 텍스트를 stdin으로 전달합니다. 구분자(delimiter)가 단독으로 나오는 줄까지를 입력으로 사용합니다.
+
 ```bash
 cat << EOF
 line 1
 line 2
+EOF
+```
+
+```
+  "EOF" 구분자 사이 내용
+  ──────────────────────> stdin → cat → terminal
+```
+
+**변수 치환:**
+
+```bash
+NAME="server01"
+cat << EOF
+hostname: ${NAME}
+date: $(date +%Y-%m-%d)
+EOF
+# → hostname: server01
+#   date: 2026-05-21
+```
+
+**변수 치환 비활성화 (`'EOF'` 또는 `\EOF`):**
+
+```bash
+cat << 'EOF'
+hostname: ${NAME}    # 치환 안 됨, 그대로 출력
+EOF
+```
+
+**들여쓰기 탭 제거 (`<<-`):**
+
+```bash
+if true; then
+    cat <<- EOF
+        들여쓰기 탭 제거됨 (탭 문자만, 스페이스는 유지)
+    EOF
+fi
+```
+
+**파일 생성 패턴 (실무):**
+
+```bash
+# 파일로 직접 저장
+cat << EOF > /etc/nginx/conf.d/app.conf
+server {
+    listen 80;
+    server_name example.com;
+}
+EOF
+
+# tee로 root 권한 파일 생성
+cat << EOF | sudo tee /etc/hosts > /dev/null
+127.0.0.1 localhost
+192.168.1.1 server01
 EOF
 ```
 
