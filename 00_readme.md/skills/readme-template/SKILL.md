@@ -34,3 +34,10 @@ description: Defines the mandatory footer template for all .md files — GitHub 
 - `YYYY-MM-DD`는 작성/수정 당일 날짜로 기입
 - README.md, CHANGELOG.md, LICENSE.md, CONTRIBUTING.md 및 모든 .md 파일에 동일 푸터 적용
 - GitHub Actions가 main push 시 날짜를 자동 갱신함
+
+## 날짜 업데이트 규칙 (필수)
+- 기존 .md 파일을 **수정할 때마다** `**마지막 업데이트**` 날짜를 오늘 날짜로 변경
+- 새 파일 생성 시 `**작성일**`과 `**마지막 업데이트**` 모두 오늘 날짜로 기입
+- `**작성일**`은 최초 생성일 — 이후 수정 시 변경하지 않음
+- 날짜 형식: `YYYY-MM-DD` (예: `2026-05-21`)
+- 파일 수정 후 푸터 날짜 업데이트를 빠뜨리면 안 됨
