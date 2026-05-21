@@ -27,7 +27,7 @@ Process A          Process B
       v                  v
 ┌─────────────────────────────┐
 │     Physical Memory         │
-│  [A pages] [B pages]    │
+│  [A pages] [B pages]        │
 └─────────────────────────────┘
 ```
 
