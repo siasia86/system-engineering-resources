@@ -132,13 +132,95 @@ mount | grep cgroup
     └── user-1000.slice/                 # UID 1000 user
 ```
 
-⚠️ root cgroup에는 `memory.max`, `cpu.max`, `pids.max` 등 **제한 설정 파일이 없습니다**. 통계/pressure 파일만 존재합니다. 제한은 하위 cgroup(`system.slice/`, `user.slice/` 이하)에서만 설정 가능합니다.
+⚠️ root cgroup에는 `memory.max`, `cpu.max`, `pids.max` 등 **제한 설정 파일이 없습니다** . 통계/pressure 파일만 존재합니다. 제한은 하위 cgroup(`system.slice/`, `user.slice/` 이하)에서만 설정 가능합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
 ---
 
 ## 4. 주요 컨트롤러
+
+### 계산식 참조
+
+설정값 입력 전 단위 변환 공식입니다.
+
+#### CPU % → quota/period
+
+```
+cpu.max 형식: "quota period" (단위: 마이크로초)
+
+CPU % = quota / period × 100
+
+예시:
+  50%  → 50000 100000   (50000 / 100000 = 0.5 = 50%)
+  25%  → 25000 100000
+  200% → 200000 100000  (코어 2개 사용)
+  제한없음 → "max 100000"
+
+공식: quota = (CPU% / 100) × period
+      period 기본값 = 100000 (100ms)
+```
+
+```bash
+# 원하는 CPU% → quota 계산
+CPU_PCT=30; PERIOD=100000
+echo "$((CPU_PCT * PERIOD / 100)) $PERIOD" > /sys/fs/cgroup/mygroup/cpu.max
+```
+
+#### Memory MB/GB → bytes
+
+```
+bytes = MB × 1024 × 1024
+bytes = GB × 1024 × 1024 × 1024
+
+예시:
+  512MB → 536870912    (512 × 1024 × 1024)
+  1GB   → 1073741824   (1 × 1024 × 1024 × 1024)
+  2GB   → 2147483648
+```
+
+```bash
+# 단위별 변환
+echo $((512 * 1024 * 1024))        # 512MB = 536870912
+echo $((1 * 1024 * 1024 * 1024))   # 1GB   = 1073741824
+echo $((2 * 1024 * 1024 * 1024))   # 2GB   = 2147483648
+
+# 또는 systemd 단위 문자열 사용 (systemctl set-property 시)
+# MemoryMax=512M  MemoryMax=1G  (자동 변환)
+```
+
+#### IO MB/s → bytes/s (rbps/wbps)
+
+```
+bytes/s = MB/s × 1024 × 1024
+
+예시:
+  50MB/s  → 52428800    (50 × 1024 × 1024)
+  100MB/s → 104857600
+  200MB/s → 209715200
+```
+
+```bash
+# 원하는 MB/s → bytes/s 계산
+MBps=100
+echo "8:0 rbps=$((MBps * 1024 * 1024)) wbps=$((MBps * 1024 * 1024))"   > /sys/fs/cgroup/mygroup/io.max
+```
+
+#### cpu.stat 출력 해석
+
+```bash
+cat /sys/fs/cgroup/mygroup/cpu.stat
+# usage_usec 5000000    ← 누적 CPU 사용 시간 (마이크로초)
+# user_usec  3000000    ← user space 사용 시간
+# system_usec 2000000   ← kernel space 사용 시간
+# nr_throttled 10       ← quota 초과로 throttle된 횟수
+# throttled_usec 500000 ← throttle된 총 시간 (마이크로초)
+
+# usage_usec → 초 변환: 5000000 / 1000000 = 5초
+# throttled_usec가 크면 CPU 제한이 너무 낮은 것
+```
+
+---
 
 ### cpu
 
@@ -158,13 +240,13 @@ cat /sys/fs/cgroup/mygroup/cpu.stat
 ### memory
 
 ```bash
-# 메모리 상한 설정 (512MB)
+# 메모리 상한 설정 (512MB = 512 × 1024 × 1024 = 536870912 bytes)
 echo $((512 * 1024 * 1024)) > /sys/fs/cgroup/mygroup/memory.max
 
-# current usage 확인
+# current usage 확인 (bytes → MB: 값 / 1024 / 1024)
 cat /sys/fs/cgroup/mygroup/memory.current
 
-# OOM 발생 시 kill 대신 throttle (swap 사용)
+# OOM 발생 시 kill 대신 throttle (swap 1GB = 1073741824 bytes)
 echo $((1024 * 1024 * 1024)) > /sys/fs/cgroup/mygroup/memory.swap.max
 
 # memory stats
