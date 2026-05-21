@@ -253,11 +253,11 @@ cat /sys/module/nf_conntrack/parameters/hashsize
 | 목적            | 프로세스/커널 상태 조회 | 하드웨어/드라이버 설정      |
 | 구조            | 비정형 (역사적 누적)    | 계층적 (디바이스 모델 반영) |
 | 도입            | 커널 초기               | 커널 2.6 (sysfs)            |
-| 프로세스 정보   | ✅ (`/proc/<PID>/`)     | ❌                          |
-| 하드웨어 제어   | 제한적                  | ✅                          |
-| sysctl 파라미터 | ✅ (`/proc/sys/`)       | ❌                          |
-| cgroup          | ❌                      | ✅ (`/sys/fs/cgroup/`)      |
-| 재부팅 후 유지  | ❌ (가상)               | ❌ (가상)                   |
+| 프로세스 정보   | ✅ (`/proc/<PID>/`)      | ❌                           |
+| 하드웨어 제어   | 제한적                  | ✅                           |
+| sysctl 파라미터 | ✅ (`/proc/sys/`)        | ❌                           |
+| cgroup          | ❌                       | ✅ (`/sys/fs/cgroup/`)       |
+| 재부팅 후 유지  | ❌ (가상)                | ❌ (가상)                    |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -393,8 +393,8 @@ inotifywait -m /sys/block/sda/queue/scheduler
 
 ---
 
-**작성일**: 2026-05-15
+**작성일** : 2026-05-15
 
-**마지막 업데이트**: 2026-05-21
+**마지막 업데이트** : 2026-05-21
 
 © 2026 siasia86. Licensed under CC BY 4.0.
