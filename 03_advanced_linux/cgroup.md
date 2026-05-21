@@ -492,25 +492,81 @@ ls /sys/fs/cgroup/system.slice/docker-<container_id>.scope/
 
 ### cgroupv2 환경에서 systemd 컨테이너 실행
 
-Ubuntu 22.04+, Rocky 9+ 등 cgroupv2 기본 환경에서 systemd 컨테이너가 실패하는 경우:
+Ubuntu 22.04+, Rocky 9+ 등 cgroupv2 기본 환경에서 systemd를 PID 1로 실행하는 컨테이너가 실패하는 경우 아래 설정이 필요합니다.
+
+#### 실패 원인
+
+```
+Failed to connect to bus: No such file or directory
+System has not been booted with systemd as init system (PID 1)
+```
+
+systemd는 PID 1로 실행되어야 하며, cgroup 파일시스템에 직접 접근해야 합니다. 일반 컨테이너는 이 두 조건을 충족하지 못합니다.
+
+#### docker-compose.yml 설정
 
 ```yaml
-# docker-compose.yml
 services:
   ubuntu22:
     image: geerlingguy/docker-ubuntu2204-ansible
-    privileged: true
-    command: /lib/systemd/systemd
-    cgroupns_mode: host                        # cgroup 네임스페이스 호스트 공유
+    privileged: true                           # Linux capability 전체 부여
+    command: /lib/systemd/systemd              # systemd를 PID 1로 실행
+    cgroupns_mode: host                        # 호스트 cgroup 네임스페이스 공유
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw       # cgroup 파일시스템 마운트
+    tmpfs:
+      - /run                                   # systemd runtime 디렉토리
+      - /run/lock                              # lock 파일 디렉토리
 ```
 
-| 옵션 | 설명 |
-|------|------|
-| `privileged: true` | 모든 Linux capability 부여 |
-| `cgroupns_mode: host` | 호스트 cgroup 네임스페이스 사용 |
-| `/sys/fs/cgroup` 마운트 | systemd가 cgroup 직접 접근 가능 |
+| 옵션 | 필요 이유 |
+|------|-----------|
+| `privileged: true` | systemd가 cgroup, mount, 네트워크 등 커널 기능 접근 필요 |
+| `command: /lib/systemd/systemd` | systemd를 PID 1로 실행 (없으면 bash 등이 PID 1) |
+| `cgroupns_mode: host` | 컨테이너가 호스트 cgroup 트리를 직접 보고 쓸 수 있게 함 |
+| `/sys/fs/cgroup` 마운트 | systemd가 서비스별 cgroup 생성/관리에 필요 |
+| `tmpfs: /run` | systemd가 `/run`에 소켓, PID 파일 생성 |
+
+#### OS별 systemd 경로
+
+```yaml
+# Ubuntu 22.04 / 24.04
+command: /lib/systemd/systemd
+
+# Rocky 9 / AlmaLinux 9 / CentOS Stream 9
+command: /usr/lib/systemd/systemd
+
+# AmazonLinux 2023
+command: /usr/lib/systemd/systemd
+```
+
+#### 동작 확인
+
+```bash
+# 컨테이너 접속 후 systemd 상태 확인
+docker exec -it <container> bash
+systemctl status          # 서비스 목록
+systemctl is-system-running  # running / degraded
+
+# PID 1 확인
+ps -p 1 -o comm=
+# 출력: systemd
+```
+
+#### cgroupv1 강제 사용 (비권장)
+
+```bash
+# 호스트 부팅 옵션에 추가 — 재부팅 필요
+# /etc/default/grub
+GRUB_CMDLINE_LINUX="systemd.unified_cgroup_hierarchy=0"
+update-grub && reboot
+
+# 확인
+stat -fc %T /sys/fs/cgroup/
+# tmpfs → v1, cgroup2fs → v2
+```
+
+⚠️ cgroupv1 강제 사용은 보안 패치 및 신규 기능 미지원으로 권장하지 않습니다. `privileged + cgroupns_mode: host` 방식을 사용합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
