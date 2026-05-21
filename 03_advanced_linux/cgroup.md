@@ -7,7 +7,7 @@
 | [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. v1 vs v2](#3-v1-vs-v2) |
 | [4. 주요 컨트롤러](#4-주요-컨트롤러) / [5. 실습](#5-실습) / [6. Docker와 cgroup](#6-docker와-cgroup) |
 | [7. systemd와 cgroup](#7-systemd와-cgroup) / [8. 트러블슈팅](#8-트러블슈팅) / [9. Tips](#9-tips) |
-| [10. cgroup 파일시스템](#10-cgroup-파일시스템) |
+| [10. cgroup 파일시스템](#10-cgroup-파일시스템) / [11. 실 테스트 (Docker)](#11-실-테스트-docker) |
 ---
 
 ## 1. 개요
@@ -739,6 +739,92 @@ CPUQuota=50%
 ```
 
 > 💡 `/proc`, `/sys`, `/sys/fs/cgroup` 상세 비교는 [linux_virtual_fs.md](./linux_virtual_fs.md) 참고
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 11. 실 테스트 (Docker)
+
+cgroupv2 환경(Ubuntu 22.04 컨테이너)에서 실제 검증한 결과입니다.
+
+### 테스트 환경
+
+| 항목 | 내용 |
+|------|------|
+| 호스트 cgroup | `cgroup2fs` (cgroupv2) |
+| 컨테이너 | `02_compose-ubuntu22-1` |
+| 컨테이너 설정 | `privileged: true`, `cgroupns_mode: host` |
+| PID 1 | `systemd` |
+
+### systemd 동작 확인
+
+```bash
+docker exec -it 02_compose-ubuntu22-1 bash
+
+# PID 1 확인
+ps -p 1 -o pid,comm=
+# 출력: 1 systemd
+
+# systemd 상태
+systemctl is-system-running
+# 출력: running
+
+# 실행 중인 서비스 목록
+systemctl list-units --type=service --state=running --no-pager
+```
+
+```
+UNIT                     LOAD   ACTIVE SUB     DESCRIPTION
+dbus.service             loaded active running D-Bus System Message Bus
+systemd-journald.service loaded active running Journal Service
+systemd-logind.service   loaded active running User Login Management
+```
+
+### io.max I/O 제한 테스트
+
+```bash
+# 1. cgroup 생성 및 io.max 설정 (10MB/s)
+mkdir -p /sys/fs/cgroup/testgroup
+echo '8:0 rbps=10485760 wbps=10485760' > /sys/fs/cgroup/testgroup/io.max
+
+# 설정 확인
+cat /sys/fs/cgroup/testgroup/io.max
+# 8:0 rbps=10485760 wbps=10485760 riops=max wiops=max
+
+# 2. 프로세스 등록 및 소속 cgroup 확인
+echo $$ > /sys/fs/cgroup/testgroup/cgroup.procs
+cat /proc/$$/cgroup | grep '0::'
+# 0::/testgroup
+
+# 3. 제한 전 (testgroup 밖)
+dd if=/dev/zero of=/tmp/testfile bs=1M count=100 oflag=direct 2>&1
+# 104857600 bytes copied, 0.036 s, 2.9 GB/s
+
+# 4. 제한 후 (testgroup 안 — echo $$ 로 등록 후)
+dd if=/dev/zero of=/tmp/testfile bs=1M count=100 oflag=direct 2>&1
+# 104857600 bytes copied, 10.002 s, 10.5 MB/s
+```
+
+| 구분 | 속도 | 비고 |
+|------|------|------|
+| 제한 전 | 2.9 GB/s | page cache 우회(oflag=direct) |
+| 제한 후 | 10.5 MB/s | io.max 10MB/s 설정값 근접 |
+
+⚠️ `oflag=direct` 없이 실행하면 page cache에 쓰여 제한이 걸리지 않은 것처럼 보입니다.
+
+### 정리
+
+```bash
+# testgroup에서 빠져나오기 (root cgroup으로 이동)
+echo $$ > /sys/fs/cgroup/cgroup.procs
+
+# cgroup 삭제 (프로세스가 없어야 삭제 가능)
+rmdir /sys/fs/cgroup/testgroup
+
+# 테스트 파일 삭제
+rm -f /tmp/testfile
+```
 
 [⬆ 목차로 돌아가기](#목차)
 
