@@ -173,16 +173,171 @@ cat /sys/fs/cgroup/mygroup/memory.stat
 
 ### io (blkio)
 
+cgroup v2의 I/O 컨트롤러입니다. 디바이스별로 대역폭(bps)과 IOPS를 제한하거나 가중치(weight)로 우선순위를 조정합니다.
+
+#### 디바이스 번호 확인
+
 ```bash
-# 디바이스 번호 확인
-ls -la /dev/sda  # 8:0
+# major:minor 번호 확인 — io.max 설정에 필요
+ls -al /dev/sdb
+# brw-rw---- 1 root disk 8, 16 May 20 11:24 /dev/sdb
+#                         ^  ^^
+#                         major=8, minor=16 → "8:16"
 
-# 읽기/쓰기 속도 제한 (100MB/s)
-echo "8:0 rbps=104857600 wbps=104857600" > /sys/fs/cgroup/mygroup/io.max
-
-# I/O 통계
-cat /sys/fs/cgroup/mygroup/io.stat
+lsblk -o NAME,MAJ:MIN,SIZE,TYPE
 ```
+
+#### io.max — 속도/IOPS 상한 (하드 제한)
+
+```bash
+# 형식: "major:minor rbps=<bytes> wbps=<bytes> riops=<count> wiops=<count>"
+# 값 생략 시 해당 항목은 제한 없음 (max)
+
+# 읽기/쓰기 100MB/s 제한
+echo "8:16 rbps=104857600 wbps=104857600" > /sys/fs/cgroup/mygroup/io.max
+
+# IOPS 제한 (읽기 1000, 쓰기 500)
+echo "8:16 riops=1000 wiops=500" > /sys/fs/cgroup/mygroup/io.max
+
+# 읽기 속도 + 쓰기 IOPS 혼합
+echo "8:16 rbps=52428800 wiops=200" > /sys/fs/cgroup/mygroup/io.max
+
+# 제한 해제
+echo "8:16 rbps=max wbps=max riops=max wiops=max" > /sys/fs/cgroup/mygroup/io.max
+
+# 현재 설정 확인
+cat /sys/fs/cgroup/mygroup/io.max
+```
+
+#### io.weight — 우선순위 (소프트 제한)
+
+```bash
+# 기본값 100, 범위 1~10000
+# 값이 높을수록 I/O 경합 시 더 많은 대역폭 할당
+
+# 전체 디바이스 기본 가중치 설정
+echo "default 200" > /sys/fs/cgroup/mygroup/io.weight
+
+# 특정 디바이스만 가중치 설정
+echo "8:16 500" > /sys/fs/cgroup/mygroup/io.weight
+
+# 현재 설정 확인
+cat /sys/fs/cgroup/mygroup/io.weight
+```
+
+#### io.stat — I/O 통계
+
+```bash
+cat /sys/fs/cgroup/mygroup/io.stat
+# 출력 예시:
+# 8:16 rbytes=1073741824 wbytes=536870912 rios=10240 wios=5120 dbytes=0 dios=0
+#       읽기 바이트       쓰기 바이트       읽기 횟수   쓰기 횟수
+```
+
+| 필드 | 설명 |
+|------|------|
+| `rbytes` / `wbytes` | 누적 읽기/쓰기 바이트 |
+| `rios` / `wios` | 누적 읽기/쓰기 I/O 횟수 |
+| `dbytes` / `dios` | discard(trim) 바이트/횟수 |
+
+#### io.pressure — I/O 압박 지표
+
+```bash
+cat /sys/fs/cgroup/mygroup/io.pressure
+# some avg10=0.00 avg60=0.00 avg300=0.00 total=0
+# full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+# some: 일부 태스크가 I/O 대기 중인 시간 비율 (%)
+# full: 모든 태스크가 I/O 대기 중인 시간 비율 (%)
+```
+
+#### systemd 서비스에 적용
+
+```bash
+# IOReadBandwidthMax / IOWriteBandwidthMax
+systemctl set-property myapp.service IOReadBandwidthMax="/dev/sdb 100M"
+systemctl set-property myapp.service IOWriteBandwidthMax="/dev/sdb 100M"
+
+# IOReadIOPSMax / IOWriteIOPSMax
+systemctl set-property myapp.service IOReadIOPSMax="/dev/sdb 1000"
+
+# IOWeight (우선순위)
+systemctl set-property myapp.service IOWeight=200
+
+# 확인
+systemctl show myapp.service | grep -i io
+```
+
+#### cgroup v1 (blkio) vs v2 (io) 비교
+
+| 항목 | v1 blkio | v2 io |
+|------|----------|-------|
+| 속도 제한 | `blkio.throttle.read_bps_device` | `io.max rbps=` |
+| IOPS 제한 | `blkio.throttle.read_iops_device` | `io.max riops=` |
+| 가중치 | `blkio.weight` | `io.weight` |
+| 통계 | `blkio.io_service_bytes` | `io.stat` |
+| 설정 형식 | 파일별 분리 | 한 줄에 모든 값 |
+
+#### 프로세스에 I/O 제한 적용
+
+`io.max` 설정만으로는 제한이 걸리지 않습니다. 대상 프로세스를 해당 cgroup에 등록해야 합니다.
+
+```bash
+# 1. cgroup 생성
+mkdir /sys/fs/cgroup/mygroup
+
+# 2. io.max 설정
+echo "8:16 rbps=104857600 wbps=104857600" > /sys/fs/cgroup/mygroup/io.max
+
+# 3. 프로세스 등록 ← 없으면 제한 안 걸림
+echo <pid> > /sys/fs/cgroup/mygroup/cgroup.procs
+
+# 등록된 프로세스 확인
+cat /sys/fs/cgroup/mygroup/cgroup.procs
+```
+
+- 등록된 PID만 제한됨 — 같은 서버의 다른 프로세스는 영향 없음
+- 자식 프로세스 자동 상속 — fork된 프로세스도 같은 cgroup에 속함
+- systemd 서비스는 자동 배치 — 별도 등록 불필요
+
+```bash
+# nginx → /sys/fs/cgroup/system.slice/nginx.service/ 에 자동 배치
+# 자세한 systemd 적용 방법은 위 '#### systemd 서비스에 적용' 참고
+cat /sys/fs/cgroup/system.slice/nginx.service/cgroup.procs
+```
+
+
+#### 적용 확인
+
+```bash
+# 1. 프로세스가 cgroup에 등록됐는지 확인
+cat /sys/fs/cgroup/mygroup/cgroup.procs
+# 출력: 등록된 PID 목록
+
+# 특정 프로세스가 어느 cgroup에 속하는지 역방향 확인
+cat /proc/<pid>/cgroup
+# 출력 예시:
+# 0::/mygroup
+
+# 2. io.max 설정값 확인
+cat /sys/fs/cgroup/mygroup/io.max
+# 출력 예시:
+# 8:16 rbps=104857600 wbps=104857600 riops=max wiops=max
+
+# 3. I/O 제한이 실제로 걸리는지 dd로 테스트
+#    현재 shell을 cgroup에 넣은 뒤 실행
+echo $$ > /sys/fs/cgroup/mygroup/cgroup.procs
+dd if=/dev/zero of=/tmp/testfile bs=1M count=500 oflag=direct 2>&1
+# 제한 전: 수백 MB/s
+# 제한 후: ~100MB/s (io.max 설정값 근처)
+
+# 4. io.stat으로 실시간 I/O 사용량 확인
+watch -n 1 'cat /sys/fs/cgroup/mygroup/io.stat'
+# 출력 예시:
+# 8:16 rbytes=0 wbytes=157286400 rios=0 wios=150 dbytes=0 dios=0
+#                ^^^^^^^^^^^^^^^ wbytes가 증가하면 쓰기 I/O 발생 중
+```
+
+⚠️ `dd` 테스트 시 `oflag=direct`를 붙여야 page cache를 우회하여 실제 디스크 I/O가 발생합니다. 없으면 cache에 쓰여 제한이 안 걸린 것처럼 보입니다.
 
 ### pids
 
