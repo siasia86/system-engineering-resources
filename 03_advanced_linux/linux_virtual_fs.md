@@ -2,11 +2,11 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. /proc 구조](#2-proc-구조) / [3. /proc 주요 파일](#3-proc-주요-파일) |
+| 섹션                                                                                                   |
+|--------------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. /proc 구조](#2-proc-구조) / [3. /proc 주요 파일](#3-proc-주요-파일)           |
 | [4. /sys 구조](#4-sys-구조) / [5. /sys 주요 경로](#5-sys-주요-경로) / [6. proc vs sys](#6-proc-vs-sys) |
-| [7. 실전 활용](#7-실전-활용) / [8. 주의사항](#8-주의사항) / [9. Tips](#9-tips) |
+| [7. 실전 활용](#7-실전-활용) / [8. 주의사항](#8-주의사항) / [9. Tips](#9-tips)                         |
 
 ---
 
@@ -18,11 +18,11 @@
 ┌─────────────────────────────────────────────────────────────┐
 │              Linux Virtual Filesystem                       │
 │                                                             │
-│  /proc  (procfs)   kernel/process state  read/write        │
-│  /sys   (sysfs)    hardware/driver info  read/write        │
-│  /sys/fs/cgroup    cgroup control        read/write        │
+│  /proc  (procfs)   kernel/process state  read/write         │
+│  /sys   (sysfs)    hardware/driver info  read/write         │
+│  /sys/fs/cgroup    cgroup control        read/write         │
 │                                                             │
-│  all virtual — cleared on reboot                           │
+│  all virtual — cleared on reboot                            │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -41,25 +41,25 @@ mount | grep -E "proc|sysfs|cgroup"
 
 ```
 /proc/
-├── 1/                    # PID 1 (systemd) 프로세스 정보
-│   ├── cmdline           # 실행 명령어
-│   ├── environ           # 환경변수
-│   ├── fd/               # 열린 파일 디스크립터
-│   ├── maps              # 메모리 맵
-│   ├── net/              # 네트워크 정보
-│   ├── status            # 프로세스 상태 요약
-│   └── cgroup            # 소속 cgroup
-├── <PID>/                # 각 프로세스별 디렉토리
-├── cpuinfo               # CPU 정보
-├── meminfo               # 메모리 정보
-├── net/                  # 네트워크 통계
-├── sys/                  # 커널 파라미터 (sysctl)
-├── mounts                # 마운트 목록
-├── filesystems           # 지원 파일시스템
-├── interrupts            # IRQ 통계
-├── loadavg               # 로드 평균
-├── uptime                # 부팅 후 경과 시간
-└── version               # 커널 버전
+├── 1/                    # PID 1 (systemd) process info
+│   ├── cmdline           # command line args
+│   ├── environ           # environment variables
+│   ├── fd/               # open file descriptors
+│   ├── maps              # memory map
+│   ├── net/              # network info
+│   ├── status            # process status summary
+│   └── cgroup            # cgroup membership
+├── <PID>/                # per-process directory
+├── cpuinfo               # CPU info
+├── meminfo               # memory info
+├── net/                  # network stats
+├── sys/                  # kernel parameters (sysctl)
+├── mounts                # mount list
+├── filesystems           # supported filesystems
+├── interrupts            # IRQ stats
+├── loadavg               # load average
+├── uptime                # uptime since boot
+└── version               # kernel version
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -77,16 +77,16 @@ cat /proc/cpuinfo | grep -E "model name|cpu cores|processor" | head -10
 # 메모리 정보
 cat /proc/meminfo | grep -E "MemTotal|MemFree|MemAvailable|SwapTotal"
 
-# 커널 버전
+# kernel version
 cat /proc/version
 
-# 부팅 후 경과 시간 (초)
+# uptime since boot (초)
 cat /proc/uptime
 
-# 로드 평균 (1분/5분/15분)
+# load average (1분/5분/15분)
 cat /proc/loadavg
 
-# 마운트 목록
+# mount list
 cat /proc/mounts
 ```
 
@@ -102,7 +102,7 @@ cat /proc/<PID>/environ | tr '\0' '\n'
 # 프로세스 메모리 맵
 cat /proc/<PID>/maps
 
-# 열린 파일 디스크립터
+# open files 디스크립터
 ls -la /proc/<PID>/fd
 
 # 프로세스 상태
@@ -156,20 +156,20 @@ sysctl -p  # /etc/sysctl.conf 적용
 
 ```
 /sys/
-├── block/                # 블록 디바이스 (sda, nvme0n1 등)
-├── bus/                  # 버스별 디바이스 (pci, usb, i2c 등)
+├── block/                # block devices (sda, nvme0n1, ...)
+├── bus/                  # devices by bus (pci, usb, i2c, ...)
 │   ├── pci/
 │   └── usb/
-├── class/                # 디바이스 클래스별
-│   ├── net/              # 네트워크 인터페이스
-│   ├── block/            # 블록 디바이스
-│   └── input/            # 입력 디바이스
-├── devices/              # 실제 디바이스 트리 (전체 하드웨어 계층)
-├── fs/                   # 파일시스템 관련
-│   └── cgroup/           # cgroup 마운트 포인트
-├── kernel/               # 커널 파라미터
-├── module/               # 로드된 커널 모듈 파라미터
-└── power/                # 전원 관리
+├── class/                # by device class
+│   ├── net/              # network interfaces
+│   ├── block/            # block devices
+│   └── input/            # input devices
+├── devices/              # physical device tree (full hardware hierarchy)
+├── fs/                   # filesystem related
+│   └── cgroup/           # cgroup mount point
+├── kernel/               # kernel parameters
+├── module/               # loaded kernel module parameters
+└── power/                # power management
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -248,16 +248,16 @@ cat /sys/module/nf_conntrack/parameters/hashsize
 
 ## 6. proc vs sys
 
-| 항목 | `/proc` | `/sys` |
-|------|---------|--------|
-| 목적 | 프로세스/커널 상태 조회 | 하드웨어/드라이버 설정 |
-| 구조 | 비정형 (역사적 누적) | 계층적 (디바이스 모델 반영) |
-| 도입 | 커널 초기 | 커널 2.6 (sysfs) |
-| 프로세스 정보 | ✅ (`/proc/<PID>/`) | ❌ |
-| 하드웨어 제어 | 제한적 | ✅ |
-| sysctl 파라미터 | ✅ (`/proc/sys/`) | ❌ |
-| cgroup | ❌ | ✅ (`/sys/fs/cgroup/`) |
-| 재부팅 후 유지 | ❌ (가상) | ❌ (가상) |
+| 항목            | `/proc`                 | `/sys`                      |
+|-----------------|-------------------------|-----------------------------|
+| 목적            | 프로세스/커널 상태 조회 | 하드웨어/드라이버 설정      |
+| 구조            | 비정형 (역사적 누적)    | 계층적 (디바이스 모델 반영) |
+| 도입            | 커널 초기               | 커널 2.6 (sysfs)            |
+| 프로세스 정보   | ✅ (`/proc/<PID>/`)     | ❌                          |
+| 하드웨어 제어   | 제한적                  | ✅                          |
+| sysctl 파라미터 | ✅ (`/proc/sys/`)       | ❌                          |
+| cgroup          | ❌                      | ✅ (`/sys/fs/cgroup/`)      |
+| 재부팅 후 유지  | ❌ (가상)               | ❌ (가상)                   |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -287,7 +287,7 @@ cat /proc/<PID>/status | grep -E "VmRSS|VmSize|VmSwap"
 # 스왑 사용 최소화 (SSD 서버)
 echo 10 | sudo tee /proc/sys/vm/swappiness
 
-# 파일 디스크립터 최대값 확인/변경
+# file descriptors 최대값 확인/변경
 cat /proc/sys/fs/file-max
 echo 1000000 | sudo tee /proc/sys/fs/file-max
 
@@ -362,7 +362,7 @@ cat /proc/kmsg
 # NUMA 노드 정보
 cat /proc/buddyinfo
 
-# 인터럽트 통계 (IRQ 분산 확인)
+# interrupt stats (IRQ 분산 확인)
 watch -n1 cat /proc/interrupts
 
 # /sys 파일 변경 감지 (inotify)
@@ -395,6 +395,6 @@ inotifywait -m /sys/block/sda/queue/scheduler
 
 **작성일**: 2026-05-15
 
-**마지막 업데이트**: 2026-05-15
+**마지막 업데이트**: 2026-05-21
 
 © 2026 siasia86. Licensed under CC BY 4.0.
