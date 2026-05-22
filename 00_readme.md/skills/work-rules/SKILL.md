@@ -97,3 +97,50 @@ After any infrastructure or code change, verify in order:
 4. Monitoring normal (no new alarms)
 
 Skip verification only if explicitly told by user.
+
+## 13. _reference 디렉토리 규칙
+
+`/root/32_system-engineering-resources/_reference/` 는 **공식 홈페이지 기반 참조 노트 전용** 디렉토리입니다.
+
+### 저장 대상
+- 공식 문서에서 수집한 권장 설정, deprecated/removed 항목, breaking changes, 버전 현황
+- 반드시 공식 홈페이지(docs.*, official blog, GitHub release notes)를 직접 확인한 내용만 저장
+- 개인 의견, 추정, 블로그 내용 혼입 금지
+
+### 파일명 규칙
+`{기술명}_official_notes.md` (예: `docker_official_notes.md`, `ansible_official_notes.md`)
+
+### .md 작성 전 필수 절차
+
+기술 관련 `.md` 파일을 **새로 작성**하거나 **기존 파일을 대폭 수정**할 때:
+
+1. `_reference/INDEX.md` 확인 — 해당 기술 참조 파일 존재 여부 확인
+2. 있으면 → 해당 파일 직접 읽기 (`last_checked` 날짜 확인, 6개월 이상 경과 시 재확인)
+3. 없으면 → 공식 홈페이지를 아래 방법으로 스캔 후 생성
+   - 일반 페이지: `lynx -dump <URL>`
+   - JS 렌더링 페이지: `curl` + GitHub API / PyPI API / raw.githubusercontent.com 직접 호출
+   - 최신 버전 확인: `curl -s "https://api.github.com/repos/<owner>/<repo>/releases/latest"`
+4. 생성 후 → `_reference/INDEX.md` 테이블에 아래 형식으로 항목 추가:
+   ```
+   | {기술명} | `_reference/{기술명}_official_notes.md` | {최신버전} | {오늘날짜} |
+   ```
+5. `_reference` 파일을 참조하여 `.md` 작성
+
+### _reference 파일 구조
+
+```markdown
+---
+name: {기술명}-official-notes
+last_checked: YYYY-MM-DD
+sources:
+  - https://공식URL
+---
+
+## 1. 버전 현황
+## 2. 권장 설정
+## 3. deprecated / removed
+## 4. breaking changes
+## 5. 보안 권장사항
+```
+
+⚠️ agent resources에는 `INDEX.md`만 등록. 개별 파일은 필요 시 직접 읽기 (context window 절약)
