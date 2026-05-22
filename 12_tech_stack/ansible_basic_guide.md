@@ -8,8 +8,8 @@
 | [4. Ad-hoc 명령 (1회성 실행)](#4-ad-hoc-명령-1회성-실행) / [5. Playbook 기초](#5-playbook-기초) / [6. 변수 우선순위](#6-변수-우선순위) |
 | [7. Handler (변경 시에만 실행)](#7-handler-변경-시에만-실행) / [8. 조건문 / 반복문](#8-조건문--반복문) / [9. Template (Jinja2)](#9-template-jinja2) |
 | [10. Role 구조](#10-role-구조) / [11. 자주 쓰는 실행 옵션](#11-자주-쓰는-실행-옵션) / [12. 실습 순서 권장](#12-실습-순서-권장) |
-| [13. 모듈 상세 사용법](#13-모듈-상세-사용법) / [14. 에러 처리](#14-에러-처리) / [15. 태그](#15-태그) |
-| [16. Dynamic Inventory](#16-dynamic-inventory) |
+| [13. 모듈 상세 사용법](#13-모듈-상세-사용법) / [14. raw 모듈과 delegate_to](#14-raw-모듈과-delegate_to) / [15. 에러 처리](#15-에러-처리) |
+| [16. 태그](#16-태그) / [17. Dynamic Inventory](#17-dynamic-inventory) / [18. Vault — 시크릿 관리](#18-vault--시크릿-관리) |
 
 
 ---
@@ -142,6 +142,28 @@ ansible-inventory --list -v
 | `--vars` | `--graph`에 변수 포함 |
 | `-i` | inventory 파일/디렉토리 지정 |
 
+### Docker 컨테이너 연결 (SSH 없이)
+
+```ini
+[docker_ubuntu]
+ubuntu22  ansible_connection=docker ansible_host=02_compose-ubuntu22-1
+ubuntu24  ansible_connection=docker ansible_host=02_compose-ubuntu24-1
+
+[docker:children]
+docker_ubuntu
+
+[docker:vars]
+ansible_remote_tmp=/tmp/.ansible/tmp
+ansible_python_interpreter=/usr/local/bin/python3
+```
+
+| `ansible_connection` 값 | 설명                                  |
+|-------------------------|---------------------------------------|
+| `ssh`                   | 기본값 — SSH로 접속                   |
+| `docker`                | `docker exec`로 접속 (SSH 불필요)     |
+| `local`                 | Controller 자신에게 실행              |
+| `winrm`                 | Windows WinRM 접속                    |
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -219,6 +241,29 @@ ansible webservers -i inventory/dev -m service -a "name=nginx state=restarted" -
     - name: uptime 출력
       debug:
         msg: "{{ result.stdout }}"
+```
+
+### 주요 Play 옵션
+
+```yaml
+- name: 예시
+  hosts: webservers
+  become: true
+  gather_facts: true        # 기본값 — OS/IP 등 서버 정보 수집 (Python 필요)
+  # gather_facts: false     # Python 없는 환경 또는 속도 최적화 시
+
+  pre_tasks:                # tasks 실행 전 항상 먼저 실행
+    - name: 사전 점검
+      debug:
+        msg: "배포 시작"
+
+  tasks:
+    - name: 작업
+
+  post_tasks:               # tasks 완료 후 항상 실행
+    - name: 사후 점검
+      debug:
+        msg: "배포 완료"
 ```
 
 ```bash
@@ -475,6 +520,7 @@ ansible-galaxy init roles/gameserver
 | `-v / -vv / -vvv`        | 상세 출력 단계           |
 | `--list-tasks`           | 실행할 task 목록만 출력  |
 | `--list-hosts`           | 대상 호스트 목록만 출력  |
+| `--syntax-check`         | 문법 검사만 (실행 안 함) |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -752,7 +798,88 @@ ansible-doc -s service
 
 ---
 
-## 14. 에러 처리
+## 14. raw 모듈과 delegate_to
+
+### `raw` 모듈 — Python 없이 실행
+
+일반 Ansible 모듈(`package`, `copy`, `service` 등)은 대상 서버에 Python이 필요합니다.
+`raw` 모듈은 SSH로 shell 명령을 그대로 전달하므로 Python 없이 동작합니다.
+
+```
+일반 모듈
+  Controller → SSH → 대상 서버에 Python 모듈 전송 → Python으로 실행  (Python 필요)
+
+raw 모듈
+  Controller → SSH → 대상 서버에서 shell 명령 직접 실행              (Python 불필요)
+```
+
+| 항목 | `raw` | `command` / `shell` |
+|------|-------|---------------------|
+| Python 필요 | ❌ | ✅ |
+| 파이프 사용 | ✅ | `shell`만 가능 (`raw`도 가능) |
+| 멱등성 자동 보장 | ❌ | ❌ |
+| 주요 용도 | Python 설치 전 부트스트랩 | 일반 명령 실행 |
+
+```yaml
+# Python 없는 서버에 Python 설치
+- name: Python 설치
+  ansible.builtin.raw: yum install -y python3
+  changed_when: false
+```
+
+⚠️ `raw` 사용 후 Python이 설치되면 이후 task부터 일반 모듈을 사용합니다.
+`gather_facts: false`와 함께 사용해야 합니다 — `setup` 모듈도 Python이 필요하기 때문입니다.
+
+### `delegate_to` — 다른 호스트에서 task 실행
+
+특정 task를 대상 서버가 아닌 **지정한 호스트**에서 실행합니다.
+`delegate_to: localhost`가 가장 많이 쓰입니다.
+
+```
+일반 task
+  Controller ──────────────────────────> 대상 서버에서 실행
+
+delegate_to: localhost
+  Controller (localhost에서 실행) ──X──> 대상 서버 접속 안 함
+```
+
+```yaml
+# docker cp는 Controller(localhost)에서 실행해야 함
+- name: 스크립트를 컨테이너에 복사
+  ansible.builtin.raw: docker cp /tmp/install.sh ubuntu18:/tmp/install.sh
+  delegate_to: localhost
+
+- name: 컨테이너에서 스크립트 실행
+  ansible.builtin.raw: bash /tmp/install.sh
+```
+
+**`raw` + `delegate_to: localhost` 조합:**
+
+```yaml
+# docker cp + 실행을 localhost에서 모두 처리
+# → 컨테이너 Python 유무와 완전히 무관
+- name: Python 설치 (ubuntu18)
+  ansible.builtin.raw: |
+    docker cp /root/scripts/python311_ubuntu18.sh ubuntu18:/tmp/python_install.sh
+    docker exec ubuntu18 bash /tmp/python_install.sh
+  delegate_to: localhost
+  when: inventory_hostname == 'ubuntu18'
+```
+
+주요 사용 사례:
+
+| 사례 | 이유 |
+|------|------|
+| `docker cp` | Controller에서 실행하는 명령 |
+| AWS CLI 호출 | Controller에 AWS 자격증명 있음 |
+| 로컬 파일 생성/수정 | 대상 서버 불필요 |
+| `run_once: true`와 조합 | 전체 중 1회만 실행 |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 15. 에러 처리
 
 ### block / rescue / always
 
@@ -825,7 +952,7 @@ tasks:
 
 ---
 
-## 15. 태그
+## 16. 태그
 
 ### 태그 작성
 
@@ -904,7 +1031,7 @@ ansible-playbook site.yml --tags nginx --list-tasks
 
 ---
 
-## 16. Dynamic Inventory
+## 17. Dynamic Inventory
 
 정적 INI 파일 대신 AWS EC2 등 외부 소스에서 인벤토리를 동적으로 생성합니다.
 
@@ -984,10 +1111,69 @@ ansible-playbook -i inventory/ site.yml
 
 ---
 
+## 18. Vault — 시크릿 관리
+
+패스워드, API 키 등 민감한 값을 암호화하여 playbook에 포함합니다.
+
+```bash
+# 암호화된 파일 생성
+ansible-vault create secrets.yml
+
+# 기존 파일 암호화
+ansible-vault encrypt vars/secrets.yml
+
+# 복호화 (평문으로 저장 — 주의)
+ansible-vault decrypt vars/secrets.yml
+
+# 내용 확인 (복호화 없이)
+ansible-vault view vars/secrets.yml
+
+# 내용 수정
+ansible-vault edit vars/secrets.yml
+
+# 패스워드 변경
+ansible-vault rekey vars/secrets.yml
+```
+
+```yaml
+# vars/secrets.yml (암호화 전)
+db_password: SecurePassword123
+api_key: SecureKey123
+```
+
+```yaml
+# playbook에서 사용
+- name: DB 설정
+  hosts: dbservers
+  vars_files:
+    - vars/secrets.yml    # vault 파일 포함
+
+  tasks:
+    - name: DB 패스워드 설정
+      template:
+        src: my.cnf.j2
+        dest: /etc/mysql/my.cnf
+      no_log: true        # 로그에 민감한 값 출력 방지
+```
+
+```bash
+# 실행 시 vault 패스워드 입력
+ansible-playbook site.yml --ask-vault-pass
+
+# 패스워드 파일 사용 (CI/CD 환경)
+ansible-playbook site.yml --vault-password-file ~/.vault_pass
+```
+
+⚠️ `.vault_pass` 파일은 `.gitignore`에 반드시 추가합니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 참고 자료
 
 - Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/) — ★★★☆☆
-- Ansible Best Practices: [Best Practices](https://docs.ansible.com/ansible/latest/tips_tricks/ansible_tips_tricks.html) — ★★★☆☆
+- Ansible Best Practices: [docs.ansible.com/tips_tricks](https://docs.ansible.com/ansible/latest/tips_tricks/ansible_tips_tricks.html) — ★★★☆☆
 
 ---
 
