@@ -538,6 +538,98 @@ docker volume inspect VOLUME
 
 ---
 
+## 9. macvlan 네트워크
+
+컨테이너에 실제 MAC 주소를 부여하여 물리 네트워크에 직접 연결합니다.
+외부 PC에서 컨테이너 IP로 직접 접속이 필요할 때 사용합니다.
+
+### 개념
+
+```
+물리 스위치 (10.200.101.1)
+    │
+    eth0 (호스트 IP: 10.200.90.155)
+    │
+    macvlan
+    ├── container-a  10.200.101.151  ← 외부 PC에서 직접 접속 가능
+    ├── container-b  10.200.101.152
+    └── container-c  10.200.101.153
+```
+
+⚠️ macvlan 제약: 호스트 → 컨테이너 직접 통신 불가 (macvlan 특성). 외부 PC → 컨테이너는 가능합니다.
+
+### Hyper-V 사전 설정
+
+macvlan은 MAC spoofing이 필요합니다. Hyper-V 호스트에서 실행합니다:
+
+```powershell
+# MAC spoofing 활성화 (Hyper-V 호스트에서 실행)
+Get-VMNetworkAdapter -VMName "VM이름" | Set-VMNetworkAdapter -MacAddressSpoofing On
+
+# 확인
+Get-VMNetworkAdapter -VMName "VM이름" | Select MacAddressSpoofing
+```
+
+### compose.yml 설정
+
+```yaml
+services:
+  app:
+    image: myapp
+    networks:
+      macvlan_net:
+        ipv4_address: 10.200.101.151
+
+networks:
+  macvlan_net:
+    driver: macvlan
+    driver_opts:
+      parent: eth0          # 호스트 물리 인터페이스
+    ipam:
+      config:
+        - subnet: 10.200.101.0/24
+          gateway: 10.200.101.1
+          ip_range: 10.200.101.144/29   # 컨테이너 할당 범위 (network address 기준)
+```
+
+#### ip_range 계산
+
+`ip_range`는 CIDR 네트워크 주소 기준이어야 합니다.
+
+| 원하는 범위          | ip_range              |
+|----------------------|-----------------------|
+| .151 ~ .158 (8개)    | 10.200.101.144/29     |
+| .161 ~ .174 (16개)   | 10.200.101.160/28     |
+| .151 ~ .166 (16개)   | 10.200.101.144/28     |
+
+### 호스트 → 컨테이너 통신 (선택)
+
+macvlan 특성상 호스트에서 컨테이너로 직접 통신이 안 됩니다.
+필요하면 macvlan 인터페이스를 호스트에 추가합니다:
+
+```bash
+# 호스트에 macvlan 인터페이스 추가 (재부팅 시 사라짐)
+sudo ip link add macvlan0 link eth0 type macvlan mode bridge
+sudo ip addr add 10.200.101.200/24 dev macvlan0
+sudo ip link set macvlan0 up
+
+# 영구 적용 (/etc/network/interfaces 또는 netplan)
+```
+
+### bridge vs macvlan 비교
+
+| 항목              | bridge                        | macvlan                        |
+|-------------------|-------------------------------|--------------------------------|
+| 외부 접속         | 포트 포워딩 필요 (`ports:`)   | 컨테이너 IP 직접 접속          |
+| 호스트→컨테이너   | ✅ 가능                       | ❌ 기본 불가 (별도 설정 필요)  |
+| 인터넷 아웃바운드 | 호스트 NAT 경유               | 스위치/라우터에서 직접 허용    |
+| Hyper-V 설정      | 불필요                        | MAC spoofing 활성화 필요       |
+| 사용 사례         | 개발/테스트 환경              | 사내 네트워크 직접 노출        |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 참고 자료
 
 - Docker Documentation: [Install Docker Engine](https://docs.docker.com/engine/install/) — ★★★☆☆
