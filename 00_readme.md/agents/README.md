@@ -8,14 +8,14 @@
 
 ## 에이전트 매트릭스
 
-| 에이전트         | 역할               | 모델               | 호출 조건                    |
-|------------------|--------------------|--------------------|------------------------------|
-| system-engineer  | 오케스트레이터     | claude-sonnet-4.6  | 기본 세션                    |
-| code-reviewer    | 코드 리뷰          | claude-haiku-4.6   | 리뷰 요청 시                 |
-| security-auditor | 보안 감사          | claude-haiku-4.6   | 보안 검토 요청 시            |
-| git-manager      | Git 워크플로우     | claude-haiku-4.6   | 커밋/PR 작성 시              |
-| doc-reviewer     | 문서 품질 검사     | claude-sonnet-4.6  | .md 파일 검증 시             |
-| markdown-writer  | 문서 작성          | claude-sonnet-4.6  | 문서 생성/수정 시            |
+| 에이전트         | 역할           | 모델               | 호출 조건          |
+|------------------|----------------|--------------------|--------------------|
+| system-engineer  | 오케스트레이터 | claude-sonnet-4.6  | 기본 세션          |
+| code-reviewer    | 코드 리뷰      | claude-haiku-4.6   | 리뷰 요청 시       |
+| security-auditor | 보안 감사      | claude-haiku-4.6   | 보안 검토 요청 시  |
+| git-manager      | Git 워크플로우 | claude-haiku-4.6   | 커밋/PR 작성 시    |
+| doc-reviewer     | 문서 품질 검사 | claude-sonnet-4.6  | .md 파일 검증 시   |
+| markdown-writer  | 문서 작성      | claude-sonnet-4.6  | 문서 생성/수정 시  |
 
 ## 호출 패턴
 
