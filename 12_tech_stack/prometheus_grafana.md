@@ -136,7 +136,7 @@ scrape_configs:
 
 services:
   prometheus:
-    image: prom/prometheus:v2.48.0
+    image: prom/prometheus:v3.4.0
     ports:
       - "9090:9090"
     volumes:
@@ -149,14 +149,14 @@ services:
       - '--web.enable-lifecycle'
 
   alertmanager:
-    image: prom/alertmanager:v0.26.0
+    image: prom/alertmanager:v0.28.1
     ports:
       - "9093:9093"
     volumes:
       - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
   grafana:
-    image: grafana/grafana:10.2.0
+    image: grafana/grafana:11.6.1
     ports:
       - "3000:3000"
     environment:
@@ -167,7 +167,7 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning
 
   node-exporter:
-    image: prom/node-exporter:v1.7.0
+    image: prom/node-exporter:v1.9.1
     ports:
       - "9100:9100"
     volumes:
@@ -192,7 +192,7 @@ helm repo update
 helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
   --namespace monitoring \
   --create-namespace \
-  --version 55.5.0 \
+  --version 85.2.1 \
   -f values-monitoring.yaml
 ```
 
@@ -629,6 +629,6 @@ curl -s http://localhost:9090/api/v1/status/tsdb | jq '.data.headStats'
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-05-10
+**마지막 업데이트**: 2026-05-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.
