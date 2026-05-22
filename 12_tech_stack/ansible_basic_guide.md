@@ -115,10 +115,32 @@ ansible_ssh_private_key_file=~/.ssh/id_ed25519
 ```
 
 ```bash
-# 인벤토리 확인
+# JSON 형식으로 전체 출력
 ansible-inventory -i inventory/dev --list
+
+# 트리 형식으로 그룹/호스트 구조 출력
 ansible-inventory -i inventory/dev --graph
+
+# 특정 호스트 변수 확인
+ansible-inventory -i inventory/dev --host dev-app-web-01
+
+# 특정 그룹만 트리 출력
+ansible-inventory -i inventory/dev --graph webservers
+
+# 변수 포함 트리 출력
+ansible-inventory -i inventory/dev --graph --vars
+
+# 현재 적용 중인 inventory 소스 확인
+ansible-inventory --list -v
 ```
+
+| 옵션 | 설명 |
+|------|------|
+| `--list` | 전체 호스트/그룹/변수 JSON 출력 |
+| `--graph` | 트리 구조 출력 |
+| `--host <hostname>` | 특정 호스트 변수만 출력 |
+| `--vars` | `--graph`에 변수 포함 |
+| `-i` | inventory 파일/디렉토리 지정 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -982,6 +1004,6 @@ ansible-playbook -i inventory/ site.yml
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-04-27
+**마지막 업데이트**: 2026-05-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.
