@@ -65,7 +65,7 @@ Apache Airflow는 **워크플로우를 코드로 정의, 스케줄링, 모니터
 
 | Executor             | 특징                          | 적합 환경          |
 |----------------------|-------------------------------|--------------------|
-| SequentialExecutor   | 순차 실행, SQLite 사용        | 개발/테스트        |
+| SequentialExecutor   | 순차 실행, SQLite 사용        | ❌ Airflow 3.0에서 제거됨 |
 | LocalExecutor        | 단일 머신 병렬 실행           | 소규모 운영        |
 | CeleryExecutor       | 분산 Worker 풀                | 대규모 운영        |
 | KubernetesExecutor   | Task별 Pod 생성               | 쿠버네티스 환경    |
@@ -319,8 +319,8 @@ airflow dags list-import-errors
 ### pip 설치
 
 ```bash
-pip install "apache-airflow==2.9.0" \
-  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.9.0/constraints-3.11.txt"
+pip install "apache-airflow==3.2.1" \
+  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.2.1/constraints-3.11.txt"
 
 # 프로바이더 추가
 pip install apache-airflow-providers-amazon
@@ -425,7 +425,7 @@ from datetime import datetime
 def on_failure(context):
     dag_id = context['dag'].dag_id
     task_id = context['task_instance'].task_id
-    execution_date = context['execution_date']
+    execution_date = context['data_interval_start']  # execution_date는 Airflow 2.2+에서 deprecated
     log_url = context['task_instance'].log_url
     print(f"FAILED: {dag_id}.{task_id} at {execution_date}")
     print(f"Log: {log_url}")
@@ -823,6 +823,6 @@ airflow tasks states-for-dag-run my_dag manual__2026-04-27T00:00:00+00:00
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-04-27
+**마지막 업데이트**: 2026-05-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.
