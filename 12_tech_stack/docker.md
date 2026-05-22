@@ -7,7 +7,7 @@
 | [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념) |
 | [4. 설치](#4-설치) / [5. 주요 명령어](#5-주요-명령어) / [6. Dockerfile](#6-dockerfile) |
 | [7. docker-compose](#7-docker-compose) / [8. 네트워크](#8-네트워크) / [9. 볼륨](#9-볼륨) |
-| [10. Tips](#10-tips) / [11. cgroup Namespace](#11-cgroup-namespace) |
+| [10. Tips](#10-tips) / [11. cgroup Namespace](#11-cgroup-namespace) / [12. Union Filesystem](#12-union-filesystem) |
 
 ---
 
@@ -333,6 +333,110 @@ services:
 
 ---
 
+## 12. Union Filesystem
+
+여러 디렉토리(레이어)를 하나의 디렉토리처럼 겹쳐 보이게 하는 파일시스템입니다.
+Docker는 내부적으로 OverlayFS(구: AUFS)를 사용합니다.
+
+### 구조
+
+```
+Layer 3 (read-write) <- added on container start, records changes
+Layer 2 (read-only)  <- nginx install layer
+Layer 1 (read-only)  <- Ubuntu base layer
+─────────────────────────────────────────
+Mount point /        <- unified view shown to user
+```
+
+레이어 3은 컨테이너 실행 시 추가되며 삭제 시 함께 제거됩니다. 레이어 1~2는 이미지 레이어로 read-only입니다.
+
+- 이미지 레이어: read-only, 여러 컨테이너가 공유
+- 컨테이너 레이어: read-write, 컨테이너 삭제 시 함께 삭제
+- Copy-on-Write: 파일 수정 시 하위 레이어는 그대로, 변경분만 상위 레이어에 기록
+
+### 실무 영향
+
+#### 1. 이미지 pull — 레이어 재사용
+
+```bash
+docker pull nginx
+# Already exists  ← 다른 이미지와 공유 레이어는 재다운로드 안 함
+# Pull complete
+```
+
+#### 2. Dockerfile 레이어 캐시
+
+상위 레이어가 변경되면 이후 레이어 캐시가 모두 무효화됩니다.
+변경 빈도가 낮은 레이어를 앞에 배치해야 빌드가 빠릅니다.
+
+```dockerfile
+FROM ubuntu:22.04
+RUN apt-get update && apt-get install -y gcc  # 자주 안 바뀜 → 앞에
+COPY app/ /app/                               # 자주 바뀜 → 뒤에
+```
+
+#### 3. 컨테이너 파일 수정은 이미지에 반영 안 됨
+
+```bash
+docker exec mycontainer rm -rf /var/log/nginx
+docker stop mycontainer && docker start mycontainer
+# → /var/log/nginx 다시 살아있음 (read-only 레이어에 있으므로)
+```
+
+컨테이너 삭제 시 read-write 레이어만 삭제됩니다. 데이터 유지가 필요하면 volume을 사용합니다.
+
+#### 4. RUN 명령어 체이닝 — 이미지 용량 최소화
+
+같은 레이어에서 파일을 삭제해야 실제 이미지 용량이 줄어듭니다.
+레이어가 확정된 이후 다음 레이어에서 삭제해도 이전 레이어에 데이터가 남습니다.
+
+```dockerfile
+# ❌ 레이어 2개 — apt 캐시가 레이어에 남음 (487MB)
+RUN apt-get install -y gcc
+RUN rm -rf /var/lib/apt/lists/*
+
+# ✅ 레이어 1개 — 레이어 확정 시점에 캐시 없음 (359MB)
+RUN apt-get install -y gcc && rm -rf /var/lib/apt/lists/*
+```
+
+실측 결과 (Ubuntu 22.04 + gcc 기준):
+
+| Dockerfile      | 이미지 크기 | 차이        |
+|-----------------|-------------|-------------|
+| RUN 2줄 분리    | 487MB       | —           |
+| RUN 1줄 체이닝  | 359MB       | **-128MB**  |
+
+#### 5. 디스크 용량 관리
+
+```bash
+docker system df        # Images / Containers / Volumes / Build Cache 전체 확인
+docker image history nginx  # 레이어별 크기 확인
+```
+
+`docker system df` 출력 항목:
+
+| 항목 | 설명 |
+|------|------|
+| Images | 이미지 레이어 전체 |
+| Containers | 각 컨테이너의 read-write 레이어 |
+| Local Volumes | 마운트된 볼륨 |
+| Build Cache | `docker build` 중간 레이어 캐시 |
+
+항목별 정리 명령어:
+
+```bash
+docker image prune       # 미사용 이미지
+docker container prune   # 중지된 컨테이너
+docker volume prune      # 미사용 볼륨
+docker builder prune     # 빌드 캐시
+
+docker system prune -a   # 위 4가지 전부 (실행 중 컨테이너 제외) — ⚠️ 운영 환경 주의
+```
+
+---
+
+[⬆ 목차로 돌아가기](#목차)
+
 ## 참고 자료
 
 - Docker Documentation: [docs.docker.com](https://docs.docker.com/) — ★★★☆☆
@@ -354,6 +458,6 @@ services:
 
 **작성일**: 2026-05-15
 
-**마지막 업데이트**: 2026-05-15
+**마지막 업데이트**: 2026-05-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.
