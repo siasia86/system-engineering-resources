@@ -98,7 +98,7 @@ Apache Kafka는 분산 이벤트 스트리밍 플랫폼. 대용량 실시간 데
 
 services:
   kafka:
-    image: confluentinc/cp-kafka:7.5.0
+    image: confluentinc/cp-kafka:8.1.3
     hostname: kafka
     ports:
       - "9092:9092"
@@ -569,6 +569,6 @@ except Exception as e:
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-05-10
+**마지막 업데이트**: 2026-05-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.

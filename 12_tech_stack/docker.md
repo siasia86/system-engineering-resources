@@ -294,65 +294,74 @@ CMD ["./app"]
 
 ## 11. cgroup Namespace
 
-### 배경
+### cgroup 이란
 
-cgroup v2 환경에서 컨테이너 안에 systemd를 실행하려면 cgroup namespace를 host와 공유해야 합니다. 격리된 cgroup namespace에서는 systemd가 자신의 cgroup 트리를 인식하지 못해 즉시 종료됩니다.
+cgroup(Control Group)은 프로세스의 CPU/메모리/IO 자원을 제한·격리하는 Linux 커널 기능입니다.
+Docker는 컨테이너별 자원 제한에 cgroup을 사용합니다.
 
-### docker run
+### cgroup 버전
 
-```bash
-# --cgroupns host 옵션으로 호스트 cgroup namespace 공유
-sudo docker run -d --name rocky9 --privileged --cgroupns host \
-  -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
-  geerlingguy/docker-rockylinux9-ansible /usr/sbin/init
-```
-
-### docker compose (v5.x)
-
-Compose v5.x에서 `cgroupns_mode` 키가 Compose Spec에서 제거되어 사용 시 오류가 발생합니다.
-
-```
-validating compose.yml: services.rocky9 additional properties 'cgroupns_mode' not allowed
-```
-
-**해결:** Docker daemon 기본 설정을 변경합니다.
+| 버전    | 특징                                      | 확인 명령어                        |
+|---------|-------------------------------------------|------------------------------------|
+| v1      | 계층별 분리, 레거시                       | `mount \| grep cgroup`             |
+| v2      | 단일 계층, 통합 인터페이스 (Ubuntu 22+)   | `stat -fc %T /sys/fs/cgroup`       |
 
 ```bash
-# /etc/docker/daemon.json
-sudo tee /etc/docker/daemon.json > /dev/null << 'EOF'
-{
-  "default-cgroupns-mode": "host"
-}
-EOF
-
-sudo systemctl restart docker
+# cgroup 버전 확인
+stat -fc %T /sys/fs/cgroup
+# cgroup2fs → v2 / tmpfs → v1
 ```
 
-이후 compose.yml에 `cgroupns_mode` 없이도 모든 컨테이너가 host cgroup namespace로 실행됩니다.
+### cgroup 네임스페이스 모드
+
+| 모드      | 설명                                                        |
+|-----------|-------------------------------------------------------------|
+| `host`    | 컨테이너 런타임의 cgroup 네임스페이스 사용 (런타임 기본값) |
+| `private` | 컨테이너 전용 독립 cgroup 네임스페이스                      |
+
+```
+host 모드:
+  컨테이너 A ── 런타임 cgroup 네임스페이스 공유
+  컨테이너 B ── 런타임 cgroup 네임스페이스 공유
+
+private 모드:
+  컨테이너 A ── 독립 cgroup 네임스페이스
+  컨테이너 B ── 독립 cgroup 네임스페이스
+```
+
+### compose.yml 설정
 
 ```yaml
 services:
-  rocky9:
-    image: geerlingguy/docker-rockylinux9-ansible
+  ubuntu22:
+    image: geerlingguy/docker-ubuntu2204-ansible
     privileged: true
-    command: /usr/sbin/init
+    command: /lib/systemd/systemd
+    cgroup: private          # 컨테이너 전용 독립 cgroup 네임스페이스
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
 ```
 
-### 버전별 정리
+### 실제 동작 확인 (테스트 결과)
 
-| 항목                  | 상태                                          |
-|-----------------------|-----------------------------------------------|
-| `docker run`          | `--cgroupns host` 옵션 사용 가능              |
-| Compose v2.x (구버전) | `cgroupns_mode: host` 키 지원                 |
-| Compose v5.x (최신)  | `cgroupns_mode` 키 제거됨 → `daemon.json` 우회 |
+Docker는 컨테이너마다 고유한 cgroup 경로를 자동 할당합니다:
 
-⚠️ `"default-cgroupns-mode": "host"`는 모든 컨테이너에 적용됩니다. 보안 격리가 필요한 환경에서는 `docker run --cgroupns private`로 개별 컨테이너를 격리할 수 있습니다.
+```
+/sys/fs/cgroup/system.slice/docker-<container_id_A>.scope
+/sys/fs/cgroup/system.slice/docker-<container_id_B>.scope
+```
+
+따라서 **같은 호스트에서 systemd 컨테이너 여러 개를 동시에 실행해도 실제로는 충돌하지 않습니다.**
+`cgroup: private` 없이도 동시 실행이 가능합니다.
+
+`cgroup: private`이 유효한 경우:
+- 컨테이너 내부에서 `/sys/fs/cgroup`의 루트가 컨테이너 자신의 cgroup으로 보임 (격리 강화)
+- 컨테이너 내부 프로세스가 호스트 전체 cgroup 트리를 볼 수 없게 제한
+- 보안 격리가 필요한 환경에서 권장
+
+⚠️ `cgroup: private`은 Docker Compose v2.x 이상에서 지원합니다. (공식 문서: [compose-spec cgroup](https://docs.docker.com/reference/compose-file/services/#cgroup))
 
 [⬆ 목차로 돌아가기](#목차)
-
----
 
 ## 12. Union Filesystem
 

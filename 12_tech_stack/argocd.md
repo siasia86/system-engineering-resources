@@ -102,7 +102,7 @@ helm repo update
 
 helm install argocd argo/argo-cd \
   --namespace argocd \
-  --version 6.7.3 \
+  --version 9.5.15 \
   --set server.service.type=LoadBalancer
 ```
 
@@ -205,7 +205,7 @@ spec:
   source:
     repoURL: https://charts.bitnami.com/bitnami
     chart: redis
-    targetRevision: 18.6.1
+    targetRevision: 23.1.1
     helm:
       releaseName: redis
       values: |
@@ -513,6 +513,6 @@ metadata:
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-05-10
+**마지막 업데이트**: 2026-05-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.

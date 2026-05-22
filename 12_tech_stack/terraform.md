@@ -87,7 +87,7 @@ Terraform은 HashiCorp의 오픈소스 IaC(Infrastructure as Code) 도구. HCL(H
 ```hcl
 # Provider 설정
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = ">= 1.9.0"
 
   required_providers {
     aws = {
@@ -714,6 +714,6 @@ terraform show -json
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-05-10
+**마지막 업데이트**: 2026-05-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.
