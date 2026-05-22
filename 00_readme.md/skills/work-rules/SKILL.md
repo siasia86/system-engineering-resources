@@ -98,6 +98,20 @@ After any infrastructure or code change, verify in order:
 
 Skip verification only if explicitly told by user.
 
+## 13. Multi-step task plan format
+For tasks with 3+ steps, state the plan before starting:
+```
+1. [step] → verify: [check]
+2. [step] → verify: [check]
+3. [step] → verify: [check]
+```
+
+## 14. Code cleanup scope
+When editing code:
+- Remove only imports/variables/functions that YOUR changes made unused
+- Do not remove pre-existing dead code — mention it instead
+- Do not refactor adjacent code that isn't broken
+
 ## 13. _reference 디렉토리 규칙
 
 `/root/32_system-engineering-resources/_reference/` 는 **공식 홈페이지 기반 참조 노트 전용** 디렉토리입니다.
