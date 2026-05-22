@@ -34,7 +34,8 @@
     "skill://spec-driven-infra",
     "skill://doubt-driven-infra",
     "skill://shipping-checklist",
-    "file://~/.kiro/markdown/STYLE.md"
+    "file://~/.kiro/markdown/STYLE.md",
+    "file:///root/32_system-engineering-resources/_reference/INDEX.md"
   ],
   "hooks": {
     "preToolUse": [

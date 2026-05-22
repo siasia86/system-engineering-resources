@@ -98,11 +98,12 @@ terraform {
 
   # Remote Backend (S3)
   backend "s3" {
-    bucket         = "my-terraform-state"
-    key            = "prod/terraform.tfstate"
-    region         = "ap-northeast-1"
-    encrypt        = true
-    dynamodb_table = "terraform-lock"
+    bucket       = "my-terraform-state"
+    key          = "prod/terraform.tfstate"
+    region       = "ap-northeast-1"
+    encrypt      = true
+    use_lockfile = true  # v1.10+: S3 네이티브 락 (DynamoDB 불필요)
+    # dynamodb_table = "terraform-lock"  # v1.10 이전 방식
   }
 }
 
@@ -300,6 +301,12 @@ terraform output public_ip
 # 기존 리소스를 State에 import (코드 없이 생성된 리소스)
 terraform import aws_instance.web i-0123456789abcdef0
 
+# v1.5+: import 블록 (HCL로 선언, terraform plan에서 미리 확인 가능)
+# import {
+#   to = aws_instance.web
+#   id = "i-0123456789abcdef0"
+# }
+
 # State에서 리소스 제거 (실제 리소스는 삭제 안 함)
 terraform state rm aws_instance.web
 
@@ -359,6 +366,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" 
   }
 }
 
+# v1.10+ use_lockfile 사용 시 아래 DynamoDB 테이블 불필요
 resource "aws_dynamodb_table" "terraform_lock" {
   name         = "terraform-lock"
   billing_mode = "PAY_PER_REQUEST"

@@ -6,7 +6,7 @@
 |------|
 | [1. 개요](#1-개요) / [2. Ubuntu 설치](#2-ubuntu-설치) / [3. RHEL 계열 설치](#3-rhel-계열-설치) |
 | [4. 초기 설정](#4-초기-설정) / [5. 기본 사용법](#5-기본-사용법) / [6. Docker Compose](#6-docker-compose) |
-| [7. 실무 팁](#7-실무-팁) / [8. 트러블슈팅](#8-트러블슈팅) |
+| [7. 실무 팁](#7-실무-팁) / [8. 트러블슈팅](#8-트러블슈팅) / [9. macvlan 네트워크](#9-macvlan-네트워크) |
 
 ---
 
@@ -58,9 +58,19 @@ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
     -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] \
-    https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
-    | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# DEB822 형식 (Ubuntu 22.04+ 공식 권장)
+sudo tee /etc/apt/sources.list.d/docker.sources > /dev/null <<'SRCEOF'
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: UBUNTU_CODENAME
+Components: stable
+Architectures: ARCH
+Signed-By: /etc/apt/keyrings/docker.asc
+SRCEOF
+# Suites/Architectures 값 자동 치환
+CODENAME=$(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+ARCH=$(dpkg --print-architecture)
+sudo sed -i "s/UBUNTU_CODENAME/$CODENAME/; s/ARCH/$ARCH/" /etc/apt/sources.list.d/docker.sources
 
 sudo apt update
 ```
@@ -171,7 +181,7 @@ sudo vi /etc/docker/daemon.json
 
 ```json
 {
-  "log-driver": "json-file",
+  "log-driver": "local",   // json-file 대신 local 권장 (자동 로테이션 지원, 공식 문서 권장)
   "log-opts": {
     "max-size": "100m",
     "max-file": "3"
@@ -190,6 +200,9 @@ sudo vi /etc/docker/daemon.json
 sudo systemctl restart docker
 sudo docker info --format '{{.LoggingDriver}}'
 ```
+
+> `local` 드라이버는 자동 로테이션을 지원하며 `json-file`보다 효율적입니다.
+> `json-file`은 기본값이지만 로테이션이 없어 디스크 고갈 위험이 있습니다.
 
 ### 4-3. 방화벽 설정
 
@@ -651,6 +664,6 @@ sudo ip link set macvlan0 up
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-05-04
+**마지막 업데이트**: 2026-05-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.
