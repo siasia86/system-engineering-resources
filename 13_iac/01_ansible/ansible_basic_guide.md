@@ -279,6 +279,18 @@ ansible-playbook -i inventory/dev playbooks/hello.yml --check
 # 특정 호스트만
 ansible-playbook -i inventory/dev playbooks/hello.yml --limit dev-app-web-01
 
+# 여러 호스트 (쉼표 구분)
+ansible-playbook -i inventory/dev playbooks/hello.yml --limit dev-app-web-01,dev-app-web-02
+
+# 그룹 지정
+ansible-playbook -i inventory/dev playbooks/hello.yml --limit webservers
+
+# 패턴 (와일드카드)
+ansible-playbook -i inventory/dev playbooks/hello.yml --limit 'dev-app-*'
+
+# 특정 호스트 제외 (! 사용, 따옴표 필수)
+ansible-playbook -i inventory/dev playbooks/hello.yml --limit 'all,!dev-db-*'
+
 # 상세 출력 (-v, -vv, -vvv 로 단계 조절)
 ansible-playbook -i inventory/dev playbooks/hello.yml -v
 ```
@@ -511,7 +523,10 @@ ansible-galaxy init roles/gameserver
 | `-i inventory/dev`       | 인벤토리 파일 지정       |
 | `--check`                | dry-run (실제 변경 없음) |
 | `--diff`                 | 파일 변경 내용 diff 출력 |
-| `--limit host1`          | 특정 호스트만 실행       |
+| `--limit host1`          | 특정 호스트만 실행                          |
+| `--limit host1,host2`    | 여러 호스트 (쉼표 구분)                     |
+| `--limit 'web*'`         | 패턴 매칭 (와일드카드)                      |
+| `--limit 'all,!db*'`     | 특정 호스트/그룹 제외 (`!` 사용)            |
 | `--tags deploy`          | 특정 태그만 실행         |
 | `--skip-tags debug`      | 특정 태그 제외           |
 | `--step`                 | task 마다 확인 후 실행   |
