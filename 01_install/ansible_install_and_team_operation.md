@@ -159,14 +159,14 @@ which ansible
 ```bash
 # Control Node
 sudo useradd -m -s /bin/bash ansible
-sudo passwd ansible
 
 # Managed Node (모든 대상 서버에서 실행)
 sudo useradd -m -s /bin/bash ansible
-sudo passwd ansible
 echo "ansible ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/ansible
 sudo chmod 440 /etc/sudoers.d/ansible
 ```
+
+⚠️ Managed Node에서 패스워드를 설정하지 않습니다. SSH 키 인증만 사용하며, 패스워드 인증은 `/etc/ssh/sshd_config`에서 비활성화합니다.
 
 ### 4-2. SSH 키 생성 및 배포
 
@@ -185,6 +185,13 @@ done
 
 # 접속 테스트
 ssh ansible@<managed-node-ip>
+```
+
+⚠️ RHEL 계열(Rocky, Amazon Linux) 컨테이너 환경에서는 `pam_sepermit.so`, `pam_nologin.so` 등이 SELinux 없는 환경에서 SSH 접속을 차단할 수 있습니다. 이 경우 `/etc/pam.d/sshd`와 `/etc/pam.d/sudo`를 최소 설정으로 교체합니다:
+
+```bash
+printf '#%%PAM-1.0\nauth     sufficient   pam_unix.so\naccount  required     pam_permit.so\nsession  sufficient   pam_unix.so\n' | sudo tee /etc/pam.d/sshd
+printf '#%%PAM-1.0\nauth     sufficient   pam_unix.so\naccount  required     pam_permit.so\nsession  sufficient   pam_unix.so\n' | sudo tee /etc/pam.d/sudo
 ```
 
 ### 4-3. ansible.cfg 설정
@@ -751,6 +758,6 @@ git push -u origin main
 
 **작성일**: 2026-03-24
 
-**마지막 업데이트**: 2026-03-24
+**마지막 업데이트**: 2026-05-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.
