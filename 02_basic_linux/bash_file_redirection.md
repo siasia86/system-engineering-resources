@@ -5,7 +5,8 @@
 | 섹션 |
 |------|
 | [1. 개요](#1-개요) / [2. File Descriptor 기본](#2-file-descriptor-기본) / [3. Output Redirection](#3-output-redirection) |
-| [4. Input Redirection](#4-input-redirection) / [5. 조합 패턴](#5-조합-패턴) / [6. 실무 예시](#6-실무-예시) |
+| [4. Input Redirection](#4-input-redirection) / [5. 조합 패턴](#5-조합-패턴) / [6. Crontab 리다이렉션](#6-crontab-리다이렉션) |
+| [7. 실무 예시](#7-실무-예시) |
 
 ---
 
@@ -75,6 +76,15 @@ command >> file.txt
   file.txt 상태:
   before: [line1][line2]
   after:  [line1][line2][new output]
+```
+
+### `noclobber` — 덮어쓰기 방지
+
+```bash
+set -o noclobber
+echo "test" > file.txt        # file.txt 이미 존재하면 에러
+echo "test" >| file.txt       # noclobber 무시하고 강제 덮어쓰기
+set +o noclobber              # 해제
 ```
 
 ### `2>` — stderr을 파일로
@@ -166,15 +176,34 @@ command 2>&1 > file.log    # stderr은 여전히 터미널로 출력
 ### `&>` — stdout + stderr 모두 파일로 (bash 전용 단축)
 
 ```bash
-command &> output.log       # bash 4.0+
-command > output.log 2>&1   # 동일, POSIX 호환
+command &> output.log       # bash 4.0+, > output.log 2>&1 과 동일
+command &>> output.log      # bash 4.0+, >> output.log 2>&1 과 동일 (append)
 ```
 
-### `>/dev/null` — 출력 버리기
+⚠️ POSIX sh에서는 사용 불가. 이식성이 필요하면 `> file 2>&1` 사용.
+
+### `/dev/null`, `/dev/zero`, `/dev/urandom`
+
+| 장치           | 용도                            |
+|----------------|---------------------------------|
+| `/dev/null`    | 블랙홀 (쓰면 버림, 읽으면 EOF)  |
+| `/dev/zero`    | 무한 null 바이트 출력           |
+| `/dev/urandom` | 무한 랜덤 바이트 출력           |
 
 ```bash
+# 출력 버리기
 command > /dev/null 2>&1    # stdout + stderr 모두 버림
 command &> /dev/null        # 동일 (bash 단축)
+
+# 파일 비우기 (0바이트)
+> file.txt                  # 가장 간단
+cat /dev/null > file.txt    # 동일
+
+# 1GB 더미 파일 생성
+dd if=/dev/zero of=dummy bs=1M count=1024
+
+# 랜덤 문자열 생성
+tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 32
 ```
 
 ---
@@ -507,7 +536,55 @@ wait "${TEE_PID}"   # tee가 모든 출력을 flush할 때까지 대기
 
 ---
 
-## 6. 실무 예시
+## 6. Crontab 리다이렉션
+
+### 기본 형식
+
+```
+min hour day month weekday command
+```
+
+### 출력 처리 패턴
+
+```bash
+# 모든 출력 버리기 (가장 흔함)
+0 3 * * * /usr/local/bin/backup.sh > /dev/null 2>&1
+
+# 에러만 메일로 받기 (stdout만 버림)
+0 3 * * * /usr/local/bin/backup.sh > /dev/null
+
+# 로그 파일에 기록 (덮어쓰기)
+0 3 * * * /usr/local/bin/backup.sh > /var/log/backup.log 2>&1
+
+# 로그 파일에 추가 (append)
+*/10 * * * * /usr/local/bin/monitor.sh >> /var/log/monitor.log 2>&1
+
+# stdout/stderr 분리
+0 4 * * * /usr/local/bin/deploy.sh >> /var/log/deploy.log 2>> /var/log/deploy_error.log
+
+# 날짜별 로그
+0 3 * * * /usr/local/bin/backup.sh >> /var/log/backup_$(date +\%Y\%m\%d).log 2>&1
+```
+
+⚠️ crontab에서 `%`는 개행으로 해석되므로 `\%`로 이스케이프 필요.
+
+### 출력을 안 버리면?
+
+cron은 명령의 stdout/stderr 출력이 있으면 `MAILTO`에 설정된 주소로 메일을 보냅니다. 미설정 시 crontab 소유자에게 발송합니다.
+
+```bash
+# 메일 수신 설정
+MAILTO="admin@example.com"
+0 3 * * * /usr/local/bin/backup.sh
+
+# 메일 비활성화
+MAILTO=""
+0 3 * * * /usr/local/bin/backup.sh
+```
+
+---
+
+## 7. 실무 예시
 
 ### 로그 파일에 stdout/stderr 모두 기록
 
@@ -578,6 +655,6 @@ echo "$(date) script end"
 
 **작성일**: 2026-05-21
 
-**마지막 업데이트**: 2026-05-21
+**마지막 업데이트**: 2026-05-24
 
 © 2026 siasia86. Licensed under CC BY 4.0.
