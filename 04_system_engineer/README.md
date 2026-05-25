@@ -36,6 +36,7 @@ SE/SRE/DBA 로드맵, 실무 운영, 도구, AI 활용, 법률 관련 문서 모
 | [S3 Gateway Endpoint](02_operations/s3_gateway_endpoint_cross_account.md) | 크로스 계정 S3 접근 |
 | [VPC Peering](02_operations/vpc_peering_inter_region_guide.md) | Inter-Region VPC Peering |
 | [인프라 Monorepo](02_operations/infra_monorepo_and_boilerplate.md) | 모노레포 구조, 보일러플레이트 |
+| [엔지니어링 실무 용어](02_operations/engineering_terms.md) | 실무에서 자주 쓰는 엔지니어링 용어 정리 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -97,6 +98,6 @@ SE/SRE/DBA 로드맵, 실무 운영, 도구, AI 활용, 법률 관련 문서 모
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-05-25
 
 © 2026 siasia86. Licensed under CC BY 4.0.
