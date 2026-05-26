@@ -15,29 +15,29 @@
 ### ELK 스택 구조
 
 ```
-애플리케이션 로그
+Application Logs
       │
       v
-┌─────────────┐   전송   ┌───────────────┐   저장   ┌──────────────┐
-│  Filebeat   │ -------> │  Logstash     │ -------> │Elasticsearch │
-│  (수집)     │          │  (파싱/변환)  │          │  (검색/저장) │
-└─────────────┘          └───────────────┘          └──────┬───────┘
-                                                           │ 조회
-                                                    ┌──────▼───────┐
-                                                    │   Kibana     │
-                                                    │  (시각화)    │
-                                                    └──────────────┘
+┌─────────────┐  ship   ┌───────────────┐  store  ┌──────────────┐
+│  Filebeat   │ ──────> │  Logstash     │ ──────> │Elasticsearch │
+│  (collect)  │         │  (parse)      │         │  (index)     │
+└─────────────┘         └───────────────┘         └──────┬───────┘
+                                                         │ query
+                                                  ┌──────▼───────┐
+                                                  │   Kibana     │
+                                                  │  (visualize) │
+                                                  └──────────────┘
 ```
 
 ### 시스템 요구사항
 
-| 항목   | 최소          | 권장 (프로덕션)       |
-|--------|---------------|-----------------------|
-| CPU    | 2 core        | 8 core 이상           |
-| RAM    | 4 GB          | 16 GB 이상            |
-| 디스크 | 20 GB         | SSD 500 GB 이상       |
-| JVM    | JDK 17+       | 번들 JDK 사용 권장    |
-| 포트   | 9200, 9300    | 9200/tcp, 9300/tcp    |
+| 항목   | 최소       | 권장 (프로덕션)    |
+|--------|------------|--------------------|
+| CPU    | 2 core     | 8 core 이상        |
+| RAM    | 4 GB       | 16 GB 이상         |
+| 디스크 | 20 GB      | SSD 500 GB 이상    |
+| JVM    | JDK 17+    | 번들 JDK 사용 권장 |
+| 포트   | 9200, 9300 | 9200/tcp, 9300/tcp |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -325,11 +325,11 @@ curl -s --cacert $ES_CERT -u $ES_AUTH -X PUT "$ES_URL/_ilm/policy/logs-policy" \
 
 ### Tip 2: 샤드 크기 가이드
 
-| 인덱스 크기   | 권장 샤드 수  |
-|---------------|---------------|
-| < 10 GB       | 1             |
-| 10 ~ 50 GB    | 2 ~ 5         |
-| > 50 GB       | 크기 / 30GB   |
+| 인덱스 크기 | 권장 샤드 수 |
+|-------------|--------------|
+| < 10 GB     | 1            |
+| 10 ~ 50 GB  | 2 ~ 5        |
+| > 50 GB     | 크기 / 30GB  |
 
 ⚠️ 샤드가 너무 많으면 오버헤드 증가. 샤드당 20~50 GB 권장.
 
@@ -349,13 +349,13 @@ curl -s --cacert $ES_CERT -u $ES_AUTH -X PUT "$ES_URL/myindex/_settings" \
 
 ## 9. 트러블슈팅
 
-| 증상                                  | 원인                          | 해결 방법                                              |
-|---------------------------------------|-------------------------------|--------------------------------------------------------|
-| `max virtual memory areas too low`    | vm.max_map_count 미설정       | `sysctl -w vm.max_map_count=262144`                    |
-| 클러스터 상태 `red`                   | 샤드 미할당                   | `GET /_cluster/allocation/explain` 확인                |
-| `circuit_breaking_exception`          | JVM 힙 부족                   | `Xmx` 증가 또는 쿼리 최적화                           |
-| 인증 실패 (8.x)                       | 패스워드 오류 또는 TLS 설정   | `elasticsearch-reset-password -u elastic`              |
-| 노드 연결 불가                        | 방화벽 또는 network.host 설정 | 9200/9300 포트 확인                                    |
+| 증상                               | 원인                          | 해결 방법                                 |
+|------------------------------------|-------------------------------|-------------------------------------------|
+| `max virtual memory areas too low` | vm.max_map_count 미설정       | `sysctl -w vm.max_map_count=262144`       |
+| 클러스터 상태 `red`                | 샤드 미할당                   | `GET /_cluster/allocation/explain` 확인   |
+| `circuit_breaking_exception`       | JVM 힙 부족                   | `Xmx` 증가 또는 쿼리 최적화               |
+| 인증 실패 (8.x)                    | 패스워드 오류 또는 TLS 설정   | `elasticsearch-reset-password -u elastic` |
+| 노드 연결 불가                     | 방화벽 또는 network.host 설정 | 9200/9300 포트 확인                       |
 
 ```bash
 # 로그 확인

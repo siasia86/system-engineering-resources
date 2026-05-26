@@ -14,12 +14,12 @@
 nginx에서 클라이언트 IP 기반 국가/도시 정보를 조회하는 모듈입니다.
 MaxMind GeoLite2/GeoIP2 DB를 사용합니다.
 
-| 항목          | 내용                                              |
-|---------------|---------------------------------------------------|
-| 모듈          | `ngx_http_geoip2_module`                          |
-| 의존성        | `libmaxminddb`                                    |
-| DB            | MaxMind GeoLite2-Country / GeoLite2-City          |
-| 소스          | https://github.com/leev/ngx_http_geoip2_module    |
+| 항목   | 내용                                           |
+|--------|------------------------------------------------|
+| 모듈   | `ngx_http_geoip2_module`                       |
+| 의존성 | `libmaxminddb`                                 |
+| DB     | MaxMind GeoLite2-Country / GeoLite2-City       |
+| 소스   | https://github.com/leev/ngx_http_geoip2_module |
 
 ### nginx 버전별 설치 방법 비교
 
@@ -31,13 +31,13 @@ MaxMind GeoLite2/GeoIP2 DB를 사용합니다.
 
 ### 허용 도메인 (방화벽/프록시 화이트리스트)
 
-| 도메인                          | 용도                                   |
-|---------------------------------|----------------------------------------|
-| `nginx.org`                     | nginx 패키지 레포 및 소스 다운로드     |
-| `github.com`                    | geoip2 모듈 소스 클론                  |
-| `objects.githubusercontent.com` | GitHub 파일 다운로드                   |
-| `archive.ubuntu.com`            | 빌드 의존성 패키지                     |
-| `www.maxmind.com`               | GeoLite2 DB 다운로드 (수동 단계/선택)  |
+| 도메인                          | 용도                                  |
+|---------------------------------|---------------------------------------|
+| `nginx.org`                     | nginx 패키지 레포 및 소스 다운로드    |
+| `github.com`                    | geoip2 모듈 소스 클론                 |
+| `objects.githubusercontent.com` | GitHub 파일 다운로드                  |
+| `archive.ubuntu.com`            | 빌드 의존성 패키지                    |
+| `www.maxmind.com`               | GeoLite2 DB 다운로드 (수동 단계/선택) |
 
 ---
 
@@ -159,13 +159,13 @@ nginx -t
 
 ## 5. 트러블슈팅
 
-| 증상 | 원인 | 해결 |
-|------|------|------|
-| `rc` 상태 (`dpkg -l`) | nginx 버전과 모듈 버전 불일치 | 버전 맞춰 재설치 또는 컴파일 |
-| `make modules` 실패 | PCRE/SSL/zlib 헤더 없음 | `apt install libpcre3-dev libssl-dev zlib1g-dev` |
-| `nginx -t` 실패 | `modules-enabled` include 없음 | nginx.conf 첫 줄에 `include` 추가 |
-| `curl: command not found` | 기본 도구 미설치 | `apt install curl gnupg2 git lsb-release` |
-| DB 파일 없음 | mmdb 미배치 | MaxMind에서 다운로드 후 경로 지정 |
+| 증상                      | 원인                           | 해결                                             |
+|---------------------------|--------------------------------|--------------------------------------------------|
+| `rc` 상태 (`dpkg -l`)     | nginx 버전과 모듈 버전 불일치  | 버전 맞춰 재설치 또는 컴파일                     |
+| `make modules` 실패       | PCRE/SSL/zlib 헤더 없음        | `apt install libpcre3-dev libssl-dev zlib1g-dev` |
+| `nginx -t` 실패           | `modules-enabled` include 없음 | nginx.conf 첫 줄에 `include` 추가                |
+| `curl: command not found` | 기본 도구 미설치               | `apt install curl gnupg2 git lsb-release`        |
+| DB 파일 없음              | mmdb 미배치                    | MaxMind에서 다운로드 후 경로 지정                |
 
 ---
 

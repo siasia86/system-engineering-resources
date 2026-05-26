@@ -112,7 +112,7 @@ When editing code:
 - Do not remove pre-existing dead code — mention it instead
 - Do not refactor adjacent code that isn't broken
 
-## 13. _reference 디렉토리 규칙
+## 15. _reference 디렉토리 규칙
 
 `/root/32_system-engineering-resources/_reference/` 는 **공식 홈페이지 기반 참조 노트 전용** 디렉토리입니다.
 
@@ -159,7 +159,7 @@ sources:
 
 ⚠️ agent resources에는 `INDEX.md`만 등록. 개별 파일은 필요 시 직접 읽기 (context window 절약)
 
-## 15. _reference 작성 후 교차 검증 의무
+## 16. _reference 작성 후 교차 검증 의무
 
 `_reference/` 파일을 **신규 생성하거나 내용을 추가**한 경우, 반드시 아래 절차를 수행합니다.
 

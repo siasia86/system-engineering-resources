@@ -15,21 +15,21 @@
 
 ### 시스템 요구사항
 
-| 항목     | 최소                  | 권장 (프로덕션)       |
-|----------|-----------------------|-----------------------|
-| CPU      | 1 core                | 4 core 이상           |
-| RAM      | 1 GB                  | 8 GB 이상             |
-| 디스크   | 5 GB                  | SSD 100 GB 이상       |
-| OS       | Ubuntu 20.04+         | Ubuntu 22.04 / Rocky 9 / Alma 9 / RHEL 9 |
-| 포트     | 3306/tcp              | 3306/tcp              |
+| 항목   | 최소          | 권장 (프로덕션)                          |
+|--------|---------------|------------------------------------------|
+| CPU    | 1 core        | 4 core 이상                              |
+| RAM    | 1 GB          | 8 GB 이상                                |
+| 디스크 | 5 GB          | SSD 100 GB 이상                          |
+| OS     | Ubuntu 20.04+ | Ubuntu 22.04 / Rocky 9 / Alma 9 / RHEL 9 |
+| 포트   | 3306/tcp      | 3306/tcp                                 |
 
 ### 버전 선택 기준
 
-| 버전       | 상태          | 권장 여부                     |
-|------------|---------------|-------------------------------|
-| MySQL 8.0  | LTS (2026 EOL)| ⚠️ 신규 구축 비권장           |
-| MySQL 8.4  | LTS (2032 EOL)| ✅ 신규 구축 권장             |
-| MySQL 9.x  | Innovation    | 실험적 기능 평가용            |
+| 버전      | 상태           | 권장 여부           |
+|-----------|----------------|---------------------|
+| MySQL 8.0 | LTS (2026 EOL) | ⚠️ 신규 구축 비권장 |
+| MySQL 8.4 | LTS (2032 EOL) | ✅ 신규 구축 권장   |
+| MySQL 9.x | Innovation     | 실험적 기능 평가용  |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -39,12 +39,12 @@
 
 ### Ubuntu 버전별 차이
 
-| 항목                  | Ubuntu 22.04 (Jammy)          | Ubuntu 24.04 (Noble)              |
-|-----------------------|-------------------------------|-----------------------------------|
-| 기본 저장소 MySQL     | 8.0.x                         | 8.0.x                             |
-| root 인증 방식        | `auth_socket`                 | `auth_socket`                     |
-| my.cnf 경로           | `/etc/mysql/mysql.conf.d/mysqld.cnf` | `/etc/mysql/mysql.conf.d/mysqld.cnf` |
-| Python 기본           | 3.10                          | 3.12                              |
+| 항목              | Ubuntu 22.04 (Jammy)                 | Ubuntu 24.04 (Noble)                 |
+|-------------------|--------------------------------------|--------------------------------------|
+| 기본 저장소 MySQL | 8.0.x                                | 8.0.x                                |
+| root 인증 방식    | `auth_socket`                        | `auth_socket`                        |
+| my.cnf 경로       | `/etc/mysql/mysql.conf.d/mysqld.cnf` | `/etc/mysql/mysql.conf.d/mysqld.cnf` |
+| Python 기본       | 3.10                                 | 3.12                                 |
 
 ### 2-1. 시스템 업데이트
 
@@ -104,11 +104,11 @@ Rocky Linux, AlmaLinux, RHEL, CentOS Stream에서 동일하게 적용됩니다.
 
 ### 배포판별 EL 버전 대응
 
-| 배포판              | EL 버전 | 저장소 RPM 경로 키워드 |
-|---------------------|---------|------------------------|
-| RHEL 8 / Rocky 8 / Alma 8 | el8 | `el8` |
-| RHEL 9 / Rocky 9 / Alma 9 | el9 | `el9` |
-| CentOS Stream 9     | el9     | `el9`                  |
+| 배포판                    | EL 버전 | 저장소 RPM 경로 키워드 |
+|---------------------------|---------|------------------------|
+| RHEL 8 / Rocky 8 / Alma 8 | el8     | `el8`                  |
+| RHEL 9 / Rocky 9 / Alma 9 | el9     | `el9`                  |
+| CentOS Stream 9           | el9     | `el9`                  |
 
 ### 3-1. 시스템 업데이트
 
@@ -374,15 +374,15 @@ SHOW VARIABLES LIKE 'log_bin';
 
 ## 9. 트러블슈팅
 
-| 증상                                    | 원인                              | 해결 방법                                                    |
-|-----------------------------------------|-----------------------------------|--------------------------------------------------------------|
-| `Access denied for user 'root'`         | auth_socket 플러그인              | `sudo mysql -u root` 또는 인증 방식 변경 (섹션 4-4)         |
-| `Can't connect to MySQL server`         | bind-address 제한 또는 방화벽     | `bind-address = 0.0.0.0` 설정 + 방화벽 허용                 |
-| `ERROR 1045: Access denied`             | 계정/패스워드 불일치              | `SHOW GRANTS FOR 'user'@'host';` 확인                        |
-| `Table 'mysql.user' doesn't exist`      | 초기화 미완료                     | `sudo mysqld --initialize` 재실행                            |
-| `InnoDB: Cannot allocate memory`        | `innodb_buffer_pool_size` 과다    | RAM의 50~70% 이하로 조정                                     |
-| `Too many connections`                  | `max_connections` 초과            | `SET GLOBAL max_connections = 300;`                          |
-| Rocky: `mysqld.log` 에 임시 PW 없음     | 이미 초기화된 상태                | `sudo mysqld --initialize --user=mysql` 후 재시작            |
+| 증상                                | 원인                           | 해결 방법                                           |
+|-------------------------------------|--------------------------------|-----------------------------------------------------|
+| `Access denied for user 'root'`     | auth_socket 플러그인           | `sudo mysql -u root` 또는 인증 방식 변경 (섹션 4-4) |
+| `Can't connect to MySQL server`     | bind-address 제한 또는 방화벽  | `bind-address = 0.0.0.0` 설정 + 방화벽 허용         |
+| `ERROR 1045: Access denied`         | 계정/패스워드 불일치           | `SHOW GRANTS FOR 'user'@'host';` 확인               |
+| `Table 'mysql.user' doesn't exist`  | 초기화 미완료                  | `sudo mysqld --initialize` 재실행                   |
+| `InnoDB: Cannot allocate memory`    | `innodb_buffer_pool_size` 과다 | RAM의 50~70% 이하로 조정                            |
+| `Too many connections`              | `max_connections` 초과         | `SET GLOBAL max_connections = 300;`                 |
+| Rocky: `mysqld.log` 에 임시 PW 없음 | 이미 초기화된 상태             | `sudo mysqld --initialize --user=mysql` 후 재시작   |
 
 ### 디버깅 명령
 
