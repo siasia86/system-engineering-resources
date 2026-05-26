@@ -1,23 +1,30 @@
 #!/usr/bin/env python3
+#import sys; sys.exit(0)  # SAFETY: uncomment this line to disable script
 """
 md-style-check.py — Markdown 스타일 검사 도구
 STYLE.md 규칙 기반: 표 정렬, 다이어그램 폭, 코드블록 언어 태그, H1 개수, 푸터, _reference 전용 항목
 
 사용법:
-  python3 md-style-check.py <file_or_dir> [--strict]
-  --strict / -s : whitelist 없이 전체 검사
+  python3 md-style-check.py <file_or_dir> [--strict|-s]
+  python3 md-style-check.py -V
 """
 
-import re, sys, os, unicodedata
+VERSION = "26.05.26"
+
+import os
+import re
+import sys
+import unicodedata
+import argparse
 
 # ── 컬러 ──────────────────────────────────────────────────────────────────────
 
-RED = '\033[0;31m'
-GREEN = '\033[0;32m'
+RED    = '\033[0;31m'
+GREEN  = '\033[0;32m'
 YELLOW = '\033[1;33m'
 PURPLE = '\033[0;35m'
-CYAN = '\033[0;36m'
-NC = '\033[0m'
+CYAN   = '\033[0;36m'
+NC     = '\033[0m'
 
 # ── 유틸 ──────────────────────────────────────────────────────────────────────
 
@@ -54,21 +61,21 @@ def check_h1(content, strict=False):
         return [f"H1 {len(h1s)}개 (1개여야 함): {h1s}"]
     return []
 
+# 출력 결과/UI 경로 패턴 (태그 없이 허용)
+_OUTPUT_PATTERNS = re.compile(
+    r'^(\d|\.\.\.|\[|SUCCESS|FAILED|ok:|changed:|fatal:|PLAY|TASK|\$|>|#|\*\*|Status|URL:|http)'
+    r'|→|\| SUCCESS|\| FAILED|\| CHANGED'
+    r'|^[A-Z][a-z]+ →'           # UI 경로 (Grafana →, Jenkins →)
+    r'|Securing |Enter password|New password'  # 인터랙티브 출력
+    r'|^Match |^Password|^Permit|^Allow|^Deny'  # sshd_config 등 설정
+    r'|^(frontend|backend|global|listen|defaults)\b'  # haproxy 설정
+    r'|^prefork:|^worker:|^event:'  # Apache MPM
+)
+
 def check_code_lang(content, strict=False):
     """언어 태그 없는 코드블록 검사.
     허용 목록: 트리/다이어그램, URL, 명령어 출력, UI 경로, 로그, 순수 텍스트 흐름."""
     issues = []
-    import re as _re
-    # 출력 결과/UI 경로 패턴 (태그 없이 허용)
-    output_patterns = _re.compile(
-        r'^(\d|\.\.\.|\[|SUCCESS|FAILED|ok:|changed:|fatal:|PLAY|TASK|\$|>|#|\*\*|Status|URL:|http)'
-        r'|→|\| SUCCESS|\| FAILED|\| CHANGED'
-        r'|^[A-Z][a-z]+ →'  # UI 경로 (Grafana →, Jenkins →)
-        r'|Securing |Enter password|New password'  # 인터랙티브 출력
-        r'|^Match |^Password|^Permit|^Allow|^Deny'  # sshd_config 등 설정
-        r'|^(frontend|backend|global|listen|defaults)\b'  # haproxy 설정
-        r'|^prefork:|^worker:|^event:'  # Apache MPM
-    )
     for m in re.finditer(r'```([^\n]*)\n(.*?)```', content, re.DOTALL):
         lang = m.group(1).strip()
         body = m.group(2)
@@ -81,14 +88,11 @@ def check_code_lang(content, strict=False):
         if not lines:
             continue
         first_line = lines[0].strip()
-        # URL로 시작 — 허용
         if first_line.startswith('http'):
             continue
-        # 첫 줄이 # 주석이거나 출력 패턴에 매치 — 허용
-        if first_line.startswith('#') or output_patterns.search(first_line):
+        if first_line.startswith('#') or _OUTPUT_PATTERNS.search(first_line):
             continue
-        # 행의 30% 이상이 출력 패턴에 매치 — 허용
-        match_count = sum(1 for l in lines if output_patterns.search(l.strip()))
+        match_count = sum(1 for l in lines if _OUTPUT_PATTERNS.search(l.strip()))
         if match_count >= len(lines) * 0.3:
             continue
         issues.append(f"언어 태그 없는 코드블록: '{first_line[:50]}'")
@@ -120,7 +124,6 @@ def check_tables(content, strict=False):
         if not data_rows:
             continue
         ncols = max(len(r) for r in data_rows)
-        # 1열짜리 표(목차 등)는 행마다 길이가 달라도 허용
         if ncols <= 1:
             continue
         col_widths = [
@@ -143,9 +146,6 @@ def check_tables(content, strict=False):
                 for i, raw_c in enumerate(raw_row):
                     if i < ncols:
                         cell_content = raw_c.strip()
-                        # 기대 raw_len = 1(앞공백) + len(content) + pad + 1(뒷공백)
-                        # pad = col_widths[i] - dw(content)
-                        # = 1 + len(content) + col_widths[i] - dw(content) + 1
                         expected_raw = 2 + len(cell_content) + col_widths[i] - dw(cell_content)
                         actual_raw = len(raw_c)
                         if actual_raw != expected_raw:
@@ -161,10 +161,8 @@ def check_diagram(content, strict=False):
     for m in re.finditer(r'```[^\n]*\n(.*?)```', content, re.DOTALL):
         body = m.group(1)
         lines = body.splitlines()
-        # ┌ 로 시작하는 행이 없으면 스킵
         if not any(l.strip().startswith('┌') for l in lines):
             continue
-        # 닫힌 박스 블록 추출 (┌ ~ └ 사이)
         in_box = False
         box_lines = []
         for l in lines:
@@ -174,12 +172,11 @@ def check_diagram(content, strict=False):
             elif in_box:
                 box_lines.append(l)
                 if '┘' in l:
-                    # 박스 완료 — ┌/└ 행만 폭 비교 (┼ 밖으로 나가는 행 제외)
                     if box_lines:
                         check_lines = [bl for bl in box_lines
-                                       if bl.strip().startswith(('┌','│','└'))
+                                       if bl.strip().startswith(('┌', '│', '└'))
                                        and '┼' not in bl
-                                       and (bl.strip().endswith(('┐','│','┘','┤','─')))]
+                                       and bl.strip().endswith(('┐', '│', '┘', '┤', '─'))]
                         if check_lines:
                             widths = [dw(bl) for bl in check_lines]
                             max_w = max(widths)
@@ -193,8 +190,7 @@ def check_diagram(content, strict=False):
     return issues
 
 def check_diagram_korean(content, strict=False):
-    """박스 다이어그램(┌┐로 시작) 내부 한글 사용 여부 (STYLE.md § 5: 영문 권장).
-    트리 구조 주석 한글은 허용."""
+    """박스 다이어그램(┌┐로 시작) 내부 한글 사용 여부 (STYLE.md § 5: 영문 권장)."""
     issues = []
     for m in re.finditer(r'```[^\n]*\n(.*?)```', content, re.DOTALL):
         body = m.group(1)
@@ -206,15 +202,14 @@ def check_diagram_korean(content, strict=False):
             issues.append(f"다이어그램 내부 한글 사용: {korean[:3]} (영문 권장)")
     return issues
 
+# 허용 이모지 목록
+_EMOJI_PATTERN = re.compile(
+    r'(' + '|'.join(re.escape(e) for e in ['✅', '❌', '🟡', '🟢', '🔴']) + r')([^\s|`])'
+)
 
 def check_emoji_space(content, strict=False):
     """이모지 뒤 공백 1칸 필수 검사 (STYLE.md § 7). 코드블록/표 셀 내 이모지 단독 사용 제외."""
-    import re as _re
     issues = []
-    # 허용 이모지 목록
-    emojis = ['✅', '❌', '🟡', '🟢', '🔴']
-    pattern = _re.compile(r'(' + '|'.join(_re.escape(e) for e in emojis) + r')([^\s|`])')
-
     in_code = False
     for i, line in enumerate(content.splitlines(), 1):
         stripped = line.strip()
@@ -223,10 +218,8 @@ def check_emoji_space(content, strict=False):
             continue
         if in_code:
             continue
-        matches = pattern.findall(stripped)
-        if matches:
-            for emoji, next_char in matches:
-                issues.append(f"L{i}: '{emoji}' 뒤 공백 없음 → '{emoji}{next_char}'")
+        for emoji, next_char in _EMOJI_PATTERN.findall(stripped):
+            issues.append(f"L{i}: '{emoji}' 뒤 공백 없음 → '{emoji}{next_char}'")
     return issues
 
 def check_footer(content, strict=False):
@@ -240,22 +233,15 @@ def check_footer(content, strict=False):
         issues.append("푸터 누락: 저작권(©) 없음")
     return issues
 
+# 반말체 종결어미 패턴
+_BANMAL_PATTERN = re.compile(
+    r'[가-힣]이다[.\s]|[가-힣]한다[.\s]|[가-힣]된다[.\s]|[가-힣]있다[.\s]'
+    r'|[가-힣]없다[.\s]|[가-힣]않는다[.\s]|[가-힣]아니다[.\s]'
+)
 
 def check_banmal(content, strict=False):
     """반말체 종결어미 검사 (STYLE.md § 10). 코드블록/인용구/헤더/표 제외."""
-    import re as _re
     issues = []
-    patterns = [
-        r'[가-힣]이다[.\s]',
-        r'[가-힣]한다[.\s]',
-        r'[가-힣]된다[.\s]',
-        r'[가-힣]있다[.\s]',
-        r'[가-힣]없다[.\s]',
-        r'[가-힣]않는다[.\s]',
-        r'[가-힣]아니다[.\s]',
-    ]
-    combined = _re.compile('|'.join(patterns))
-
     in_code = False
     for i, line in enumerate(content.splitlines(), 1):
         stripped = line.strip()
@@ -265,30 +251,24 @@ def check_banmal(content, strict=False):
         if in_code:
             continue
         if (not stripped
-                or stripped.startswith('#')
-                or stripped.startswith('|')
-                or stripped.startswith('*')
-                or stripped.startswith('!')
-                or stripped.startswith('>')
-                or stripped.startswith('©')
-                or stripped.startswith('-')):
+                or stripped.startswith(('#', '|', '*', '!', '>', '©', '-'))):
             continue
-        if _re.search(r'[가-힣]', stripped) and combined.search(stripped):
+        if re.search(r'[가-힣]', stripped) and _BANMAL_PATTERN.search(stripped):
             issues.append(f"L{i}: {stripped[:80]}")
     return issues
 
+# 과장 표현 패턴
+_EXAGGERATION_PATTERN  = re.compile(r'완전한|완벽한|최고의|최강의|완전 |완벽 |최고 |최강 ')
+_EXAGGERATION_WHITELIST = re.compile(
+    r'완전 이진|완전 그래프|완전 격리|완전 지원|완전 일관성|완전 오버라이딩'
+    r'|최고 추론|최고 성능.*→'
+    r'|완전한 하드웨어|완전한 제어|완전한 자유 소프트웨어|완전한 빌드|완전한 데이터'
+    r'|최고 \|'
+)
+
 def check_exaggeration(content, strict=False):
     """과장 표현 검사 (STYLE.md § 10). 코드블록 제외."""
-    import re as _re
     issues = []
-    pattern = _re.compile(r'완전한|완벽한|최고의|최강의|완전 |완벽 |최고 |최강 ')
-    whitelist = _re.compile(
-        r'완전 이진|완전 그래프|완전 격리|완전 지원|완전 일관성|완전 오버라이딩'
-        r'|최고 추론|최고 성능.*→'
-        r'|완전한 하드웨어|완전한 제어|완전한 자유 소프트웨어|완전한 빌드|완전한 데이터'
-        r'|최고 \|'
-    )
-
     in_code = False
     for i, line in enumerate(content.splitlines(), 1):
         stripped = line.strip()
@@ -297,8 +277,8 @@ def check_exaggeration(content, strict=False):
             continue
         if in_code:
             continue
-        if _re.search(r'[가-힣]', stripped) and pattern.search(stripped):
-            if strict or not whitelist.search(stripped):
+        if re.search(r'[가-힣]', stripped) and _EXAGGERATION_PATTERN.search(stripped):
+            if strict or not _EXAGGERATION_WHITELIST.search(stripped):
                 issues.append(f"L{i}: {stripped[:80]}")
     return issues
 
@@ -318,7 +298,7 @@ def check_reference(content, path, strict=False):
         issues.append("_reference: frontmatter에 last_checked 없음")
     return issues
 
-# ── 메인 ──────────────────────────────────────────────────────────────────────
+# ── 검사 목록 ─────────────────────────────────────────────────────────────────
 
 CHECKS = [
     ("H1 개수",          check_h1),
@@ -338,12 +318,15 @@ REFERENCE_SKIP = {"푸터"}
 # INDEX.md는 _reference 규칙 적용 제외
 INDEX_SKIP = {"_reference 규칙"}
 
+# ── 파일 처리 ─────────────────────────────────────────────────────────────────
+
 def check_file(path, strict=False):
+    """단일 파일 검사. [(항목명, 이슈메시지), ...] 반환."""
     try:
         with open(path) as f:
             content = f.read()
     except Exception as e:
-        return [f"파일 읽기 실패: {e}"]
+        return [("파일 읽기", f"실패: {e}")]
 
     is_reference = '_reference' in path
     is_index = os.path.basename(path) == 'INDEX.md'
@@ -366,6 +349,7 @@ def check_file(path, strict=False):
     return all_issues
 
 def collect_files(target):
+    """파일 또는 디렉토리에서 .md 파일 목록 반환."""
     if os.path.isfile(target):
         return [target]
     result = []
@@ -375,22 +359,53 @@ def collect_files(target):
                 result.append(os.path.join(root, f))
     return result
 
-def main():
-    args = sys.argv[1:]
-    strict = '--strict' in args or '-s' in args
-    paths = [a for a in args if not a.startswith('-')]
+# ── 진입점 ────────────────────────────────────────────────────────────────────
 
-    if not paths:
-        print("사용법: python3 md-style-check.py <file_or_dir> [--strict|-s]")
-        sys.exit(1)
+def parse_args():
+    """커맨드라인 인자 파싱."""
+    parser = argparse.ArgumentParser(
+        description='Markdown 스타일 검사 도구 (STYLE.md 규칙 기반)',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "\nExamples:\n"
+            "  %(prog)s ./01_install/                  디렉토리 전체 검사\n"
+            "  %(prog)s ./01_install/nginx_install.md  단일 파일 검사\n"
+            "  %(prog)s ./_reference/ --strict         과장 표현 whitelist 없이 전체 검사\n"
+            "\nChecks:\n"
+            "  H1 개수          문서당 H1 정확히 1개\n"
+            "  코드블록 언어 태그  ```bash, ```yaml 등 언어 태그 필수\n"
+            "  표 정렬          한글 display width 기준 셀 패딩\n"
+            "  다이어그램 행 폭  박스 다이어그램 내부 행 폭 일치\n"
+            "  다이어그램 한글  박스 다이어그램 내부 영문 권장\n"
+            "  이모지 뒤 공백   ✅❌🟡🟢🔴 뒤 공백 1칸 필수\n"
+            "  반말체 종결어미  ~이다/한다/된다 등 금지\n"
+            "  과장 표현        완전/완벽/최고/최강 등 금지 (--strict: whitelist 무시)\n"
+            "  푸터             작성일/마지막 업데이트/저작권 필수\n"
+            "  _reference 규칙  sources/last_checked frontmatter 필수\n"
+        )
+    )
+    parser.add_argument('targets', nargs='+', metavar='path',
+                        help='검사할 파일 또는 디렉토리 (여러 개 가능)')
+    parser.add_argument('-s', '--strict', action='store_true',
+                        help='과장 표현 whitelist 없이 전체 검사')
+    parser.add_argument('-V', '--version', action='version', version=f'%(prog)s {VERSION}')
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
 
     files = []
-    for p in paths:
+    for p in args.targets:
         files.extend(collect_files(p))
+
+    if not files:
+        print("검사할 .md 파일이 없습니다.")
+        sys.exit(1)
 
     total_issues = 0
     for fpath in files:
-        issues = check_file(fpath, strict)
+        issues = check_file(fpath, args.strict)
         rel = fpath.replace('/root/32_system-engineering-resources/', '')
         if issues:
             print(f"\n{RED}❌ {rel}{NC}")
@@ -407,5 +422,9 @@ def main():
         print(f"{GREEN}검사 파일: {len(files)}개 | 이슈: {total_issues}건{NC}")
     sys.exit(1 if total_issues else 0)
 
+
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(130)
