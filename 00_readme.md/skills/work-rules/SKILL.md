@@ -82,7 +82,7 @@ regexes = [
 After creating or modifying any .md file under /root/32_system-engineering-resources, run:
 
 ```bash
-sudo bash /root/32_system-engineering-resources/md-style-check.sh <path>
+sudo python3 /root/32_system-engineering-resources/md-style-check.py <path>
 ```
 
 - Run on the specific file or directory modified (not the entire repo unless requested)

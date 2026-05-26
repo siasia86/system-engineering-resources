@@ -17,11 +17,10 @@ sources:
 
 ## 1. 버전 현황 (확인일: 2026-05-22)
 
-| 컴포넌트       | 최신 버전     | 비고                        |
-|----------------|---------------|-----------------------------|
-| Docker Engine  | 29.5.2        | moby/moby                   |
-| Docker Compose | v5.1.4        | docker/compose              |
-| Helm           | v4.2.0        | v3와 대부분 호환             |
+| 컴포넌트       | 최신 버전 | 비고           |
+|----------------|-----------|----------------|
+| Docker Engine  | 29.5.2    | moby/moby      |
+| Docker Compose | v5.1.4    | docker/compose |
 
 ## 2. 설치
 
@@ -66,11 +65,11 @@ sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker
 }
 ```
 
-| 옵션              | 기본값      | 권장값   | 이유                                              |
-|-------------------|-------------|----------|---------------------------------------------------|
-| `log-driver`      | `json-file` | `local`  | 자동 로테이션, 효율적 포맷. json-file은 로테이션 없음 |
-| `live-restore`    | `false`     | `true`   | 데몬 재시작 시 컨테이너 유지                      |
-| `userland-proxy`  | `true`      | `false`  | 성능 향상 (커널 직접 처리), 단 일부 환경 주의     |
+| 옵션             | 기본값      | 권장값  | 이유                                                                                             |
+|------------------|-------------|---------|--------------------------------------------------------------------------------------------------|
+| `log-driver`     | `json-file` | `local` | 자동 로테이션, 효율적 포맷. json-file은 로테이션 없음                                            |
+| `live-restore`   | `false`     | `true`  | 데몬 재시작 시 컨테이너 유지                                                                     |
+| `userland-proxy` | `true`      | `false` | 루프백 트래픽을 커널 직접 처리. 일부 환경에서 미지원 주의 (공식 daemon.json 예시에서 false 사용) |
 
 ⚠️ `json-file`은 기본값이지만 로테이션이 없어 디스크 고갈 위험. 공식 문서에서 `local` 권장.
 
@@ -85,18 +84,18 @@ sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker
 
 ### override 파일 자동 병합
 
-```
+```yaml
 compose.yaml          # 기본 설정
 compose.override.yaml # 자동 병합 (개발 환경 오버라이드)
 ```
 
 ### depends_on condition 값
 
-| 값                            | 의미                              |
-|-------------------------------|-----------------------------------|
-| `service_started`             | 컨테이너 시작됨 (기본)            |
-| `service_healthy`             | healthcheck 통과                  |
-| `service_completed_successfully` | 종료 코드 0으로 완료           |
+| 값                               | 의미                   |
+|----------------------------------|------------------------|
+| `service_started`                | 컨테이너 시작됨 (기본) |
+| `service_healthy`                | healthcheck 통과       |
+| `service_completed_successfully` | 종료 코드 0으로 완료   |
 
 ### deploy.resources
 
@@ -126,10 +125,10 @@ deploy:
 
 ### macvlan 옵션
 
-| 옵션           | 기본값   | 설명                                                    |
-|----------------|----------|---------------------------------------------------------|
-| `macvlan_mode` | `bridge` | `bridge` / `vepa` / `passthru` / `private`              |
-| `parent`       | 없음     | 부모 인터페이스 (필수)                                  |
+| 옵션           | 기본값   | 설명                                       |
+|----------------|----------|--------------------------------------------|
+| `macvlan_mode` | `bridge` | `bridge` / `vepa` / `passthru` / `private` |
+| `parent`       | 없음     | 부모 인터페이스 (필수)                     |
 
 ### cgroup (compose)
 
