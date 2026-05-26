@@ -4,18 +4,10 @@
 
 | 섹션 |
 |------|
-| [1. 개요](#1-개요) |
-| [2. Ubuntu 설치](#2-ubuntu-설치) |
-| [3. Rocky Linux 10 설치](#3-rocky-linux-10-설치) |
-| [4. 공통 초기 설정](#4-공통-초기-설정) |
-| [5. 설치 검증](#5-설치-검증) |
-| [6. 디렉토리 구조 (권장)](#6-디렉토리-구조-권장) |
-| [7. 트러블슈팅](#7-트러블슈팅) |
-| [8. 보안 권장 사항](#8-보안-권장-사항) |
-| [9. 설치 방법 비교](#9-설치-방법-비교) |
-| [10. 팀 공동 사용 구성](#10-팀-공동-사용-구성) |
-| [11. 실행 권한 제어](#11-실행-권한-제어) |
-| [12. 감사 로그 및 Git 운영](#12-감사-로그-및-git-운영) |
+| [1. 개요](#1-개요) / [2. Ubuntu 설치](#2-ubuntu-설치) / [3. Rocky Linux 10 설치](#3-rocky-linux-10-설치) |
+| [4. 공통 초기 설정](#4-공통-초기-설정) / [5. 설치 검증](#5-설치-검증) / [6. 디렉토리 구조 (권장)](#6-디렉토리-구조-권장) |
+| [7. 트러블슈팅](#7-트러블슈팅) / [8. 보안 권장 사항](#8-보안-권장-사항) / [9. 설치 방법 비교](#9-설치-방법-비교) |
+| [10. 팀 공동 사용 구성](#10-팀-공동-사용-구성) / [11. 실행 권한 제어](#11-실행-권한-제어) / [12. 감사 로그 및 Git 운영](#12-감사-로그-및-git-운영) |
 | [13. 확장: AWX (Ansible Tower 오픈소스)](#13-확장-awx-ansible-tower-오픈소스) |
 
 ---
@@ -37,12 +29,12 @@
 ```
 ┌─────────────────────┐         SSH         ┌─────────────────────┐
 │   Control Node      │────────────────────>│   Managed Node 1    │
-│   (Ansible 설치)    │────────────────────>│   Managed Node 2    │
+│   (Ansible)         │────────────────────>│   Managed Node 2    │
 │                     │────────────────────>│   Managed Node 3    │
 └─────────────────────┘                     └─────────────────────┘
-  - ansible 설치                              - Python 3 만 필요
-  - Playbook 작성/실행                        - 에이전트 설치 불필요
-  - Inventory 관리                            - SSH 접속 허용
+  - ansible install                           - Python 3 only
+  - Playbook write/run                        - No agent required
+  - Inventory manage                          - SSH access allowed
 ```
 
 ### 시스템 요구사항
@@ -225,31 +217,31 @@ ssh_args = -o ControlMaster=auto -o ControlPersist=600s
 
 **[defaults]**
 
-| 항목 | 값 | 설명 |
-|------|----|------|
-| `inventory` | `/etc/ansible/hosts` | 기본 inventory 파일 경로. `-i` 옵션으로 덮어쓸 수 있습니다. |
-| `remote_user` | `ansible` | SSH 접속 시 사용할 원격 계정. 각 호스트에 동일 계정이 있어야 합니다. |
-| `host_key_checking` | `False` | 최초 접속 시 SSH host key 확인 생략. 운영 환경에서는 `True` 권장합니다. |
-| `log_path` | `/var/log/ansible.log` | 실행 로그 저장 경로. 파일이 없으면 자동 생성됩니다. |
-| `forks` | `10` | 동시 접속 호스트 수. 호스트가 많을수록 높게 설정하면 속도가 향상됩니다. |
-| `interpreter_python` | `auto` | 원격 호스트에서 Python 자동 탐색. 경로가 다른 호스트는 inventory에서 개별 지정합니다. |
+| 항목                 | 값                     | 설명                                                                                  |
+|----------------------|------------------------|---------------------------------------------------------------------------------------|
+| `inventory`          | `/etc/ansible/hosts`   | 기본 inventory 파일 경로. `-i` 옵션으로 덮어쓸 수 있습니다.                           |
+| `remote_user`        | `ansible`              | SSH 접속 시 사용할 원격 계정. 각 호스트에 동일 계정이 있어야 합니다.                  |
+| `host_key_checking`  | `False`                | 최초 접속 시 SSH host key 확인 생략. 운영 환경에서는 `True` 권장합니다.               |
+| `log_path`           | `/var/log/ansible.log` | 실행 로그 저장 경로. 파일이 없으면 자동 생성됩니다.                                   |
+| `forks`              | `10`                   | 동시 접속 호스트 수. 호스트가 많을수록 높게 설정하면 속도가 향상됩니다.               |
+| `interpreter_python` | `auto`                 | 원격 호스트에서 Python 자동 탐색. 경로가 다른 호스트는 inventory에서 개별 지정합니다. |
 
 **[privilege_escalation]**
 
-| 항목 | 값 | 설명 |
-|------|----|------|
-| `become` | `True` | 권한 상승 기본 활성화. playbook에서 `become: false`로 개별 비활성화 가능합니다. |
-| `become_method` | `sudo` | 권한 상승 방법. `sudo` / `su` / `pbrun` 등 선택 가능합니다. |
-| `become_user` | `root` | 상승할 대상 계정. |
-| `become_ask_pass` | `False` | sudo 패스워드 입력 생략. `NOPASSWD` sudoers 설정이 필요합니다. |
+| 항목              | 값      | 설명                                                                            |
+|-------------------|---------|---------------------------------------------------------------------------------|
+| `become`          | `True`  | 권한 상승 기본 활성화. playbook에서 `become: false`로 개별 비활성화 가능합니다. |
+| `become_method`   | `sudo`  | 권한 상승 방법. `sudo` / `su` / `pbrun` 등 선택 가능합니다.                     |
+| `become_user`     | `root`  | 상승할 대상 계정.                                                               |
+| `become_ask_pass` | `False` | sudo 패스워드 입력 생략. `NOPASSWD` sudoers 설정이 필요합니다.                  |
 
 **[ssh_connection]**
 
-| 항목 | 값 | 설명 |
-|------|----|------|
-| `pipelining` | `True` | 여러 SSH 명령을 하나의 연결로 처리. 속도가 향상되나 `requiretty` sudoers 설정과 충돌할 수 있습니다. |
-| `ControlMaster=auto` | - | SSH 연결 다중화. 동일 호스트 재접속 시 기존 연결 재사용합니다. |
-| `ControlPersist=600s` | - | 마지막 접속 후 10분간 연결 유지. 연속 playbook 실행 시 SSH 재연결 없이 속도가 향상됩니다. |
+| 항목                  | 값     | 설명                                                                                                |
+|-----------------------|--------|-----------------------------------------------------------------------------------------------------|
+| `pipelining`          | `True` | 여러 SSH 명령을 하나의 연결로 처리. 속도가 향상되나 `requiretty` sudoers 설정과 충돌할 수 있습니다. |
+| `ControlMaster=auto`  | -      | SSH 연결 다중화. 동일 호스트 재접속 시 기존 연결 재사용합니다.                                      |
+| `ControlPersist=600s` | -      | 마지막 접속 후 10분간 연결 유지. 연속 playbook 실행 시 SSH 재연결 없이 속도가 향상됩니다.           |
 
 ⚠️ `ansible.cfg` 우선순위: 현재 디렉토리 → 홈 디렉토리 → `/etc/ansible/ansible.cfg` 순으로 적용됩니다. 프로젝트별 설정이 필요하면 프로젝트 디렉토리에 별도 `ansible.cfg`를 생성합니다.
 
@@ -293,14 +285,14 @@ gameservers
 
 #### Inventory 주요 문법
 
-| 문법 | 예시 | 설명 |
-|------|------|------|
-| 호스트 변수 | `host1 ansible_host=10.0.1.1` | 호스트별 개별 변수 지정 |
-| 그룹 | `[webservers]` | 호스트 묶음 |
-| 그룹 변수 | `[webservers:vars]` | 그룹 전체에 변수 적용 |
-| 중첩 그룹 | `[production:children]` | 그룹을 묶는 상위 그룹 |
-| 포트 지정 | `host1 ansible_host=10.0.1.1 ansible_port=2222` | 기본 22 외 포트 사용 시 |
-| 연결 방식 | `ansible_connection=ssh\|docker\|local` | SSH 외 연결 방식 지정 |
+| 문법        | 예시                                            | 설명                    |        |                       |
+|-------------|-------------------------------------------------|-------------------------|--------|-----------------------|
+| 호스트 변수 | `host1 ansible_host=10.0.1.1`                   | 호스트별 개별 변수 지정 |        |                       |
+| 그룹        | `[webservers]`                                  | 호스트 묶음             |        |                       |
+| 그룹 변수   | `[webservers:vars]`                             | 그룹 전체에 변수 적용   |        |                       |
+| 중첩 그룹   | `[production:children]`                         | 그룹을 묶는 상위 그룹   |        |                       |
+| 포트 지정   | `host1 ansible_host=10.0.1.1 ansible_port=2222` | 기본 22 외 포트 사용 시 |        |                       |
+| 연결 방식   | `ansible_connection=ssh\                        | docker\                 | local` | SSH 외 연결 방식 지정 |
 
 ⚠️ inventory 파일은 환경별(dev/qa/stg/prd)로 분리 관리를 권장합니다. 하나의 파일에 모든 환경을 넣으면 실수로 운영 서버에 실행할 위험이 있습니다.
 
@@ -338,14 +330,14 @@ ansible gameservers -a "df -h"
 ansible webservers -m systemd -a "name=nginx"
 ```
 
-| 옵션 | 설명 |
-|------|------|
-| `-m` | 모듈 지정 (생략 시 `command` 모듈 사용) |
-| `-a` | 모듈 인자 |
-| `-b` | become (sudo) 활성화 |
-| `-i` | inventory 파일 지정 |
-| `--limit` | 실행 대상 호스트/그룹 제한 |
-| `-f` | 동시 실행 수 (forks) |
+| 옵션      | 설명                                    |
+|-----------|-----------------------------------------|
+| `-m`      | 모듈 지정 (생략 시 `command` 모듈 사용) |
+| `-a`      | 모듈 인자                               |
+| `-b`      | become (sudo) 활성화                    |
+| `-i`      | inventory 파일 지정                     |
+| `--limit` | 실행 대상 호스트/그룹 제한              |
+| `-f`      | 동시 실행 수 (forks)                    |
 
 ### 5-3. 정상 출력 예시
 
@@ -395,14 +387,14 @@ prd-app-web-01 | SUCCESS => {
 
 #### 디렉토리 역할 설명
 
-| 디렉토리/파일 | 역할 |
-|---------------|------|
-| `inventory/dev\|qa\|stg\|prd` | 환경별 inventory 파일 분리 |
-| `group_vars/all.yml` | 전체 호스트 공통 변수 |
-| `group_vars/webservers.yml` | webservers 그룹 전용 변수 |
-| `host_vars/hostname.yml` | 특정 호스트 전용 변수 |
-| `roles/` | 재사용 가능한 task 묶음 |
-| `playbooks/site.yml` | 전체 인프라 적용 진입점 |
+| 디렉토리/파일               | 역할                      |      |      |                            |
+|-----------------------------|---------------------------|------|------|----------------------------|
+| `inventory/dev\             | qa\                       | stg\ | prd` | 환경별 inventory 파일 분리 |
+| `group_vars/all.yml`        | 전체 호스트 공통 변수     |      |      |                            |
+| `group_vars/webservers.yml` | webservers 그룹 전용 변수 |      |      |                            |
+| `host_vars/hostname.yml`    | 특정 호스트 전용 변수     |      |      |                            |
+| `roles/`                    | 재사용 가능한 task 묶음   |      |      |                            |
+| `playbooks/site.yml`        | 전체 인프라 적용 진입점   |      |      |                            |
 
 ⚠️ `group_vars/`, `host_vars/`는 inventory 파일과 **같은 디렉토리**에 있어야 자동으로 로드됩니다.
 
@@ -514,9 +506,9 @@ chmod 600 ~/.ansible_vault_pass
 | SSH 키 관리  | 서버 1곳에서 관리              | 팀원별 키 관리         |
 | 변경 통제    | 래퍼 스크립트 / 파일 권한      | Git PR 리뷰            |
 | 감사 추적    | 서버 로그 집중                 | Git 커밋 이력          |
-| 환경 일관성  | ✅ 동일 환경 보장              | ⚠️ 버전 차이 가능       |
+| 환경 일관성  | ✅ 동일 환경 보장              | ⚠️ 버전 차이 가능      |
 | 장애 포인트  | Control Node 장애 시 전원 불가 | 개인 PC 독립적         |
-| ISMS 대응    | ✅ 접근 통제 용이              | ⚠️ 개인 PC 통제 어려움  |
+| ISMS 대응    | ✅ 접근 통제 용이              | ⚠️ 개인 PC 통제 어려움 |
 | 권장 팀 규모 | 2~10명                         | 10명 이상              |
 
 ⚠️ 10명 이하 인프라 팀이라면 **공용 Control Node + Git 병행**이 가장 실용적입니다.
@@ -526,15 +518,15 @@ chmod 600 ~/.ansible_vault_pass
 ```
 ┌──────────────────┐
 │  Control Node    │
-│  (공용 서버)     │
+│  (Shared Server) │
 │                  │
-│  ansible-admin ──┼── 관리자 (설정/역할 관리)
-│  user-kim    ────┼── 팀원 A
-│  user-park   ────┼── 팀원 B
-│  user-lee    ────┼── 팀원 C
+│  ansible-admin ──┼── Admin (config/role)
+│  user-kim    ────┼── Member A
+│  user-park   ────┼── Member B
+│  user-lee    ────┼── Member C
 └──────────────────┘
          |
-         | SSH (ansible 서비스 계정)
+         | SSH (ansible service account)
          v
 ┌──────────────────┐
 │  Managed Nodes   │
@@ -666,12 +658,12 @@ sudo chmod 755 /opt/ansible/bin/run-playbook.sh
 
 ### 11-2. 환경별 권한 매트릭스
 
-| 역할          | dev | qa  | stg | prd |
-|---------------|-----|-----|-----|-----|
-| ansible-admin | ✅  | ✅  | ✅  | ✅  |
-| user-kim      | ✅  | ✅  | ✅  | ✅  |
-| user-park     | ✅  | ✅  | ❌  | ❌  |
-| user-lee      | ✅  | ✅  | ❌  | ❌  |
+| 역할          | dev | qa | stg | prd |
+|---------------|-----|----|-----|-----|
+| ansible-admin | ✅  | ✅ | ✅  | ✅  |
+| user-kim      | ✅  | ✅ | ✅  | ✅  |
+| user-park     | ✅  | ✅ | ❌  | ❌  |
+| user-lee      | ✅  | ✅ | ❌  | ❌  |
 
 [⬆ 목차로 돌아가기](#목차)
 

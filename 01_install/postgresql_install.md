@@ -15,21 +15,21 @@
 
 ### 시스템 요구사항
 
-| 항목     | 최소                  | 권장 (프로덕션)              |
-|----------|-----------------------|------------------------------|
-| CPU      | 1 core                | 4 core 이상                  |
-| RAM      | 1 GB                  | 8 GB 이상                    |
-| 디스크   | 5 GB                  | SSD 100 GB 이상              |
-| OS       | Ubuntu 20.04+         | Ubuntu 22.04 / Rocky 9 / Alma 9 / RHEL 9 |
-| 포트     | 5432/tcp              | 5432/tcp                     |
+| 항목   | 최소          | 권장 (프로덕션)                          |
+|--------|---------------|------------------------------------------|
+| CPU    | 1 core        | 4 core 이상                              |
+| RAM    | 1 GB          | 8 GB 이상                                |
+| 디스크 | 5 GB          | SSD 100 GB 이상                          |
+| OS     | Ubuntu 20.04+ | Ubuntu 22.04 / Rocky 9 / Alma 9 / RHEL 9 |
+| 포트   | 5432/tcp      | 5432/tcp                                 |
 
 ### 버전 선택 기준
 
-| 버전          | EOL       | 권장 여부                 |
-|---------------|-----------|---------------------------|
-| PostgreSQL 14 | 2026-11   | ⚠️ EOL 임박, 비권장       |
-| PostgreSQL 16 | 2028-11   | ✅ 안정적, 현재 권장      |
-| PostgreSQL 17 | 2029-11   | ✅ 신규 구축 권장         |
+| 버전          | EOL     | 권장 여부            |
+|---------------|---------|----------------------|
+| PostgreSQL 14 | 2026-11 | ⚠️ EOL 임박, 비권장  |
+| PostgreSQL 16 | 2028-11 | ✅ 안정적, 현재 권장 |
+| PostgreSQL 17 | 2029-11 | ✅ 신규 구축 권장    |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -39,13 +39,13 @@
 
 ### Ubuntu 버전별 차이
 
-| 항목                    | Ubuntu 22.04 (Jammy)                    | Ubuntu 24.04 (Noble)                    |
-|-------------------------|-----------------------------------------|-----------------------------------------|
-| 기본 저장소 PostgreSQL  | 14.x                                    | 16.x                                    |
-| PGDG 최신 버전          | 17                                      | 17 (18 출시 시 자동 반영)               |
-| DB 생성 로케일          | `LC_COLLATE 'en_US.UTF-8'` 가능         | `LOCALE 'C.UTF-8'` 사용 권장 (ICU 기반)|
-| 설정 파일 경로          | `/etc/postgresql/14/main/`              | `/etc/postgresql/17/main/`              |
-| 로그 경로               | `/var/log/postgresql/`                  | `/var/log/postgresql/`                  |
+| 항목                   | Ubuntu 22.04 (Jammy)            | Ubuntu 24.04 (Noble)                    |
+|------------------------|---------------------------------|-----------------------------------------|
+| 기본 저장소 PostgreSQL | 14.x                            | 16.x                                    |
+| PGDG 최신 버전         | 17                              | 17 (18 출시 시 자동 반영)               |
+| DB 생성 로케일         | `LC_COLLATE 'en_US.UTF-8'` 가능 | `LOCALE 'C.UTF-8'` 사용 권장 (ICU 기반) |
+| 설정 파일 경로         | `/etc/postgresql/14/main/`      | `/etc/postgresql/17/main/`              |
+| 로그 경로              | `/var/log/postgresql/`          | `/var/log/postgresql/`                  |
 
 ⚠️ Ubuntu 24.04는 PostgreSQL 17 기준으로 ICU 로케일을 사용합니다.
 `LC_COLLATE 'en_US.UTF-8'` 방식으로 DB 생성 시 오류가 발생하므로 `LOCALE 'C.UTF-8'`을 사용합니다.
@@ -121,11 +121,11 @@ Rocky Linux, AlmaLinux, RHEL, CentOS Stream에서 동일하게 적용됩니다.
 
 ### 배포판별 EL 버전 대응
 
-| 배포판                        | EL 버전 | PGDG RPM 경로 키워드 |
-|-------------------------------|---------|----------------------|
-| RHEL 8 / Rocky 8 / Alma 8    | EL-8    | `EL-8`               |
-| RHEL 9 / Rocky 9 / Alma 9    | EL-9    | `EL-9`               |
-| CentOS Stream 9               | EL-9    | `EL-9`               |
+| 배포판                    | EL 버전 | PGDG RPM 경로 키워드 |
+|---------------------------|---------|----------------------|
+| RHEL 8 / Rocky 8 / Alma 8 | EL-8    | `EL-8`               |
+| RHEL 9 / Rocky 9 / Alma 9 | EL-9    | `EL-9`               |
+| CentOS Stream 9           | EL-9    | `EL-9`               |
 
 ### 3-1. 시스템 업데이트
 
@@ -409,15 +409,15 @@ WHERE state IS NOT NULL;
 
 ## 10. 트러블슈팅
 
-| 증상                                          | 원인                              | 해결 방법                                                          |
-|-----------------------------------------------|-----------------------------------|--------------------------------------------------------------------|
-| `FATAL: role "user" does not exist`           | DB 계정 미생성                    | `CREATE USER` 실행                                                 |
-| `FATAL: password authentication failed`       | 패스워드 불일치 또는 pg_hba 설정  | pg_hba.conf 인증 방식 확인, 패스워드 재설정                        |
-| `could not connect to server: Connection refused` | 서비스 미실행 또는 포트 차단  | `systemctl status postgresql`, 방화벽 확인                         |
-| `FATAL: no pg_hba.conf entry for host`        | pg_hba.conf 허용 규칙 없음        | 해당 IP/계정 규칙 추가 후 `pg_reload_conf()`                       |
-| `FATAL: database "mydb" does not exist`       | DB 미생성                         | `CREATE DATABASE mydb;`                                            |
-| `out of shared memory`                        | `shared_buffers` 또는 `max_connections` 과다 | 값 조정 후 재시작                                        |
-| Rocky: `initdb` 미실행                        | 클러스터 초기화 누락              | `sudo /usr/pgsql-17/bin/postgresql-17-setup initdb`                |
+| 증상                                              | 원인                                         | 해결 방법                                           |
+|---------------------------------------------------|----------------------------------------------|-----------------------------------------------------|
+| `FATAL: role "user" does not exist`               | DB 계정 미생성                               | `CREATE USER` 실행                                  |
+| `FATAL: password authentication failed`           | 패스워드 불일치 또는 pg_hba 설정             | pg_hba.conf 인증 방식 확인, 패스워드 재설정         |
+| `could not connect to server: Connection refused` | 서비스 미실행 또는 포트 차단                 | `systemctl status postgresql`, 방화벽 확인          |
+| `FATAL: no pg_hba.conf entry for host`            | pg_hba.conf 허용 규칙 없음                   | 해당 IP/계정 규칙 추가 후 `pg_reload_conf()`        |
+| `FATAL: database "mydb" does not exist`           | DB 미생성                                    | `CREATE DATABASE mydb;`                             |
+| `out of shared memory`                            | `shared_buffers` 또는 `max_connections` 과다 | 값 조정 후 재시작                                   |
+| Rocky: `initdb` 미실행                            | 클러스터 초기화 누락                         | `sudo /usr/pgsql-17/bin/postgresql-17-setup initdb` |
 
 ### 디버깅 명령
 
@@ -462,15 +462,15 @@ psql -h 10.0.1.10 -U secureuser123 -d mydb
 
 ### psql 주요 메타 명령
 
-| 명령어        | 설명                        |
-|---------------|-----------------------------|
-| `\l`          | DB 목록                     |
-| `\c mydb`     | DB 전환                     |
-| `\dt`         | 테이블 목록                 |
-| `\d users`    | 테이블 구조                 |
-| `\du`         | 사용자 목록                 |
-| `\timing`     | 쿼리 실행 시간 표시 토글    |
-| `\q`          | 종료                        |
+| 명령어     | 설명                     |
+|------------|--------------------------|
+| `\l`       | DB 목록                  |
+| `\c mydb`  | DB 전환                  |
+| `\dt`      | 테이블 목록              |
+| `\d users` | 테이블 구조              |
+| `\du`      | 사용자 목록              |
+| `\timing`  | 쿼리 실행 시간 표시 토글 |
+| `\q`       | 종료                     |
 
 ### DB / 테이블 기본 조작
 

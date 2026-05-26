@@ -14,20 +14,20 @@
 
 ### 시스템 요구사항
 
-| 항목   | 최소          | 권장 (프로덕션)       |
-|--------|---------------|-----------------------|
-| CPU    | 2 core        | 4 core 이상           |
-| RAM    | 2 GB          | 8 GB 이상             |
-| 디스크 | 10 GB         | SSD 100 GB 이상       |
-| 포트   | 27017/tcp     | 27017/tcp             |
+| 항목   | 최소      | 권장 (프로덕션) |
+|--------|-----------|-----------------|
+| CPU    | 2 core    | 4 core 이상     |
+| RAM    | 2 GB      | 8 GB 이상       |
+| 디스크 | 10 GB     | SSD 100 GB 이상 |
+| 포트   | 27017/tcp | 27017/tcp       |
 
 ### 버전 선택
 
-| 버전       | 상태          | 권장 여부         |
-|------------|---------------|-------------------|
-| MongoDB 6.0| EOL 2025-07   | ⚠️ 비권장         |
-| MongoDB 7.0| LTS (2027-10) | ✅ 권장           |
-| MongoDB 8.0| Latest        | ✅ 신규 구축 권장 |
+| 버전        | 상태          | 권장 여부         |
+|-------------|---------------|-------------------|
+| MongoDB 6.0 | EOL 2025-07   | ⚠️ 비권장         |
+| MongoDB 7.0 | LTS (2027-10) | ✅ 권장           |
+| MongoDB 8.0 | Latest        | ✅ 신규 구축 권장 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -312,13 +312,13 @@ db.serverStatus().wiredTiger.cache
 
 ## 8. 트러블슈팅
 
-| 증상                                  | 원인                          | 해결 방법                                              |
-|---------------------------------------|-------------------------------|--------------------------------------------------------|
-| `Authentication failed`               | 계정/패스워드 오류            | `--authenticationDatabase admin` 확인                  |
-| `connection refused`                  | mongod 미실행 또는 bindIp     | `systemctl status mongod`, bindIp 설정 확인            |
-| `not master` 오류                     | Replica Set에서 Secondary 쓰기 | Primary 노드에 연결                                   |
-| 디스크 사용량 급증                    | 저널 + 데이터 파일            | `db.repairDatabase()` 또는 compact                     |
-| 메모리 사용량 과다                    | WiredTiger 캐시 과다          | `cacheSizeGB` 조정                                     |
+| 증상                    | 원인                           | 해결 방법                                   |
+|-------------------------|--------------------------------|---------------------------------------------|
+| `Authentication failed` | 계정/패스워드 오류             | `--authenticationDatabase admin` 확인       |
+| `connection refused`    | mongod 미실행 또는 bindIp      | `systemctl status mongod`, bindIp 설정 확인 |
+| `not master` 오류       | Replica Set에서 Secondary 쓰기 | Primary 노드에 연결                         |
+| 디스크 사용량 급증      | 저널 + 데이터 파일             | `db.repairDatabase()` 또는 compact          |
+| 메모리 사용량 과다      | WiredTiger 캐시 과다           | `cacheSizeGB` 조정                          |
 
 ```bash
 # 로그 확인
