@@ -103,8 +103,8 @@ kind: KubeletConfiguration
 cgroupDriver: systemd
 ```
 
-⚠️ kubeadm v1.22+는 `cgroupDriver` 미설정 시 자동으로 `systemd`로 설정합니다.
-⚠️ Kubernetes v1.37부터 containerd 1.x(RuntimeConfig CRI RPC 미지원)는 kubelet과 호환 불가 예정입니다.
+🟡 kubeadm v1.22+는 `cgroupDriver` 미설정 시 자동으로 `systemd`로 설정합니다.
+🟡 Kubernetes v1.37부터 containerd 1.x(RuntimeConfig CRI RPC 미지원)는 kubelet과 호환 불가 예정입니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -178,7 +178,7 @@ conmon_cgroup = "pod"
 cgroup_manager = "cgroupfs"
 ```
 
-⚠️ cgroupfs 사용 시 `conmon_cgroup = "pod"` 함께 설정 필요합니다.
+🟡 cgroupfs 사용 시 `conmon_cgroup = "pod"` 함께 설정 필요합니다.
 
 #### sandbox 이미지 변경
 
@@ -245,7 +245,7 @@ sysctl net.ipv4.ip_forward
 | Kubernetes 전용 | 아니오 (Docker 내장)              | 예                        | 아니오                   |
 | cgroup 기본값   | cgroupfs (설정 필요)              | systemd                   | cgroupfs (설정 필요)     |
 | CRI 소켓        | `/run/containerd/containerd.sock` | `/var/run/crio/crio.sock` | `/run/cri-dockerd.sock`  |
-| 공식 권장       | ✅                                | ✅                        | ⚠️ 어댑터 필요           |
+| 공식 권장       | ✅                                | ✅                        | 🟡 어댑터 필요           |
 
 [⬆ 목차로 돌아가기](#목차)
 

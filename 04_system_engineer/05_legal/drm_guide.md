@@ -107,7 +107,7 @@ GPL v3 = 소스코드 공개 + 설치 정보 제공
 | 완전한 자유 소프트웨어 | GPL v3 | Tivoization 방지 |
 | DRM 무관 라이브러리 | MIT / Apache 2.0 | 제약 없음 |
 
-⚠️ Linux 커널은 "GPL v2 only"를 명시하여 GPL v3 적용을 의도적으로 배제하고 있다.
+🟡 Linux 커널은 "GPL v2 only"를 명시하여 GPL v3 적용을 의도적으로 배제하고 있다.
 
 [⬆ 목차로 돌아가기](#목차)
 

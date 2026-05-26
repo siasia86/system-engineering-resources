@@ -110,7 +110,7 @@
 4. 경로가 이미 있으면 (다른 Target으로 설정된 경우): 해당 경로의 Target을 Peering Connection으로 변경
 5. Save changes
 
-⚠️ 서브넷별로 라우팅 테이블이 다를 수 있다. Peering 통신이 필요한 서브넷의 라우팅 테이블에만 추가한다.
+🟡 서브넷별로 라우팅 테이블이 다를 수 있다. Peering 통신이 필요한 서브넷의 라우팅 테이블에만 추가한다.
 
 확인 방법:
 1. VPC → Subnets → 대상 서브넷 선택
@@ -313,7 +313,7 @@ aws ec2 create-route \
   --region us-east-1
 ```
 
-⚠️ 동일 destination이 이미 존재하면 `RouteAlreadyExists` 에러가 발생한다. 이 경우 `replace-route`를 사용한다.
+🟡 동일 destination이 이미 존재하면 `RouteAlreadyExists` 에러가 발생한다. 이 경우 `replace-route`를 사용한다.
 
 ### 기존 경로 변경 (replace-route)
 

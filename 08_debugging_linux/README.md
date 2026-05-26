@@ -86,7 +86,7 @@
 - 짧은 시간 사용
 
 **프로덕션 환경:**
-- ⚠️ 주의 필요
+- 🟡 주의 필요
 - 권장: perf, bpftrace, lsof, iotop
 - 제한적 사용: strace, ltrace (짧은 시간만)
 - 비권장: valgrind, gdb (서비스 중단)

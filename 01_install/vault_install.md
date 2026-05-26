@@ -112,7 +112,7 @@ Unseal Key 5: xxxx
 Initial Root Token: hvs.xxxx
 ```
 
-⚠️ Unseal Key와 Root Token은 분리 보관 필수. 분실 시 복구 불가.
+🟡 Unseal Key와 Root Token은 분리 보관 필수. 분실 시 복구 불가.
 
 ### 4-3. Unseal (재시작 시마다 필요)
 
@@ -249,7 +249,7 @@ services:
     restart: unless-stopped
 ```
 
-⚠️ `-dev` 모드는 메모리 저장, 재시작 시 데이터 초기화. 개발/테스트 전용.
+🟡 `-dev` 모드는 메모리 저장, 재시작 시 데이터 초기화. 개발/테스트 전용.
 
 [⬆ 목차로 돌아가기](#목차)
 

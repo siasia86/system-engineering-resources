@@ -256,7 +256,7 @@ vagrant ssh-config
 config.vm.synced_folder ".", "/vagrant", disabled: true
 ```
 
-⚠️ Windows Guest 사용 시 라이선스가 필요합니다. `gusztavvargadr` box는 평가판(180일)입니다.
+🟡 Windows Guest 사용 시 라이선스가 필요합니다. `gusztavvargadr` box는 평가판(180일)입니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

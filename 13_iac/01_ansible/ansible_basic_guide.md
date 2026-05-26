@@ -842,7 +842,7 @@ raw 모듈
   changed_when: false
 ```
 
-⚠️ `raw` 사용 후 Python이 설치되면 이후 task부터 일반 모듈을 사용합니다.
+🟡 `raw` 사용 후 Python이 설치되면 이후 task부터 일반 모듈을 사용합니다.
 `gather_facts: false`와 함께 사용해야 합니다 — `setup` 모듈도 Python이 필요하기 때문입니다.
 
 ### `delegate_to` — 다른 호스트에서 task 실행
@@ -1179,7 +1179,7 @@ ansible-playbook site.yml --ask-vault-pass
 ansible-playbook site.yml --vault-password-file ~/.vault_pass
 ```
 
-⚠️ `.vault_pass` 파일은 `.gitignore`에 반드시 추가합니다.
+🟡 `.vault_pass` 파일은 `.gitignore`에 반드시 추가합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

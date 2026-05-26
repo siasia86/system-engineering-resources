@@ -132,7 +132,7 @@ mount | grep cgroup
     └── user-1000.slice/                 # UID 1000 user
 ```
 
-⚠️ root cgroup에는 `memory.max`, `cpu.max`, `pids.max` 등 **제한 설정 파일이 없습니다** . 통계/pressure 파일만 존재합니다. 제한은 하위 cgroup(`system.slice/`, `user.slice/` 이하)에서만 설정 가능합니다.
+🟡 root cgroup에는 `memory.max`, `cpu.max`, `pids.max` 등 **제한 설정 파일이 없습니다** . 통계/pressure 파일만 존재합니다. 제한은 하위 cgroup(`system.slice/`, `user.slice/` 이하)에서만 설정 가능합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -419,7 +419,7 @@ watch -n 1 'cat /sys/fs/cgroup/mygroup/io.stat'
 #                ^^^^^^^^^^^^^^^ wbytes가 증가하면 쓰기 I/O 발생 중
 ```
 
-⚠️ `dd` 테스트 시 `oflag=direct`를 붙여야 page cache를 우회하여 실제 디스크 I/O가 발생합니다. 없으면 cache에 쓰여 제한이 안 걸린 것처럼 보입니다.
+🟡 `dd` 테스트 시 `oflag=direct`를 붙여야 page cache를 우회하여 실제 디스크 I/O가 발생합니다. 없으면 cache에 쓰여 제한이 안 걸린 것처럼 보입니다.
 
 ### pids
 
@@ -531,7 +531,7 @@ echo $$ | sudo tee /sys/fs/cgroup/cgroup.procs
 sudo rmdir /sys/fs/cgroup/mytest
 ```
 
-⚠️ `rmdir`은 cgroup 안에 프로세스가 남아있으면 실패합니다. 반드시 프로세스를 먼저 이동시킵니다.
+🟡 `rmdir`은 cgroup 안에 프로세스가 남아있으면 실패합니다. 반드시 프로세스를 먼저 이동시킵니다.
 
 ### systemd-run으로 간편 실행 (v2 권장)
 
@@ -648,7 +648,7 @@ stat -fc %T /sys/fs/cgroup/
 # tmpfs → v1, cgroup2fs → v2
 ```
 
-⚠️ cgroupv1 강제 사용은 보안 패치 및 신규 기능 미지원으로 권장하지 않습니다. `privileged + cgroupns_mode: host` 방식을 사용합니다.
+🟡 cgroupv1 강제 사용은 보안 패치 및 신규 기능 미지원으로 권장하지 않습니다. `privileged + cgroupns_mode: host` 방식을 사용합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -763,9 +763,9 @@ cat /sys/fs/cgroup/cgroup.controllers
 systemctl show <service> -p ControlGroup
 ```
 
-⚠️ `/sys/fs/cgroup` 파일을 직접 수정하면 재부팅 시 초기화됩니다. 영구 설정은 systemd unit 파일 또는 `/etc/cgconfig.conf`를 사용합니다.
+🟡 `/sys/fs/cgroup` 파일을 직접 수정하면 재부팅 시 초기화됩니다. 영구 설정은 systemd unit 파일 또는 `/etc/cgconfig.conf`를 사용합니다.
 
-⚠️ cgroupv2 환경에서 `--privileged` 없이 systemd 컨테이너를 실행하면 Exit 255로 즉시 종료됩니다.
+🟡 cgroupv2 환경에서 `--privileged` 없이 systemd 컨테이너를 실행하면 Exit 255로 즉시 종료됩니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -893,7 +893,7 @@ dd if=/dev/zero of=/tmp/testfile bs=1M count=100 oflag=direct 2>&1
 | 제한 전 | 2.9 GB/s  | page cache 우회(oflag=direct) |
 | 제한 후 | 10.5 MB/s | io.max 10MB/s 설정값 근접     |
 
-⚠️ `oflag=direct` 없이 실행하면 page cache에 쓰여 제한이 걸리지 않은 것처럼 보입니다.
+🟡 `oflag=direct` 없이 실행하면 page cache에 쓰여 제한이 걸리지 않은 것처럼 보입니다.
 
 ### 정리
 

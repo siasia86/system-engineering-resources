@@ -262,7 +262,7 @@ ZREVRANGE leaderboard 0 9 WITHSCORES   # 상위 10명
 EXISTS user:1:name
 DEL user:1:name
 EXPIRE user:1:name 3600
-KEYS user:*        # ⚠️ 프로덕션 사용 금지 → SCAN 사용
+KEYS user:*        # 🟡 프로덕션 사용 금지 → SCAN 사용
 SCAN 0 MATCH user:* COUNT 100
 ```
 
@@ -273,7 +273,7 @@ redis-cli info server    # 서버 정보
 redis-cli info memory    # 메모리 사용량
 redis-cli info stats     # 통계
 redis-cli info replication  # 복제 상태
-redis-cli monitor        # 실시간 명령어 모니터링 (⚠️ 성능 영향)
+redis-cli monitor        # 실시간 명령어 모니터링 (🟡 성능 영향)
 ```
 
 [⬆ 목차로 돌아가기](#목차)

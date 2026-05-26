@@ -152,7 +152,7 @@ Context files total: 4.2% of context window
 | 지속성    | 세션 종료 후에도 유지            | 세션 종료 시 삭제         |
 | 용도      | 항상 참고해야 하는 파일          | 현재 작업에만 필요한 파일 |
 
-⚠️ `/context add/remove/clear` 는 세션 한정입니다. 영구 설정은 에이전트 JSON의 `resources` 필드를 수정하세요.
+🟡 `/context add/remove/clear` 는 세션 한정입니다. 영구 설정은 에이전트 JSON의 `resources` 필드를 수정하세요.
 
 #### 크기 제한
 
@@ -442,7 +442,7 @@ AI가 도구 실행 허가를 요청할 때 사용하는 키입니다.
 |------------------------|-------------------------------|
 | `ctrl`, `shift`, `alt` | `a-z`, `0-9`, `f1-f12`, `tab` |
 
-⚠️ 같은 단축키를 여러 에이전트에 지정하면 충돌로 비활성화됩니다.
+🟡 같은 단축키를 여러 에이전트에 지정하면 충돌로 비활성화됩니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -523,7 +523,7 @@ Context usage: 45% (90,000 / 200,000 tokens)
 N회차: Context 90% → /compact 실행 → 이전 대화 요약 → 40% 로 감소
 ```
 
-⚠️ 긴 작업 시 `/compact` 를 중간중간 실행하면 Context Window 를 효율적으로 사용할 수 있습니다.
+🟡 긴 작업 시 `/compact` 를 중간중간 실행하면 Context Window 를 효율적으로 사용할 수 있습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -681,7 +681,7 @@ kiro-cli inline status
 | `/tools untrust fs_write`            | 다시 확인 모드로 복원                |
 | `/tools reset`                       | 에이전트 기본 권한으로 초기화        |
 
-⚠️ 세션 중 변경한 권한은 세션 종료 시 초기화됩니다.
+🟡 세션 중 변경한 권한은 세션 종료 시 초기화됩니다.
 
 ### 시작 시 옵션으로 지정
 
@@ -1033,7 +1033,7 @@ Ready to exit [plan] agent to start your implementation? [y/n]: y
 [default] > 위 계획대로 roles/ 디렉토리 구조와 os_tuning role 먼저 만들어줘
 ```
 
-⚠️ Plan 에이전트는 계획만 세우고, 실제 파일 생성/명령 실행은 기본 에이전트로 복귀 후 수행합니다.
+🟡 Plan 에이전트는 계획만 세우고, 실제 파일 생성/명령 실행은 기본 에이전트로 복귀 후 수행합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -1405,7 +1405,7 @@ Native
 Total         2.5k
 ```
 
-⚠️ 사용하지 않는 MCP 서버는 `"disabled": true` 로 비활성화하면 토큰을 절약할 수 있습니다.
+🟡 사용하지 않는 MCP 서버는 `"disabled": true` 로 비활성화하면 토큰을 절약할 수 있습니다.
 
 ### 대용량 파일 처리 전략
 
@@ -1896,7 +1896,7 @@ kiro-cli settings chat.enableSubagent true
 
 
 > Subagent/Delegate 실전 활용은 [섹션 14. 병렬 처리](#14-병렬-처리-parallel-execution) 참고
-⚠️ 실험적 기능은 향후 변경되거나 제거될 수 있습니다.
+🟡 실험적 기능은 향후 변경되거나 제거될 수 있습니다.
 
 ---
 
@@ -2438,7 +2438,7 @@ kiro-cli settings open
 | `minimax-m2.5`      | 0.25x       | 실험적 프리뷰              |
 | `qwen3-coder-next`  | 0.05x       | 실험적 프리뷰, 최저 비용   |
 
-⚠️ 모델 목록은 리전과 시점에 따라 달라질 수 있습니다.
+🟡 모델 목록은 리전과 시점에 따라 달라질 수 있습니다.
 
 ### 모델 변경 방법
 

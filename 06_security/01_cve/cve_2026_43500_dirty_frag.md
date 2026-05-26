@@ -27,7 +27,7 @@
 | PoC | 공개됨 |
 | 영향 | 비권한 로컬 사용자 → root 권한 상승 |
 
-⚠️ **공개된 Dirty Frag PoC는 CVE-2026-43284 (xfrm/ESP) + CVE-2026-43500 (rxrpc) 두 경로를 체인으로 사용합니다.**
+🟡 **공개된 Dirty Frag PoC는 CVE-2026-43284 (xfrm/ESP) + CVE-2026-43500 (rxrpc) 두 경로를 체인으로 사용합니다.**
 
 - CVE-2026-43284 단독: Ubuntu AppArmor가 XFRM 소켓을 제한할 수 있어 불안정
 - CVE-2026-43500 단독: `rxrpc` 모듈이 기본 미로드인 배포판에서 동작 안 함
@@ -106,7 +106,7 @@ gcc -O0 -Wall -o exp exp.c -lutil
 | openSUSE Tumbleweed | 7.0.2-1-default |
 | Fedora 44 | 6.19.14-300.fc44.x86_64 |
 
-⚠️ **Copy Fail 완화(`algif_aead` blacklist)를 적용해도 Dirty Frag는 여전히 취약합니다.** rxrpc 경로는 `algif_aead` 모듈과 무관하게 동작합니다.
+🟡 **Copy Fail 완화(`algif_aead` blacklist)를 적용해도 Dirty Frag는 여전히 취약합니다.** rxrpc 경로는 `algif_aead` 모듈과 무관하게 동작합니다.
 
 ### 탐지 명령어
 

@@ -27,7 +27,7 @@
 
 | 버전          | EOL     | 권장 여부            |
 |---------------|---------|----------------------|
-| PostgreSQL 14 | 2026-11 | ⚠️ EOL 임박, 비권장  |
+| PostgreSQL 14 | 2026-11 | 🟡 EOL 임박, 비권장  |
 | PostgreSQL 16 | 2028-11 | ✅ 안정적, 현재 권장 |
 | PostgreSQL 17 | 2029-11 | ✅ 신규 구축 권장    |
 
@@ -47,7 +47,7 @@
 | 설정 파일 경로         | `/etc/postgresql/14/main/`      | `/etc/postgresql/17/main/`              |
 | 로그 경로              | `/var/log/postgresql/`          | `/var/log/postgresql/`                  |
 
-⚠️ Ubuntu 24.04는 PostgreSQL 17 기준으로 ICU 로케일을 사용합니다.
+🟡 Ubuntu 24.04는 PostgreSQL 17 기준으로 ICU 로케일을 사용합니다.
 `LC_COLLATE 'en_US.UTF-8'` 방식으로 DB 생성 시 오류가 발생하므로 `LOCALE 'C.UTF-8'`을 사용합니다.
 
 ### 2-1. 시스템 업데이트
@@ -65,7 +65,7 @@ sudo apt install postgresql postgresql-contrib -y
 sudo systemctl enable --now postgresql
 ```
 
-⚠️ Ubuntu 기본 저장소 버전은 최신이 아닐 수 있습니다. 특정 버전이 필요하면 방법 B를 사용합니다.
+🟡 Ubuntu 기본 저장소 버전은 최신이 아닐 수 있습니다. 특정 버전이 필요하면 방법 B를 사용합니다.
 
 ### 2-3. 설치 방법 B: PostgreSQL 공식 저장소 (PGDG)
 
@@ -308,7 +308,7 @@ host    replication repl          10.0.1.0/24      scram-sha-256
 # host  all        all            0.0.0.0/0        reject
 ```
 
-⚠️ `trust` 방식은 패스워드 없이 접속을 허용하므로 프로덕션에서 사용 금지.
+🟡 `trust` 방식은 패스워드 없이 접속을 허용하므로 프로덕션에서 사용 금지.
 
 ```bash
 # 설정 반영 (재시작 없이)

@@ -206,7 +206,7 @@ for cert in /etc/letsencrypt/live/*/cert.pem; do
     domain=$(echo $cert | cut -d/ -f6)
     expiry=$(openssl x509 -in $cert -noout -enddate | cut -d= -f2)
     days=$(( ( $(date -d "$expiry" +%s) - $(date +%s) ) / 86400 ))
-    [ $days -lt 30 ] && echo "⚠️  $domain: $days 일 남음"
+    [ $days -lt 30 ] && echo "🟡  $domain: $days 일 남음"
 done
 
 # SSL Labs 등급 확인 (외부)

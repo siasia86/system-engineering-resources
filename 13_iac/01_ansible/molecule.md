@@ -280,7 +280,7 @@ molecule idempotency
 MOLECULE_ANSIBLE_ARGS="--tags install" molecule converge
 ```
 
-⚠️ `molecule test`는 실패 시 `destroy`를 건너뜁니다. 인스턴스가 남아있으면 `molecule destroy`로 수동 삭제합니다.
+🟡 `molecule test`는 실패 시 `destroy`를 건너뜁니다. 인스턴스가 남아있으면 `molecule destroy`로 수동 삭제합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

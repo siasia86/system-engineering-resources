@@ -623,8 +623,8 @@ BACKUP_BASE_DIR="/backup"
 MYSQL_DATA_DIR="/var/lib/mysql"
 
 # 10초 대기 (취소 가능)
-echo "⚠️  WARNING: This will restore MySQL to ${RESTORE_FULL_DATE}"
-echo "⚠️  Current data will be backed up to ${MYSQL_DATA_DIR}_backup_$(date +%Y%m%d%H%M%S)"
+echo "🟡  WARNING: This will restore MySQL to ${RESTORE_FULL_DATE}"
+echo "🟡  Current data will be backed up to ${MYSQL_DATA_DIR}_backup_$(date +%Y%m%d%H%M%S)"
 echo ""
 echo "Press Ctrl+C within 10 seconds to cancel..."
 
@@ -802,9 +802,9 @@ RESTORE_FULL_DATE="FULL_DATE_PLACEHOLDER"
 BACKUP_BASE_DIR="/backup"
 MYSQL_DATA_DIR="/var/lib/mysql"
 
-echo "⚠️  WARNING: This will restore MySQL to ${RESTORE_DATE}"
-echo "⚠️  Using Full: ${RESTORE_FULL_DATE}"
-echo "⚠️  Using Incremental: ${RESTORE_DATE}"
+echo "🟡  WARNING: This will restore MySQL to ${RESTORE_DATE}"
+echo "🟡  Using Full: ${RESTORE_FULL_DATE}"
+echo "🟡  Using Incremental: ${RESTORE_DATE}"
 echo ""
 echo "Press Ctrl+C within 10 seconds to cancel..."
 
@@ -1848,7 +1848,7 @@ for full in $(ls -d ${FULL_DIR}/*-00 2>/dev/null | sort); do
         if [ "${inc_from}" == "${full_lsn}" ]; then
             echo "   └─ Inc: ${inc_date} (LSN: ${inc_from} -> ${inc_to}, Size: ${inc_size})"
         else
-            echo "   └─ ⚠️  Inc: ${inc_date} (LSN MISMATCH!)"
+            echo "   └─ 🟡  Inc: ${inc_date} (LSN MISMATCH!)"
         fi
     done
     
@@ -2180,7 +2180,7 @@ THRESHOLD=80  # 80% 이상 사용 시 정리
 USAGE=$(df -h ${BACKUP_DIR} | awk 'NR==2 {print $5}' | sed 's/%//')
 
 if [ ${USAGE} -ge ${THRESHOLD} ]; then
-    echo "⚠️  Disk usage ${USAGE}% exceeds threshold ${THRESHOLD}%"
+    echo "🟡  Disk usage ${USAGE}% exceeds threshold ${THRESHOLD}%"
     echo "Starting cleanup..."
     
     # 1. 가장 오래된 압축 파일 삭제

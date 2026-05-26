@@ -681,11 +681,11 @@ kubectl debug -it my-pod --image=busybox --target=my-app
 
 ### 주의사항
 
-⚠️ `resources.limits.memory`를 설정하지 않으면 메모리 누수 시 노드 전체에 영향을 줍니다. 반드시 설정합니다.
+🟡 `resources.limits.memory`를 설정하지 않으면 메모리 누수 시 노드 전체에 영향을 줍니다. 반드시 설정합니다.
 
-⚠️ `kubectl delete pod --force --grace-period=0`은 StatefulSet Pod에서 데이터 손상을 유발할 수 있습니다.
+🟡 `kubectl delete pod --force --grace-period=0`은 StatefulSet Pod에서 데이터 손상을 유발할 수 있습니다.
 
-⚠️ Secret은 기본적으로 etcd에 base64 인코딩(암호화 아님)으로 저장됩니다. etcd 암호화 또는 외부 시크릿 관리자(AWS Secrets Manager, Vault) 사용을 권장합니다.
+🟡 Secret은 기본적으로 etcd에 base64 인코딩(암호화 아님)으로 저장됩니다. etcd 암호화 또는 외부 시크릿 관리자(AWS Secrets Manager, Vault) 사용을 권장합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

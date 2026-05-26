@@ -166,7 +166,7 @@ WHERE o.status = 'completed';
 | `rows` | 예상 스캔 행 수 |
 | `Extra` | `Using index`, `Using temporary`, `Using filesort` |
 
-⚠️ `Using temporary` + `Using filesort` 동시 출현 시 성능 위험 신호.
+🟡 `Using temporary` + `Using filesort` 동시 출현 시 성능 위험 신호.
 
 ### PostgreSQL EXPLAIN ANALYZE
 

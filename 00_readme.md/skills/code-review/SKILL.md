@@ -97,16 +97,16 @@ Apply when: "리뷰", "review", "검토", "코드 리뷰"
 | # | 심각도 | 위치 | 문제 | 제안 |
 |---|--------|------|------|------|
 | 1 | 🔴    | L42  | ...  | ...  |
-| 2 | ⚠️    | L78  | ...  | ...  |
+| 2 | 🟡    | L78  | ...  | ...  |
 
-심각도: 🔴 bug/security | ⚠️ improvement | 💡 suggestion
+심각도: 🔴 bug/security | 🟡 improvement | 💡 suggestion
 
 총평: (1~2문장 요약)
 ```
 
 ## Priority
 - 🔴 items: must fix before merge
-- ⚠️ items: should fix (technical debt if skipped)
+- 🟡 items: should fix (technical debt if skipped)
 - 💡 items: optional improvement
 
 ## Red Flags

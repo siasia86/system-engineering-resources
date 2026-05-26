@@ -171,7 +171,7 @@ newgrp docker
 docker ps
 ```
 
-⚠️ 로그아웃 후 재로그인해야 완전히 적용됩니다.
+🟡 로그아웃 후 재로그인해야 완전히 적용됩니다.
 
 ### 4-2. daemon.json 설정
 
@@ -219,7 +219,7 @@ sudo firewall-cmd --permanent --add-port=443/tcp
 sudo firewall-cmd --reload
 ```
 
-⚠️ Docker가 관리하는 포트는 `ufw status`에 표시되지 않아도 외부에서 접근 가능하다.
+🟡 Docker가 관리하는 포트는 `ufw status`에 표시되지 않아도 외부에서 접근 가능하다.
 내부 전용 서비스는 `127.0.0.1:PORT:PORT` 형식으로 바인딩할 것.
 
 [⬆ 목차로 돌아가기](#목차)
@@ -569,7 +569,7 @@ docker volume inspect VOLUME
     └── container-c  10.200.101.153
 ```
 
-⚠️ macvlan 제약: 호스트 → 컨테이너 직접 통신 불가 (macvlan 특성). 외부 PC → 컨테이너는 가능합니다.
+🟡 macvlan 제약: 호스트 → 컨테이너 직접 통신 불가 (macvlan 특성). 외부 PC → 컨테이너는 가능합니다.
 
 ### Hyper-V 사전 설정
 

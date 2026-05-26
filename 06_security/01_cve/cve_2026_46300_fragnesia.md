@@ -27,7 +27,7 @@
 
 > Dirty Frag(CVE-2026-43284/43500)와 **별개 버그**입니다. 동일한 XFRM/ESP 클래스이며 임시 완화 방법은 동일합니다.
 
-> ⚠️ **Dirty Frag 완화(`dirtyfrag.conf`)를 이미 적용한 경우 추가 조치 불필요.** 동일한 `esp4`/`esp6`/`rxrpc` blacklist가 Fragnesia도 차단합니다.
+> 🟡 **Dirty Frag 완화(`dirtyfrag.conf`)를 이미 적용한 경우 추가 조치 불필요.** 동일한 `esp4`/`esp6`/`rxrpc` blacklist가 Fragnesia도 차단합니다.
 
 > 동일 계열 취약점: [CVE-2026-31431](./cve_2026_31431_copy_fail.md) (CISA KEV) / [CVE-2026-43284](./cve_2026_43284_dirty_frag.md) (xfrm/ESP) / [CVE-2026-43500](./cve_2026_43500_dirty_frag.md) (rxrpc)
 
@@ -153,7 +153,7 @@ ip xfrm policy list
 | `esp4` / `esp6` | IPsec VPN 터널 활성 | 기존 VPN 세션 즉시 끊김 |
 | `rxrpc` | AFS 클라이언트 사용 중 | AFS 파일시스템 접근 불가 |
 
-⚠️ IPsec / strongSwan / Libreswan 터널을 종단하는 호스트에는 이 완화를 적용하지 않습니다.
+🟡 IPsec / strongSwan / Libreswan 터널을 종단하는 호스트에는 이 완화를 적용하지 않습니다.
 
 **미적용 시 — Step 2. blacklist 등록 + 언로드 (원문)**
 

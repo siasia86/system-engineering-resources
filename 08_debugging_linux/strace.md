@@ -1160,7 +1160,7 @@ strace -e trace=file -p $(pgrep myapp) 2>&1 | grep --line-buffered openat
 
 ## 22. 프로덕션 환경 사용 시 주의사항
 
-### ⚠️ 중요 경고
+### 🟡 중요 경고
 
 1. **성능 영향**
    - 5-10배 느려짐

@@ -26,7 +26,7 @@ ansible_ssh_private_key_file=~/.ssh/id_ed25519
 ansible_connection=ssh
 ```
 
-> ⚠️ `ansible_user=root` 직접 사용은 보안상 권장하지 않습니다.
+> 🟡 `ansible_user=root` 직접 사용은 보안상 권장하지 않습니다.
 > 전용 `ansible` 계정을 생성하고 `become: true`로 권한 상승하는 방식을 사용합니다.
 
 ### Docker 컨테이너 연결
@@ -48,7 +48,7 @@ ansible_remote_tmp=/tmp/.ansible/tmp
 
 ```yaml
 # OS 무관 (자동 감지)
-# ⚠️ curl은 Rocky9/AmazonLinux2023에서 curl-minimal과 충돌 가능
+# 🟡 curl은 Rocky9/AmazonLinux2023에서 curl-minimal과 충돌 가능
 # 해당 OS에서는 아래 OS별 모듈로 분기 처리 권장
 - ansible.builtin.package:
     name: wget           # curl 대신 충돌 없는 패키지로 테스트

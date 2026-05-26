@@ -27,7 +27,7 @@
 
 | 버전      | 상태           | 권장 여부           |
 |-----------|----------------|---------------------|
-| MySQL 8.0 | LTS (2026 EOL) | ⚠️ 신규 구축 비권장 |
+| MySQL 8.0 | LTS (2026 EOL) | 🟡 신규 구축 비권장 |
 | MySQL 8.4 | LTS (2032 EOL) | ✅ 신규 구축 권장   |
 | MySQL 9.x | Innovation     | 실험적 기능 평가용  |
 
@@ -61,7 +61,7 @@ sudo apt install mysql-server -y
 sudo systemctl enable --now mysql
 ```
 
-⚠️ Ubuntu 기본 저장소의 MySQL 버전은 최신이 아닐 수 있습니다. 특정 버전이 필요하면 방법 B를 사용합니다.
+🟡 Ubuntu 기본 저장소의 MySQL 버전은 최신이 아닐 수 있습니다. 특정 버전이 필요하면 방법 B를 사용합니다.
 
 ### 2-3. 설치 방법 B: MySQL 공식 저장소
 

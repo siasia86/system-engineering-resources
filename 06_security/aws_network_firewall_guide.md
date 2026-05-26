@@ -69,7 +69,7 @@ Internet Gateway
 | Public Subnet    | IGW → Firewall 경유 라우팅        | 기존 서브넷 |
 | Private Subnet   | 보호 대상 리소스                  | 기존 서브넷 |
 
-⚠️ Firewall Subnet은 AZ당 1개 필요합니다. 멀티 AZ 구성 시 AZ별로 생성합니다.
+🟡 Firewall Subnet은 AZ당 1개 필요합니다. 멀티 AZ 구성 시 AZ별로 생성합니다.
 
 ### Route Table 설정
 
@@ -432,7 +432,7 @@ aws network-firewall associate-subnets \
   ]'
 ```
 
-⚠️ AZ별로 Firewall Endpoint가 생성되며, 각 AZ의 Route Table에 해당 AZ의 Endpoint를 지정해야 합니다.
+🟡 AZ별로 Firewall Endpoint가 생성되며, 각 AZ의 Route Table에 해당 AZ의 Endpoint를 지정해야 합니다.
 
 ### 7-4. Terraform으로 관리
 

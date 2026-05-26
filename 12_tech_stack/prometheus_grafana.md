@@ -597,11 +597,11 @@ curl -s http://localhost:9090/api/v1/status/tsdb | jq '.data.headStats'
 
 ### 주의사항
 
-⚠️ 레이블 카디널리티 관리: 사용자 ID, 요청 ID 등 고유 값이 많은 레이블은 메모리 폭증을 유발합니다. 레이블 값은 유한한 집합(status code, method, endpoint 등)으로 제한합니다.
+🟡 레이블 카디널리티 관리: 사용자 ID, 요청 ID 등 고유 값이 많은 레이블은 메모리 폭증을 유발합니다. 레이블 값은 유한한 집합(status code, method, endpoint 등)으로 제한합니다.
 
-⚠️ Grafana 기본 admin 비밀번호를 반드시 변경합니다. 외부 접근 시 리버스 프록시(NGINX) + TLS를 적용합니다.
+🟡 Grafana 기본 admin 비밀번호를 반드시 변경합니다. 외부 접근 시 리버스 프록시(NGINX) + TLS를 적용합니다.
 
-⚠️ Prometheus는 고가용성(HA) 구성이 복잡합니다. 대규모 환경에서는 Thanos 또는 Cortex를 검토합니다.
+🟡 Prometheus는 고가용성(HA) 구성이 복잡합니다. 대규모 환경에서는 Thanos 또는 Cortex를 검토합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

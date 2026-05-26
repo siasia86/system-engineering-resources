@@ -352,7 +352,7 @@ replicate_wild_do_table    = mydb.order%
 replicate_wild_ignore_table = mydb.tmp%
 ```
 
-⚠️ `binlog_do_db` / `replicate_do_db`는 기본 DB(`USE db`) 기준으로 동작합니다.
+🟡 `binlog_do_db` / `replicate_do_db`는 기본 DB(`USE db`) 기준으로 동작합니다.
 크로스 DB 쿼리(`INSERT INTO other_db.table`)는 필터링이 의도대로 동작하지 않을 수 있다.
 ROW 형식 binlog + Replica 측 필터 조합을 권장합니다.
 
@@ -591,7 +591,7 @@ SET GTID_NEXT = 'AUTOMATIC';
 START REPLICA;
 ```
 
-⚠️ `SQL_REPLICA_SKIP_COUNTER`는 GTID 모드에서 사용 불가. GTID 환경에서는 위 방법 사용.
+🟡 `SQL_REPLICA_SKIP_COUNTER`는 GTID 모드에서 사용 불가. GTID 환경에서는 위 방법 사용.
 
 ### Tip 4: SSL/TLS 복제 채널 보안
 

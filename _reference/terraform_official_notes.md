@@ -55,8 +55,8 @@ terraform {
 }
 ```
 
-⚠️ `use_lockfile` (v1.10+): S3 네이티브 조건부 쓰기로 락 구현. DynamoDB 테이블 불필요.
-⚠️ `encrypt = true` 필수 — 상태 파일에 민감 정보 포함 가능.
+🟡 `use_lockfile` (v1.10+): S3 네이티브 조건부 쓰기로 락 구현. DynamoDB 테이블 불필요.
+🟡 `encrypt = true` 필수 — 상태 파일에 민감 정보 포함 가능.
 
 ## 4. 버전별 주요 변경사항
 

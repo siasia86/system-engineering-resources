@@ -71,7 +71,7 @@ sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker
 | `live-restore`   | `false`     | `true`  | 데몬 재시작 시 컨테이너 유지                                                                     |
 | `userland-proxy` | `true`      | `false` | 루프백 트래픽을 커널 직접 처리. 일부 환경에서 미지원 주의 (공식 daemon.json 예시에서 false 사용) |
 
-⚠️ `json-file`은 기본값이지만 로테이션이 없어 디스크 고갈 위험. 공식 문서에서 `local` 권장.
+🟡 `json-file`은 기본값이지만 로테이션이 없어 디스크 고갈 위험. 공식 문서에서 `local` 권장.
 
 ## 4. Compose 파일
 

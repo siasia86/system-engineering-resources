@@ -31,7 +31,7 @@ env: dev / qa / stg / prd
 ex: prd-app-web-frontend, dev-db-rds-postgresql
 
 ## 6. Symbols
-Allowed: ✅ ❌ ⚠️ 🟢 🟡 🔴 ★★☆☆☆
+Allowed: ✅ ❌ 🟡 🟢 🔴 ★★☆☆☆
 No other emojis allowed (no decorative emojis)
 
 ## 7. sudo
@@ -157,7 +157,7 @@ sources:
 ## 5. 보안 권장사항
 ```
 
-⚠️ agent resources에는 `INDEX.md`만 등록. 개별 파일은 필요 시 직접 읽기 (context window 절약)
+🟡 agent resources에는 `INDEX.md`만 등록. 개별 파일은 필요 시 직접 읽기 (context window 절약)
 
 ## 16. _reference 작성 후 교차 검증 의무
 
