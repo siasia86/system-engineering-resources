@@ -206,6 +206,29 @@ def check_diagram_korean(content, strict=False):
             issues.append(f"다이어그램 내부 한글 사용: {korean[:3]} (영문 권장)")
     return issues
 
+
+def check_emoji_space(content, strict=False):
+    """이모지 뒤 공백 1칸 필수 검사 (STYLE.md § 7). 코드블록/표 셀 내 이모지 단독 사용 제외."""
+    import re as _re
+    issues = []
+    # 허용 이모지 목록
+    emojis = ['✅', '❌', '🟡', '🟢', '🔴']
+    pattern = _re.compile(r'(' + '|'.join(_re.escape(e) for e in emojis) + r')([^\s|`])')
+
+    in_code = False
+    for i, line in enumerate(content.splitlines(), 1):
+        stripped = line.strip()
+        if stripped.startswith('```'):
+            in_code = not in_code
+            continue
+        if in_code:
+            continue
+        matches = pattern.findall(stripped)
+        if matches:
+            for emoji, next_char in matches:
+                issues.append(f"L{i}: '{emoji}' 뒤 공백 없음 → '{emoji}{next_char}'")
+    return issues
+
 def check_footer(content, strict=False):
     """README 푸터 존재 여부 (작성일, 마지막 업데이트, 저작권)."""
     issues = []
@@ -303,6 +326,7 @@ CHECKS = [
     ("표 정렬",           check_tables),
     ("다이어그램 행 폭",  check_diagram),
     ("다이어그램 한글",   check_diagram_korean),
+    ("이모지 뒤 공백",    check_emoji_space),
     ("반말체 종결어미",   check_banmal),
     ("과장 표현",         check_exaggeration),
     ("푸터",              check_footer),
