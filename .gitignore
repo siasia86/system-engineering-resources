@@ -41,3 +41,5 @@ notes/
 #99_ETC/
 *masang*
 *masang*.md
+
+__pycache__/
