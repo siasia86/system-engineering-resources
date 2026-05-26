@@ -267,32 +267,43 @@ users:
 
 ## 5. 앵커와 별칭
 
-반복되는 값을 재사용합니다.
+같은 설정을 여러 곳에 반복 작성하지 않고, 한 번 정의해서 재사용하는 기능입니다.
 
-### 기본 사용
+### 문제: 반복 작성
 
 ```yaml
-defaults: &defaults
-  timeout: 30
-  retries: 3
-  delay: 5
+services:
+  web:
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+    image: nginx:latest
 
-production:
-  <<: *defaults
-  timeout: 60
+  api:
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+    image: myapp:latest
 
-staging:
-  <<: *defaults
+  worker:
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+    image: worker:latest
 ```
 
-- `&defaults`: 앵커 정의 (이름 부여)
-- `*defaults`: 별칭 참조 (값 복사)
-- `<<`: 맵 병합 (merge key)
+`restart` + `logging` 블록이 3번 반복됩니다. 서비스가 10개면 10번 복붙해야 합니다.
 
-### 실전 예시 (Docker Compose)
+### 해결: 앵커로 한 번 정의, 별칭으로 재사용
 
 ```yaml
-x-common: &common
+x-common: &common              # ← "common"이라는 이름으로 저장
   restart: unless-stopped
   logging:
     driver: json-file
@@ -301,12 +312,60 @@ x-common: &common
 
 services:
   web:
-    <<: *common
+    <<: *common                # ← 저장한 내용을 여기에 붙여넣기
     image: nginx:latest
+
   api:
-    <<: *common
+    <<: *common                # ← 같은 내용 재사용
     image: myapp:latest
+
+  worker:
+    <<: *common                # ← 같은 내용 재사용
+    image: worker:latest
 ```
+
+YAML 파서가 처리한 최종 결과는 반복 작성한 것과 **완전히 동일**합니다. 수정 시 `x-common` 한 곳만 고치면 전체에 반영됩니다.
+
+### 동작 원리
+
+```
+&common  →  "이 블록을 common이라는 이름으로 기억해"
+*common  →  "common으로 기억한 블록을 여기에 복사해"
+<<       →  "복사한 내용을 현재 맵에 병합해"
+```
+
+### 기호 정리
+
+- `&이름`: 앵커 정의 (이름 부여)
+- `*이름`: 별칭 참조 (값 복사)
+- `<<`: 맵 병합 (merge key)
+
+### 값 덮어쓰기
+
+별칭으로 가져온 뒤 같은 키를 다시 쓰면 덮어씁니다.
+
+```yaml
+defaults: &defaults
+  timeout: 30
+  retries: 3
+
+production:
+  <<: *defaults
+  timeout: 60       # ← 30을 60으로 덮어쓰기
+
+# 결과: production = {timeout: 60, retries: 3}
+```
+
+### 변수와의 차이
+
+| 구분           | 앵커/별칭 (`&`, `*`)    | Ansible `vars`         |
+|----------------|-------------------------|------------------------|
+| 처리 주체      | YAML 파서 (어떤 도구든) | Ansible 엔진만         |
+| 사용 가능 범위 | 같은 YAML 파일 내       | playbook/role 전체     |
+| 조건부 값      | ❌ 불가                 | ✅ `when` 등 조합 가능 |
+| Docker Compose | ✅ 사용 가능            | ❌ 해당 없음           |
+
+🟡 `x-` 접두사는 Docker Compose가 무시하는 커스텀 키입니다. 앵커 정의용으로 관례적으로 사용합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
