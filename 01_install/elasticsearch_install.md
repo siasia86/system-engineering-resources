@@ -73,7 +73,7 @@ sudo apt install elasticsearch -y
 sudo systemctl enable --now elasticsearch
 ```
 
-⚠️ 최초 설치 시 `elastic` 슈퍼유저 패스워드가 터미널에 출력됩니다. 반드시 저장합니다.
+🟡 최초 설치 시 `elastic` 슈퍼유저 패스워드가 터미널에 출력됩니다. 반드시 저장합니다.
 
 ### 2-4. 설치 확인
 
@@ -331,7 +331,7 @@ curl -s --cacert $ES_CERT -u $ES_AUTH -X PUT "$ES_URL/_ilm/policy/logs-policy" \
 | 10 ~ 50 GB  | 2 ~ 5        |
 | > 50 GB     | 크기 / 30GB  |
 
-⚠️ 샤드가 너무 많으면 오버헤드 증가. 샤드당 20~50 GB 권장.
+🟡 샤드가 너무 많으면 오버헤드 증가. 샤드당 20~50 GB 권장.
 
 ### Tip 3: 슬로우 로그 활성화
 

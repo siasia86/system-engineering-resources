@@ -68,8 +68,8 @@ GROUP BY u.user_id;
 |-------|------|------|
 | `Using index` | 커버링 인덱스 (테이블 미접근) | ✅ 최적 |
 | `Using where` | WHERE 필터링 | 일반적 |
-| `Using filesort` | 정렬을 위한 추가 작업 | ⚠️ 인덱스 정렬 검토 |
-| `Using temporary` | 임시 테이블 사용 | ⚠️ 쿼리 최적화 필요 |
+| `Using filesort` | 정렬을 위한 추가 작업 | 🟡 인덱스 정렬 검토 |
+| `Using temporary` | 임시 테이블 사용 | 🟡 쿼리 최적화 필요 |
 | `Using index condition` | ICP (Index Condition Pushdown) | ✅ 양호 |
 
 ### EXPLAIN FORMAT=JSON (상세 분석)

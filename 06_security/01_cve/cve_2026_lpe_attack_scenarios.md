@@ -211,7 +211,7 @@ sudo rpm -Va 2>/dev/null | grep -v "^$"
 sudo rpm -V openssh-server sudo bash coreutils 2>/dev/null
 ```
 
-⚠️ page-cache write 특성상 **디스크에 흔적을 남기지 않습니다.** 재부팅하면 page cache가 초기화되므로 익스플로잇 실행 흔적은 사라집니다. 단, 공격자가 재부팅 후에도 유지되는 백도어(crontab, systemd unit, SUID 파일 등)를 심었다면 디스크에 남습니다.
+🟡 page-cache write 특성상 **디스크에 흔적을 남기지 않습니다.** 재부팅하면 page cache가 초기화되므로 익스플로잇 실행 흔적은 사라집니다. 단, 공격자가 재부팅 후에도 유지되는 백도어(crontab, systemd unit, SUID 파일 등)를 심었다면 디스크에 남습니다.
 
 ### 로그 확인 (CVE 공개일 이후)
 

@@ -11,11 +11,11 @@ Check: structure(toc-section match,heading level,flow) / content(tech error,typo
 # no-inference: 공식 문서에 없는 기능명·파라미터명·동작 설명 혼입 여부 (블로그·Stack Overflow·추론 내용 금지)
 # last-checked: frontmatter last_checked 날짜 존재 여부
 
-Output: Korean, ✅❌⚠️ per item, diff for fixes
+Output: Korean, ✅❌🟡 per item, diff for fixes
 
 Loop (max 3 iterations):
-1. Review → list all ❌/⚠️ issues
+1. Review → list all ❌/🟡 issues
 2. Fix all issues found
 3. Re-review the same file(s)
-4. Repeat until no ❌/⚠️ remain or 3 iterations completed
+4. Repeat until no ❌/🟡 remain or 3 iterations completed
 5. Final summary: iterations run, issues fixed, remaining issues

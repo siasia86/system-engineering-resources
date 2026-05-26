@@ -338,11 +338,11 @@ sudo k3s etcd-snapshot save --name k3s-snapshot
 
 ### 주의사항
 
-⚠️ 단일 노드 SQLite 구성은 HA가 아닙니다. 프로덕션에서는 임베디드 etcd 또는 외부 데이터스토어를 사용합니다.
+🟡 단일 노드 SQLite 구성은 HA가 아닙니다. 프로덕션에서는 임베디드 etcd 또는 외부 데이터스토어를 사용합니다.
 
-⚠️ `/etc/rancher/k3s/k3s.yaml`은 클러스터 admin 자격증명을 포함합니다. 권한을 `600`으로 유지합니다.
+🟡 `/etc/rancher/k3s/k3s.yaml`은 클러스터 admin 자격증명을 포함합니다. 권한을 `600`으로 유지합니다.
 
-⚠️ k3s 업그레이드 전 etcd 스냅샷 또는 DB 백업을 먼저 수행합니다.
+🟡 k3s 업그레이드 전 etcd 스냅샷 또는 DB 백업을 먼저 수행합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

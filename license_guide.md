@@ -1,6 +1,6 @@
 # 라이선스 가이드
 
-⚠️ 이 문서는 학습 목적의 요약 가이드이며 법적 조언이 아닙니다. 실제 라이선스 적용 시 원문과 법률 전문가 검토를 권장합니다.
+🟡 이 문서는 학습 목적의 요약 가이드이며 법적 조언이 아닙니다. 실제 라이선스 적용 시 원문과 법률 전문가 검토를 권장합니다.
 
 ## 목차
 
@@ -38,7 +38,7 @@ The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 ```
 
-> 상업적 사용 ✅ / 수정 ✅ / 배포 ✅ / 특허 ⚠️ 명시 없음 / 출처 표시 의무 ✅ → [비교표](#3-라이선스-비교)
+> 상업적 사용 ✅ / 수정 ✅ / 배포 ✅ / 특허 🟡 명시 없음 / 출처 표시 의무 ✅ → [비교표](#3-라이선스-비교)
 
 ---
 
@@ -99,7 +99,7 @@ Hyper-V LIS (GPL v2 코드 포함)
     → 20,000줄 소스코드 Linux 커널에 공개 기여
 ```
 
-⚠️ 이 사례는 GPL v2 기반이며, 현재 섹션의 GPL v3와 조항 구성이 다를 수 있습니다.
+🟡 이 사례는 GPL v2 기반이며, 현재 섹션의 GPL v3와 조항 구성이 다를 수 있습니다.
 
 > — [Linux Kernel Mailing List, 2009](https://lkml.org/lkml/2009/7/20/264)
 

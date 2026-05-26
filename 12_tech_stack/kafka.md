@@ -538,11 +538,11 @@ except Exception as e:
 
 ### 주의사항
 
-⚠️ 파티션 수는 생성 후 늘릴 수 있지만 줄일 수 없습니다. 초기 설계 시 충분한 파티션 수를 설정합니다.
+🟡 파티션 수는 생성 후 늘릴 수 있지만 줄일 수 없습니다. 초기 설계 시 충분한 파티션 수를 설정합니다.
 
-⚠️ `unclean.leader.election.enable=false`를 설정합니다. `true`이면 ISR에 없는 브로커가 Leader가 되어 데이터 손실이 발생할 수 있습니다.
+🟡 `unclean.leader.election.enable=false`를 설정합니다. `true`이면 ISR에 없는 브로커가 Leader가 되어 데이터 손실이 발생할 수 있습니다.
 
-⚠️ Consumer Lag이 지속적으로 증가하면 Consumer 처리 속도가 Producer 발행 속도를 따라가지 못하는 것입니다. Consumer 수를 늘리거나 처리 로직을 최적화합니다.
+🟡 Consumer Lag이 지속적으로 증가하면 Consumer 처리 속도가 Producer 발행 속도를 따라가지 못하는 것입니다. Consumer 수를 늘리거나 처리 로직을 최적화합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

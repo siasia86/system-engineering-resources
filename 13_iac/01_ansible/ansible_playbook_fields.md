@@ -303,7 +303,7 @@ ansible all -m ansible.builtin.service -a "name=nginx state=restarted"
 | 서비스     | `ansible.builtin.service` | `ansible.windows.win_service`  |
 | 연결 테스트 | `ansible.builtin.ping`   | `ansible.windows.win_ping`     |
 
-> ⚠️ `ansible -a` (command 모듈)는 Windows에서 동작하지 않습니다.
+> 🟡 `ansible -a` (command 모듈)는 Windows에서 동작하지 않습니다.
 > Windows ad-hoc은 반드시 `-m ansible.windows.win_shell`을 명시해야 합니다.
 
 ---

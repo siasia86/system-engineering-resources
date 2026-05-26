@@ -31,7 +31,7 @@
 
 | 문서 | CVE | 코드네임 | 비고 |
 |------|-----|---------|------|
-| [CVE-2026-31431](01_cve/cve_2026_31431_copy_fail.md) | CVE-2026-31431 | Copy Fail | CISA KEV ⚠️ 조치기한 2026-05-15 |
+| [CVE-2026-31431](01_cve/cve_2026_31431_copy_fail.md) | CVE-2026-31431 | Copy Fail | CISA KEV 🟡 조치기한 2026-05-15 |
 | [CVE-2026-43284](01_cve/cve_2026_43284_dirty_frag.md) | CVE-2026-43284 | Dirty Frag | xfrm/ESP LPE |
 | [CVE-2026-43500](01_cve/cve_2026_43500_dirty_frag.md) | CVE-2026-43500 | Dirty Frag | rxrpc LPE |
 | [LPE 공격 시나리오](01_cve/cve_2026_lpe_attack_scenarios.md) | — | — | 실효성 분석 / 침해 확인 |

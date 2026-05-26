@@ -16,7 +16,7 @@
 
 ```
 ┌─────────────┐   scrape   ┌──────────────┐   query   ┌─────────────┐
-│ Node        │ <────────── │  Prometheus  │ <─────── │   Grafana   │
+│ Node        │ <───────── │  Prometheus  │ <───────  │   Grafana   │
 │ Exporter    │            │  (TSDB)      │           │ (dashboard) │
 └─────────────┘            └──────┬───────┘           └─────────────┘
                                   │ alert

@@ -123,7 +123,7 @@ interface GigabitEthernet0/1
 
 ### Native VLAN 주의사항
 
-⚠️ 양쪽 스위치의 Native VLAN이 불일치하면 트래픽이 잘못된 VLAN으로 전달될 수 있습니다.
+🟡 양쪽 스위치의 Native VLAN이 불일치하면 트래픽이 잘못된 VLAN으로 전달될 수 있습니다.
 
 ```
 Switch A (native vlan 1) ---- Switch B (native vlan 99)
@@ -197,7 +197,7 @@ interface GigabitEthernet0/1
 | 항목            | 설명                                        |
 |-----------------|---------------------------------------------|
 | 프로토콜        | DTP (Dynamic Trunking Protocol)             |
-| 보안            | ⚠️ DTP 악용 가능 → 비활성화 권장             |
+| 보안            | 🟡 DTP 악용 가능 → 비활성화 권장             |
 | 사용 환경       | 소규모 네트워크, 테스트 환경                 |
 | 운영 환경 권장  | ❌ 명시적으로 Access/Trunk 지정 권장          |
 

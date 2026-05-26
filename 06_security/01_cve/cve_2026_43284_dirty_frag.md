@@ -27,7 +27,7 @@
 | PoC | 공개됨 |
 | 영향 | 비권한 로컬 사용자 → root 권한 상승 |
 
-⚠️ **공개된 Dirty Frag PoC는 CVE-2026-43284 (xfrm/ESP) + CVE-2026-43500 (rxrpc) 두 경로를 체인으로 사용합니다.**
+🟡 **공개된 Dirty Frag PoC는 CVE-2026-43284 (xfrm/ESP) + CVE-2026-43500 (rxrpc) 두 경로를 체인으로 사용합니다.**
 
 - CVE-2026-43284 단독: Ubuntu AppArmor가 XFRM 소켓을 제한할 수 있어 불안정
 - CVE-2026-43500 단독: `rxrpc` 모듈이 기본 미로드인 배포판에서 동작 안 함
@@ -66,7 +66,7 @@ MSG_SPLICE_PAGES → UDP skb (SKBFL_SHARED_FRAG 미설정)
 | 5.15.x | 5.12 ~ 5.15.204 | **5.15.205+**  | RHEL 9.0~9.2         | 22.04 LTS           | AL2023            |
 | 6.1.x  | 5.16 ~ 6.1.170  | **6.1.171+**   | RHEL 9.3~9.4         | 22.04 LTS (HWE)     | AL2023 (6.1)      |
 | 6.6.x  | 6.2 ~ 6.6.137   | **6.6.138+**   | RHEL 9.5+            | 24.04 LTS           | AL2023 (6.6)      |
-| 6.12.x | 6.7 ~ 6.12.86   | **6.12.87+**   | RHEL 10              | **24.04 LTS** ⚠️    | —                 |
+| 6.12.x | 6.7 ~ 6.12.86   | **6.12.87+**   | RHEL 10              | **24.04 LTS** 🟡    | —                 |
 | 6.18.x | 6.13 ~ 6.18.27  | **6.18.28+**   | —                    | 25.04               | —                 |
 | 7.0.x  | 7.0 ~ 7.0.4     | **7.0.5+**     | —                    | 25.10 (예정)        | —                 |
 
@@ -92,8 +92,8 @@ gcc -O0 -Wall -o exp exp.c -lutil
 | PoC 빌드 | ✅ 성공 | `exp` 바이너리 생성 (62,320 bytes) |
 | 커널 버전 | ❌ 취약 | 6.8.0-101 — 6.12.x 브랜치 취약 범위 |
 | CVE-2026-43284 패치 | ❌ 미적용 | Ubuntu 백포트 미배포 (2026-05-14 기준) |
-| `esp4` 모듈 | ⚠️ 미로드 | 모듈 파일 존재, auto-load 가능, blacklist 없음 |
-| `esp6` 모듈 | ⚠️ 미로드 | 모듈 파일 존재, auto-load 가능, blacklist 없음 |
+| `esp4` 모듈 | 🟡 미로드 | 모듈 파일 존재, auto-load 가능, blacklist 없음 |
+| `esp6` 모듈 | 🟡 미로드 | 모듈 파일 존재, auto-load 가능, blacklist 없음 |
 | XFRM netlink 소켓 | ❌ **OPEN** | 비권한 접근 성공 — ESP 익스플로잇 경로 활성 |
 | 비권한 user namespace | ❌ 활성 | `kernel.unprivileged_userns_clone=1` |
 | blacklist | ❌ 없음 | `/etc/modprobe.d/` dirtyfrag 설정 없음 |
@@ -114,7 +114,7 @@ gcc -O0 -Wall -o exp exp.c -lutil
 | openSUSE Tumbleweed | 7.0.2-1-default |
 | Fedora 44 | 6.19.14-300.fc44.x86_64 |
 
-⚠️ **Copy Fail 완화(`algif_aead` blacklist)를 적용해도 Dirty Frag는 여전히 취약합니다.** xfrm-ESP 경로는 `algif_aead` 모듈과 무관하게 동작합니다.
+🟡 **Copy Fail 완화(`algif_aead` blacklist)를 적용해도 Dirty Frag는 여전히 취약합니다.** xfrm-ESP 경로는 `algif_aead` 모듈과 무관하게 동작합니다.
 
 ### 탐지 명령어
 
@@ -180,7 +180,7 @@ sudo cp /etc/modprobe.d/dirtyfrag.conf /etc/modprobe.d/dirtyfrag.conf.bak 2>/dev
 
 **Step 3. blacklist 생성 + 언로드 (원문)**
 
-⚠️ `>` 는 파일을 덮어씁니다. Step 2에서 백업 확인 후 실행합니다.
+🟡 `>` 는 파일을 덮어씁니다. Step 2에서 백업 확인 후 실행합니다.
 
 ```bash
 # ---- 원문 (DirtyFrag-Detector / CVE-2026-43284 PoC 권장) ---- #
