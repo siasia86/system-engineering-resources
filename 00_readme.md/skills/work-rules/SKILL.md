@@ -130,7 +130,7 @@ When editing code:
 
 1. `_reference/INDEX.md` 확인 — 해당 기술 참조 파일 존재 여부 확인
 2. 있으면 → 해당 파일 직접 읽기 (`last_checked` 날짜 확인, 6개월 이상 경과 시 재확인)
-3. 없으면 → 공식 홈페이지를 아래 방법으로 스캔 후 생성
+3. 없으면 → 공식 홈페이지를 아래 방법으로 스캔 후 **먼저 생성** (`.md` 작성 전에)
    - 일반 페이지: `lynx -dump <URL>`
    - JS 렌더링 페이지: `curl` + GitHub API / PyPI API / raw.githubusercontent.com 직접 호출
    - 최신 버전 확인: `curl -s "https://api.github.com/repos/<owner>/<repo>/releases/latest"`
@@ -139,6 +139,8 @@ When editing code:
    | {기술명} | `_reference/{기술명}_official_notes.md` | {최신버전} | {오늘날짜} |
    ```
 5. `_reference` 파일을 참조하여 `.md` 작성
+
+🟡 **순서 엄수**: `_reference` 생성 → INDEX 업데이트 → `.md` 작성. 역순 금지.
 
 ### _reference 파일 구조
 
