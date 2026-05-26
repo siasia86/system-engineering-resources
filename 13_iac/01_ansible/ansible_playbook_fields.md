@@ -2,11 +2,11 @@
 
 ## 목차
 
-| 섹션 |
-|------|
+| 섹션                                                                                                                             |
+|----------------------------------------------------------------------------------------------------------------------------------|
 | [1. Play 레벨 필드](#1-play-레벨-필드) / [2. Task 레벨 필드](#2-task-레벨-필드) / [3. register 변수 필드](#3-register-변수-필드) |
-| [4. 조건/반복 필드](#4-조건반복-필드) / [5. 권한 상승](#5-권한-상승) / [6. 자주 쓰는 패턴](#6-자주-쓰는-패턴) |
-| [7. Ad-hoc 명령](#7-ad-hoc-명령) |
+| [4. 조건/반복 필드](#4-조건반복-필드) / [5. 권한 상승](#5-권한-상승) / [6. 자주 쓰는 패턴](#6-자주-쓰는-패턴)                    |
+| [7. Ad-hoc 명령](#7-ad-hoc-명령)                                                                                                 |
 
 ---
 
@@ -28,14 +28,14 @@ Play 전체에 적용되는 설정입니다.
     PATH: /usr/local/bin
 ```
 
-| 필드            | 기본값  | 설명                                      |
-|-----------------|---------|-------------------------------------------|
-| `hosts`         | 없음    | 필수. inventory 그룹명 또는 IP            |
-| `become`        | false   | sudo/runas 권한 상승                      |
-| `gather_facts`  | true    | 느린 경우 `false`로 비활성화              |
-| `vars`          | -       | 인라인 변수 정의                          |
-| `vars_files`    | -       | 외부 yml 파일에서 변수 로드               |
-| `environment`   | -       | 환경변수 (모든 task에 적용)               |
+| 필드           | 기본값 | 설명                           |
+|----------------|--------|--------------------------------|
+| `hosts`        | 없음   | 필수. inventory 그룹명 또는 IP |
+| `become`       | false  | sudo/runas 권한 상승           |
+| `gather_facts` | true   | 느린 경우 `false`로 비활성화   |
+| `vars`         | -      | 인라인 변수 정의               |
+| `vars_files`   | -      | 외부 yml 파일에서 변수 로드    |
+| `environment`  | -      | 환경변수 (모든 task에 적용)    |
 
 ---
 
@@ -62,17 +62,17 @@ tasks:
       key: value
 ```
 
-| 필드             | 설명                                                    |
-|------------------|---------------------------------------------------------|
-| `register`       | 결과를 변수에 저장 — 이후 task에서 참조 가능            |
-| `when`           | 조건이 true일 때만 실행                                 |
-| `loop`           | 리스트 반복 — 각 항목은 `{{ item }}`으로 참조           |
-| `notify`         | task가 changed일 때 handler 호출                        |
-| `ignore_errors`  | 실패해도 다음 task 계속 실행                            |
-| `changed_when`   | changed 판단 기준 커스텀 (false면 항상 ok)              |
-| `failed_when`    | 실패 판단 기준 커스텀                                   |
-| `tags`           | `--tags`, `--skip-tags`로 선택 실행                     |
-| `timeout`        | task 최대 실행 시간 (초)                                |
+| 필드            | 설명                                          |
+|-----------------|-----------------------------------------------|
+| `register`      | 결과를 변수에 저장 — 이후 task에서 참조 가능  |
+| `when`          | 조건이 true일 때만 실행                       |
+| `loop`          | 리스트 반복 — 각 항목은 `{{ item }}`으로 참조 |
+| `notify`        | task가 changed일 때 handler 호출              |
+| `ignore_errors` | 실패해도 다음 task 계속 실행                  |
+| `changed_when`  | changed 판단 기준 커스텀 (false면 항상 ok)    |
+| `failed_when`   | 실패 판단 기준 커스텀                         |
+| `tags`          | `--tags`, `--skip-tags`로 선택 실행           |
+| `timeout`       | task 최대 실행 시간 (초)                      |
 
 ---
 
@@ -90,17 +90,17 @@ tasks:
     msg: "{{ result.stdout_lines }}"
 ```
 
-| 필드                  | 타입     | 설명                              |
-|-----------------------|----------|-----------------------------------|
-| `result.stdout`       | string   | 표준 출력 전체                    |
-| `result.stdout_lines` | list     | 표준 출력 줄 단위 리스트          |
-| `result.stderr`       | string   | 표준 에러 출력                    |
-| `result.rc`           | int      | 종료 코드 (0 = 성공)              |
-| `result.changed`      | bool     | 변경 발생 여부                    |
-| `result.failed`       | bool     | 실패 여부                         |
-| `result.skipped`      | bool     | 스킵 여부                         |
-| `result.msg`          | string   | 모듈 메시지 (일부 모듈)           |
-| `result.results`      | list     | `loop` 사용 시 각 항목 결과 리스트 |
+| 필드                  | 타입   | 설명                               |
+|-----------------------|--------|------------------------------------|
+| `result.stdout`       | string | 표준 출력 전체                     |
+| `result.stdout_lines` | list   | 표준 출력 줄 단위 리스트           |
+| `result.stderr`       | string | 표준 에러 출력                     |
+| `result.rc`           | int    | 종료 코드 (0 = 성공)               |
+| `result.changed`      | bool   | 변경 발생 여부                     |
+| `result.failed`       | bool   | 실패 여부                          |
+| `result.skipped`      | bool   | 스킵 여부                          |
+| `result.msg`          | string | 모듈 메시지 (일부 모듈)            |
+| `result.results`      | list   | `loop` 사용 시 각 항목 결과 리스트 |
 
 ### 조건에서 활용
 
@@ -202,11 +202,11 @@ when: result.rc != 0
   become_user: SYSTEM
 ```
 
-| 필드            | 설명                                          |
-|-----------------|-----------------------------------------------|
-| `become`        | 권한 상승 활성화                              |
-| `become_user`   | 상승할 계정 (Linux: root, Windows: SYSTEM)    |
-| `become_method` | 방법 (Linux: sudo, Windows: runas)            |
+| 필드            | 설명                                       |
+|-----------------|--------------------------------------------|
+| `become`        | 권한 상승 활성화                           |
+| `become_user`   | 상승할 계정 (Linux: root, Windows: SYSTEM) |
+| `become_method` | 방법 (Linux: sudo, Windows: runas)         |
 
 ---
 
@@ -264,13 +264,13 @@ Playbook 없이 단일 명령을 실행합니다.
 ansible <호스트/그룹> -i <inventory> -m <모듈> -a "<인자>"
 ```
 
-| 옵션 | 설명 |
-|------|------|
-| `-i` | inventory 파일 지정 |
-| `-m` | 모듈 지정 (기본값: `command`) |
-| `-a` | 모듈 인자 |
-| `-b` | become (권한 상승) |
-| `--check` | dry-run |
+| 옵션      | 설명                          |
+|-----------|-------------------------------|
+| `-i`      | inventory 파일 지정           |
+| `-m`      | 모듈 지정 (기본값: `command`) |
+| `-a`      | 모듈 인자                     |
+| `-b`      | become (권한 상승)            |
+| `--check` | dry-run                       |
 
 ### 모듈별 사용 예시
 
@@ -295,13 +295,13 @@ ansible all -m ansible.builtin.service -a "name=nginx state=restarted"
 
 ### Linux vs Windows 모듈 비교
 
-| 용도       | Linux                     | Windows                        |
-|------------|---------------------------|--------------------------------|
-| 명령 실행  | `command`, `shell`        | `win_shell`, `win_command`     |
-| 파일 관리  | `ansible.builtin.file`    | `ansible.windows.win_file`     |
-| 패키지     | `ansible.builtin.package` | `ansible.windows.win_package`  |
-| 서비스     | `ansible.builtin.service` | `ansible.windows.win_service`  |
-| 연결 테스트 | `ansible.builtin.ping`   | `ansible.windows.win_ping`     |
+| 용도        | Linux                     | Windows                       |
+|-------------|---------------------------|-------------------------------|
+| 명령 실행   | `command`, `shell`        | `win_shell`, `win_command`    |
+| 파일 관리   | `ansible.builtin.file`    | `ansible.windows.win_file`    |
+| 패키지      | `ansible.builtin.package` | `ansible.windows.win_package` |
+| 서비스      | `ansible.builtin.service` | `ansible.windows.win_service` |
+| 연결 테스트 | `ansible.builtin.ping`    | `ansible.windows.win_ping`    |
 
 > 🟡 `ansible -a` (command 모듈)는 Windows에서 동작하지 않습니다.
 > Windows ad-hoc은 반드시 `-m ansible.windows.win_shell`을 명시해야 합니다.

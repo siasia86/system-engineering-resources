@@ -2,10 +2,10 @@
 
 ## 목차
 
-| 섹션 |
-|------|
+| 섹션                                                                                                     |
+|----------------------------------------------------------------------------------------------------------|
 | [1. 연결 설정](#1-연결-설정) / [2. 자주 쓰는 모듈](#2-자주-쓰는-모듈) / [3. Ad-hoc 명령](#3-ad-hoc-명령) |
-| [4. OS별 분기 패턴](#4-os별-분기-패턴) / [5. Playbook 예시](#5-playbook-예시) |
+| [4. OS별 분기 패턴](#4-os별-분기-패턴) / [5. Playbook 예시](#5-playbook-예시)                            |
 
 > 공통 필드는 [ansible_playbook_fields.md](ansible_playbook_fields.md) 참고
 
@@ -203,14 +203,14 @@ ansible all -m ansible.builtin.copy -a "src=/tmp/test.txt dest=/tmp/test.txt"
 
 ### 자주 쓰는 `ansible_*` 변수
 
-| 변수 | 예시 값 | 설명 |
-|------|---------|------|
-| `ansible_os_family` | `Debian`, `RedHat` | OS 계열 |
-| `ansible_distribution` | `Ubuntu`, `Rocky` | 배포판 이름 |
-| `ansible_distribution_version` | `22.04`, `9.3` | 버전 |
-| `ansible_hostname` | `ubuntu22` | 호스트명 |
-| `ansible_default_ipv4.address` | `10.200.101.151` | 기본 IP |
-| `ansible_memtotal_mb` | `28610` | 전체 메모리 (MB) |
+| 변수                           | 예시 값            | 설명             |
+|--------------------------------|--------------------|------------------|
+| `ansible_os_family`            | `Debian`, `RedHat` | OS 계열          |
+| `ansible_distribution`         | `Ubuntu`, `Rocky`  | 배포판 이름      |
+| `ansible_distribution_version` | `22.04`, `9.3`     | 버전             |
+| `ansible_hostname`             | `ubuntu22`         | 호스트명         |
+| `ansible_default_ipv4.address` | `10.200.101.151`   | 기본 IP          |
+| `ansible_memtotal_mb`          | `28610`            | 전체 메모리 (MB) |
 
 ---
 

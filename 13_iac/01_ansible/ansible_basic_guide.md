@@ -2,14 +2,15 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. ansible.cfg 적용 우선순위](#2-ansiblecfg-적용-우선순위) / [3. Inventory (대상 서버 목록)](#3-inventory-대상-서버-목록) |
-| [4. Ad-hoc 명령 (1회성 실행)](#4-ad-hoc-명령-1회성-실행) / [5. Playbook 기초](#5-playbook-기초) / [6. 변수 우선순위](#6-변수-우선순위) |
+| 섹션                                                                                                                                                |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. ansible.cfg 적용 우선순위](#2-ansiblecfg-적용-우선순위) / [3. Inventory (대상 서버 목록)](#3-inventory-대상-서버-목록)     |
+| [4. Ad-hoc 명령 (1회성 실행)](#4-ad-hoc-명령-1회성-실행) / [5. Playbook 기초](#5-playbook-기초) / [6. 변수 우선순위](#6-변수-우선순위)              |
 | [7. Handler (변경 시에만 실행)](#7-handler-변경-시에만-실행) / [8. 조건문 / 반복문](#8-조건문--반복문) / [9. Template (Jinja2)](#9-template-jinja2) |
-| [10. Role 구조](#10-role-구조) / [11. 자주 쓰는 실행 옵션](#11-자주-쓰는-실행-옵션) / [12. 실습 순서 권장](#12-실습-순서-권장) |
-| [13. 모듈 상세 사용법](#13-모듈-상세-사용법) / [14. raw 모듈과 delegate_to](#14-raw-모듈과-delegate_to) / [15. 에러 처리](#15-에러-처리) |
-| [16. 태그](#16-태그) / [17. Dynamic Inventory](#17-dynamic-inventory) / [18. Vault — 시크릿 관리](#18-vault--시크릿-관리) |
+| [10. Role 구조](#10-role-구조) / [11. 자주 쓰는 실행 옵션](#11-자주-쓰는-실행-옵션) / [12. 실습 순서 권장](#12-실습-순서-권장)                      |
+| [13. 모듈 상세 사용법](#13-모듈-상세-사용법) / [14. raw 모듈과 delegate_to](#14-raw-모듈과-delegate_to) / [15. 에러 처리](#15-에러-처리)            |
+| [16. 태그](#16-태그) / [17. Dynamic Inventory](#17-dynamic-inventory) / [18. Vault — 시크릿 관리](#18-vault--시크릿-관리)                           |
+| [19. ansible-lint — 코드 품질 검사](#19-ansible-lint--코드-품질-검사)                                                                               |
 
 
 ---
@@ -134,13 +135,13 @@ ansible-inventory -i inventory/dev --graph --vars
 ansible-inventory --list -v
 ```
 
-| 옵션 | 설명 |
-|------|------|
-| `--list` | 전체 호스트/그룹/변수 JSON 출력 |
-| `--graph` | 트리 구조 출력 |
-| `--host <hostname>` | 특정 호스트 변수만 출력 |
-| `--vars` | `--graph`에 변수 포함 |
-| `-i` | inventory 파일/디렉토리 지정 |
+| 옵션                | 설명                            |
+|---------------------|---------------------------------|
+| `--list`            | 전체 호스트/그룹/변수 JSON 출력 |
+| `--graph`           | 트리 구조 출력                  |
+| `--host <hostname>` | 특정 호스트 변수만 출력         |
+| `--vars`            | `--graph`에 변수 포함           |
+| `-i`                | inventory 파일/디렉토리 지정    |
 
 ### Docker 컨테이너 연결 (SSH 없이)
 
@@ -157,12 +158,12 @@ ansible_remote_tmp=/tmp/.ansible/tmp
 ansible_python_interpreter=/usr/local/bin/python3
 ```
 
-| `ansible_connection` 값 | 설명                                  |
-|-------------------------|---------------------------------------|
-| `ssh`                   | 기본값 — SSH로 접속                   |
-| `docker`                | `docker exec`로 접속 (SSH 불필요)     |
-| `local`                 | Controller 자신에게 실행              |
-| `winrm`                 | Windows WinRM 접속                    |
+| `ansible_connection` 값 | 설명                              |
+|-------------------------|-----------------------------------|
+| `ssh`                   | 기본값 — SSH로 접속               |
+| `docker`                | `docker exec`로 접속 (SSH 불필요) |
+| `local`                 | Controller 자신에게 실행          |
+| `winrm`                 | Windows WinRM 접속                |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -518,24 +519,24 @@ ansible-galaxy init roles/gameserver
 
 ## 11. 자주 쓰는 실행 옵션
 
-| 옵션                     | 설명                     |
-|--------------------------|--------------------------|
-| `-i inventory/dev`       | 인벤토리 파일 지정       |
-| `--check`                | dry-run (실제 변경 없음) |
-| `--diff`                 | 파일 변경 내용 diff 출력 |
-| `--limit host1`          | 특정 호스트만 실행                          |
-| `--limit host1,host2`    | 여러 호스트 (쉼표 구분)                     |
-| `--limit 'web*'`         | 패턴 매칭 (와일드카드)                      |
-| `--limit 'all,!db*'`     | 특정 호스트/그룹 제외 (`!` 사용)            |
-| `--tags deploy`          | 특정 태그만 실행         |
-| `--skip-tags debug`      | 특정 태그 제외           |
-| `--step`                 | task 마다 확인 후 실행   |
-| `--start-at-task "이름"` | 특정 task 부터 실행      |
-| `-e "key=value"`         | 변수 전달 (최우선)       |
-| `-v / -vv / -vvv`        | 상세 출력 단계           |
-| `--list-tasks`           | 실행할 task 목록만 출력  |
-| `--list-hosts`           | 대상 호스트 목록만 출력  |
-| `--syntax-check`         | 문법 검사만 (실행 안 함) |
+| 옵션                     | 설명                             |
+|--------------------------|----------------------------------|
+| `-i inventory/dev`       | 인벤토리 파일 지정               |
+| `--check`                | dry-run (실제 변경 없음)         |
+| `--diff`                 | 파일 변경 내용 diff 출력         |
+| `--limit host1`          | 특정 호스트만 실행               |
+| `--limit host1,host2`    | 여러 호스트 (쉼표 구분)          |
+| `--limit 'web*'`         | 패턴 매칭 (와일드카드)           |
+| `--limit 'all,!db*'`     | 특정 호스트/그룹 제외 (`!` 사용) |
+| `--tags deploy`          | 특정 태그만 실행                 |
+| `--skip-tags debug`      | 특정 태그 제외                   |
+| `--step`                 | task 마다 확인 후 실행           |
+| `--start-at-task "이름"` | 특정 task 부터 실행              |
+| `-e "key=value"`         | 변수 전달 (최우선)               |
+| `-v / -vv / -vvv`        | 상세 출력 단계                   |
+| `--list-tasks`           | 실행할 task 목록만 출력          |
+| `--list-hosts`           | 대상 호스트 목록만 출력          |
+| `--syntax-check`         | 문법 검사만 (실행 안 함)         |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -828,12 +829,12 @@ raw 모듈
   Controller → SSH → 대상 서버에서 shell 명령 직접 실행              (Python 불필요)
 ```
 
-| 항목 | `raw` | `command` / `shell` |
-|------|-------|---------------------|
-| Python 필요 | ❌ | ✅ |
-| 파이프 사용 | ✅ | `shell`만 가능 (`raw`도 가능) |
-| 멱등성 자동 보장 | ❌ | ❌ |
-| 주요 용도 | Python 설치 전 부트스트랩 | 일반 명령 실행 |
+| 항목             | `raw`                     | `command` / `shell`           |
+|------------------|---------------------------|-------------------------------|
+| Python 필요      | ❌                        | ✅                            |
+| 파이프 사용      | ✅                        | `shell`만 가능 (`raw`도 가능) |
+| 멱등성 자동 보장 | ❌                        | ❌                            |
+| 주요 용도        | Python 설치 전 부트스트랩 | 일반 명령 실행                |
 
 ```yaml
 # Python 없는 서버에 Python 설치
@@ -883,12 +884,12 @@ delegate_to: localhost
 
 주요 사용 사례:
 
-| 사례 | 이유 |
-|------|------|
-| `docker cp` | Controller에서 실행하는 명령 |
-| AWS CLI 호출 | Controller에 AWS 자격증명 있음 |
-| 로컬 파일 생성/수정 | 대상 서버 불필요 |
-| `run_once: true`와 조합 | 전체 중 1회만 실행 |
+| 사례                    | 이유                           |
+|-------------------------|--------------------------------|
+| `docker cp`             | Controller에서 실행하는 명령   |
+| AWS CLI 호출            | Controller에 AWS 자격증명 있음 |
+| 로컬 파일 생성/수정     | 대상 서버 불필요               |
+| `run_once: true`와 조합 | 전체 중 1회만 실행             |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -1034,13 +1035,13 @@ ansible-playbook site.yml --tags nginx --list-tasks
 
 ### 특수 태그
 
-| 태그       | 동작                                          |
-|------------|-----------------------------------------------|
-| `always`   | `--tags` 지정 여부와 무관하게 항상 실행       |
-| `never`    | `--tags never` 로 명시해야만 실행             |
-| `tagged`   | 태그가 있는 task만 실행                       |
-| `untagged` | 태그가 없는 task만 실행                       |
-| `all`      | 모든 task 실행 (기본값)                       |
+| 태그       | 동작                                    |
+|------------|-----------------------------------------|
+| `always`   | `--tags` 지정 여부와 무관하게 항상 실행 |
+| `never`    | `--tags never` 로 명시해야만 실행       |
+| `tagged`   | 태그가 있는 task만 실행                 |
+| `untagged` | 태그가 없는 task만 실행                 |
+| `all`      | 모든 task 실행 (기본값)                 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -1180,6 +1181,97 @@ ansible-playbook site.yml --vault-password-file ~/.vault_pass
 ```
 
 🟡 `.vault_pass` 파일은 `.gitignore`에 반드시 추가합니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 19. ansible-lint — 코드 품질 검사
+
+playbook의 버그, 스타일 위반, 멱등성 문제를 자동으로 검사합니다.
+
+### 설치
+
+```bash
+pip install ansible-lint
+```
+
+### 실행
+
+```bash
+# 단일 파일
+ansible-lint playbook.yml
+
+# 여러 파일
+ansible-lint playbook.yml playbook_ssh_setup.yml
+
+# 특정 프로파일 지정
+ansible-lint --profile production playbook.yml
+```
+
+### Profile (검사 강도)
+
+엄격도 순서: `min` → `basic` → `moderate` → `safety` → `shared` → `production`
+
+| Profile    | 주요 검사 항목                           |
+|------------|------------------------------------------|
+| min        | 문법 오류, FQCN                          |
+| basic      | name[casing], no-changed-when, yaml 형식 |
+| moderate   | 변수명 규칙, task 구조                   |
+| production | 전체 규칙 (CI/CD 권장)                   |
+
+```bash
+# 현재 파일이 어느 profile까지 통과하는지 확인
+ansible-lint --nocolor playbook.yml
+# → "Last profile that met the validation criteria was 'production'"
+```
+
+### 주요 규칙
+
+| 규칙                    | 설명                                          | 예시                          |
+|-------------------------|-----------------------------------------------|-------------------------------|
+| `name[casing]`          | task 이름 대문자 시작                         | `- name: Install nginx`       |
+| `no-changed-when`       | `raw`/`command`/`shell`에 `changed_when` 필수 | `changed_when: false`         |
+| `ignore-errors`         | `ignore_errors` 대신 `failed_when` 사용       | `failed_when: result.rc != 0` |
+| `yaml[line-length]`     | 한 줄 160자 이하                              | URL은 변수화 또는 skip        |
+| `yaml[trailing-spaces]` | 줄 끝 공백 금지                               | 에디터 자동 제거 설정         |
+| `fqcn`                  | 모듈 전체 이름 사용                           | `ansible.builtin.copy`        |
+
+### `changed_when` 패턴
+
+```yaml
+# 항상 ok (조회/설정 task)
+- name: SSH 설정
+  ansible.builtin.raw: sed -i '...' /etc/ssh/sshd_config
+  changed_when: false
+
+# rc로 변경 감지 (설치 스크립트)
+- name: Python 설치
+  ansible.builtin.shell: bash /tmp/install.sh
+  register: result
+  changed_when: result.rc == 0
+
+# 출력으로 변경 감지
+- name: 패키지 설치
+  ansible.builtin.raw: |
+    rpm -q nginx || (yum install -y nginx && echo INSTALLED)
+  register: result
+  changed_when: "'INSTALLED' in result.stdout"
+```
+
+### `.ansible-lint` 설정 파일
+
+프로젝트 루트에 위치. 특정 규칙을 skip하거나 커스터마이즈합니다.
+
+```yaml
+# .ansible-lint
+warn_list: []
+skip_list:
+  - ignore-errors      # 조건부 ignore_errors — 의도적 사용
+  - yaml[line-length]  # URL이 160자 초과 — 단축 불가
+```
+
+🟡 `skip_list`는 최소화합니다. skip 이유를 주석으로 반드시 명시합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
