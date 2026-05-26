@@ -158,3 +158,32 @@ sources:
 ```
 
 ⚠️ agent resources에는 `INDEX.md`만 등록. 개별 파일은 필요 시 직접 읽기 (context window 절약)
+
+## 15. _reference 작성 후 교차 검증 의무
+
+`_reference/` 파일을 **신규 생성하거나 내용을 추가**한 경우, 반드시 아래 절차를 수행합니다.
+
+### 검증 절차
+
+1. **버전 정보**: GitHub API 또는 PyPI API로 실제 최신 버전 재확인
+   ```bash
+   curl -s "https://api.github.com/repos/<owner>/<repo>/releases/latest" | python3 -c "import sys,json; print(json.load(sys.stdin)['tag_name'])"
+   curl -s "https://pypi.org/pypi/<package>/json" | python3 -c "import sys,json; print(json.load(sys.stdin)['info']['version'])"
+   ```
+2. **기능/개념 설명**: 공식 문서 URL을 직접 열어 해당 내용이 실제로 존재하는지 확인
+3. **의심 항목 표시**: 공식 문서에서 확인하지 못한 내용은 작성하지 않거나, 주석으로 `# 미확인 — 검증 필요` 표시
+
+### 금지 사항
+
+- 기억이나 추론으로 작성한 내용을 공식 문서 기반인 것처럼 저장 ❌
+- 블로그, Stack Overflow, 비공식 튜토리얼 내용 혼입 ❌
+- 공식 문서에 없는 기능명·파라미터명 사용 ❌
+
+### 오류 발견 시
+
+`_reference` 파일에서 오류를 발견하면:
+1. 즉시 공식 문서에서 정확한 내용 확인
+2. 해당 파일 수정
+3. `last_checked` 날짜 업데이트
+4. INDEX.md 버전 정보 업데이트
+5. 해당 `_reference`를 참조해 작성된 다른 `.md` 파일에도 오류가 전파됐는지 확인
