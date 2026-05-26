@@ -14,12 +14,12 @@
 Windows Server 2019 / Windows 10 이상에서 OpenSSH Server를 기본 제공합니다.
 Linux에서 `ssh` 명령으로 Windows에 접속하거나, Ansible WinRM 대신 SSH 연결로 사용할 수 있습니다.
 
-| 항목       | 내용                                       |
-|------------|--------------------------------------------|
-| 대상 OS    | Windows Server 2019/2022, Windows 10/11    |
-| 포트       | 22/tcp                                     |
-| 인증 방식  | 공개키 (패스워드는 보안상 비활성화 권장)   |
-| 주요 용도  | Ansible SSH 연결, 원격 관리, 파일 전송     |
+| 항목      | 내용                                     |
+|-----------|------------------------------------------|
+| 대상 OS   | Windows Server 2019/2022, Windows 10/11  |
+| 포트      | 22/tcp                                   |
+| 인증 방식 | 공개키 (패스워드는 보안상 비활성화 권장) |
+| 주요 용도 | Ansible SSH 연결, 원격 관리, 파일 전송   |
 
 > ⚠️ Windows OpenSSH 9.5 이하에서 `Administrator` 계정은 버그로 인해 접속이 안 됩니다.
 > **별도 로컬 계정을 생성해서 Administrators 그룹에 추가하는 방식을 권장합니다.**
@@ -228,16 +228,16 @@ netsh advfirewall firewall set rule name="OpenSSH-Server-In-TCP" `
 
 ## 6. 트러블슈팅
 
-| 증상 | 원인 | 조치 |
-|------|------|------|
-| `Connection reset` (인증 직전) | `PubkeyAuthentication` 주석 처리 | `sshd_config` 주석 제거 후 재시작 |
-| `Connection reset` (Administrator) | OpenSSH 9.5 버그 | 별도 계정 생성 후 Administrators 그룹 추가 |
-| 공개키 인증 실패 | 파일 권한 과다 | `icacls`로 해당 계정/SYSTEM만 허용 |
-| 공개키 인증 실패 (Administrators 그룹) | `authorized_keys` 무시 | `administrators_authorized_keys`에 등록 |
-| 공개키 인증 실패 (키 등록 후에도 안 됨) | CRLF 줄바꿈 | `WriteAllText`로 LF 강제 저장 |
-| 접속 후 즉시 종료 | DefaultShell 미설정 | `HKLM:\SOFTWARE\OpenSSH` DefaultShell 등록 |
-| sshd 시작 실패 | `sshd_config` 문법 오류 | `SyslogFacility` 등 Windows 미지원 옵션 제거 |
-| 출력 한글 깨짐 | CP949 인코딩 | 명령 앞에 `chcp 65001` 추가 |
+| 증상                                    | 원인                             | 조치                                         |
+|-----------------------------------------|----------------------------------|----------------------------------------------|
+| `Connection reset` (인증 직전)          | `PubkeyAuthentication` 주석 처리 | `sshd_config` 주석 제거 후 재시작            |
+| `Connection reset` (Administrator)      | OpenSSH 9.5 버그                 | 별도 계정 생성 후 Administrators 그룹 추가   |
+| 공개키 인증 실패                        | 파일 권한 과다                   | `icacls`로 해당 계정/SYSTEM만 허용           |
+| 공개키 인증 실패 (Administrators 그룹)  | `authorized_keys` 무시           | `administrators_authorized_keys`에 등록      |
+| 공개키 인증 실패 (키 등록 후에도 안 됨) | CRLF 줄바꿈                      | `WriteAllText`로 LF 강제 저장                |
+| 접속 후 즉시 종료                       | DefaultShell 미설정              | `HKLM:\SOFTWARE\OpenSSH` DefaultShell 등록   |
+| sshd 시작 실패                          | `sshd_config` 문법 오류          | `SyslogFacility` 등 Windows 미지원 옵션 제거 |
+| 출력 한글 깨짐                          | CP949 인코딩                     | 명령 앞에 `chcp 65001` 추가                  |
 
 ### SSH 클라이언트 config 주의사항
 

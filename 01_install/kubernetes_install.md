@@ -14,22 +14,22 @@
 
 ### k3s vs kubeadm 선택 기준
 
-| 항목          | k3s                           | kubeadm                       |
-|---------------|-------------------------------|-------------------------------|
-| 설치 난이도   | 매우 쉬움 (단일 명령)         | 복잡 (단계별 설정 필요)       |
-| 리소스 사용   | 적음 (512 MB RAM)             | 많음 (2 GB+ RAM)              |
-| 대상 환경     | 개발, 엣지, 소규모 프로덕션   | 엔터프라이즈 프로덕션         |
-| HA 구성       | 가능 (임베디드 etcd)          | 가능 (외부 etcd 권장)         |
-| 권장 상황     | 빠른 시작, 단일 노드           | 대규모 멀티 노드 클러스터     |
+| 항목        | k3s                         | kubeadm                   |
+|-------------|-----------------------------|---------------------------|
+| 설치 난이도 | 매우 쉬움 (단일 명령)       | 복잡 (단계별 설정 필요)   |
+| 리소스 사용 | 적음 (512 MB RAM)           | 많음 (2 GB+ RAM)          |
+| 대상 환경   | 개발, 엣지, 소규모 프로덕션 | 엔터프라이즈 프로덕션     |
+| HA 구성     | 가능 (임베디드 etcd)        | 가능 (외부 etcd 권장)     |
+| 권장 상황   | 빠른 시작, 단일 노드        | 대규모 멀티 노드 클러스터 |
 
 ### 시스템 요구사항
 
-| 항목   | k3s (단일 노드)   | kubeadm (노드당)  |
-|--------|-------------------|-------------------|
-| CPU    | 1 core            | 2 core 이상       |
-| RAM    | 512 MB            | 2 GB 이상         |
-| 디스크 | 5 GB              | 20 GB 이상        |
-| OS     | Ubuntu 20.04+     | Ubuntu 22.04+ / Rocky 9+ |
+| 항목   | k3s (단일 노드) | kubeadm (노드당)         |
+|--------|-----------------|--------------------------|
+| CPU    | 1 core          | 2 core 이상              |
+| RAM    | 512 MB          | 2 GB 이상                |
+| 디스크 | 5 GB            | 20 GB 이상               |
+| OS     | Ubuntu 20.04+   | Ubuntu 22.04+ / Rocky 9+ |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -335,14 +335,14 @@ kubectl top pods -n myapp
 
 ## 7. 트러블슈팅
 
-| 증상                              | 원인                          | 해결 방법                                              |
-|-----------------------------------|-------------------------------|--------------------------------------------------------|
-| Node `NotReady`                   | CNI 미설치 또는 kubelet 오류  | `kubectl describe node`, `journalctl -u kubelet`       |
-| Pod `Pending`                     | 리소스 부족 또는 스케줄링 불가 | `kubectl describe pod` → Events 확인                  |
-| Pod `CrashLoopBackOff`            | 컨테이너 시작 실패            | `kubectl logs <pod>` 확인                              |
-| Pod `ImagePullBackOff`            | 이미지 없음 또는 인증 실패    | 이미지 태그 확인, imagePullSecrets 설정                |
-| `connection refused` (apiserver)  | Control Plane 다운            | `sudo systemctl status kube-apiserver`                 |
-| kubeadm init 실패 (swap)          | swap 활성화 상태              | `sudo swapoff -a`                                      |
+| 증상                             | 원인                           | 해결 방법                                        |
+|----------------------------------|--------------------------------|--------------------------------------------------|
+| Node `NotReady`                  | CNI 미설치 또는 kubelet 오류   | `kubectl describe node`, `journalctl -u kubelet` |
+| Pod `Pending`                    | 리소스 부족 또는 스케줄링 불가 | `kubectl describe pod` → Events 확인             |
+| Pod `CrashLoopBackOff`           | 컨테이너 시작 실패             | `kubectl logs <pod>` 확인                        |
+| Pod `ImagePullBackOff`           | 이미지 없음 또는 인증 실패     | 이미지 태그 확인, imagePullSecrets 설정          |
+| `connection refused` (apiserver) | Control Plane 다운             | `sudo systemctl status kube-apiserver`           |
+| kubeadm init 실패 (swap)         | swap 활성화 상태               | `sudo swapoff -a`                                |
 
 ```bash
 # 이벤트 확인

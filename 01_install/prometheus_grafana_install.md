@@ -16,8 +16,8 @@
 
 ```
 ┌─────────────┐   scrape   ┌──────────────┐   query   ┌─────────────┐
-│ Node        │ <--------- │  Prometheus  │ <-------- │   Grafana   │
-│ Exporter    │            │  (TSDB)      │           │  (시각화)   │
+│ Node        │ <────────── │  Prometheus  │ <─────── │   Grafana   │
+│ Exporter    │            │  (TSDB)      │           │ (dashboard) │
 └─────────────┘            └──────┬───────┘           └─────────────┘
                                   │ alert
                            ┌──────▼───────┐
@@ -27,12 +27,12 @@
 
 ### 컴포넌트 역할
 
-| 컴포넌트          | 포트  | 역할                                  |
-|-------------------|-------|---------------------------------------|
-| Prometheus        | 9090  | 메트릭 수집 및 저장 (TSDB)            |
-| Node Exporter     | 9100  | 호스트 시스템 메트릭 노출             |
-| Grafana           | 3000  | 메트릭 시각화 및 대시보드             |
-| Alertmanager      | 9093  | 알림 라우팅 (Slack, Email 등)         |
+| 컴포넌트      | 포트 | 역할                          |
+|---------------|------|-------------------------------|
+| Prometheus    | 9090 | 메트릭 수집 및 저장 (TSDB)    |
+| Node Exporter | 9100 | 호스트 시스템 메트릭 노출     |
+| Grafana       | 3000 | 메트릭 시각화 및 대시보드     |
+| Alertmanager  | 9093 | 알림 라우팅 (Slack, Email 등) |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -406,13 +406,13 @@ curl -s -u admin:SecurePassword123 \
 
 ## 9. 트러블슈팅
 
-| 증상                              | 원인                          | 해결 방법                                              |
-|-----------------------------------|-------------------------------|--------------------------------------------------------|
-| 타겟 `DOWN` 상태                  | Exporter 미실행 또는 방화벽   | `curl http://TARGET:9100/metrics` 확인                 |
-| Grafana 데이터 없음               | 데이터 소스 연결 실패         | Data Source → Test 확인                                |
-| 알림 미발송                       | Alertmanager 설정 오류        | `amtool check-config alertmanager.yml`                 |
-| 디스크 사용량 급증                | 보존 기간 과다                | `retention.time` 또는 `retention.size` 조정            |
-| PromQL 쿼리 느림                  | 범위 너무 넓음                | 쿼리 범위 축소, recording rules 사용                   |
+| 증상                | 원인                        | 해결 방법                                   |
+|---------------------|-----------------------------|---------------------------------------------|
+| 타겟 `DOWN` 상태    | Exporter 미실행 또는 방화벽 | `curl http://TARGET:9100/metrics` 확인      |
+| Grafana 데이터 없음 | 데이터 소스 연결 실패       | Data Source → Test 확인                     |
+| 알림 미발송         | Alertmanager 설정 오류      | `amtool check-config alertmanager.yml`      |
+| 디스크 사용량 급증  | 보존 기간 과다              | `retention.time` 또는 `retention.size` 조정 |
+| PromQL 쿼리 느림    | 범위 너무 넓음              | 쿼리 범위 축소, recording rules 사용        |
 
 ```bash
 # Prometheus 타겟 상태 확인
