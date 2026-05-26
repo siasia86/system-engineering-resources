@@ -2,10 +2,10 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념) |
-| [4. 설치](#4-설치) / [5. 주요 명령어](#5-주요-명령어) / [6. 설정 파일](#6-설정-파일) |
+| 섹션                                                                                                       |
+|------------------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념)                             |
+| [4. 설치](#4-설치) / [5. 주요 명령어](#5-주요-명령어) / [6. 설정 파일](#6-설정-파일)                       |
 | [7. Docker 드라이버](#7-docker-드라이버) / [8. Vagrant 드라이버](#8-vagrant-드라이버) / [9. Tips](#9-tips) |
 
 ---
@@ -207,13 +207,13 @@ provisioner:
 
 ### geerlingguy 이미지 목록
 
-| OS                  | 이미지                                          |
-|---------------------|-------------------------------------------------|
-| Ubuntu 20.04        | `geerlingguy/docker-ubuntu2004-ansible`         |
-| Ubuntu 22.04        | `geerlingguy/docker-ubuntu2204-ansible`         |
-| Ubuntu 24.04        | `geerlingguy/docker-ubuntu2404-ansible`         |
-| Rocky Linux 9       | `geerlingguy/docker-rockylinux9-ansible`        |
-| Amazon Linux 2023   | `geerlingguy/docker-amazonlinux2023-ansible`    |
+| OS                | 이미지                                       |
+|-------------------|----------------------------------------------|
+| Ubuntu 20.04      | `geerlingguy/docker-ubuntu2004-ansible`      |
+| Ubuntu 22.04      | `geerlingguy/docker-ubuntu2204-ansible`      |
+| Ubuntu 24.04      | `geerlingguy/docker-ubuntu2404-ansible`      |
+| Rocky Linux 9     | `geerlingguy/docker-rockylinux9-ansible`     |
+| Amazon Linux 2023 | `geerlingguy/docker-amazonlinux2023-ansible` |
 
 [⬆ 목차로 돌아가기](#목차)
 
