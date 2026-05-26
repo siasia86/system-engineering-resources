@@ -178,7 +178,7 @@ echo '.vault_pass' >> .gitignore
 echo '*.vault_pass' >> .gitignore
 ```
 
-⚠️ `vault_password_file` 경로는 절대경로 또는 `~` 사용. 상대경로는 실행 위치에 따라 달라집니다.
+🟡 `vault_password_file` 경로는 절대경로 또는 `~` 사용. 상대경로는 실행 위치에 따라 달라집니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

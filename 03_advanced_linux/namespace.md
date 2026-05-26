@@ -193,7 +193,7 @@ cat /proc/<pid>/uid_map
 dockerd-rootless-setuptool.sh install
 ```
 
-⚠️ Docker는 기본적으로 user namespace를 사용하지 않습니다. `userns-remap` 설정 시 활성화됩니다.
+🟡 Docker는 기본적으로 user namespace를 사용하지 않습니다. `userns-remap` 설정 시 활성화됩니다.
 
 ### cgroup
 
@@ -358,7 +358,7 @@ nsenter -t <container_pid> --net ip addr
 # → SSH 또는 콘솔로만 접근 가능
 ```
 
-⚠️ Docker가 namespace로 격리하더라도 커널을 공유하므로, 커널 취약점(예: Dirty COW, runc 탈출)은 모든 컨테이너에 영향을 줍니다. VM은 하이퍼바이저 취약점이 아닌 이상 격리가 유지됩니다.
+🟡 Docker가 namespace로 격리하더라도 커널을 공유하므로, 커널 취약점(예: Dirty COW, runc 탈출)은 모든 컨테이너에 영향을 줍니다. VM은 하이퍼바이저 취약점이 아닌 이상 격리가 유지됩니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -489,7 +489,7 @@ docker run --cgroupns host --privileged ...
 docker run --cgroupns private ...
 ```
 
-⚠️ Docker Compose v5.x에서 `cgroupns_mode` 키가 제거되었습니다. `daemon.json`으로 기본값을 설정합니다. 상세 내용은 [docker.md 섹션 11](../12_tech_stack/docker.md#11-cgroup-namespace)을 참고합니다.
+🟡 Docker Compose v5.x에서 `cgroupns_mode` 키가 제거되었습니다. `daemon.json`으로 기본값을 설정합니다. 상세 내용은 [docker.md 섹션 11](../12_tech_stack/docker.md#11-cgroup-namespace)을 참고합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -512,7 +512,7 @@ lsns -t net
 sudo find /proc/*/ns -name 'pid' 2>/dev/null | wc -l
 ```
 
-⚠️ user namespace를 활성화하면 비특권 사용자도 다른 namespace를 생성할 수 있습니다. 보안 정책에 따라 `kernel.unprivileged_userns_clone=0`으로 제한할 수 있습니다.
+🟡 user namespace를 활성화하면 비특권 사용자도 다른 namespace를 생성할 수 있습니다. 보안 정책에 따라 `kernel.unprivileged_userns_clone=0`으로 제한할 수 있습니다.
 
 ```bash
 # user namespace 비활성화 (보안 강화)

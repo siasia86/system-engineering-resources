@@ -166,7 +166,7 @@ terraform apply -target=aws_subnet.private
 terraform apply  # 나머지 전체
 ```
 
-⚠️ `-target`은 임시 수단입니다. 최종적으로 전체 `terraform apply`가 "No changes"여야 합니다.
+🟡 `-target`은 임시 수단입니다. 최종적으로 전체 `terraform apply`가 "No changes"여야 합니다.
 
 ## Ansible Specific
 

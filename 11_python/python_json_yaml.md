@@ -130,7 +130,7 @@ with open('multi.yml', 'r') as f:
         print(doc)
 ```
 
-### ⚠️ 보안 주의
+### 🟡 보안 주의
 
 ```python
 # yaml.load()는 임의 코드 실행 위험

@@ -405,7 +405,7 @@ airflow tasks test my_dag my_task 2026-04-27
 airflow tasks list my_dag --tree
 ```
 
-⚠️ `airflow tasks test`는 실제 외부 시스템(DB, S3 등)에 영향을 줍니다. 테스트 환경에서 실행 권장.
+🟡 `airflow tasks test`는 실제 외부 시스템(DB, S3 등)에 영향을 줍니다. 테스트 환경에서 실행 권장.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -620,7 +620,7 @@ python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().
 export AIRFLOW__CORE__FERNET_KEY='your-generated-fernet-key'
 ```
 
-⚠️ Fernet 키를 변경하면 기존 암호화된 Connections/Variables를 복호화할 수 없습니다. 키는 반드시 백업합니다.
+🟡 Fernet 키를 변경하면 기존 암호화된 Connections/Variables를 복호화할 수 없습니다. 키는 반드시 백업합니다.
 
 ### Secret Backend
 

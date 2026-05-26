@@ -208,7 +208,7 @@ strace ./myapp 2>&1 | grep "EPERM\|EACCES"
 | 네트워크 도구     | `cap_add=NET_ADMIN,NET_RAW`                                    |
 | 일반 앱           | `cap_drop=ALL`, seccomp=RuntimeDefault                         |
 
-⚠️ `CAP_SYS_ADMIN`은 거의 모든 권한을 포함합니다. 꼭 필요한 경우가 아니면 부여하지 않습니다.
+🟡 `CAP_SYS_ADMIN`은 거의 모든 권한을 포함합니다. 꼭 필요한 경우가 아니면 부여하지 않습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

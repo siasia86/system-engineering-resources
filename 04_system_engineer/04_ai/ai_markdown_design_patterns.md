@@ -93,7 +93,7 @@ structured AnalysisResult dicts.
 - Make business recommendations (→ human review)
 ```
 
-> ⚠️ "하지 않는 것" 섹션이 없으면 AI가 역할을 넘어서 행동합니다.
+> 🟡 "하지 않는 것" 섹션이 없으면 AI가 역할을 넘어서 행동합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
