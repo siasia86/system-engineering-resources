@@ -7,17 +7,18 @@ description: _reference 디렉토리 인덱스. 기술별 공식 문서 참조 �
 
 문서 작성/검토 시 해당 기술의 참조 파일을 읽어 공식 권장사항을 확인합니다.
 
-| 기술       | 파일                                      | 최신 버전                     | 확인일     |
-|------------|-------------------------------------------|-------------------------------|------------|
-| Ansible    | `_reference/ansible_official_notes.md`    | 13.7.0 (core 2.21.0)          | 2026-05-26 |
-| ArgoCD     | `_reference/argocd_official_notes.md`     | v3.4.2                        | 2026-05-26 |
-| Docker     | `_reference/docker_official_notes.md`     | Engine 29.5.2, Compose v5.1.4 | 2026-05-22 |
-| Grafana    | `_reference/grafana_official_notes.md`    | v13.0.1                       | 2026-05-26 |
-| Helm       | `_reference/helm_official_notes.md`       | v4.2.0                        | 2026-05-26 |
-| Kubernetes | `_reference/kubernetes_official_notes.md` | v1.36.1                       | 2026-05-26 |
-| Prometheus | `_reference/prometheus_official_notes.md` | v3.11.3                       | 2026-05-26 |
-| Terraform  | `_reference/terraform_official_notes.md`  | v1.15.4, AWS Provider v6.46.0 | 2026-05-22 |
-| Zabbix     | `_reference/zabbix_official_notes.md`     | 7.4 (LTS: 7.0)                | 2026-05-22 |
+| 기술                 | 파일                                                | 최신 버전                     | 확인일     |
+|----------------------|-----------------------------------------------------|-------------------------------|------------|
+| Ansible              | `_reference/ansible_official_notes.md`              | 13.7.0 (core 2.21.0)          | 2026-05-26 |
+| ArgoCD               | `_reference/argocd_official_notes.md`               | v3.4.2                        | 2026-05-26 |
+| Docker               | `_reference/docker_official_notes.md`               | Engine 29.5.2, Compose v5.1.4 | 2026-05-22 |
+| Grafana              | `_reference/grafana_official_notes.md`              | v13.0.1                       | 2026-05-26 |
+| Helm                 | `_reference/helm_official_notes.md`                 | v4.2.0                        | 2026-05-26 |
+| Kubernetes           | `_reference/kubernetes_official_notes.md`           | v1.36.1                       | 2026-05-26 |
+| Protocol Error Codes | `_reference/protocol_error_codes_official_notes.md` | RFC 9110 / RFC 5321 / RFC 959 | 2026-05-26 |
+| Prometheus           | `_reference/prometheus_official_notes.md`           | v3.11.3                       | 2026-05-26 |
+| Terraform            | `_reference/terraform_official_notes.md`            | v1.15.4, AWS Provider v6.46.0 | 2026-05-22 |
+| Zabbix               | `_reference/zabbix_official_notes.md`               | 7.4 (LTS: 7.0)                | 2026-05-22 |
 
 ## 사용 규칙
 
