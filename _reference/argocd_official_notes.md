@@ -25,28 +25,29 @@ sources:
 ## 3. GitOps 패턴
 
 ```
-개발자
+Developer
   │  git push
   v
-Git 저장소 (단일 진실 공급원)
-  │  변경 감지
+Git Repository (Single Source of Truth)
+  │  detect changes
   v
-ArgoCD (자동 sync)
+ArgoCD (auto sync)
   │
   v
-Kubernetes 클러스터 (실제 상태 = Git 상태)
+Kubernetes Cluster (live state = Git state)
 ```
+- 개발자가 Git에 push → ArgoCD가 변경 감지 → 클러스터 자동 동기화
 
 ## 4. 핵심 개념
 
-| 용어              | 설명                                                         |
-|-------------------|--------------------------------------------------------------|
-| Application       | Git 소스 + K8s 클러스터 대상을 연결한 ArgoCD 오브젝트       |
-| Sync              | Git 상태를 클러스터에 적용하는 동작                          |
-| Sync Status       | Synced / OutOfSync / Unknown                                 |
-| Health Status     | Healthy / Degraded / Progressing / Missing                   |
-| App of Apps       | Application을 관리하는 상위 Application 패턴                 |
-| ApplicationSet    | 여러 클러스터/환경에 Application 자동 생성                   |
+| 용어           | 설명                                                  |
+|----------------|-------------------------------------------------------|
+| Application    | Git 소스 + K8s 클러스터 대상을 연결한 ArgoCD 오브젝트 |
+| Sync           | Git 상태를 클러스터에 적용하는 동작                   |
+| Sync Status    | Synced / OutOfSync / Unknown                          |
+| Health Status  | Healthy / Degraded / Progressing / Missing            |
+| App of Apps    | Application을 관리하는 상위 Application 패턴          |
+| ApplicationSet | 여러 클러스터/환경에 Application 자동 생성            |
 
 ## 5. 지원 소스 타입
 
