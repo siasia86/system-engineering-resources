@@ -401,7 +401,7 @@ steps:
 
 ## 참고 자료
 
-- YAML Specification 1.2: [yaml.org/spec](https://yaml.org/spec/1.2.2/) — ★★★★☆
+- YAML Specification 1.2: [yaml.org/spec](https://yaml.org/spec/1.2.2/) — ★★★☆☆
 - YAML Multiline: [yaml-multiline.info](https://yaml-multiline.info/) — ★★☆☆☆
 - Ansible YAML Syntax: [docs.ansible.com/yaml_syntax](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html) — ★★★☆☆
 
