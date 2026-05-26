@@ -11,9 +11,9 @@ sources:
 
 ## 1. 버전 현황 (확인일: 2026-05-26)
 
-| 항목        | 버전    |
-|-------------|---------|
-| Prometheus  | v3.11.3 |
+| 항목       | 버전    |
+|------------|---------|
+| Prometheus | v3.11.3 |
 
 ## 2. 공식 정의
 
@@ -23,24 +23,24 @@ sources:
 
 ## 3. 핵심 개념
 
-| 용어           | 설명                                                         |
-|----------------|--------------------------------------------------------------|
-| Time series    | 타임스탬프 + 레이블 + 값으로 구성된 메트릭 데이터           |
-| Metric name    | 측정 대상 식별자 (예: `http_requests_total`)                 |
-| Label          | 메트릭 차원 구분 key=value 쌍 (예: `method="GET"`)           |
-| Scrape         | Prometheus가 타겟에서 메트릭을 수집하는 행위 (Pull 방식)     |
-| Exporter       | 메트릭을 `/metrics` 엔드포인트로 노출하는 에이전트           |
-| AlertManager   | Prometheus 알림 라우팅·그룹핑·억제 처리                     |
-| PromQL         | Prometheus 전용 쿼리 언어                                    |
+| 용어         | 설명                                                     |
+|--------------|----------------------------------------------------------|
+| Time series  | 타임스탬프 + 레이블 + 값으로 구성된 메트릭 데이터        |
+| Metric name  | 측정 대상 식별자 (예: `http_requests_total`)             |
+| Label        | 메트릭 차원 구분 key=value 쌍 (예: `method="GET"`)       |
+| Scrape       | Prometheus가 타겟에서 메트릭을 수집하는 행위 (Pull 방식) |
+| Exporter     | 메트릭을 `/metrics` 엔드포인트로 노출하는 에이전트       |
+| AlertManager | Prometheus 알림 라우팅·그룹핑·억제 처리                  |
+| PromQL       | Prometheus 전용 쿼리 언어                                |
 
 ## 4. 메트릭 타입
 
-| 타입      | 설명                                      | 예시                        |
-|-----------|-------------------------------------------|-----------------------------|
-| Counter   | 단조 증가 값 (재시작 시 0으로 리셋)       | `http_requests_total`       |
-| Gauge     | 증감 가능한 현재 값                       | `memory_usage_bytes`        |
-| Histogram | 버킷별 분포 + 합계 + 카운트               | `http_request_duration`     |
-| Summary   | 분위수(quantile) 계산 (클라이언트 사이드) | `rpc_duration_seconds`      |
+| 타입      | 설명                                      | 예시                    |
+|-----------|-------------------------------------------|-------------------------|
+| Counter   | 단조 증가 값 (재시작 시 0으로 리셋)       | `http_requests_total`   |
+| Gauge     | 증감 가능한 현재 값                       | `memory_usage_bytes`    |
+| Histogram | 버킷별 분포 + 합계 + 카운트               | `http_request_duration` |
+| Summary   | 분위수(quantile) 계산 (클라이언트 사이드) | `rpc_duration_seconds`  |
 
 ## 5. Pull 방식 특징
 
@@ -50,12 +50,12 @@ sources:
 
 ## 6. 주요 Exporter
 
-| Exporter        | 대상                    |
-|-----------------|-------------------------|
-| node_exporter   | Linux 호스트 메트릭     |
+| Exporter          | 대상                       |
+|-------------------|----------------------------|
+| node_exporter     | Linux 호스트 메트릭        |
 | blackbox_exporter | HTTP/TCP 엔드포인트 프로브 |
-| mysqld_exporter | MySQL                   |
-| cadvisor        | 컨테이너 메트릭         |
+| mysqld_exporter   | MySQL                      |
+| cadvisor          | 컨테이너 메트릭            |
 
 ## 7. 주의사항
 
