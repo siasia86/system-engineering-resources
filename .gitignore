@@ -31,15 +31,26 @@ notes/
 *.backup
 *.old
 
-# 회사 특정 정보 (제외)
+# ETC
 51_siasia/
 51_masang/
 
-# 중복 디렉토리
+# duplication directory
 33_sjyun_32_readme.md/
 #00_readme.md/
 #99_ETC/
 *masang*
 *masang*.md
 
+## python
+*.pyc
 __pycache__/
+
+## json_mask.py
+*.map.json
+*.map.json*
+## ip_mask.py
+*.map.ip.json
+*.map.ip.json*
+
+
