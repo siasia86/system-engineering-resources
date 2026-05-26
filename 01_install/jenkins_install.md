@@ -14,23 +14,23 @@
 
 ### 시스템 요구사항
 
-| 항목   | 최소          | 권장                  |
-|--------|---------------|-----------------------|
-| CPU    | 1 core        | 4 core 이상           |
-| RAM    | 1 GB          | 4 GB 이상             |
-| 디스크 | 10 GB         | SSD 50 GB 이상        |
-| JDK    | JDK 17+       | JDK 21                |
-| 포트   | 8080/tcp      | 8080/tcp              |
+| 항목   | 최소     | 권장           |
+|--------|----------|----------------|
+| CPU    | 1 core   | 4 core 이상    |
+| RAM    | 1 GB     | 4 GB 이상      |
+| 디스크 | 10 GB    | SSD 50 GB 이상 |
+| JDK    | JDK 17+  | JDK 21         |
+| 포트   | 8080/tcp | 8080/tcp       |
 
 ### Jenkins vs GitHub Actions 비교
 
-| 항목          | Jenkins                       | GitHub Actions                |
-|---------------|-------------------------------|-------------------------------|
-| 호스팅        | 자체 서버                     | GitHub 관리형                 |
-| 비용          | 서버 비용만                   | 무료 (공개) / 분당 과금 (비공개) |
-| 플러그인      | 1,800+ 플러그인               | Marketplace Actions           |
-| 온프레미스    | ✅                            | Self-hosted runner 필요       |
-| 권장 상황     | 온프레미스, 복잡한 파이프라인 | GitHub 연동, 클라우드 네이티브 |
+| 항목       | Jenkins                       | GitHub Actions                   |
+|------------|-------------------------------|----------------------------------|
+| 호스팅     | 자체 서버                     | GitHub 관리형                    |
+| 비용       | 서버 비용만                   | 무료 (공개) / 분당 과금 (비공개) |
+| 플러그인   | 1,800+ 플러그인               | Marketplace Actions              |
+| 온프레미스 | ✅                            | Self-hosted runner 필요          |
+| 권장 상황  | 온프레미스, 복잡한 파이프라인 | GitHub 연동, 클라우드 네이티브   |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -149,13 +149,13 @@ server {
 
 ### 주요 개념
 
-| 개념          | 설명                                  |
-|---------------|---------------------------------------|
-| Job           | 빌드/배포 작업 단위                   |
-| Pipeline      | 코드로 정의한 CI/CD 흐름 (Jenkinsfile)|
-| Stage         | Pipeline의 단계 (Build, Test, Deploy) |
-| Agent         | 빌드를 실행하는 노드                  |
-| Credential    | 패스워드, SSH 키 등 민감 정보 저장소  |
+| 개념       | 설명                                   |
+|------------|----------------------------------------|
+| Job        | 빌드/배포 작업 단위                    |
+| Pipeline   | 코드로 정의한 CI/CD 흐름 (Jenkinsfile) |
+| Stage      | Pipeline의 단계 (Build, Test, Deploy)  |
+| Agent      | 빌드를 실행하는 노드                   |
+| Credential | 패스워드, SSH 키 등 민감 정보 저장소   |
 
 ### Credential 등록
 
@@ -315,13 +315,13 @@ Jenkins → Manage Jenkins → Nodes → New Node
 
 ## 9. 트러블슈팅
 
-| 증상                              | 원인                          | 해결 방법                                              |
-|-----------------------------------|-------------------------------|--------------------------------------------------------|
-| 웹 UI 접속 불가                   | 서비스 미실행 또는 포트 차단  | `systemctl status jenkins`, 방화벽 확인                |
-| 플러그인 설치 실패                | 네트워크 또는 프록시 문제     | Manage Jenkins → Plugin Manager → Advanced → 프록시 설정 |
-| 빌드 `Permission denied`          | jenkins 사용자 권한 부족      | `usermod -aG docker jenkins` 후 재시작                 |
-| `OutOfMemoryError`                | JVM 힙 부족                   | `/etc/default/jenkins` 에서 `JAVA_ARGS` 조정           |
-| Git checkout 실패                 | Credential 오류               | Credential ID 확인, 토큰 만료 여부 확인                |
+| 증상                     | 원인                         | 해결 방법                                                |
+|--------------------------|------------------------------|----------------------------------------------------------|
+| 웹 UI 접속 불가          | 서비스 미실행 또는 포트 차단 | `systemctl status jenkins`, 방화벽 확인                  |
+| 플러그인 설치 실패       | 네트워크 또는 프록시 문제    | Manage Jenkins → Plugin Manager → Advanced → 프록시 설정 |
+| 빌드 `Permission denied` | jenkins 사용자 권한 부족     | `usermod -aG docker jenkins` 후 재시작                   |
+| `OutOfMemoryError`       | JVM 힙 부족                  | `/etc/default/jenkins` 에서 `JAVA_ARGS` 조정             |
+| Git checkout 실패        | Credential 오류              | Credential ID 확인, 토큰 만료 여부 확인                  |
 
 ```bash
 # 로그 확인

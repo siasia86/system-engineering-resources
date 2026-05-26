@@ -14,21 +14,21 @@
 
 ### 시스템 요구사항
 
-| 항목   | 최소                              | 권장                              |
-|--------|-----------------------------------|-----------------------------------|
-| OS     | Ubuntu 20.04+ / RHEL 8+           | Ubuntu 22.04+ / Rocky 9+          |
-| CPU    | 1 core (64-bit)                   | 2 core 이상                       |
-| RAM    | 512 MB                            | 2 GB 이상                         |
-| 디스크 | 10 GB                             | SSD 50 GB 이상                    |
+| 항목   | 최소                    | 권장                     |
+|--------|-------------------------|--------------------------|
+| OS     | Ubuntu 20.04+ / RHEL 8+ | Ubuntu 22.04+ / Rocky 9+ |
+| CPU    | 1 core (64-bit)         | 2 core 이상              |
+| RAM    | 512 MB                  | 2 GB 이상                |
+| 디스크 | 10 GB                   | SSD 50 GB 이상           |
 
 ### Docker Engine vs Docker Desktop
 
-| 항목        | Docker Engine          | Docker Desktop              |
-|-------------|------------------------|-----------------------------|
-| 대상        | Linux 서버             | macOS / Windows / Linux GUI |
-| 설치 방식   | CLI                    | GUI 인스톨러                |
-| 라이선스    | Apache 2.0 (무료)      | 기업 규모에 따라 유료       |
-| 권장 환경   | 서버 / CI              | 개발자 로컬                 |
+| 항목      | Docker Engine     | Docker Desktop              |
+|-----------|-------------------|-----------------------------|
+| 대상      | Linux 서버        | macOS / Windows / Linux GUI |
+| 설치 방식 | CLI               | GUI 인스톨러                |
+| 라이선스  | Apache 2.0 (무료) | 기업 규모에 따라 유료       |
+| 권장 환경 | 서버 / CI         | 개발자 로컬                 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -327,19 +327,19 @@ volumes:
 
 ### 주요 명령어
 
-| 명령어                          | 설명                                    |
-|---------------------------------|-----------------------------------------|
-| `docker compose up -d`          | 백그라운드 실행 (이미지 없으면 pull)    |
-| `docker compose down`           | 컨테이너 + 네트워크 삭제                |
-| `docker compose down -v`        | 볼륨까지 삭제                           |
-| `docker compose ps`             | 서비스 상태 확인                        |
-| `docker compose logs -f`        | 전체 로그 스트리밍                      |
-| `docker compose logs -f app`    | 특정 서비스 로그                        |
-| `docker compose exec app sh`    | 컨테이너 접속                           |
-| `docker compose pull`           | 이미지 최신화                           |
-| `docker compose up -d --build`  | 이미지 빌드 후 재시작                   |
-| `docker compose restart app`    | 특정 서비스 재시작                      |
-| `docker compose config`         | 최종 설정 확인 (변수 치환 결과)         |
+| 명령어                         | 설명                                 |
+|--------------------------------|--------------------------------------|
+| `docker compose up -d`         | 백그라운드 실행 (이미지 없으면 pull) |
+| `docker compose down`          | 컨테이너 + 네트워크 삭제             |
+| `docker compose down -v`       | 볼륨까지 삭제                        |
+| `docker compose ps`            | 서비스 상태 확인                     |
+| `docker compose logs -f`       | 전체 로그 스트리밍                   |
+| `docker compose logs -f app`   | 특정 서비스 로그                     |
+| `docker compose exec app sh`   | 컨테이너 접속                        |
+| `docker compose pull`          | 이미지 최신화                        |
+| `docker compose up -d --build` | 이미지 빌드 후 재시작                |
+| `docker compose restart app`   | 특정 서비스 재시작                   |
+| `docker compose config`        | 최종 설정 확인 (변수 치환 결과)      |
 
 ### 환경 변수 분리 (.env)
 
@@ -422,12 +422,12 @@ services:
 
 ### Tip 2: Named Volume vs Bind Mount
 
-| 항목          | Named Volume                          | Bind Mount                    |
-|---------------|---------------------------------------|-------------------------------|
-| 경로          | Docker 관리 (`/var/lib/docker/volumes/`) | 호스트 절대경로            |
-| 백업          | `docker volume` 명령으로 관리         | 호스트 파일시스템 직접 접근   |
-| 권장 용도     | DB 데이터, 영구 저장소                | 설정 파일, 소스 코드 (개발)   |
-| SELinux       | 자동 처리                             | `:z` / `:Z` 레이블 필요       |
+| 항목      | Named Volume                             | Bind Mount                  |
+|-----------|------------------------------------------|-----------------------------|
+| 경로      | Docker 관리 (`/var/lib/docker/volumes/`) | 호스트 절대경로             |
+| 백업      | `docker volume` 명령으로 관리            | 호스트 파일시스템 직접 접근 |
+| 권장 용도 | DB 데이터, 영구 저장소                   | 설정 파일, 소스 코드 (개발) |
+| SELinux   | 자동 처리                                | `:z` / `:Z` 레이블 필요     |
 
 ```yaml
 volumes:
@@ -515,16 +515,16 @@ services:
 
 ## 8. 트러블슈팅
 
-| 증상                                    | 원인                        | 해결 방법                                                    |
-|-----------------------------------------|-----------------------------|--------------------------------------------------------------|
-| `permission denied` (docker 명령)       | docker 그룹 미적용          | `sudo usermod -aG docker $USER` 후 재로그인                  |
-| `port is already allocated`             | 호스트 포트 충돌            | `ss -tlnp \| grep PORT` 로 점유 프로세스 확인                |
-| 컨테이너가 즉시 종료됨                  | 포그라운드 프로세스 없음    | `docker logs CONTAINER` 로 오류 확인                         |
-| `no space left on device`               | Docker 디스크 가득 참       | `docker system prune -a --volumes`                           |
-| DB 컨테이너 접속 불가 (앱 시작 직후)   | DB 초기화 미완료            | `healthcheck` + `condition: service_healthy` 적용            |
-| 볼륨 데이터 유지 안 됨                  | `down -v` 사용              | `-v` 없이 `down` 사용, Named Volume 확인                     |
-| RHEL: 볼륨 마운트 `permission denied`   | SELinux 컨텍스트 불일치     | 볼륨 경로에 `:z` 또는 `:Z` 추가                              |
-| `Cannot connect to the Docker daemon`   | docker 서비스 미실행        | `sudo systemctl start docker`                                |
+| 증상                                  | 원인                     | 해결 방법                                         |                                  |
+|---------------------------------------|--------------------------|---------------------------------------------------|----------------------------------|
+| `permission denied` (docker 명령)     | docker 그룹 미적용       | `sudo usermod -aG docker $USER` 후 재로그인       |                                  |
+| `port is already allocated`           | 호스트 포트 충돌         | `ss -tlnp \                                       | grep PORT` 로 점유 프로세스 확인 |
+| 컨테이너가 즉시 종료됨                | 포그라운드 프로세스 없음 | `docker logs CONTAINER` 로 오류 확인              |                                  |
+| `no space left on device`             | Docker 디스크 가득 참    | `docker system prune -a --volumes`                |                                  |
+| DB 컨테이너 접속 불가 (앱 시작 직후)  | DB 초기화 미완료         | `healthcheck` + `condition: service_healthy` 적용 |                                  |
+| 볼륨 데이터 유지 안 됨                | `down -v` 사용           | `-v` 없이 `down` 사용, Named Volume 확인          |                                  |
+| RHEL: 볼륨 마운트 `permission denied` | SELinux 컨텍스트 불일치  | 볼륨 경로에 `:z` 또는 `:Z` 추가                   |                                  |
+| `Cannot connect to the Docker daemon` | docker 서비스 미실행     | `sudo systemctl start docker`                     |                                  |
 
 ### 디버깅 명령
 
@@ -609,11 +609,11 @@ networks:
 
 `ip_range`는 CIDR 네트워크 주소 기준이어야 합니다.
 
-| 원하는 범위          | ip_range              |
-|----------------------|-----------------------|
-| .151 ~ .158 (8개)    | 10.200.101.144/29     |
-| .161 ~ .174 (16개)   | 10.200.101.160/28     |
-| .151 ~ .166 (16개)   | 10.200.101.144/28     |
+| 원하는 범위        | ip_range          |
+|--------------------|-------------------|
+| .151 ~ .158 (8개)  | 10.200.101.144/29 |
+| .161 ~ .174 (16개) | 10.200.101.160/28 |
+| .151 ~ .166 (16개) | 10.200.101.144/28 |
 
 ### 호스트 → 컨테이너 통신 (선택)
 
@@ -631,13 +631,13 @@ sudo ip link set macvlan0 up
 
 ### bridge vs macvlan 비교
 
-| 항목              | bridge                        | macvlan                        |
-|-------------------|-------------------------------|--------------------------------|
-| 외부 접속         | 포트 포워딩 필요 (`ports:`)   | 컨테이너 IP 직접 접속          |
-| 호스트→컨테이너   | ✅ 가능                       | ❌ 기본 불가 (별도 설정 필요)  |
-| 인터넷 아웃바운드 | 호스트 NAT 경유               | 스위치/라우터에서 직접 허용    |
-| Hyper-V 설정      | 불필요                        | MAC spoofing 활성화 필요       |
-| 사용 사례         | 개발/테스트 환경              | 사내 네트워크 직접 노출        |
+| 항목              | bridge                      | macvlan                       |
+|-------------------|-----------------------------|-------------------------------|
+| 외부 접속         | 포트 포워딩 필요 (`ports:`) | 컨테이너 IP 직접 접속         |
+| 호스트→컨테이너   | ✅ 가능                     | ❌ 기본 불가 (별도 설정 필요) |
+| 인터넷 아웃바운드 | 호스트 NAT 경유             | 스위치/라우터에서 직접 허용   |
+| Hyper-V 설정      | 불필요                      | MAC spoofing 활성화 필요      |
+| 사용 사례         | 개발/테스트 환경            | 사내 네트워크 직접 노출       |
 
 [⬆ 목차로 돌아가기](#목차)
 
