@@ -140,7 +140,7 @@ command > output.log 2>&1
                                     2>&1 = "FD2를 FD1이 가리키는 곳으로"
 ```
 
-⚠️ 순서가 중요합니다:
+🟡 순서가 중요합니다:
 
 ```bash
 # ✅ 올바른 순서: stdout을 파일로 → stderr을 stdout으로
@@ -180,7 +180,7 @@ command &> output.log       # bash 4.0+, > output.log 2>&1 과 동일
 command &>> output.log      # bash 4.0+, >> output.log 2>&1 과 동일 (append)
 ```
 
-⚠️ POSIX sh에서는 사용 불가. 이식성이 필요하면 `> file 2>&1` 사용.
+🟡 POSIX sh에서는 사용 불가. 이식성이 필요하면 `> file 2>&1` 사용.
 
 ### `/dev/null`, `/dev/zero`, `/dev/urandom`
 
@@ -358,7 +358,7 @@ exec >> /var/log/script.log 2>&1
 # ... 이후 모든 출력이 파일로 ...
 ```
 
-⚠️ `exec`로 변경한 FD는 **현재 쉘 세션 전체**에 영향을 줍니다. 스크립트 내에서만 사용하거나, 서브쉘 `( )`로 범위를 제한하는 것이 안전합니다.
+🟡 `exec`로 변경한 FD는 **현재 쉘 세션 전체**에 영향을 줍니다. 스크립트 내에서만 사용하거나, 서브쉘 `( )`로 범위를 제한하는 것이 안전합니다.
 
 ```bash
 # 서브쉘로 범위 제한
@@ -566,7 +566,7 @@ min hour day month weekday command
 0 3 * * * /usr/local/bin/backup.sh >> /var/log/backup_$(date +\%Y\%m\%d).log 2>&1
 ```
 
-⚠️ crontab에서 `%`는 개행으로 해석되므로 `\%`로 이스케이프 필요.
+🟡 crontab에서 `%`는 개행으로 해석되므로 `\%`로 이스케이프 필요.
 
 ### 출력을 안 버리면?
 

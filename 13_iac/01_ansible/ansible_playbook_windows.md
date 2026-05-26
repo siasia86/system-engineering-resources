@@ -41,7 +41,7 @@ ansible_winrm_port=5985
 ansible_winrm_scheme=http
 ```
 
-> ⚠️ `ansible_password` 평문은 테스트 환경 전용입니다. 운영 환경에서는 `ansible-vault encrypt_string` 사용.
+> 🟡 `ansible_password` 평문은 테스트 환경 전용입니다. 운영 환경에서는 `ansible-vault encrypt_string` 사용.
 
 ### ansible.cfg
 
@@ -156,7 +156,7 @@ ansible_winrm_server_cert_validation=ignore
 
 ## 3. Ad-hoc 명령
 
-> ⚠️ `ansible -a` (command 모듈)는 Windows에서 동작하지 않습니다.
+> 🟡 `ansible -a` (command 모듈)는 Windows에서 동작하지 않습니다.
 > 반드시 `-m ansible.windows.win_shell`을 명시해야 합니다.
 
 ```bash

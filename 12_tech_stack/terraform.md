@@ -693,9 +693,9 @@ terraform output -json
 terraform show -json
 ```
 
-⚠️ `terraform destroy`는 되돌릴 수 없습니다. 프로덕션 환경에서는 `prevent_destroy = true` 설정을 권장합니다.
+🟡 `terraform destroy`는 되돌릴 수 없습니다. 프로덕션 환경에서는 `prevent_destroy = true` 설정을 권장합니다.
 
-⚠️ State 파일에는 민감 정보가 포함될 수 있습니다. S3 Backend 사용 시 버킷 암호화와 접근 제어를 반드시 설정합니다.
+🟡 State 파일에는 민감 정보가 포함될 수 있습니다. S3 Backend 사용 시 버킷 암호화와 접근 제어를 반드시 설정합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

@@ -21,7 +21,7 @@ Linux에서 `ssh` 명령으로 Windows에 접속하거나, Ansible WinRM 대신 
 | 인증 방식 | 공개키 (패스워드는 보안상 비활성화 권장) |
 | 주요 용도 | Ansible SSH 연결, 원격 관리, 파일 전송   |
 
-> ⚠️ Windows OpenSSH 9.5 이하에서 `Administrator` 계정은 버그로 인해 접속이 안 됩니다.
+> 🟡 Windows OpenSSH 9.5 이하에서 `Administrator` 계정은 버그로 인해 접속이 안 됩니다.
 > **별도 로컬 계정을 생성해서 Administrators 그룹에 추가하는 방식을 권장합니다.**
 
 ---
@@ -114,7 +114,7 @@ Linux에서 공개키 확인:
 cat ~/.ssh/id_ed25519.pub
 ```
 
-> ⚠️ Administrators 그룹 계정은 `~/.ssh/authorized_keys`가 무시됩니다.
+> 🟡 Administrators 그룹 계정은 `~/.ssh/authorized_keys`가 무시됩니다.
 > 반드시 `C:\ProgramData\ssh\administrators_authorized_keys`에 등록해야 합니다.
 
 Windows에서 등록:

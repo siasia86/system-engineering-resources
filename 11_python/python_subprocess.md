@@ -115,7 +115,7 @@ result = subprocess.run(['ls', '-la', '/tmp'], capture_output=True, text=True)
 # 문자열로 전달
 result = subprocess.run('ls -la /tmp | grep log', shell=True, capture_output=True, text=True)
 
-# ⚠️ shell=True + 사용자 입력 = 보안 위험 (Shell Injection)
+# 🟡 shell=True + 사용자 입력 = 보안 위험 (Shell Injection)
 # 절대 사용자 입력을 shell=True와 함께 사용하지 말 것
 ```
 
@@ -226,7 +226,7 @@ def check_disk_usage(threshold=80):
         parts = line.split()
         usage = int(parts[4].replace('%', ''))
         if usage >= threshold:
-            print(f"⚠️ {parts[5]}: {parts[4]} 사용 중")
+            print(f"🟡 {parts[5]}: {parts[4]} 사용 중")
 ```
 
 ### 서비스 상태 확인

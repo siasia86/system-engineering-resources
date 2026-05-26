@@ -236,7 +236,7 @@ docker network connect mynet <컨테이너>        # 실행 중 컨테이너에 
 | 스위치 MAC 제한   | 포트당 MAC 수 제한에 걸릴 수 있음 | 제한 없음                   |
 | 권장 환경         | 물리 서버, MAC spoofing 가능   | 클라우드 VM, Hyper-V           |
 
-⚠️ macvlan/ipvlan 모두 호스트→컨테이너 직접 통신이 기본적으로 불가합니다. 필요 시 호스트에 별도 macvlan/ipvlan 인터페이스를 추가합니다.
+🟡 macvlan/ipvlan 모두 호스트→컨테이너 직접 통신이 기본적으로 불가합니다. 필요 시 호스트에 별도 macvlan/ipvlan 인터페이스를 추가합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -286,7 +286,7 @@ COPY --from=builder /app .
 CMD ["./app"]
 ```
 
-⚠️ `docker system prune -a`는 중지된 컨테이너와 미사용 이미지를 모두 삭제합니다. 운영 환경에서 주의가 필요합니다.
+🟡 `docker system prune -a`는 중지된 컨테이너와 미사용 이미지를 모두 삭제합니다. 운영 환경에서 주의가 필요합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -359,7 +359,7 @@ Docker는 컨테이너마다 고유한 cgroup 경로를 자동 할당합니다:
 - 컨테이너 내부 프로세스가 호스트 전체 cgroup 트리를 볼 수 없게 제한
 - 보안 격리가 필요한 환경에서 권장
 
-⚠️ `cgroup: private`은 Docker Compose v2.x 이상에서 지원합니다. (공식 문서: [compose-spec cgroup](https://docs.docker.com/reference/compose-file/services/#cgroup))
+🟡 `cgroup: private`은 Docker Compose v2.x 이상에서 지원합니다. (공식 문서: [compose-spec cgroup](https://docs.docker.com/reference/compose-file/services/#cgroup))
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -460,7 +460,7 @@ docker container prune   # 중지된 컨테이너
 docker volume prune      # 미사용 볼륨
 docker builder prune     # 빌드 캐시
 
-docker system prune -a   # 위 4가지 전부 (실행 중 컨테이너 제외) — ⚠️ 운영 환경 주의
+docker system prune -a   # 위 4가지 전부 (실행 중 컨테이너 제외) — 🟡 운영 환경 주의
 ```
 
 ---

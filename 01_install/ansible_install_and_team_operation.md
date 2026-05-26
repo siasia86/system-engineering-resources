@@ -158,7 +158,7 @@ echo "ansible ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/ansible
 sudo chmod 440 /etc/sudoers.d/ansible
 ```
 
-⚠️ Managed Node에서 패스워드를 설정하지 않습니다. SSH 키 인증만 사용하며, 패스워드 인증은 `/etc/ssh/sshd_config`에서 비활성화합니다.
+🟡 Managed Node에서 패스워드를 설정하지 않습니다. SSH 키 인증만 사용하며, 패스워드 인증은 `/etc/ssh/sshd_config`에서 비활성화합니다.
 
 ### 4-2. SSH 키 생성 및 배포
 
@@ -179,7 +179,7 @@ done
 ssh ansible@<managed-node-ip>
 ```
 
-⚠️ RHEL 계열(Rocky, Amazon Linux) 컨테이너 환경에서는 `pam_sepermit.so`, `pam_nologin.so` 등이 SELinux 없는 환경에서 SSH 접속을 차단할 수 있습니다. 이 경우 `/etc/pam.d/sshd`와 `/etc/pam.d/sudo`를 최소 설정으로 교체합니다:
+🟡 RHEL 계열(Rocky, Amazon Linux) 컨테이너 환경에서는 `pam_sepermit.so`, `pam_nologin.so` 등이 SELinux 없는 환경에서 SSH 접속을 차단할 수 있습니다. 이 경우 `/etc/pam.d/sshd`와 `/etc/pam.d/sudo`를 최소 설정으로 교체합니다:
 
 ```bash
 printf '#%%PAM-1.0\nauth     sufficient   pam_unix.so\naccount  required     pam_permit.so\nsession  sufficient   pam_unix.so\n' | sudo tee /etc/pam.d/sshd
@@ -243,7 +243,7 @@ ssh_args = -o ControlMaster=auto -o ControlPersist=600s
 | `ControlMaster=auto`  | -      | SSH 연결 다중화. 동일 호스트 재접속 시 기존 연결 재사용합니다.                                      |
 | `ControlPersist=600s` | -      | 마지막 접속 후 10분간 연결 유지. 연속 playbook 실행 시 SSH 재연결 없이 속도가 향상됩니다.           |
 
-⚠️ `ansible.cfg` 우선순위: 현재 디렉토리 → 홈 디렉토리 → `/etc/ansible/ansible.cfg` 순으로 적용됩니다. 프로젝트별 설정이 필요하면 프로젝트 디렉토리에 별도 `ansible.cfg`를 생성합니다.
+🟡 `ansible.cfg` 우선순위: 현재 디렉토리 → 홈 디렉토리 → `/etc/ansible/ansible.cfg` 순으로 적용됩니다. 프로젝트별 설정이 필요하면 프로젝트 디렉토리에 별도 `ansible.cfg`를 생성합니다.
 
 ### 4-4. Inventory 파일 설정
 
@@ -294,7 +294,7 @@ gameservers
 | 포트 지정   | `host1 ansible_host=10.0.1.1 ansible_port=2222` | 기본 22 외 포트 사용 시 |        |                       |
 | 연결 방식   | `ansible_connection=ssh\                        | docker\                 | local` | SSH 외 연결 방식 지정 |
 
-⚠️ inventory 파일은 환경별(dev/qa/stg/prd)로 분리 관리를 권장합니다. 하나의 파일에 모든 환경을 넣으면 실수로 운영 서버에 실행할 위험이 있습니다.
+🟡 inventory 파일은 환경별(dev/qa/stg/prd)로 분리 관리를 권장합니다. 하나의 파일에 모든 환경을 넣으면 실수로 운영 서버에 실행할 위험이 있습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -396,7 +396,7 @@ prd-app-web-01 | SUCCESS => {
 | `roles/`                    | 재사용 가능한 task 묶음   |      |      |                            |
 | `playbooks/site.yml`        | 전체 인프라 적용 진입점   |      |      |                            |
 
-⚠️ `group_vars/`, `host_vars/`는 inventory 파일과 **같은 디렉토리**에 있어야 자동으로 로드됩니다.
+🟡 `group_vars/`, `host_vars/`는 inventory 파일과 **같은 디렉토리**에 있어야 자동으로 로드됩니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -462,7 +462,7 @@ chmod 600 ~/.ansible_vault_pass
 # vault_password_file = ~/.ansible_vault_pass
 ```
 
-⚠️ `vault_password_file` 경로는 절대 Git에 커밋하지 않습니다. `.gitignore`에 추가합니다.
+🟡 `vault_password_file` 경로는 절대 Git에 커밋하지 않습니다. `.gitignore`에 추가합니다.
 
 ### 보안 체크리스트
 
@@ -490,7 +490,7 @@ chmod 600 ~/.ansible_vault_pass
 | 의존성 관리 | 자동                    | 수동 (venv 권장)         |
 | 공식 권장   | 테스트/개발 환경        | 프로덕션 환경            |
 
-⚠️ pip 설치 시 반드시 가상환경(venv) 사용을 권장합니다. 시스템 Python 패키지와 충돌을 방지합니다.
+🟡 pip 설치 시 반드시 가상환경(venv) 사용을 권장합니다. 시스템 Python 패키지와 충돌을 방지합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -506,12 +506,12 @@ chmod 600 ~/.ansible_vault_pass
 | SSH 키 관리  | 서버 1곳에서 관리              | 팀원별 키 관리         |
 | 변경 통제    | 래퍼 스크립트 / 파일 권한      | Git PR 리뷰            |
 | 감사 추적    | 서버 로그 집중                 | Git 커밋 이력          |
-| 환경 일관성  | ✅ 동일 환경 보장              | ⚠️ 버전 차이 가능      |
+| 환경 일관성  | ✅ 동일 환경 보장              | 🟡 버전 차이 가능      |
 | 장애 포인트  | Control Node 장애 시 전원 불가 | 개인 PC 독립적         |
-| ISMS 대응    | ✅ 접근 통제 용이              | ⚠️ 개인 PC 통제 어려움 |
+| ISMS 대응    | ✅ 접근 통제 용이              | 🟡 개인 PC 통제 어려움 |
 | 권장 팀 규모 | 2~10명                         | 10명 이상              |
 
-⚠️ 10명 이하 인프라 팀이라면 **공용 Control Node + Git 병행**이 가장 실용적입니다.
+🟡 10명 이하 인프라 팀이라면 **공용 Control Node + Git 병행**이 가장 실용적입니다.
 
 ### 아키텍처
 

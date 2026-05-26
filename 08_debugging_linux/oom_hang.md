@@ -176,7 +176,7 @@ echo -1000 > /proc/<pid>/oom_score_adj
 systemctl daemon-reload
 ```
 
-⚠️ `-1000` 설정 시 해당 프로세스가 메모리 누수를 일으키면 시스템 전체 hang으로 이어질 수 있습니다.
+🟡 `-1000` 설정 시 해당 프로세스가 메모리 누수를 일으키면 시스템 전체 hang으로 이어질 수 있습니다.
 
 ### cgroup으로 메모리 제한 (OOM 격리)
 

@@ -293,7 +293,7 @@ jobs:
       - name: Deploy
         env:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          # ⚠️ 장기 키 방식 — OIDC 사용 불가한 경우에만 사용 (섹션 9 OIDC 권장)
+          # 🟡 장기 키 방식 — OIDC 사용 불가한 경우에만 사용 (섹션 9 OIDC 권장)
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: ./deploy.sh
@@ -619,11 +619,11 @@ steps:
 
 ### 주의사항
 
-⚠️ `secrets.GITHUB_TOKEN`은 자동 제공되지만 권한 범위를 최소화합니다. `permissions` 키로 명시적 선언을 권장합니다.
+🟡 `secrets.GITHUB_TOKEN`은 자동 제공되지만 권한 범위를 최소화합니다. `permissions` 키로 명시적 선언을 권장합니다.
 
-⚠️ Self-hosted Runner는 Public 저장소에서 사용 시 보안 위험이 있습니다. Fork PR이 악성 코드를 실행할 수 있으므로 Private 저장소에서만 사용합니다.
+🟡 Self-hosted Runner는 Public 저장소에서 사용 시 보안 위험이 있습니다. Fork PR이 악성 코드를 실행할 수 있으므로 Private 저장소에서만 사용합니다.
 
-⚠️ AWS 자격증명은 장기 키(Access Key) 대신 OIDC를 사용합니다.
+🟡 AWS 자격증명은 장기 키(Access Key) 대신 OIDC를 사용합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

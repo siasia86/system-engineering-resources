@@ -105,7 +105,7 @@ curl -s --header "PRIVATE-TOKEN: <token>" \
 | Value     | `<your-token>`                          |
 | Add to    | `Header`                                |
 
-⚠️ Base URL은 회사 GitLab 도메인으로 변경합니다. `http://` → `https://` 확인 필수.
+🟡 Base URL은 회사 GitLab 도메인으로 변경합니다. `http://` → `https://` 확인 필수.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -193,7 +193,7 @@ Grafana 12 Heatmap은 table frame 입력 시 호환 문제가 있습니다. **Ba
 5. sortBy          → created_at 오름차순
 ```
 
-⚠️ Infinity 플러그인 내장 Filter는 `(intermediate value).map is not a function` 에러를 유발합니다. 반드시 **Grafana Transform 탭의 `filterByValue`** 를 사용합니다.
+🟡 Infinity 플러그인 내장 Filter는 `(intermediate value).map is not a function` 에러를 유발합니다. 반드시 **Grafana Transform 탭의 `filterByValue`** 를 사용합니다.
 
 ### filterByValue 설정
 
@@ -282,15 +282,15 @@ Dashboard → Add → Row
 /api/v4/groups/<id>/events?action=pushed&after=2026-01-01&before=2026-12-31
 ```
 
-⚠️ GitLab API는 페이지당 최대 100개 제한입니다. 커밋이 많으면 Infinity 단독으로는 한계가 있으며, 이 경우 Prometheus exporter 방식으로 전환합니다.
+🟡 GitLab API는 페이지당 최대 100개 제한입니다. 커밋이 많으면 Infinity 단독으로는 한계가 있으며, 이 경우 Prometheus exporter 방식으로 전환합니다.
 
-⚠️ Datasource 레벨에 Auth 설정했더라도 패널 URL을 절대경로로 입력하면 Header가 누락될 수 있습니다. 패널 Headers 탭에 `PRIVATE-TOKEN`을 직접 추가합니다.
+🟡 Datasource 레벨에 Auth 설정했더라도 패널 URL을 절대경로로 입력하면 Header가 누락될 수 있습니다. 패널 Headers 탭에 `PRIVATE-TOKEN`을 직접 추가합니다.
 
-⚠️ Infinity Datasource `Allowed hosts`에 GitLab 도메인을 반드시 등록합니다 (`https://` 포함). 미등록 시 `requested URL not allowed` 에러가 발생합니다.
+🟡 Infinity Datasource `Allowed hosts`에 GitLab 도메인을 반드시 등록합니다 (`https://` 포함). 미등록 시 `requested URL not allowed` 에러가 발생합니다.
 
-⚠️ `author_name`은 git config 기준이므로 GitLab username과 다를 수 있습니다. API로 실제 값을 확인 후 `filterByValue`에 입력합니다.
+🟡 `author_name`은 git config 기준이므로 GitLab username과 다를 수 있습니다. API로 실제 값을 확인 후 `filterByValue`에 입력합니다.
 
-⚠️ 커밋이 없는 날짜는 API 응답에 포함되지 않아 Bar chart에 표시되지 않습니다. 빈 날짜까지 표시하려면 중간 저장소(InfluxDB/Prometheus) 수집 파이프라인이 필요합니다.
+🟡 커밋이 없는 날짜는 API 응답에 포함되지 않아 Bar chart에 표시되지 않습니다. 빈 날짜까지 표시하려면 중간 저장소(InfluxDB/Prometheus) 수집 파이프라인이 필요합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
