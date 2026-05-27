@@ -189,3 +189,62 @@ sources:
 3. `last_checked` 날짜 업데이트
 4. INDEX.md 버전 정보 업데이트
 5. 해당 `_reference`를 참조해 작성된 다른 `.md` 파일에도 오류가 전파됐는지 확인
+
+## 17. Python 스크립트 작성 규칙
+
+`/root/sj_del/ip_mask.py`, `json_mask.py` 스타일 기준.
+
+### 파일 구조 (순서 엄수)
+
+```
+shebang
+SAFETY 주석
+모듈 docstring (사용법 포함)
+VERSION 상수
+import (stdlib 한 줄씩, 알파벳 순)
+상수/패턴 (# ── 섹션명 ──... 구분)
+함수 정의
+if __name__ == '__main__': try/except
+```
+
+### 필수 항목
+
+- **shebang**: `#!/usr/bin/env python3`
+- **SAFETY 주석**: `#import sys; sys.exit(0)  # SAFETY: uncomment this line to disable script`
+- **VERSION**: `VERSION = "YY.MM.DD"` (날짜 기반)
+- **import**: 한 줄씩, stdlib 먼저, 알파벳 순 — `import re, sys` 한 줄 금지
+- **모듈 상단 패턴 컴파일**: 함수 내 `re.compile()` 반복 금지 — 모듈 레벨 상수로 선언
+- **함수 내 중복 import 금지**: `import re as _re` 함수 내 반복 금지
+- **argparse 필수**: `sys.argv` 직접 파싱 금지
+  - `-h/--help`: argparse 자동 제공
+  - `-V/--version`: `action='version'`, `version=f'%(prog)s {VERSION}'`
+  - `-s/--strict` 등 플래그: 단축키 + 풀네임 모두 제공
+  - `epilog`: Examples + 주요 옵션 설명 포함
+- **`parse_args()` 분리**: `main()` 내 인라인 금지, 별도 함수로 분리
+- **`if __name__` try/except**:
+  ```python
+  if __name__ == '__main__':
+      try:
+          main()
+      except KeyboardInterrupt:
+          sys.exit(130)
+  ```
+
+### 섹션 구분 주석
+
+```python
+# ── 컬러 ──────────────────────────────────────────────────────────────────────
+# ── 상수 ──────────────────────────────────────────────────────────────────────
+# ── 유틸 ──────────────────────────────────────────────────────────────────────
+# ── 검사 함수 ─────────────────────────────────────────────────────────────────
+# ── 진입점 ────────────────────────────────────────────────────────────────────
+```
+
+### 함수 docstring
+
+한 줄 요약 필수. 긴 설명은 두 번째 줄부터.
+
+```python
+def process_file(filepath, dry_run=False):
+    """파일 내 IP 치환 (해당 패턴 없으면 스킵)."""
+```
