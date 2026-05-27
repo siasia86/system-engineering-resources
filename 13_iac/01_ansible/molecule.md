@@ -7,6 +7,7 @@
 | [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념)                             |
 | [4. 설치](#4-설치) / [5. 주요 명령어](#5-주요-명령어) / [6. 설정 파일](#6-설정-파일)                       |
 | [7. Docker 드라이버](#7-docker-드라이버) / [8. Vagrant 드라이버](#8-vagrant-드라이버) / [9. Tips](#9-tips) |
+| [10. 실무 구조 vs 학습 구조](#10-실무-구조-vs-학습-구조)                                                  |
 
 ---
 
@@ -286,6 +287,98 @@ MOLECULE_ANSIBLE_ARGS="--tags install" molecule converge
 
 ---
 
+## 10. 실무 구조 vs 학습 구조
+
+### 학습 구조 (비효율)
+
+playbook과 molecule role을 분리하면 같은 기능을 두 번 작성하게 됩니다.
+
+```
+project/
+├── playbooks/
+│   └── ssh_setup.yml              # 운영 코드 (raw 모듈)
+└── molecule_tests/
+    └── roles/ssh_setup/
+        └── tasks/main.yml         # 같은 기능을 다시 작성 (apt/dnf 모듈)
+```
+
+🟡 playbook 수정 시 molecule role도 따로 수정해야 합니다. 동기화가 빠지면 테스트가 무의미해집니다.
+
+### 실무 구조 (권장)
+
+role이 운영 코드이자 테스트 대상입니다. 별도로 "테스트용 코드"를 만들지 않습니다.
+
+```
+project/
+├── roles/
+│   ├── ssh_setup/
+│   │   ├── tasks/main.yml         # 운영 코드 = 테스트 대상 (하나만 존재)
+│   │   ├── handlers/main.yml
+│   │   ├── defaults/main.yml
+│   │   └── molecule/default/      # 이 role을 테스트
+│   │       ├── molecule.yml
+│   │       ├── converge.yml
+│   │       └── verify.yml
+│   └── nginx/
+│       ├── tasks/main.yml
+│       └── molecule/default/
+│           └── ...
+├── playbooks/
+│   └── site.yml                   # roles를 조합해서 호출만
+└── inventory/
+```
+
+### 비교
+
+| 항목        | 학습 구조 (분리) | 실무 구조 (통합)      |
+|-------------|------------------|-----------------------|
+| 운영 코드   | playbook에 직접  | `roles/*/tasks/`      |
+| 테스트 대상 | 별도 role 작성   | 운영 role 그대로      |
+| 수정 시     | 2곳 수정 필요    | 1곳만 수정            |
+| 동기화 위험 | 높음             | 없음                  |
+| CI/CD 연동  | 경로 복잡        | `molecule test` 한 줄 |
+
+### 전환 방법
+
+```bash
+# 1. playbook의 task를 role로 추출
+ansible-galaxy role init roles/ssh_setup
+
+# 2. role 안에 molecule 시나리오 생성
+cd roles/ssh_setup
+molecule init scenario
+
+# 3. playbook은 role 호출만
+# playbooks/site.yml
+# - hosts: all
+#   roles:
+#     - ssh_setup
+#     - nginx
+
+# 4. 테스트
+molecule test
+```
+
+### CI/CD 파이프라인 예시
+
+```yaml
+# .github/workflows/molecule.yml
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        role: [ssh_setup, nginx, zabbix_agent]
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install molecule molecule-plugins[docker]
+      - run: cd roles/${{ matrix.role }} && molecule test
+```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 참고 자료
 
 - Molecule Documentation: [ansible.readthedocs.io/projects/molecule](https://ansible.readthedocs.io/projects/molecule/) — ★★★☆☆
@@ -308,6 +401,6 @@ MOLECULE_ANSIBLE_ARGS="--tags install" molecule converge
 
 **작성일**: 2026-05-15
 
-**마지막 업데이트**: 2026-05-15
+**마지막 업데이트**: 2026-05-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.
