@@ -8,6 +8,20 @@ description: Defines operating rules for all agents. Use when executing any task
 ## 1. Confirm before action
 Print task summary before execution. format: "수행할 작업: - [item]"
 
+## 1-1. Long-running command timeout handling
+
+For commands that may block (vagrant up, packer build, apt install, docker pull, etc.):
+
+1. **Never use polling loops inside a single tool call** (e.g., `for i in ...; do sleep 30; check; done`) — blocks the session and appears frozen.
+2. **Always use `timeout N <command>`** with a short limit (e.g., `timeout 15` for SSH checks).
+3. **For background tasks** (Task Scheduler, nohup, etc.):
+   - Launch with a single non-blocking command, then immediately move on to the next independent task.
+   - Check status only once in the next separate tool call — never in a loop.
+4. **If a command times out or hangs**: kill it, diagnose from logs, fix and retry autonomously.
+5. **Retry limit**: after 2 failed attempts with the same approach, switch to a fundamentally different method.
+6. **Never pause mid-task** for confirmation. The user will Ctrl+C if something is wrong.
+
+
 ## 2. Dangerous operations
 terraform apply, infra changes, service restart, deploy → ask "진행할까요?" before execution
 
@@ -248,3 +262,18 @@ if __name__ == '__main__': try/except
 def process_file(filepath, dry_run=False):
     """파일 내 IP 치환 (해당 패턴 없으면 스킵)."""
 ```
+
+## Windows PowerShell via SSH
+
+SSH로 Windows PowerShell 명령 실행 시 한글 출력이 깨지는 것을 방지하려면 반드시 아래 패턴을 사용합니다.
+
+```bash
+# 올바른 패턴 — cmd로 chcp 65001 설정 후 powershell 실행
+ssh user@host "cmd /c \"chcp 65001 > nul && powershell -Command \"\"<명령어>\"\"\""
+
+# 잘못된 패턴 — PowerShell 내에서 chcp는 동작하지 않음
+ssh user@host "powershell -Command \"chcp 65001 >nul; <명령어>\""
+```
+
+- `chcp 65001`: Windows 코드 페이지를 UTF-8로 변경
+- `cmd /c` 래핑 필수: PowerShell 단독 실행 시 `>nul` 리다이렉션이 파일로 처리됨
