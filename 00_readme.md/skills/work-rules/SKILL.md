@@ -7,6 +7,8 @@ description: Defines operating rules for all agents. Use when executing any task
 
 ## 1. Confirm before action
 Print task summary before execution. format: "수행할 작업: - [item]"
+This applies to **destructive or irreversible** operations only (§ 2, § 3).
+For routine tasks (file edits, status checks, builds), proceed without confirmation.
 
 ## 1-1. Long-running command timeout handling
 
@@ -16,7 +18,7 @@ For commands that may block (vagrant up, packer build, apt install, docker pull,
 2. **Always use `timeout N <command>`** with a short limit (e.g., `timeout 15` for SSH checks).
 3. **For background tasks** (Task Scheduler, nohup, etc.):
    - Launch with a single non-blocking command, then immediately move on to the next independent task.
-   - Check status only once in the next separate tool call — never in a loop.
+   - Check status in subsequent separate tool calls — never in a polling loop within one call.
 4. **If a command times out or hangs**: kill it, diagnose from logs, fix and retry autonomously.
 5. **Retry limit**: after 2 failed attempts with the same approach, switch to a fundamentally different method.
 6. **Never pause mid-task** for confirmation. The user will Ctrl+C if something is wrong.
@@ -93,7 +95,7 @@ regexes = [
 ```
 
 ## 11. Markdown style check (after writing/editing .md)
-After creating or modifying any .md file under /root/32_system-engineering-resources, run:
+After creating or modifying any .md file under /root/32_system-engineering-resources or /opt/00_chobo_ansible, run:
 
 ```bash
 sudo python3 /root/32_system-engineering-resources/md-style-check.py <path>
@@ -263,7 +265,7 @@ def process_file(filepath, dry_run=False):
     """파일 내 IP 치환 (해당 패턴 없으면 스킵)."""
 ```
 
-## Windows PowerShell via SSH
+## 18. Windows PowerShell via SSH
 
 SSH로 Windows PowerShell 명령 실행 시 한글 출력이 깨지는 것을 방지하려면 반드시 아래 패턴을 사용합니다.
 
