@@ -38,6 +38,24 @@ def dw(s):
             w += 1
     return w
 
+def split_table_row(line):
+    """표 행을 열로 분할. 백틱 내부의 | 는 무시."""
+    stripped = line.strip().strip("|")
+    cells = []
+    current = ""
+    in_backtick = False
+    for c in stripped:
+        if c == "`":
+            in_backtick = not in_backtick
+            current += c
+        elif c == "|" and not in_backtick:
+            cells.append(current)
+            current = ""
+        else:
+            current += c
+    cells.append(current)
+    return cells
+
 def strip_code_blocks(content):
     """코드블록(``` ```) 제거 후 반환. frontmatter(---) 보존."""
     return re.sub(r'```[^\n]*\n.*?```', '', content, flags=re.DOTALL)
@@ -109,7 +127,7 @@ def check_tables(content, strict=False):
         if len(block) < 2:
             continue
 
-        rows_raw = [l.strip().strip('|').split('|') for l in block]
+        rows_raw = [split_table_row(l) for l in block]
         rows_str = [[c.strip() for c in r] for r in rows_raw]
 
         sep_idx = next(

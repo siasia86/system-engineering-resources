@@ -87,7 +87,7 @@ command="/usr/local/bin/backup.sh",no-pty,no-x11-forwarding ssh-ed25519 AAAA...
 
 ### ~/.ssh/config (클라이언트)
 
-```
+```ssh-config
 Host prod-bastion
     HostName 192.0.2.1
     User Secureuser123
@@ -165,14 +165,14 @@ AuthenticationMethods publickey,keyboard-interactive
 
 ## 5. SSH 점검 체크리스트
 
-| 항목                              | 확인 명령어                                          |
-|-----------------------------------|------------------------------------------------------|
-| 루트 로그인 비활성화              | `grep PermitRootLogin /etc/ssh/sshd_config`          |
-| 패스워드 인증 비활성화            | `grep PasswordAuthentication /etc/ssh/sshd_config`   |
-| 포트 변경 여부                    | `ss -tlnp | grep sshd`                               |
-| authorized_keys 권한              | `stat ~/.ssh/authorized_keys`                        |
-| fail2ban 동작 여부                | `sudo fail2ban-client status sshd`                   |
-| 최근 로그인 실패 기록             | `sudo journalctl -u sshd | grep Failed | tail -20`   |
+| 항목                   | 확인 명령어                                        |
+|------------------------|----------------------------------------------------|
+| 루트 로그인 비활성화   | `grep PermitRootLogin /etc/ssh/sshd_config`        |
+| 패스워드 인증 비활성화 | `grep PasswordAuthentication /etc/ssh/sshd_config` |
+| 포트 변경 여부         | `ss -tlnp | grep sshd`                             |
+| authorized_keys 권한   | `stat ~/.ssh/authorized_keys`                      |
+| fail2ban 동작 여부     | `sudo fail2ban-client status sshd`                 |
+| 최근 로그인 실패 기록  | `sudo journalctl -u sshd | grep Failed | tail -20` |
 
 [⬆ 목차로 돌아가기](#목차)
 
