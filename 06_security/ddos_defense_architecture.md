@@ -19,7 +19,7 @@
 ## 전체 구조도
 
 ```
-인터넷
+Internet
   v
 ┌─────────────────────────────────────────────────────────────┐
 │                     Global DNS Layer                        │
@@ -33,7 +33,7 @@ Route 53 (DNS)
 ┌─────────────────────────────────────────────────────────────┐
 │                  VPC Border Defense Layer                   │
 └─────────────────────────────────────────────────────────────┘
-AWS Network Firewall (Suricata 기반 IPS/IDS)
+AWS Network Firewall (Suricata-based IPS/IDS)
 ├─ DDoS pattern detection
 ├─ Malicious traffic blocking
 ├─ Stateful inspection
@@ -54,7 +54,7 @@ NLB (Network Load Balancer)
 ┌─────────────────────────────────────────────────────────────┐
 │         Linux Proxy Layer (Auto Scaling Group)              │
 └─────────────────────────────────────────────────────────────┘
-Linux Proxy (3-5대, Auto Scaling)
+Linux Proxy (3-5 instances, Auto Scaling)
 │
 ├─ [Pre-kernel] XDP/eBPF
 │  ├─ Ultra-fast packet drop (millions pps)
@@ -196,21 +196,21 @@ Blocked
 
 ```
 Linux Proxy (CrowdSec Agent)
-  v (Block decision request)
+  │ (Block decision request)
 CrowdSec LAPI Server
-  v (Blocked IP list response)
+  │ (Blocked IP list response)
 Linux Proxy (nftables 업데이트)
 
 Linux Proxy (XDP 동기화 스크립트)
-  v (Blocked IP query)
+  │ (Blocked IP query)
 Redis (ElastiCache)
-  v (Blocked IP list response)
+  │ (Blocked IP list response)
 Linux Proxy (XDP BPF Map 업데이트)
 
 Linux Proxy (Zabbix Agent)
-  v (Metrics push)
+  │ (Metrics push)
 Zabbix Server
-  v (Alert sent)
+  │ (Alert sent)
 Admin
 ```
 
@@ -245,35 +245,35 @@ VPC (10.0.0.0/16)
 ### 보안 그룹
 
 **NLB → Linux Proxy:**
-```
+```yaml
 Source: 0.0.0.0/0
 Port: 27015 (게임 포트)
 Protocol: TCP/UDP
 ```
 
 **Linux Proxy → CrowdSec LAPI:**
-```
+```yaml
 Source: 10.0.10.0/24 (Proxy Subnet)
 Port: 8080
 Protocol: TCP
 ```
 
 **Linux Proxy → Redis:**
-```
+```yaml
 Source: 10.0.10.0/24
 Port: 6379
 Protocol: TCP
 ```
 
 **Linux Proxy → Zabbix:**
-```
+```yaml
 Source: 10.0.10.0/24
 Port: 10051
 Protocol: TCP
 ```
 
 **Linux Proxy → 게임서버:**
-```
+```yaml
 Source: 10.0.10.0/24
 Port: 27015
 Protocol: TCP/UDP

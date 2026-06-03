@@ -195,13 +195,13 @@ aws guardduty get-findings \
 
 ### 주요 탐지 유형
 
-| 유형                              | 설명                                    |
-|-----------------------------------|-----------------------------------------|
-| `UnauthorizedAccess:EC2/SSHBruteForce` | SSH brute-force 시도              |
-| `Recon:EC2/PortProbeUnprotectedPort`   | 포트 스캔 탐지                    |
-| `CryptoCurrency:EC2/BitcoinTool`       | 암호화폐 채굴 탐지                |
-| `Trojan:EC2/BlackholeTraffic`          | C&C 서버 통신 탐지                |
-| `UnauthorizedAccess:IAMUser/ConsoleLogin` | 비정상 콘솔 로그인             |
+| 유형                                      | 설명                 |
+|-------------------------------------------|----------------------|
+| `UnauthorizedAccess:EC2/SSHBruteForce`    | SSH brute-force 시도 |
+| `Recon:EC2/PortProbeUnprotectedPort`      | 포트 스캔 탐지       |
+| `CryptoCurrency:EC2/BitcoinTool`          | 암호화폐 채굴 탐지   |
+| `Trojan:EC2/BlackholeTraffic`             | C&C 서버 통신 탐지   |
+| `UnauthorizedAccess:IAMUser/ConsoleLogin` | 비정상 콘솔 로그인   |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -262,15 +262,15 @@ aws securityhub get-findings \
     --region ap-northeast-2
 ```
 
-| 항목                              | 확인 방법                                                    |
-|-----------------------------------|--------------------------------------------------------------|
-| 루트 계정 MFA 활성화              | IAM 콘솔 → 보안 자격증명                                    |
-| 미사용 Access Key 삭제            | `aws iam list-access-keys`                                   |
-| 공개 S3 버킷 없음                 | `aws s3api list-buckets` + Public Access Block 확인          |
-| Security Group 0.0.0.0/0 SSH 없음 | `aws ec2 describe-security-groups`                           |
-| CloudTrail 활성화                 | `aws cloudtrail get-trail-status --name org-trail`           |
-| GuardDuty 활성화                  | `aws guardduty list-detectors`                               |
-| Config 규칙 준수 여부             | `aws configservice describe-compliance-by-config-rule`       |
+| 항목                              | 확인 방법                                              |
+|-----------------------------------|--------------------------------------------------------|
+| 루트 계정 MFA 활성화              | IAM 콘솔 → 보안 자격증명                               |
+| 미사용 Access Key 삭제            | `aws iam list-access-keys`                             |
+| 공개 S3 버킷 없음                 | `aws s3api list-buckets` + Public Access Block 확인    |
+| Security Group 0.0.0.0/0 SSH 없음 | `aws ec2 describe-security-groups`                     |
+| CloudTrail 활성화                 | `aws cloudtrail get-trail-status --name org-trail`     |
+| GuardDuty 활성화                  | `aws guardduty list-detectors`                         |
+| Config 규칙 준수 여부             | `aws configservice describe-compliance-by-config-rule` |
 
 [⬆ 목차로 돌아가기](#목차)
 

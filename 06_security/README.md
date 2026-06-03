@@ -12,16 +12,16 @@
 
 ## 1. 문서 목록
 
-| 문서                                                          | 설명                                              |
-|---------------------------------------------------------------|---------------------------------------------------|
-| [DDoS 방어 아키텍처](ddos_defense_architecture.md)           | XDP/nftables/CrowdSec/HAProxy 계층별 방어 전략   |
-| [Linux 서버 보안 강화](linux_hardening.md)                   | sysctl, auditd, 불필요 서비스 제거, umask         |
-| [방화벽 - iptables/nftables](firewall_iptables_nftables.md)  | 체인/규칙, nftables 문법, 실전 룰셋               |
-| [SSH 보안](ssh_security.md)                                   | 키 기반 인증, sshd_config 강화, fail2ban          |
-| [TLS/SSL 가이드](tls_ssl_guide.md)                           | 인증서 구조, Let's Encrypt, openssl, mTLS         |
-| [시크릿 관리](secret_management.md)                          | Ansible Vault, AWS Secrets Manager, Vault 비교    |
-| [AWS 보안](aws_security.md)                                   | IAM, Security Group, WAF, GuardDuty, CloudTrail   |
-| [취약점 스캔](vulnerability_scanning.md)                     | nmap, trivy, lynis, CVE 대응 흐름                 |
+| 문서                                                        | 설명                                            |
+|-------------------------------------------------------------|-------------------------------------------------|
+| [DDoS 방어 아키텍처](ddos_defense_architecture.md)          | XDP/nftables/CrowdSec/HAProxy 계층별 방어 전략  |
+| [Linux 서버 보안 강화](linux_hardening.md)                  | sysctl, auditd, 불필요 서비스 제거, umask       |
+| [방화벽 - iptables/nftables](firewall_iptables_nftables.md) | 체인/규칙, nftables 문법, 실전 룰셋             |
+| [SSH 보안](ssh_security.md)                                 | 키 기반 인증, sshd_config 강화, fail2ban        |
+| [TLS/SSL 가이드](tls_ssl_guide.md)                          | 인증서 구조, Let's Encrypt, openssl, mTLS       |
+| [시크릿 관리](secret_management.md)                         | Ansible Vault, AWS Secrets Manager, Vault 비교  |
+| [AWS 보안](aws_security.md)                                 | IAM, Security Group, WAF, GuardDuty, CloudTrail |
+| [취약점 스캔](vulnerability_scanning.md)                    | nmap, trivy, lynis, CVE 대응 흐름               |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -29,12 +29,12 @@
 
 ## 2. CVE
 
-| 문서 | CVE | 코드네임 | 비고 |
-|------|-----|---------|------|
-| [CVE-2026-31431](01_cve/cve_2026_31431_copy_fail.md) | CVE-2026-31431 | Copy Fail | CISA KEV 🟡 조치기한 2026-05-15 |
-| [CVE-2026-43284](01_cve/cve_2026_43284_dirty_frag.md) | CVE-2026-43284 | Dirty Frag | xfrm/ESP LPE |
-| [CVE-2026-43500](01_cve/cve_2026_43500_dirty_frag.md) | CVE-2026-43500 | Dirty Frag | rxrpc LPE |
-| [LPE 공격 시나리오](01_cve/cve_2026_lpe_attack_scenarios.md) | — | — | 실효성 분석 / 침해 확인 |
+| 문서                                                         | CVE            | 코드네임   | 비고                            |
+|--------------------------------------------------------------|----------------|------------|---------------------------------|
+| [CVE-2026-31431](01_cve/cve_2026_31431_copy_fail.md)         | CVE-2026-31431 | Copy Fail  | CISA KEV 🟡 조치기한 2026-05-15 |
+| [CVE-2026-43284](01_cve/cve_2026_43284_dirty_frag.md)        | CVE-2026-43284 | Dirty Frag | xfrm/ESP LPE                    |
+| [CVE-2026-43500](01_cve/cve_2026_43500_dirty_frag.md)        | CVE-2026-43500 | Dirty Frag | rxrpc LPE                       |
+| [LPE 공격 시나리오](01_cve/cve_2026_lpe_attack_scenarios.md) | —              | —          | 실효성 분석 / 침해 확인         |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -42,17 +42,17 @@
 
 ## 3. 상황별 선택 가이드
 
-| 상황                          | 문서                                                                              |
-|-------------------------------|-----------------------------------------------------------------------------------|
-| 대규모 DDoS 공격 대응         | [DDoS 방어 아키텍처](ddos_defense_architecture.md)                               |
-| 신규 서버 보안 기본 설정      | [Linux 서버 보안 강화](linux_hardening.md)                                       |
-| 방화벽 규칙 작성              | [방화벽 - iptables/nftables](firewall_iptables_nftables.md)                      |
-| SSH 접근 제어 강화            | [SSH 보안](ssh_security.md)                                                       |
-| HTTPS/인증서 설정             | [TLS/SSL 가이드](tls_ssl_guide.md)                                               |
-| 패스워드/키 안전하게 관리     | [시크릿 관리](secret_management.md)                                              |
-| AWS 인프라 보안 점검          | [AWS 보안](aws_security.md)                                                       |
-| 서버/컨테이너 취약점 점검     | [취약점 스캔](vulnerability_scanning.md)                                         |
-| Linux LPE CVE 대응            | [CVE 목록](01_cve/)                                                               |
+| 상황                      | 문서                                                        |
+|---------------------------|-------------------------------------------------------------|
+| 대규모 DDoS 공격 대응     | [DDoS 방어 아키텍처](ddos_defense_architecture.md)          |
+| 신규 서버 보안 기본 설정  | [Linux 서버 보안 강화](linux_hardening.md)                  |
+| 방화벽 규칙 작성          | [방화벽 - iptables/nftables](firewall_iptables_nftables.md) |
+| SSH 접근 제어 강화        | [SSH 보안](ssh_security.md)                                 |
+| HTTPS/인증서 설정         | [TLS/SSL 가이드](tls_ssl_guide.md)                          |
+| 패스워드/키 안전하게 관리 | [시크릿 관리](secret_management.md)                         |
+| AWS 인프라 보안 점검      | [AWS 보안](aws_security.md)                                 |
+| 서버/컨테이너 취약점 점검 | [취약점 스캔](vulnerability_scanning.md)                    |
+| Linux LPE CVE 대응        | [CVE 목록](01_cve/)                                         |
 
 [⬆ 목차로 돌아가기](#목차)
 

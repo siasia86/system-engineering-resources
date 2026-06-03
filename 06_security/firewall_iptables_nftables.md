@@ -121,7 +121,7 @@ sudo nft list ruleset > /etc/nftables.conf
 
 ### 기본 구조
 
-```
+```nft
 table <family> <name> {
     chain <name> {
         type <type> hook <hook> priority <priority>; policy <policy>;
@@ -130,12 +130,12 @@ table <family> <name> {
 }
 ```
 
-| 항목     | 값                                          |
-|----------|---------------------------------------------|
-| family   | `ip` / `ip6` / `inet` (IPv4+IPv6) / `arp`  |
-| type     | `filter` / `nat` / `route`                  |
+| 항목     | 값                                                            |
+|----------|---------------------------------------------------------------|
+| family   | `ip` / `ip6` / `inet` (IPv4+IPv6) / `arp`                     |
+| type     | `filter` / `nat` / `route`                                    |
 | hook     | `prerouting` / `input` / `forward` / `output` / `postrouting` |
-| priority | 숫자 (낮을수록 먼저 처리), `filter`=0       |
+| priority | 숫자 (낮을수록 먼저 처리), `filter`=0                         |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -207,14 +207,14 @@ sudo nft list set inet filter blocklist
 
 ## 5. iptables vs nftables 비교
 
-| 구분             | iptables                        | nftables                          |
-|------------------|---------------------------------|-----------------------------------|
-| IPv4/IPv6        | 별도 명령어 (`ip6tables`)       | `inet` family로 통합              |
-| 성능             | 선형 탐색                       | 해시/집합 기반, 빠름              |
-| 동적 집합        | ipset 별도 설치 필요            | 내장 (`set`, `map`)               |
-| 문법             | 명령어 기반                     | 선언형 설정 파일                  |
-| 커널 지원        | 3.x~                            | 3.13~ (권장 4.x~)                 |
-| 마이그레이션     | -                               | `iptables-translate` 변환 도구    |
+| 구분         | iptables                  | nftables                       |
+|--------------|---------------------------|--------------------------------|
+| IPv4/IPv6    | 별도 명령어 (`ip6tables`) | `inet` family로 통합           |
+| 성능         | 선형 탐색                 | 해시/집합 기반, 빠름           |
+| 동적 집합    | ipset 별도 설치 필요      | 내장 (`set`, `map`)            |
+| 문법         | 명령어 기반               | 선언형 설정 파일               |
+| 커널 지원    | 3.x~                      | 3.13~ (권장 4.x~)              |
+| 마이그레이션 | -                         | `iptables-translate` 변환 도구 |
 
 ```bash
 # iptables 규칙을 nftables 문법으로 변환

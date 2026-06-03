@@ -13,23 +13,23 @@
 AWS Network Firewall은 VPC 수준의 관리형 네트워크 방화벽 서비스입니다.
 Stateful/Stateless 패킷 필터링, IPS(침입 방지), 도메인 필터링을 지원합니다.
 
-| 항목          | 내용                                              |
-|---------------|---------------------------------------------------|
-| 유형          | 관리형 네트워크 방화벽 (L3~L7)                    |
-| 배포 위치     | VPC 내 전용 서브넷 (Firewall Subnet)              |
-| 처리 방식     | Stateless → Stateful 순서로 평가                  |
-| 기본 정책     | 명시적 PASS 없으면 DROP (Default Deny)            |
-| 비활성화      | ❌ 불가 — 삭제 또는 규칙 수정으로 우회            |
+| 항목      | 내용                                   |
+|-----------|----------------------------------------|
+| 유형      | 관리형 네트워크 방화벽 (L3~L7)         |
+| 배포 위치 | VPC 내 전용 서브넷 (Firewall Subnet)   |
+| 처리 방식 | Stateless → Stateful 순서로 평가       |
+| 기본 정책 | 명시적 PASS 없으면 DROP (Default Deny) |
+| 비활성화  | ❌ 불가 — 삭제 또는 규칙 수정으로 우회 |
 
 ### 주요 기능
 
-| 기능                  | 설명                                              |
-|-----------------------|---------------------------------------------------|
-| Stateless 필터링      | 5-tuple 기반 패킷 단위 필터링 (빠름)              |
-| Stateful 필터링       | 연결 상태 추적, Suricata 규칙 지원                |
-| IPS                   | AWS 관리형 위협 시그니처 자동 업데이트            |
-| 도메인 필터링         | FQDN/도메인 기반 아웃바운드 제어                  |
-| TLS 검사              | SSL/TLS 복호화 후 검사 (별도 설정 필요)           |
+| 기능             | 설명                                    |
+|------------------|-----------------------------------------|
+| Stateless 필터링 | 5-tuple 기반 패킷 단위 필터링 (빠름)    |
+| Stateful 필터링  | 연결 상태 추적, Suricata 규칙 지원      |
+| IPS              | AWS 관리형 위협 시그니처 자동 업데이트  |
+| 도메인 필터링    | FQDN/도메인 기반 아웃바운드 제어        |
+| TLS 검사         | SSL/TLS 복호화 후 검사 (별도 설정 필요) |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -63,11 +63,11 @@ Internet Gateway
 
 ### 서브넷 구성 요구사항
 
-| 서브넷 유형      | 용도                              | 권장 크기  |
-|------------------|-----------------------------------|------------|
-| Firewall Subnet  | Firewall Endpoint 전용            | /28 이상   |
-| Public Subnet    | IGW → Firewall 경유 라우팅        | 기존 서브넷 |
-| Private Subnet   | 보호 대상 리소스                  | 기존 서브넷 |
+| 서브넷 유형     | 용도                       | 권장 크기   |
+|-----------------|----------------------------|-------------|
+| Firewall Subnet | Firewall Endpoint 전용     | /28 이상    |
+| Public Subnet   | IGW → Firewall 경유 라우팅 | 기존 서브넷 |
+| Private Subnet  | 보호 대상 리소스           | 기존 서브넷 |
 
 🟡 Firewall Subnet은 AZ당 1개 필요합니다. 멀티 AZ 구성 시 AZ별로 생성합니다.
 
@@ -105,13 +105,13 @@ Network Firewall
     └── Firewall Endpoint (AZ별 생성)
 ```
 
-| 구성 요소             | 설명                                              |
-|-----------------------|---------------------------------------------------|
-| Firewall              | VPC에 연결되는 실제 방화벽 인스턴스               |
-| Firewall Policy       | Rule Group 을 조합한 정책                         |
-| Stateless Rule Group  | 패킷 단위 필터 (PASS / DROP / Forward to Stateful)|
-| Stateful Rule Group   | 연결 추적 기반 필터 (PASS / DROP / ALERT)         |
-| Rule Group            | 재사용 가능한 규칙 묶음 (Policy에 연결)           |
+| 구성 요소            | 설명                                               |
+|----------------------|----------------------------------------------------|
+| Firewall             | VPC에 연결되는 실제 방화벽 인스턴스                |
+| Firewall Policy      | Rule Group 을 조합한 정책                          |
+| Stateless Rule Group | 패킷 단위 필터 (PASS / DROP / Forward to Stateful) |
+| Stateful Rule Group  | 연결 추적 기반 필터 (PASS / DROP / ALERT)          |
+| Rule Group           | 재사용 가능한 규칙 묶음 (Policy에 연결)            |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -228,11 +228,11 @@ aws network-firewall describe-firewall \
 
 ### Stateless 규칙 액션
 
-| 액션                    | 설명                              |
-|-------------------------|-----------------------------------|
-| `aws:pass`              | 허용 (Stateful 검사 생략)         |
-| `aws:drop`              | 차단                              |
-| `aws:forward_to_sfe`    | Stateful 엔진으로 전달            |
+| 액션                 | 설명                      |
+|----------------------|---------------------------|
+| `aws:pass`           | 허용 (Stateful 검사 생략) |
+| `aws:drop`           | 차단                      |
+| `aws:forward_to_sfe` | Stateful 엔진으로 전달    |
 
 ### Stateful 규칙 유형
 
@@ -309,11 +309,11 @@ Stateless Rules (Priority 낮을수록 먼저)
 
 ### 로그 유형
 
-| 로그 유형  | 내용                              | 대상                            |
-|------------|-----------------------------------|---------------------------------|
-| ALERT      | Stateful ALERT 규칙 매칭 트래픽   | CloudWatch Logs / S3 / Firehose |
-| FLOW       | 모든 허용 트래픽 흐름             | CloudWatch Logs / S3 / Firehose |
-| TLS        | TLS 검사 결과                     | CloudWatch Logs / S3 / Firehose |
+| 로그 유형 | 내용                            | 대상                            |
+|-----------|---------------------------------|---------------------------------|
+| ALERT     | Stateful ALERT 규칙 매칭 트래픽 | CloudWatch Logs / S3 / Firehose |
+| FLOW      | 모든 허용 트래픽 흐름           | CloudWatch Logs / S3 / Firehose |
+| TLS       | TLS 검사 결과                   | CloudWatch Logs / S3 / Firehose |
 
 ### 로깅 활성화
 
@@ -376,11 +376,11 @@ aws logs filter-log-events \
 
 별도 규칙 작성 없이 AWS가 관리하는 위협 시그니처를 사용합니다.
 
-| 규칙 그룹                                      | 설명                        |
-|------------------------------------------------|-----------------------------|
-| `AWSManagedRulesCommonRuleSet`                 | 일반 위협 차단              |
-| `AWSManagedRulesThreatIntelligenceRuleSet`     | 알려진 악성 IP 차단         |
-| `AWSManagedRulesBotControlRuleSet`             | 봇 트래픽 차단              |
+| 규칙 그룹                                  | 설명                |
+|--------------------------------------------|---------------------|
+| `AWSManagedRulesCommonRuleSet`             | 일반 위협 차단      |
+| `AWSManagedRulesThreatIntelligenceRuleSet` | 알려진 악성 IP 차단 |
+| `AWSManagedRulesBotControlRuleSet`         | 봇 트래픽 차단      |
 
 ```bash
 # Firewall Policy에 관리형 규칙 추가
@@ -495,12 +495,10 @@ aws logs filter-log-events \
 
 ### Route Table 설정 오류
 
-```
-증상: 트래픽이 Firewall을 경유하지 않음
-원인: Route Table이 Firewall Endpoint가 아닌 IGW/NAT를 직접 가리킴
-해결: 각 서브넷 Route Table의 0.0.0.0/0 → Firewall Endpoint(vpce-xxx)로 수정
-```
+- **증상**: 트래픽이 Firewall을 경유하지 않음
+- **원인**: Route Table이 Firewall Endpoint가 아닌 IGW/NAT를 직접 가리킴
 
+- **해결**: 각 서브넷 Route Table의 0.0.0.0/0 → Firewall Endpoint(vpce-xxx)로 수정
 ### Firewall Endpoint ID 확인
 
 ```bash
@@ -512,11 +510,9 @@ aws network-firewall describe-firewall \
 
 ### 규칙 즉시 적용 안 됨
 
-```
-증상: 규칙 추가 후에도 트래픽 차단/허용 안 됨
-원인: Rule Group 업데이트 후 Policy 반영까지 수십 초 소요
-해결: 1~2분 대기 후 재테스트
-```
+- **증상**: 규칙 추가 후에도 트래픽 차단/허용 안 됨
+- **원인**: Rule Group 업데이트 후 Policy 반영까지 수십 초 소요
+- **해결**: 1~2분 대기 후 재테스트
 
 ### 특정 트래픽만 허용 (Default Deny 환경)
 
