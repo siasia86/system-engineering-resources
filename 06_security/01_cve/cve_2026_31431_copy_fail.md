@@ -13,20 +13,20 @@
 
 > 🟡 **CISA KEV 등재 (조치 기한 2026-05-15 경과)**. 실제 익스플로잇 확인됨. 즉시 패치 필요.
 
-| 항목 | 내용 |
-|------|------|
-| CVE | CVE-2026-31431 |
-| 별칭 | **Copy Fail** |
-| 발견자 | Xint Code (xint.io / copy.fail) |
-| CVSS | 7.8 (HIGH) |
-| 공격 벡터 | LOCAL / LOW privilege / NO interaction |
-| CWE | CWE-669 (Incorrect Resource Transfer Between Spheres) |
-| 컴포넌트 | `crypto/algif_aead` |
-| 발표일 | 2026-04-22 |
-| CISA KEV 등재 | 2026-05-01 |
-| 조치 기한 | **2026-05-15** |
-| PoC | 공개됨 (copy.fail — 732바이트 Python 스크립트) |
-| 영향 | 비권한 로컬 사용자 → root 권한 상승 |
+| 항목          | 내용                                                  |
+|---------------|-------------------------------------------------------|
+| CVE           | CVE-2026-31431                                        |
+| 별칭          | **Copy Fail**                                         |
+| 발견자        | Xint Code (xint.io / copy.fail)                       |
+| CVSS          | 7.8 (HIGH)                                            |
+| 공격 벡터     | LOCAL / LOW privilege / NO interaction                |
+| CWE           | CWE-669 (Incorrect Resource Transfer Between Spheres) |
+| 컴포넌트      | `crypto/algif_aead`                                   |
+| 발표일        | 2026-04-22                                            |
+| CISA KEV 등재 | 2026-05-01                                            |
+| 조치 기한     | **2026-05-15**                                        |
+| PoC           | 공개됨 (copy.fail — 732바이트 Python 스크립트)        |
+| 영향          | 비권한 로컬 사용자 → root 권한 상승                   |
 
 > 동일 버그 클래스(page-cache write): [CVE-2026-43284](./cve_2026_43284_dirty_frag.md) / [CVE-2026-43500](./cve_2026_43500_dirty_frag.md) (**Dirty Frag**, 발견자: Hyunwoo Kim @v4bel) / [CVE-2026-46300](./cve_2026_46300_fragnesia.md) (**Fragnesia**, 발견자: William Bowling)
 > Copy Fail과 Dirty Frag는 **별개 연구자가 독립적으로 발견**한 별개 취약점입니다. 임시 완화 모듈도 다릅니다 (`algif_aead` vs `esp4/esp6/rxrpc`).
@@ -52,15 +52,15 @@ splice() → UDP socket → shared frag pages
 
 **취약 버전:**
 
-| 브랜치 | 취약 범위       | 패치 버전      | RHEL/CentOS          | Ubuntu              | Amazon Linux      |
-|--------|-----------------|----------------|----------------------|---------------------|-------------------|
-| 5.10.x | 4.14 ~ 5.10.253 | **5.10.254+**  | RHEL 8 (백포트 확인) | 20.04 LTS (HWE)     | AL2 (5.10 kernel) |
-| 5.15.x | 5.11 ~ 5.15.203 | **5.15.204+**  | RHEL 9.0~9.2         | 22.04 LTS           | AL2023            |
-| 6.1.x  | 5.16 ~ 6.1.169  | **6.1.170+**   | RHEL 9.3~9.4         | 22.04 LTS (HWE)     | AL2023 (6.1)      |
-| 6.6.x  | 6.2 ~ 6.6.136   | **6.6.137+**   | RHEL 9.5+            | 24.04 LTS           | AL2023 (6.6)      |
-| 6.12.x | 6.7 ~ 6.12.84   | **6.12.85+**   | RHEL 10              | **24.04 LTS** 🟡    | —                 |
-| 6.18.x | 6.13 ~ 6.18.21  | **6.18.22+**   | —                    | 25.04               | —                 |
-| 6.19.x | 6.19 ~ 6.19.11  | **6.19.12+**   | —                    | 25.10 (예정)        | —                 |
+| 브랜치 | 취약 범위       | 패치 버전     | RHEL/CentOS          | Ubuntu           | Amazon Linux      |
+|--------|-----------------|---------------|----------------------|------------------|-------------------|
+| 5.10.x | 4.14 ~ 5.10.253 | **5.10.254+** | RHEL 8 (백포트 확인) | 20.04 LTS (HWE)  | AL2 (5.10 kernel) |
+| 5.15.x | 5.11 ~ 5.15.203 | **5.15.204+** | RHEL 9.0~9.2         | 22.04 LTS        | AL2023            |
+| 6.1.x  | 5.16 ~ 6.1.169  | **6.1.170+**  | RHEL 9.3~9.4         | 22.04 LTS (HWE)  | AL2023 (6.1)      |
+| 6.6.x  | 6.2 ~ 6.6.136   | **6.6.137+**  | RHEL 9.5+            | 24.04 LTS        | AL2023 (6.6)      |
+| 6.12.x | 6.7 ~ 6.12.84   | **6.12.85+**  | RHEL 10              | **24.04 LTS** 🟡 | —                 |
+| 6.18.x | 6.13 ~ 6.18.21  | **6.18.22+**  | —                    | 25.04            | —                 |
+| 6.19.x | 6.19 ~ 6.19.11  | **6.19.12+**  | —                    | 25.10 (예정)     | —                 |
 
 > RHEL/CentOS는 자체 백포트 패치를 적용하므로 upstream 버전과 다릅니다. `rpm -q --changelog kernel | grep CVE-2026-31431` 으로 패치 포함 여부를 직접 확인합니다.
 
@@ -74,13 +74,13 @@ splice() → UDP socket → shared frag pages
 
 테스트 환경: Ubuntu 24.04.4 LTS / kernel `6.8.0-101-generic`
 
-| 항목 | 결과 | 비고 |
-|------|------|------|
-| 커널 버전 | ❌ 취약 | 6.8.0-101 — 6.12.x 브랜치 취약 범위 |
+| 항목                | 결과      | 비고                                   |
+|---------------------|-----------|----------------------------------------|
+| 커널 버전           | ❌ 취약   | 6.8.0-101 — 6.12.x 브랜치 취약 범위    |
 | CVE-2026-31431 패치 | 🟡 미확인 | `algif_aead` blacklist 적용으로 완화됨 |
-| `algif_aead` 모듈 | ✅ 완화 | `/etc/modprobe.d/` blacklist 적용됨 |
-| AppArmor | ✅ 활성 | 완전 차단은 아님, 정책 확인 필요 |
-| SELinux | ❌ 비활성 | Ubuntu 기본값 |
+| `algif_aead` 모듈   | ✅ 완화   | `/etc/modprobe.d/` blacklist 적용됨    |
+| AppArmor            | ✅ 활성   | 완전히 차단하지 않음, 정책 확인 필요   |
+| SELinux             | ❌ 비활성 | Ubuntu 기본값                          |
 
 ### 탐지 명령어
 
@@ -130,8 +130,8 @@ ss -A alg 2>/dev/null | head -10
 lsmod | grep "^algif_aead"
 ```
 
-| 모듈 | 사용 중인 경우 | 언로드 시 영향 |
-|------|--------------|----------------|
+| 모듈         | 사용 중인 경우                       | 언로드 시 영향                      |
+|--------------|--------------------------------------|-------------------------------------|
 | `algif_aead` | OpenSSL / GnuTLS AF_ALG 엔진 사용 중 | 암호화 연산 실패, 애플리케이션 오류 |
 
 **Step 2. 언로드 및 blacklist 등록**
@@ -150,12 +150,12 @@ lsmod | grep "^algif_aead"
 
 ### 배포판별 보안 공지
 
-| 배포판 | 공지 URL |
-|--------|---------|
-| RHEL/CentOS | https://access.redhat.com/security/cve/CVE-2026-31431 |
-| Ubuntu | https://ubuntu.com/security/CVE-2026-31431 |
-| Debian | https://security-tracker.debian.org/tracker/CVE-2026-31431 |
-| Amazon Linux | https://alas.aws.amazon.com/ |
+| 배포판       | 공지 URL                                                   |
+|--------------|------------------------------------------------------------|
+| RHEL/CentOS  | https://access.redhat.com/security/cve/CVE-2026-31431      |
+| Ubuntu       | https://ubuntu.com/security/CVE-2026-31431                 |
+| Debian       | https://security-tracker.debian.org/tracker/CVE-2026-31431 |
+| Amazon Linux | https://alas.aws.amazon.com/                               |
 
 [⬆ 목차로 돌아가기](#목차)
 
