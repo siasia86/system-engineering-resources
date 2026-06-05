@@ -279,3 +279,59 @@ ssh user@host "powershell -Command \"chcp 65001 >nul; <명령어>\""
 
 - `chcp 65001`: Windows 코드 페이지를 UTF-8로 변경
 - `cmd /c` 래핑 필수: PowerShell 단독 실행 시 `>nul` 리다이렉션이 파일로 처리됨
+
+## 19. 파일 치환 후 즉시 검증
+
+`sed`, `python replace`, `str_replace` 등으로 파일 내용을 변경한 후 반드시 아래를 수행합니다.
+
+### 필수 절차
+
+1. **치환 적용 확인**: 변경 대상 행을 `grep` 또는 `sed -n`으로 직접 출력하여 의도대로 변경되었는지 확인
+2. **잔재 확인**: 이전 값이 동일 파일 또는 프로젝트 전체에 남아있지 않은지 `grep -rn "이전값"` 실행
+3. **영향 범위 확인**: 변경 값(IP, 경로, 이름 등)이 다른 파일에도 존재할 경우 프로젝트 전체(`grep -rn`)로 스캔
+
+### 전역 값 변경 시 추가 규칙
+
+IP 주소, 파일 경로, 호스트명 등 **여러 파일에 걸쳐 사용되는 값**을 변경할 때:
+
+```bash
+# 변경 전: 영향받는 파일 전수 파악
+grep -rn "이전값" /프로젝트루트/ | grep -v ".log|.git"
+
+# 변경 후: 잔재 0건 확인
+grep -rn "이전값" /프로젝트루트/ | grep -v ".log|.git"
+```
+
+- 변경 대상 파일을 **먼저 전부 파악**한 뒤 일괄 변경
+- 부분 변경 후 "나머지는 나중에" 패턴 금지 — 한 번에 완료하거나 TODO 명시
+
+### 금지 사항
+
+- 치환 명령 실행 후 결과 확인 없이 다음 작업 진행 ❌
+- `replace()`가 매칭 실패(0건 치환)해도 에러 없이 넘어가는 것을 방치 ❌
+- 동일 값이 여러 파일에 있을 때 일부 파일만 변경하고 나머지를 누락 ❌
+
+### Python replace 안전 패턴
+
+```python
+# ❌ 위험 — 매칭 실패해도 에러 없이 진행
+content = content.replace(old, new)
+
+# ✅ 안전 — 매칭 실패 시 즉시 감지
+if old not in content:
+    print(f"WARNING: '{old[:50]}...' not found in {path}")
+else:
+    content = content.replace(old, new)
+    print(f"✓ replaced in {path}")
+```
+
+### sed 안전 패턴
+
+```bash
+# ❌ 위험 — 매칭 0건이어도 exit 0
+sed -i 's/old/new/g' file.txt
+
+# ✅ 안전 — 변경 여부 확인
+sed -i 's/old/new/g' file.txt
+grep -q "new" file.txt && echo "✓ applied" || echo "⚠️ not found"
+```

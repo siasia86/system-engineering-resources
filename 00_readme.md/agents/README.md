@@ -16,6 +16,7 @@
 | git-manager      | Git 워크플로우 | claude-haiku-4.6   | 커밋/PR 작성 시    |
 | doc-reviewer     | 문서 품질 검사 | claude-sonnet-4.6  | .md 파일 검증 시   |
 | markdown-writer  | 문서 작성      | claude-sonnet-4.6  | 문서 생성/수정 시  |
+| se-lite          | 경량 Q&A       | claude-sonnet-4.6  | 개념/명령어 질문 시 |
 
 ## 호출 패턴
 
