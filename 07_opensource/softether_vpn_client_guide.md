@@ -4,30 +4,32 @@
 
 | 섹션 |
 |------|
-| [1. 개요](#1-개요) / [2. 설치 — Ubuntu](#2-설치--ubuntu) / [3. 설치 — Rocky Linux](#3-설치--rocky-linux) |
+| [1. 개요](#1-개요) / [2. 설치 — Ubuntu](#2-설치-ubuntu) / [3. 설치 — Rocky Linux](#3-설치-rocky-linux) |
 | [4. VPN 연결 설정](#4-vpn-연결-설정) / [5. IP 할당 및 확인](#5-ip-할당-및-확인) / [6. systemd 서비스 등록](#6-systemd-서비스-등록) |
 | [7. 주요 vpncmd 명령어](#7-주요-vpncmd-명령어) / [8. 트러블슈팅](#8-트러블슈팅) |
+
+---
 
 ## 1. 개요
 
 SoftEther VPN은 멀티 프로토콜을 지원하는 오픈소스 VPN 소프트웨어입니다.
 이 문서는 Linux 클라이언트(`vpnclient`) 설치 및 연결 방법을 다룹니다.
 
-| 항목      | 내용                                                        |
-|-----------|-------------------------------------------------------------|
-| 언어      | C                                                           |
-| 라이선스  | Apache 2.0                                                  |
-| 최신 버전 | v4.43-9799-beta (2026-05 기준)                              |
-| GitHub    | https://github.com/SoftEtherVPN/SoftEtherVPN_Stable        |
+| 항목      | 내용                                                |
+|-----------|-----------------------------------------------------|
+| 언어      | C                                                   |
+| 라이선스  | Apache 2.0                                          |
+| 최신 버전 | v4.43-9799-beta (2026-05 기준)                      |
+| GitHub    | https://github.com/SoftEtherVPN/SoftEtherVPN_Stable |
 
 ### 바이너리 종류
 
-| 바이너리    | 역할                  |
-|-------------|-----------------------|
-| `vpnserver` | VPN 서버              |
+| 바이너리    | 역할                     |
+|-------------|--------------------------|
+| `vpnserver` | VPN 서버                 |
 | `vpnclient` | VPN 클라이언트 (본 문서) |
-| `vpnbridge` | 브리지 모드           |
-| `vpncmd`    | CLI 관리 도구         |
+| `vpnbridge` | 브리지 모드              |
+| `vpncmd`    | CLI 관리 도구            |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -122,12 +124,12 @@ VPN Client> NicCreate vpn0
 VPN Client> AccountCreate myconn /SERVER:192.0.2.1:443 /HUB:VPN /USERNAME:Secureuser123 /NICNAME:vpn0
 ```
 
-| 파라미터      | 설명                              |
-|---------------|-----------------------------------|
-| `/SERVER`     | VPN 서버 주소:포트                |
-| `/HUB`        | 연결할 Virtual Hub 이름           |
-| `/USERNAME`   | VPN 계정 사용자명                 |
-| `/NICNAME`    | 연결에 사용할 가상 NIC 이름       |
+| 파라미터    | 설명                        |
+|-------------|-----------------------------|
+| `/SERVER`   | VPN 서버 주소:포트          |
+| `/HUB`      | 연결할 Virtual Hub 이름     |
+| `/USERNAME` | VPN 계정 사용자명           |
+| `/NICNAME`  | 연결에 사용할 가상 NIC 이름 |
 
 ### 패스워드 설정
 
@@ -222,19 +224,19 @@ cd /opt/vpnclient && ./vpncmd
 
 ### 명령어 목록
 
-| 명령어                          | 설명                        |
-|---------------------------------|-----------------------------|
-| `NicCreate <name>`              | 가상 NIC 생성               |
-| `NicList`                       | 가상 NIC 목록               |
-| `NicDelete <name>`              | 가상 NIC 삭제               |
-| `AccountCreate <name> ...`      | VPN 계정 생성               |
-| `AccountList`                   | 계정 목록                   |
-| `AccountGet <name>`             | 계정 상세 확인              |
-| `AccountPasswordSet <name> ...` | 패스워드 설정               |
-| `AccountConnect <name>`         | VPN 연결                    |
-| `AccountDisconnect <name>`      | VPN 연결 해제               |
-| `AccountStatusGet <name>`       | 연결 상태 확인              |
-| `AccountDelete <name>`          | 계정 삭제                   |
+| 명령어                          | 설명           |
+|---------------------------------|----------------|
+| `NicCreate <name>`              | 가상 NIC 생성  |
+| `NicList`                       | 가상 NIC 목록  |
+| `NicDelete <name>`              | 가상 NIC 삭제  |
+| `AccountCreate <name> ...`      | VPN 계정 생성  |
+| `AccountList`                   | 계정 목록      |
+| `AccountGet <name>`             | 계정 상세 확인 |
+| `AccountPasswordSet <name> ...` | 패스워드 설정  |
+| `AccountConnect <name>`         | VPN 연결       |
+| `AccountDisconnect <name>`      | VPN 연결 해제  |
+| `AccountStatusGet <name>`       | 연결 상태 확인 |
+| `AccountDelete <name>`          | 계정 삭제      |
 
 ### 계정 생성 ~ 삭제 전체 흐름
 
@@ -246,13 +248,13 @@ VPN Client> NicCreate vpn0
 
 # 계정 생성 (대화형)
 VPN Client> AccountCreate my_vpn
-Destination VPN Server Host Name and Port Number: mv-live-update.masangsoft.com:80
+Destination VPN Server Host Name and Port Number: vpn.example.com:80
 Destination Virtual HUB Name: VPN
-Connecting User Name: siasia
+Connecting User Name: Secureuser123
 Used Virtual Network Adapter Name: vpn0
 
 # 또는 한 줄로
-VPN Client> AccountCreate my_vpn /SERVER:my-live.com:80 /HUB:VPN /USERNAME:siasia /NICNAME:vpn0
+VPN Client> AccountCreate my_vpn /SERVER:vpn.example.com:80 /HUB:VPN /USERNAME:Secureuser123 /NICNAME:vpn0
 
 # 패스워드 설정 (standard: 일반 / radius: RADIUS+OTP)
 VPN Client> AccountPasswordSet my_vpn /PASSWORD:SecurePassword123456789 /TYPE:radius
@@ -279,7 +281,7 @@ VPN Client> AccountDisconnect my_vpn
 # 삭제 후 재생성
 VPN Client> AccountDisconnect my_vpn
 VPN Client> AccountDelete my_vpn
-VPN Client> AccountCreate my_vpn /SERVER:new-server.example.com:443 /HUB:VPN /USERNAME:sjyun /NICNAME:vpn0
+VPN Client> AccountCreate my_vpn /SERVER:new-server.example.com:443 /HUB:VPN /USERNAME:Secureuser123 /NICNAME:vpn0
 VPN Client> AccountPasswordSet my_vpn /PASSWORD:SecurePassword123456789 /TYPE:radius
 ```
 
@@ -305,7 +307,7 @@ VPN Client> NicDelete vpn0
 ps aux | grep vpnclient
 
 # 로그 확인
-cat /opt/vpnclient/packet_log/
+ls /opt/vpnclient/packet_log/
 ```
 
 ### 가상 NIC 미생성 (vpn_vpn0 없음)
@@ -346,11 +348,11 @@ VPN Client> AccountPasswordSet my_vpn /PASSWORD:SecurePassword123456789 /TYPE:ra
 
 > 예: 고정 패스워드 `SecurePassword123`, OTP `456789` → `SecurePassword123456789`
 
-| 확인 항목     | 내용                                        |
-|---------------|---------------------------------------------|
-| 인증 타입     | `/TYPE:radius`                              |
-| 패스워드 형식 | `고정패스워드` + `OTP 6자리` 연속 입력      |
-| OTP 유효시간  | 30초 — 만료 전 입력 필요                    |
+| 확인 항목     | 내용                                   |
+|---------------|----------------------------------------|
+| 인증 타입     | `/TYPE:radius`                         |
+| 패스워드 형식 | `고정패스워드` + `OTP 6자리` 연속 입력 |
+| OTP 유효시간  | 30초 — 만료 전 입력 필요               |
 
 #### 전체 연결 흐름 (Google OTP 서버 기준)
 
