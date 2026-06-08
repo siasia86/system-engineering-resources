@@ -1,10 +1,5 @@
 # Linux 컨테이너 기술 스택 구조
 
-> **내부 공유 자료**  
-> 작성일: 2026-01-29  
-> 버전: 1.0  
-> 대상: 시스템 엔지니어, SRE
-
 ## 목차
 
 | 섹션 |
@@ -44,11 +39,11 @@
 │   Low-Level Kernel Features                  │
 │  ┌──────────────┐  ┌──────────────────────┐  │
 │  │  Namespaces  │  │     Cgroups          │  │
-│  │ (isolation) │  │  (resource limit)  │  │
+│  │ (isolation)  │  │  (resource limit)    │  │
 │  └──────────────┘  └──────────────────────┘  │
 │  ┌──────────────┐  ┌──────────────────────┐  │
 │  │ Capabilities │  │     Seccomp          │  │
-│  │ (privilege) │  │  (syscall filter)  │  │
+│  │ (privilege)  │  │  (syscall filter)    │  │
 │  └──────────────┘  └──────────────────────┘  │
 └──────────────────────────────────────────────┘
                      v
@@ -201,7 +196,7 @@ CAP_CHOWN:        파일 소유권 변경
 ### LXD/LXC 스택
 
 ```
-사용자
+User
   v
 lxc launch ubuntu:22.04 web  ← LXD (High-level)
   v
@@ -219,7 +214,7 @@ Linux Kernel
 ### Docker 스택
 
 ```
-사용자
+User
   v
 docker run nginx              ← Docker (High-level)
   v
@@ -775,17 +770,17 @@ cat /proc/$PID/gid_map
 ## 7. 추상화 레벨 비교
 
 ```
-High-level (추상화 높음, 사용 쉬움):
+High-level (high abstraction, easy to use):
 ┌──────────────────────────┐
 │  LXD, Docker, Podman     │  ← mainly used by users
 └──────────────────────────┘
 
-Mid-level (중간 추상화):
+Mid-level:
 ┌──────────────────────────┐
 │  LXC, containerd, runc   │  ← used internally by tools
 └──────────────────────────┘
 
-Low-level (추상화 낮음, 직접 사용 어려움):
+Low-level (low abstraction, direct use is complex):
 ┌──────────────────────────┐
 │  Namespaces, Cgroups     │  ← kernel features, used for troubleshooting
 └──────────────────────────┘
@@ -1062,7 +1057,7 @@ Kernel:      Linux Kernel (기반)
 - 문제 발생: Low-level 확인 (Namespace, Cgroup)
 - 최적화: Low-level 조정
 
-**간단히: "위로 갈수록 쉽고, 아래로 갈수록 복잡하지만 강력함"**
+**간단히: "위로 갈수록 쉽고, 아래로 갈수록 복잡하지만 강력합니다."**
 
 ---
 

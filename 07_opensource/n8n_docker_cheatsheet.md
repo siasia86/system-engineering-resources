@@ -7,11 +7,11 @@
 | [1. 컨테이너 관리](#1-컨테이너-관리) |
 | [2. 컨테이너 내부 접속](#2-컨테이너-내부-접속) |
 | [3. 이미지 관리](#3-이미지-관리) |
-| [4. 데이터 초기화 / 볼륨 관리](#4-데이터-초기화--볼륨-관리) |
+| [4. 데이터 초기화 / 볼륨 관리](#4-데이터-초기화-볼륨-관리) |
 | [5. n8n 관리 명령어](#5-n8n-관리-명령어) |
-| [6. n8n 환경 변수 관련 (HTTP / HTTPS)](#6-n8n-환경-변수-관련-http--https) |
+| [6. n8n 환경 변수 관련 (HTTP / HTTPS)](#6-n8n-환경-변수-관련-http-https) |
 | [7. MySQL 연결 확인](#7-mysql-연결-확인) |
-| [8. 전체 초기화 (컨테이너 + 볼륨 + 네트워크)](#8-전체-초기화-컨테이너--볼륨--네트워크) |
+| [8. 전체 초기화 (컨테이너 + 볼륨 + 네트워크)](#8-전체-초기화-컨테이너-볼륨-네트워크) |
 
 ---
 
@@ -97,7 +97,7 @@ environment:
   N8N_HOST: example.com
   N8N_PORT: 5678
   N8N_PROTOCOL: http           # http / https
-  N8N_BASIC_AUTH_ACTIVE: "true"
+  N8N_BASIC_AUTH_ACTIVE: "true"   # deprecated: n8n v1.0+ 이후 User Management로 대체
   N8N_BASIC_AUTH_USER: Secureuser123
   N8N_BASIC_AUTH_PASSWORD: SecurePassword123
   N8N_SECURE_COOKIE: "false"   # HTTP 환경에서는 false, HTTPS 환경에서는 true

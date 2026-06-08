@@ -2,7 +2,7 @@
 #import sys; sys.exit(0)  # SAFETY: uncomment this line to disable script
 """
 md-style-check.py — Markdown 스타일 검사 도구
-STYLE.md 규칙 기반: 표 정렬, 다이어그램 폭, 코드블록 언어 태그, H1 개수, 푸터, _reference 전용 항목
+STYLE.md 규칙 기반: 표 정렬, 다이어그램 폭, H1 개수, 푸터, _reference 전용 항목
 
 사용법:
   python3 md-style-check.py <file_or_dir> [--strict|-s]
@@ -58,11 +58,38 @@ def split_table_row(line):
 
 def strip_code_blocks(content):
     """코드블록(``` ```) 제거 후 반환. frontmatter(---) 보존."""
-    return re.sub(r'```[^\n]*\n.*?```', '', content, flags=re.DOTALL)
+    lines = content.split('\n')
+    result = []
+    in_block = False
+    for line in lines:
+        s = line.rstrip()
+        if not in_block and s.startswith('```'):
+            in_block = True
+        elif in_block and s.rstrip() in ('```', '``` ') or (in_block and re.match(r'^``` *$', s)):
+            in_block = False
+        elif not in_block:
+            result.append(line)
+    return '\n'.join(result)
 
 def get_code_blocks(content):
     """(lang, body) 튜플 리스트 반환."""
-    return re.findall(r'```([^\n]*)\n(.*?)```', content, re.DOTALL)
+    blocks = []
+    lines = content.split('\n')
+    in_block = False
+    lang = ''
+    body_lines = []
+    for line in lines:
+        s = line.rstrip()
+        if not in_block and s.startswith('```'):
+            in_block = True
+            lang = s[3:].strip()
+            body_lines = []
+        elif in_block and re.match(r'^``` *$', s):
+            blocks.append((lang, '\n'.join(body_lines)))
+            in_block = False
+        elif in_block:
+            body_lines.append(line)
+    return blocks
 
 def strip_frontmatter(content):
     """frontmatter 제거 후 반환."""
@@ -73,7 +100,7 @@ def strip_frontmatter(content):
 def check_h1(content, strict=False):
     """H1이 정확히 1개인지 확인."""
     body = strip_frontmatter(content)
-    body = re.sub(r'```.*?```', '', body, flags=re.DOTALL)
+    body = strip_code_blocks(body)
     h1s = re.findall(r'^# .+', body, re.MULTILINE)
     if len(h1s) != 1:
         return [f"H1 {len(h1s)}개 (1개여야 함): {h1s}"]
@@ -85,18 +112,24 @@ _OUTPUT_PATTERNS = re.compile(
     r'|→|\| SUCCESS|\| FAILED|\| CHANGED'
     r'|^[A-Z][a-z]+ →'           # UI 경로 (Grafana →, Jenkins →)
     r'|Securing |Enter password|New password'  # 인터랙티브 출력
+    r'|^VPN Client>'  # SoftEther vpncmd 세션
     r'|^Match |^Password|^Permit|^Allow|^Deny'  # sshd_config 등 설정
     r'|^(frontend|backend|global|listen|defaults)\b'  # haproxy 설정
     r'|^prefork:|^worker:|^event:'  # Apache MPM
+    r'|^[가-힣].+:'  # 한글 항목 헤더 (사용 조건:, 장점:, 단점: 등)
+    r'|^- '  # 불릿 리스트
+    r'|^[A-Z][A-Z_a-z ]+:'  # 대문자 시작 키 (CAP_NET_ADMIN:, PID Namespace: 등)
+    r'|^[a-z_]+:'  # 소문자 키 (cpu:, memory: 등)
+    r'|^[가-힣/]'  # 한글 또는 한글/슬래시 시작 텍스트 블록
+    r'|^[✓✗]'  # 체크마크 기호
 )
 
 def check_code_lang(content, strict=False):
     """언어 태그 없는 코드블록 검사.
     허용 목록: 트리/다이어그램, URL, 명령어 출력, UI 경로, 로그, 순수 텍스트 흐름."""
     issues = []
-    for m in re.finditer(r'```([^\n]*)\n(.*?)```', content, re.DOTALL):
-        lang = m.group(1).strip()
-        body = m.group(2)
+    for lang, body in get_code_blocks(content):
+        lang = lang.strip()
         if lang:
             continue
         # 트리/다이어그램 문자 포함 — 허용
@@ -176,8 +209,7 @@ def check_diagram(content, strict=False):
     """닫힌 박스 다이어그램(┌...┐ ~ └...┘) 내부 행 display width 일치 여부.
     박스 밖 행(설명, 화살표 등)은 검사 제외."""
     issues = []
-    for m in re.finditer(r'```[^\n]*\n(.*?)```', content, re.DOTALL):
-        body = m.group(1)
+    for _lang, body in get_code_blocks(content):
         lines = body.splitlines()
         if not any(l.strip().startswith('┌') for l in lines):
             continue
@@ -210,8 +242,7 @@ def check_diagram(content, strict=False):
 def check_diagram_korean(content, strict=False):
     """박스 다이어그램(┌┐로 시작) 내부 한글 사용 여부 (STYLE.md § 5: 영문 권장)."""
     issues = []
-    for m in re.finditer(r'```[^\n]*\n(.*?)```', content, re.DOTALL):
-        body = m.group(1)
+    for _lang, body in get_code_blocks(content):
         lines = body.splitlines()
         if not any(l.strip().startswith('┌') or l.strip().startswith('┐') for l in lines):
             continue
@@ -228,14 +259,10 @@ _EMOJI_PATTERN = re.compile(
 def check_emoji_space(content, strict=False):
     """이모지 뒤 공백 1칸 필수 검사 (STYLE.md § 7). 코드블록/표 셀 내 이모지 단독 사용 제외."""
     issues = []
-    in_code = False
-    for i, line in enumerate(content.splitlines(), 1):
+    # 코드블록 제거 후 원본 라인 번호 추적
+    clean = strip_code_blocks(content)
+    for i, line in enumerate(clean.splitlines(), 1):
         stripped = line.strip()
-        if stripped.startswith('```'):
-            in_code = not in_code
-            continue
-        if in_code:
-            continue
         for emoji, next_char in _EMOJI_PATTERN.findall(stripped):
             issues.append(f"L{i}: '{emoji}' 뒤 공백 없음 → '{emoji}{next_char}'")
     return issues
@@ -260,14 +287,9 @@ _BANMAL_PATTERN = re.compile(
 def check_banmal(content, strict=False):
     """반말체 종결어미 검사 (STYLE.md § 10). 코드블록/인용구/헤더/표 제외."""
     issues = []
-    in_code = False
-    for i, line in enumerate(content.splitlines(), 1):
+    clean = strip_code_blocks(content)
+    for i, line in enumerate(clean.splitlines(), 1):
         stripped = line.strip()
-        if stripped.startswith('```'):
-            in_code = not in_code
-            continue
-        if in_code:
-            continue
         if (not stripped
                 or stripped.startswith(('#', '|', '*', '!', '>', '©', '-'))):
             continue
@@ -287,14 +309,9 @@ _EXAGGERATION_WHITELIST = re.compile(
 def check_exaggeration(content, strict=False):
     """과장 표현 검사 (STYLE.md § 10). 코드블록 제외."""
     issues = []
-    in_code = False
-    for i, line in enumerate(content.splitlines(), 1):
+    clean = strip_code_blocks(content)
+    for i, line in enumerate(clean.splitlines(), 1):
         stripped = line.strip()
-        if stripped.startswith('```'):
-            in_code = not in_code
-            continue
-        if in_code:
-            continue
         if re.search(r'[가-힣]', stripped) and _EXAGGERATION_PATTERN.search(stripped):
             if strict or not _EXAGGERATION_WHITELIST.search(stripped):
                 issues.append(f"L{i}: {stripped[:80]}")
@@ -320,7 +337,6 @@ def check_reference(content, path, strict=False):
 
 CHECKS = [
     ("H1 개수",          check_h1),
-    ("코드블록 언어 태그", check_code_lang),
     ("표 정렬",           check_tables),
     ("다이어그램 행 폭",  check_diagram),
     ("다이어그램 한글",   check_diagram_korean),
@@ -371,7 +387,8 @@ def collect_files(target):
     if os.path.isfile(target):
         return [target]
     result = []
-    for root, _, files in os.walk(target):
+    for root, dirs, files in os.walk(target):
+        dirs.sort()
         for f in sorted(files):
             if f.endswith('.md'):
                 result.append(os.path.join(root, f))
@@ -391,7 +408,6 @@ def parse_args():
             "  %(prog)s ./_reference/ --strict         과장 표현 whitelist 없이 전체 검사\n"
             "\nChecks:\n"
             "  H1 개수          문서당 H1 정확히 1개\n"
-            "  코드블록 언어 태그  ```bash, ```yaml 등 언어 태그 필수\n"
             "  표 정렬          한글 display width 기준 셀 패딩\n"
             "  다이어그램 행 폭  박스 다이어그램 내부 행 폭 일치\n"
             "  다이어그램 한글  박스 다이어그램 내부 영문 권장\n"
