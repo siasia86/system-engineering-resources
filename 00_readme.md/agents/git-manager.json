@@ -17,7 +17,8 @@
   ],
   "resources": [
     "skill://git-commit-rule",
-    "skill://work-rules"
+    "skill://work-rules",
+    "skill://kiro-lock"
   ],
   "hooks": {
     "preToolUse": [
