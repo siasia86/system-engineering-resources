@@ -80,3 +80,20 @@ When permission error occurs creating `.kiro-lock`:
 When orchestrator (system-engineer) holds the lock and invokes sub-agents via delegate:
 - Sub-agents do not re-check the lock (already acquired)
 - Lock release is performed by orchestrator upon final work completion
+
+## 7. Hook on/off
+
+The preToolUse hook (`~/.kiro/hooks/kiro-lock.sh`) can be toggled without editing agent JSON.
+
+```bash
+# off
+touch ~/.kiro/hooks/kiro-lock.disabled
+
+# on
+rm ~/.kiro/hooks/kiro-lock.disabled
+
+# status
+ls ~/.kiro/hooks/kiro-lock.disabled 2>/dev/null && echo "OFF" || echo "ON"
+```
+
+When disabled, the hook exits immediately (exit 0) — manual lock checks in SKILL.md §1–3 still apply.

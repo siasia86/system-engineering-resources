@@ -7,32 +7,32 @@ description: Documents security masking tools (ip_mask.py, json_mask.py, aws-sec
 
 ## 1. Script list
 
-| File | Purpose | Target |
-|------|---------|--------|
-| `/root/sj_del/ip_mask.py` | Public IP → RFC 5737 | All text files |
-| `/root/sj_del/json_mask.py` | AWS resource masking (18 types) | `.json` files |
-| `/root/sj_del/aws-security-check.sh` | AWS sensitive data detection (9 types) | Directory scan |
-| `/root/sj_del/git-security-check.sh` | Pre-commit security check (5 types) | Git staged files |
-| `/root/sj_del/md-style-check.sh` | Markdown style check | `.md` files |
-| `/root/sj_del/security-check.conf` | Shared config for bash scripts | conf |
+| File                                 | Purpose                                | Target           |
+|--------------------------------------|----------------------------------------|------------------|
+| `/root/sj_del/ip_mask.py`            | Public IP → RFC 5737                   | All text files   |
+| `/root/sj_del/json_mask.py`          | AWS resource masking (18 types)        | `.json` files    |
+| `/root/sj_del/aws-security-check.sh` | AWS sensitive data detection (9 types) | Directory scan   |
+| `/root/sj_del/git-security-check.sh` | Pre-commit security check (5 types)    | Git staged files |
+| `/root/sj_del/md-style-check.sh`     | Markdown style check                   | `.md` files      |
+| `/root/sj_del/security-check.conf`   | Shared config for bash scripts         | conf             |
 
 ## 2. Common option scheme (ip_mask.py / json_mask.py)
 
-| Option | Description |
-|--------|-------------|
-| `-f` / `--file` | Single file target |
-| `-D` / `--dir` | Recursive directory processing |
-| `-r` / `--restore` | Restore original |
-| `-d` / `--dry-run` | No file modification, preview only |
-| `-v` / `--verbose` | Show changed lines in detail |
-| `--all` | Include skipped files in output (ip_mask.py) |
-| `--force` | Ignore serial mismatch |
-| `-V` / `--version` | Print version |
-| `-i` / `--include` | Include extension filter |
-| `-e` / `--exclude` | Exclude extension filter |
-| `-q` / `--quiet` | Minimize log output |
-| `-m` / `--map` | Specify map file path directly |
-| `--debug` | Pattern debugging (json_mask.py only) |
+| Option             | Description                                  |
+|--------------------|----------------------------------------------|
+| `-f` / `--file`    | Single file target                           |
+| `-D` / `--dir`     | Recursive directory processing               |
+| `-r` / `--restore` | Restore original                             |
+| `-d` / `--dry-run` | No file modification, preview only           |
+| `-v` / `--verbose` | Show changed lines in detail                 |
+| `--all`            | Include skipped files in output (ip_mask.py) |
+| `--force`          | Ignore serial mismatch                       |
+| `-V` / `--version` | Print version                                |
+| `-i` / `--include` | Include extension filter                     |
+| `-e` / `--exclude` | Exclude extension filter                     |
+| `-q` / `--quiet`   | Minimize log output                          |
+| `-m` / `--map`     | Specify map file path directly               |
+| `--debug`          | Pattern debugging (json_mask.py only)        |
 
 ## 3. Design principles
 
@@ -46,13 +46,13 @@ description: Documents security masking tools (ip_mask.py, json_mask.py, aws-sec
 
 ## 4. Color rules
 
-| Color | Usage |
-|-------|-------|
-| Red | mask filename, masked count |
-| Purple | restore filename, backup path |
-| Yellow | skip/warning, pre-change IP |
-| Green | post-change IP, restored count |
-| Gray | line numbers (`L1`, `L2`) |
+| Color  | Usage                          |
+|--------|--------------------------------|
+| Red    | mask filename, masked count    |
+| Purple | restore filename, backup path  |
+| Yellow | skip/warning, pre-change IP    |
+| Green  | post-change IP, restored count |
+| Gray   | line numbers (`L1`, `L2`)      |
 
 ## 5. ip_mask.py details
 

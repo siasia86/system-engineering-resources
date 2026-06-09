@@ -56,12 +56,12 @@ For any range [min, max], always test:
 
 ## Test Type Selection
 
-| Request | Test Type |
-|---------|-----------|
-| Function/class | Unit test (BVA + EP) |
-| Module integration | Integration test |
-| Bug fix | Regression test (reproduce bug) |
-| API endpoint | Integration + status code |
+| Request            | Test Type                       |
+|--------------------|---------------------------------|
+| Function/class     | Unit test (BVA + EP)            |
+| Module integration | Integration test                |
+| Bug fix            | Regression test (reproduce bug) |
+| API endpoint       | Integration + status code       |
 
 ## Checklist (every test)
 - [ ] Happy path
@@ -72,15 +72,15 @@ For any range [min, max], always test:
 
 ## Infrastructure Testing
 
-| 대상 | 검증 명령어 |
-|------|-------------|
-| Terraform syntax | `terraform validate` |
-| Terraform format | `terraform fmt -check` |
-| Terraform plan | `terraform plan` (No unexpected changes) |
-| Ansible syntax | `ansible-playbook --syntax-check` |
-| Ansible dry-run | `ansible-playbook --check --diff` |
-| Shell scripts | `shellcheck <script>.sh` |
-| Shell syntax | `bash -n <script>.sh` |
+| 대상             | 검증 명령어                              |
+|------------------|------------------------------------------|
+| Terraform syntax | `terraform validate`                     |
+| Terraform format | `terraform fmt -check`                   |
+| Terraform plan   | `terraform plan` (No unexpected changes) |
+| Ansible syntax   | `ansible-playbook --syntax-check`        |
+| Ansible dry-run  | `ansible-playbook --check --diff`        |
+| Shell scripts    | `shellcheck <script>.sh`                 |
+| Shell syntax     | `bash -n <script>.sh`                    |
 
 ### IaC Test Principles
 - `terraform plan` before every apply
@@ -91,13 +91,13 @@ For any range [min, max], always test:
 
 ### Container / Docker Testing
 
-| 대상 | 검증 명령어 |
-|------|-------------|
-| Dockerfile lint | `hadolint Dockerfile` |
-| Image build | `docker build --no-cache -t test .` |
-| Container health | `docker inspect --format='{{.State.Health.Status}}'` |
-| Compose syntax | `docker compose config` |
-| Port binding | `ss -tlnp \| grep <port>` |
+| 대상             | 검증 명령어                                          |              |
+|------------------|------------------------------------------------------|--------------|
+| Dockerfile lint  | `hadolint Dockerfile`                                |              |
+| Image build      | `docker build --no-cache -t test .`                  |              |
+| Container health | `docker inspect --format='{{.State.Health.Status}}'` |              |
+| Compose syntax   | `docker compose config`                              |              |
+| Port binding     | `ss -tlnp \                                          | grep <port>` |
 
 ### Post-Change Verification Pattern
 
