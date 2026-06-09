@@ -18,7 +18,8 @@
   "resources": [
     "skill://md-link-check",
     "file://~/.kiro/markdown/STYLE.md",
-    "skill://work-rules"
+    "skill://work-rules",
+    "skill://kiro-lock"
   ],
   "hooks": {
     "preToolUse": [

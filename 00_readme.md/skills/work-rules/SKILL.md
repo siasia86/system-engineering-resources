@@ -335,3 +335,8 @@ sed -i 's/old/new/g' file.txt
 sed -i 's/old/new/g' file.txt
 grep -q "new" file.txt && echo "✓ applied" || echo "⚠️ not found"
 ```
+
+## 20. Kiro Lock (동시 작업 방지)
+
+파일 수정 작업 전 반드시 `skill://kiro-lock` 절차를 수행합니다.
+Lock을 획득하지 못하면 어떤 파일도 수정하지 않습니다.
