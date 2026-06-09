@@ -65,21 +65,21 @@ ASSUMPTIONS:
 
 ## 리소스 목록
 
-| 리소스              | 이름 규칙                    | 수량 |
-|---------------------|------------------------------|------|
-| VPC                 | prd-vpc-main                 | 1    |
-| Subnet (Private)    | prd-subnet-private-{az}      | 2    |
-| Security Group      | prd-sg-{service}             | N    |
+| 리소스           | 이름 규칙               | 수량 |
+|------------------|-------------------------|------|
+| VPC              | prd-vpc-main            | 1    |
+| Subnet (Private) | prd-subnet-private-{az} | 2    |
+| Security Group   | prd-sg-{service}        | N    |
 
 ## 네트워크 설계
 
-| CIDR            | 용도              | AZ   |
-|-----------------|-------------------|------|
-| 10.0.0.0/16     | VPC               | -    |
-| 10.0.1.0/24     | Public Subnet     | 2a   |
-| 10.0.2.0/24     | Public Subnet     | 2c   |
-| 10.0.11.0/24    | Private Subnet    | 2a   |
-| 10.0.12.0/24    | Private Subnet    | 2c   |
+| CIDR         | 용도           | AZ |
+|--------------|----------------|----|
+| 10.0.0.0/16  | VPC            | -  |
+| 10.0.1.0/24  | Public Subnet  | 2a |
+| 10.0.2.0/24  | Public Subnet  | 2c |
+| 10.0.11.0/24 | Private Subnet | 2a |
+| 10.0.12.0/24 | Private Subnet | 2c |
 
 ## 보안 요구사항
 - [ ] 최소 권한 원칙 (IAM)
@@ -129,12 +129,12 @@ Terraform/AWS가 아닌 Ansible role/playbook 설계 시 사용합니다.
 
 ## 대상 환경
 
-| 항목          | 내용                                      |
-|---------------|-------------------------------------------|
-| 대상 OS       | Ubuntu 22/24, Rocky 9, AmazonLinux 2023   |
-| 연결 방식     | SSH / docker / winrm                      |
-| 권한 상승     | become: true (sudo/runas)                 |
-| Ansible 버전  | 2.15+                                     |
+| 항목         | 내용                                    |
+|--------------|-----------------------------------------|
+| 대상 OS      | Ubuntu 22/24, Rocky 9, AmazonLinux 2023 |
+| 연결 방식    | SSH / docker / winrm                    |
+| 권한 상승    | become: true (sudo/runas)               |
+| Ansible 버전 | 2.15+                                   |
 
 ## Inventory 구조
 
@@ -161,20 +161,20 @@ Terraform/AWS가 아닌 Ansible role/playbook 설계 시 사용합니다.
 
 ## 멱등성 보장 계획
 
-| Task | 멱등성 방법 |
-|------|-------------|
-| 패키지 설치 | `state: present` |
-| 파일 생성 | `creates:` 또는 `stat` 선행 체크 |
-| 서비스 시작 | `state: started` |
-| 설정 변경 | `lineinfile` / `template` |
+| Task        | 멱등성 방법                      |
+|-------------|----------------------------------|
+| 패키지 설치 | `state: present`                 |
+| 파일 생성   | `creates:` 또는 `stat` 선행 체크 |
+| 서비스 시작 | `state: started`                 |
+| 설정 변경   | `lineinfile` / `template`        |
 
 ## OS별 분기 계획
 
-| 작업 | Debian | RedHat |
-|------|--------|--------|
-| 패키지 | `apt` | `dnf`/`yum` |
-| 서비스명 | `ssh` | `sshd` |
-| 그룹 | `sudo` | `wheel` |
+| 작업     | Debian | RedHat      |
+|----------|--------|-------------|
+| 패키지   | `apt`  | `dnf`/`yum` |
+| 서비스명 | `ssh`  | `sshd`      |
+| 그룹     | `sudo` | `wheel`     |
 
 ## 시크릿 관리
 - vault 암호화 대상: [목록]
@@ -224,12 +224,12 @@ Terraform/AWS가 아닌 Ansible role/playbook 설계 시 사용합니다.
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
-| "간단한 변경이라 스펙 불필요합니다" | 간단해도 블래스트 레디어스와 롤백 계획은 필요합니다. |
-| "코드 먼저 작성하고 문서화하겠습니다" | 그건 문서화이지 스펙이 아닙니다. 스펙의 가치는 사전 합의입니다. |
-| "요구사항이 바뀔 텐데 스펙을 왜 씁니까" | 바뀌면 스펙을 업데이트합니다. 없는 것보다 낫습니다. |
-| "시간이 없습니다" | 15분 스펙이 수 시간 장애 복구를 방지합니다. |
+| Rationalization                         | Reality                                                         |
+|-----------------------------------------|-----------------------------------------------------------------|
+| "간단한 변경이라 스펙 불필요합니다"     | 간단해도 블래스트 레디어스와 롤백 계획은 필요합니다.            |
+| "코드 먼저 작성하고 문서화하겠습니다"   | 그건 문서화이지 스펙이 아닙니다. 스펙의 가치는 사전 합의입니다. |
+| "요구사항이 바뀔 텐데 스펙을 왜 씁니까" | 바뀌면 스펙을 업데이트합니다. 없는 것보다 낫습니다.             |
+| "시간이 없습니다"                       | 15분 스펙이 수 시간 장애 복구를 방지합니다.                     |
 
 ## Red Flags
 
