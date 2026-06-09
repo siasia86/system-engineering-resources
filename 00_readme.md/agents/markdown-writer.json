@@ -25,6 +25,7 @@
   ],
   "resources": [
     "skill://work-rules",
+    "skill://kiro-lock",
     "skill://readme-template",
     "skill://git-commit-rule",
     "skill://md-link-check",

@@ -24,6 +24,7 @@
   ],
   "resources": [
     "skill://work-rules",
+    "skill://kiro-lock",
     "skill://using-skills",
     "skill://readme-template",
     "skill://security-tools",
