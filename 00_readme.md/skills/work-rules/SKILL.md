@@ -152,7 +152,7 @@ When **creating new** or **significantly modifying** a tech-related `.md` file:
    - Latest version check: `curl -s "https://api.github.com/repos/<owner>/<repo>/releases/latest"`
 4. After creation → add entry to `_reference/INDEX.md` table in this format:
    ```
-   | {tech} | `_reference/{tech}_official_notes.md` | {latest_version} | {today_date} |
+|  | {tech} | `_reference/{tech}_official_notes.md` | {latest_version} | {today_date} |
    ```
 5. Write `.md` referencing the `_reference` file
 

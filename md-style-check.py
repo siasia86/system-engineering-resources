@@ -349,6 +349,8 @@ CHECKS = [
 
 # _reference 파일은 푸터 불필요
 REFERENCE_SKIP = {"푸터"}
+# .kiro 내부 문서는 푸터 불필요
+KIRO_SKIP = {"푸터"}
 # INDEX.md는 _reference 규칙 적용 제외
 INDEX_SKIP = {"_reference 규칙"}
 
@@ -363,11 +365,14 @@ def check_file(path, strict=False):
         return [("파일 읽기", f"실패: {e}")]
 
     is_reference = '_reference' in path
+    is_kiro = '.kiro' in path
     is_index = os.path.basename(path) == 'INDEX.md'
     all_issues = []
 
     for name, fn in CHECKS:
         if is_reference and name in REFERENCE_SKIP:
+            continue
+        if is_kiro and name in KIRO_SKIP:
             continue
         if is_index and name in INDEX_SKIP:
             continue

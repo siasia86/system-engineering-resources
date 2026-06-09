@@ -54,3 +54,4 @@ __pycache__/
 *.map.ip.json*
 
 
+.kiro-lock

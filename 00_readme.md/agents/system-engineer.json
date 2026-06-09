@@ -36,10 +36,21 @@
     "skill://doubt-driven-infra",
     "skill://shipping-checklist",
     "file://~/.kiro/markdown/STYLE.md",
-    "file:///root/32_system-engineering-resources/_reference/INDEX.md"
+    "file:///root/32_system-engineering-resources/_reference/INDEX.md",
+    "skill://bash-script-template",
+    "skill://python-script-template",
+    "skill://testing-guide",
+    "skill://code-review",
+    "skill://git-commit-rule"
   ],
   "hooks": {
     "preToolUse": [
+      {
+        "command": "~/.kiro/hooks/kiro-lock.sh",
+        "tools": [
+          "fs_write"
+        ]
+      },
       {
         "command": "echo \"[$(date +%H:%M:%S)] tool=$TOOL_NAME\" >> /tmp/kiro-infra-audit.log && [ -n \"$TOOL_INPUT_path\" ] && [ -f \"$TOOL_INPUT_path\" ] && cp \"$TOOL_INPUT_path\" \"/tmp/kiro-diff-before\" || true",
         "tools": [
