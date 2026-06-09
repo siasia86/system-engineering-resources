@@ -128,115 +128,115 @@ When editing code:
 - Do not remove pre-existing dead code — mention it instead
 - Do not refactor adjacent code that isn't broken
 
-## 15. _reference 디렉토리 규칙
+## 15. _reference directory rules
 
-`/root/32_system-engineering-resources/_reference/` 는 **공식 홈페이지 기반 참조 노트 전용** 디렉토리입니다.
+`/root/32_system-engineering-resources/_reference/` is **official-homepage-based reference notes only** directory.
 
-### 저장 대상
-- 공식 문서에서 수집한 권장 설정, deprecated/removed 항목, breaking changes, 버전 현황
-- 반드시 공식 홈페이지(docs.*, official blog, GitHub release notes)를 직접 확인한 내용만 저장
-- 개인 의견, 추정, 블로그 내용 혼입 금지
+### Storage targets
+- Recommended settings, deprecated/removed items, breaking changes, version status collected from official docs
+- Only store content directly verified from official homepage (docs.*, official blog, GitHub release notes)
+- No personal opinions, guesses, or blog content allowed
 
-### 파일명 규칙
-`{기술명}_official_notes.md` (예: `docker_official_notes.md`, `ansible_official_notes.md`)
+### Filename convention
+`{tech}_official_notes.md` (e.g., `docker_official_notes.md`, `ansible_official_notes.md`)
 
-### .md 작성 전 필수 절차
+### Mandatory procedure before writing .md
 
-기술 관련 `.md` 파일을 **새로 작성**하거나 **기존 파일을 대폭 수정**할 때:
+When **creating new** or **significantly modifying** a tech-related `.md` file:
 
-1. `_reference/INDEX.md` 확인 — 해당 기술 참조 파일 존재 여부 확인
-2. 있으면 → 해당 파일 직접 읽기 (`last_checked` 날짜 확인, 6개월 이상 경과 시 재확인)
-3. 없으면 → 공식 홈페이지를 아래 방법으로 스캔 후 **먼저 생성** (`.md` 작성 전에)
-   - 일반 페이지: `lynx -dump <URL>`
-   - JS 렌더링 페이지: `curl` + GitHub API / PyPI API / raw.githubusercontent.com 직접 호출
-   - 최신 버전 확인: `curl -s "https://api.github.com/repos/<owner>/<repo>/releases/latest"`
-4. 생성 후 → `_reference/INDEX.md` 테이블에 아래 형식으로 항목 추가:
+1. Check `_reference/INDEX.md` — verify if reference file exists for that technology
+2. If exists → read the file directly (check `last_checked` date, re-verify if older than 6 months)
+3. If not exists → scan official homepage using methods below, then **create reference first** (before writing `.md`)
+   - Regular pages: `lynx -dump <URL>`
+   - JS-rendered pages: `curl` + GitHub API / PyPI API / raw.githubusercontent.com direct call
+   - Latest version check: `curl -s "https://api.github.com/repos/<owner>/<repo>/releases/latest"`
+4. After creation → add entry to `_reference/INDEX.md` table in this format:
    ```
-   | {기술명} | `_reference/{기술명}_official_notes.md` | {최신버전} | {오늘날짜} |
+   | {tech} | `_reference/{tech}_official_notes.md` | {latest_version} | {today_date} |
    ```
-5. `_reference` 파일을 참조하여 `.md` 작성
+5. Write `.md` referencing the `_reference` file
 
-🟡 **순서 엄수**: `_reference` 생성 → INDEX 업데이트 → `.md` 작성. 역순 금지.
+🟡 **Strict order**: create `_reference` → update INDEX → write `.md`. Reverse order prohibited.
 
-### _reference 파일 구조
+### _reference file structure
 
 ```markdown
 ---
-name: {기술명}-official-notes
+name: {tech}-official-notes
 last_checked: YYYY-MM-DD
 sources:
-  - https://공식URL
+  - https://official-URL
 ---
 
-## 1. 버전 현황
-## 2. 권장 설정
+## 1. Version status
+## 2. Recommended settings
 ## 3. deprecated / removed
 ## 4. breaking changes
-## 5. 보안 권장사항
+## 5. Security recommendations
 ```
 
-🟡 agent resources에는 `INDEX.md`만 등록. 개별 파일은 필요 시 직접 읽기 (context window 절약)
+🟡 Register only `INDEX.md` in agent resources. Read individual files on demand (context window savings)
 
-## 16. _reference 작성 후 교차 검증 의무
+## 16. _reference post-write cross-verification obligation
 
-`_reference/` 파일을 **신규 생성하거나 내용을 추가**한 경우, 반드시 아래 절차를 수행합니다.
+When **creating new or adding content** to `_reference/` files, the following procedure is mandatory.
 
-### 검증 절차
+### Verification procedure
 
-1. **버전 정보**: GitHub API 또는 PyPI API로 실제 최신 버전 재확인
+1. **Version info**: Re-verify actual latest version via GitHub API or PyPI API
    ```bash
    curl -s "https://api.github.com/repos/<owner>/<repo>/releases/latest" | python3 -c "import sys,json; print(json.load(sys.stdin)['tag_name'])"
    curl -s "https://pypi.org/pypi/<package>/json" | python3 -c "import sys,json; print(json.load(sys.stdin)['info']['version'])"
    ```
-2. **기능/개념 설명**: 공식 문서 URL을 직접 열어 해당 내용이 실제로 존재하는지 확인
-3. **의심 항목 표시**: 공식 문서에서 확인하지 못한 내용은 작성하지 않거나, 주석으로 `# 미확인 — 검증 필요` 표시
+2. **Feature/concept descriptions**: Open official doc URL directly to confirm content actually exists
+3. **Suspicious items**: Do not write content unverifiable from official docs, or mark with comment `# unverified — needs verification`
 
-### 금지 사항
+### Prohibited
 
-- 기억이나 추론으로 작성한 내용을 공식 문서 기반인 것처럼 저장 ❌
-- 블로그, Stack Overflow, 비공식 튜토리얼 내용 혼입 ❌
-- 공식 문서에 없는 기능명·파라미터명 사용 ❌
+- Writing content from memory/inference and presenting it as official-doc-based ❌
+- Mixing in blog, Stack Overflow, unofficial tutorial content ❌
+- Using feature names/parameter names not found in official docs ❌
 
-### 오류 발견 시
+### When errors are found
 
-`_reference` 파일에서 오류를 발견하면:
-1. 즉시 공식 문서에서 정확한 내용 확인
-2. 해당 파일 수정
-3. `last_checked` 날짜 업데이트
-4. INDEX.md 버전 정보 업데이트
-5. 해당 `_reference`를 참조해 작성된 다른 `.md` 파일에도 오류가 전파됐는지 확인
+When discovering errors in `_reference` files:
+1. Immediately verify correct content from official docs
+2. Fix the file
+3. Update `last_checked` date
+4. Update INDEX.md version info
+5. Check if the error propagated to other `.md` files referencing that `_reference`
 
-## 17. Python 스크립트 작성 규칙
+## 17. Python script writing rules
 
-`/root/sj_del/ip_mask.py`, `json_mask.py` 스타일 기준.
+Style reference: `/root/sj_del/ip_mask.py`, `json_mask.py`.
 
-### 파일 구조 (순서 엄수)
+### File structure (strict order)
 
 ```
 shebang
-SAFETY 주석
-모듈 docstring (사용법 포함)
-VERSION 상수
-import (stdlib 한 줄씩, 알파벳 순)
-상수/패턴 (# ── 섹션명 ──... 구분)
-함수 정의
+SAFETY comment
+module docstring (including usage)
+VERSION constant
+import (stdlib one per line, alphabetical)
+constants/patterns (# ── section ──... separator)
+function definitions
 if __name__ == '__main__': try/except
 ```
 
-### 필수 항목
+### Mandatory items
 
 - **shebang**: `#!/usr/bin/env python3`
-- **SAFETY 주석**: `#import sys; sys.exit(0)  # SAFETY: uncomment this line to disable script`
-- **VERSION**: `VERSION = "YY.MM.DD"` (날짜 기반)
-- **import**: 한 줄씩, stdlib 먼저, 알파벳 순 — `import re, sys` 한 줄 금지
-- **모듈 상단 패턴 컴파일**: 함수 내 `re.compile()` 반복 금지 — 모듈 레벨 상수로 선언
-- **함수 내 중복 import 금지**: `import re as _re` 함수 내 반복 금지
-- **argparse 필수**: `sys.argv` 직접 파싱 금지
-  - `-h/--help`: argparse 자동 제공
+- **SAFETY comment**: `#import sys; sys.exit(0)  # SAFETY: uncomment this line to disable script`
+- **VERSION**: `VERSION = "YY.MM.DD"` (date-based)
+- **import**: one per line, stdlib first, alphabetical — `import re, sys` on one line prohibited
+- **Module-level pattern compile**: `re.compile()` inside functions prohibited — declare as module-level constants
+- **No duplicate imports in functions**: `import re as _re` repeated in functions prohibited
+- **argparse mandatory**: direct `sys.argv` parsing prohibited
+  - `-h/--help`: argparse auto-provides
   - `-V/--version`: `action='version'`, `version=f'%(prog)s {VERSION}'`
-  - `-s/--strict` 등 플래그: 단축키 + 풀네임 모두 제공
-  - `epilog`: Examples + 주요 옵션 설명 포함
-- **`parse_args()` 분리**: `main()` 내 인라인 금지, 별도 함수로 분리
+  - `-s/--strict` etc. flags: provide both shorthand + full name
+  - `epilog`: include Examples + key option descriptions
+- **Separate `parse_args()`**: no inline in `main()`, extract to separate function
 - **`if __name__` try/except**:
   ```python
   if __name__ == '__main__':
@@ -246,78 +246,78 @@ if __name__ == '__main__': try/except
           sys.exit(130)
   ```
 
-### 섹션 구분 주석
+### Section separator comments
 
 ```python
-# ── 컬러 ──────────────────────────────────────────────────────────────────────
-# ── 상수 ──────────────────────────────────────────────────────────────────────
-# ── 유틸 ──────────────────────────────────────────────────────────────────────
-# ── 검사 함수 ─────────────────────────────────────────────────────────────────
-# ── 진입점 ────────────────────────────────────────────────────────────────────
+# ── colors ────────────────────────────────────────────────────────────────────
+# ── constants ─────────────────────────────────────────────────────────────────
+# ── utilities ─────────────────────────────────────────────────────────────────
+# ── check functions ───────────────────────────────────────────────────────────
+# ── entry point ───────────────────────────────────────────────────────────────
 ```
 
-### 함수 docstring
+### Function docstring
 
-한 줄 요약 필수. 긴 설명은 두 번째 줄부터.
+One-line summary mandatory. Longer description from second line onward.
 
 ```python
 def process_file(filepath, dry_run=False):
-    """파일 내 IP 치환 (해당 패턴 없으면 스킵)."""
+    """Replace IPs in file (skip if no matching pattern)."""
 ```
 
 ## 18. Windows PowerShell via SSH
 
-SSH로 Windows PowerShell 명령 실행 시 한글 출력이 깨지는 것을 방지하려면 반드시 아래 패턴을 사용합니다.
+To prevent Korean/UTF-8 output corruption when executing Windows PowerShell commands via SSH, always use the following pattern.
 
 ```bash
-# 올바른 패턴 — cmd로 chcp 65001 설정 후 powershell 실행
-ssh user@host "cmd /c \"chcp 65001 > nul && powershell -Command \"\"<명령어>\"\"\""
+# Correct pattern — set chcp 65001 via cmd then execute powershell
+ssh user@host "cmd /c \"chcp 65001 > nul && powershell -Command \"\"<command>\"\"\""
 
-# 잘못된 패턴 — PowerShell 내에서 chcp는 동작하지 않음
-ssh user@host "powershell -Command \"chcp 65001 >nul; <명령어>\""
+# Wrong pattern — chcp does not work inside PowerShell
+ssh user@host "powershell -Command \"chcp 65001 >nul; <command>\""
 ```
 
-- `chcp 65001`: Windows 코드 페이지를 UTF-8로 변경
-- `cmd /c` 래핑 필수: PowerShell 단독 실행 시 `>nul` 리다이렉션이 파일로 처리됨
+- `chcp 65001`: Changes Windows code page to UTF-8
+- `cmd /c` wrapping mandatory: PowerShell standalone treats `>nul` redirection as file output
 
-## 19. 파일 치환 후 즉시 검증
+## 19. Post-replacement immediate verification
 
-`sed`, `python replace`, `str_replace` 등으로 파일 내용을 변경한 후 반드시 아래를 수행합니다.
+After modifying file content with `sed`, `python replace`, `str_replace`, etc., always perform the following.
 
-### 필수 절차
+### Mandatory procedure
 
-1. **치환 적용 확인**: 변경 대상 행을 `grep` 또는 `sed -n`으로 직접 출력하여 의도대로 변경되었는지 확인
-2. **잔재 확인**: 이전 값이 동일 파일 또는 프로젝트 전체에 남아있지 않은지 `grep -rn "이전값"` 실행
-3. **영향 범위 확인**: 변경 값(IP, 경로, 이름 등)이 다른 파일에도 존재할 경우 프로젝트 전체(`grep -rn`)로 스캔
+1. **Confirm replacement applied**: Print target lines with `grep` or `sed -n` to verify intended changes
+2. **Check for remnants**: Run `grep -rn "old_value"` to ensure previous value doesn't remain in same file or project-wide
+3. **Check impact scope**: If changed value (IP, path, hostname, etc.) exists in other files, scan project-wide (`grep -rn`)
 
-### 전역 값 변경 시 추가 규칙
+### Additional rules for global value changes
 
-IP 주소, 파일 경로, 호스트명 등 **여러 파일에 걸쳐 사용되는 값**을 변경할 때:
+When changing values used across **multiple files** (IP addresses, file paths, hostnames, etc.):
 
 ```bash
-# 변경 전: 영향받는 파일 전수 파악
-grep -rn "이전값" /프로젝트루트/ | grep -v ".log|.git"
+# Before change: identify all affected files
+grep -rn "old_value" /project_root/ | grep -v ".log|.git"
 
-# 변경 후: 잔재 0건 확인
-grep -rn "이전값" /프로젝트루트/ | grep -v ".log|.git"
+# After change: confirm 0 remnants
+grep -rn "old_value" /project_root/ | grep -v ".log|.git"
 ```
 
-- 변경 대상 파일을 **먼저 전부 파악**한 뒤 일괄 변경
-- 부분 변경 후 "나머지는 나중에" 패턴 금지 — 한 번에 완료하거나 TODO 명시
+- **Identify all target files first**, then batch-change
+- Partial change with "rest later" pattern prohibited — complete all at once or mark TODO
 
-### 금지 사항
+### Prohibited
 
-- 치환 명령 실행 후 결과 확인 없이 다음 작업 진행 ❌
-- `replace()`가 매칭 실패(0건 치환)해도 에러 없이 넘어가는 것을 방치 ❌
-- 동일 값이 여러 파일에 있을 때 일부 파일만 변경하고 나머지를 누락 ❌
+- Proceeding to next task without verifying replacement result ❌
+- Ignoring `replace()` matching failure (0 replacements) silently ❌
+- Changing only some files when same value exists in multiple files, missing the rest ❌
 
-### Python replace 안전 패턴
+### Python replace safe pattern
 
 ```python
-# ❌ 위험 — 매칭 실패해도 에러 없이 진행
+# ❌ Dangerous — proceeds silently on match failure
 content = content.replace(old, new)
 
-# ✅ 안전 — 매칭 실패 시 즉시 감지
+# ✅ Safe — detects match failure immediately
 if old not in content:
     print(f"WARNING: '{old[:50]}...' not found in {path}")
 else:
@@ -325,18 +325,45 @@ else:
     print(f"✓ replaced in {path}")
 ```
 
-### sed 안전 패턴
+### sed safe pattern
 
 ```bash
-# ❌ 위험 — 매칭 0건이어도 exit 0
+# ❌ Dangerous — exit 0 even with 0 matches
 sed -i 's/old/new/g' file.txt
 
-# ✅ 안전 — 변경 여부 확인
+# ✅ Safe — verify change applied
 sed -i 's/old/new/g' file.txt
 grep -q "new" file.txt && echo "✓ applied" || echo "⚠️ not found"
 ```
 
-## 20. Kiro Lock (동시 작업 방지)
+## 20. VM deletion confirmation mandatory
 
-파일 수정 작업 전 반드시 `skill://kiro-lock` 절차를 수행합니다.
-Lock을 획득하지 못하면 어떤 파일도 수정하지 않습니다.
+VM deletion (Remove-VM, vagrant destroy, Stop-VM -Force, etc.) must **always list targets first and get user confirmation before proceeding**.
+
+```
+1. Display current VM list
+2. Ask "These VMs will be deleted. Proceed?"
+3. Execute deletion only after user approval
+```
+
+- Same rule applies to single VM deletion
+- Recreation (delete → recreate) also requires confirmation before deletion
+
+## 21. Zombie SSH process cleanup at session start
+
+SSH/scp processes left over from previous sessions interrupted with Ctrl+C can exhaust Windows host SSH MaxSessions, blocking new connections.
+
+Run at session start or when SSH is unresponsive.
+
+```bash
+# Check for zombies
+ps -ef | grep -E "ssh.*ansibleuser|timeout.*ssh" | grep -v grep
+
+# Cleanup
+sudo kill -9 $(ps -ef | grep -E "ssh.*ansibleuser|timeout.*ssh" | grep -v grep | awk '{print $2}') 2>/dev/null
+```
+
+## 22. Kiro Lock (concurrent work prevention)
+
+Before any file modification, `skill://kiro-lock` procedure is mandatory.
+If lock is not acquired, no files shall be modified.
