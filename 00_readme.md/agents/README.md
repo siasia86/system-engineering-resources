@@ -8,15 +8,15 @@
 
 ## 에이전트 매트릭스
 
-| 에이전트         | 역할           | 모델               | 호출 조건          |
-|------------------|----------------|--------------------|--------------------|
-| system-engineer  | 오케스트레이터 | claude-sonnet-4.6  | 기본 세션          |
-| code-reviewer    | 코드 리뷰      | claude-haiku-4.6   | 리뷰 요청 시       |
-| security-auditor | 보안 감사      | claude-haiku-4.6   | 보안 검토 요청 시  |
-| git-manager      | Git 워크플로우 | claude-haiku-4.6   | 커밋/PR 작성 시    |
-| doc-reviewer     | 문서 품질 검사 | claude-sonnet-4.6  | .md 파일 검증 시   |
-| markdown-writer  | 문서 작성      | claude-sonnet-4.6  | 문서 생성/수정 시  |
-| se-lite          | 경량 Q&A       | claude-sonnet-4.6  | 개념/명령어 질문 시 |
+| 에이전트         | 역할           | 모델              | 호출 조건           |
+|------------------|----------------|-------------------|---------------------|
+| system-engineer  | 오케스트레이터 | claude-sonnet-4.6 | 기본 세션           |
+| code-reviewer    | 코드 리뷰      | claude-haiku-4.6  | 리뷰 요청 시        |
+| security-auditor | 보안 감사      | claude-haiku-4.6  | 보안 검토 요청 시   |
+| git-manager      | Git 워크플로우 | claude-haiku-4.6  | 커밋/PR 작성 시     |
+| doc-reviewer     | 문서 품질 검사 | claude-sonnet-4.6 | .md 파일 검증 시    |
+| markdown-writer  | 문서 작성      | claude-sonnet-4.6 | 문서 생성/수정 시   |
+| se-lite          | 경량 Q&A       | claude-sonnet-4.6 | 개념/명령어 질문 시 |
 
 ## 호출 패턴
 
@@ -45,3 +45,32 @@ system-engineer
     ├── delegate → security-auditor  ─┼── 병렬 실행
     └── merge results                ─┘
 ```
+
+## Skill Resources (system-engineer)
+
+| skill                    | 용도                      | 자동 트리거    |
+|--------------------------|---------------------------|----------------|
+| `work-rules`             | 전체 작업 규칙 (§ 1~22)   | 항상 로드      |
+| `kiro-lock`              | 동시 수정 방지            | 파일 수정 시   |
+| `using-skills`           | 작업 → skill 매핑         | 세션 시작 시   |
+| `readme-template`        | README 푸터/배지          | .md 작성 시    |
+| `bash-script-template`   | Bash 표준 구조/로깅       | .sh 작성 시    |
+| `python-script-template` | Python 표준 구조/argparse | .py 작성 시    |
+| `security-tools`         | 보안 검토/마스킹          | 보안 작업 시   |
+| `md-link-check`          | 마크다운 링크/목차 검증   | .md 검증 시    |
+| `debugging-and-recovery` | 장애 복구 워크플로        | 오류 발생 시   |
+| `incremental-change`     | IaC 점진적 변경           | 코드 수정 시   |
+| `planning-and-breakdown` | 작업 분해                 | 복합 작업 시   |
+| `spec-driven-infra`      | 스펙 기반 인프라          | 신규 구축 시   |
+| `doubt-driven-infra`     | 비가역 변경 안전 장치     | 위험 작업 시   |
+| `shipping-checklist`     | 배포 체크리스트           | 배포/런칭 시   |
+| `testing-guide`          | 테스트 작성 가이드        | 테스트 작성 시 |
+| `code-review`            | 코드 리뷰 규칙            | 리뷰 요청 시   |
+| `git-commit-rule`        | 커밋/PR 규칙              | Git 작업 시    |
+
+### Context 파일
+
+| 파일                                                               | 용도                 |
+|--------------------------------------------------------------------|----------------------|
+| `file://~/.kiro/markdown/STYLE.md`                                 | Markdown 작성 규칙   |
+| `file:///root/32_system-engineering-resources/_reference/INDEX.md` | 기술 레퍼런스 인덱스 |

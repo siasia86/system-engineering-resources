@@ -19,6 +19,8 @@ Task arrives
     ├── IaC 코드 작성/수정?          → incremental-change
     ├── 장애/오류 발생?              → debugging-and-recovery
     ├── 협업 디렉토리 파일 수정?      → kiro-lock
+    ├── Python 스크립트 작성?          → python-script-template
+    ├── Bash 스크립트 작성?            → bash-script-template
     ├── 코드/스크립트 리뷰?          → code-review
     ├── 보안 검토/마스킹?            → security-tools
     ├── 프로덕션/비가역 변경?        → doubt-driven-infra
@@ -35,12 +37,12 @@ Task arrives
 
 스킬은 단독 또는 조합으로 사용합니다.
 
-| 시나리오 | 스킬 체인 |
-|----------|-----------|
+| 시나리오           | 스킬 체인                                                       |
+|--------------------|-----------------------------------------------------------------|
 | 새 인프라 프로젝트 | spec-driven-infra → planning-and-breakdown → incremental-change |
-| 프로덕션 변경 | doubt-driven-infra → incremental-change → shipping-checklist |
-| 장애 대응 | debugging-and-recovery → incremental-change |
-| 코드 리뷰 후 수정 | code-review → incremental-change → testing-guide |
+| 프로덕션 변경      | doubt-driven-infra → incremental-change → shipping-checklist    |
+| 장애 대응          | debugging-and-recovery → incremental-change                     |
+| 코드 리뷰 후 수정  | code-review → incremental-change → testing-guide                |
 
 ## Rules
 
