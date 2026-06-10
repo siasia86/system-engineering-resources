@@ -21,7 +21,6 @@
   "resources": [
     "skill://security-tools",
     "skill://work-rules",
-    "skill://kiro-lock",
     "skill://code-review"
   ],
   "hooks": {

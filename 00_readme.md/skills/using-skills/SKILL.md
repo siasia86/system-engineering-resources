@@ -18,9 +18,9 @@ Task arrives
     ├── 작업 분해 필요?              → planning-and-breakdown
     ├── IaC 코드 작성/수정?          → incremental-change
     ├── 장애/오류 발생?              → debugging-and-recovery
-    ├── 협업 디렉토리 파일 수정?      → kiro-lock
     ├── Python 스크립트 작성?          → python-script-template
     ├── Bash 스크립트 작성?            → bash-script-template
+    ├── 협업 디렉토리 파일 수정?      → kiro-lock (현재 disabled — 협업 시 enable 필요)
     ├── 코드/스크립트 리뷰?          → code-review
     ├── 보안 검토/마스킹?            → security-tools
     ├── 프로덕션/비가역 변경?        → doubt-driven-infra
