@@ -51,7 +51,7 @@ Allowed: ✅ ❌ 🟡 🟢 🔴 ★★☆☆☆
 No other emojis allowed (no decorative emojis)
 
 ## 7. sudo
-Use sudo for file operations under /root/
+Use sudo when file operations require elevated permissions (e.g., files under /root/, /opt/, /etc/, or any path owned by root).
 
 ## 8. Code changes
 - Minimal change principle (modify only requested scope)
@@ -351,19 +351,92 @@ VM deletion (Remove-VM, vagrant destroy, Stop-VM -Force, etc.) must **always lis
 
 ## 21. Zombie SSH process cleanup at session start
 
-SSH/scp processes left over from previous sessions interrupted with Ctrl+C can exhaust Windows host SSH MaxSessions, blocking new connections.
+SSH/scp processes left over from previous sessions interrupted with Ctrl+C can exhaust the remote host's SSH MaxSessions, blocking new connections.
 
 Run at session start or when SSH is unresponsive.
 
 ```bash
-# Check for zombies
-ps -ef | grep -E "ssh.*ansibleuser|timeout.*ssh" | grep -v grep
+# Generic pattern — replace <target> with actual SSH target hostname or IP
+ps -ef | grep -E "ssh.*<target>|timeout.*ssh" | grep -v grep
 
 # Cleanup
+sudo kill -9 $(ps -ef | grep -E "ssh.*<target>|timeout.*ssh" | grep -v grep | awk '{print $2}') 2>/dev/null
+```
+
+For the `ansibleuser@10.200.101.101` (Windows Hyper-V host) environment:
+
+```bash
 sudo kill -9 $(ps -ef | grep -E "ssh.*ansibleuser|timeout.*ssh" | grep -v grep | awk '{print $2}') 2>/dev/null
 ```
 
 ## 22. Kiro Lock (concurrent work prevention)
 
-Before any file modification, `skill://kiro-lock` procedure is mandatory.
-If lock is not acquired, no files shall be modified.
+> 🟡 Currently **disabled** (`~/.kiro/hooks/kiro-lock.disabled` exists). Skip this rule until re-enabled.
+
+When enabled: before any file modification, follow `skill://kiro-lock` §1–3:
+
+1. Check `.kiro-lock` in the project root (`.git` directory parent)
+2. If absent → create lock file
+3. After work → `rm -f .kiro-lock`
+
+```bash
+# Enable
+rm ~/.kiro/hooks/kiro-lock.disabled
+
+# Disable
+touch ~/.kiro/hooks/kiro-lock.disabled
+```
+
+## 23. Immediate PLAN.md issue logging
+
+When working in a project that has a PLAN.md (e.g., `/opt/00_chobo_ansible/05_vagrant/PLAN.md`), log any unexpected errors, escape issues, script bugs, or significant fixes **immediately after resolving them** — before moving on to the next task.
+
+### When to log
+
+Log to PLAN.md when any of the following occur during non-PLAN.md work:
+
+- Script execution fails (non-trivial error)
+- Escape/quoting issue discovered (`$`, `\n`, `\\`, shell vs Python string)
+- Code modification causes IndentationError or silent fail
+- VM/infrastructure behavior differs from expectation **and root cause required >5 minutes to identify**
+- Workaround applied **that is non-obvious or environment-specific**
+
+🟡 **Exception**: Editing PLAN.md itself does not trigger this rule (no loop).
+🟡 **Exception**: If no PLAN.md exists in the project, skip this rule — do not create one automatically.
+🟡 **Dedup**: Before adding a new issue, check if the same symptom already exists in PLAN.md. If so, append to the existing entry rather than creating a duplicate.
+🟡 **Scope**: Only log issues that required non-trivial investigation or had non-obvious root causes. Skip simple retries, typos, or one-liner fixes with no learning value.
+🟡 **Collaboration**: When working collaboratively, re-enable kiro-lock (§ 22) before logging to PLAN.md to prevent concurrent modification conflicts.
+
+### What to log
+
+Use the issue template in PLAN.md `## 이슈 기록`. Use the next sequential number after the last existing issue (check existing `#### 이슈 N:` entries to determine N):
+
+```markdown
+#### 이슈 N: 제목
+
+- 증상: (what happened)
+- 원인: (why it happened)
+- 해결:
+  ```bash/python/powershell
+  (fix code)
+  ```
+- 재현 방법: (optional — how to reproduce)
+  ```bash
+  (reproduction command)
+  ```
+```
+
+### Timing rule
+
+- ✅ Log **immediately after fix** — same tool call or the very next one
+- ❌ "I'll log it later" → always forgotten
+
+### How to find PLAN.md
+
+Look for `PLAN.md` starting from the current working directory, searching up to 4 levels deep:
+
+```bash
+find "$(pwd)" -maxdepth 4 -name "PLAN.md" 2>/dev/null
+# or from project root (git root)
+git rev-parse --show-toplevel 2>/dev/null | xargs -I{} find {} -maxdepth 3 -name "PLAN.md"
+```

@@ -28,7 +28,7 @@
 
 | agent            | 등록된 skills                                                                                 |
 |------------------|-----------------------------------------------------------------------------------------------|
-| system-engineer  | skill 17개 + file 2개 = 총 19개                                                               |
+| system-engineer  | skill 17개 + file 2개 = 총 18개 (kiro-lock 제외, disabled)                                    |
 | code-reviewer    | work-rules, kiro-lock, code-review, security-tools, testing-guide, git-commit-rule            |
 | security-auditor | work-rules, kiro-lock, security-tools, code-review                                            |
 | doc-reviewer     | work-rules, kiro-lock, md-link-check, STYLE.md                                                |

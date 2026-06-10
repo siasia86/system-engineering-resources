@@ -51,7 +51,6 @@ system-engineer
 | skill                    | 용도                      | 자동 트리거    |
 |--------------------------|---------------------------|----------------|
 | `work-rules`             | 전체 작업 규칙 (§ 1~22)   | 항상 로드      |
-| `kiro-lock`              | 동시 수정 방지            | 파일 수정 시   |
 | `using-skills`           | 작업 → skill 매핑         | 세션 시작 시   |
 | `readme-template`        | README 푸터/배지          | .md 작성 시    |
 | `bash-script-template`   | Bash 표준 구조/로깅       | .sh 작성 시    |
