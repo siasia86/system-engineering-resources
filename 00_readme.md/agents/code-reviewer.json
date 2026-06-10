@@ -18,7 +18,6 @@
   ],
   "resources": [
     "skill://code-review",
-    "skill://kiro-lock",
     "skill://security-tools",
     "skill://testing-guide",
     "skill://git-commit-rule",
