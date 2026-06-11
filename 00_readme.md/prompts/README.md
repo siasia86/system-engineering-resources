@@ -11,6 +11,8 @@
 | `ansible-debug`   | Ansible 실행 오류 디버깅        | `/prompts ansible-debug`   |
 | `ansible-convert` | 수동 명령 → Ansible 변환        | `/prompts ansible-convert` |
 | `code-review`     | 일반 코드 리뷰                  | `/prompts code-review`     |
+| `doc-consistency-review`         | 파일 간 정합성 검증 (범용)              | `/prompts doc-consistency-review`         |
+| `doc-consistency-ansible-review` | 파일 간 정합성 (Ansible/Vagrant 전용)   | `/prompts doc-consistency-ansible-review` |
 | `vagrant-review`  | Vagrantfile 리뷰                | `/prompts vagrant-review`  |
 | `py-review`       | Python 스크립트 리뷰 (template) | `/prompts py-review`       |
 | `sh-review`       | Bash 스크립트 리뷰 (template)   | `/prompts sh-review`       |
