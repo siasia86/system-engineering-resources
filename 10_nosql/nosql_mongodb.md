@@ -2,39 +2,40 @@
 
 ## 목차
 
-| 단계 | 섹션                                                                                                                                                              |
-|------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 기초 | [1. MongoDB 개념](#1-mongodb-개념) / [2. 데이터 모델](#2-데이터-모델)                                                                                              |
-| CRUD | [3. CRUD 기본](#3-crud-기본) / [4. 쿼리 연산자](#4-쿼리-연산자)                                                                                                    |
-| 고급 | [5. 인덱스](#5-인덱스) / [6. Aggregation Pipeline](#6-aggregation-pipeline) / [7. 스키마 설계 패턴](#7-스키마-설계-패턴) / [8. 운영 팁](#8-운영-팁) |
+| 단계 | 섹션                                                                                                                     |
+|------|--------------------------------------------------------------------------------------------------------------------------|
+| 기초 | [1. MongoDB 개념](#1-mongodb-개념) / [2. 데이터 모델](#2-데이터-모델)                                                    |
+| CRUD | [3. CRUD 기본](#3-crud-기본) / [4. 쿼리 연산자](#4-쿼리-연산자)                                                          |
+| 고급 | [5. 인덱스](#5-인덱스) / [6. Aggregation Pipeline](#6-aggregation-pipeline) / [7. 스키마 설계 패턴](#7-스키마-설계-패턴) |
+|      | [8. 운영 팁](#8-운영-팁)                                                                                                 |
 
 ---
 
 ## 1. MongoDB 개념
 
-MongoDB는 **문서(Document) 기반 NoSQL 데이터베이스**다.
+MongoDB는 **문서(Document) 기반 NoSQL 데이터베이스**입니다.
 JSON 형태의 BSON 문서를 컬렉션에 저장합니다.
 
 ### RDBMS vs MongoDB
 
-| RDBMS | MongoDB | 설명 |
-|-------|---------|------|
-| Database | Database | 데이터베이스 |
-| Table | Collection | 데이터 집합 |
-| Row | Document | 단일 데이터 |
-| Column | Field | 데이터 필드 |
-| JOIN | $lookup / Embedding | 관계 표현 |
-| Index | Index | 검색 최적화 |
-| Transaction | Transaction (4.0+) | 원자적 처리 |
+| RDBMS       | MongoDB             | 설명         |
+|-------------|---------------------|--------------|
+| Database    | Database            | 데이터베이스 |
+| Table       | Collection          | 데이터 집합  |
+| Row         | Document            | 단일 데이터  |
+| Column      | Field               | 데이터 필드  |
+| JOIN        | $lookup / Embedding | 관계 표현    |
+| Index       | Index               | 검색 최적화  |
+| Transaction | Transaction (4.0+)  | 원자적 처리  |
 
 ### 특징
 
-| 항목 | 설명 |
-|------|------|
-| 스키마 | 유연한 스키마 (Schema-less) |
-| 확장성 | 수평 확장 (Sharding) |
-| 복제 | Replica Set (자동 Failover) |
-| 쿼리 | 풍부한 쿼리 언어 |
+| 항목     | 설명                          |
+|----------|-------------------------------|
+| 스키마   | 유연한 스키마 (Schema-less)   |
+| 확장성   | 수평 확장 (Sharding)          |
+| 복제     | Replica Set (자동 Failover)   |
+| 쿼리     | 풍부한 쿼리 언어              |
 | 트랜잭션 | 멀티 도큐먼트 트랜잭션 (4.0+) |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -45,7 +46,7 @@ JSON 형태의 BSON 문서를 컬렉션에 저장합니다.
 
 ### Document 구조
 
-```json
+```javascript
 {
   "_id": ObjectId("507f1f77bcf86cd799439011"),
   "user_id": 101,
@@ -62,10 +63,10 @@ JSON 형태의 BSON 문서를 컬렉션에 저장합니다.
 
 ### Embedding vs Referencing
 
-| 방식 | 설명 | 적합한 경우 |
-|------|------|-------------|
-| **Embedding** | 관련 데이터를 문서 내 중첩 | 1:1, 1:소수, 함께 조회 |
-| **Referencing** | ObjectId로 다른 컬렉션 참조 | 1:다수, 독립적 접근 |
+| 방식            | 설명                        | 적합한 경우            |
+|-----------------|-----------------------------|------------------------|
+| **Embedding**   | 관련 데이터를 문서 내 중첩  | 1:1, 1:소수, 함께 조회 |
+| **Referencing** | ObjectId로 다른 컬렉션 참조 | 1:다수, 독립적 접근    |
 
 ```javascript
 // Embedding (주문 내 상품 정보 포함)
@@ -300,17 +301,17 @@ db.orders.aggregate([
 
 ### 주요 Stage
 
-| Stage | 설명 |
-|-------|------|
-| `$match` | 조건 필터 (WHERE) |
-| `$group` | 집계 (GROUP BY) |
-| `$sort` | 정렬 (ORDER BY) |
-| `$limit` / `$skip` | 페이지네이션 |
-| `$project` | 필드 선택/변환 |
-| `$lookup` | 컬렉션 JOIN |
-| `$unwind` | 배열 펼치기 |
-| `$addFields` | 필드 추가 |
-| `$facet` | 다중 집계 병렬 실행 |
+| Stage              | 설명                |
+|--------------------|---------------------|
+| `$match`           | 조건 필터 (WHERE)   |
+| `$group`           | 집계 (GROUP BY)     |
+| `$sort`            | 정렬 (ORDER BY)     |
+| `$limit` / `$skip` | 페이지네이션        |
+| `$project`         | 필드 선택/변환      |
+| `$lookup`          | 컬렉션 JOIN         |
+| `$unwind`          | 배열 펼치기         |
+| `$addFields`       | 필드 추가           |
+| `$facet`           | 다중 집계 병렬 실행 |
 
 [⬆ 목차로 돌아가기](#목차)
 
