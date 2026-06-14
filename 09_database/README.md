@@ -4,21 +4,21 @@ RDBMS 설계, 운영, 최적화 관련 문서 모음.
 
 ## 목차
 
-| 분류 | 문서 | 설명 |
-|------|------|------|
-| **설치** | [MySQL 설치](../01_install/mysql_install.md) | Ubuntu/Rocky, 초기 설정, 보안 |
-| **설치** | [PostgreSQL 설치](../01_install/postgresql_install.md) | Ubuntu/Rocky, pg_hba.conf, 보안 |
-| **설계** | [정규화](rdbms_normalization.md) | 1NF~BCNF, 반정규화 판단 기준 |
-| **쿼리** | [JOIN](rdbms_join.md) | JOIN 종류, 실행 방식, 최적화 |
-| **쿼리** | [View](rdbms_view.md) | View, Materialized View |
-| **성능** | [Index](rdbms_index.md) | B-Tree, 복합 인덱스, 커버링 인덱스 |
-| **성능** | [EXPLAIN](rdbms_explain.md) | 실행 계획 분석, 슬로우 쿼리 튜닝 |
-| **트랜잭션** | [Transaction](rdbms_transaction.md) | ACID, 격리 수준, MVCC |
-| **트랜잭션** | [Lock](rdbms_lock.md) | Row/Gap Lock, 데드락, SKIP LOCKED |
-| **프로그래밍** | [Procedure](rdbms_procedure.md) | 저장 프로시저, 커서, 예외 처리 |
-| **운영** | [Replication](rdbms_replication.md) | binlog, GTID, AWS RDS Read Replica |
-| **운영** | [Partition](rdbms_partition.md) | Range/List/Hash 파티셔닝, 프루닝 |
-| **운영** | [Schema Migration](rdbms_schema_migration.md) | pt-osc, gh-ost, 무중단 마이그레이션 |
+| 분류           | 문서                                                   | 설명                                |
+|----------------|--------------------------------------------------------|-------------------------------------|
+| **설치**       | [MySQL 설치](../01_install/mysql_install.md)           | Ubuntu/Rocky, 초기 설정, 보안       |
+| **설치**       | [PostgreSQL 설치](../01_install/postgresql_install.md) | Ubuntu/Rocky, pg_hba.conf, 보안     |
+| **설계**       | [정규화](rdbms_normalization.md)                       | 1NF~BCNF, 반정규화 판단 기준        |
+| **쿼리**       | [JOIN](rdbms_join.md)                                  | JOIN 종류, 실행 방식, 최적화        |
+| **쿼리**       | [View](rdbms_view.md)                                  | View, Materialized View             |
+| **성능**       | [Index](rdbms_index.md)                                | B-Tree, 복합 인덱스, 커버링 인덱스  |
+| **성능**       | [EXPLAIN](rdbms_explain.md)                            | 실행 계획 분석, 슬로우 쿼리 튜닝    |
+| **트랜잭션**   | [Transaction](rdbms_transaction.md)                    | ACID, 격리 수준, MVCC               |
+| **트랜잭션**   | [Lock](rdbms_lock.md)                                  | Row/Gap Lock, 데드락, SKIP LOCKED   |
+| **프로그래밍** | [Procedure](rdbms_procedure.md)                        | 저장 프로시저, 커서, 예외 처리      |
+| **운영**       | [Replication](rdbms_replication.md)                    | binlog, GTID, AWS RDS Read Replica  |
+| **운영**       | [Partition](rdbms_partition.md)                        | Range/List/Hash 파티셔닝, 프루닝    |
+| **운영**       | [Schema Migration](rdbms_schema_migration.md)          | pt-osc, gh-ost, 무중단 마이그레이션 |
 
 [학습 순서](#학습-순서)
 

@@ -2,18 +2,18 @@
 
 ## 목차
 
-| 단계 | 섹션                                                                                                                                                              |
-|------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 기초 | [1. 실행 계획 개념](#1-실행-계획-개념) / [2. MySQL EXPLAIN](#2-mysql-explain)                                                                                      |
-| 분석 | [3. PostgreSQL EXPLAIN](#3-postgresql-explain) / [4. 슬로우 쿼리 탐지](#4-슬로우-쿼리-탐지)                                                                        |
-| 고급 | [5. 튜닝 패턴](#5-튜닝-패턴) / [6. 실전 체크리스트](#6-실전-체크리스트) |
+| 단계 | 섹션                                                                                        |
+|------|---------------------------------------------------------------------------------------------|
+| 기초 | [1. 실행 계획 개념](#1-실행-계획-개념) / [2. MySQL EXPLAIN](#2-mysql-explain)               |
+| 분석 | [3. PostgreSQL EXPLAIN](#3-postgresql-explain) / [4. 슬로우 쿼리 탐지](#4-슬로우-쿼리-탐지) |
+| 고급 | [5. 튜닝 패턴](#5-튜닝-패턴) / [6. 실전 체크리스트](#6-실전-체크리스트)                     |
 
 ---
 
 ## 1. 실행 계획 개념
 
 옵티마이저가 쿼리를 어떻게 실행할지 결정한 계획.
-인덱스 사용 여부, JOIN 순서, 스캔 방식 등을 확인할 수 있다.
+인덱스 사용 여부, JOIN 순서, 스캔 방식 등을 확인할 수 있습니다.
 
 ```
 쿼리 → 파서 → 옵티마이저 → 실행 계획 → 실행 엔진 → 결과
@@ -37,40 +37,40 @@ GROUP BY u.user_id;
 
 ### 출력 컬럼 설명
 
-| 컬럼 | 설명 |
-|------|------|
-| `id` | 쿼리 단계 번호 (높을수록 먼저 실행) |
-| `select_type` | SIMPLE, PRIMARY, SUBQUERY, DERIVED 등 |
-| `table` | 접근 테이블 |
-| `type` | 접근 방식 (아래 참조) |
-| `possible_keys` | 사용 가능한 인덱스 목록 |
-| `key` | 실제 사용된 인덱스 |
-| `key_len` | 사용된 인덱스 바이트 수 |
-| `rows` | 예상 스캔 행 수 |
-| `filtered` | 조건 필터링 후 남는 행 비율 (%) |
-| `Extra` | 추가 정보 |
+| 컬럼            | 설명                                  |
+|-----------------|---------------------------------------|
+| `id`            | 쿼리 단계 번호 (높을수록 먼저 실행)   |
+| `select_type`   | SIMPLE, PRIMARY, SUBQUERY, DERIVED 등 |
+| `table`         | 접근 테이블                           |
+| `type`          | 접근 방식 (아래 참조)                 |
+| `possible_keys` | 사용 가능한 인덱스 목록               |
+| `key`           | 실제 사용된 인덱스                    |
+| `key_len`       | 사용된 인덱스 바이트 수               |
+| `rows`          | 예상 스캔 행 수                       |
+| `filtered`      | 조건 필터링 후 남는 행 비율 (%)       |
+| `Extra`         | 추가 정보                             |
 
 ### type 컬럼 (성능 순)
 
-| type | 설명 | 성능 |
-|------|------|------|
-| `system` | 1행짜리 테이블 | ★★★★★ |
-| `const` | PK/Unique 상수 조회 | ★★★★★ |
+| type     | 설명                    | 성능  |
+|----------|-------------------------|-------|
+| `system` | 1행짜리 테이블          | ★★★★★ |
+| `const`  | PK/Unique 상수 조회     | ★★★★★ |
 | `eq_ref` | JOIN에서 PK/Unique 사용 | ★★★★☆ |
-| `ref` | Non-Unique 인덱스 조회 | ★★★☆☆ |
-| `range` | 인덱스 범위 스캔 | ★★★☆☆ |
-| `index` | 인덱스 Full Scan | ★★☆☆☆ |
-| `ALL` | Full Table Scan | ★☆☆☆☆ |
+| `ref`    | Non-Unique 인덱스 조회  | ★★★☆☆ |
+| `range`  | 인덱스 범위 스캔        | ★★★☆☆ |
+| `index`  | 인덱스 Full Scan        | ★★☆☆☆ |
+| `ALL`    | Full Table Scan         | ★☆☆☆☆ |
 
 ### Extra 주요 값
 
-| Extra | 의미 | 조치 |
-|-------|------|------|
-| `Using index` | 커버링 인덱스 (테이블 미접근) | ✅ 최적 |
-| `Using where` | WHERE 필터링 | 일반적 |
-| `Using filesort` | 정렬을 위한 추가 작업 | 🟡 인덱스 정렬 검토 |
-| `Using temporary` | 임시 테이블 사용 | 🟡 쿼리 최적화 필요 |
-| `Using index condition` | ICP (Index Condition Pushdown) | ✅ 양호 |
+| Extra                   | 의미                           | 조치                |
+|-------------------------|--------------------------------|---------------------|
+| `Using index`           | 커버링 인덱스 (테이블 미접근)  | ✅ 최적             |
+| `Using where`           | WHERE 필터링                   | 일반적              |
+| `Using filesort`        | 정렬을 위한 추가 작업          | 🟡 인덱스 정렬 검토 |
+| `Using temporary`       | 임시 테이블 사용               | 🟡 쿼리 최적화 필요 |
+| `Using index condition` | ICP (Index Condition Pushdown) | ✅ 양호             |
 
 ### EXPLAIN FORMAT=JSON (상세 분석)
 
@@ -123,28 +123,28 @@ Planning Time: 0.1 ms
 Execution Time: 0.05 ms
 ```
 
-| 항목 | 설명 |
-|------|------|
-| `cost=0.43..8.45` | 시작 비용..총 비용 (상대값) |
-| `rows=5` | 예상 행 수 |
-| `actual time=0.023..0.031` | 실제 첫 행..마지막 행 시간 (ms) |
-| `loops=1` | 반복 횟수 (Nested Loop에서 중요) |
-| `shared hit=3` | 버퍼 캐시 히트 수 |
-| `shared read=10` | 디스크 읽기 수 |
+| 항목                       | 설명                             |
+|----------------------------|----------------------------------|
+| `cost=0.43..8.45`          | 시작 비용..총 비용 (상대값)      |
+| `rows=5`                   | 예상 행 수                       |
+| `actual time=0.023..0.031` | 실제 첫 행..마지막 행 시간 (ms)  |
+| `loops=1`                  | 반복 횟수 (Nested Loop에서 중요) |
+| `shared hit=3`             | 버퍼 캐시 히트 수                |
+| `shared read=10`           | 디스크 읽기 수                   |
 
 ### 노드 종류
 
-| 노드 | 설명 |
-|------|------|
-| `Seq Scan` | Full Table Scan |
-| `Index Scan` | 인덱스 + 테이블 접근 |
-| `Index Only Scan` | 인덱스만 접근 (커버링) |
-| `Bitmap Index Scan` | 비트맵 인덱스 스캔 |
-| `Hash Join` | 해시 조인 |
-| `Nested Loop` | 중첩 루프 조인 |
-| `Merge Join` | 정렬 병합 조인 |
-| `Sort` | 정렬 |
-| `Aggregate` | 집계 |
+| 노드                | 설명                   |
+|---------------------|------------------------|
+| `Seq Scan`          | Full Table Scan        |
+| `Index Scan`        | 인덱스 + 테이블 접근   |
+| `Index Only Scan`   | 인덱스만 접근 (커버링) |
+| `Bitmap Index Scan` | 비트맵 인덱스 스캔     |
+| `Hash Join`         | 해시 조인              |
+| `Nested Loop`       | 중첩 루프 조인         |
+| `Merge Join`        | 정렬 병합 조인         |
+| `Sort`              | 정렬                   |
+| `Aggregate`         | 집계                   |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -275,13 +275,13 @@ ANALYZE TABLE orders;          -- MySQL
 VACUUM ANALYZE orders;         -- PostgreSQL
 ```
 
-| 체크 항목 | 기준 | 조치 |
-|-----------|------|------|
-| `type` | `ALL` 또는 `index` | 인덱스 추가 |
-| `rows` | 전체 행의 20% 이상 | 조건/인덱스 검토 |
-| `Extra` | `Using filesort` | ORDER BY 인덱스 |
-| `Extra` | `Using temporary` | 쿼리 재작성 |
-| `filtered` | 10% 미만 | 선택도 높은 인덱스 |
+| 체크 항목  | 기준               | 조치               |
+|------------|--------------------|--------------------|
+| `type`     | `ALL` 또는 `index` | 인덱스 추가        |
+| `rows`     | 전체 행의 20% 이상 | 조건/인덱스 검토   |
+| `Extra`    | `Using filesort`   | ORDER BY 인덱스    |
+| `Extra`    | `Using temporary`  | 쿼리 재작성        |
+| `filtered` | 10% 미만           | 선택도 높은 인덱스 |
 
 [⬆ 목차로 돌아가기](#목차)
 
