@@ -2,11 +2,11 @@
 
 ## 목차
 
-| 단계 | 섹션                                                                                                                                                    |
-|------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 기초 | [1. Lock 개념](#1-lock-개념) / [2. Lock 종류](#2-lock-종류)                                                                                              |
-| 심화 | [3. InnoDB Lock](#3-innodb-lock) / [4. 데드락 탐지와 해결](#4-데드락-탐지와-해결)                                                                        |
-| 고급 | [5. Lock 모니터링](#5-lock-모니터링) / [6. Lock 최소화 팁](#6-lock-최소화-팁) |
+| 단계 | 섹션                                                                              |
+|------|-----------------------------------------------------------------------------------|
+| 기초 | [1. Lock 개념](#1-lock-개념) / [2. Lock 종류](#2-lock-종류)                       |
+| 심화 | [3. InnoDB Lock](#3-innodb-lock) / [4. 데드락 탐지와 해결](#4-데드락-탐지와-해결) |
+| 고급 | [5. Lock 모니터링](#5-lock-모니터링) / [6. Lock 최소화 팁](#6-lock-최소화-팁)     |
 
 ---
 
@@ -16,10 +16,10 @@
 
 ### Lock 호환성 매트릭스
 
-| 요청 \ 보유 | Shared (S) | Exclusive (X) |
-|-------------|:----------:|:-------------:|
-| **Shared (S)** | ✅ 호환 | ❌ 대기 |
-| **Exclusive (X)** | ❌ 대기 | ❌ 대기 |
+| 요청 \ 보유       | Shared (S) | Exclusive (X) |
+|-------------------|------------|---------------|
+| **Shared (S)**    | ✅ 호환    | ❌ 대기       |
+| **Exclusive (X)** | ❌ 대기    | ❌ 대기       |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -29,28 +29,28 @@
 
 ### 범위에 따른 분류
 
-| Lock | 범위 | 획득 시점 |
-|------|------|-----------|
-| **Table Lock** | 테이블 전체 | DDL, LOCK TABLES, MyISAM DML |
-| **Row Lock** | 특정 행 | InnoDB DML (SELECT FOR UPDATE 등) |
-| **Page Lock** | 데이터 페이지 | 일부 DBMS |
+| Lock           | 범위          | 획득 시점                         |
+|----------------|---------------|-----------------------------------|
+| **Table Lock** | 테이블 전체   | DDL, LOCK TABLES, MyISAM DML      |
+| **Row Lock**   | 특정 행       | InnoDB DML (SELECT FOR UPDATE 등) |
+| **Page Lock**  | 데이터 페이지 | 일부 DBMS                         |
 
 ### 성격에 따른 분류
 
-| Lock | 설명 | SQL |
-|------|------|-----|
-| **Shared Lock (S)** | 읽기 Lock. 다른 S Lock과 공존 가능 | `SELECT ... FOR SHARE` |
-| **Exclusive Lock (X)** | 쓰기 Lock. 다른 Lock과 공존 불가 | `SELECT ... FOR UPDATE`, `UPDATE`, `DELETE` |
-| **Intention Lock** | 테이블 레벨에서 Row Lock 의도 표시 | 자동 획득 |
+| Lock                   | 설명                               | SQL                                         |
+|------------------------|------------------------------------|---------------------------------------------|
+| **Shared Lock (S)**    | 읽기 Lock. 다른 S Lock과 공존 가능 | `SELECT ... FOR SHARE`                      |
+| **Exclusive Lock (X)** | 쓰기 Lock. 다른 Lock과 공존 불가   | `SELECT ... FOR UPDATE`, `UPDATE`, `DELETE` |
+| **Intention Lock**     | 테이블 레벨에서 Row Lock 의도 표시 | 자동 획득                                   |
 
 ### InnoDB 전용 Lock
 
-| Lock | 설명 |
-|------|------|
-| **Record Lock** | 인덱스 레코드 자체에 대한 Lock |
-| **Gap Lock** | 인덱스 레코드 사이의 간격에 대한 Lock (Phantom Read 방지) |
-| **Next-Key Lock** | Record Lock + Gap Lock 결합 (InnoDB 기본) |
-| **Insert Intention Lock** | INSERT 전 Gap에 대한 의도 Lock |
+| Lock                      | 설명                                                      |
+|---------------------------|-----------------------------------------------------------|
+| **Record Lock**           | 인덱스 레코드 자체에 대한 Lock                            |
+| **Gap Lock**              | 인덱스 레코드 사이의 간격에 대한 Lock (Phantom Read 방지) |
+| **Next-Key Lock**         | Record Lock + Gap Lock 결합 (InnoDB 기본)                 |
+| **Insert Intention Lock** | INSERT 전 Gap에 대한 의도 Lock                            |
 
 [⬆ 목차로 돌아가기](#목차)
 
