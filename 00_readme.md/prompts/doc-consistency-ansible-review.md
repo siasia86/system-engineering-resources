@@ -1,5 +1,5 @@
 Cross-file consistency review (Ansible/Vagrant project) for @${1:directory}
-# ${1} 생략 시: /opt/00_chobo_ansible 를 대상으로 삼을 것.
+# ${1} 생략 시: /opt/00_chobo_ansible 를 대상으로 삼을 것. 어떤 파일을 리뷰 할건지 리스트 출력 할것. 
 
 Extends `doc-consistency-review` with Ansible/Vagrant/Hyper-V specific checks.
 Run base checks (version, path, date, status, links, cross-doc) first, then add:
