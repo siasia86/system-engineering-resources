@@ -264,6 +264,61 @@ if __name__ == '__main__':
 
 ---
 
+## 단축 옵션 규칙
+
+일관성을 위해 아래 단축키를 표준으로 사용합니다.
+
+| 단축 | 전체 옵션           | 용도                          |
+|------|---------------------|-------------------------------|
+| `-V` | `--version`         | 버전 출력 (필수)              |
+| `-d` | `--dry-run`         | 변경 없이 출력만 (권장)       |
+| `-v` | `--verbose`         | 상세 출력 (권장)              |
+| `-q` | `--quiet`           | 에러만 출력 (선택)            |
+| `-l` | `--list`            | 대상 목록 출력 후 종료 (선택) |
+| `-o` | `--os` / `--output` | 대상/출력 지정 (상황별)       |
+| `-f` | `--file`            | 파일 지정 (선택)              |
+| `-D` | `--dir`             | 디렉토리 지정 (선택)          |
+| `-r` | `--restore`         | 원복 모드 (선택)              |
+| `-P` | (대문자)            | skip 계열 옵션 (선택)         |
+
+🟡 대문자 단축키(`-P`, `-D`)는 소문자와 혼동 방지가 필요한 경우에만 사용합니다.
+
+## 도움말 출력 규칙
+
+`-h/--help` 출력은 아래 구조를 따릅니다.
+
+```
+usage: script_name.py [-h] [--dry-run] [--verbose] [--quiet] [--list] [-V]
+
+한 줄 설명 (description)
+
+options:
+  -h, --help      show this help message and exit
+  --dry-run, -d   실행 없이 단계만 출력
+  --verbose, -v   상세 출력
+  --quiet, -q     에러만 출력
+  --list, -l      대상 목록 출력 후 종료
+  -V, --version   show program's version number and exit
+
+Examples:
+  script_name.py -d                 dry-run 전체
+  script_name.py -o target_name     특정 대상만 실행
+
+Notes:
+  - 멱등성 보장: 이미 처리된 대상에 다시 실행해도 결과 동일
+  - 로그: /var/log/sjyun/ansible/
+```
+
+### 작성 규칙
+
+- `description`: 스크립트 기능을 한 줄로 설명합니다
+- `options`: argparse가 자동 생성합니다. 한글 help 텍스트 권장합니다
+- `Examples`: 실제 사용 명령어 2~4개를 포함합니다
+- `Notes`: 멱등성, 로그 위치, 주의사항 등을 기재합니다
+- `formatter_class=argparse.RawDescriptionHelpFormatter` 필수 (epilog 줄바꿈 유지)
+
+---
+
 ## 적용 규칙
 
 | 항목                 | 규칙                                               |
