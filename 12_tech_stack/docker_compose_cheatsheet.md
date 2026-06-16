@@ -2,9 +2,10 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. Docker 기본 명령어](#1-docker-기본-명령어) / [2. Docker Compose 기본 명령어](#2-docker-compose-기본-명령어) |
+| 섹션                                                                                                                             |
+|----------------------------------------------------------------------------------------------------------------------------------|
+| [1. Docker 기본 명령어](#1-docker-기본-명령어) / [2. Docker Compose 기본 명령어](#2-docker-compose-기본-명령어)                    |
+| [3. Compose 네트워크](#3-compose-네트워크) / [4. Compose 고급 설정](#4-compose-고급-설정) |
 
 ---
 
@@ -153,6 +154,143 @@ docker compose up -d --force-recreate <서비스>
 
 ---
 
+## 3. Compose 네트워크
+
+### 네트워크 드라이버
+
+| 드라이버  | 컨테이너 IP        | 호스트→컨테이너 | 외부→컨테이너 | 사용 사례                    |
+|-----------|---------------------|:---:|:---:|--------------------------------------|
+| bridge    | 172.17.x.x (내부)  | ✅  | ❌  | 기본값, 포트 포워딩으로 외부 노출    |
+| host      | 호스트 IP 공유      | ✅  | ✅  | 성능 우선, 포트 격리 불필요          |
+| macvlan   | 실제 네트워크 IP    | ❌  | ✅  | 물리 네트워크 직접 노출 (VM처럼)     |
+| ipvlan    | 실제 네트워크 IP    | ❌  | ✅  | MAC 제한 환경 (클라우드/Hyper-V)     |
+| overlay   | 가상 (멀티호스트)   | ✅  | ❌  | Swarm 클러스터                       |
+| none      | 없음                | ❌  | ❌  | 완전 격리                            |
+
+### compose.yml 네트워크 설정
+
+```yaml
+# bridge (기본)
+networks:
+  app_net:
+    driver: bridge
+
+# macvlan (사내 네트워크 직접 노출)
+networks:
+  ansible_net:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: 10.200.101.0/24
+          gateway: 10.200.101.1
+          ip_range: 10.200.101.128/27
+
+# 서비스에 고정 IP 할당
+services:
+  ubuntu22:
+    networks:
+      ansible_net:
+        ipv4_address: 10.200.101.143
+```
+
+### 네트워크 명령어
+
+```bash
+docker network ls                                # 네트워크 목록
+docker network inspect <프로젝트>_<네트워크명>   # 상세 정보 (할당 IP 확인)
+docker network prune                             # 미사용 네트워크 삭제
+docker compose up -d --force-recreate            # 네트워크 설정 변경 후 재생성
+```
+
+### macvlan 주의사항
+
+- 호스트 → macvlan 컨테이너 직접 통신 불가 (Linux 커널 제한)
+- 해결: `docker` connection (Ansible) 또는 호스트에 macvlan sub-interface 추가
+- Hyper-V 환경에서는 가상 스위치에 MAC spoofing 허용 필요
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 4. Compose 고급 설정
+
+### cgroup 설정
+
+```yaml
+services:
+  ubuntu22:
+    privileged: true
+    cgroup: host          # cgroup v2 + systemd 249+ 필수
+    # cgroup: private     # systemd 237 이하에서만 정상 동작
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+```
+
+| cgroup 모드 | cgroupns  | systemd 237 이하 | systemd 249+ | 비고                        |
+|-------------|-----------|:---:|:---:|------------------------------------|
+| `host`      | host      | ✅  | ✅  | cgroup v2 호스트에서 권장          |
+| `private`   | private   | ✅  | ❌  | Exit(255) 발생                     |
+
+### 리소스 제한
+
+```yaml
+services:
+  app:
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 512M
+        reservations:
+          cpus: "0.5"
+          memory: 128M
+```
+
+### 의존성 + 헬스체크
+
+```yaml
+services:
+  app:
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+```
+
+### 환경변수 관리
+
+```yaml
+services:
+  app:
+    env_file: .env                    # 파일에서 로드
+    environment:
+      - DB_HOST=db                    # 직접 지정
+      - DB_PASSWORD=${DB_PASS}        # 셸 변수 참조
+```
+
+### 프로파일 (선택적 서비스)
+
+```yaml
+services:
+  app:
+    profiles: []                      # 항상 시작
+  debug:
+    profiles: ["dev"]                 # --profile dev 시에만 시작
+
+# docker compose --profile dev up -d
+```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 참고 자료
 
 - Docker Documentation: [docs.docker.com](https://docs.docker.com/) — ★★★☆☆
@@ -173,6 +311,6 @@ docker compose up -d --force-recreate <서비스>
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-06-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.
