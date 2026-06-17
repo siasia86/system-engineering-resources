@@ -168,6 +168,7 @@
 • 국세청 홈택스 — https://www.hometax.go.kr
 • 인사담당자 카페 — https://cafe.naver.com/insadamwiki
 • SHRM — https://www.shrm.org
+• AIHR Career Path (시각적 로드맵) — https://www.aihr.com/resources/hr-career-path/
 
 ---
 
@@ -183,4 +184,10 @@
 
 ---
 
-작성일: 2026-06-17
+---
+
+**작성일**: 2026-06-17
+
+**마지막 업데이트**: 2026-06-17
+
+© 2026 siasia86. Licensed under CC BY 4.0.
