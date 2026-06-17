@@ -4,10 +4,10 @@
 
 ## 문서 목록
 
-| 직군      | Markdown (표 포함)                             | Google Docs용                                              |
-|-----------|------------------------------------------------|------------------------------------------------------------|
-| 인사/총무 | [hr_admin_roadmap.md](hr_admin_roadmap.md)     | [hr_admin_roadmap_gdocs.md](hr_admin_roadmap_gdocs.md)     |
-| 회계/재무 | [accounting_roadmap.md](accounting_roadmap.md) | [accounting_roadmap_gdocs.md](accounting_roadmap_gdocs.md) |
+| 직군      | Markdown                                       | Word (.docx)                                       |
+|-----------|------------------------------------------------|----------------------------------------------------|
+| 인사/총무 | [hr_admin_roadmap.md](hr_admin_roadmap.md)     | [hr_admin_roadmap.docx](hr_admin_roadmap.docx)     |
+| 회계/재무 | [accounting_roadmap.md](accounting_roadmap.md) | [accounting_roadmap.docx](accounting_roadmap.docx) |
 
 ## 문서 구성
 
@@ -23,7 +23,7 @@
 ## 활용 방법
 
 - Markdown 버전: GitHub/GitLab에서 바로 열람합니다
-- Google Docs 버전: 복사 후 Google Docs에 붙여넣기하면 서식이 유지됩니다
+- Word 버전: Google Docs에 업로드하거나 MS Word에서 열 수 있습니다
 
 ---
 
