@@ -307,20 +307,25 @@
 
 ## 9. 추천 학습 URL
 
-| 분류       | 사이트                                                                                          | 내용                        |
-|------------|-------------------------------------------------------------------------------------------------|-----------------------------|
-| 법령 검색  | [law.go.kr](https://www.law.go.kr)                                                              | 법제처 국가법령정보센터     |
-| 판례 검색  | [caselook.kr](https://caselook.kr)                                                              | 노동 판례 검색 (무료 일부)  |
-| 고용노동부 | [moel.go.kr](https://www.moel.go.kr)                                                            | 노동법 해석, 질의회시       |
-| HR 뉴스    | [hrinsight.co.kr](https://www.hrinsight.co.kr)                                                  | 인사 트렌드, 제도 사례      |
-| 교육       | [hrd.go.kr](https://www.hrd.go.kr)                                                              | 직업훈련포털 (내일배움카드) |
-| 4대보험    | [4insure.or.kr](https://www.4insure.or.kr)                                                      | 4대보험 정보연계센터        |
-| 연말정산   | [hometax.go.kr](https://www.hometax.go.kr)                                                      | 국세청 홈택스               |
-| 커뮤니티   | [cafe.naver.com/insadamwiki](https://cafe.naver.com/insadamwiki)                                | 인사담당자 커뮤니티         |
-| 노무법인   | [youtube.com/@노무법인인사이트](https://www.youtube.com/results?search_query=노무법인+인사이트) | 노동법 해설 영상            |
-| SHRM       | [shrm.org](https://www.shrm.org)                                                                | 글로벌 HR 자격/리서치       |
+| 분류       | 사이트                                                           | 내용                        |
+|------------|------------------------------------------------------------------|-----------------------------|
+| 법령 검색  | [law.go.kr](https://www.law.go.kr)                               | 법제처 국가법령정보센터     |
+| 고용노동부 | [moel.go.kr](https://www.moel.go.kr)                             | 노동법 해석, 질의회시       |
+| HR 뉴스    | [hrinsight.co.kr](https://www.hrinsight.co.kr)                   | 인사 트렌드, 제도 사례      |
+| 교육       | [hrd.go.kr](https://www.hrd.go.kr)                               | 직업훈련포털 (내일배움카드) |
+| 4대보험    | [4insure.or.kr](https://www.4insure.or.kr)                       | 4대보험 정보연계센터        |
+| 연말정산   | [hometax.go.kr](https://www.hometax.go.kr)                       | 국세청 홈택스               |
+| 커뮤니티   | [cafe.naver.com/insadamwiki](https://cafe.naver.com/insadamwiki) | 인사담당자 커뮤니티         |
+| SHRM       | [shrm.org](https://www.shrm.org)                                 | 글로벌 HR 자격/리서치       |
 
 ## 참고 자료
+
+### 해외 로드맵/학습 사이트
+
+- AIHR Career Path (시각적 로드맵): [aihr.com/resources/hr-career-path](https://www.aihr.com/resources/hr-career-path/) — ★★★☆☆
+
+### 국내
+
 
 - 고용노동부: [moel.go.kr](https://www.moel.go.kr) — ★★★☆☆
 - HR 인사이트: [hrinsight.co.kr](https://www.hrinsight.co.kr) — ★★☆☆☆

@@ -168,6 +168,7 @@
 • 한국공인회계사회 — https://www.kicpa.or.kr
 • 한국세무사회 — https://www.kacpta.or.kr
 • CFA Institute — https://www.cfainstitute.org
+• IMA (CMA 인증) — https://www.imanet.org/cma-certification
 
 ---
 
@@ -183,4 +184,10 @@
 
 ---
 
-작성일: 2026-06-17
+---
+
+**작성일**: 2026-06-17
+
+**마지막 업데이트**: 2026-06-17
+
+© 2026 siasia86. Licensed under CC BY 4.0.
