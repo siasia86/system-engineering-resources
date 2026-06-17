@@ -298,21 +298,28 @@
 
 ## 9. 추천 학습 URL
 
-| 분류      | 사이트                                                                                     | 내용                          |
-|-----------|--------------------------------------------------------------------------------------------|-------------------------------|
-| 법령 검색 | [law.go.kr](https://www.law.go.kr)                                                         | 법제처 국가법령정보센터       |
-| 국세청    | [hometax.go.kr](https://www.hometax.go.kr)                                                 | 홈택스 (신고/납부)            |
-| IFRS      | [kasb.or.kr](https://www.kasb.or.kr)                                                       | 한국회계기준원 (K-IFRS 원문)  |
-| 삼일      | [samili.com](https://www.samili.com)                                                       | 세무/회계 실무 해설           |
-| 더존      | [douzone.com](https://www.douzone.com)                                                     | ERP 교육/매뉴얼               |
-| 세무사회  | [kacpta.or.kr](https://www.kacpta.or.kr)                                                   | 전산세무 자격시험 정보        |
-| 회계사회  | [kicpa.or.kr](https://www.kicpa.or.kr)                                                     | CPA 시험/CPE 교육             |
-| DART      | [dart.fss.or.kr](https://dart.fss.or.kr)                                                   | 전자공시 (타사 재무제표 분석) |
-| 교육      | [aifa.co.kr](https://www.aifa.co.kr)                                                       | 삼일아카데미 (실무 강의)      |
-| YouTube   | [youtube.com/@떠먹여주는세법](https://www.youtube.com/results?search_query=떠먹여주는세법) | 세법 기초 영상                |
-| CFA       | [cfainstitute.org](https://www.cfainstitute.org)                                           | CFA 자격/학습 자료            |
+| 분류      | 사이트                                           | 내용                          |
+|-----------|--------------------------------------------------|-------------------------------|
+| 법령 검색 | [law.go.kr](https://www.law.go.kr)               | 법제처 국가법령정보센터       |
+| 국세청    | [hometax.go.kr](https://www.hometax.go.kr)       | 홈택스 (신고/납부)            |
+| IFRS      | [kasb.or.kr](https://www.kasb.or.kr)             | 한국회계기준원 (K-IFRS 원문)  |
+| 삼일      | [samili.com](https://www.samili.com)             | 세무/회계 실무 해설           |
+| 더존      | [douzone.com](https://www.douzone.com)           | ERP 교육/매뉴얼               |
+| 세무사회  | [kacpta.or.kr](https://www.kacpta.or.kr)         | 전산세무 자격시험 정보        |
+| 회계사회  | [kicpa.or.kr](https://www.kicpa.or.kr)           | CPA 시험/CPE 교육             |
+| DART      | [dart.fss.or.kr](https://dart.fss.or.kr)         | 전자공시 (타사 재무제표 분석) |
+| 교육      | [aifa.co.kr](https://www.aifa.co.kr)             | 삼일아카데미 (실무 강의)      |
+| CFA       | [cfainstitute.org](https://www.cfainstitute.org) | CFA 자격/학습 자료            |
 
 ## 참고 자료
+
+### 해외 로드맵/학습 사이트
+
+- CFA Institute Programs: [cfainstitute.org/programs](https://www.cfainstitute.org/programs/cfa) — ★★★★☆
+- IMA (Management Accounting): [imanet.org](https://www.imanet.org/cma-certification) — ★★★☆☆
+
+### 국내
+
 
 - 한국공인회계사회: [kicpa.or.kr](https://www.kicpa.or.kr) — ★★★☆☆
 - 한국세무사회: [kacpta.or.kr](https://www.kacpta.or.kr) — ★★★☆☆
