@@ -151,14 +151,16 @@ lifecycle.prevent_destroy is set, refusing to destroy
 
 | 항목                                   | 절감액 (월, USD) |
 |----------------------------------------|------------------|
-| ap-northeast-1 EIP                     | ~4               |
+| ap-northeast-1 EIP 1개                 | ~4               |
 | ap-northeast-1 EBS 2개                 | ~3               |
 | ap-northeast-1 EC2 + VPC 관련          | ~100             |
+| ap-northeast-1 RDS 7개                 | ~237             |
 | ap-northeast-2 EC2 × 3 + EIP × 3 + NLB | ~150             |
 | ap-northeast-2 EBS 2개                 | ~5               |
-| us-east-1 EIP × 3                      | ~11              |
+| ap-northeast-2 RDS 1개                 | ~12              |
+| us-east-1 EIP 3개                      | ~11              |
 | us-west-2 EBS 1개                      | ~1               |
-| 합계                                   | **~274**         |
+| 합계                                   | **~523**         |
 
 ## 6. 잔여 과금 리소스
 
