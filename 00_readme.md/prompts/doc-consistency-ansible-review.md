@@ -13,10 +13,12 @@ Additional check items:
 6. python-script-syntax: all .py files in scripts/ pass `ast.parse()`
 
 Edge case handling:
-- SSH to Windows host 불가: checks 3, 5 → 🟡 skip (접근 불가 명시)
-- 여러 PLAN.md 존재 시: 각각 독립 검증
-- inventory.ini 없는 서브디렉토리: check 1, 2 skip
-- 코드블록/인용구 내부 IP·경로: 검증 제외
+- SSH to Windows unreachable: checks 3, 5 → 🟡 skip with "Windows host unreachable" note
+- Multiple PLAN.md files in project: verify each independently
+- Subdirectory without inventory.ini: skip checks 1, 2
+- IPs/paths inside code blocks (```) or blockquotes (>): exclude from verification
+- VM in inventory.ini but not in VMS dict: 🟡 warn (may be manually added VM)
+- PLAN.md issues marked with "무시" (ignored): skip code-sync verification
 
 Method:
 - inventory.ini: grep ansible_host= lines → extract IP map
