@@ -394,6 +394,9 @@ Python 프로그래밍 가이드.
 - [license_guide.md](license_guide.md)
 - [CHANGELOG.md](CHANGELOG.md)
 
+## github link
+
+[_reference/github_references.md](./_reference/github_references.md) 참고.
 
 ## 참고 자료
 

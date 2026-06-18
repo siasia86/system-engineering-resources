@@ -440,3 +440,39 @@ find "$(pwd)" -maxdepth 4 -name "PLAN.md" 2>/dev/null
 # or from project root (git root)
 git rev-parse --show-toplevel 2>/dev/null | xargs -I{} find {} -maxdepth 3 -name "PLAN.md"
 ```
+
+## 24. GitHub reference auto-append
+
+When referencing a GitHub repository during work, automatically append the URL to `_reference/github_references.md`.
+
+### Conditions
+
+- Verify repository existence via GitHub API before adding:
+  ```bash
+  curl -s -o /dev/null -w "%{http_code}" https://api.github.com/repos/<owner>/<repo>
+  # 200 = exists, 404 = not found
+  ```
+- Do not add if the same URL already exists in the file:
+  ```bash
+  grep -q "github.com/<owner>/<repo>" /root/32_system-engineering-resources/_reference/github_references.md
+  # exit 0 = duplicate, skip
+  ```
+- Do not add temporary references (example-only, comparison-purpose).
+
+### Classification rules
+
+- URL or description contains `agent`, `ai`, `llm`, `prompt` → `## 1. AI/Agent`
+- URL or description contains `packer`, `terraform`, `ansible`, `vagrant` → `## 2. Packer/IaC`
+- Otherwise → `## 3. 도구`
+
+### Entry format
+
+```markdown
+- [repo-name]: [github.com/owner/repo](https://github.com/owner/repo) — ★★☆☆☆
+```
+
+### Target file
+
+```
+/root/32_system-engineering-resources/_reference/github_references.md
+```
