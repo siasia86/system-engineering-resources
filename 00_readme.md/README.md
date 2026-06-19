@@ -44,6 +44,26 @@ system-engineer (orchestrator)
     └── delegate → markdown-writer   (문서 작성)
 ```
 
+
+## Agent Loop 현황
+
+Observe → Plan → Act → Verify 사이클이 skill/tool/rule로 동작합니다.
+
+| 단계     | 대응                                              | 상태 |
+|----------|---------------------------------------------------|------|
+| Observe  | memory.md, STYLE.md, _reference/INDEX.md          | ✅   |
+| Plan     | planning-and-breakdown, spec-driven-infra, §13    | ✅   |
+| Act      | allowedTools, incremental-change, script templates | ✅   |
+| Verify   | md-style-check.py, §12, testing-guide, hooks      | ✅   |
+| Feedback | debugging-and-recovery, §1-1 (2회 실패→전환)      | ✅   |
+
+### 향후 개선 (미구현)
+
+| 항목 | 내용 | 트리거 |
+|------|------|--------|
+| Observe 자동화 | 세션 종료 시 memory.md 자동 summary 업데이트 | 세션 관리 기능 확장 시 |
+| Verify 자동화 | hook에서 md-style-check/terraform validate 자동 실행 | CI 파이프라인 구축 시 |
+| Feedback 자동 트리거 | 검증 실패 시 자동으로 수정 루프 재진입 | 에이전트 자율 실행 지원 시 |
 ## 금지 패턴
 
 - code-reviewer → security-auditor 호출 (중첩 금지)
