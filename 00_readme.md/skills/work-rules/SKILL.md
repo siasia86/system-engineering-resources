@@ -208,7 +208,9 @@ When discovering errors in `_reference` files:
 
 ## 17. Python script writing rules
 
-Style reference: `/root/sj_del/ip_mask.py`, `json_mask.py`.
+Style reference: `/root/sj_del/ip_mask.py`, `json_mask.py`, `s3_file_upload.py`.
+- `ip_mask.py`, `json_mask.py`: basic CLI script pattern
+- `s3_file_upload.py`: long-running service script pattern (config load, file lock, status file)
 
 ### File structure (strict order)
 
@@ -263,6 +265,55 @@ One-line summary mandatory. Longer description from second line onward.
 ```python
 def process_file(filepath, dry_run=False):
     """Replace IPs in file (skip if no matching pattern)."""
+```
+
+### Config file load pattern (TOML/JSON)
+
+For scripts with external configuration:
+
+```python
+def load_config(config_path=None):
+    """Load config from TOML/JSON. Auto-discover if path not given."""
+    if config_path is None:
+        toml_files = glob.glob(os.path.join(SCRIPT_DIR, '*config.toml'))
+        json_files = glob.glob(os.path.join(SCRIPT_DIR, '*config.json'))
+        config_files = toml_files or json_files
+        if len(config_files) != 1:
+            raise FileNotFoundError("exactly 1 config file required")
+        config_path = config_files[0]
+    if config_path.endswith('.toml'):
+        import tomllib
+        with open(config_path, 'rb') as f:
+            return tomllib.load(f)
+    with open(config_path, 'r') as f:
+        return json.load(f)
+```
+
+- Validate required keys immediately after load
+- Validate value ranges (min/max) before use
+
+### File lock pattern (duplicate execution prevention)
+
+```python
+import fcntl  # Linux
+lock_fp = open(LOCK_FILE, 'w')
+try:
+    fcntl.flock(lock_fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
+except OSError:
+    print("already running")
+    sys.exit(0)
+# ... do work ...
+# finally: fcntl.flock(lock_fp, fcntl.LOCK_UN); lock_fp.close(); os.remove(LOCK_FILE)
+```
+
+### Status file pattern (monitoring integration)
+
+```python
+STATUS_FILE = os.path.join(LOG_DIR, "backup.status")
+def write_status(error_codes):
+    """Write error code for external monitoring (Zabbix, etc.)."""
+    with open(STATUS_FILE, 'w') as f:
+        f.write(str(min(error_codes)) if error_codes else '0')
 ```
 
 ## 18. Windows PowerShell via SSH
