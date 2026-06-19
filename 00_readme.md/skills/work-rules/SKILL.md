@@ -208,7 +208,9 @@ When discovering errors in `_reference` files:
 
 ## 17. Python script writing rules
 
-Style reference: `/root/sj_del/ip_mask.py`, `json_mask.py`.
+Style reference: `/root/sj_del/ip_mask.py`, `json_mask.py`, `s3_file_upload.py`.
+- `ip_mask.py`, `json_mask.py`: basic CLI script pattern
+- `s3_file_upload.py`: long-running service script pattern (config load, file lock, status file)
 
 ### File structure (strict order)
 
@@ -263,6 +265,55 @@ One-line summary mandatory. Longer description from second line onward.
 ```python
 def process_file(filepath, dry_run=False):
     """Replace IPs in file (skip if no matching pattern)."""
+```
+
+### Config file load pattern (TOML/JSON)
+
+For scripts with external configuration:
+
+```python
+def load_config(config_path=None):
+    """Load config from TOML/JSON. Auto-discover if path not given."""
+    if config_path is None:
+        toml_files = glob.glob(os.path.join(SCRIPT_DIR, '*config.toml'))
+        json_files = glob.glob(os.path.join(SCRIPT_DIR, '*config.json'))
+        config_files = toml_files or json_files
+        if len(config_files) != 1:
+            raise FileNotFoundError("exactly 1 config file required")
+        config_path = config_files[0]
+    if config_path.endswith('.toml'):
+        import tomllib
+        with open(config_path, 'rb') as f:
+            return tomllib.load(f)
+    with open(config_path, 'r') as f:
+        return json.load(f)
+```
+
+- Validate required keys immediately after load
+- Validate value ranges (min/max) before use
+
+### File lock pattern (duplicate execution prevention)
+
+```python
+import fcntl  # Linux
+lock_fp = open(LOCK_FILE, 'w')
+try:
+    fcntl.flock(lock_fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
+except OSError:
+    print("already running")
+    sys.exit(0)
+# ... do work ...
+# finally: fcntl.flock(lock_fp, fcntl.LOCK_UN); lock_fp.close(); os.remove(LOCK_FILE)
+```
+
+### Status file pattern (monitoring integration)
+
+```python
+STATUS_FILE = os.path.join(LOG_DIR, "backup.status")
+def write_status(error_codes):
+    """Write error code for external monitoring (Zabbix, etc.)."""
+    with open(STATUS_FILE, 'w') as f:
+        f.write(str(min(error_codes)) if error_codes else '0')
 ```
 
 ## 18. Windows PowerShell via SSH
@@ -439,4 +490,40 @@ Look for `PLAN.md` starting from the current working directory, searching up to 
 find "$(pwd)" -maxdepth 4 -name "PLAN.md" 2>/dev/null
 # or from project root (git root)
 git rev-parse --show-toplevel 2>/dev/null | xargs -I{} find {} -maxdepth 3 -name "PLAN.md"
+```
+
+## 24. GitHub reference auto-append
+
+When referencing a GitHub repository during work, automatically append the URL to `_reference/github_references.md`.
+
+### Conditions
+
+- Verify repository existence via GitHub API before adding:
+  ```bash
+  curl -s -o /dev/null -w "%{http_code}" https://api.github.com/repos/<owner>/<repo>
+  # 200 = exists, 404 = not found
+  ```
+- Do not add if the same URL already exists in the file:
+  ```bash
+  grep -q "github.com/<owner>/<repo>" /root/32_system-engineering-resources/_reference/github_references.md
+  # exit 0 = duplicate, skip
+  ```
+- Do not add temporary references (example-only, comparison-purpose).
+
+### Classification rules
+
+- URL or description contains `agent`, `ai`, `llm`, `prompt` → `## 1. AI/Agent`
+- URL or description contains `packer`, `terraform`, `ansible`, `vagrant` → `## 2. Packer/IaC`
+- Otherwise → `## 3. 도구`
+
+### Entry format
+
+```markdown
+- [repo-name]: [github.com/owner/repo](https://github.com/owner/repo) — ★★☆☆☆
+```
+
+### Target file
+
+```
+/root/32_system-engineering-resources/_reference/github_references.md
 ```
