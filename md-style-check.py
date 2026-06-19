@@ -267,6 +267,32 @@ def check_emoji_space(content, strict=False):
             issues.append(f"L{i}: '{emoji}' 뒤 공백 없음 → '{emoji}{next_char}'")
     return issues
 
+
+def check_bold_parentheses(content, strict=False):
+    """Bold(**) 안에 괄호가 포함된 경우 검출.
+    
+    일부 마크다운 렌더러(GitHub 포함)는 **text(...)** 형태에서
+    ')' 뒤의 '**'를 bold 닫힘으로 인식하지 못합니다.
+    원인: 파서가 ')' 를 bold 범위의 종료 지점으로 혼동하는 엣지 케이스.
+    해결: 괄호를 bold 밖으로 이동 — **text**(...)
+    """
+    if not strict:
+        return []
+    issues = []
+    clean = strip_code_blocks(content)
+    for i, line in enumerate(clean.splitlines(), 1):
+        # **...(...)** 패턴 검출 (** 안에 ( ) 포함)
+        for m in re.finditer(r'[*][*][^*]*[(]([^)]{10,})[)][^*]*[*][*]', line):
+            matched = m.group(0)
+            paren_content = m.group(1)
+            if ' ' not in paren_content:
+                continue
+            # 표 셀 내 **A** 단독 사용은 제외 (괄호 없는 경우는 이미 필터됨)
+            issues.append(
+                f"L{i}: bold 안에 괄호 포함 (렌더링 깨짐 가능) → '{matched}'"
+            )
+    return issues
+
 def check_footer(content, strict=False):
     """README 푸터 존재 여부 (작성일, 마지막 업데이트, 저작권)."""
     issues = []
@@ -341,6 +367,7 @@ CHECKS = [
     ("다이어그램 행 폭",  check_diagram),
     ("다이어그램 한글",   check_diagram_korean),
     ("이모지 뒤 공백",    check_emoji_space),
+    ("bold 괄호",         check_bold_parentheses),
     ("반말체 종결어미",   check_banmal),
     ("과장 표현",         check_exaggeration),
     ("푸터",              check_footer),
