@@ -1,6 +1,6 @@
 ---
 name: testing-guide
-description: Guides test writing with AAA pattern, BVA, and equivalence partitioning. Use when writing unit tests, integration tests, or infrastructure validation tests.
+description: Guides test writing with AAA pattern, BVA, EP, and edge case analysis. Use when writing unit tests, integration tests, or infrastructure validation tests.
 ---
 
 # Testing Guide
@@ -68,7 +68,31 @@ For any range [min, max], always test:
 - [ ] Error case (invalid input, exception)
 - [ ] Boundary values (min, max, min-1, max+1)
 - [ ] Empty input (None, "", [])
+- [ ] Edge cases (see 5-axis below)
 - [ ] Idempotency (if applicable)
+
+## Edge Case Analysis (5-axis)
+
+Derive edge cases from 5 axes. Pick at least 1 from each applicable axis.
+
+| Axis     | Question                                  | Examples                                |
+|----------|-------------------------------------------|-----------------------------------------|
+| Input    | Empty, max length, special chars?         | null, 0, MAX_INT, unicode, newline      |
+| Environment | Disk full, OOM, network down?          | DNS fail, read-only mount, low bandwidth|
+| State    | Initial, mid-failure, post-restart?       | uninitialized, partial write, cold start|
+| Time     | Concurrency, timeout, order reversal?     | simultaneous write, expired token       |
+| Resource | Exhaustion, contention, limit reached?    | FD exhausted, pool full, PID limit      |
+
+Reference: `file:///root/32_system-engineering-resources/05_computer_science/02_testing/04_test_design/edge_case_testing.md`
+
+### Terminology
+
+| Term           | Meaning                                    |
+|----------------|--------------------------------------------|
+| Edge case      | Boundary of valid range                    |
+| Corner case    | Multiple boundaries intersecting           |
+| Degenerate case| Extremely simple/empty input               |
+| Race condition | Timing-dependent concurrent conflict       |
 
 ## Infrastructure Testing
 
@@ -97,7 +121,7 @@ For any range [min, max], always test:
 | Image build      | `docker build --no-cache -t test .`                  |              |
 | Container health | `docker inspect --format='{{.State.Health.Status}}'` |              |
 | Compose syntax   | `docker compose config`                              |              |
-| Port binding     | `ss -tlnp \                                          | grep <port>` |
+| Port binding     | `ss -tlnp` 으로 포트 확인                              |              |
 
 ### Post-Change Verification Pattern
 
@@ -123,6 +147,7 @@ aws ec2 describe-instance-status --instance-ids <id>
 
 - 테스트 없이 "동작 확인했습니다" 주장
 - happy path만 테스트하고 에러 케이스 누락
+- edge case 도출 없이 "정상 동작" 판단
 - terraform plan 미확인 상태에서 apply
 - 테스트 실패를 무시하고 진행
 - "나중에 테스트 추가하겠습니다"로 건너뜀
