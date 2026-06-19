@@ -24,6 +24,7 @@
     "web_fetch"
   ],
   "resources": [
+    "file://~/.kiro/memory.md",
     "skill://work-rules",
     "skill://readme-template",
     "skill://git-commit-rule",
