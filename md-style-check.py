@@ -221,7 +221,7 @@ def check_diagram(content, strict=False):
                 box_lines.append(l)
             elif in_box:
                 box_lines.append(l)
-                if '┘' in l:
+                if l.strip().startswith('└') and l.strip().endswith('┘'):
                     if box_lines:
                         check_lines = [bl for bl in box_lines
                                        if bl.strip().startswith(('┌', '│', '└'))
