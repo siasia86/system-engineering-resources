@@ -23,6 +23,7 @@
     "web_fetch"
   ],
   "resources": [
+    "file://~/.kiro/memory.md",
     "skill://work-rules",
     "skill://using-skills",
     "skill://readme-template",
