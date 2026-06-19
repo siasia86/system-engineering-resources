@@ -11,7 +11,6 @@
 | Docker | 29.5.3 (cgroup v2) |
 | SSH 키 | ~/.ssh/id_ed25519 |
 | venv | /home/sjyun/.venv |
-| AWS 프로필 | 01_re (980527594869) |
 
 ## 프로젝트 경로
 
@@ -20,12 +19,13 @@
 | Ansible 학습 | /opt/00_chobo_ansible/ |
 | 기술 문서 | /root/32_system-engineering-resources/ |
 | AWS 작업 | /home/sjyun/03_aws/ |
+| 스크립트 | /root/sj_del/ |
 | 로그 | /var/log/sjyun/ansible/ |
 
 ## 작업 규칙 요약
 
 - md-style-check 0건 통과 필수
-- Python으로 통일 (bash 스크립트 지양)
+- Python으로 통일 (bash 스크립트 가능하나 빈도수는 작게)
 - 삭제 작업: 출력 → 승인 → 삭제 → 정리
 - PLAN.md 이슈: 해결 직후 즉시 기재
 - IP 전체 기재 (축약 금지)
