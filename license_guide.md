@@ -534,3 +534,4 @@ GitHub CLA Assistant 등 도구로 자동화 가능.
 **마지막 업데이트**: 2026-04-30
 
 © 2026 siasia86. Licensed under CC BY 4.0.
+
