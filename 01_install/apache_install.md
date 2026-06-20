@@ -530,16 +530,16 @@ sudo systemctl restart apache2
 
 ## 9. 트러블슈팅
 
-| 증상                                | 원인                             | 해결 방법                                                     |               |
-|-------------------------------------|----------------------------------|---------------------------------------------------------------|---------------|
-| `apache2ctl configtest` 실패        | 설정 문법 오류                   | 오류 메시지 라인 확인 후 수정                                 |               |
-| 403 Forbidden                       | 파일 권한 또는 `Require` 설정    | `chmod`, `chown` 확인 / `Require all granted` 추가            |               |
-| 404 Not Found                       | DocumentRoot 또는 파일 경로 오류 | `DocumentRoot` 경로 확인                                      |               |
-| 500 Internal Server Error           | PHP 오류 또는 .htaccess 문제     | `error.log` 확인                                              |               |
-| `bind() to 0.0.0.0:80 failed`       | 포트 충돌                        | `ss -tlnp \                                                   | grep 80` 확인 |
-| mod_php + event MPM 충돌            | libphp는 prefork 전용            | `a2dismod mpm_event && a2enmod mpm_prefork` 또는 PHP-FPM 사용 |               |
-| RHEL: DocumentRoot 접근 거부        | SELinux 컨텍스트 불일치          | `semanage fcontext` + `restorecon`                            |               |
-| `Could not reliably determine FQDN` | ServerName 미설정                | `apache2.conf` 에 `ServerName localhost` 추가                 |               |
+| 증상                                | 원인                             | 해결 방법                                                     |
+|-------------------------------------|----------------------------------|---------------------------------------------------------------|
+| `apache2ctl configtest` 실패        | 설정 문법 오류                   | 오류 메시지 라인 확인 후 수정                                 |
+| 403 Forbidden                       | 파일 권한 또는 `Require` 설정    | `chmod`, `chown` 확인 / `Require all granted` 추가            |
+| 404 Not Found                       | DocumentRoot 또는 파일 경로 오류 | `DocumentRoot` 경로 확인                                      |
+| 500 Internal Server Error           | PHP 오류 또는 .htaccess 문제     | `error.log` 확인                                              |
+| `bind() to 0.0.0.0:80 failed`       | 포트 충돌                        | `ss -tlnp \| grep 80` 확인                                    |
+| mod_php + event MPM 충돌            | libphp는 prefork 전용            | `a2dismod mpm_event && a2enmod mpm_prefork` 또는 PHP-FPM 사용 |
+| RHEL: DocumentRoot 접근 거부        | SELinux 컨텍스트 불일치          | `semanage fcontext` + `restorecon`                            |
+| `Could not reliably determine FQDN` | ServerName 미설정                | `apache2.conf` 에 `ServerName localhost` 추가                 |
 
 ```bash
 # 에러 로그 확인
