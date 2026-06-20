@@ -651,14 +651,14 @@ ansible-playbook -i inventory playbook.yml
 **고가용성 설계**
 ```
 Region: ap-northeast-2
-├─ AZ-A
-│  ├─ Web Server 1
-│  ├─ App Server 1
-│  └─ DB Master
-└─ AZ-C
-   ├─ Web Server 2
-   ├─ App Server 2
-   └─ DB Slave
+├─ AZ-A               
+│  ├─ Web Server 1    
+│  ├─ App Server 1    
+│  └─ DB Master       
+└─ AZ-C               
+   ├─ Web Server 2    
+   ├─ App Server 2    
+   └─ DB Slave        
 ```
 
 ### 용량 계획
