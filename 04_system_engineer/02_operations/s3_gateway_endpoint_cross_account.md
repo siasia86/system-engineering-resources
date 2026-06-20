@@ -177,13 +177,13 @@ aws s3 cp test.txt s3://b-account-bucket/test.txt --region us-east-1
 
 ## 확인 체크리스트
 
-| #   | 항목                         | 확인 방법               |
-|-----|------------------------------|-------------------------|
-| 1   | Gateway Endpoint 생성        | describe-vpc-endpoints  |
-| 2   | 라우트 테이블에 pl-xxx 경로  | describe-route-tables   |
-| 3   | B계정 버킷 정책 (A계정 허용) | s3api get-bucket-policy |
-| 4   | A계정 IAM Role (B버킷 접근)  | iam get-role-policy     |
-| 5   | EC2 → S3 업로드 테스트       | aws s3 cp               |
+| # | 항목                         | 확인 방법               |
+|---|------------------------------|-------------------------|
+| 1 | Gateway Endpoint 생성        | describe-vpc-endpoints  |
+| 2 | 라우트 테이블에 pl-xxx 경로  | describe-route-tables   |
+| 3 | B계정 버킷 정책 (A계정 허용) | s3api get-bucket-policy |
+| 4 | A계정 IAM Role (B버킷 접근)  | iam get-role-policy     |
+| 5 | EC2 → S3 업로드 테스트       | aws s3 cp               |
 
 [⬆ 목차로 돌아가기](#목차)
 

@@ -25,41 +25,41 @@
 ### 전체 디렉토리 구조
 
 ```
-infra-monorepo/
-├── docs/
+infra-monorepo/                                     
+├── docs/                                           
 │   ├── adr/                        ← 기술 결정 기록
-│   ├── runbooks/                   ← 운영 매뉴얼
-│   └── postmortem/                 ← 장애 보고서
-├── ansible/
-│   ├── ansible.cfg
-│   ├── inventories/
-│   │   ├── dev/
-│   │   ├── qa/
-│   │   ├── stg/
-│   │   └── prd/
-│   ├── playbooks/
-│   ├── roles/
-│   └── group_vars/
-├── terraform/
-│   ├── modules/                    ← 재사용 모듈
-│   └── environments/
-│       ├── dev/
-│       ├── stg/
-│       └── prd/
-├── monitoring/
-│   ├── zabbix/
-│   └── alerting/
-├── scripts/
-│   └── common/
+│   ├── runbooks/                   ← 운영 매뉴얼   
+│   └── postmortem/                 ← 장애 보고서   
+├── ansible/                                        
+│   ├── ansible.cfg                                 
+│   ├── inventories/                                
+│   │   ├── dev/                                    
+│   │   ├── qa/                                     
+│   │   ├── stg/                                    
+│   │   └── prd/                                    
+│   ├── playbooks/                                  
+│   ├── roles/                                      
+│   └── group_vars/                                 
+├── terraform/                                      
+│   ├── modules/                    ← 재사용 모듈   
+│   └── environments/                               
+│       ├── dev/                                    
+│       ├── stg/                                    
+│       └── prd/                                    
+├── monitoring/                                     
+│   ├── zabbix/                                     
+│   └── alerting/                                   
+├── scripts/                                        
+│   └── common/                                     
 ├── templates/                      ← 보일러플레이트
-│   ├── new-service/
-│   ├── new-server/
-│   └── new-project/
-├── .kiro/
-│   ├── agents/
-│   └── skills/
-├── .gitlab-ci.yml                  ← CI/CD
-└── README.md
+│   ├── new-service/                                
+│   ├── new-server/                                 
+│   └── new-project/                                
+├── .kiro/                                          
+│   ├── agents/                                     
+│   └── skills/                                     
+├── .gitlab-ci.yml                  ← CI/CD         
+└── README.md                                       
 ```
 
 ### Monorepo 장단점
@@ -90,20 +90,20 @@ infra-monorepo/
 ### 템플릿 디렉토리 구조
 
 ```
-templates/new-service/
-├── README.md.tmpl
-├── ansible/
-│   ├── playbook.yml.tmpl
-│   └── inventory.yml.tmpl
-├── terraform/
-│   ├── main.tf.tmpl
-│   └── variables.tf.tmpl
-├── monitoring/
+templates/new-service/          
+├── README.md.tmpl              
+├── ansible/                    
+│   ├── playbook.yml.tmpl       
+│   └── inventory.yml.tmpl      
+├── terraform/                  
+│   ├── main.tf.tmpl            
+│   └── variables.tf.tmpl       
+├── monitoring/                 
 │   └── zabbix-template.yml.tmpl
-├── docs/
-│   └── adr/
-│       └── adr-template.md
-└── init.sh
+├── docs/                       
+│   └── adr/                    
+│       └── adr-template.md     
+└── init.sh                     
 ```
 
 ### init.sh (템플릿 생성 스크립트)
@@ -158,13 +158,13 @@ echo "✅ Created: ${DEST}"
 ### 디렉토리 구조
 
 ```
-docs/runbooks/
+docs/runbooks/                                  
 ├── incident-response.md        ← 장애 대응 절차
 ├── server-add.md               ← 서버 추가 절차
 ├── deploy-rollback.md          ← 배포/롤백 절차
-├── db-failover.md              ← DB 페일오버
-├── certificate-renewal.md      ← 인증서 갱신
-└── on-call-guide.md            ← 당직 가이드
+├── db-failover.md              ← DB 페일오버   
+├── certificate-renewal.md      ← 인증서 갱신   
+└── on-call-guide.md            ← 당직 가이드   
 ```
 
 ### Runbook 템플릿
@@ -214,6 +214,8 @@ command here
 ---
 
 ## 트러블슈팅
+
+```
 | 증상 | 원인 | 해결 |
 |------|------|------|
 |      |      |      |

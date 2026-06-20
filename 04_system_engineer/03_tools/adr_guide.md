@@ -39,15 +39,15 @@ ADR은 중요한 기술 결정을 "왜 그렇게 했는지" 기록하는 경량 
 ## 2. 디렉토리 구조
 
 ```
-project/
-└── docs/
-    └── adr/
+project/                                          
+└── docs/                                         
+    └── adr/                                      
         ├── README.md          ← ADR 목록 (인덱스)
-        ├── adr-001-os-selection.md
-        ├── adr-002-iac-tool.md
-        ├── adr-003-monitoring-stack.md
-        └── templates/
-            └── adr-template.md
+        ├── adr-001-os-selection.md               
+        ├── adr-002-iac-tool.md                   
+        ├── adr-003-monitoring-stack.md           
+        └── templates/                            
+            └── adr-template.md                   
 ```
 
 ### README.md (인덱스)

@@ -276,7 +276,7 @@ traceroute 10.1.1.10
 
 ## 기존 라우팅 테이블에 Peering 경로 추가
 
-이미 라우팅 테이블이 존재하는 환경에서 Peering 경로만 추가하는 방법이다.
+이미 라우팅 테이블이 존재하는 환경에서 Peering 경로만 추가하는 방법입니다.
 VPC Peering을 생성/수락해도 라우트 엔트리는 자동으로 추가되지 않는다.
 
 ### 현재 라우팅 테이블 확인
@@ -313,7 +313,7 @@ aws ec2 create-route \
   --region us-east-1
 ```
 
-🟡 동일 destination이 이미 존재하면 `RouteAlreadyExists` 에러가 발생한다. 이 경우 `replace-route`를 사용한다.
+🟡 동일 destination이 이미 존재하면 `RouteAlreadyExists` 에러가 발생합니다. 이 경우 `replace-route`를 사용합니다.
 
 ### 기존 경로 변경 (replace-route)
 
