@@ -285,14 +285,14 @@ gameservers
 
 #### Inventory 주요 문법
 
-| 문법        | 예시                                            | 설명                    |        |                       |
-|-------------|-------------------------------------------------|-------------------------|--------|-----------------------|
-| 호스트 변수 | `host1 ansible_host=10.0.1.1`                   | 호스트별 개별 변수 지정 |        |                       |
-| 그룹        | `[webservers]`                                  | 호스트 묶음             |        |                       |
-| 그룹 변수   | `[webservers:vars]`                             | 그룹 전체에 변수 적용   |        |                       |
-| 중첩 그룹   | `[production:children]`                         | 그룹을 묶는 상위 그룹   |        |                       |
-| 포트 지정   | `host1 ansible_host=10.0.1.1 ansible_port=2222` | 기본 22 외 포트 사용 시 |        |                       |
-| 연결 방식   | `ansible_connection=ssh\                        | docker\                 | local` | SSH 외 연결 방식 지정 |
+| 문법        | 예시                                            | 설명                    |
+|-------------|-------------------------------------------------|-------------------------|
+| 호스트 변수 | `host1 ansible_host=10.0.1.1`                   | 호스트별 개별 변수 지정 |
+| 그룹        | `[webservers]`                                  | 호스트 묶음             |
+| 그룹 변수   | `[webservers:vars]`                             | 그룹 전체에 변수 적용   |
+| 중첩 그룹   | `[production:children]`                         | 그룹을 묶는 상위 그룹   |
+| 포트 지정   | `host1 ansible_host=10.0.1.1 ansible_port=2222` | 기본 22 외 포트 사용 시 |
+| 연결 방식   | `ansible_connection=ssh\|docker\|local`         | SSH 외 연결 방식 지정   |
 
 🟡 inventory 파일은 환경별(dev/qa/stg/prd)로 분리 관리를 권장합니다. 하나의 파일에 모든 환경을 넣으면 실수로 운영 서버에 실행할 위험이 있습니다.
 
@@ -387,14 +387,14 @@ prd-app-web-01 | SUCCESS => {
 
 #### 디렉토리 역할 설명
 
-| 디렉토리/파일               | 역할                      |      |      |                            |
-|-----------------------------|---------------------------|------|------|----------------------------|
-| `inventory/dev\             | qa\                       | stg\ | prd` | 환경별 inventory 파일 분리 |
-| `group_vars/all.yml`        | 전체 호스트 공통 변수     |      |      |                            |
-| `group_vars/webservers.yml` | webservers 그룹 전용 변수 |      |      |                            |
-| `host_vars/hostname.yml`    | 특정 호스트 전용 변수     |      |      |                            |
-| `roles/`                    | 재사용 가능한 task 묶음   |      |      |                            |
-| `playbooks/site.yml`        | 전체 인프라 적용 진입점   |      |      |                            |
+| 디렉토리/파일                 | 역할                       |
+|-------------------------------|----------------------------|
+| `inventory/dev\|qa\|stg\|prd` | 환경별 inventory 파일 분리 |
+| `group_vars/all.yml`          | 전체 호스트 공통 변수      |
+| `group_vars/webservers.yml`   | webservers 그룹 전용 변수  |
+| `host_vars/hostname.yml`      | 특정 호스트 전용 변수      |
+| `roles/`                      | 재사용 가능한 task 묶음    |
+| `playbooks/site.yml`          | 전체 인프라 적용 진입점    |
 
 🟡 `group_vars/`, `host_vars/`는 inventory 파일과 **같은 디렉토리**에 있어야 자동으로 로드됩니다.
 

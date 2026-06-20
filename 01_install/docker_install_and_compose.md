@@ -515,16 +515,16 @@ services:
 
 ## 8. 트러블슈팅
 
-| 증상                                  | 원인                     | 해결 방법                                         |                                  |
-|---------------------------------------|--------------------------|---------------------------------------------------|----------------------------------|
-| `permission denied` (docker 명령)     | docker 그룹 미적용       | `sudo usermod -aG docker $USER` 후 재로그인       |                                  |
-| `port is already allocated`           | 호스트 포트 충돌         | `ss -tlnp \                                       | grep PORT` 로 점유 프로세스 확인 |
-| 컨테이너가 즉시 종료됨                | 포그라운드 프로세스 없음 | `docker logs CONTAINER` 로 오류 확인              |                                  |
-| `no space left on device`             | Docker 디스크 가득 참    | `docker system prune -a --volumes`                |                                  |
-| DB 컨테이너 접속 불가 (앱 시작 직후)  | DB 초기화 미완료         | `healthcheck` + `condition: service_healthy` 적용 |                                  |
-| 볼륨 데이터 유지 안 됨                | `down -v` 사용           | `-v` 없이 `down` 사용, Named Volume 확인          |                                  |
-| RHEL: 볼륨 마운트 `permission denied` | SELinux 컨텍스트 불일치  | 볼륨 경로에 `:z` 또는 `:Z` 추가                   |                                  |
-| `Cannot connect to the Docker daemon` | docker 서비스 미실행     | `sudo systemctl start docker`                     |                                  |
+| 증상                                  | 원인                     | 해결 방법                                         |
+|---------------------------------------|--------------------------|---------------------------------------------------|
+| `permission denied` (docker 명령)     | docker 그룹 미적용       | `sudo usermod -aG docker $USER` 후 재로그인       |
+| `port is already allocated`           | 호스트 포트 충돌         | `ss -tlnp \| grep PORT` 로 점유 프로세스 확인     |
+| 컨테이너가 즉시 종료됨                | 포그라운드 프로세스 없음 | `docker logs CONTAINER` 로 오류 확인              |
+| `no space left on device`             | Docker 디스크 가득 참    | `docker system prune -a --volumes`                |
+| DB 컨테이너 접속 불가 (앱 시작 직후)  | DB 초기화 미완료         | `healthcheck` + `condition: service_healthy` 적용 |
+| 볼륨 데이터 유지 안 됨                | `down -v` 사용           | `-v` 없이 `down` 사용, Named Volume 확인          |
+| RHEL: 볼륨 마운트 `permission denied` | SELinux 컨텍스트 불일치  | 볼륨 경로에 `:z` 또는 `:Z` 추가                   |
+| `Cannot connect to the Docker daemon` | docker 서비스 미실행     | `sudo systemctl start docker`                     |
 
 ### 디버깅 명령
 
