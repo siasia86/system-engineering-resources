@@ -6,6 +6,38 @@
 
 ---
 
+## [2.2.1] - 2026-06-21
+
+### Fixed
+
+#### 01_install — 표 정렬 수정 (5개 파일)
+- `nginx_install.md`, `apache_install.md`, `docker_install_and_compose.md`, `ansible_install_and_team_operation.md`, `elasticsearch_install.md`
+- 표 내부 파이프(`|`) 미이스케이프로 인한 열 깨짐 수정 (`\|` 이스케이프 적용)
+- 불필요한 빈 열 제거 및 display width 기준 패딩 재정렬
+
+#### 02_basic_linux — 표 정렬 + 다이어그램 수정 (4개 파일)
+- `bash_file_redirection.md` — 표 패딩 수정, 다이어그램 행 폭 통일, 다이어그램 내부 한글→영문
+- `bash_math.md` — 표 열 너비 재정렬 (`\|\|` 이스케이프 포함)
+- `root_password_recovery.md` — 표 열 너비 재정렬
+- `shell_interactive_mode.md` — 표 전체 자동 정렬
+
+#### 04_system_engineer — 표 정렬 + 구조 수정 (22개 파일)
+- 전체 표 display width 기준 자동 정렬
+- `kiro_cli_command_reference.md` — 파이프 이스케이프 (`--wrap <always \| never>`)
+- `game_infra_kpi_presentation.md` — H1 중복 수정 (`# ubuntu-24.04` → `## ubuntu-24.04`)
+- `infra_monorepo_and_boilerplate.md` — 코드블록 시작 태그 누락 수정
+- `ai_markdown_design_patterns.md` — 이모지 뒤 공백 추가
+- `vpc_peering_inter_region_guide.md` — 반말체→합니다체 수정 (2건)
+- 다이어그램 행 폭 패딩 통일
+
+#### 05_computer_science — 표 정렬 + 다이어그램 수정 (19개 파일)
+- 전체 표 display width 기준 자동 정렬
+- `equivalence_partitioning.md` — 코드블록 닫힘 누락 수정
+- `ipv4_addressing_guide.md`, `array.md`, `linked_list.md`, `queue.md`, `integration_testing.md` — 다이어그램 내부 한글→영문
+- 다이어그램 행 폭 패딩 통일
+
+---
+
 ## [2.2.0] - 2026-05-04
 
 ### Added
