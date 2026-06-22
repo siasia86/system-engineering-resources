@@ -118,12 +118,12 @@ kill -SIGTERM -<pgid>
 
 | 시그널    | 번호  | 기본 동작           | 무시 가능 |
 |-----------|-------|---------------------|-----------|
-| SIGTERM   | 15    | 종료                | ✅         |
-| SIGKILL   | 9     | 강제 종료           | ❌         |
-| SIGHUP    | 1     | 종료/재로드         | ✅         |
-| SIGINT    | 2     | 종료 (Ctrl+C)       | ✅         |
-| SIGCHLD   | 17    | 자식 상태 변경 알림 | ✅         |
-| SIGUSR1/2 | 10/12 | 사용자 정의         | ✅         |
+| SIGTERM   | 15    | 종료                | ✅        |
+| SIGKILL   | 9     | 강제 종료           | ❌        |
+| SIGHUP    | 1     | 종료/재로드         | ✅        |
+| SIGINT    | 2     | 종료 (Ctrl+C)       | ✅        |
+| SIGCHLD   | 17    | 자식 상태 변경 알림 | ✅        |
+| SIGUSR1/2 | 10/12 | 사용자 정의         | ✅        |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -458,13 +458,13 @@ Network
 - Sync only: 동기화만 필요 → 세마포어
 - Unidirectional: 단방향 스트림, 부모-자식 → 파이프
 
-| 방식         | 지속성           | 커널 잔존 | 네트워크 | 권장          |
-|--------------|------------------|-----------|----------|---------------|
-| 파이프       | 프로세스 생존 시 | ❌         | ❌        | ✅ 단순 스트림 |
-| System V shm | 명시적 삭제 전   | ✅         | ❌        | 🟡 레거시     |
-| POSIX shm    | 명시적 삭제 전   | ✅         | ❌        | ✅ 현대적      |
-| Unix Socket  | 프로세스 생존 시 | ❌         | ❌        | ✅ 범용        |
-| TCP Socket   | 프로세스 생존 시 | ❌         | ✅        | ✅ 네트워크    |
+| 방식         | 지속성           | 커널 잔존 | 네트워크 | 권장           |
+|--------------|------------------|-----------|----------|----------------|
+| 파이프       | 프로세스 생존 시 | ❌        | ❌       | ✅ 단순 스트림 |
+| System V shm | 명시적 삭제 전   | ✅        | ❌       | 🟡 레거시      |
+| POSIX shm    | 명시적 삭제 전   | ✅        | ❌       | ✅ 현대적      |
+| Unix Socket  | 프로세스 생존 시 | ❌        | ❌       | ✅ 범용        |
+| TCP Socket   | 프로세스 생존 시 | ❌        | ✅       | ✅ 네트워크    |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -475,7 +475,7 @@ Network
 - Linux man pages: [man7.org/linux/man-pages](https://man7.org/linux/man-pages/man7/ipc_namespaces.7.html) — ★★★☆☆
 - Linux man pages — svipc: [man7.org/linux/man-pages/man7/svipc.7.html](https://man7.org/linux/man-pages/man7/svipc.7.html) — ★★★☆☆
 - [namespace.md](namespace.md)
-- [strace.md](strace.md)
+- [strace.md](../08_debugging_linux/strace.md)
 
 ---
 
