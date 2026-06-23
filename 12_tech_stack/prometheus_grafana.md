@@ -2,12 +2,12 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. Prometheus 핵심 개념](#3-prometheus-핵심-개념) |
-| [4. 설치](#4-설치) / [5. PromQL](#5-promql) / [6. 알림 (Alertmanager)](#6-알림-alertmanager) |
+| 섹션                                                                                                         |
+|--------------------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. Prometheus 핵심 개념](#3-prometheus-핵심-개념)         |
+| [4. 설치](#4-설치) / [5. PromQL](#5-promql) / [6. 알림 (Alertmanager)](#6-알림-alertmanager)                 |
 | [7. Grafana 대시보드](#7-grafana-대시보드) / [8. Exporter](#8-exporter) / [9. K8s 모니터링](#9-k8s-모니터링) |
-| [10. Tips](#10-tips) |
+| [10. Tips](#10-tips)                                                                                         |
 
 ---
 
@@ -60,12 +60,12 @@ Prometheus는 오픈소스 시계열 모니터링 시스템. Grafana는 Promethe
 
 ### 메트릭 유형
 
-| 유형      | 설명                                      | 예시                          |
-|-----------|-------------------------------------------|-------------------------------|
-| Counter   | 단조 증가 값 (재시작 시 0으로 리셋)       | HTTP 요청 수, 에러 수         |
-| Gauge     | 임의로 증감하는 값                        | CPU 사용률, 메모리 사용량     |
-| Histogram | 값의 분포 (버킷별 카운트 + 합계)          | 응답 시간, 요청 크기          |
-| Summary   | 분위수(quantile) 계산 (클라이언트 사이드) | 응답 시간 p50/p95/p99         |
+| 유형      | 설명                                      | 예시                      |
+|-----------|-------------------------------------------|---------------------------|
+| Counter   | 단조 증가 값 (재시작 시 0으로 리셋)       | HTTP 요청 수, 에러 수     |
+| Gauge     | 임의로 증감하는 값                        | CPU 사용률, 메모리 사용량 |
+| Histogram | 값의 분포 (버킷별 카운트 + 합계)          | 응답 시간, 요청 크기      |
+| Summary   | 분위수(quantile) 계산 (클라이언트 사이드) | 응답 시간 p50/p95/p99     |
 
 ### 레이블
 
@@ -436,14 +436,14 @@ providers:
 
 ### 유용한 공개 대시보드 (Grafana ID)
 
-| 대시보드                    | ID    | 용도                        |
-|-----------------------------|-------|-----------------------------|
-| Node Exporter Full          | 1860  | 서버 리소스 모니터링        |
-| Kubernetes Cluster          | 7249  | K8s 클러스터 개요           |
-| Kubernetes Pod              | 6781  | Pod 상세 모니터링           |
-| MySQL Overview              | 7362  | MySQL 모니터링              |
-| Redis Dashboard             | 11835 | Redis 모니터링              |
-| NGINX Ingress Controller    | 9614  | Ingress 트래픽 모니터링     |
+| 대시보드                 | ID    | 용도                    |
+|--------------------------|-------|-------------------------|
+| Node Exporter Full       | 1860  | 서버 리소스 모니터링    |
+| Kubernetes Cluster       | 7249  | K8s 클러스터 개요       |
+| Kubernetes Pod           | 6781  | Pod 상세 모니터링       |
+| MySQL Overview           | 7362  | MySQL 모니터링          |
+| Redis Dashboard          | 11835 | Redis 모니터링          |
+| NGINX Ingress Controller | 9614  | Ingress 트래픽 모니터링 |
 
 ```bash
 # Grafana CLI로 대시보드 가져오기
@@ -458,14 +458,14 @@ grafana-cli dashboards import 1860
 
 ### 주요 Exporter
 
-| Exporter          | 포트  | 용도                                           |
-|-------------------|-------|------------------------------------------------|
-| node_exporter     | 9100  | 서버 OS 메트릭 (CPU, 메모리, 디스크, 네트워크) |
-| mysqld_exporter   | 9104  | MySQL/MariaDB 메트릭                           |
-| redis_exporter    | 9121  | Redis 메트릭                                   |
-| nginx-exporter    | 9113  | NGINX 메트릭                                   |
-| blackbox_exporter | 9115  | HTTP/TCP/ICMP 외부 프로브                      |
-| process-exporter  | 9256  | 프로세스별 메트릭                              |
+| Exporter          | 포트 | 용도                                           |
+|-------------------|------|------------------------------------------------|
+| node_exporter     | 9100 | 서버 OS 메트릭 (CPU, 메모리, 디스크, 네트워크) |
+| mysqld_exporter   | 9104 | MySQL/MariaDB 메트릭                           |
+| redis_exporter    | 9121 | Redis 메트릭                                   |
+| nginx-exporter    | 9113 | NGINX 메트릭                                   |
+| blackbox_exporter | 9115 | HTTP/TCP/ICMP 외부 프로브                      |
+| process-exporter  | 9256 | 프로세스별 메트릭                              |
 
 ### 애플리케이션 계측 (Python 예시)
 

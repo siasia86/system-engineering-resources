@@ -2,12 +2,12 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념) |
+| 섹션                                                                                                                 |
+|----------------------------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념)                                       |
 | [4. 설치 & 설정](#4-설치--설정) / [5. 주요 명령어](#5-주요-명령어) / [6. Producer & Consumer](#6-producer--consumer) |
-| [7. 파티션 & 복제](#7-파티션--복제) / [8. Consumer Group](#8-consumer-group) / [9. 운영](#9-운영) |
-| [10. Tips](#10-tips) |
+| [7. 파티션 & 복제](#7-파티션--복제) / [8. Consumer Group](#8-consumer-group) / [9. 운영](#9-운영)                    |
+| [10. Tips](#10-tips)                                                                                                 |
 
 ---
 
@@ -69,20 +69,20 @@ Apache Kafka는 분산 이벤트 스트리밍 플랫폼. 대용량 실시간 데
 
 ## 3. 핵심 개념
 
-| 개념            | 설명                                                          |
-|-----------------|---------------------------------------------------------------|
-| Topic           | 메시지를 분류하는 논리적 채널 (DB 테이블과 유사)              |
-| Partition       | Topic의 물리적 분할 단위. 병렬 처리와 확장성 제공             |
-| Offset          | 파티션 내 메시지의 순서 번호 (0부터 시작, 단조 증가)          |
-| Broker          | Kafka 서버 인스턴스. 파티션 데이터 저장 및 서빙               |
-| Leader          | 파티션의 읽기/쓰기를 담당하는 브로커                          |
-| Follower        | Leader 파티션을 복제하는 브로커 (ISR)                         |
-| ISR             | In-Sync Replicas. Leader와 동기화된 복제본 집합               |
-| Producer        | Topic에 메시지를 발행하는 클라이언트                          |
-| Consumer        | Topic에서 메시지를 구독하는 클라이언트                        |
-| Consumer Group  | 동일 Topic을 분산 처리하는 Consumer 집합                      |
-| Retention       | 메시지 보존 기간/크기 (기본 7일)                              |
-| ZooKeeper/KRaft | 클러스터 메타데이터 관리 (KRaft는 ZooKeeper 없이 동작)        |
+| 개념            | 설명                                                   |
+|-----------------|--------------------------------------------------------|
+| Topic           | 메시지를 분류하는 논리적 채널 (DB 테이블과 유사)       |
+| Partition       | Topic의 물리적 분할 단위. 병렬 처리와 확장성 제공      |
+| Offset          | 파티션 내 메시지의 순서 번호 (0부터 시작, 단조 증가)   |
+| Broker          | Kafka 서버 인스턴스. 파티션 데이터 저장 및 서빙        |
+| Leader          | 파티션의 읽기/쓰기를 담당하는 브로커                   |
+| Follower        | Leader 파티션을 복제하는 브로커 (ISR)                  |
+| ISR             | In-Sync Replicas. Leader와 동기화된 복제본 집합        |
+| Producer        | Topic에 메시지를 발행하는 클라이언트                   |
+| Consumer        | Topic에서 메시지를 구독하는 클라이언트                 |
+| Consumer Group  | 동일 Topic을 분산 처리하는 Consumer 집합               |
+| Retention       | 메시지 보존 기간/크기 (기본 7일)                       |
+| ZooKeeper/KRaft | 클러스터 메타데이터 관리 (KRaft는 ZooKeeper 없이 동작) |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -334,11 +334,11 @@ finally:
 
 ### Producer 설정 비교
 
-| 설정                  | 값          | 특성                              |
-|-----------------------|-------------|-----------------------------------|
-| `acks=0`              | 0           | 응답 없음. 최고 처리량, 데이터 손실 가능 |
-| `acks=1`              | 1           | Leader 확인. 균형                 |
-| `acks=all` (`acks=-1`)| all         | 모든 ISR 확인. 최고 내구성        |
+| 설정                   | 값  | 특성                                     |
+|------------------------|-----|------------------------------------------|
+| `acks=0`               | 0   | 응답 없음. 처리량 최대, 데이터 손실 가능 |
+| `acks=1`               | 1   | Leader 확인. 균형                        |
+| `acks=all` (`acks=-1`) | all | 모든 ISR 확인. 내구성 최대               |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -418,11 +418,11 @@ kafka-consumer-groups.sh --bootstrap-server localhost:9092 \
 
 ### 오프셋 커밋 전략
 
-| 전략              | 설명                                      | 위험                        |
-|-------------------|-------------------------------------------|-----------------------------|
-| Auto Commit       | 주기적으로 자동 커밋                      | 처리 전 커밋 시 메시지 손실 |
-| Manual Sync       | 처리 완료 후 동기 커밋                    | 처리량 감소                 |
-| Manual Async      | 처리 완료 후 비동기 커밋                  | 실패 시 재처리 필요         |
+| 전략         | 설명                     | 위험                        |
+|--------------|--------------------------|-----------------------------|
+| Auto Commit  | 주기적으로 자동 커밋     | 처리 전 커밋 시 메시지 손실 |
+| Manual Sync  | 처리 완료 후 동기 커밋   | 처리량 감소                 |
+| Manual Async | 처리 완료 후 비동기 커밋 | 실패 시 재처리 필요         |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -432,13 +432,13 @@ kafka-consumer-groups.sh --bootstrap-server localhost:9092 \
 
 ### 모니터링 지표
 
-| 지표                              | 설명                          | 임계값 기준          |
-|-----------------------------------|-------------------------------|----------------------|
-| `kafka.consumer.lag`              | Consumer 처리 지연             | 지속 증가 시 경보    |
-| `kafka.broker.BytesInPerSec`      | 초당 수신 바이트               | 용량 계획 기준       |
-| `kafka.broker.UnderReplicatedPartitions` | 복제 지연 파티션 수      | 0이어야 정상         |
-| `kafka.broker.ActiveControllerCount` | 활성 Controller 수          | 클러스터당 1이어야 함 |
-| `kafka.broker.OfflinePartitionsCount` | 오프라인 파티션 수          | 0이어야 정상         |
+| 지표                                     | 설명                | 임계값 기준           |
+|------------------------------------------|---------------------|-----------------------|
+| `kafka.consumer.lag`                     | Consumer 처리 지연  | 지속 증가 시 경보     |
+| `kafka.broker.BytesInPerSec`             | 초당 수신 바이트    | 용량 계획 기준        |
+| `kafka.broker.UnderReplicatedPartitions` | 복제 지연 파티션 수 | 0이어야 정상          |
+| `kafka.broker.ActiveControllerCount`     | 활성 Controller 수  | 클러스터당 1이어야 함 |
+| `kafka.broker.OfflinePartitionsCount`    | 오프라인 파티션 수  | 0이어야 정상          |
 
 ### Prometheus + JMX Exporter
 
@@ -507,11 +507,11 @@ kafka-reassign-partitions.sh \
 
 ### 메시지 전달 보장 수준
 
-| 수준                | 설명                                      | 설정                                    |
-|---------------------|-------------------------------------------|-----------------------------------------|
-| At-most-once        | 최대 1회 전달 (손실 가능)                 | `acks=0`, auto commit                   |
-| At-least-once       | 최소 1회 전달 (중복 가능)                 | `acks=all`, 수동 커밋, 재시도           |
-| Exactly-once        | 정확히 1회 전달                           | Idempotent Producer + Transactional API |
+| 수준          | 설명                      | 설정                                    |
+|---------------|---------------------------|-----------------------------------------|
+| At-most-once  | 최대 1회 전달 (손실 가능) | `acks=0`, auto commit                   |
+| At-least-once | 최소 1회 전달 (중복 가능) | `acks=all`, 수동 커밋, 재시도           |
+| Exactly-once  | 정확히 1회 전달           | Idempotent Producer + Transactional API |
 
 ### Exactly-once Producer
 
