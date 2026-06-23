@@ -295,13 +295,26 @@ def check_diagram_box_chars(content, strict=False):
 def check_diagram_korean(content, strict=False):
     """박스 다이어그램(┌┐로 시작) 내부 한글 사용 여부 (STYLE.md § 5: 영문 권장)."""
     issues = []
-    for _lang, body in get_code_blocks(content):
-        lines = body.splitlines()
-        if not any(l.strip().startswith('┌') or l.strip().startswith('┐') for l in lines):
-            continue
-        korean = re.findall(r'[가-힣]+', body)
-        if korean:
-            issues.append(f"다이어그램 내부 한글 사용: {korean[:3]} (영문 권장)")
+    all_lines = content.split('\n')
+    in_block = False
+    block_start = 0
+    block_body = []
+    for i, line in enumerate(all_lines, 1):
+        s = line.rstrip()
+        if not in_block and s.startswith('```'):
+            in_block = True
+            block_start = i + 1
+            block_body = []
+        elif in_block and re.match(r'^``` *$', s):
+            if any(bl.strip().startswith('┌') or bl.strip().startswith('┐') for bl in block_body):
+                for j, bl in enumerate(block_body):
+                    korean = re.findall(r'[가-힣]+', bl)
+                    if korean:
+                        lineno = block_start + j
+                        issues.append(f"L{lineno}: 다이어그램 내부 한글 사용: {korean[:3]} (영문 권장)")
+            in_block = False
+        elif in_block:
+            block_body.append(line)
     return issues
 
 # 허용 이모지 목록
@@ -399,7 +412,7 @@ def check_exaggeration(content, strict=False):
 def check_reference(content, path, strict=False):
     """_reference/ 파일 전용 검사."""
     issues = []
-    if '_reference' not in path:
+    if '/_reference/' not in path:
         return issues
     fm = re.search(r'^---\n(.*?)\n---', content, re.DOTALL)
     if not fm:
@@ -415,32 +428,33 @@ def check_reference(content, path, strict=False):
 # ── 검사 목록 ─────────────────────────────────────────────────────────────────
 
 CHECKS = [
-    ("H1 개수",          check_h1),
-    ("표 정렬",           check_tables),
-    ("다이어그램 행 폭",  check_diagram),
-    ("다이어그램 한글",   check_diagram_korean),
-    ("박스 문자 정합",    check_diagram_box_chars),
-    ("이모지 뒤 공백",    check_emoji_space),
-    ("bold 괄호",         check_bold_parentheses),
-    ("반말체 종결어미",   check_banmal),
-    ("과장 표현",         check_exaggeration),
-    ("푸터",              check_footer),
-    ("_reference 규칙",  check_reference),
+    # (key,             display_name,        function)
+    ("h1",              "H1 개수",           check_h1),
+    ("table",           "표 정렬",           check_tables),
+    ("diagram-width",   "다이어그램 행 폭",  check_diagram),
+    ("diagram-kr",      "다이어그램 한글",   check_diagram_korean),
+    ("box-chars",       "박스 문자 정합",    check_diagram_box_chars),
+    ("emoji",           "이모지 뒤 공백",    check_emoji_space),
+    ("bold-paren",      "bold 괄호",         check_bold_parentheses),
+    ("banmal",          "반말체 종결어미",   check_banmal),
+    ("exaggeration",    "과장 표현",         check_exaggeration),
+    ("footer",          "푸터",              check_footer),
+    ("reference",       "_reference 규칙",   check_reference),
 ]
 
 # _reference 파일은 푸터 불필요
-REFERENCE_SKIP = {"푸터"}
+REFERENCE_SKIP = {"footer"}
 # .kiro 내부 문서는 푸터 불필요
-KIRO_SKIP = {"푸터"}
+KIRO_SKIP = {"footer"}
 # INDEX.md는 _reference 규칙 적용 제외
-INDEX_SKIP = {"_reference 규칙"}
+INDEX_SKIP = {"reference"}
 
 # 파일별 특정 검사 항목 제외 (경로 패턴: 검사명 집합)
 FILE_SKIP = {
-    "06_security/ddos_defense_architecture.md": {"다이어그램 행 폭"},
-    "02_basic_linux/vim_airline.md": {"다이어그램 행 폭", "H1 개수"},
-    "04_system_engineer/02_operations/game_infra_kpi_presentation.md": {"다이어그램 한글"},
-    "05_computer_science/network_headers.md": {"박스 문자 정합"},
+    "06_security/ddos_defense_architecture.md": {"diagram-width"},
+    "02_basic_linux/vim_airline.md": {"diagram-width", "h1"},
+    "04_system_engineer/02_operations/game_infra_kpi_presentation.md": {"diagram-kr"},
+    "05_computer_science/network_headers.md": {"box-chars"},
 }
 
 def _should_skip_for_file(filepath, check_name):
@@ -460,21 +474,21 @@ def check_file(path, strict=False, skip_checks=None):
     except Exception as e:
         return [("파일 읽기", f"실패: {e}")]
 
-    is_reference = '_reference' in path
+    is_reference = '/_reference/' in path
     is_kiro = '.kiro' in path
     is_index = os.path.basename(path) == 'INDEX.md'
     all_issues = []
 
-    for name, fn in CHECKS:
-        if is_reference and name in REFERENCE_SKIP:
+    for key, name, fn in CHECKS:
+        if is_reference and key in REFERENCE_SKIP:
             continue
-        if is_kiro and name in KIRO_SKIP:
+        if is_kiro and key in KIRO_SKIP:
             continue
-        if is_index and name in INDEX_SKIP:
+        if is_index and key in INDEX_SKIP:
             continue
-        if _should_skip_for_file(path, name):
+        if _should_skip_for_file(path, key):
             continue
-        if skip_checks and name in skip_checks:
+        if skip_checks and key in skip_checks:
             continue
         try:
             if name == "_reference 규칙":
@@ -491,7 +505,7 @@ def check_file(path, strict=False, skip_checks=None):
 EXCLUDE_DIRS = {'99_ETC', '90_DELETE', '33_sjyun_32_readme.md', '51_siasia', '00_readme.md', '.git', '__pycache__'}
 
 # 검사 제외 파일
-EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'README.md', 'CHANGELOG.md'}
+EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'CHANGELOG.md'}
 
 def collect_files(target, extra_exclude_dirs=None, exclude_files=None):
     """파일 또는 디렉토리에서 .md 파일 목록 반환."""
@@ -502,12 +516,17 @@ def collect_files(target, extra_exclude_dirs=None, exclude_files=None):
     skip_dirs = EXCLUDE_DIRS | set(extra_exclude_dirs or [])
     skip_files = EXCLUDE_FILES | set(exclude_files or [])
     result = []
+    target_abs = os.path.abspath(target)
     for root, dirs, files in os.walk(target):
         dirs[:] = [d for d in dirs if d not in skip_dirs]
         dirs.sort()
         for f in sorted(files):
-            if f.endswith('.md') and f not in skip_files:
-                result.append(os.path.join(root, f))
+            if not f.endswith('.md') or f in skip_files:
+                continue
+            # 루트 디렉토리의 README.md만 제외
+            if f == 'README.md' and os.path.abspath(root) == target_abs:
+                continue
+            result.append(os.path.join(root, f))
     return result
 
 # ── 진입점 ────────────────────────────────────────────────────────────────────
@@ -576,20 +595,35 @@ def main():
         print("검사할 .md 파일이 없습니다.")
         sys.exit(1)
 
+    # 제외 현황 출력
+    all_exclude_dirs = sorted(EXCLUDE_DIRS | set(args.exclude_dirs))
+    all_exclude_files = sorted(EXCLUDE_FILES | set(args.exclude_files)) + ['README.md (루트)']
+    skip_flags = [f"--no-{k}" for k in [
+        'h1', 'table', 'diagram-width', 'diagram-kr', 'box-chars',
+        'emoji', 'bold-paren', 'banmal', 'exaggeration', 'footer', 'reference'
+    ] if getattr(args, f"no_{k.replace('-', '_')}", False)]
+
+    if all_exclude_dirs or all_exclude_files or skip_flags:
+        print(f"{YELLOW}[제외] 디렉토리: {', '.join(all_exclude_dirs)}{NC}")
+        print(f"{YELLOW}[제외] 파일: {', '.join(all_exclude_files)}{NC}")
+        if skip_flags:
+            print(f"{YELLOW}[제외] 검사: {', '.join(skip_flags)}{NC}")
+        print()
+
     total_issues = 0
     for fpath in files:
         skip_checks = []
-        if args.no_diagram_kr: skip_checks.append('다이어그램 한글')
-        if args.no_diagram_width: skip_checks.append('다이어그램 행 폭')
-        if args.no_table: skip_checks.append('표 정렬')
-        if args.no_emoji: skip_checks.append('이모지 뒤 공백')
-        if args.no_banmal: skip_checks.append('반말체 종결어미')
-        if args.no_exaggeration: skip_checks.append('과장 표현')
-        if args.no_footer: skip_checks.append('푸터')
-        if args.no_h1: skip_checks.append('H1 개수')
-        if args.no_box_chars: skip_checks.append('박스 문자 정합')
-        if args.no_bold_paren: skip_checks.append('bold 괄호')
-        if args.no_reference: skip_checks.append('_reference 규칙')
+        if args.no_h1: skip_checks.append('h1')
+        if args.no_table: skip_checks.append('table')
+        if args.no_diagram_width: skip_checks.append('diagram-width')
+        if args.no_diagram_kr: skip_checks.append('diagram-kr')
+        if args.no_box_chars: skip_checks.append('box-chars')
+        if args.no_emoji: skip_checks.append('emoji')
+        if args.no_bold_paren: skip_checks.append('bold-paren')
+        if args.no_banmal: skip_checks.append('banmal')
+        if args.no_exaggeration: skip_checks.append('exaggeration')
+        if args.no_footer: skip_checks.append('footer')
+        if args.no_reference: skip_checks.append('reference')
         issues = check_file(fpath, strict=args.strict, skip_checks=skip_checks)
         rel = fpath.replace('/root/32_system-engineering-resources/', '')
         if issues:
