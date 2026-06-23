@@ -430,7 +430,6 @@ INDEX_SKIP = {"_reference 규칙"}
 FILE_SKIP = {
     "06_security/ddos_defense_architecture.md": {"다이어그램 행 폭"},
     "02_basic_linux/vim_airline.md": {"다이어그램 행 폭", "H1 개수"},
-    "00_readme.md/": {"다이어그램 행 폭"},
     "04_system_engineer/02_operations/game_infra_kpi_presentation.md": {"다이어그램 한글"},
     "05_computer_science/network_headers.md": {"박스 문자 정합"},
 }
@@ -477,15 +476,23 @@ def check_file(path, strict=False):
 
     return all_issues
 
-def collect_files(target):
+# 검사 제외 디렉토리
+EXCLUDE_DIRS = {'99_ETC', '90_DELETE', '33_sjyun_32_readme.md', '51_siasia', '00_readme.md', '.git', '__pycache__'}
+
+def collect_files(target, extra_exclude_dirs=None, exclude_files=None):
     """파일 또는 디렉토리에서 .md 파일 목록 반환."""
     if os.path.isfile(target):
+        if exclude_files and os.path.basename(target) in exclude_files:
+            return []
         return [target]
+    skip_dirs = EXCLUDE_DIRS | set(extra_exclude_dirs or [])
+    skip_files = set(exclude_files or [])
     result = []
     for root, dirs, files in os.walk(target):
+        dirs[:] = [d for d in dirs if d not in skip_dirs]
         dirs.sort()
         for f in sorted(files):
-            if f.endswith('.md'):
+            if f.endswith('.md') and f not in skip_files:
                 result.append(os.path.join(root, f))
     return result
 
@@ -515,6 +522,12 @@ def parse_args():
     )
     parser.add_argument('targets', nargs='+', metavar='path',
                         help='검사할 파일 또는 디렉토리 (여러 개 가능)')
+    parser.add_argument('-E', '--exclude-dir', action='append', default=[],
+                        dest='exclude_dirs', metavar='DIR',
+                        help='제외할 디렉토리명 (여러 번 사용 가능)')
+    parser.add_argument('-X', '--exclude-file', action='append', default=[],
+                        dest='exclude_files', metavar='FILE',
+                        help='제외할 파일명 (여러 번 사용 가능)')
     parser.add_argument('-s', '--strict', action='store_true',
                         help='과장 표현 whitelist 없이 전체 검사')
     parser.add_argument('-V', '--version', action='version', version=f'%(prog)s {VERSION}')
