@@ -5,11 +5,20 @@ md-style-check.py — Markdown 스타일 검사 도구
 STYLE.md 규칙 기반: 표 정렬, 다이어그램 폭, H1 개수, 푸터, _reference 전용 항목
 
 사용법:
-  python3 md-style-check.py <file_or_dir> [--strict|-s]
+  python3 md-style-check.py <path> [path ...]
+  python3 md-style-check.py <path> -E <dir> -X <file> --no-diagram-kr
+  python3 md-style-check.py <path> --strict
   python3 md-style-check.py -V
+
+옵션:
+  -E, --exclude-dir DIR     제외할 디렉토리명 (여러 번 사용 가능)
+  -X, --exclude-file FILE   제외할 파일명 (여러 번 사용 가능)
+  --no-<check>              특정 검사 항목 제외 (--help 참고)
+  -s, --strict              과장 표현 whitelist 없이 전체 검사
+  -V, --version             버전 출력
 """
 
-VERSION = "26.05.26"
+VERSION = "26.06.23"
 
 import os
 import re
@@ -254,7 +263,6 @@ def check_diagram_box_chars(content, strict=False):
     단, ┬/┴/┼ 는 경유 문자로 허용 (분기/합류 다이어그램).
     """
     issues = []
-    import re as _re
     for _lang, body in get_code_blocks(content):
         for i, line in enumerate(body.splitlines(), 1):
             stripped = line.rstrip()
@@ -266,7 +274,7 @@ def check_diagram_box_chars(content, strict=False):
                 if not part:
                     continue
                 # ├───┐ 같은 순수 잘못된 조합 (중간에 다른 박스문자 없이 직접 연결)
-                m = _re.match(r'^([┌├└])([─]+)([┐┘┤┼┬┴])$', part)
+                m = re.match(r'^([┌├└])([─]+)([┐┘┤┼┬┴])$', part)
                 if m:
                     start_ch = m.group(1)
                     end_ch = m.group(3)
@@ -443,7 +451,7 @@ def _should_skip_for_file(filepath, check_name):
 
 # ── 파일 처리 ─────────────────────────────────────────────────────────────────
 
-def check_file(path, strict=False):
+def check_file(path, strict=False, skip_checks=None):
     """단일 파일 검사. [(항목명, 이슈메시지), ...] 반환."""
     try:
         with open(path) as f:
@@ -465,6 +473,8 @@ def check_file(path, strict=False):
             continue
         if _should_skip_for_file(path, name):
             continue
+        if skip_checks and name in skip_checks:
+            continue
         try:
             if name == "_reference 규칙":
                 issues = check_reference(content, path, strict)
@@ -479,6 +489,9 @@ def check_file(path, strict=False):
 # 검사 제외 디렉토리
 EXCLUDE_DIRS = {'99_ETC', '90_DELETE', '33_sjyun_32_readme.md', '51_siasia', '00_readme.md', '.git', '__pycache__'}
 
+# 검사 제외 파일
+EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'README.md', 'CHANGELOG.md'}
+
 def collect_files(target, extra_exclude_dirs=None, exclude_files=None):
     """파일 또는 디렉토리에서 .md 파일 목록 반환."""
     if os.path.isfile(target):
@@ -486,7 +499,7 @@ def collect_files(target, extra_exclude_dirs=None, exclude_files=None):
             return []
         return [target]
     skip_dirs = EXCLUDE_DIRS | set(extra_exclude_dirs or [])
-    skip_files = set(exclude_files or [])
+    skip_files = EXCLUDE_FILES | set(exclude_files or [])
     result = []
     for root, dirs, files in os.walk(target):
         dirs[:] = [d for d in dirs if d not in skip_dirs]
@@ -508,6 +521,9 @@ def parse_args():
             "  %(prog)s ./01_install/                  디렉토리 전체 검사\n"
             "  %(prog)s ./01_install/nginx_install.md  단일 파일 검사\n"
             "  %(prog)s ./_reference/ --strict         과장 표현 whitelist 없이 전체 검사\n"
+            "  %(prog)s ./ -E 99_ETC -E 90_DELETE       디렉토리 제외\n"
+            "  %(prog)s ./ -X vim_airline.md            파일 제외\n"
+            "  %(prog)s ./ --no-diagram-kr              다이어그램 한글 검사 제외\n"
             "\nChecks:\n"
             "  H1 개수          문서당 H1 정확히 1개\n"
             "  표 정렬          한글 display width 기준 셀 패딩\n"
@@ -528,6 +544,20 @@ def parse_args():
     parser.add_argument('-X', '--exclude-file', action='append', default=[],
                         dest='exclude_files', metavar='FILE',
                         help='제외할 파일명 (여러 번 사용 가능)')
+    # 검사 항목 제외 플래그
+    skip_group = parser.add_argument_group('skip options', '특정 검사 항목 제외')
+    skip_group.add_argument('--no-diagram-kr', action='store_true', help='다이어그램 한글 검사 제외')
+    skip_group.add_argument('--no-diagram-width', action='store_true', help='다이어그램 행 폭 검사 제외')
+    skip_group.add_argument('--no-table', action='store_true', help='표 정렬 검사 제외')
+    skip_group.add_argument('--no-emoji', action='store_true', help='이모지 뒤 공백 검사 제외')
+    skip_group.add_argument('--no-banmal', action='store_true', help='반말체 종결어미 검사 제외')
+    skip_group.add_argument('--no-exaggeration', action='store_true', help='과장 표현 검사 제외')
+    skip_group.add_argument('--no-footer', action='store_true', help='푸터 검사 제외')
+    skip_group.add_argument('--no-h1', action='store_true', help='H1 개수 검사 제외')
+    skip_group.add_argument('--no-box-chars', action='store_true', help='박스 문자 정합 검사 제외')
+    skip_group.add_argument('--no-bold-paren', action='store_true', help='bold 괄호 검사 제외')
+    skip_group.add_argument('--no-reference', action='store_true', help='_reference 규칙 검사 제외')
+
     parser.add_argument('-s', '--strict', action='store_true',
                         help='과장 표현 whitelist 없이 전체 검사')
     parser.add_argument('-V', '--version', action='version', version=f'%(prog)s {VERSION}')
@@ -547,7 +577,19 @@ def main():
 
     total_issues = 0
     for fpath in files:
-        issues = check_file(fpath, args.strict)
+        skip_checks = []
+        if args.no_diagram_kr: skip_checks.append('다이어그램 한글')
+        if args.no_diagram_width: skip_checks.append('다이어그램 행 폭')
+        if args.no_table: skip_checks.append('표 정렬')
+        if args.no_emoji: skip_checks.append('이모지 뒤 공백')
+        if args.no_banmal: skip_checks.append('반말체 종결어미')
+        if args.no_exaggeration: skip_checks.append('과장 표현')
+        if args.no_footer: skip_checks.append('푸터')
+        if args.no_h1: skip_checks.append('H1 개수')
+        if args.no_box_chars: skip_checks.append('박스 문자 정합')
+        if args.no_bold_paren: skip_checks.append('bold 괄호')
+        if args.no_reference: skip_checks.append('_reference 규칙')
+        issues = check_file(fpath, strict=args.strict, skip_checks=skip_checks)
         rel = fpath.replace('/root/32_system-engineering-resources/', '')
         if issues:
             print(f"\n{RED}❌ {rel}{NC}")
