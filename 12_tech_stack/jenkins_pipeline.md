@@ -2,13 +2,13 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. Pipeline 유형](#3-pipeline-유형) |
+| 섹션                                                                                                                                         |
+|----------------------------------------------------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. Pipeline 유형](#3-pipeline-유형)                                                       |
 | [4. Declarative Pipeline](#4-declarative-pipeline) / [5. Scripted Pipeline](#5-scripted-pipeline) / [6. 공유 라이브러리](#6-공유-라이브러리) |
-| [7. 에이전트/노드](#7-에이전트노드) / [8. 플러그인](#8-플러그인) / [9. 보안](#9-보안) |
-| [10. 모니터링](#10-모니터링) / [11. Tips](#11-tips) / [12. 멀티브랜치 Pipeline](#12-멀티브랜치-pipeline) |
-| [13. Docker 빌드 / ECR](#13-docker-빌드--ecr) / [14. 테스트 리포트 / 아티팩트](#14-테스트-리포트--아티팩트) |
+| [7. 에이전트/노드](#7-에이전트노드) / [8. 플러그인](#8-플러그인) / [9. 보안](#9-보안)                                                        |
+| [10. 모니터링](#10-모니터링) / [11. Tips](#11-tips) / [12. 멀티브랜치 Pipeline](#12-멀티브랜치-pipeline)                                     |
+| [13. Docker 빌드 / ECR](#13-docker-빌드--ecr) / [14. 테스트 리포트 / 아티팩트](#14-테스트-리포트--아티팩트)                                  |
 
 
 ---
@@ -62,11 +62,11 @@ Jenkins는 오픈소스 CI/CD 자동화 서버. **Jenkinsfile**로 빌드/테스
 
 ## 3. Pipeline 유형
 
-| 유형                   | 특징                                     | 권장 여부      |
-|------------------------|------------------------------------------|----------------|
-| Declarative Pipeline   | 구조화된 문법, 검증 용이, 가독성 높음    | ✅ 권장        |
-| Scripted Pipeline      | Groovy 전체 문법 사용, 유연성 높음       | 복잡한 로직용  |
-| Freestyle Job          | UI 기반 설정, 코드 관리 불가             | ❌ 비권장      |
+| 유형                 | 특징                                  | 권장 여부     |
+|----------------------|---------------------------------------|---------------|
+| Declarative Pipeline | 구조화된 문법, 검증 용이, 가독성 높음 | ✅ 권장       |
+| Scripted Pipeline    | Groovy 전체 문법 사용, 유연성 높음    | 복잡한 로직용 |
+| Freestyle Job        | UI 기반 설정, 코드 관리 불가          | ❌ 비권장     |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -346,19 +346,19 @@ pipeline {
 
 ### 필수 플러그인
 
-| 플러그인              | 용도                         |
-|-----------------------|------------------------------|
-| Pipeline              | 파이프라인 기본 기능         |
-| Git                   | Git 연동                     |
-| Credentials Binding   | 자격증명 주입                |
-| Blue Ocean            | 파이프라인 시각화 UI         |
-| Slack Notification    | Slack 알림                   |
-| Docker Pipeline       | Docker 빌드/실행             |
-| Kubernetes            | K8s 동적 에이전트            |
-| AWS Steps             | AWS CLI 래퍼                 |
-| JUnit                 | 테스트 결과 리포트           |
-| HTML Publisher        | HTML 리포트 게시             |
-| Timestamper           | 로그에 타임스탬프 추가       |
+| 플러그인            | 용도                   |
+|---------------------|------------------------|
+| Pipeline            | 파이프라인 기본 기능   |
+| Git                 | Git 연동               |
+| Credentials Binding | 자격증명 주입          |
+| Blue Ocean          | 파이프라인 시각화 UI   |
+| Slack Notification  | Slack 알림             |
+| Docker Pipeline     | Docker 빌드/실행       |
+| Kubernetes          | K8s 동적 에이전트      |
+| AWS Steps           | AWS CLI 래퍼           |
+| JUnit               | 테스트 결과 리포트     |
+| HTML Publisher      | HTML 리포트 게시       |
+| Timestamper         | 로그에 타임스탬프 추가 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -416,13 +416,13 @@ curl -s "http://localhost:8080/job/my-job/lastBuild/api/json" \
 
 ### 주요 모니터링 지표
 
-| 지표               | 확인 방법                           |
-|--------------------|-------------------------------------|
-| 빌드 성공률        | Build History, Blue Ocean           |
-| 빌드 시간 추이     | Build Time Trend 플러그인           |
-| 큐 대기 시간       | Manage Jenkins -> Load Statistics   |
-| 에이전트 상태      | Manage Jenkins -> Nodes             |
-| 디스크 사용량      | JENKINS_HOME 모니터링 필수          |
+| 지표           | 확인 방법                         |
+|----------------|-----------------------------------|
+| 빌드 성공률    | Build History, Blue Ocean         |
+| 빌드 시간 추이 | Build Time Trend 플러그인         |
+| 큐 대기 시간   | Manage Jenkins -> Load Statistics |
+| 에이전트 상태  | Manage Jenkins -> Nodes           |
+| 디스크 사용량  | JENKINS_HOME 모니터링 필수        |
 
 ### Prometheus 연동
 
@@ -679,12 +679,12 @@ pipeline {
 
 ### 태그 전략
 
-| 태그 패턴                   | 용도                          |
-|-----------------------------|-------------------------------|
-| `latest`                    | 최신 main 브랜치 이미지       |
-| `main-42` (브랜치-빌드번호) | 재현 가능한 특정 빌드         |
-| `v1.2.3` (Git 태그)         | 릴리즈 버전                   |
-| `sha-a1b2c3d` (커밋 해시)   | 정확한 소스 추적              |
+| 태그 패턴                   | 용도                    |
+|-----------------------------|-------------------------|
+| `latest`                    | 최신 main 브랜치 이미지 |
+| `main-42` (브랜치-빌드번호) | 재현 가능한 특정 빌드   |
+| `v1.2.3` (Git 태그)         | 릴리즈 버전             |
+| `sha-a1b2c3d` (커밋 해시)   | 정확한 소스 추적        |
 
 ```groovy
 // Git 태그 기반 이미지 태그
