@@ -239,6 +239,50 @@ def check_diagram(content, strict=False):
                     in_box = False
     return issues
 
+
+def check_diagram_box_chars(content, strict=False):
+    """다이어그램 박스 문자 조합 정합성 검사.
+    
+    행의 양 끝(시작 문자 ~ 끝 문자)만 검사합니다.
+    중간에 ┬┴┼ 등 분기 문자가 있는 것은 정상입니다.
+    
+    규칙: 행에서 ┌├└ 로 시작하는 세그먼트가 최종적으로 어떤 문자로 끝나는지 확인.
+    - ┌ 로 시작 → 같은 세그먼트 마지막이 ┐ 또는 중간에 ┬┴┼ 경유 후 ┐ 로 끝나야 함
+    - └ 로 시작 → ┘ 로 끝나야 함
+    - ├ 로 시작 → ┤ 로 끝나야 함
+    
+    단, ┬/┴/┼ 는 경유 문자로 허용 (분기/합류 다이어그램).
+    """
+    issues = []
+    import re as _re
+    for _lang, body in get_code_blocks(content):
+        for i, line in enumerate(body.splitlines(), 1):
+            stripped = line.rstrip()
+            if not stripped:
+                continue
+            # 독립 세그먼트 추출: 공백으로 분리된 박스 단위
+            parts = stripped.split()
+            for part in parts:
+                if not part:
+                    continue
+                # ├───┐ 같은 순수 잘못된 조합 (중간에 다른 박스문자 없이 직접 연결)
+                m = _re.match(r'^([┌├└])([─]+)([┐┘┤┼┬┴])$', part)
+                if m:
+                    start_ch = m.group(1)
+                    end_ch = m.group(3)
+                    valid = False
+                    if start_ch == '┌' and end_ch in ('┐', '┬'):
+                        valid = True
+                    elif start_ch == '└' and end_ch in ('┘', '┴'):
+                        valid = True
+                    elif start_ch == '├' and end_ch in ('┤', '┼', '┬', '┴', '┐'):
+                        valid = True
+                    if not valid:
+                        issues.append(
+                            f"박스 문자 오류: '{start_ch}...{end_ch}' ('{start_ch}'는 '{end_ch}'로 끝날 수 없음) | '{stripped[:50]}'"
+                        )
+    return issues
+
 def check_diagram_korean(content, strict=False):
     """박스 다이어그램(┌┐로 시작) 내부 한글 사용 여부 (STYLE.md § 5: 영문 권장)."""
     issues = []
@@ -366,6 +410,7 @@ CHECKS = [
     ("표 정렬",           check_tables),
     ("다이어그램 행 폭",  check_diagram),
     ("다이어그램 한글",   check_diagram_korean),
+    ("박스 문자 정합",    check_diagram_box_chars),
     ("이모지 뒤 공백",    check_emoji_space),
     ("bold 괄호",         check_bold_parentheses),
     ("반말체 종결어미",   check_banmal),
@@ -386,6 +431,8 @@ FILE_SKIP = {
     "06_security/ddos_defense_architecture.md": {"다이어그램 행 폭"},
     "02_basic_linux/vim_airline.md": {"다이어그램 행 폭", "H1 개수"},
     "00_readme.md/": {"다이어그램 행 폭"},
+    "04_system_engineer/02_operations/game_infra_kpi_presentation.md": {"다이어그램 한글"},
+    "05_computer_science/network_headers.md": {"박스 문자 정합"},
 }
 
 def _should_skip_for_file(filepath, check_name):
