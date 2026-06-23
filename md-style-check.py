@@ -539,7 +539,7 @@ def main():
 
     files = []
     for p in args.targets:
-        files.extend(collect_files(p))
+        files.extend(collect_files(p, args.exclude_dirs, args.exclude_files))
 
     if not files:
         print("검사할 .md 파일이 없습니다.")
