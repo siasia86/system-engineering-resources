@@ -2,11 +2,11 @@
 
 ## 목차
 
-| 단계 | 섹션                                                                                                                                                              |
-|------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 기초 | [1. 기본 개념](#1-기본-개념) / [2. Stage와 Commit](#2-stage와-commit)                                                                                             |
-| 비교 | [3. diff — 변경 내용 확인](#3-diff--변경-내용-확인) / [4. log — 히스토리 조회](#4-log--히스토리-조회)                                                             |
-| 원격 | [5. fetch와 pull](#5-fetch와-pull) / [6. remote 관리](#6-remote-관리)                                                                                             |
+| 단계 | 섹션                                                                                                                                 |
+|------|--------------------------------------------------------------------------------------------------------------------------------------|
+| 기초 | [1. 기본 개념](#1-기본-개념) / [2. Stage와 Commit](#2-stage와-commit)                                                                |
+| 비교 | [3. diff — 변경 내용 확인](#3-diff--변경-내용-확인) / [4. log — 히스토리 조회](#4-log--히스토리-조회)                                |
+| 원격 | [5. fetch와 pull](#5-fetch와-pull) / [6. remote 관리](#6-remote-관리)                                                                |
 | 고급 | [7. stash](#7-stash) / [8. rebase vs merge](#8-rebase-vs-merge) / [9. 실무 팁](#9-실무-팁) / [10. safe.directory](#10-safedirectory) |
 
 ---
@@ -102,15 +102,15 @@ A  file4.txt    # Staged (신규)
 
 ### 비교 대상별 명령어
 
-| 비교 대상                              | 명령어                                      |
-|----------------------------------------|---------------------------------------------|
-| Working Directory vs Staging           | `git diff`                                  |
-| Staging vs 마지막 Commit               | `git diff --staged`                         |
-| Working Directory vs 마지막 Commit     | `git diff HEAD`                             |
-| 특정 커밋 간 비교                      | `git diff <commit1> <commit2>`              |
-| 로컬 브랜치 vs 원격 브랜치             | `git diff main origin/main`                 |
-| 브랜치 간 비교                         | `git diff feature/login main`               |
-| 특정 파일만                            | `git diff HEAD -- file.txt`                 |
+| 비교 대상                          | 명령어                         |
+|------------------------------------|--------------------------------|
+| Working Directory vs Staging       | `git diff`                     |
+| Staging vs 마지막 Commit           | `git diff --staged`            |
+| Working Directory vs 마지막 Commit | `git diff HEAD`                |
+| 특정 커밋 간 비교                  | `git diff <commit1> <commit2>` |
+| 로컬 브랜치 vs 원격 브랜치         | `git diff main origin/main`    |
+| 브랜치 간 비교                     | `git diff feature/login main`  |
+| 특정 파일만                        | `git diff HEAD -- file.txt`    |
 
 ### 로컬 vs Remote 차이 확인 (커밋 전)
 
@@ -136,12 +136,12 @@ git diff --stat main origin/main
 
 ### diff 비교 대상 요약
 
-| 명령어 | 비교 대상 | 설명 |
-|--------|-----------|------|
-| `git diff` | Working Dir vs Staging | `git add` 전 변경사항 |
-| `git diff --staged` | Staging vs 마지막 Commit | `git add` 후 커밋 전 변경사항 |
-| `git diff HEAD` | Working Dir vs 마지막 Commit | 스테이징 여부 무관 전체 변경사항 |
-| `git diff origin/main` | 로컬 브랜치 vs 원격 브랜치 | 로컬이 원격보다 얼마나 앞서 있는지 |
+| 명령어                 | 비교 대상                    | 설명                               |
+|------------------------|------------------------------|------------------------------------|
+| `git diff`             | Working Dir vs Staging       | `git add` 전 변경사항              |
+| `git diff --staged`    | Staging vs 마지막 Commit     | `git add` 후 커밋 전 변경사항      |
+| `git diff HEAD`        | Working Dir vs 마지막 Commit | 스테이징 여부 무관 전체 변경사항   |
+| `git diff origin/main` | 로컬 브랜치 vs 원격 브랜치   | 로컬이 원격보다 얼마나 앞서 있는지 |
 
 ```bash
 # -C 옵션: 해당 경로에서 git 명령 실행 (cd 없이)
@@ -234,12 +234,12 @@ git log main..origin/main --oneline
 
 ### fetch vs pull 비교
 
-| 구분          | `git fetch`                          | `git pull`                            |
-|---------------|--------------------------------------|---------------------------------------|
-| 동작          | 원격 정보만 가져옴 (merge 없음)      | fetch + merge (또는 rebase)           |
-| Working Dir   | 변경 없음                            | 변경됨                                |
-| 안전성        | 높음 (검토 후 merge 가능)            | 낮음 (즉시 반영)                      |
-| 권장 상황     | 변경 내용 확인 후 신중하게 반영할 때 | 단순 동기화, 충돌 없을 때             |
+| 구분        | `git fetch`                          | `git pull`                  |
+|-------------|--------------------------------------|-----------------------------|
+| 동작        | 원격 정보만 가져옴 (merge 없음)      | fetch + merge (또는 rebase) |
+| Working Dir | 변경 없음                            | 변경됨                      |
+| 안전성      | 높음 (검토 후 merge 가능)            | 낮음 (즉시 반영)            |
+| 권장 상황   | 변경 내용 확인 후 신중하게 반영할 때 | 단순 동기화, 충돌 없을 때   |
 
 ### fetch 활용 패턴
 
@@ -368,12 +368,12 @@ main:    A---B---C---D'---E'
 feature:             D'---E'
 ```
 
-| 구분          | merge                          | rebase                          |
-|---------------|--------------------------------|---------------------------------|
-| 히스토리      | 분기 구조 유지 (merge commit)  | 선형 히스토리                   |
-| 충돌 해결     | 1회                            | 커밋마다 발생 가능              |
-| 협업 안전성   | 높음 (원본 커밋 유지)          | 낮음 (공유 브랜치에 사용 금지)  |
-| 권장 상황     | 팀 공유 브랜치, PR merge       | 로컬 정리, feature → main 전    |
+| 구분        | merge                         | rebase                         |
+|-------------|-------------------------------|--------------------------------|
+| 히스토리    | 분기 구조 유지 (merge commit) | 선형 히스토리                  |
+| 충돌 해결   | 1회                           | 커밋마다 발생 가능             |
+| 협업 안전성 | 높음 (원본 커밋 유지)         | 낮음 (공유 브랜치에 사용 금지) |
+| 권장 상황   | 팀 공유 브랜치, PR merge      | 로컬 정리, feature → main 전   |
 
 ```bash
 # merge
@@ -479,11 +479,11 @@ To add an exception for this directory, call:
 
 ### 발생 상황
 
-| 상황                                        | 예시                              |
-|---------------------------------------------|-----------------------------------|
-| root로 clone한 repo를 일반 유저가 접근      | sudo git clone 후 일반 유저 사용  |
-| Docker 컨테이너 내 마운트된 디렉토리        | CI/CD 파이프라인                  |
-| NFS/공유 마운트 디렉토리                    | 팀 공유 서버                      |
+| 상황                                   | 예시                             |
+|----------------------------------------|----------------------------------|
+| root로 clone한 repo를 일반 유저가 접근 | sudo git clone 후 일반 유저 사용 |
+| Docker 컨테이너 내 마운트된 디렉토리   | CI/CD 파이프라인                 |
+| NFS/공유 마운트 디렉토리               | 팀 공유 서버                     |
 
 ### 해결 방법
 
