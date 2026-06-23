@@ -2,7 +2,8 @@
 #import sys; sys.exit(0)  # SAFETY: uncomment this line to disable script
 """
 md-style-check.py — Markdown 스타일 검사 도구
-STYLE.md 규칙 기반: 표 정렬, 다이어그램 폭, H1 개수, 푸터, _reference 전용 항목
+STYLE.md 규칙 기반: 표 정렬, 다이어그램 폭/한글/박스 문자, H1 개수,
+이모지 공백, bold 괄호, 반말체, 과장 표현, 푸터, _reference 규칙
 
 사용법:
   python3 md-style-check.py <path> [path ...]
