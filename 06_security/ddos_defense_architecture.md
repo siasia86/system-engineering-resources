@@ -113,7 +113,7 @@ Windows Game Server (Auto Scaling)                                │   │  │
 │  ├─ AI-based detection engine       │                               │  │
 │  ├─ Community blocklist             │                               │  │
 │  └─ Block decision management       │                               │  │
-└─────────────────────────────────────┘                               │  │
+└─────────────────────────────────────┘ <────────────────────────────────┘                              
                                                                       │  │
 ┌─────────────────────────────────────┐                               │  │
 │  Redis (ElastiCache)                │ <─────────────────────────────┘  │
