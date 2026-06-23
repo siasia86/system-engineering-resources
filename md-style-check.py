@@ -381,6 +381,20 @@ KIRO_SKIP = {"푸터"}
 # INDEX.md는 _reference 규칙 적용 제외
 INDEX_SKIP = {"_reference 규칙"}
 
+# 파일별 특정 검사 항목 제외 (경로 패턴: 검사명 집합)
+FILE_SKIP = {
+    "06_security/ddos_defense_architecture.md": {"다이어그램 행 폭"},
+    "02_basic_linux/vim_airline.md": {"다이어그램 행 폭", "H1 개수"},
+    "00_readme.md/": {"다이어그램 행 폭"},
+}
+
+def _should_skip_for_file(filepath, check_name):
+    """파일 경로 기반 특정 검사 항목 제외 여부."""
+    for pattern, skip_checks in FILE_SKIP.items():
+        if pattern in filepath and check_name in skip_checks:
+            return True
+    return False
+
 # ── 파일 처리 ─────────────────────────────────────────────────────────────────
 
 def check_file(path, strict=False):
@@ -402,6 +416,8 @@ def check_file(path, strict=False):
         if is_kiro and name in KIRO_SKIP:
             continue
         if is_index and name in INDEX_SKIP:
+            continue
+        if _should_skip_for_file(path, name):
             continue
         try:
             if name == "_reference 규칙":
