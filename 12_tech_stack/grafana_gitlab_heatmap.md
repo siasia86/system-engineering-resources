@@ -2,11 +2,11 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. 사전 준비](#2-사전-준비) / [3. Infinity Datasource 설정](#3-infinity-datasource-설정) |
+| 섹션                                                                                                                             |
+|----------------------------------------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. 사전 준비](#2-사전-준비) / [3. Infinity Datasource 설정](#3-infinity-datasource-설정)                   |
 | [4. 패널 쿼리 설정](#4-패널-쿼리-설정) / [5. 유저별 Bar chart 패널](#5-유저별-bar-chart-패널) / [6. 그룹별 분리](#6-그룹별-분리) |
-| [7. Tips](#7-tips) |
+| [7. Tips](#7-tips)                                                                                                               |
 
 ---
 
@@ -97,13 +97,13 @@ curl -s --header "PRIVATE-TOKEN: <token>" \
 
 `Configuration` → `Data Sources` → `Add` → `Infinity`
 
-| 항목      | 값                                      |
-|-----------|-----------------------------------------|
-| Base URL  | `https://gitlab.example.com/api/v4`     |
-| Auth Type | `API Key`                               |
-| Key       | `PRIVATE-TOKEN`                         |
-| Value     | `<your-token>`                          |
-| Add to    | `Header`                                |
+| 항목      | 값                                  |
+|-----------|-------------------------------------|
+| Base URL  | `https://gitlab.example.com/api/v4` |
+| Auth Type | `API Key`                           |
+| Key       | `PRIVATE-TOKEN`                     |
+| Value     | `<your-token>`                      |
+| Add to    | `Header`                            |
 
 🟡 Base URL은 회사 GitLab 도메인으로 변경합니다. `http://` → `https://` 확인 필수.
 
@@ -117,11 +117,11 @@ curl -s --header "PRIVATE-TOKEN: <token>" \
 
 패널 추가 → Datasource: `Infinity` 선택
 
-| 항목    | 값 |
-|---------|----|
-| Type    | `JSON` |
-| Method  | `GET` |
-| URL     | `https://gitlab.example.com/api/v4/events?action=pushed&per_page=100` |
+| 항목   | 값                                                                    |
+|--------|-----------------------------------------------------------------------|
+| Type   | `JSON`                                                                |
+| Method | `GET`                                                                 |
+| URL    | `https://gitlab.example.com/api/v4/events?action=pushed&per_page=100` |
 
 Headers 탭:
 ```
@@ -140,20 +140,20 @@ project_id      → string → project_id
 
 ### 범위별 API 엔드포인트
 
-| 범위           | 엔드포인트                                                    | 권한        |
-|----------------|---------------------------------------------------------------|-------------|
-| 전체 사용자    | `/api/v4/events?action=pushed`                                | admin 전용  |
-| 특정 사용자    | `/api/v4/users/<user_id>/events?action=pushed`                | read_api    |
-| 특정 그룹      | `/api/v4/groups/<group_id>/events?action=pushed`              | read_api    |
-| 특정 프로젝트  | `/api/v4/projects/<project_id>/events?action=pushed`          | read_api    |
+| 범위          | 엔드포인트                                           | 권한       |
+|---------------|------------------------------------------------------|------------|
+| 전체 사용자   | `/api/v4/events?action=pushed`                       | admin 전용 |
+| 특정 사용자   | `/api/v4/users/<user_id>/events?action=pushed`       | read_api   |
+| 특정 그룹     | `/api/v4/groups/<group_id>/events?action=pushed`     | read_api   |
+| 특정 프로젝트 | `/api/v4/projects/<project_id>/events?action=pushed` | read_api   |
 
 ### Computed columns / Filter / Group by
 
-| 기능              | 용도                                              | 잔디 필요 여부 |
-|-------------------|---------------------------------------------------|----------------|
-| Computed columns  | API 응답에 없는 컬럼을 수식으로 생성              | 선택 (날짜 파싱용) |
-| Filter            | 특정 조건으로 데이터 필터링 (작성자, 날짜 등)     | 선택           |
-| Group by          | 날짜별 커밋 수 집계 — **Heatmap 핵심 설정**       | ✅ 필수        |
+| 기능             | 용도                                          | 잔디 필요 여부     |
+|------------------|-----------------------------------------------|--------------------|
+| Computed columns | API 응답에 없는 컬럼을 수식으로 생성          | 선택 (날짜 파싱용) |
+| Filter           | 특정 조건으로 데이터 필터링 (작성자, 날짜 등) | 선택               |
+| Group by         | 날짜별 커밋 수 집계 — **Heatmap 핵심 설정**   | ✅ 필수            |
 
 **Group by 설정:**
 
@@ -225,9 +225,9 @@ curl -s --header "PRIVATE-TOKEN: <admin-token>" \
   | python3 -c 'import sys,json; [print(c["author_name"]) for c in json.load(sys.stdin)]'
 ```
 
-| username | author_name (git config) | 비고 |
-|----------|--------------------------|------|
-| user1    | user1                    | 영문 |
+| username | author_name (git config) | 비고            |
+|----------|--------------------------|-----------------|
+| user1    | user1                    | 영문            |
 | user2    | 홍길동                   | 한글 git config |
 
 ### Bar chart 패널 옵션

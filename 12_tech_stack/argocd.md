@@ -2,12 +2,12 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념) |
-| [4. 설치](#4-설치) / [5. Application 관리](#5-application-관리) / [6. Sync 전략](#6-sync-전략) |
+| 섹션                                                                                              |
+|---------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념)                    |
+| [4. 설치](#4-설치) / [5. Application 관리](#5-application-관리) / [6. Sync 전략](#6-sync-전략)    |
 | [7. App of Apps 패턴](#7-app-of-apps-패턴) / [8. RBAC & 보안](#8-rbac--보안) / [9. 알림](#9-알림) |
-| [10. Tips](#10-tips) |
+| [10. Tips](#10-tips)                                                                              |
 
 ---
 
@@ -58,13 +58,13 @@ ArgoCD는 Kubernetes를 위한 GitOps 기반 CD(Continuous Delivery) 도구. Git
    └──────────────┘  └──────────────┘  └──────────────┘
 ```
 
-| 컴포넌트               | 역할                                              |
-|------------------------|---------------------------------------------------|
-| API Server             | UI, CLI, gRPC/REST API 제공. 인증/인가 처리       |
-| Repository Server      | Git 저장소 클론 및 매니페스트 생성 (캐시 포함)    |
-| Application Controller | 실제 상태 vs 원하는 상태 비교 및 동기화           |
-| Redis                  | 캐시 및 상태 저장                                 |
-| Dex (선택)             | SSO/OIDC 연동                                     |
+| 컴포넌트               | 역할                                           |
+|------------------------|------------------------------------------------|
+| API Server             | UI, CLI, gRPC/REST API 제공. 인증/인가 처리    |
+| Repository Server      | Git 저장소 클론 및 매니페스트 생성 (캐시 포함) |
+| Application Controller | 실제 상태 vs 원하는 상태 비교 및 동기화        |
+| Redis                  | 캐시 및 상태 저장                              |
+| Dex (선택)             | SSO/OIDC 연동                                  |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -72,17 +72,17 @@ ArgoCD는 Kubernetes를 위한 GitOps 기반 CD(Continuous Delivery) 도구. Git
 
 ## 3. 핵심 개념
 
-| 개념              | 설명                                                          |
-|-------------------|---------------------------------------------------------------|
-| Application       | Git 소스 + K8s 클러스터/네임스페이스 매핑 단위               |
-| Project           | Application 그룹. 소스/대상 클러스터/네임스페이스 제한 가능  |
-| Sync              | Git 상태를 클러스터에 적용하는 작업                           |
-| Sync Status       | Synced / OutOfSync / Unknown                                  |
-| Health Status     | Healthy / Progressing / Degraded / Missing / Suspended        |
-| Drift             | Git 정의와 실제 클러스터 상태의 차이                          |
-| Auto Sync         | 변경 감지 시 자동으로 Sync 실행                               |
-| Self Heal         | 클러스터에서 직접 변경된 내용을 Git 상태로 되돌림             |
-| Prune             | Git에서 삭제된 리소스를 클러스터에서도 삭제                   |
+| 개념          | 설명                                                        |
+|---------------|-------------------------------------------------------------|
+| Application   | Git 소스 + K8s 클러스터/네임스페이스 매핑 단위              |
+| Project       | Application 그룹. 소스/대상 클러스터/네임스페이스 제한 가능 |
+| Sync          | Git 상태를 클러스터에 적용하는 작업                         |
+| Sync Status   | Synced / OutOfSync / Unknown                                |
+| Health Status | Healthy / Progressing / Degraded / Missing / Suspended      |
+| Drift         | Git 정의와 실제 클러스터 상태의 차이                        |
+| Auto Sync     | 변경 감지 시 자동으로 Sync 실행                             |
+| Self Heal     | 클러스터에서 직접 변경된 내용을 Git 상태로 되돌림           |
+| Prune         | Git에서 삭제된 리소스를 클러스터에서도 삭제                 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -239,12 +239,12 @@ spec:
 
 ### Sync 옵션 비교
 
-| 옵션              | 설명                                              | 권장 환경  |
-|-------------------|---------------------------------------------------|------------|
-| Auto Sync         | Git 변경 감지 시 자동 적용                        | dev/stg    |
-| Manual Sync       | 수동으로 Sync 실행                                | prod       |
-| Self Heal         | 클러스터 직접 변경 시 Git 상태로 복원             | 모든 환경  |
-| Prune             | Git에서 삭제된 리소스를 클러스터에서도 삭제       | 주의 필요  |
+| 옵션        | 설명                                        | 권장 환경 |
+|-------------|---------------------------------------------|-----------|
+| Auto Sync   | Git 변경 감지 시 자동 적용                  | dev/stg   |
+| Manual Sync | 수동으로 Sync 실행                          | prod      |
+| Self Heal   | 클러스터 직접 변경 시 Git 상태로 복원       | 모든 환경 |
+| Prune       | Git에서 삭제된 리소스를 클러스터에서도 삭제 | 주의 필요 |
 
 ### Sync Wave (순서 제어)
 
@@ -280,12 +280,12 @@ spec:
       restartPolicy: Never
 ```
 
-| Hook 타입    | 실행 시점                    |
-|--------------|------------------------------|
-| PreSync      | Sync 시작 전                 |
-| Sync         | Sync 중 (일반 리소스와 함께) |
-| PostSync     | Sync 완료 후                 |
-| SyncFail     | Sync 실패 시                 |
+| Hook 타입 | 실행 시점                    |
+|-----------|------------------------------|
+| PreSync   | Sync 시작 전                 |
+| Sync      | Sync 중 (일반 리소스와 함께) |
+| PostSync  | Sync 완료 후                 |
+| SyncFail  | Sync 실패 시                 |
 
 [⬆ 목차로 돌아가기](#목차)
 

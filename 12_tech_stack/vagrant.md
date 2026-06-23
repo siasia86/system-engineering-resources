@@ -2,12 +2,12 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념) |
+| 섹션                                                                                     |
+|------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념)           |
 | [4. 설치](#4-설치) / [5. 주요 명령어](#5-주요-명령어) / [6. Vagrantfile](#6-vagrantfile) |
-| [7. 프로비저닝](#7-프로비저닝) / [8. 멀티 머신](#8-멀티-머신) / [9. Tips](#9-tips) |
-| [10. Ansible + Hyper-V 구성](#10-ansible--hyper-v-구성) |
+| [7. 프로비저닝](#7-프로비저닝) / [8. 멀티 머신](#8-멀티-머신) / [9. Tips](#9-tips)       |
+| [10. Ansible + Hyper-V 구성](#10-ansible--hyper-v-구성)                                  |
 
 ---
 
@@ -26,7 +26,7 @@ VM을 코드로 정의하고 자동으로 생성·관리하는 도구입니다. 
 └─────────────────────────────────────────────────────────────┘
 ```
 
-Docker 대비 완전한 OS 환경을 제공하므로 systemd, 커널 모듈, Windows Guest 등 컨테이너로 재현하기 어려운 환경에 적합합니다.
+Docker 대비 독립적인 OS 환경을 제공하므로 systemd, 커널 모듈, Windows Guest 등 컨테이너로 재현하기 어려운 환경에 적합합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -60,13 +60,13 @@ Docker 대비 완전한 OS 환경을 제공하므로 systemd, 커널 모듈, Win
 
 ## 3. 핵심 개념
 
-| 개념         | 설명                                                        |
-|--------------|-------------------------------------------------------------|
-| Box          | VM 베이스 이미지 (Vagrant Cloud에서 배포)                   |
-| Vagrantfile  | VM 정의 파일 (Ruby DSL)                                     |
-| Provider     | VM을 실제로 실행하는 하이퍼바이저                           |
-| Provisioner  | VM 생성 후 자동 설정 도구 (shell, Ansible 등)               |
-| Synced Folder| 호스트-게스트 간 공유 디렉토리                              |
+| 개념          | 설명                                          |
+|---------------|-----------------------------------------------|
+| Box           | VM 베이스 이미지 (Vagrant Cloud에서 배포)     |
+| Vagrantfile   | VM 정의 파일 (Ruby DSL)                       |
+| Provider      | VM을 실제로 실행하는 하이퍼바이저             |
+| Provisioner   | VM 생성 후 자동 설정 도구 (shell, Ansible 등) |
+| Synced Folder | 호스트-게스트 간 공유 디렉토리                |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -138,13 +138,13 @@ end
 
 ### 주요 Box
 
-| OS                    | Box 이름                                      |
-|-----------------------|-----------------------------------------------|
-| Ubuntu 22.04          | `ubuntu/jammy64`                              |
-| Ubuntu 24.04          | `ubuntu/noble64`                              |
-| Rocky Linux 9         | `rockylinux/9`                                |
-| Amazon Linux 2        | `bento/amazonlinux-2`                         |
-| Windows Server 2022   | `gusztavvargadr/windows-server-2022-standard` |
+| OS                  | Box 이름                                      |
+|---------------------|-----------------------------------------------|
+| Ubuntu 22.04        | `ubuntu/jammy64`                              |
+| Ubuntu 24.04        | `ubuntu/noble64`                              |
+| Rocky Linux 9       | `rockylinux/9`                                |
+| Amazon Linux 2      | `bento/amazonlinux-2`                         |
+| Windows Server 2022 | `gusztavvargadr/windows-server-2022-standard` |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -338,10 +338,10 @@ ansible_winrm_scheme=http
 
 ### 역할 분담
 
-| 대상 | 도구 | 실행 위치 |
-|------|------|-----------|
-| Linux (Ubuntu, Rocky, AL2023) | Molecule + Docker | A 서버 (Linux) |
-| Windows (2019, 2022, 2025) | Vagrant + Hyper-V | B 서버 (Windows) |
+| 대상                          | 도구              | 실행 위치        |
+|-------------------------------|-------------------|------------------|
+| Linux (Ubuntu, Rocky, AL2023) | Molecule + Docker | A 서버 (Linux)   |
+| Windows (2019, 2022, 2025)    | Vagrant + Hyper-V | B 서버 (Windows) |
 
 [⬆ 목차로 돌아가기](#목차)
 

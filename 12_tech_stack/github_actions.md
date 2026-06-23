@@ -2,12 +2,12 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념) |
-| [4. 워크플로우 문법](#4-워크플로우-문법) / [5. 트리거](#5-트리거) / [6. Jobs & Steps](#6-jobs--steps) |
+| 섹션                                                                                                                    |
+|-------------------------------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념)                                          |
+| [4. 워크플로우 문법](#4-워크플로우-문법) / [5. 트리거](#5-트리거) / [6. Jobs & Steps](#6-jobs--steps)                   |
 | [7. 환경변수 & 시크릿](#7-환경변수--시크릿) / [8. 재사용 워크플로우](#8-재사용-워크플로우) / [9. AWS 연동](#9-aws-연동) |
-| [10. 실전 예시](#10-실전-예시) / [11. Tips](#11-tips) |
+| [10. 실전 예시](#10-실전-예시) / [11. Tips](#11-tips)                                                                   |
 
 ---
 
@@ -25,7 +25,7 @@ GitHub Actions는 GitHub에 내장된 CI/CD 플랫폼. 저장소 이벤트(push,
 └──────────────────────────────────────────────────────────────┘
 ```
 
-- Jenkins 대비 별도 서버 불필요, GitHub 저장소와 완전 통합
+- Jenkins 대비 별도 서버 불필요, GitHub 저장소와 네이티브 통합
 - Public 저장소: 무료 / Private 저장소: 월 2,000분 무료 (GitHub Free 기준)
 
 [⬆ 목차로 돌아가기](#목차)
@@ -61,18 +61,18 @@ GitHub Actions는 GitHub에 내장된 CI/CD 플랫폼. 저장소 이벤트(push,
 
 ## 3. 핵심 개념
 
-| 개념       | 설명                                                          |
-|------------|---------------------------------------------------------------|
-| Workflow   | 자동화 프로세스 정의 파일 (`.github/workflows/*.yml`)         |
-| Event      | 워크플로우를 트리거하는 GitHub 이벤트 (push, pull_request 등) |
-| Job        | Runner에서 실행되는 작업 단위. 기본적으로 병렬 실행           |
-| Step       | Job 내 순차 실행 단위. shell 명령어 또는 Action               |
-| Action     | 재사용 가능한 Step 단위 패키지 (Marketplace에서 공유)         |
-| Runner     | 워크플로우를 실행하는 서버 (GitHub-hosted 또는 Self-hosted)   |
-| Secret     | 암호화된 환경변수 (토큰, 비밀번호 등)                         |
-| Environment| 배포 환경 (dev/stg/prod). 보호 규칙 및 시크릿 범위 설정 가능  |
-| Matrix     | 여러 OS/버전 조합으로 Job을 병렬 실행                         |
-| Artifact   | Job 간 또는 워크플로우 실행 결과 파일 공유                    |
+| 개념        | 설명                                                          |
+|-------------|---------------------------------------------------------------|
+| Workflow    | 자동화 프로세스 정의 파일 (`.github/workflows/*.yml`)         |
+| Event       | 워크플로우를 트리거하는 GitHub 이벤트 (push, pull_request 등) |
+| Job         | Runner에서 실행되는 작업 단위. 기본적으로 병렬 실행           |
+| Step        | Job 내 순차 실행 단위. shell 명령어 또는 Action               |
+| Action      | 재사용 가능한 Step 단위 패키지 (Marketplace에서 공유)         |
+| Runner      | 워크플로우를 실행하는 서버 (GitHub-hosted 또는 Self-hosted)   |
+| Secret      | 암호화된 환경변수 (토큰, 비밀번호 등)                         |
+| Environment | 배포 환경 (dev/stg/prod). 보호 규칙 및 시크릿 범위 설정 가능  |
+| Matrix      | 여러 OS/버전 조합으로 Job을 병렬 실행                         |
+| Artifact    | Job 간 또는 워크플로우 실행 결과 파일 공유                    |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -591,17 +591,17 @@ jobs:
 
 ### 주요 공식 Action
 
-| Action                                  | 용도                        |
-|-----------------------------------------|-----------------------------|
-| `actions/checkout@v6`                   | 코드 체크아웃               |
-| `actions/setup-node@v6`                 | Node.js 설치                |
-| `actions/setup-python@v5`               | Python 설치                 |
-| `actions/cache@v5`                      | 의존성 캐시                 |
-| `actions/upload-artifact@v7`            | 아티팩트 업로드             |
-| `actions/download-artifact@v4`          | 아티팩트 다운로드           |
-| `aws-actions/configure-aws-credentials@v4` | AWS 자격증명 설정        |
-| `aws-actions/amazon-ecr-login@v2`       | ECR 로그인                  |
-| `docker/build-push-action@v5`           | Docker 빌드 & 푸시          |
+| Action                                     | 용도               |
+|--------------------------------------------|--------------------|
+| `actions/checkout@v6`                      | 코드 체크아웃      |
+| `actions/setup-node@v6`                    | Node.js 설치       |
+| `actions/setup-python@v5`                  | Python 설치        |
+| `actions/cache@v5`                         | 의존성 캐시        |
+| `actions/upload-artifact@v7`               | 아티팩트 업로드    |
+| `actions/download-artifact@v4`             | 아티팩트 다운로드  |
+| `aws-actions/configure-aws-credentials@v4` | AWS 자격증명 설정  |
+| `aws-actions/amazon-ecr-login@v2`          | ECR 로그인         |
+| `docker/build-push-action@v5`              | Docker 빌드 & 푸시 |
 
 ### 디버깅
 

@@ -2,13 +2,13 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념) |
-| [4. DAG 작성](#4-dag-작성) / [5. Operator](#5-operator) / [6. 의존성 관리](#6-의존성-관리) |
-| [7. 스케줄링](#7-스케줄링) / [8. 모니터링](#8-모니터링) / [9. 설치/설정](#9-설치설정) |
+| 섹션                                                                                                |
+|-----------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념)                      |
+| [4. DAG 작성](#4-dag-작성) / [5. Operator](#5-operator) / [6. 의존성 관리](#6-의존성-관리)          |
+| [7. 스케줄링](#7-스케줄링) / [8. 모니터링](#8-모니터링) / [9. 설치/설정](#9-설치설정)               |
 | [10. Tips](#10-tips) / [11. 에러 처리 / 알림](#11-에러-처리--알림) / [12. XCom 상세](#12-xcom-상세) |
-| [13. 보안](#13-보안) / [14. 성능 튜닝](#14-성능-튜닝) |
+| [13. 보안](#13-보안) / [14. 성능 튜닝](#14-성능-튜닝)                                               |
 
 
 ---
@@ -63,12 +63,12 @@ Apache Airflow는 **워크플로우를 코드로 정의, 스케줄링, 모니터
 
 ### Executor 유형
 
-| Executor             | 특징                          | 적합 환경          |
-|----------------------|-------------------------------|--------------------|
-| SequentialExecutor   | 순차 실행, SQLite 사용        | ❌ Airflow 3.0에서 제거됨 |
-| LocalExecutor        | 단일 머신 병렬 실행           | 소규모 운영        |
-| CeleryExecutor       | 분산 Worker 풀                | 대규모 운영        |
-| KubernetesExecutor   | Task별 Pod 생성               | 쿠버네티스 환경    |
+| Executor           | 특징                   | 적합 환경                 |
+|--------------------|------------------------|---------------------------|
+| SequentialExecutor | 순차 실행, SQLite 사용 | ❌ Airflow 3.0에서 제거됨 |
+| LocalExecutor      | 단일 머신 병렬 실행    | 소규모 운영               |
+| CeleryExecutor     | 분산 Worker 풀         | 대규모 운영               |
+| KubernetesExecutor | Task별 Pod 생성        | 쿠버네티스 환경           |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -76,17 +76,17 @@ Apache Airflow는 **워크플로우를 코드로 정의, 스케줄링, 모니터
 
 ## 3. 핵심 개념
 
-| 개념         | 설명                                                      |
-|--------------|-----------------------------------------------------------|
-| DAG          | 작업 흐름 전체 정의 (Python 파일)                         |
-| Task         | DAG 내 개별 실행 단위                                     |
-| Operator     | Task 실행 방식 (Bash, Python, HTTP 등)                    |
-| TaskInstance | 특정 DAG Run에서의 Task 실행 인스턴스                     |
-| DAG Run      | DAG의 1회 실행 (scheduled/manual/backfill)                |
-| XCom         | Task 간 소량 데이터 공유 메커니즘                         |
-| Connection   | 외부 시스템 연결 정보 (DB, S3, API 등)                    |
-| Variable     | 전역 설정값 저장소                                        |
-| Pool         | Task 동시 실행 수 제한                                    |
+| 개념         | 설명                                       |
+|--------------|--------------------------------------------|
+| DAG          | 작업 흐름 전체 정의 (Python 파일)          |
+| Task         | DAG 내 개별 실행 단위                      |
+| Operator     | Task 실행 방식 (Bash, Python, HTTP 등)     |
+| TaskInstance | 특정 DAG Run에서의 Task 실행 인스턴스      |
+| DAG Run      | DAG의 1회 실행 (scheduled/manual/backfill) |
+| XCom         | Task 간 소량 데이터 공유 메커니즘          |
+| Connection   | 외부 시스템 연결 정보 (DB, S3, API 등)     |
+| Variable     | 전역 설정값 저장소                         |
+| Pool         | Task 동시 실행 수 제한                     |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -176,16 +176,16 @@ my_pipeline()
 
 ### 주요 내장 Operator
 
-| Operator                 | 용도                     | 패키지                     |
-|--------------------------|--------------------------|----------------------------|
-| `BashOperator`           | 쉘 명령 실행             | airflow.operators.bash     |
-| `PythonOperator`         | Python 함수 실행         | airflow.operators.python   |
-| `EmailOperator`          | 이메일 발송              | airflow.operators.email    |
-| `HttpOperator`           | HTTP 요청                | airflow.providers.http     |
-| `S3ToRedshiftOperator`   | S3 → Redshift 로드       | airflow.providers.amazon   |
-| `PostgresOperator`       | PostgreSQL 쿼리 실행     | airflow.providers.postgres |
-| `KubernetesPodOperator`  | K8s Pod 실행             | airflow.providers.cncf     |
-| `SparkSubmitOperator`    | Spark Job 제출           | airflow.providers.apache   |
+| Operator                | 용도                 | 패키지                     |
+|-------------------------|----------------------|----------------------------|
+| `BashOperator`          | 쉘 명령 실행         | airflow.operators.bash     |
+| `PythonOperator`        | Python 함수 실행     | airflow.operators.python   |
+| `EmailOperator`         | 이메일 발송          | airflow.operators.email    |
+| `HttpOperator`          | HTTP 요청            | airflow.providers.http     |
+| `S3ToRedshiftOperator`  | S3 → Redshift 로드   | airflow.providers.amazon   |
+| `PostgresOperator`      | PostgreSQL 쿼리 실행 | airflow.providers.postgres |
+| `KubernetesPodOperator` | K8s Pod 실행         | airflow.providers.cncf     |
+| `SparkSubmitOperator`   | Spark Job 제출       | airflow.providers.apache   |
 
 ### Sensor (조건 대기)
 
@@ -226,14 +226,14 @@ t3.set_downstream(t4)
 
 ### TriggerRule (기본값: `all_success`)
 
-| Rule            | 실행 조건                            |
-|-----------------|--------------------------------------|
-| `all_success`   | 모든 upstream 성공                   |
-| `all_failed`    | 모든 upstream 실패                   |
-| `all_done`      | 모든 upstream 완료 (성공/실패 무관)  |
-| `one_success`   | upstream 중 하나라도 성공            |
-| `one_failed`    | upstream 중 하나라도 실패            |
-| `none_failed`   | 실패 없음 (skipped 허용)             |
+| Rule          | 실행 조건                           |
+|---------------|-------------------------------------|
+| `all_success` | 모든 upstream 성공                  |
+| `all_failed`  | 모든 upstream 실패                  |
+| `all_done`    | 모든 upstream 완료 (성공/실패 무관) |
+| `one_success` | upstream 중 하나라도 성공           |
+| `one_failed`  | upstream 중 하나라도 실패           |
+| `none_failed` | 실패 없음 (skipped 허용)            |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -255,14 +255,14 @@ t3.set_downstream(t4)
 
 - 분(min), 시(hour), 일(day), 월(month), 요일(weekday) 순서
 
-| 표현식         | 의미               |
-|----------------|--------------------|
-| `@hourly`      | 매시 정각          |
-| `@daily`       | 매일 자정          |
-| `@weekly`      | 매주 일요일 자정   |
-| `@monthly`     | 매월 1일 자정      |
-| `0 2 * * *`    | 매일 02:00         |
-| `0 */6 * * *`  | 6시간마다          |
+| 표현식        | 의미             |
+|---------------|------------------|
+| `@hourly`     | 매시 정각        |
+| `@daily`      | 매일 자정        |
+| `@weekly`     | 매주 일요일 자정 |
+| `@monthly`    | 매월 1일 자정    |
+| `0 2 * * *`   | 매일 02:00       |
+| `0 */6 * * *` | 6시간마다        |
 
 ### execution_date vs data_interval
 
@@ -284,12 +284,12 @@ def process(**context):
 
 ### 웹 UI 주요 뷰
 
-| 뷰          | 용도                                   |
-|-------------|----------------------------------------|
-| Grid View   | DAG Run × Task 매트릭스, 상태 한눈에  |
-| Graph View  | DAG 구조 시각화                        |
-| Gantt View  | Task 실행 시간 분석                    |
-| Log View    | Task 로그 실시간 확인                  |
+| 뷰         | 용도                                 |
+|------------|--------------------------------------|
+| Grid View  | DAG Run × Task 매트릭스, 상태 한눈에 |
+| Graph View | DAG 구조 시각화                      |
+| Gantt View | Task 실행 시간 분석                  |
+| Log View   | Task 로그 실시간 확인                |
 
 ### CLI
 
@@ -491,13 +491,13 @@ with DAG(
 
 ### 주요 콜백 비교
 
-| 콜백                    | 트리거 시점              | 등록 위치          |
-|-------------------------|--------------------------|--------------------|
-| `on_failure_callback`   | Task/DAG 실패            | DAG, Task, default_args |
-| `on_retry_callback`     | Task 재시도              | Task, default_args |
-| `on_success_callback`   | Task 성공                | Task, default_args |
-| `on_execute_callback`   | Task 실행 시작           | Task               |
-| `sla_miss_callback`     | SLA 초과                 | DAG                |
+| 콜백                  | 트리거 시점    | 등록 위치               |
+|-----------------------|----------------|-------------------------|
+| `on_failure_callback` | Task/DAG 실패  | DAG, Task, default_args |
+| `on_retry_callback`   | Task 재시도    | Task, default_args      |
+| `on_success_callback` | Task 성공      | Task, default_args      |
+| `on_execute_callback` | Task 실행 시작 | Task                    |
+| `sla_miss_callback`   | SLA 초과       | DAG                     |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -595,12 +595,12 @@ def cleanup_xcom(context, session=None):
 airflow tasks clear my_dag --start-date 2026-01-01 --end-date 2026-04-01
 ```
 
-| 항목              | 제한                                      |
-|-------------------|-------------------------------------------|
-| SQLite            | 2GB (개발용, 운영 비권장)                 |
-| PostgreSQL        | 1GB per value                             |
-| MySQL             | 64KB (MEDIUMBLOB 설정 시 16MB)            |
-| 권장 최대 크기    | 48KB 이하 (경로/ID/상태값만 전달)         |
+| 항목           | 제한                              |
+|----------------|-----------------------------------|
+| SQLite         | 2GB (개발용, 운영 비권장)         |
+| PostgreSQL     | 1GB per value                     |
+| MySQL          | 64KB (MEDIUMBLOB 설정 시 16MB)    |
+| 권장 최대 크기 | 48KB 이하 (경로/ID/상태값만 전달) |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -725,11 +725,11 @@ max_dagruns_to_create_per_loop = 10
 
 ### Executor별 튜닝
 
-| Executor           | 튜닝 포인트                                                    |
-|--------------------|----------------------------------------------------------------|
-| LocalExecutor      | `parallelism` = CPU 코어 수 × 2                               |
-| CeleryExecutor     | Worker 수 × Worker concurrency = 전체 처리량                  |
-| KubernetesExecutor | Pod 생성 오버헤드 있음 — 짧은 Task에 비효율                   |
+| Executor           | 튜닝 포인트                                  |
+|--------------------|----------------------------------------------|
+| LocalExecutor      | `parallelism` = CPU 코어 수 × 2              |
+| CeleryExecutor     | Worker 수 × Worker concurrency = 전체 처리량 |
+| KubernetesExecutor | Pod 생성 오버헤드 있음 — 짧은 Task에 비효율  |
 
 ```bash
 # CeleryExecutor Worker 설정
@@ -789,15 +789,15 @@ airflow tasks states-for-dag-run my_dag manual__2026-04-27T00:00:00+00:00
 
 ### 성능 체크리스트
 
-| 항목                          | 권장값/방법                                      |
-|-------------------------------|--------------------------------------------------|
-| DAG 파싱 시간                 | 1초 미만 (`airflow dags report` 로 확인)         |
-| `catchup`                     | `False` (불필요한 과거 Run 방지)                 |
-| `max_active_runs_per_dag`     | `1` (중복 실행 방지)                             |
-| XCom 크기                     | 48KB 이하 (대용량은 S3 경로 전달)                |
-| Sensor `mode`                 | `reschedule` (Worker 슬롯 점유 방지)             |
-| Pool                          | 외부 시스템 연동 Task에 반드시 설정              |
-| `min_file_process_interval`   | DAG 수가 많으면 60~120초로 증가                  |
+| 항목                        | 권장값/방법                              |
+|-----------------------------|------------------------------------------|
+| DAG 파싱 시간               | 1초 미만 (`airflow dags report` 로 확인) |
+| `catchup`                   | `False` (불필요한 과거 Run 방지)         |
+| `max_active_runs_per_dag`   | `1` (중복 실행 방지)                     |
+| XCom 크기                   | 48KB 이하 (대용량은 S3 경로 전달)        |
+| Sensor `mode`               | `reschedule` (Worker 슬롯 점유 방지)     |
+| Pool                        | 외부 시스템 연동 Task에 반드시 설정      |
+| `min_file_process_interval` | DAG 수가 많으면 60~120초로 증가          |
 
 [⬆ 목차로 돌아가기](#목차)
 
