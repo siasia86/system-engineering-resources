@@ -11,6 +11,7 @@
 | Docker | 29.5.3 (cgroup v2) |
 | SSH 키 | ~/.ssh/id_ed25519 |
 | venv | /home/sjyun/.venv |
+| AWS 프로필 | 01_re (980527594869) |
 
 ## 프로젝트 경로
 
@@ -33,6 +34,9 @@
 
 ## 최근 결정 사항
 
+- 2026-06-23: md-style-check.py --no-* 옵션 11개, -E/-X, box-chars 검사 추가 (v26.06.23)
+- 2026-06-23: 06_security, 08_debugging, 12_tech_stack, README.md 표 정렬 일괄 수정
+- 2026-06-23: game_infra_kpi_presentation.md 박스 문자 오류 수정
 - 2026-06-19: md-style-check.py 다이어그램 검사 수정 (중첩 박스 지원)
 - 2026-06-19: testing-guide skill에 edge case 5축 분석 추가
 - 2026-06-19: harness_engineering.md 원문 대조 검증 완료 (13건 수정)
