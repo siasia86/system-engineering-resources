@@ -23,25 +23,25 @@
 # 기본 패키지
 top 
 ```
-![top_기본](../98_image/resource-utilization-monitoring/top.png)
+![top_기본](../../98_image/resource-utilization-monitoring/top.png)
 
 ```bash
 # 기본 패키지
 top + tt mm 
 ```
-![top+tt,mm](../98_image/resource-utilization-monitoring/top_tt_mm.png)
+![top+tt,mm](../../98_image/resource-utilization-monitoring/top_tt_mm.png)
 
 ```bash
 # 설치 필요
 htop
 ```
-![htop](../98_image/resource-utilization-monitoring/htop.png)
+![htop](../../98_image/resource-utilization-monitoring/htop.png)
 
 ```bash
 # 설치 필요
 bashtop
 ```
-![bashtop](../98_image/resource-utilization-monitoring/bashtop.png)
+![bashtop](../../98_image/resource-utilization-monitoring/bashtop.png)
 
 ### 단축키
 - top, htop 은  P (process 순서 정렬) M (memory 순서 정렬) 단축키가 있습니다.
@@ -112,7 +112,7 @@ iotop -o
 
 ``` 
 - 기록을 남겨야 하는 상황일때 사용 (zabbix 와 조합하여 모니터링 등)
-![iostat -x 1 1](../98_image/resource-utilization-monitoring/iostat_x_1_1.png)
+![iostat -x 1 1](../../98_image/resource-utilization-monitoring/iostat_x_1_1.png)
 
 ### nmon ★★★
 - 실시간 확인은 nmon 이 tui 환경으로 가시성이 조금 더 좋습니다. 
@@ -124,7 +124,7 @@ nmon
 # 진입 후 
 d  
 ```
-![nmon disk io](../98_image/resource-utilization-monitoring/nmon_disk_io.png)
+![nmon disk io](../../98_image/resource-utilization-monitoring/nmon_disk_io.png)
 
 
 
@@ -157,7 +157,7 @@ vnstat -i eth0
 # 설치 필요
 bmon
 ```
-![bmon](../98_image/resource-utilization-monitoring/bmon.png)
+![bmon](../../98_image/resource-utilization-monitoring/bmon.png)
 
 ### 임계값 설정
 - **정상**: 대역폭 사용률 < 70%
