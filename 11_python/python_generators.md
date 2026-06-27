@@ -829,7 +829,7 @@ count = sum(1 for _ in gen)
 **관련 문서:**
 - [컴프리헨션](./python_comprehensions.md) - 제너레이터 표현식
 - [함수](./python_functions.md) - 함수 기초
-- [이터레이터](./python_iterators.md) - 이터레이터 프로토콜
+- 이터레이터 (작성 예정) - 이터레이터 프로토콜
 
 ---
 
