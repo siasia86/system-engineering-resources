@@ -694,7 +694,7 @@ content = data_file.read_text()
 
 **관련 문서:**
 - [예외 처리](./python_exceptions.md) - 파일 에러 처리
-- [JSON 처리](./python_json.md) - JSON 파일 다루기
+- [JSON/YAML 처리](./python_json_yaml.md) - JSON 파일 다루기
 
 ---
 
