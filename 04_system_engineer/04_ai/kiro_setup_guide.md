@@ -697,8 +697,7 @@ kiro-cli settings chat.enableCheckpoint true
 - addyosmani/agent-skills: [github.com](https://github.com/addyosmani/agent-skills) — ★★★☆☆
 - Kiro CLI 공식 문서: [kiro.dev/docs/cli](https://kiro.dev/docs/cli/) — ★★★☆☆
 - [kiro_cli_command_reference.md](./kiro_cli_command_reference.md)
-- [agents/README.md](../../../00_readme.md/agents/README.md)
-- [skills/README.md](../../../00_readme.md/skills/README.md)
+- [skills/README.md](../../00_readme.md/skills/README.md)
 
 ---
 
