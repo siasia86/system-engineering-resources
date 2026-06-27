@@ -80,7 +80,7 @@
 ## 참고 자료
 
 - 한국 저작권법: [law.go.kr](https://www.law.go.kr/법령/저작권법) — ★★★☆☆
-- [라이선스 가이드](./license_guide.md)
+- 라이선스 가이드 (작성 예정)
 - [DRM 가이드](./drm_guide.md)
 
 ---

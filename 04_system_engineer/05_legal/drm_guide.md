@@ -193,7 +193,7 @@ def verify_license(license_key: str) -> bool:
 - FSF - GPL v3 DRM 조항: [gnu.org/licenses/rms-why-gplv3](https://www.gnu.org/licenses/rms-why-gplv3.html) — ★★★☆☆
 - W3C EME 명세: [w3.org/TR/encrypted-media](https://www.w3.org/TR/encrypted-media/) — ★★★☆☆
 - 한국 저작권법: [law.go.kr](https://www.law.go.kr/법령/저작권법) — ★★☆☆☆
-- [라이선스 가이드](./license_guide.md)
+- 라이선스 가이드 (작성 예정)
 
 ---
 

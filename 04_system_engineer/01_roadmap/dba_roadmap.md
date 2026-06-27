@@ -64,10 +64,10 @@ SQL
 
 | 개념      | 설명                | 관련 문서                                                       |
 |-----------|---------------------|-----------------------------------------------------------------|
-| 정규화    | 1NF~BCNF, 반정규화  | [rdbms_normalization.md](../09_database/rdbms_normalization.md) |
-| 인덱스    | B-Tree, 복합 인덱스 | [rdbms_index.md](../09_database/rdbms_index.md)                 |
-| 트랜잭션  | ACID, 격리 수준     | [rdbms_transaction.md](../09_database/rdbms_transaction.md)     |
-| 실행 계획 | EXPLAIN 분석        | [rdbms_explain.md](../09_database/rdbms_explain.md)             |
+| 정규화    | 1NF~BCNF, 반정규화  | [rdbms_normalization.md](../../09_database/rdbms_normalization.md) |
+| 인덱스    | B-Tree, 복합 인덱스 | [rdbms_index.md](../../09_database/rdbms_index.md)                 |
+| 트랜잭션  | ACID, 격리 수준     | [rdbms_transaction.md](../../09_database/rdbms_transaction.md)     |
+| 실행 계획 | EXPLAIN 분석        | [rdbms_explain.md](../../09_database/rdbms_explain.md)             |
 
 [⬆ 목차로 돌아가기](#목차)
 

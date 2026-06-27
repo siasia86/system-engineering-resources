@@ -70,13 +70,13 @@ systemctl status game-server.service
 
 > 주요 Active 상태값: `active (running)` 실행 중 / `inactive (dead)` 중지됨 / `failed` 실행 실패
 ### zabbix-server : 배포판에 있는 systemd
-![systemctl status zabbix 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_zabbix-server.png)
+![systemctl status zabbix 출력 예시](../../98_image/game-infra-kpi-presentation/systemctl_status_zabbix-server.png)
 
 ### n8n  : 수작업으로 만든 systemd 
-![systemctl status n8n 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_n8n-server.png)
+![systemctl status n8n 출력 예시](../../98_image/game-infra-kpi-presentation/systemctl_status_n8n-server.png)
 
 ### rsync  : 서버(OS) 시작시 자동으로 실행 되지 않습니다. 
-![systemctl status rsync 출력 예시](../98_image/game-infra-kpi-presentation/systemctl_status_rsync.png)
+![systemctl status rsync 출력 예시](../../98_image/game-infra-kpi-presentation/systemctl_status_rsync.png)
 
 ```bash
 # 게임 서버 포트(예: 7777)의 리스닝 상태를 확인합니다.
@@ -114,7 +114,7 @@ ps -eo lstart,pid,cmd |  grep -i zabbix_server
 > - 예) 4코어 서버에서 load average 4.0 = 100% 사용, 8.0 = 200% (대기 발생)
 
 ### uptime  + w
-![uptime, w 출력 예시](../98_image/game-infra-kpi-presentation/uptime_cmd.png)
+![uptime, w 출력 예시](../../98_image/game-infra-kpi-presentation/uptime_cmd.png)
 
 ```bash
 # 최근 24시간 내 서비스 재시작 이력을 조회합니다.
@@ -144,10 +144,10 @@ Get-EventLog -LogName System -EntryType Error -After (Get-Date).AddDays(-1) |  W
 systeminfo | findstr "부팅 시간"
 ```
 ### powershell netstat 
-![powershell netstat_출력 예시](../98_image/game-infra-kpi-presentation/powershell_netstat.png)
+![powershell netstat_출력 예시](../../98_image/game-infra-kpi-presentation/powershell_netstat.png)
 
 ### powershell systeminfo
-![powershell systeminfo_출력 예시](../98_image/game-infra-kpi-presentation/powershell_systeminfo.png)
+![powershell systeminfo_출력 예시](../../98_image/game-infra-kpi-presentation/powershell_systeminfo.png)
 
 ### 1-5. 장애 대응 흐름도
 
@@ -275,7 +275,7 @@ HOST: sjyun                       Loss%   Snt   Last   Avg  Best  Wrst StDev
  15.├── tu-in-f102.1e100.net      65.0%    20   27.3  28.2  27.3  30.0   0.9
 ```
 ### mtr
-![mtr_출력 예시](../98_image/game-infra-kpi-presentation/mtr.png)
+![mtr_출력 예시](../../98_image/game-infra-kpi-presentation/mtr.png)
 
 
 | 항목  | 설명                                                                                  |
@@ -639,8 +639,8 @@ LimitNOFILE=10000
 
 ```
 
-![mysql services limit-1](../98_image/game-infra-kpi-presentation/mysql_services_limit-1.png)
-![mysql services limit-2](../98_image/game-infra-kpi-presentation/mysql_services_limit-2.png)
+![mysql services limit-1](../../98_image/game-infra-kpi-presentation/mysql_services_limit-1.png)
+![mysql services limit-2](../../98_image/game-infra-kpi-presentation/mysql_services_limit-2.png)
 
 
 
@@ -980,7 +980,7 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 
 - 아래는 5가지 핵심 지표를 한눈에 확인할 수 있는 zabbix 대시보드 화면 입니다.
 
-![zabbix main page](../98_image/resource-utilization-monitoring/zabbix_main_page.png)
+![zabbix main page](../../98_image/resource-utilization-monitoring/zabbix_main_page.png)
 
 
 
