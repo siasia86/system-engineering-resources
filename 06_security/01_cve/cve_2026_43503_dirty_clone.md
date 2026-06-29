@@ -2,31 +2,31 @@
 
 ## 목차
 
-| 섹션 |
-|------|
+| 섹션                                                                                           |
+|------------------------------------------------------------------------------------------------|
 | [1. 개요](#1-개요) / [2. 취약점 상세](#2-취약점-상세) / [3. 영향 범위 확인](#3-영향-범위-확인) |
-| [4. 대처 방안](#4-대처-방안) / [5. 사후 검증](#5-사후-검증) |
+| [4. 대처 방안](#4-대처-방안) / [5. 사후 검증](#5-사후-검증)                                    |
 
 ---
 
 ## 1. 개요
 
-| 항목      | 내용                                                       |
-|-----------|------------------------------------------------------------|
-| CVE       | CVE-2026-43503                                             |
-| 별칭      | **DirtyClone**                                             |
-| CVSS      | 8.8 (HIGH)                                                 |
-| 벡터      | `CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H`          |
-| 공격 벡터 | LOCAL / LOW privilege / CHANGED scope / NO interaction     |
-| 컴포넌트  | `net/core/skbuff.c` — `__pskb_copy_fclone()`, `skb_shift()` |
-| 발견자    | Hyunwoo Kim (@v4bel) + JFrog (Eddy Tsalolikhin, Or Peles) |
-| 도입 커밋 | `cef401de7be8` (2013년)                                    |
-| 패치 커밋 | `48f6a5356a33` (mainline, 2026-05-21)                      |
-| NVD 공개  | 2026-05-23                                                 |
-| JFrog 공개 | 2026-06-25                                                |
-| CISA KEV  | ❌                                                         |
-| PoC       | ✅ 공개됨 (JFrog — page cache write via iptables TEE)     |
-| 영향      | 비권한 로컬 사용자 → root 권한 상승                        |
+| 항목       | 내용                                                        |
+|------------|-------------------------------------------------------------|
+| CVE        | CVE-2026-43503                                              |
+| 별칭       | **DirtyClone**                                              |
+| CVSS       | 8.8 (HIGH)                                                  |
+| 벡터       | `CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H`              |
+| 공격 벡터  | LOCAL / LOW privilege / CHANGED scope / NO interaction      |
+| 컴포넌트   | `net/core/skbuff.c` — `__pskb_copy_fclone()`, `skb_shift()` |
+| 발견자     | Hyunwoo Kim (@v4bel) + JFrog (Eddy Tsalolikhin, Or Peles)   |
+| 도입 커밋  | `cef401de7be8` (2013년)                                     |
+| 패치 커밋  | `48f6a5356a33` (mainline, 2026-05-21)                       |
+| NVD 공개   | 2026-05-23                                                  |
+| JFrog 공개 | 2026-06-25                                                  |
+| CISA KEV   | ❌                                                          |
+| PoC        | ✅ 공개됨 (JFrog — page cache write via iptables TEE)       |
+| 영향       | 비권한 로컬 사용자 → root 권한 상승                         |
 
 🟡 **DirtyFrag 계열의 최신 변종입니다.** 기존 `dirtyfrag.conf` blacklist (`esp4`/`esp6`/`rxrpc`)를 이미 적용한 경우 추가 조치 불필요합니다.
 
@@ -58,25 +58,25 @@ vmsplice/splice → UDP skb (page-cache backed)
 
 **기존 DirtyFrag 패치와의 차이:**
 
-| CVE            | 버그 위치                  | 마커 누락 경로          |
-|----------------|----------------------------|-------------------------|
-| CVE-2026-43284 | `ip_append_data()` splice  | UDP splice → ESP        |
-| CVE-2026-46300 | `skb_try_coalesce()`       | GRO coalesce → ESP      |
-| CVE-2026-43503 | `__pskb_copy_fclone()`     | TEE/dup clone → ESP     |
+| CVE            | 버그 위치                 | 마커 누락 경로      |
+|----------------|---------------------------|---------------------|
+| CVE-2026-43284 | `ip_append_data()` splice | UDP splice → ESP    |
+| CVE-2026-46300 | `skb_try_coalesce()`      | GRO coalesce → ESP  |
+| CVE-2026-43503 | `__pskb_copy_fclone()`    | TEE/dup clone → ESP |
 
 **패치 내용:** frag descriptor 이동 시 `SKBFL_SHARED_FRAG` 비트를 destination skb에도 설정합니다. 수정 대상: `__pskb_copy_fclone()`, `skb_shift()`, `skb_gro_receive()`, `skb_gro_receive_list()`, `tcp_clone_payload()`, `skb_segment()`.
 
 **취약 버전:**
 
-| 브랜치 | 취약 범위       | 패치 버전     | RHEL/CentOS          | Ubuntu          | Amazon Linux      |
-|--------|-----------------|---------------|----------------------|-----------------|-------------------|
-| 5.10.x | 3.9 ~ 5.10.256  | **5.10.257+** | RHEL 8 (백포트 확인) | 20.04 LTS (HWE) | AL2 (5.10 kernel) |
-| 5.15.x | 5.11 ~ 5.15.207 | **5.15.208+** | RHEL 9.0~9.2         | 22.04 LTS       | AL2023            |
-| 6.1.x  | 5.16 ~ 6.1.173  | **6.1.174+**  | RHEL 9.3~9.4         | 22.04 LTS (HWE) | AL2023 (6.1)      |
-| 6.6.x  | 6.2 ~ 6.6.140   | **6.6.141+**  | RHEL 9.5+            | 24.04 LTS       | AL2023 (6.6)      |
-| 6.12.x | 6.7 ~ 6.12.90   | **6.12.91+**  | RHEL 10              | **24.04 LTS** 🟡 | —                |
-| 6.18.x | 6.13 ~ 6.18.32  | **6.18.33+**  | —                    | 25.04           | —                 |
-| 7.0.x  | 6.19 ~ 7.0.9    | **7.0.10+**   | —                    | 25.10 (예정)    | —                 |
+| 브랜치 | 취약 범위       | 패치 버전     | RHEL/CentOS          | Ubuntu           | Amazon Linux      |
+|--------|-----------------|---------------|----------------------|------------------|-------------------|
+| 5.10.x | 3.9 ~ 5.10.256  | **5.10.257+** | RHEL 8 (백포트 확인) | 20.04 LTS (HWE)  | AL2 (5.10 kernel) |
+| 5.15.x | 5.11 ~ 5.15.207 | **5.15.208+** | RHEL 9.0~9.2         | 22.04 LTS        | AL2023            |
+| 6.1.x  | 5.16 ~ 6.1.173  | **6.1.174+**  | RHEL 9.3~9.4         | 22.04 LTS (HWE)  | AL2023 (6.1)      |
+| 6.6.x  | 6.2 ~ 6.6.140   | **6.6.141+**  | RHEL 9.5+            | 24.04 LTS        | AL2023 (6.6)      |
+| 6.12.x | 6.7 ~ 6.12.90   | **6.12.91+**  | RHEL 10              | **24.04 LTS** 🟡 | —                 |
+| 6.18.x | 6.13 ~ 6.18.32  | **6.18.33+**  | —                    | 25.04            | —                 |
+| 7.0.x  | 6.19 ~ 7.0.9    | **7.0.10+**   | —                    | 25.10 (예정)     | —                 |
 
 > 첫 패치 태그: v7.1-rc5 (2026-05-24)
 
@@ -88,20 +88,20 @@ vmsplice/splice → UDP skb (page-cache backed)
 
 ### 익스플로잇 조건
 
-| 조건                         | 설명                                            |
-|------------------------------|-------------------------------------------------|
-| `CAP_NET_ADMIN`              | IPsec SA/policy 및 iptables 설정에 필요         |
-| 비권한 user namespace        | Debian/Fedora/Ubuntu 기본 활성 → userns로 획득  |
-| iptables TEE 또는 nf_dup    | `__pskb_copy_fclone()` 트리거에 필요            |
-| ESP 모듈 (`esp4`/`esp6`)    | in-place decrypt 경로                           |
+| 조건                     | 설명                                           |
+|--------------------------|------------------------------------------------|
+| `CAP_NET_ADMIN`          | IPsec SA/policy 및 iptables 설정에 필요        |
+| 비권한 user namespace    | Debian/Fedora/Ubuntu 기본 활성 → userns로 획득 |
+| iptables TEE 또는 nf_dup | `__pskb_copy_fclone()` 트리거에 필요           |
+| ESP 모듈 (`esp4`/`esp6`) | in-place decrypt 경로                          |
 
 ### JFrog 확인 배포판
 
-| 배포판         | 익스플로잇 결과 |
-|----------------|-----------------|
-| Debian         | ✅ root 획득    |
-| Ubuntu         | ✅ root 획득    |
-| Fedora         | ✅ root 획득    |
+| 배포판 | 익스플로잇 결과 |
+|--------|-----------------|
+| Debian | ✅ root 획득    |
+| Ubuntu | ✅ root 획득    |
+| Fedora | ✅ root 획득    |
 
 ### 탐지 명령어
 
@@ -169,10 +169,10 @@ sudo rmmod esp4 esp6 rxrpc 2>/dev/null || true
 echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
 ```
 
-| 모듈            | 사용 중인 경우              | 언로드 시 영향             |
-|-----------------|-----------------------------|----------------------------|
-| `esp4` / `esp6` | IPsec VPN 터널 활성         | 기존 VPN 세션 즉시 끊김    |
-| `rxrpc`         | AFS 클라이언트 사용 중      | AFS 파일시스템 접근 불가   |
+| 모듈            | 사용 중인 경우         | 언로드 시 영향           |
+|-----------------|------------------------|--------------------------|
+| `esp4` / `esp6` | IPsec VPN 터널 활성    | 기존 VPN 세션 즉시 끊김  |
+| `rxrpc`         | AFS 클라이언트 사용 중 | AFS 파일시스템 접근 불가 |
 
 🟡 IPsec / strongSwan / Libreswan 터널을 종단하는 호스트에는 방법 B를 사용합니다.
 
