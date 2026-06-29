@@ -29,7 +29,7 @@
 
 > 🟡 **Dirty Frag 완화(`dirtyfrag.conf`)를 이미 적용한 경우 추가 조치 불필요.** 동일한 `esp4`/`esp6`/`rxrpc` blacklist가 Fragnesia도 차단합니다.
 
-> 동일 계열 취약점: [CVE-2026-31431](./cve_2026_31431_copy_fail.md) (CISA KEV) / [CVE-2026-43284](./cve_2026_43284_dirty_frag.md) (xfrm/ESP) / [CVE-2026-43500](./cve_2026_43500_dirty_frag.md) (rxrpc)
+> 동일 계열 취약점: [CVE-2026-31431](./cve_2026_31431_copy_fail.md) (CISA KEV) / [CVE-2026-43284](./cve_2026_43284_dirty_frag.md) (xfrm/ESP) / [CVE-2026-43500](./cve_2026_43500_dirty_frag.md) (rxrpc) / [CVE-2026-43503](./cve_2026_43503_dirty_clone.md) (DirtyClone)
 
 [⬆ 목차로 돌아가기](#목차)
 
