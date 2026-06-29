@@ -252,6 +252,8 @@ ls -la /etc/cron* /var/spool/cron/crontabs/ 2>/dev/null
 - [cve_2026_46300_fragnesia.md](./cve_2026_46300_fragnesia.md) — CVE-2026-46300 (Fragnesia)
 - Copy Fail: [copy.fail](https://copy.fail/) — ★★☆☆☆
 - Dirty Frag: [github.com/V4bel/dirtyfrag](https://github.com/V4bel/dirtyfrag) — ★★☆☆☆
+- DirtyClone: [research.jfrog.com](https://research.jfrog.com/post/dissecting-and-exploiting-linux-lpe-variant-dirtyclone-cve-2026-43503/) — ★★★☆☆
+- [cve_2026_43503_dirty_clone.md](./cve_2026_43503_dirty_clone.md) — CVE-2026-43503 (DirtyClone)
 
 ---
 

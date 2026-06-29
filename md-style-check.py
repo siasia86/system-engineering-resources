@@ -474,7 +474,7 @@ def check_file(path, strict=False, skip_checks=None):
     except Exception as e:
         return [("파일 읽기", f"실패: {e}")]
 
-    is_reference = '/_reference/' in path
+    is_reference = '/_reference/' in path or path.startswith('_reference/') or path.startswith('./_reference/')
     is_kiro = '.kiro' in path
     is_index = os.path.basename(path) == 'INDEX.md'
     all_issues = []
@@ -502,7 +502,7 @@ def check_file(path, strict=False, skip_checks=None):
     return all_issues
 
 # 검사 제외 디렉토리
-EXCLUDE_DIRS = {'99_ETC', '90_DELETE', '33_sjyun_32_readme.md', '51_siasia', '00_readme.md', '.git', '__pycache__'}
+EXCLUDE_DIRS = {'99_ETC', '90_DELETE', '33_sjyun_32_readme.md', '51_siasia', '00_readme.md', '.git', '__pycache__', '_reference'}
 
 # 검사 제외 파일
 EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'CHANGELOG.md'}

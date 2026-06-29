@@ -37,7 +37,7 @@
 
 CVE-2026-31431 (`algif_aead`)은 동일한 skb shared frag in-place 복호화 버그 클래스이지만 **독립적인 별개 경로**이며 별도 완화가 필요합니다. → [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md)
 
-> 동일 계열 취약점: [CVE-2026-31431](./cve_2026_31431_copy_fail.md) (CISA KEV) / [CVE-2026-43284](./cve_2026_43284_dirty_frag.md) (xfrm/ESP) / [CVE-2026-46300](./cve_2026_46300_fragnesia.md) (Fragnesia)
+> 동일 계열 취약점: [CVE-2026-31431](./cve_2026_31431_copy_fail.md) (CISA KEV) / [CVE-2026-43284](./cve_2026_43284_dirty_frag.md) (xfrm/ESP) / [CVE-2026-46300](./cve_2026_46300_fragnesia.md) (Fragnesia) / [CVE-2026-43503](./cve_2026_43503_dirty_clone.md) (DirtyClone)
 
 [⬆ 목차로 돌아가기](#목차)
 
