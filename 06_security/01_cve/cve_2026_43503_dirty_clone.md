@@ -38,6 +38,8 @@
 
 ## 2. 취약점 상세
 
+> 출처: [JFrog Research — DirtyClone](https://research.jfrog.com/post/dissecting-and-exploiting-linux-lpe-variant-dirtyclone-cve-2026-43503/) / [NVD CVE-2026-43503](https://nvd.nist.gov/vuln/detail/CVE-2026-43503) / [커널 패치 커밋](https://git.kernel.org/stable/c/9bc9d6d6967a2239aa57af2aa53554eddd640d20)
+
 `__pskb_copy_fclone()`과 `skb_shift()`가 frag descriptor를 복사할 때 `SKBFL_SHARED_FRAG` 비트를 전파하지 않습니다. `iptables TEE`(`nf_dup_ipv4()`) 규칙이 존재하면 `__pskb_copy_fclone()`을 통해 skb가 복제되며, 복제된 skb에서 shared frag 마커가 사라집니다.
 
 이 skb가 loopback IPsec 경로의 `esp_input()`에 도달하면 커널이 `skb_cow_data()` 없이 **in-place 복호화**를 수행하여 page cache를 직접 덮어씁니다.
