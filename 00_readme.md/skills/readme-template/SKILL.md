@@ -35,6 +35,10 @@ description: Defines the mandatory footer template for all .md files — GitHub 
 - README.md, CHANGELOG.md, LICENSE.md, CONTRIBUTING.md 및 모든 .md 파일에 동일 푸터 적용
 - GitHub Actions가 main push 시 날짜를 자동 갱신함
 
+## 푸터 제외 대상
+- `_reference/` 디렉토리 내 파일은 푸터를 붙이지 않습니다
+- `_reference/` 파일은 frontmatter(`sources`, `last_checked`)로 버전 관리합니다
+
 ## 날짜 업데이트 규칙 (필수)
 - 기존 .md 파일을 **수정할 때마다** `**마지막 업데이트**` 날짜를 오늘 날짜로 변경
 - 새 파일 생성 시 `**작성일**`과 `**마지막 업데이트**` 모두 오늘 날짜로 기입
