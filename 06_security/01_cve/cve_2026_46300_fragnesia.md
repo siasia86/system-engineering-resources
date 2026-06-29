@@ -37,6 +37,8 @@
 
 ## 2. 취약점 상세
 
+> 출처: [CVE.org CVE-2026-46300](https://www.cve.org/CVERecord?id=CVE-2026-46300) / [CloudLinux Blog](https://blog.cloudlinux.com/fragnesia-mitigation-and-kernel-update)
+
 TCP 소켓이 `espintcp` ULP 모드로 전환되기 전에 `splice(2)` / `sendfile(2)`로 파일 페이지가 수신 큐에 이미 적재된 경우, 커널이 해당 파일 페이지를 ESP 암호문으로 간주하여 **in-place 복호화**를 수행합니다.
 
 AES-GCM 키스트림이 캐시된 파일 페이지에 XOR되며, IV nonce를 제어하면 **임의 파일의 page cache에 1바이트씩 결정론적 쓰기 프리미티브**를 획득합니다.

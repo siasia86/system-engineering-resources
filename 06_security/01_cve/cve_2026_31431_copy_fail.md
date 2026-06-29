@@ -37,6 +37,8 @@
 
 ## 2. 취약점 상세
 
+> 출처: [NVD CVE-2026-31431](https://nvd.nist.gov/vuln/detail/CVE-2026-31431) / [커널 패치 커밋](https://git.kernel.org/stable/c/19d43105a97be0810edbda875f2cd03f30dc130c) / [Copy Fail PoC](https://copy.fail/)
+
 `algif_aead`에서 in-place 복호화 시 `skb_cloned()` 체크만 수행하고 `skb_has_frag_list()` / `skb_has_shared_frag()` 는 체크하지 않습니다. `splice()`로 UDP 소켓에 연결된 shared frag 페이지를 AEAD 복호화 경로에 전달하면 **page cache를 직접 덮어쓸 수 있어 권한 상승**이 가능합니다.
 
 ```
