@@ -123,8 +123,8 @@ Flow:
 
 | 항목                 | 값 (예시)            |
 |----------------------|----------------------|
-| A계정 ID             | 111111111111         |
-| B계정 ID             | 222222222222         |
+| A계정 ID             | <ACCOUNT-ID-1>         |
+| B계정 ID             | <ACCOUNT-ID-1>         |
 | 리전                 | ap-northeast-2       |
 | EC2 Instance Profile | ec2-backup-role      |
 | B계정 Role           | backup-writer-role   |
@@ -194,7 +194,7 @@ aws s3api put-bucket-lifecycle-configuration \
 
 1. B계정 IAM → 역할 → 역할 만들기
 2. 신뢰할 수 있는 엔터티 유형: **AWS 계정**
-3. 다른 AWS 계정: `111111111111` (A계정 ID) 입력
+3. 다른 AWS 계정: `<ACCOUNT-ID-1>` (A계정 ID) 입력
 4. 역할 이름: `backup-writer-role`
 5. 권한 정책 → 정책 생성 → JSON 탭에 아래 내용 붙여넣기:
 
@@ -212,8 +212,8 @@ aws s3api put-bucket-lifecycle-configuration \
         "s3:ListBucket"
       ],
       "Resource": [
-        "arn:aws:s3:::my-backup-bucket-222",
-        "arn:aws:s3:::my-backup-bucket-222/*"
+        "arn:aws:s3:::<BUCKET-1>",
+        "arn:aws:s3:::<BUCKET-1>/*"
       ]
     }
   ]
@@ -229,7 +229,7 @@ aws s3api put-bucket-lifecycle-configuration \
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::111111111111:role/ec2-backup-role"
+        "AWS": "arn:aws:iam::<ACCOUNT-ID-1>:role/ec2-backup-role"
       },
       "Action": "sts:AssumeRole",
       "Condition": {
@@ -246,14 +246,14 @@ aws s3api put-bucket-lifecycle-configuration \
 
 ```bash
 # Trust Policy 생성
-cat > /tmp/trust-policy.json << 'EOF'
+cat > /tmp/<DOMAIN-1> << 'EOF'
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::111111111111:role/ec2-backup-role"
+        "AWS": "arn:aws:iam::<ACCOUNT-ID-1>:role/ec2-backup-role"
       },
       "Action": "sts:AssumeRole",
       "Condition": {
@@ -269,12 +269,12 @@ EOF
 # Role 생성
 aws iam create-role \
   --role-name backup-writer-role \
-  --assume-role-policy-document file:///tmp/trust-policy.json \
+  --assume-role-policy-document file:///tmp/<DOMAIN-1> \
   --description "Cross-account backup writer from A account EC2" \
   --profile b-account
 
 # S3 쓰기 Policy 연결
-cat > /tmp/s3-write-policy.json << 'EOF'
+cat > /tmp/<DOMAIN-2> << 'EOF'
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -288,8 +288,8 @@ cat > /tmp/s3-write-policy.json << 'EOF'
         "s3:ListBucket"
       ],
       "Resource": [
-        "arn:aws:s3:::my-backup-bucket-222",
-        "arn:aws:s3:::my-backup-bucket-222/*"
+        "arn:aws:s3:::<BUCKET-1>",
+        "arn:aws:s3:::<BUCKET-1>/*"
       ]
     }
   ]
@@ -299,7 +299,7 @@ EOF
 aws iam put-role-policy \
   --role-name backup-writer-role \
   --policy-name backup-s3-write \
-  --policy-document file:///tmp/s3-write-policy.json \
+  --policy-document file:///tmp/<DOMAIN-2> \
   --profile b-account
 ```
 
@@ -326,7 +326,7 @@ aws iam put-role-policy \
       "Sid": "AllowAssumeBackupRole",
       "Effect": "Allow",
       "Action": "sts:AssumeRole",
-      "Resource": "arn:aws:iam::222222222222:role/backup-writer-role"
+      "Resource": "arn:aws:iam::<ACCOUNT-ID-1>:role/backup-writer-role"
     }
   ]
 }
@@ -338,7 +338,7 @@ aws iam put-role-policy \
 
 ```bash
 # EC2 Trust Policy
-cat > /tmp/ec2-trust.json << 'EOF'
+cat > /tmp/<DOMAIN-3> << 'EOF'
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -356,11 +356,11 @@ EOF
 # Role 생성
 aws iam create-role \
   --role-name ec2-backup-role \
-  --assume-role-policy-document file:///tmp/ec2-trust.json \
+  --assume-role-policy-document file:///tmp/<DOMAIN-3> \
   --profile a-account
 
 # AssumeRole 권한 부여 (B계정 Role을 맡을 수 있는 권한)
-cat > /tmp/assume-policy.json << 'EOF'
+cat > /tmp/<DOMAIN-4> << 'EOF'
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -368,7 +368,7 @@ cat > /tmp/assume-policy.json << 'EOF'
       "Sid": "AllowAssumeBackupRole",
       "Effect": "Allow",
       "Action": "sts:AssumeRole",
-      "Resource": "arn:aws:iam::222222222222:role/backup-writer-role"
+      "Resource": "arn:aws:iam::<ACCOUNT-ID-1>:role/backup-writer-role"
     }
   ]
 }
@@ -377,7 +377,7 @@ EOF
 aws iam put-role-policy \
   --role-name ec2-backup-role \
   --policy-name allow-assume-backup-role \
-  --policy-document file:///tmp/assume-policy.json \
+  --policy-document file:///tmp/<DOMAIN-4> \
   --profile a-account
 
 # Instance Profile 생성 + Role 연결
@@ -392,7 +392,7 @@ aws iam add-role-to-instance-profile \
 
 # EC2에 Instance Profile 연결
 aws ec2 associate-iam-instance-profile \
-  --instance-id i-0123456789abcdef0 \
+  --instance-id <INSTANCE-ID-1> \
   --iam-instance-profile Name=ec2-backup-role \
   --profile a-account
 ```
@@ -406,7 +406,7 @@ aws ec2 associate-iam-instance-profile \
 ```bash
 # 1. B계정 Role AssumeRole
 CREDENTIALS=$(aws sts assume-role \
-  --role-arn "arn:aws:iam::222222222222:role/backup-writer-role" \
+  --role-arn "arn:aws:iam::<ACCOUNT-ID-1>:role/backup-writer-role" \
   --role-session-name "backup-session-$(date +%Y%m%d)" \
   --external-id "backup-external-id-2026" \
   --duration-seconds 3600 \
@@ -437,14 +437,14 @@ unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 
 set -euo pipefail
 
-ROLE_ARN="arn:aws:iam::222222222222:role/backup-writer-role"
+ROLE_ARN="arn:aws:iam::<ACCOUNT-ID-1>:role/backup-writer-role"
 EXTERNAL_ID="backup-external-id-2026"
 BUCKET="my-backup-bucket-222"
 SOURCE_DIR="/opt/backup"
 REGION="ap-northeast-2"
 DATE=$(date +%Y-%m-%d)
 HOSTNAME=$(hostname)
-LOG="/var/log/s3-backup.log"
+LOG="/var/log/<DOMAIN-5>"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] backup start" >> "$LOG"
 
@@ -499,11 +499,11 @@ chmod 644 /etc/cron.d/s3-backup
 ### SystemD Timer (대안)
 
 ```bash
-# /etc/systemd/system/s3-backup.service
-cat > /etc/systemd/system/s3-backup.service << 'EOF'
+# /etc/systemd/system/<DOMAIN-6>
+cat > /etc/systemd/system/<DOMAIN-6> << 'EOF'
 [Unit]
 Description=S3 Cross-Account Backup
-After=network-online.target
+After=<DOMAIN-7>
 
 [Service]
 Type=oneshot
@@ -512,8 +512,8 @@ StandardOutput=journal
 StandardError=journal
 EOF
 
-# /etc/systemd/system/s3-backup.timer
-cat > /etc/systemd/system/s3-backup.timer << 'EOF'
+# /etc/systemd/system/<DOMAIN-8>
+cat > /etc/systemd/system/<DOMAIN-8> << 'EOF'
 [Unit]
 Description=Daily S3 Backup Timer
 
@@ -522,11 +522,11 @@ OnCalendar=*-*-* 03:00:00
 Persistent=true
 
 [Install]
-WantedBy=timers.target
+WantedBy=<DOMAIN-9>
 EOF
 
 systemctl daemon-reload
-systemctl enable --now s3-backup.timer
+systemctl enable --now <DOMAIN-8>
 ```
 
 ---
@@ -538,7 +538,7 @@ systemctl enable --now s3-backup.timer
 ```bash
 # EC2에서 실행
 aws sts assume-role \
-  --role-arn "arn:aws:iam::222222222222:role/backup-writer-role" \
+  --role-arn "arn:aws:iam::<ACCOUNT-ID-1>:role/backup-writer-role" \
   --role-session-name "test-session" \
   --external-id "backup-external-id-2026" \
   --query 'Credentials.Expiration' \
@@ -551,8 +551,8 @@ aws sts assume-role \
 
 ```bash
 # 임시 토큰 설정 후
-echo "test" > /tmp/test-backup.txt
-aws s3 cp /tmp/test-backup.txt s3://my-backup-bucket-222/test/ --region ap-northeast-2
+echo "test" > /tmp/<DOMAIN-10>
+aws s3 cp /tmp/<DOMAIN-10> s3://my-backup-bucket-222/test/ --region ap-northeast-2
 
 # B계정에서 확인
 aws s3 ls s3://my-backup-bucket-222/test/ --profile b-account
@@ -564,7 +564,7 @@ aws s3 ls s3://my-backup-bucket-222/test/ --profile b-account
 # B계정에서 실행 — 소유자가 B계정인지 확인
 aws s3api get-object-acl \
   --bucket my-backup-bucket-222 \
-  --key test/test-backup.txt \
+  --key test/<DOMAIN-10> \
   --profile b-account
 ```
 
@@ -597,12 +597,12 @@ aws s3api get-object-acl \
 
 ## 통계
 
-![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
-![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
-![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
-![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
-![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+![GitHub stars](https://<DOMAIN-11>/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://<DOMAIN-11>/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://<DOMAIN-11>/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://<DOMAIN-11>/github/last-commit/siasia86/system-engineering-resources)
+![License](https://<DOMAIN-11>/github/license/siasia86/system-engineering-resources)
+![Actions](https://<DOMAIN-11>/github/actions/workflow/status/siasia86/system-engineering-resources/<DOMAIN-12>)
 
 ---
 

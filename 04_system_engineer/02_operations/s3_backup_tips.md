@@ -75,9 +75,9 @@ aws configure set s3.multipart_chunksize 64MB
 ```bash
 # VPC Endpoint 생성
 aws ec2 create-vpc-endpoint \
-  --vpc-id vpc-0123456789abcdef0 \
+  --vpc-id vpc-12345678 \
   --service-name com.amazonaws.ap-northeast-2.s3 \
-  --route-table-ids rtb-0123456789abcdef0
+  --route-table-ids <RTB-ID>
 
 # 비용 비교 (1TB 전송/월)
 # NAT Gateway: $45 (처리 비용) + $45 (데이터 비용) = $90
@@ -168,7 +168,7 @@ EC2 메타데이터 서비스 v1을 비활성화하여 SSRF 공격으로 Instanc
 ```bash
 # 기존 인스턴스에 IMDSv2 강제 적용
 aws ec2 modify-instance-metadata-options \
-  --instance-id i-0123456789abcdef0 \
+  --instance-id i-1234567890abcdef0 \
   --http-tokens required \
   --http-endpoint enabled
 ```
@@ -197,7 +197,7 @@ aws s3api put-bucket-encryption \
       {
         "ApplyServerSideEncryptionByDefault": {
           "SSEAlgorithm": "aws:kms",
-          "KMSMasterKeyID": "arn:aws:kms:ap-northeast-2:222222222222:key/key-id"
+          "KMSMasterKeyID": "arn:aws:kms:ap-northeast-2:123456789012:key/key-id"
         }
       }
     ]
@@ -208,7 +208,7 @@ aws s3api put-bucket-encryption \
 
 ```bash
 aws ec2 modify-vpc-endpoint \
-  --vpc-endpoint-id vpce-0123456789abcdef0 \
+  --vpc-endpoint-id <VPCE-ID> \
   --policy-document '{
     "Statement": [
       {
@@ -241,7 +241,7 @@ aws ec2 modify-vpc-endpoint \
       ],
       "Condition": {
         "StringNotEquals": {
-          "aws:sourceVpc": "vpc-0123456789abcdef0"
+          "aws:sourceVpc": "vpc-12345678"
         }
       }
     }
@@ -329,7 +329,7 @@ aws s3api put-object-tagging \
   --key game-server/2026/10.200.101.50-web01/data.tar.zst \
   --tagging '{
     "TagSet": [
-      {"Key": "backup-source", "Value": "i-0123456789abcdef0"},
+      {"Key": "backup-source", "Value": "i-1234567890abcdef0"},
       {"Key": "retention", "Value": "30d"},
       {"Key": "environment", "Value": "production"}
     ]

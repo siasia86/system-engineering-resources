@@ -164,8 +164,8 @@ VPC 삭제 시 tfstate 외 리소스가 잔존하면 발생합니다.
 # 잔여 리소스 확인
 aws --profile [profile] --region [region] ec2 describe-network-interfaces \
   --filters "Name=vpc-id,Values=[vpc-id]" --output text
-aws --profile [profile] --region [region] ec2 describe-vpc-endpoints \
-  --filters "Name=vpc-id,Values=[vpc-id]" "Name=vpc-endpoint-state,Values=available" \
+aws --profile [profile] --region [region] ec2 describe-<VPC-ID-1>ndpoints \
+  --filters "Name=vpc-id,Values=[vpc-id]" "Name=<VPC-ID-1>ndpoint-state,Values=available" \
   --query "VpcEndpoints[].[VpcEndpointId,ServiceName]" --output text
 aws --profile [profile] --region [region] ec2 describe-security-groups \
   --filters "Name=vpc-id,Values=[vpc-id]" \
@@ -189,7 +189,7 @@ aws --profile [profile] --region [region] ec2 delete-subnet --subnet-id subnet-x
 aws --profile [profile] --region [region] ec2 delete-vpc --vpc-id vpc-xxx
 
 # 4. 정리: tfstate에서 제거
-terraform state rm [resource.name]
+terraform state rm [<DOMAIN-1>]
 ```
 
 ## 5. 비용 절감 효과

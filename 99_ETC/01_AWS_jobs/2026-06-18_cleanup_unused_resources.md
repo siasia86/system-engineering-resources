@@ -48,32 +48,32 @@
 
 | 리전           | 리소스 유형       | 상세                                       | 월 비용 (USD) |
 |----------------|-------------------|--------------------------------------------|---------------|
-| ap-northeast-1 | EIP 미연결        | 52.199.51.188 (yhkim-eip1)                 | ~4            |
+| ap-northeast-1 | EIP 미연결        | <IP-1> (yhkim-eip1)                 | ~4            |
 | ap-northeast-1 | EBS available × 2 | 16GB × 2 (2025-04)                         | ~3            |
 | ap-northeast-2 | EBS available × 2 | 30GB × 2 (2025-11)                         | ~5            |
-| us-east-1      | EIP 미연결 × 3    | 3.229.60.122, 52.54.201.100, 52.72.233.251 | ~11           |
+| us-east-1      | EIP 미연결 × 3    | <IP-2>, <IP-3>, <IP-4> | ~11           |
 | us-west-2      | EBS available × 1 | 8GB                                        | ~1            |
 
 ## 3. 삭제 리소스 목록
 
 | 리전           | 리소스 유형                     | 상세                                       | 결과 |
 |----------------|---------------------------------|--------------------------------------------|------|
-| ap-northeast-1 | EC2 (game-server-windows-sjyun) | i-0bde26bb2269c41a6, t3.large              | ✅   |
+| ap-northeast-1 | EC2 (game-server-windows-sjyun) | <INSTANCE-ID-1>, t3.large              | ✅   |
 | ap-northeast-1 | EBS available × 2               | 16GB × 2 (2025-04)                         | ✅   |
-| ap-northeast-1 | EIP (yhkim-eip1)                | 52.199.51.188                              | ✅   |
-| ap-northeast-1 | VPC + 네트워크                  | vpc-016880b95b5c8579c (83_gz_amazon)       | ✅   |
+| ap-northeast-1 | EIP (yhkim-eip1)                | <IP-1>                              | ✅   |
+| ap-northeast-1 | VPC + 네트워크                  | <VPC-ID-1> (83_gz_amazon)       | ✅   |
 | ap-northeast-2 | EC2 × 3 + EIP × 3               | haproxy-kr-fixed-1~3, t3.medium (72_gz)    | ✅   |
-| ap-northeast-2 | NLB + SG + VPC                  | haproxy-nlb, vpc-0cb4cbe1150fa9f78 (72_gz) | ✅   |
+| ap-northeast-2 | NLB + SG + VPC                  | haproxy-nlb, <VPC-ID-2> (72_gz) | ✅   |
 | ap-northeast-2 | EBS available × 2               | 30GB × 2 (2025-11)                         | ✅   |
-| us-east-1      | EIP 미연결 × 3                  | 3.229.60.122, 52.54.201.100, 52.72.233.251 | ✅   |
+| us-east-1      | EIP 미연결 × 3                  | <IP-2>, <IP-3>, <IP-4> | ✅   |
 | us-west-2      | EBS available × 1               | 8GB                                        | ✅   |
-| ap-northeast-1 | RDS kr-an1-live-auth            | db.t3.small, MariaDB, 100GB                | ✅   |
-| ap-northeast-1 | RDS kr-an1-live-common          | db.t3.small, MariaDB, 100GB                | ✅   |
-| ap-northeast-1 | RDS kr-an1-live-global-rank     | db.t3.small, MariaDB, 200GB                | ✅   |
-| ap-northeast-1 | RDS kr-an1-live-gms             | db.t3.small, MariaDB, 99GB                 | ✅   |
-| ap-northeast-1 | RDS kr-an1-live-mail            | db.t3.small, MariaDB, 1000GB               | ✅   |
-| ap-northeast-1 | RDS kr-an1-live-player          | db.t3.small, MariaDB, 1000GB               | ✅   |
-| ap-northeast-1 | RDS logdb-aurora-new2           | db.t3.small, Aurora MySQL, 1GB             | ✅   |
+| ap-northeast-1 | RDS kr-an1-live-auth            | <DOMAIN-1>, MariaDB, 100GB                | ✅   |
+| ap-northeast-1 | RDS kr-an1-live-common          | <DOMAIN-1>, MariaDB, 100GB                | ✅   |
+| ap-northeast-1 | RDS kr-an1-live-global-rank     | <DOMAIN-1>, MariaDB, 200GB                | ✅   |
+| ap-northeast-1 | RDS kr-an1-live-gms             | <DOMAIN-1>, MariaDB, 99GB                 | ✅   |
+| ap-northeast-1 | RDS kr-an1-live-mail            | <DOMAIN-1>, MariaDB, 1000GB               | ✅   |
+| ap-northeast-1 | RDS kr-an1-live-player          | <DOMAIN-1>, MariaDB, 1000GB               | ✅   |
+| ap-northeast-1 | RDS logdb-aurora-new2           | <DOMAIN-1>, Aurora MySQL, 1GB             | ✅   |
 
 ## 4. 트러블슈팅
 
@@ -96,8 +96,8 @@ VPC 삭제 시 네트워크 리소스 정리에 시간이 소요되며 terraform
 
 ```bash
 # AWS CLI로 직접 삭제 후 state 정리
-aws --profile 01_re --region ap-northeast-1 ec2 delete-vpc --vpc-id vpc-016880b95b5c8579c
-terraform state rm module.vpc.aws_vpc.this
+aws --profile 01_re --region ap-northeast-1 ec2 delete-vpc --vpc-id <VPC-ID-1>
+terraform state rm <DOMAIN-2>.aws_vpc.this
 ```
 
 #### 이슈 2 — VPC DependencyViolation (72_gz)
@@ -108,24 +108,24 @@ terraform state rm module.vpc.aws_vpc.this
 **증상:**
 
 ```
-DependencyViolation: The vpc 'vpc-0cb4cbe1150fa9f78' has dependencies and cannot be deleted.
+DependencyViolation: The vpc '<VPC-ID-2>' has dependencies and cannot be deleted.
 ```
 
 **원인:**
 
 tfstate 외 리소스가 잔존했습니다.
 - `launch-wizard-9` Security Group
-- S3 VPC Endpoint (`vpce-0849851808ebf7bf0`)
+- S3 VPC Endpoint (`<VPCE-ID-1>`)
 
 **해결:**
 
 ```bash
 aws --profile 01_re --region ap-northeast-2 ec2 delete-security-group \
-  --group-id sg-0d0d19f52cc08e07b
-aws --profile 01_re --region ap-northeast-2 ec2 delete-vpc-endpoints \
-  --vpc-endpoint-ids vpce-0849851808ebf7bf0
+  --group-id <SG-ID-1>
+aws --profile 01_re --region ap-northeast-2 ec2 delete-<VPC-ID-3>ndpoints \
+  --<VPC-ID-3>ndpoint-ids <VPCE-ID-1>
 aws --profile 01_re --region ap-northeast-2 ec2 delete-vpc \
-  --vpc-id vpc-0cb4cbe1150fa9f78
+  --vpc-id <VPC-ID-2>
 ```
 
 #### 이슈 3 — prevent_destroy 차단 (83_gz_amazon 13-ec2-game)
@@ -141,7 +141,7 @@ lifecycle.prevent_destroy is set, refusing to destroy
 
 **원인:**
 
-`main.tf`에 `lifecycle { prevent_destroy = true }` 설정이 있었습니다.
+`<DOMAIN-3>`에 `lifecycle { prevent_destroy = true }` 설정이 있었습니다.
 
 **해결:**
 
@@ -170,17 +170,17 @@ lifecycle.prevent_destroy is set, refusing to destroy
 |----------------|----------------------------------|----------------------------------|---------------|
 | ap-northeast-1 | EBS 스냅샷 22개                  | 합계 ~1,459GB                    | ~44           |
 | ap-northeast-2 | EBS 스냅샷 9개                   | 합계 544GB (AMI 포함)            | ~16           |
-| ap-northeast-2 | RDS dev-jellybfan-db             | db.t4g.micro, PostgreSQL, 20GB   | ~12           |
-| ap-northeast-2 | RDS dev-kings-event-rds-20241127 | db.t3.small, MySQL, 20GB         | ~25           |
-| ap-northeast-2 | RDS dev-vespa-web-rds-20241127   | db.t3.small, MySQL, 20GB         | ~25           |
-| ap-northeast-2 | RDS knowledgebase (Bedrock)      | db.serverless, Aurora PostgreSQL | 사용량 기반   |
-| ap-northeast-2 | RDS kr-an2-research-integrate    | db.t3.medium, Aurora MySQL       | ~50           |
-| ap-northeast-2 | RDS live-kings-event-rds         | db.t3.small, MySQL, 100GB        | ~37           |
-| ap-northeast-2 | RDS live-kingsraid-web-rds       | db.t3.small, MySQL, 100GB        | ~37           |
-| ap-northeast-2 | RDS live-vespainc-web-rds        | db.t3.small, MySQL, 100GB        | ~37           |
-| us-west-2      | RDS cs-pgvector-db (Bedrock)     | db.serverless, Aurora PostgreSQL | 사용량 기반   |
-| us-west-2      | RDS database-1                   | db.t3.small, MySQL, 20GB         | ~25           |
-| us-west-2      | RDS knowledgebase (Bedrock)      | db.serverless, Aurora PostgreSQL | 사용량 기반   |
+| ap-northeast-2 | RDS dev-jellybfan-db             | <DOMAIN-4>, PostgreSQL, 20GB   | ~12           |
+| ap-northeast-2 | RDS dev-kings-event-rds-20241127 | <DOMAIN-1>, MySQL, 20GB         | ~25           |
+| ap-northeast-2 | RDS dev-vespa-web-rds-20241127   | <DOMAIN-1>, MySQL, 20GB         | ~25           |
+| ap-northeast-2 | RDS knowledgebase (Bedrock)      | <DOMAIN-5>, Aurora PostgreSQL | 사용량 기반   |
+| ap-northeast-2 | RDS kr-an2-research-integrate    | <DOMAIN-6>, Aurora MySQL       | ~50           |
+| ap-northeast-2 | RDS live-kings-event-rds         | <DOMAIN-1>, MySQL, 100GB        | ~37           |
+| ap-northeast-2 | RDS live-kingsraid-web-rds       | <DOMAIN-1>, MySQL, 100GB        | ~37           |
+| ap-northeast-2 | RDS live-vespainc-web-rds        | <DOMAIN-1>, MySQL, 100GB        | ~37           |
+| us-west-2      | RDS cs-pgvector-db (Bedrock)     | <DOMAIN-5>, Aurora PostgreSQL | 사용량 기반   |
+| us-west-2      | RDS database-1                   | <DOMAIN-1>, MySQL, 20GB         | ~25           |
+| us-west-2      | RDS knowledgebase (Bedrock)      | <DOMAIN-5>, Aurora PostgreSQL | 사용량 기반   |
 
 🟡 Live 서비스 RDS는 유지합니다. dev/test RDS와 EBS 스냅샷은 필요 시 삭제 검토를 권장합니다.
 

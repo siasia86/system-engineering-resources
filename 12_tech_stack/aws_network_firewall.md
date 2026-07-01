@@ -80,8 +80,8 @@ aws network-firewall create-firewall-policy \
 aws network-firewall create-firewall \
   --firewall-name "anf-fw" \
   --firewall-policy-arn "arn:aws:network-firewall:ap-northeast-3:ACCOUNT:firewall-policy/anf-policy" \
-  --vpc-id "vpc-047cbd5548e38a136" \
-  --subnet-mappings SubnetId=subnet-0c10c04f4a40f8665 \
+  --vpc-id "vpc-12345678" \
+  --subnet-mappings SubnetId=<SUBNET-ID> \
   --region ap-northeast-3
 ```
 
@@ -126,9 +126,9 @@ aws network-firewall describe-firewall \
 
 ```bash
 aws ec2 create-route \
-  --route-table-id rtb-00ce5067ba2939098 \
+  --route-table-id <RTB-ID> \
   --destination-cidr-block 0.0.0.0/0 \
-  --vpc-endpoint-id vpce-0cf1955108b5564ac \
+  --vpc-endpoint-id <VPCE-ID> \
   --region ap-northeast-3
 ```
 
@@ -148,7 +148,7 @@ aws ec2 create-route \
 
 ```bash
 aws ec2 delete-route \
-  --route-table-id rtb-00ce5067ba2939098 \
+  --route-table-id <RTB-ID> \
   --destination-cidr-block 0.0.0.0/0 \
   --region ap-northeast-3
 ```
@@ -263,7 +263,7 @@ create/modify multiple log destination configs
 **증상:**
 
 ```
-DependencyViolation: The routeTable 'rtb-0c3cd0507f0ed6714'
+DependencyViolation: The routeTable '<RTB-ID>'
 has dependencies and cannot be deleted.
 ```
 
