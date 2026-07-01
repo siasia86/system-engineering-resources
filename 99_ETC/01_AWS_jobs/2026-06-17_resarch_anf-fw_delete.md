@@ -15,7 +15,7 @@
 | 항목     | 값                                  |
 |----------|-------------------------------------|
 | 작업일시 | 2026-06-17 14:26 ~ 14:39 (KST)      |
-| 계정     | 01_re (980527594869)                |
+| 계정     | 01_re (<ACCOUNT-ID-1>)                |
 | 리전     | ap-northeast-3 (오사카)             |
 | 작업자   | sjyun                               |
 | 작업목적 | anf-fw 및 연관 VPC 리소스 전체 삭제 |
@@ -29,7 +29,7 @@
 | 항목     | 값                      |
 |----------|-------------------------|
 | 작업일시 | 2026-06-17 (KST)        |
-| 계정     | 01_re (980527594869)    |
+| 계정     | 01_re (<ACCOUNT-ID-1>)    |
 | 리전     | ap-northeast-3 (오사카) |
 | 삭제방법 | 콘솔 또는 CLI terminate |
 
@@ -57,32 +57,32 @@
 
 | 리소스       | ID                         | Name      | 비고             |
 |--------------|----------------------------|-----------|------------------|
-| VPC          | vpc-047cbd5548e38a136      | -         | 10.0.0.0/16      |
-| IGW          | igw-0410ee400a06575dd      | anw-igw   | -                |
-| NAT GW       | nat-1447a6028114ef6d1      | -         | 16.209.8.241     |
-| EIP          | eipalloc-0e3345d04469221db | -         | 16.209.8.241     |
-| Subnet pub-1 | subnet-06cd61c2b59a6a3ec   | anw-pub-1 | 10.0.10.0/24, 3a |
-| Subnet pub-2 | subnet-090f23fe24ebd280a   | anw-pub-2 | 10.0.11.0/24, 3b |
-| Subnet pri-1 | subnet-0657d36e245b49e50   | anw-pri-1 | 10.0.20.0/24, 3a |
-| Subnet pri-2 | subnet-0df23808f2ba71e54   | anw-pri-2 | 10.0.21.0/24, 3b |
-| Subnet fw-1  | subnet-0c10c04f4a40f8665   | anw-fw-1  | 10.0.0.0/24, 3a  |
-| Subnet fw-2  | subnet-0a17f13b4556b30d6   | anw-fw-2  | 10.0.1.0/24, 3b  |
+| VPC          | <VPC-ID-1>      | -         | <IP-1>/16      |
+| IGW          | <IGW-ID-1>      | anw-igw   | -                |
+| NAT GW       | <NAT-GW-ID-1>      | -         | <IP-2>     |
+| EIP          | eipalloc-0e3345d04469221db | -         | <IP-2>     |
+| Subnet pub-1 | <SUBNET-ID-1>   | anw-pub-1 | <IP-3>/24, 3a |
+| Subnet pub-2 | <SUBNET-ID-2>   | anw-pub-2 | <IP-4>/24, 3b |
+| Subnet pri-1 | <SUBNET-ID-3>   | anw-pri-1 | <IP-5>/24, 3a |
+| Subnet pri-2 | <SUBNET-ID-4>   | anw-pri-2 | <IP-6>/24, 3b |
+| Subnet fw-1  | <SUBNET-ID-5>   | anw-fw-1  | <IP-1>/24, 3a  |
+| Subnet fw-2  | <SUBNET-ID-6>   | anw-fw-2  | <IP-7>/24, 3b  |
 
 ### 라우팅 테이블 (삭제 전)
 
-| RouteTableId          | 연결 서브넷 | 0.0.0.0/0 next-hop          |
+| RouteTableId          | 연결 서브넷 | <IP-8>/0 next-hop          |
 |-----------------------|-------------|-----------------------------|
-| rtb-00ce5067ba2939098 | anw-pri-2   | vpce-0cf1955108b5564ac (FW) |
-| rtb-0d953ff368bafe53a | anw-pub-1   | igw-0410ee400a06575dd       |
-| rtb-0670d263350dd4cb6 | main        | (없음)                      |
-| rtb-0b0d0465e782f626d | (미연결)    | igw-0410ee400a06575dd       |
-| rtb-0c3cd0507f0ed6714 | (미연결)    | (없음)                      |
-| rtb-060bd50e833b4da68 | anw-fw-1    | (None, 블랙홀)              |
+| <RTB-ID-1> | anw-pri-2   | <VPCE-ID-1> (FW) |
+| <RTB-ID-2> | anw-pub-1   | <IGW-ID-1>       |
+| <RTB-ID-3> | main        | (없음)                      |
+| <RTB-ID-4> | (미연결)    | <IGW-ID-1>       |
+| <RTB-ID-5> | (미연결)    | (없음)                      |
+| <RTB-ID-6> | anw-fw-1    | (None, 블랙홀)              |
 
 ### EC2 / Security Group
 
 - EC2 인스턴스: 없음
-- Security Group: `sg-007bec4a83761c8c4` (default) — 삭제 제외
+- Security Group: `<SG-ID-1>` (default) — 삭제 제외
 
 ## 3. 작업 순서 및 결과
 
@@ -92,12 +92,12 @@
 | 2    | 로깅 설정 TLS 제거                  | ✅   |
 | 3    | 로깅 설정 ALERT 제거 (빈 배열)      | ✅   |
 | 4    | anf-fw 삭제 요청 (DELETING)         | ✅   |
-| 5    | NAT GW nat-1447a6028114ef6d1 삭제   | ✅   |
+| 5    | NAT GW <NAT-GW-ID-1> 삭제   | ✅   |
 | 6    | EIP eipalloc-0e3345d04469221db 해제 | ✅   |
 | 7    | 서브넷 6개 삭제                     | ✅   |
 | 8    | 라우팅 테이블 5개 삭제              | ✅   |
 | 9    | IGW detach 후 삭제                  | ✅   |
-| 10   | VPC vpc-047cbd5548e38a136 삭제      | ✅   |
+| 10   | VPC <VPC-ID-1> 삭제      | ✅   |
 
 ### 유지된 리소스 (요청에 의해 삭제 제외)
 
@@ -133,7 +133,7 @@ create/modify multiple log destination configs
 **오류:**
 
 ```
-DependencyViolation: The routeTable 'rtb-0c3cd0507f0ed6714'
+DependencyViolation: The routeTable '<RTB-ID-5>'
 has dependencies and cannot be deleted.
 ```
 
@@ -145,7 +145,7 @@ has dependencies and cannot be deleted.
 aws ec2 disassociate-route-table \
   --association-id rtbassoc-05a7c2abd639b7f56 --region ap-northeast-3
 aws ec2 delete-route-table \
-  --route-table-id rtb-0c3cd0507f0ed6714 --region ap-northeast-3
+  --route-table-id <RTB-ID-5> --region ap-northeast-3
 ```
 
 #### 이슈 3 — VPC DependencyViolation (비동기 삭제 미완료)
@@ -153,7 +153,7 @@ aws ec2 delete-route-table \
 **오류:**
 
 ```
-DependencyViolation: The vpc 'vpc-047cbd5548e38a136'
+DependencyViolation: The vpc '<VPC-ID-1>'
 has dependencies and cannot be deleted.
 ```
 
@@ -168,7 +168,7 @@ aws network-firewall list-firewalls \
 
 # NAT GW 삭제 완료 확인
 aws ec2 describe-nat-gateways \
-  --nat-gateway-ids nat-1447a6028114ef6d1 \
+  --nat-gateway-ids <NAT-GW-ID-1> \
   --query "NatGateways[0].State" --output text --region ap-northeast-3
 # deleted = 완료
 ```
@@ -178,7 +178,7 @@ aws ec2 describe-nat-gateways \
 ap-northeast-3 리전 확인 결과:
 
 - EC2: 없음
-- VPC vpc-047cbd5548e38a136: 삭제됨
+- VPC <VPC-ID-1>: 삭제됨
 - Network Firewall anf-fw: 삭제됨
 - anf-policy / Rule Group 6개: 유지 중
 - 과금 발생 리소스: 없음
@@ -189,7 +189,7 @@ ap-northeast-3 리전 확인 결과:
 | 항목     | 값                      |
 |----------|-------------------------|
 | 작업일시 | 2026-06-17 (KST)        |
-| 계정     | 01_re (980527594869)    |
+| 계정     | 01_re (<ACCOUNT-ID-1>)    |
 | 리전     | ap-northeast-3 (오사카) |
 | 삭제방법 | 콘솔 또는 CLI terminate |
 
@@ -197,9 +197,9 @@ ap-northeast-3 리전 확인 결과:
 
 | Name        | InstanceId          | Type      | 삭제 시각 (UTC)         |
 |-------------|---------------------|-----------|-------------------------|
-| test-remote | i-09e7abb19cd2059af | t3.medium | 2026-06-17 05:12:15 GMT |
-| test-pub    | i-0886b0b9e8aa5832d | t3.medium | 2026-06-17 05:12:15 GMT |
-| test-pri    | i-0859ade44caa03b18 | t3.medium | 2026-06-17 05:12:15 GMT |
+| test-remote | <INSTANCE-ID-1> | t3.medium | 2026-06-17 05:12:15 GMT |
+| test-pub    | <INSTANCE-ID-2> | t3.medium | 2026-06-17 05:12:15 GMT |
+| test-pri    | <INSTANCE-ID-3> | t3.medium | 2026-06-17 05:12:15 GMT |
 
 
 
@@ -211,8 +211,8 @@ ap-northeast-3 리전 확인 결과:
 
 | AllocationId               | Public IP     | 결과    |
 |----------------------------|---------------|---------|
-| eipalloc-0253fc0a208d10498 | 15.168.31.137 | ✅ 해제 |
-| eipalloc-08d70b704dfb29627 | 15.168.54.9   | ✅ 해제 |
+| eipalloc-0253fc0a208d10498 | <IP-9> | ✅ 해제 |
+| eipalloc-08d70b704dfb29627 | <IP-10>   | ✅ 해제 |
 
 ---
 
