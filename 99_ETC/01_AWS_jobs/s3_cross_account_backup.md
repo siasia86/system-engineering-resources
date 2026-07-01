@@ -589,6 +589,9 @@ aws s3api get-object-acl \
 - [ ] A계정 EC2 Role에 최소 권한 (AssumeRole만)
 - [ ] 백업 스크립트에서 환경 변수 사용 후 즉시 unset
 - [ ] CloudTrail에서 AssumeRole 이벤트 모니터링
+- [ ] Object Lock 적용 검토 (삭제 방지)
+
+> Object Lock 상세는 [s3_object_lock.md](../../04_system_engineer/02_operations/s3_object_lock.md) 참고
 
 ---
 
