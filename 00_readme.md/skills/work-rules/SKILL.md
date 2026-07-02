@@ -136,6 +136,7 @@ When editing code:
 - Recommended settings, deprecated/removed items, breaking changes, version status collected from official docs
 - Only store content directly verified from official homepage (docs.*, official blog, GitHub release notes)
 - No personal opinions, guesses, or blog content allowed
+- ❌ Writing from memory/inference and presenting as official-doc-based is **prohibited** (detail: § 16)
 
 ### Filename convention
 `{tech}_official_notes.md` (e.g., `docker_official_notes.md`, `ansible_official_notes.md`)
