@@ -60,6 +60,12 @@
         "tools": [
           "fs_write"
         ]
+      },
+      {
+        "command": "bash $HOME/.kiro/hooks/md-style-check.sh",
+        "tools": [
+          "fs_write"
+        ]
       }
     ]
   },
