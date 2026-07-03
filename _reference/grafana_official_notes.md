@@ -1,7 +1,7 @@
 ---
 name: grafana-official-notes
 description: Grafana 공식 문서 기반 핵심 개념, 버전, 데이터소스 정리.
-last_checked: 2026-05-26
+last_checked: 2026-07-03
 sources:
   - https://grafana.com/docs/grafana/latest/introduction/
   - https://grafana.com/docs/grafana/latest/datasources/
@@ -13,7 +13,7 @@ sources:
 
 | 항목    | 버전    | 비고             |
 |---------|---------|------------------|
-| Grafana | v13.0.1 | OSS / Enterprise |
+| Grafana | v13.1.0 | OSS / Enterprise |
 
 ## 2. 공식 정의
 

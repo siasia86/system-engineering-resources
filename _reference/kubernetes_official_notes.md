@@ -1,7 +1,7 @@
 ---
 name: kubernetes-official-notes
 description: Kubernetes 공식 문서 기반 핵심 개념, 버전, 아키텍처 정리.
-last_checked: 2026-05-26
+last_checked: 2026-07-03
 sources:
   - https://kubernetes.io/docs/concepts/overview/
   - https://kubernetes.io/docs/concepts/architecture/
@@ -13,7 +13,7 @@ sources:
 
 | 항목      | 내용                 |
 |-----------|----------------------|
-| 버전      | v1.36.1              |
+| 버전      | v1.36.2              |
 | 지원 정책 | 최신 3개 마이너 버전 |
 
 ## 2. 공식 정의

@@ -1,7 +1,7 @@
 ---
 name: argocd-official-notes
 description: ArgoCD 공식 문서 기반 GitOps 개념, 버전, 아키텍처 정리.
-last_checked: 2026-05-26
+last_checked: 2026-07-03
 sources:
   - https://argo-cd.readthedocs.io/en/stable/
   - https://argo-cd.readthedocs.io/en/stable/core_concepts/
@@ -13,7 +13,7 @@ sources:
 
 | 항목   | 버전   |
 |--------|--------|
-| ArgoCD | v3.4.2 |
+| ArgoCD | v3.4.4 |
 
 ## 2. 공식 정의
 
