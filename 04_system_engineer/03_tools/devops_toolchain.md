@@ -77,9 +77,9 @@ Jenkins              │
 
 | 카테고리          | 도구                     | 최신 버전 | 공식 설명                                           |
 |-------------------|--------------------------|-----------|-----------------------------------------------------|
-| 인프라 프로비저닝 | Terraform                | v1.15.4   | Infrastructure as code tool                         |
-| 서버 구성 자동화  | Ansible                  | v2.21.0   | Open source IT automation engine                    |
-| 컨테이너 런타임   | Docker Engine            | v29.5.2   | Build, share, and run containerized applications    |
+| 인프라 프로비저닝 | Terraform                | v1.15.7   | Infrastructure as code tool                         |
+| 서버 구성 자동화  | Ansible                  | v2.21.1   | Open source IT automation engine                    |
+| 컨테이너 런타임   | Docker Engine            | v29.6.1   | Build, share, and run containerized applications    |
 | 컨테이너 구성     | Docker Compose           | v5.1.4    | Multi-container application definition              |
 | 오케스트레이션    | Kubernetes               | v1.36.1   | Automated container deployment, scaling, management |
 | K8s 패키지 관리   | Helm                     | v4.2.0    | The package manager for Kubernetes                  |
