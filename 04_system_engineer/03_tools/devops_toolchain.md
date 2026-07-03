@@ -32,41 +32,41 @@ IaC(Infrastructure as Code)는 그 중 인프라를 코드로 정의·관리하�
 ## 2. 전체 흐름
 
 ```
-개발자                 CI/CD                  인프라                  운영
+Developer              CI/CD                  Infra                  Ops
 ─────                 ─────                  ────                   ────  
-코드 작성                                                                 
+Write Code                                                                 
     │                                                                     
     v                                                                     
 Git push                                                                  
     │                                                                     
     v                                                                     
-GitHub Actions  ──>  테스트/빌드                                          
+GitHub Actions  ──>  Test/Build                                          
 Jenkins              │                                                    
                      v                                                    
-                  Docker 이미지 빌드                                      
+                  Docker Image Build                                      
                      │                                                    
                      v                                                    
-                  이미지 레지스트리 push                                  
+                  Image Registry Push                                  
                   (ECR / Docker Hub)                                      
                      │                                                    
           ┌──────────┴──────────┐                                         
           │                     │                                         
           v                     v                                         
     Terraform              Ansible                                        
-    (인프라 생성)          (서버 설정)                                    
-    VPC/EC2/RDS            패키지 설치                                    
+    (Infra Provision)          (Server Config)                                    
+    VPC/EC2/RDS            Package Install                                    
           │                     │                                         
           └──────────┬──────────┘                                         
                      │                                                    
                      v                                                    
-               Kubernetes 클러스터                                        
-               Helm으로 앱 배포                                           
+               Kubernetes Cluster                                        
+               Helm App Deploy                                           
                ArgoCD (GitOps)                                            
                      │                                                    
                      v                                                    
             Prometheus + Grafana                                          
-            메트릭 수집·시각화                                            
-            Zabbix 알림                                                   
+            Metrics Collection/Dashboard                                            
+            Zabbix Alerting                                                   
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -116,7 +116,7 @@ resource "aws_instance" "web" {
 
 ### Ansible — 서버 구성 자동화
 
-에이전트 없이 SSH로 서버에 접속해 패키지 설치, 설정 파일 배포, 서비스 관리를 자동화합니다.
+에이전트 없이 SSH로 서버에 접속해 Package Install, 설정 파일 배포, 서비스 관리를 자동화합니다.
 
 ```yaml
 # 예시: nginx 설치
@@ -222,7 +222,7 @@ jobs:
 Git 저장소를 단일 진실 공급원(Single Source of Truth)으로 삼아 K8s 클러스터 상태를 자동 동기화합니다.
 
 ```
-Git repo (YAML) ──> ArgoCD ──> Kubernetes 클러스터
+Git repo (YAML) ──> ArgoCD ──> Kubernetes Cluster
      변경 감지          자동 sync
 ```
 
@@ -238,7 +238,7 @@ Git repo (YAML) ──> ArgoCD ──> Kubernetes 클러스터
 
 ```
 앱/서버/K8s                    
-    │  메트릭 노출 (/metrics)  
+    │  Expose metrics (/metrics)  
     v                          
 Prometheus (수집·저장·알림)    
     │                          
