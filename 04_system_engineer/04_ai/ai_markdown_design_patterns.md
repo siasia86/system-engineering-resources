@@ -2,12 +2,12 @@
 
 ## 목차
 
-| 섹션 |
-|------|
+| 섹션                                                                                                                                                                    |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [1. 4-파일 패턴 (멀티 에이전트 시스템)](#1-4-파일-패턴-멀티-에이전트-시스템) / [2. 3단계 로딩 패턴 (Progressive Disclosure)](#2-3단계-로딩-패턴-progressive-disclosure) |
-| [3. 스킬 디렉토리 패턴](#3-스킬-디렉토리-패턴) / [4. 마크다운 프롬프트 구조 패턴](#4-마크다운-프롬프트-구조-패턴) |
-| [5. 토큰 효율 패턴](#5-토큰-효율-패턴) |
-| [6. 스킬 작성 규칙](#6-스킬-작성-규칙) / [7. 보안 규칙](#7-보안-규칙) / [8. 실전 적용 예시 (Kiro CLI)](#8-실전-적용-예시-kiro-cli) |
+| [3. 스킬 디렉토리 패턴](#3-스킬-디렉토리-패턴) / [4. 마크다운 프롬프트 구조 패턴](#4-마크다운-프롬프트-구조-패턴)                                                       |
+| [5. 토큰 효율 패턴](#5-토큰-효율-패턴)                                                                                                                                  |
+| [6. 스킬 작성 규칙](#6-스킬-작성-규칙) / [7. 보안 규칙](#7-보안-규칙) / [8. 실전 적용 예시 (Kiro CLI)](#8-실전-적용-예시-kiro-cli)                                      |
 
 
 ---
@@ -47,11 +47,11 @@ repo/
 ```markdown
 # Agents System Overview
 
-| Agent              | Role           | Hands off to              |
-|--------------------|----------------|---------------------------|
-| orchestrator-agent | Router / entry | analyst, writer, viz      |
-| analyst-agent      | Data analysis  | viz-agent, writer-agent   |
-| writer-agent       | Prose & reports| human review              |
+| Agent              | Role            | Hands off to            |
+|--------------------|-----------------|-------------------------|
+| orchestrator-agent | Router / entry  | analyst, writer, viz    |
+| analyst-agent      | Data analysis   | viz-agent, writer-agent |
+| writer-agent       | Prose & reports | human review            |
 
 [⬆ 목차로 돌아가기](#목차)
 
