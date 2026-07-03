@@ -13,7 +13,7 @@ Linux 패킷 필터링(netfilter/iptables)과 트래픽 제어(tc)를 정리합�
 
 ## 1. netfilter 개요
 
-커널 내 패킷 처리 프레임워크입니다. iptables/nftables/Cilium 모두 netfilter 위에서 동작합니다.
+커널 내 패킷 처리 프레임워크입니다. iptables/nftables는 netfilter 위에서 동작합니다. Cilium은 eBPF/XDP 기반으로 netfilter를 우회(bypass)하여 패킷을 처리합니다.
 
 ```
 packet in
@@ -36,12 +36,12 @@ PREROUTING ──> (routing decision) ──> FORWARD ──> POSTROUTING ──
 
 ### 체인과 테이블
 
-| 테이블   | 용도           | 체인                            |
-|----------|----------------|---------------------------------|
-| `filter` | 패킷 허용/차단 | INPUT, FORWARD, OUTPUT          |
-| `nat`    | 주소 변환      | PREROUTING, POSTROUTING, OUTPUT |
-| `mangle` | 패킷 헤더 수정 | 모든 체인                       |
-| `raw`    | 연결 추적 제외 | PREROUTING, OUTPUT              |
+| 테이블   | 용도           | 체인                                   |
+|----------|----------------|----------------------------------------|
+| `filter` | 패킷 허용/차단 | INPUT, FORWARD, OUTPUT                 |
+| `nat`    | 주소 변환      | PREROUTING, INPUT, OUTPUT, POSTROUTING |
+| `mangle` | 패킷 헤더 수정 | 모든 체인                              |
+| `raw`    | 연결 추적 제외 | PREROUTING, OUTPUT                     |
 
 [⬆ 목차로 돌아가기](#목차)
 

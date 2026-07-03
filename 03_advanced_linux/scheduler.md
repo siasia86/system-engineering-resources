@@ -15,6 +15,8 @@ Linux CFS(Completely Fair Scheduler)와 CPU 스케줄링 메커니즘을 정리�
 
 Linux 스케줄러는 여러 프로세스가 CPU를 공정하게 나눠 쓰도록 관리합니다.
 
+🟡 Linux 6.6(2023-10)부터 CFS가 EEVDF(Earliest Eligible Virtual Deadline First)로 교체되었습니다. EEVDF는 vruntime 대신 가상 데드라인 기반으로 스케줄링하여 레이턴시 민감 작업의 응답성을 개선합니다. 아래 CFS 설명은 6.5 이하 커널 및 EEVDF의 기반 개념으로 유효합니다.
+
 ```
 Run Queue (per CPU)
 ┌─────────────────────────────┐

@@ -4,7 +4,7 @@
 
 | 섹션                                                                                                       |
 |------------------------------------------------------------------------------------------------------------|
-| [1. 개요](#1-개요) / [2. 7가지 Namespace](#2-7가지-namespace) / [3. 시스템 콜](#3-시스템-콜)               |
+| [1. 개요](#1-개요) / [2. 8가지 Namespace](#2-8가지-namespace) / [3. 시스템 콜](#3-시스템-콜)               |
 | [4. /proc/[pid]/ns/](#4-procpidns) / [5. unshare 명령어](#5-unshare-명령어) / [6. 실전 예시](#6-실전-예시) |
 | [7. cgroup Namespace](#7-cgroup-namespace) / [8. Tips](#8-tips)                                            |
 
@@ -39,7 +39,7 @@ Docker, LXC, Podman 등 컨테이너 런타임은 namespace + cgroup 조합으�
 
 ---
 
-## 2. 7가지 Namespace
+## 2. 8가지 Namespace
 
 | Namespace | 플래그            | 격리 대상                            | 커널 버전 |
 |-----------|-------------------|--------------------------------------|-----------|
@@ -50,6 +50,7 @@ Docker, LXC, Podman 등 컨테이너 런타임은 namespace + cgroup 조합으�
 | ipc       | `CLONE_NEWIPC`    | IPC (세마포어, 메시지큐, 공유메모리) | 2.6.19    |
 | user      | `CLONE_NEWUSER`   | UID/GID 매핑                         | 3.8       |
 | cgroup    | `CLONE_NEWCGROUP` | cgroup 루트 디렉토리                 | 4.6       |
+| time      | `CLONE_NEWTIME`   | 부팅 시각, 모노토닉 클럭             | 5.6       |
 
 ### mnt (Mount)
 
