@@ -24,6 +24,7 @@ description: _reference 디렉토리 인덱스. 기술별 공식 문서 참조 �
 | Zabbix               | `_reference/zabbix_official_notes.md`               | 7.4.11 (LTS: 7.0)             | 2026-07-03 |
 | CVE/Security         | `_reference/cve_security_official_notes.md`         | NVD API 2.0, CISA KEV         | 2026-06-29 |
 | Linux Kernel         | `_reference/linux_kernel_official_notes.md`         | namespace, cgroup, scheduler  | 2026-07-03 |
+| Networking           | `_reference/networking_official_notes.md`           | BGP, DDoS, CDN, VPC           | 2026-07-03 |
 
 ## 사용 규칙
 
