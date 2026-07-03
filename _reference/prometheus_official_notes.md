@@ -1,7 +1,7 @@
 ---
 name: prometheus-official-notes
 description: Prometheus 공식 문서 기반 핵심 개념, 버전, 데이터 모델 정리.
-last_checked: 2026-05-26
+last_checked: 2026-07-03
 sources:
   - https://prometheus.io/docs/introduction/overview/
   - https://prometheus.io/docs/concepts/data_model/
@@ -13,7 +13,7 @@ sources:
 
 | 항목       | 버전    |
 |------------|---------|
-| Prometheus | v3.11.3 |
+| Prometheus | v3.13.0 |
 
 ## 2. 공식 정의
 

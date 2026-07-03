@@ -1,7 +1,7 @@
 ---
 name: helm-official-notes
 description: Helm 공식 문서 기반 핵심 개념, 버전, Chart 구조 정리.
-last_checked: 2026-05-26
+last_checked: 2026-07-03
 sources:
   - https://helm.sh/docs/intro/using_helm/
   - https://helm.sh/docs/chart_template_guide/
@@ -13,7 +13,7 @@ sources:
 
 | 항목 | 버전   | 비고                                      |
 |------|--------|-------------------------------------------|
-| Helm | v4.2.0 | v3.8+부터 OCI GA, v4에서 digest 지원 추가 |
+| Helm | v4.2.2 | v3.8+부터 OCI GA, v4에서 digest 지원 추가 |
 
 ## 2. 공식 정의
 

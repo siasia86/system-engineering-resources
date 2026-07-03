@@ -1,7 +1,7 @@
 ---
 name: terraform-official-notes
 description: Terraform 공식 문서 기반 권장사항, 버전별 변경사항 정리. 문서 작성/검토 시 참조.
-last_checked: 2026-05-22
+last_checked: 2026-07-03
 sources:
   - https://developer.hashicorp.com/terraform/language
   - https://developer.hashicorp.com/terraform/language/backend/s3
@@ -16,7 +16,7 @@ sources:
 
 | 컴포넌트          | 최신 버전 | 비고          |
 |-------------------|-----------|---------------|
-| Terraform         | v1.15.4   | stable        |
+| Terraform         | v1.15.7   | stable        |
 | AWS Provider      | v6.46.0   | hashicorp/aws |
 | Terraform (alpha) | v1.16.0   | 개발 중       |
 
