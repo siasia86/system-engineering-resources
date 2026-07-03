@@ -1,7 +1,7 @@
 ---
 name: ansible-official-notes
 description: Ansible 공식 문서 기반 핵심 개념, 버전, 구성요소 정리.
-last_checked: 2026-05-26
+last_checked: 2026-07-03
 sources:
   - https://www.ansible.com/
   - https://docs.ansible.com/ansible/latest/getting_started/index.html
@@ -14,7 +14,7 @@ sources:
 
 | 패키지       | 최신 버전 | 비고                                     |
 |--------------|-----------|------------------------------------------|
-| ansible      | 13.7.0    | ansible-core + 커뮤니티 컬렉션 풀 패키지 |
+| ansible      | 14.1.0    | ansible-core + 커뮤니티 컬렉션 풀 패키지 |
 | ansible-core | 2.21.0    | 최소 코어 (ansible 패키지에 포함됨)      |
 
 - ansible 버전과 ansible-core 버전은 별개 (ansible 13.x = ansible-core 2.21)

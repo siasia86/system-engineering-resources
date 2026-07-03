@@ -4,7 +4,7 @@ description: Docker 공식 문서 기반 권장사항, deprecated, breaking chan
 tags:
   - docker
   - reference
-last_checked: 2026-05-22
+last_checked: 2026-07-03
 sources:
   - https://docs.docker.com/engine/install/
   - https://docs.docker.com/reference/cli/dockerd/
@@ -19,8 +19,8 @@ sources:
 
 | 컴포넌트       | 최신 버전 | 비고           |
 |----------------|-----------|----------------|
-| Docker Engine  | 29.5.2    | moby/moby      |
-| Docker Compose | v5.1.4    | docker/compose |
+| Docker Engine  | 29.6.1    | moby/moby      |
+| Docker Compose | v5.3.0    | docker/compose |
 
 ## 2. 설치
 
