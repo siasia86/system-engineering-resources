@@ -26,40 +26,40 @@
 
 ```
 infra-monorepo/                                     
-├── docs/                                           
-│   ├── adr/                        ← 기술 결정 기록
-│   ├── runbooks/                   ← 운영 매뉴얼   
-│   └── postmortem/                 ← 장애 보고서   
-├── ansible/                                        
-│   ├── ansible.cfg                                 
-│   ├── inventories/                                
-│   │   ├── dev/                                    
-│   │   ├── qa/                                     
-│   │   ├── stg/                                    
-│   │   └── prd/                                    
-│   ├── playbooks/                                  
-│   ├── roles/                                      
-│   └── group_vars/                                 
-├── terraform/                                      
-│   ├── modules/                    ← 재사용 모듈   
-│   └── environments/                               
-│       ├── dev/                                    
-│       ├── stg/                                    
-│       └── prd/                                    
-├── monitoring/                                     
-│   ├── zabbix/                                     
-│   └── alerting/                                   
-├── scripts/                                        
-│   └── common/                                     
-├── templates/                      ← 보일러플레이트
-│   ├── new-service/                                
-│   ├── new-server/                                 
-│   └── new-project/                                
-├── .kiro/                                          
-│   ├── agents/                                     
-│   └── skills/                                     
-├── .gitlab-ci.yml                  ← CI/CD         
-└── README.md                                       
+├── docs/                                                          
+│   ├── adr/                        ← Architecture Decision Records
+│   ├── runbooks/                   ← Operational Runbooks         
+│   └── postmortem/                 ← Postmortem Reports           
+├── ansible/                                                       
+│   ├── ansible.cfg                                                
+│   ├── inventories/                                               
+│   │   ├── dev/                                                   
+│   │   ├── qa/                                                    
+│   │   ├── stg/                                                   
+│   │   └── prd/                                                   
+│   ├── playbooks/                                                 
+│   ├── roles/                                                     
+│   └── group_vars/                                                
+├── terraform/                                                     
+│   ├── modules/                    ← Reusable Modules             
+│   └── environments/                                              
+│       ├── dev/                                                   
+│       ├── stg/                                                   
+│       └── prd/                                                   
+├── monitoring/                                                    
+│   ├── zabbix/                                                    
+│   └── alerting/                                                  
+├── scripts/                                                       
+│   └── common/                                                    
+├── templates/                      ← Boilerplate Templates        
+│   ├── new-service/                                               
+│   ├── new-server/                                                
+│   └── new-project/                                               
+├── .kiro/                                                         
+│   ├── agents/                                                    
+│   └── skills/                                                    
+├── .gitlab-ci.yml                  ← CI/CD                        
+└── README.md                                                      
 ```
 
 ### Monorepo 장단점
@@ -159,12 +159,12 @@ echo "✅ Created: ${DEST}"
 
 ```
 docs/runbooks/                                  
-├── incident-response.md        ← 장애 대응 절차
-├── server-add.md               ← 서버 추가 절차
-├── deploy-rollback.md          ← 배포/롤백 절차
-├── db-failover.md              ← DB 페일오버   
-├── certificate-renewal.md      ← 인증서 갱신   
-└── on-call-guide.md            ← 당직 가이드   
+├── incident-response.md        ← Incident Response
+├── server-add.md               ← Server Provisioning
+├── deploy-rollback.md          ← Deploy/Rollback
+├── db-failover.md              ← DB Failover   
+├── certificate-renewal.md      ← Certificate Renewal   
+└── on-call-guide.md            ← On-call Guide   
 ```
 
 ### Runbook 템플릿
@@ -504,35 +504,19 @@ ADR은 개별 결정의 "왜", Golden Path는 결정들의 "요약본"입니다.
 ## 6. 전체 문서 체계
 
 ```
-┌──────────────────────────────────────────────────┐
-│  infra-monorepo                                  │
-│                                                  │
-│  docs/                                           │
-│  ├── adr/          ← "왜" 이렇게 결정했는가      │
-│  ├── runbooks/     ← "어떻게" 실행하는가         │
-│  ├── postmortem/   ← "무엇이" 잘못되었는가       │
-│  └── golden-path/  ← "무엇을" 기본으로 쓰는가    │
-│                                                  │
-│  templates/        ← 보일러플레이트 (자동화)     │
-│  .kiro/skills/     ← AI 에이전트 규칙            │
-└──────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────┐
+│  infra-monorepo                                               │
+│                                                               │
+│  docs/                                                        │
+│  ├── adr/          ← "Why" this decision                      │
+│  ├── runbooks/     ← "How" to execute                         │
+│  ├── postmortem/   ← "What" went wrong                        │
+│  └── golden-path/  ← "What" to use by default                 │
+│                                                               │
+│  templates/        ← Boilerplate Templates (automation)       │
+│  .kiro/skills/     ← AI agent rules                           │
+└───────────────────────────────────────────────────────────────┘
 ```
-
-| 문서 유형   | 질문             | 변경 빈도 | 독자                 |
-|-------------|------------------|-----------|----------------------|
-| ADR         | 왜?              | 불변      | 미래 의사결정자      |
-| Runbook     | 어떻게?          | 수시      | 현재 운영자          |
-| Postmortem  | 무엇이 잘못?     | 장애 후   | 전체 팀              |
-| Golden Path | 무엇을 기본으로? | 분기별    | 신규 프로젝트 담당자 |
-| Boilerplate | (자동 생성)      | 필요 시   | 프로젝트 시작자      |
-
-
----
-
-## 참고 자료
-
-- Monorepo Tools: [monorepo.tools](https://monorepo.tools/) — ★★☆☆☆
-- Terraform Documentation: [developer.hashicorp.com](https://developer.hashicorp.com/terraform/docs) — ★★☆☆☆
 
 ---
 
@@ -547,8 +531,8 @@ ADR은 개별 결정의 "왜", Golden Path는 결정들의 "요약본"입니다.
 
 ---
 
-**작성일**: 2026-03-25
+**작성일**: 2026-06-10
 
-**마지막 업데이트**: 2026-04-11
+**마지막 업데이트**: 2026-07-03
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -22,13 +22,13 @@ A계정 EC2 (10.120.0.0/20) → B계정 S3 버킷 업로드 구성 (동일 리�
 
 ```
 ┌───────────────────────────┐          ┌───────────────────────────┐
-│  A계정 (us-east-1)        │          │  B계정 (us-east-1)        │
+│  Account-A (us-east-1)    │          │  Account-B (us-east-1)    │
 │                           │          │                           │
 │  EC2 (10.120.0.0/20)      │          │  S3 Bucket                │
 │    │                      │          │    (b-account-bucket)     │
 │    v                      │          │                           │
 │  S3 Gateway Endpoint      │ ───────> │  Bucket Policy            │
-│  (vpce-xxxx)              │          │    (A계정 허용)           │
+│  (vpce-xxxx)              │          │    (Allow Account-A)      │
 └───────────────────────────┘          └───────────────────────────┘
 ```
 
