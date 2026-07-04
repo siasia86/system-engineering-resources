@@ -34,6 +34,8 @@
 
 ## 최근 결정 사항
 
+- 2026-07-04: md-link-check.py 코드블록 파싱 수정 (라인 토글 방식, v26.07.04)
+- 2026-07-04: code-review prompt에 testing 항목 추가 (BVA/EP/Edge 5축)
 - 2026-06-23: md-style-check.py --no-* 옵션 11개, -E/-X, box-chars 검사 추가 (v26.06.23)
 - 2026-06-23: 06_security, 08_debugging, 12_tech_stack, README.md 표 정렬 일괄 수정
 - 2026-06-23: game_infra_kpi_presentation.md 박스 문자 오류 수정
