@@ -345,7 +345,7 @@ Defense in depth:
 | Object Lock    | 보존 기간 내 삭제 거부     | root 포함 모든 삭제 (Compliance) |
 | 버전 관리      | 덮어쓰기 시 이전 버전 보존 | 데이터 교체 공격                 |
 
-> 상세 STS 설정은 [s3_cross_account_backup.md](../99_ETC/01_AWS_jobs/s3_cross_account_backup.md) 참고
+> 상세 STS 설정은 [s3_cross_account_backup.md](../../99_ETC/01_AWS_jobs/s3_cross_account_backup.md) 참고
 
 ---
 
