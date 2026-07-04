@@ -383,8 +383,8 @@ jobs:
 
 - Molecule Documentation: [ansible.readthedocs.io/projects/molecule](https://ansible.readthedocs.io/projects/molecule/) — ★★★☆☆
 - geerlingguy Docker images: [github.com/geerlingguy/docker-*-ansible](https://github.com/geerlingguy) — ★★☆☆☆
-- [vagrant.md](./vagrant.md)
-- [docker.md](./docker.md)
+- [vagrant.md](../../12_tech_stack/vagrant.md)
+- [docker.md](../../12_tech_stack/docker.md)
 
 ---
 
