@@ -65,7 +65,7 @@ def collect_md_files(paths):
     files = []
     for p in paths:
         if not os.path.exists(p):
-            print(f"⚠ 경로 없음: {p}", file=sys.stderr)
+            print(f"🟡 경로 없음: {p}", file=sys.stderr)
             continue
         if os.path.isfile(p) and p.endswith('.md'):
             files.append(p)
@@ -90,11 +90,23 @@ def strip_code_blocks_preserve_lines(content, filepath=None):
     result = []
     in_code = False
     fence_count = 0
-    for line in lines:
+    last_open_line = 0
+    last_open_tag = ''
+    nested_hints = []
+    for i, line in enumerate(lines, 1):
         stripped = line.strip()
         if stripped.startswith('```'):
-            in_code = not in_code
             fence_count += 1
+            if not in_code:
+                # 열림
+                in_code = True
+                last_open_line = i
+                last_open_tag = stripped
+            else:
+                # 닫힘 — 닫는 태그가 언어 태그를 포함하면 중첩 의심
+                if stripped != '```' and len(stripped) > 3:
+                    nested_hints.append((last_open_line, last_open_tag, i, stripped))
+                in_code = False
             result.append('')
         elif in_code:
             result.append('')
@@ -103,7 +115,10 @@ def strip_code_blocks_preserve_lines(content, filepath=None):
             result.append(INLINE_CODE_PATTERN.sub(_blank_inline, line))
     if in_code and filepath:
         rel = os.path.relpath(filepath)
-        print(f"⚠ unclosed code block: {rel} (fence count: {fence_count})", file=sys.stderr)
+        print(f"🟡 unclosed code block: {rel} (fence count: {fence_count}, last open: L{last_open_line})", file=sys.stderr)
+        if nested_hints:
+            for open_line, open_tag, close_line, close_tag in nested_hints[:3]:
+                print(f"   hint: nested fence at L{open_line} ({open_tag}) -> L{close_line} ({close_tag})", file=sys.stderr)
     return '\n'.join(result)
 
 
