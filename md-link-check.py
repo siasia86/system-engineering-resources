@@ -8,6 +8,7 @@ md-link-check.py — Markdown 내부 링크 존재 여부 검증
     python md-link-check.py <file_or_dir> [file_or_dir ...]
     python md-link-check.py /root/32_system-engineering-resources/
     python md-link-check.py README.md
+    python md-link-check.py -v /root/32_system-engineering-resources/
 
 검증 대상:
     - [text](relative/path.md) 형태의 상대경로 링크
@@ -17,13 +18,14 @@ md-link-check.py — Markdown 내부 링크 존재 여부 검증
     - http:// https:// 외부 링크
     - #anchor 앵커 링크
     - 코드블록 내부 링크
+    - 인라인 코드 내부 링크
 
 종료 코드:
     0 = 모든 링크 정상
     1 = 깨진 링크 발견
 """
 
-VERSION = "26.06.19"
+VERSION = "26.07.04"
 
 import argparse
 import os
@@ -33,7 +35,12 @@ import sys
 # ── patterns ──────────────────────────────────────────────────────────────────
 
 LINK_PATTERN = re.compile(r'\[([^\]]*)\]\(([^)]+)\)')
-CODE_BLOCK_PATTERN = re.compile(r'```[\s\S]*?```')
+INLINE_CODE_PATTERN = re.compile(r'`+.+?`+')
+
+
+def _blank_inline(m):
+    """인라인 코드를 동일 길이 공백으로 치환."""
+    return ' ' * len(m.group(0))
 
 # ── functions ─────────────────────────────────────────────────────────────────
 
@@ -43,18 +50,23 @@ def parse_args():
         description='Markdown 내부 링크 존재 여부 검증',
         epilog='Examples:\n'
                '  python md-link-check.py README.md\n'
-               '  python md-link-check.py /root/32_system-engineering-resources/\n',
+               '  python md-link-check.py /root/32_system-engineering-resources/\n'
+               '  python md-link-check.py -v README.md    파일별 링크 수 출력\n',
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument('paths', nargs='+', help='.md 파일 또는 디렉토리')
+    parser.add_argument('-v', '--verbose', action='store_true', help='파일별 링크 수 출력')
     parser.add_argument('-V', '--version', action='version', version=f'%(prog)s {VERSION}')
     return parser.parse_args()
 
 
 def collect_md_files(paths):
-    """경로 목록에서 .md 파일 수집."""
+    """경로 목록에서 .md 파일 수집. 존재하지 않는 경로는 경고 출력."""
     files = []
     for p in paths:
+        if not os.path.exists(p):
+            print(f"⚠ 경로 없음: {p}", file=sys.stderr)
+            continue
         if os.path.isfile(p) and p.endswith('.md'):
             files.append(p)
         elif os.path.isdir(p):
@@ -66,11 +78,33 @@ def collect_md_files(paths):
     return sorted(set(files))
 
 
-def strip_code_blocks_preserve_lines(content):
-    """코드블록 내용을 빈 행으로 치환 (행 번호 유지)."""
-    def replacer(m):
-        return '\n' * m.group(0).count('\n')
-    return CODE_BLOCK_PATTERN.sub(replacer, content)
+def strip_code_blocks_preserve_lines(content, filepath=None):
+    """코드블록·인라인 코드 내용을 제거 (행 번호 유지).
+
+    라인 단위 토글 방식으로 코드 펜스를 판정합니다.
+    줄 시작이 ``` 인 경우만 코드블록 경계로 인식하므로
+    인라인 백틱(줄 중간)에 의한 오판을 방지합니다.
+    홀수 펜스(unclosed code block) 감지 시 stderr 경고를 출력합니다.
+    """
+    lines = content.splitlines()
+    result = []
+    in_code = False
+    fence_count = 0
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith('```'):
+            in_code = not in_code
+            fence_count += 1
+            result.append('')
+        elif in_code:
+            result.append('')
+        else:
+            # 인라인 코드 제거 (길이 유지 불필요, 공백 치환)
+            result.append(INLINE_CODE_PATTERN.sub(_blank_inline, line))
+    if in_code and filepath:
+        rel = os.path.relpath(filepath)
+        print(f"⚠ unclosed code block: {rel} (fence count: {fence_count})", file=sys.stderr)
+    return '\n'.join(result)
 
 
 def extract_link_path(raw_link):
@@ -90,7 +124,7 @@ def check_file(filepath):
     except (UnicodeDecodeError, OSError) as e:
         return ([(-1, f"[읽기 실패: {e}]", filepath)], 0)
 
-    clean = strip_code_blocks_preserve_lines(raw_content)
+    clean = strip_code_blocks_preserve_lines(raw_content, filepath=filepath)
     base_dir = os.path.dirname(os.path.abspath(filepath))
     broken = []
     link_count = 0
@@ -138,6 +172,9 @@ def main():
         if broken:
             total_broken += len(broken)
             broken_files.append((filepath, broken))
+        if args.verbose and link_count > 0 and not broken:
+            rel = os.path.relpath(filepath)
+            print(f"  ✅ {rel} ({link_count} links)")
 
     # 출력
     if broken_files:
