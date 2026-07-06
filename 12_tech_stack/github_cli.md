@@ -727,6 +727,39 @@ gh pr create
 
 ## 12. 실무 팁
 
+### git merge vs gh pr merge
+
+로컬 `git merge`와 `gh pr merge`는 결과는 같지만(브랜치 합침) **프로세스가 다릅니다.**
+
+| 항목              | `git merge` (로컬) | `gh pr merge` (GitHub)              |
+|-------------------|--------------------|-------------------------------------|
+| 실행 위치         | 내 PC              | GitHub 서버                         |
+| 리뷰/승인         | 없음 (바로 머지)   | PR 리뷰 프로세스 거침               |
+| branch protection | 우회됨 (로컬)      | 적용됨 (CI 통과, 리뷰 필수 등)      |
+| 기록              | git log에만 남음   | PR #번호 + 코멘트 + 리뷰 이력       |
+| CI 확인           | 안 함              | required checks 통과 필수 (설정 시) |
+| 알림              | 없음               | 팀원에게 알림 발송                  |
+| 롤백              | `git reset`        | GitHub "Revert" 버튼 1클릭          |
+
+```bash
+# 로컬 merge (혼자 작업, 빠르게)
+git checkout main
+git merge yunli
+git push origin main
+
+# gh pr merge (팀 협업, 코드 리뷰)
+gh pr create --base main --head yunli --title "feat: 기능"
+# → 리뷰어 승인 + CI 통과 후
+gh pr merge --squash --delete-branch
+```
+
+| 상황                    | 추천          |
+|-------------------------|---------------|
+| 혼자 작업, 빠르게       | `git merge`   |
+| 팀 협업, 코드 리뷰 필요 | `gh pr merge` |
+| main 보호 설정 있음     | `gh pr merge` |
+| 이력 추적 필요          | `gh pr merge` |
+
 ### PR 생성 자동화
 
 ```bash
