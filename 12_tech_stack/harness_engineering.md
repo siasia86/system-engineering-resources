@@ -130,7 +130,7 @@ repo/
 | Enforcing architecture and taste    | 아키텍처 경계와 취향(taste)을 린터/원칙으로 인코딩하여 강제       |
 | Entropy management                  | 정기적으로 기술 부채를 청소하는 에이전트를 운영                   |
 | Throughput changes merge philosophy | 고처리량 환경에서 수정 비용이 대기 비용보다 낮아 빠른 머지를 우선 |
-| Long-running autonomy               | 단일 에이전트 실행이 최대 6시간 이상 무인 동작 가능 (OpenAI 원문)     |
+| Long-running autonomy               | 단일 에이전트 실행이 최대 6시간 이상 무인 동작 가능 (OpenAI 원문) |
 
 ### Anthropic (Claude팀) 접근법
 
