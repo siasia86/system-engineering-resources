@@ -54,6 +54,60 @@
 🟡 Ubuntu 24.04 + PostgreSQL 17은 ICU provider가 기본입니다.
 `LC_COLLATE 'en_US.UTF-8'` 방식은 해당 locale이 설치돼 있으면 동작하지만, 기본 설치에서는 locale 미존재로 오류가 발생할 수 있습니다. `LOCALE 'C.UTF-8'` 사용을 권장합니다.
 
+#### ICU provider란
+
+PostgreSQL에서 문자열을 **정렬(sort)하고 비교(compare)하는 엔진**을 "collation provider"라고 합니다. 두 가지 provider가 있습니다:
+
+| provider    | 설명                                                      | 정렬 규칙 출처                 |
+|-------------|-----------------------------------------------------------|--------------------------------|
+| libc (기존) | OS의 glibc 라이브러리 사용                                | `/usr/lib/locale/` (OS locale) |
+| ICU (신규)  | ICU(International Components for Unicode) 라이브러리 사용 | ICU 내장 데이터                |
+
+**왜 ICU로 바뀌는가:**
+
+```
+libc 문제:
+  - OS 업그레이드 시 glibc 버전 변경 → 정렬 순서 변경 가능
+  - 같은 'en_US.UTF-8'인데 Ubuntu 22 vs 24에서 정렬 결과 다름
+  - 인덱스가 정렬 순서 기반 → 인덱스 손상 위험 (REINDEX 필요)
+
+ICU 장점:
+  - PostgreSQL 빌드에 포함 → OS 업그레이드와 무관
+  - 동일 ICU 버전이면 어떤 OS에서든 동일 정렬 결과
+  - 인덱스 안정성 보장
+```
+
+**실제 영향 (사용자 관점):**
+
+```sql
+-- libc provider (기존 방식)
+CREATE DATABASE mydb
+    ENCODING 'UTF8'
+    LC_COLLATE 'en_US.UTF-8'    -- OS에 이 locale이 설치돼 있어야 함
+    TEMPLATE template0;
+
+-- ICU provider (신규 방식)
+CREATE DATABASE mydb
+    ENCODING 'UTF8'
+    LOCALE_PROVIDER 'icu'
+    ICU_LOCALE 'en-US'          -- OS locale 불필요, ICU 내장 데이터 사용
+    TEMPLATE template0;
+
+-- 간편 방식 (libc + C locale — 어디서든 동작)
+CREATE DATABASE mydb
+    ENCODING 'UTF8'
+    LOCALE 'C.UTF-8'            -- C locale은 모든 환경에서 존재
+    TEMPLATE template0;
+```
+
+**정리:**
+
+| 상황                             | 사용할 방식                                    |
+|----------------------------------|------------------------------------------------|
+| 새 프로젝트 (정렬 안정성 중요)   | `LOCALE_PROVIDER 'icu'` + `ICU_LOCALE 'en-US'` |
+| 간단하게 (정렬 불필요/영문 위주) | `LOCALE 'C.UTF-8'` (가장 호환성 높음)          |
+| 기존 DB 호환 유지                | `LC_COLLATE 'en_US.UTF-8'` + locale 설치 확인  |
+
 ### 2-1. 시스템 업데이트
 
 ```bash
