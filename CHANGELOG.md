@@ -6,6 +6,38 @@
 
 ---
 
+## [3.0.0] - 2026-07-07
+
+### Changed
+
+#### 레포 구조 전면 개편 (BREAKING CHANGE)
+
+기존 13개 최상위 디렉토리 → 6개 섹션 기반 구조로 전환.
+
+| 신규 디렉토리        | 내용                                                                    | 통합 출처           |
+|----------------------|-------------------------------------------------------------------------|---------------------|
+| `01_fundamentals/`   | linux, networking, cs, programming                                      | 02, 03, 05, 08, 11  |
+| `02_infrastructure/` | containers, cicd, iac, monitoring, cloud_aws, data_pipeline, web_server | 01, 07, 12, 13      |
+| `03_engineering/`    | reliability, delivery, organization, cost                               | 04/02_operations    |
+| `04_security/`       | hardening, cloud, cve, web_cwe                                          | 06                  |
+| `05_database/`       | rdbms, operations, nosql, forensics                                     | 09, 10              |
+| `06_career/`         | roadmap, legal, ai_tools                                                | 04/01, 04/04, 04/05 |
+
+- git mv 200+ 파일 (history 보존)
+- README.md 전면 재작성 (6섹션 레벨 기반 탐색)
+- 내부 링크 전수 수정 (md-link-check 0건)
+- md-style-check.py FILE_SKIP + EXCLUDE_DIRS 경로 갱신
+- md-style-check.py 박스 상/하단 공백 혼입 검출 규칙 추가
+- .gitignore: `99_archive/` 통합 (기존 51_siasia, 33_sjyun, 99_ETC 제거)
+- 기존 디렉토리 README.md 12개 삭제
+- `00_readme.md/`, `90_DELETE/` 삭제
+
+### Removed
+
+- `00_readme.md/` — Kiro 설정 복사본 (불필요)
+- `90_DELETE/` — deprecated 파일 2개 (CONTRIBUTING, GITHUB_UPLOAD_GUIDE)
+- 기존 디렉토리 README.md 12개 (01_install ~ 12_tech_stack)
+
 ## [2.3.0] - 2026-07-07
 
 ### Added
