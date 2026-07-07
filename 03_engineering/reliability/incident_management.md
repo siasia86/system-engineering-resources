@@ -29,6 +29,9 @@
 | Live Incident State Document | 실시간 상태 문서 유지 (단일 진실 소스)     |
 | Clear, Live Handoff          | 교대 시 명시적 인수인계 (암묵적 전달 금지) |
 
+> Google SRE Book Ch.14 "Managing Incidents" — 위 4원칙은 FEMA ICS(Incident Command System)를 소프트웨어 운영에 적용한 것입니다.
+> — https://sre.google/sre-book/managing-incidents/
+
 ## 2. 장애 등급
 
 ### Severity 분류
@@ -40,6 +43,9 @@
 | SEV-3 | Minor    | 부분 기능 저하, 우회 가능          | 1시간     | 2시간         |
 | SEV-4 | Low      | 경미한 이슈, 소수 영향             | 업무 시간 | 일 1회        |
 | SEV-5 | Cosmetic | UI 결함, 오타, 성능 미미한 저하    | 백로그    | 불필요        |
+
+> PagerDuty의 5-level severity model을 기반으로 합니다. 조직마다 3~5단계로 조정합니다.
+> — https://response.pagerduty.com/before/severity_levels/
 
 ### 등급 판단 기준
 
@@ -105,6 +111,9 @@ On-Call Engineer (초기 대응)
 - 5분마다 상황 요약: "현재 상태, 다음 조치, 예상 복구 시간"
 - 교대 시 명시적 선언: "IC를 [이름]에게 넘깁니다"
 
+> IC 역할은 미국 FEMA의 National Incident Management System(NIMS)에서 유래합니다. Google SRE가 이를 IT 운영에 도입했습니다.
+> — https://www.fema.gov/emergency-managers/nims
+
 ## 4. 대응 프로세스
 
 ### 5단계 프레임워크
@@ -137,6 +146,9 @@ On-Call Engineer (초기 대응)
   2. 트래픽 드레인 (문제 서버/리전 제외)
   3. 스케일 업/아웃 (부하 분산)
   4. 기능 비활성화 (feature flag off)
+
+> "Reduce the impact first. Investigate the root cause after the incident is mitigated." — Google SRE Book Ch.14
+> — https://sre.google/sre-book/managing-incidents/
 
 ## 5. 커뮤니케이션
 
@@ -258,6 +270,9 @@ CTO / CEO
 - 월 2회 이하 야간 호출 (번아웃 방지)
 - 장애 대응 후 다음 시프트 면제 (피로 관리)
 - 온콜 중 프로젝트 작업: 중단 가능한 것만 배정
+
+> Google SRE Book Ch.11 "Being On-Call": 온콜 업무 비중 25% 이하, 최소 2인 로테이션 권장.
+> — https://sre.google/sre-book/being-on-call/
 
 ## 9. 트러블슈팅
 
