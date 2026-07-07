@@ -462,11 +462,11 @@ INDEX_SKIP = {"reference"}
 
 # 파일별 특정 검사 항목 제외 (경로 패턴: 검사명 집합)
 FILE_SKIP = {
-    "06_security/ddos_defense_architecture.md": {"diagram-width"},
-    "02_basic_linux/vim_airline.md": {"diagram-width", "h1"},
-    "04_system_engineer/02_operations/game_infra_kpi_presentation.md": {"diagram-kr"},
-    "05_computer_science/network_headers.md": {"box-chars"},
-    "04_system_engineer/04_ai/kiro_cli_command_reference.md": {"diagram-kr"},
+    "04_security/cloud/ddos_defense_architecture.md": {"diagram-width"},
+    "01_fundamentals/linux/vim_airline.md": {"diagram-width", "h1"},
+    "02_infrastructure/monitoring/game_infra_kpi_presentation.md": {"diagram-kr"},
+    "01_fundamentals/networking/network_headers.md": {"box-chars"},
+    "06_career/ai_tools/kiro_cli_command_reference.md": {"diagram-kr"},
 }
 
 def _should_skip_for_file(filepath, check_name):
@@ -514,7 +514,7 @@ def check_file(path, strict=False, skip_checks=None):
     return all_issues
 
 # 검사 제외 디렉토리
-EXCLUDE_DIRS = {'99_ETC', '90_DELETE', '33_sjyun_32_readme.md', '51_siasia', '00_readme.md', '.git', '__pycache__', '_reference'}
+EXCLUDE_DIRS = {'99_archive', '.git', '__pycache__', '_reference'}
 
 # 검사 제외 파일
 EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'CHANGELOG.md'}
