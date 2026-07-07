@@ -34,6 +34,8 @@
 
 ## 최근 결정 사항
 
+- 2026-07-07: work-rules §26 추가 (TODO 배치 Pre/Post 출력 의무)
+- 2026-07-07: ~/.kiro/.docs-kr/ 생성 (SKILL 한글 해설서, context 미등록, best-effort 동기화)
 - 2026-07-04: md-link-check.py 코드블록 파싱 수정 (라인 토글 방식, v26.07.04)
 - 2026-07-04: code-review prompt에 testing 항목 추가 (BVA/EP/Edge 5축)
 - 2026-06-23: md-style-check.py --no-* 옵션 11개, -E/-X, box-chars 검사 추가 (v26.06.23)
