@@ -19,7 +19,7 @@ STYLE.md 규칙 기반: 표 정렬, 다이어그램 폭/한글/박스 문자, H1
   -V, --version             버전 출력
 """
 
-VERSION = "26.06.23"
+VERSION = "26.07.07"
 
 import os
 import re
@@ -75,7 +75,7 @@ def strip_code_blocks(content):
         s = line.rstrip()
         if not in_block and s.startswith('```'):
             in_block = True
-        elif in_block and s.rstrip() in ('```', '``` ') or (in_block and re.match(r'^``` *$', s)):
+        elif in_block and re.match(r'^`{3,}\s*$', s):
             in_block = False
         elif not in_block:
             result.append(line)
@@ -329,9 +329,26 @@ def check_diagram_korean(content, strict=False):
     return issues
 
 # 허용 이모지 목록
+_ALLOWED_EMOJIS = ['✅', '❌', '🟡', '🟢', '🔴', '★', '☆', '💡']
+# 공백 검사 대상: ✅ ❌ 🟡 🟢 🔴 만 (★☆💡는 공백 규칙 불필요)
+_EMOJI_SPACE_TARGETS = ['✅', '❌', '🟡', '🟢', '🔴']
 _EMOJI_PATTERN = re.compile(
-    r'(' + '|'.join(re.escape(e) for e in ['✅', '❌', '🟡', '🟢', '🔴']) + r')([^\s|`])'
+    r'(' + '|'.join(re.escape(e) for e in _EMOJI_SPACE_TARGETS) + r')([^\s|`])'
 )
+# 비허용 이모지 탐지: Unicode Emoji 범위 중 허용 목록 외
+# 장식용 이모지만 검사 (Emoticons, Transport/Map Symbols, Supplemental)
+# 기호 문자(✓✗⚠☰⬆ 등)는 제외
+_ALL_EMOJI_PATTERN = re.compile(
+    '[\U0001F300-\U0001F5FF'   # Misc Symbols and Pictographs
+    '\U0001F600-\U0001F64F'    # Emoticons
+    '\U0001F680-\U0001F6FF'    # Transport and Map Symbols
+    '\U0001F900-\U0001F9FF'    # Supplemental Symbols
+    '\U0001FA00-\U0001FA6F'    # Chess Symbols
+    '\U0001FA70-\U0001FAFF'    # Symbols Extended-A
+    '\U00002B50'                 # ⭐ (White Medium Star — ★과 혼동 방지)
+    ']+'
+)
+
 
 def check_emoji_space(content, strict=False):
     """이모지 뒤 공백 1칸 필수 검사 (STYLE.md § 7). 코드블록/표 셀 내 이모지 단독 사용 제외."""
@@ -342,6 +359,24 @@ def check_emoji_space(content, strict=False):
         stripped = line.strip()
         for emoji, next_char in _EMOJI_PATTERN.findall(stripped):
             issues.append(f"L{i}: '{emoji}' 뒤 공백 없음 → '{emoji}{next_char}'")
+    return issues
+
+
+def check_emoji_disallowed(content, strict=False):
+    """비허용 이모지 사용 검사 (STYLE.md § 7). 허용: ✅ ❌ 🟡 🟢 🔴 + ★. 코드블록/인용구 내부 제외."""
+    issues = []
+    clean = strip_code_blocks(content)
+    for i, line in enumerate(clean.splitlines(), 1):
+        stripped = line.strip()
+        # 인용구(>) 내부 제외 — 외부 출처 인용 시 원문 이모지 보존 목적
+        if stripped.startswith('>'):
+            continue
+        for match in _ALL_EMOJI_PATTERN.finditer(stripped):
+            emoji = match.group()
+            # 허용 목록 확인 (문자 단위 — ★★★☆☆ 같은 연속도 허용)
+            if all(c in _ALLOWED_EMOJIS for c in emoji):
+                continue
+            issues.append(f"L{i}: 비허용 이모지 '{emoji}' — 허용: ✅ ❌ 🟡 🟢 🔴 ★")
     return issues
 
 
@@ -446,6 +481,7 @@ CHECKS = [
     ("diagram-kr",      "다이어그램 한글",   check_diagram_korean),
     ("box-chars",       "박스 문자 정합",    check_diagram_box_chars),
     ("emoji",           "이모지 뒤 공백",    check_emoji_space),
+    ("emoji-disallow",  "비허용 이모지",     check_emoji_disallowed),
     ("bold-paren",      "bold 괄호",         check_bold_parentheses),
     ("banmal",          "반말체 종결어미",   check_banmal),
     ("exaggeration",    "과장 표현",         check_exaggeration),
@@ -515,7 +551,7 @@ def check_file(path, strict=False, skip_checks=None):
     return all_issues
 
 # 검사 제외 디렉토리
-EXCLUDE_DIRS = {'99_archive', '.git', '__pycache__', '_reference'}
+EXCLUDE_DIRS = {'99_archive', '.git', '__pycache__', '_reference', '00_readme.md'}
 
 # 검사 제외 파일
 EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'CHANGELOG.md'}
@@ -583,6 +619,7 @@ def parse_args():
     skip_group.add_argument('--no-diagram-width', action='store_true', help='다이어그램 행 폭 검사 제외')
     skip_group.add_argument('--no-table', action='store_true', help='표 정렬 검사 제외')
     skip_group.add_argument('--no-emoji', action='store_true', help='이모지 뒤 공백 검사 제외')
+    skip_group.add_argument('--no-emoji-disallow', action='store_true', help='비허용 이모지 검사 제외')
     skip_group.add_argument('--no-banmal', action='store_true', help='반말체 종결어미 검사 제외')
     skip_group.add_argument('--no-exaggeration', action='store_true', help='과장 표현 검사 제외')
     skip_group.add_argument('--no-footer', action='store_true', help='푸터 검사 제외')
@@ -632,6 +669,7 @@ def main():
         if args.no_diagram_kr: skip_checks.append('diagram-kr')
         if args.no_box_chars: skip_checks.append('box-chars')
         if args.no_emoji: skip_checks.append('emoji')
+        if args.no_emoji_disallow: skip_checks.append('emoji-disallow')
         if args.no_bold_paren: skip_checks.append('bold-paren')
         if args.no_banmal: skip_checks.append('banmal')
         if args.no_exaggeration: skip_checks.append('exaggeration')
