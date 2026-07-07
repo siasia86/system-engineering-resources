@@ -31,14 +31,10 @@ notes/
 *.backup
 *.old
 
-# ETC
-51_siasia/
-51_masang/
+# Archive
+99_archive/
 
 # duplication directory
-33_sjyun_32_readme.md/
-#00_readme.md/
-#99_ETC/
 *masang*
 *masang*.md
 
