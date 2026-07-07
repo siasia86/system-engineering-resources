@@ -146,6 +146,9 @@
 
 ---
 
+> MTTR/MTBF/MTTA 등 신뢰성 지표는 ITIL v4와 DORA(DevOps Research and Assessment) 보고서에서 업계 표준으로 정의합니다.
+> — https://dora.dev/guides/dora-metrics-four-keys/
+
 ## 참고 자료
 
 - Google SRE Book: [sre.google/sre-book/table-of-contents](https://sre.google/sre-book/table-of-contents/) — ★★★★☆
