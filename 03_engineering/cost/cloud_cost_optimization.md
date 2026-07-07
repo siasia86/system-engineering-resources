@@ -164,6 +164,10 @@
 | Right-sizing 후 성능 저하 | 피크 미고려              | p99 기준 분석, 2주+ 데이터 확보         |
 | 팀별 비용 책임 불분명     | 비용 할당 미설정         | 태깅 + CostCenter 기반 차지백 도입      |
 
+> 클라우드 비용 최적화 원칙은 AWS Well-Architected Framework (Cost Optimization Pillar)와 FinOps Foundation의 FinOps Framework에 기반합니다.
+> — https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/
+> — https://www.finops.org/framework/
+
 ## 참고 자료
 
 - FinOps Foundation: [finops.org/framework](https://www.finops.org/framework/) — ★★★★☆

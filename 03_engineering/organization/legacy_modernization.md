@@ -176,6 +176,10 @@ Martin Fowler (2004): 교살 무화과(Strangler Fig)가 숙주 나무를 서서
 | 데이터 불일치 발생        | Dual write 실패        | Outbox 패턴 + 보상 로직 + 모니터링 |
 | 경영진 지지 상실          | 가시적 성과 부족       | 초기 성공 사례 빠르게 확보 후 공유 |
 
+> 레거시 현대화 전략(Retire, Retain, Rehost, Replatform, Refactor, Rebuild)은 AWS의 6R 마이그레이션 전략에 기반합니다. Strangler Fig 패턴은 Martin Fowler(2004)가 제안했습니다.
+> — https://aws.amazon.com/blogs/enterprise-strategy/6-strategies-for-migrating-applications-to-the-cloud/
+> — https://martinfowler.com/bliki/StranglerFigApplication.html
+
 ## 참고 자료
 
 - Martin Fowler: [StranglerFigApplication](https://martinfowler.com/bliki/StranglerFigApplication.html) — ★★☆☆☆

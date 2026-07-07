@@ -437,6 +437,10 @@ AI가 기존 ADR을 참조하면 일관된 형식과 맥락을 유지할 수 있
 
 ---
 
+> Architecture Decision Record(ADR)는 Michael Nygard가 2011년 블로그에서 제안한 형식입니다. Thoughtworks Technology Radar에서 "Adopt"로 선정(2016)되었습니다.
+> — https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
+> — https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records
+
 ## 참고 자료
 
 - Nygard, Michael. "Documenting Architecture Decisions": [cognitect.com](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) — ★★☆☆☆

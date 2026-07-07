@@ -17,7 +17,7 @@
 | 목적      | 장애로부터 학습하여 동일/유사 장애 재발 방지            |
 | 출처      | Google SRE Book Ch.15 "Postmortem Culture"              |
 | 핵심      | Blameless (비난 없는), 시스템 관점, Action 추적         |
-| 작성 시한 | 장애 종료 후 48시간 이내                                |
+| 작성 시한 | 장애 종료 후 48시간 이내 (기억 정확도 유지)             |
 | 리뷰 시한 | 작성 후 1주 이내 리뷰 미팅                              |
 | 연관 문서 | Incident Management (장애 중), Change Management (예방) |
 
@@ -32,12 +32,18 @@
 | 학습 목적          | 처벌이 아닌 개선을 위한 과정                      |
 | 투명성             | Postmortem은 조직 전체에 공유                     |
 
+> Blameless 문화는 Sidney Dekker의 "Just Culture" 이론에 기반합니다. Google SRE Book Ch.15에서 이를 엔지니어링 조직에 적용했습니다.
+> — https://sre.google/sre-book/postmortem-culture/
+
 ### Google 원칙 (SRE Book Ch.15)
 
 - 모든 SEV-1/SEV-2 장애에 대해 Postmortem 작성 필수
 - Action items는 버그 트래커에 등록, 담당자/기한 명시
 - Postmortem 리뷰 미팅 필수 (작성만으로는 불충분)
 - "Blameless" 하지만 "Accountable" — 개선 책임은 존재
+
+> "A postmortem is written for all significant incidents, regardless of whether or not they paged." — Google SRE Book Ch.15
+> — https://sre.google/sre-book/postmortem-culture/
 
 ## 3. 작성 기준
 
@@ -129,6 +135,9 @@ Why 5: Static analysis tooling not updated for new DB library
 Root Cause: Tooling gap — static analysis not covering new library
 ```
 
+> 5 Whys는 Toyota Production System에서 유래한 근본 원인 분석 기법입니다. 단, 복잡한 시스템에서는 5 Whys만으로는 불충분하며 Contributing Factors 분석을 병행해야 합니다.
+> — Taiichi Ohno, "Toyota Production System" (1988)
+
 ### Contributing Factor Categories
 
 | 카테고리      | 예시                        |
@@ -166,6 +175,9 @@ Root Cause: Tooling gap — static analysis not covering new library
 | Assignable | "홍길동, 2026-07-14까지"         | "팀에서 처리"          |
 | Realistic  | "이번 스프린트에 린터 규칙 추가" | "전체 아키텍처 재설계" |
 | Trackable  | "Jira INFRA-1234"                | "나중에 하자"          |
+
+> SMART 기준(Specific, Measurable, Assignable, Realistic, Time-bound)은 Google SRE Book Appendix D의 예시 Postmortem에서 Action Items 작성 기준으로 권장됩니다.
+> — https://sre.google/sre-book/example-postmortem/
 
 ## 7. 리뷰 프로세스
 
