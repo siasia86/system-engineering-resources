@@ -274,6 +274,10 @@ spec:
 | Error Budget Policy 무시      | 조직 합의 부재                | 경영진 포함 Policy 재승인            |
 | Alert fatigue (과다 알림)     | Burn rate 임계값 부적절       | Multi-window alert 적용, 임계값 조정 |
 
+> SLO/SLI/Error Budget 개념은 Google SRE Book Ch.4 "Service Level Objectives"에서 최초 정립되었습니다. Error Budget Policy는 Google SRE Workbook Ch.2에서 상세히 다룹니다.
+> — https://sre.google/sre-book/service-level-objectives/
+> — https://sre.google/workbook/error-budget-policy/
+
 ## 참고 자료
 
 - Google SRE Book Ch.4: [Service Level Objectives](https://sre.google/sre-book/service-level-objectives/) — ★★★★☆
