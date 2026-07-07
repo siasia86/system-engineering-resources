@@ -467,6 +467,7 @@ FILE_SKIP = {
     "02_infrastructure/monitoring/game_infra_kpi_presentation.md": {"diagram-kr"},
     "01_fundamentals/networking/network_headers.md": {"box-chars"},
     "06_career/ai_tools/kiro_cli_command_reference.md": {"diagram-kr"},
+    "02_infrastructure/cicd/infra_monorepo_and_boilerplate.md": {"table"},
 }
 
 def _should_skip_for_file(filepath, check_name):
