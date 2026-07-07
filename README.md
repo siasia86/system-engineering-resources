@@ -50,23 +50,25 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [iotop](01_fundamentals/linux/iotop.md)                                  | I/O 모니터링                |
 | [tcpdump](01_fundamentals/linux/tcpdump.md)                              | 네트워크 패킷 캡처          |
 | [OOM/Hang 진단](01_fundamentals/linux/oom_hang.md)                       | OOM Killer, kdump, sysrq    |
+| [vim-airline](01_fundamentals/linux/vim_airline.md)                      | 상태바 플러그인             |
 
 ### Networking
 
-| 문서                                                                   | 설명                         |
-|------------------------------------------------------------------------|------------------------------|
-| [IPv4 주소 체계](01_fundamentals/networking/ipv4_addressing_guide.md)  | 서브넷, CIDR, AWS VPC        |
-| [IPv6 주소 체계](01_fundamentals/networking/ipv6_addressing_guide.md)  | 주소 구조, 표기법, SLAAC     |
-| [TCP 상태 전이](01_fundamentals/networking/TCP_state.md)               | 3/4-Way Handshake, TIME_WAIT |
-| [패킷 분석](01_fundamentals/networking/packet_analysis.md)             | IP/TCP/UDP 헤더, PROXY Proto |
-| [네트워크 헤더](01_fundamentals/networking/network_headers.md)         | Ethernet, ARP, DNS, TLS      |
-| [HTTP 메서드](01_fundamentals/networking/http_methods.md)              | GET/POST/PUT/DELETE/PATCH    |
-| [tcpdump 예제](01_fundamentals/networking/tcpdump_examples.md)         | 패킷 캡처 실전 예제          |
-| [Switch VLAN Mode](01_fundamentals/networking/switch_vlan_mode.md)     | Access/Trunk/Hybrid          |
-| [VPN Protocol](01_fundamentals/networking/vpn_protocol.md)             | PPTP~WireGuard 비교          |
-| [에러 코드](01_fundamentals/networking/error_codes.md)                 | HTTP/SMTP/FTP 상태 코드      |
-| [ASN/DDoS 대응](01_fundamentals/networking/asn_and_cloudflare_ddos.md) | ASN 운영, Cloudflare         |
-| [CDN/Proxy/Origin](01_fundamentals/networking/cdn_proxy_origin_ip.md)  | CDN 구조, Origin IP 보호     |
+| 문서                                                                      | 설명                         |
+|---------------------------------------------------------------------------|------------------------------|
+| [IPv4 주소 체계](01_fundamentals/networking/ipv4_addressing_guide.md)     | 서브넷, CIDR, AWS VPC        |
+| [IPv6 주소 체계](01_fundamentals/networking/ipv6_addressing_guide.md)     | 주소 구조, 표기법, SLAAC     |
+| [TCP 상태 전이](01_fundamentals/networking/TCP_state.md)                  | 3/4-Way Handshake, TIME_WAIT |
+| [패킷 분석](01_fundamentals/networking/packet_analysis.md)                | IP/TCP/UDP 헤더, PROXY Proto |
+| [네트워크 헤더](01_fundamentals/networking/network_headers.md)            | Ethernet, ARP, DNS, TLS      |
+| [HTTP 메서드](01_fundamentals/networking/http_methods.md)                 | GET/POST/PUT/DELETE/PATCH    |
+| [tcpdump 예제](01_fundamentals/networking/tcpdump_examples.md)            | 패킷 캡처 실전 예제          |
+| [Switch VLAN Mode](01_fundamentals/networking/switch_vlan_mode.md)        | Access/Trunk/Hybrid          |
+| [VPN Protocol](01_fundamentals/networking/vpn_protocol.md)                | PPTP~WireGuard 비교          |
+| [에러 코드](01_fundamentals/networking/error_codes.md)                    | HTTP/SMTP/FTP 상태 코드      |
+| [ASN/DDoS 대응](01_fundamentals/networking/asn_and_cloudflare_ddos.md)    | ASN 운영, Cloudflare         |
+| [CDN/Proxy/Origin](01_fundamentals/networking/cdn_proxy_origin_ip.md)     | CDN 구조, Origin IP 보호     |
+| [SoftEther VPN](01_fundamentals/networking/softether_vpn_client_guide.md) | SoftEther 클라이언트 설정    |
 
 ### CS
 
