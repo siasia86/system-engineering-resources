@@ -25,6 +25,7 @@ description: _reference 디렉토리 인덱스. 기술별 공식 문서 참조 �
 | CVE/Security         | `_reference/cve_security_official_notes.md`         | NVD API 2.0, CISA KEV         | 2026-06-29 |
 | Linux Kernel         | `_reference/linux_kernel_official_notes.md`         | namespace, cgroup, scheduler  | 2026-07-03 |
 | Networking           | `_reference/networking_official_notes.md`           | BGP, DDoS, CDN, VPC           | 2026-07-03 |
+| PostgreSQL           | `_reference/postgresql_official_notes.md`           | 18.4 (EOL 2030-11)            | 2026-07-07 |
 
 ## 사용 규칙
 
