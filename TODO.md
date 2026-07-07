@@ -2,6 +2,8 @@
 
 md-style-check 잔여 이슈 및 신규 문서 작성 목록입니다.
 
+🟡 완료된 항목은 `CHANGELOG.md`로 이동합니다. TODO에는 미완료 항목만 유지합니다.
+
 ## 목차
 
 | 섹션                                                                                                                                |
@@ -15,20 +17,18 @@ md-style-check 잔여 이슈 및 신규 문서 작성 목록입니다.
 
 STYLE.md 규칙: 코드블록 내 다이어그램은 영문 사용 권장 (GitHub 웹 폰트 호환).
 
-| 파일                                                          | 이슈 수 | 잔여 한글 키워드 예시     |
-|---------------------------------------------------------------|---------|---------------------------|
-| `04_system_engineer/01_roadmap/sre_roadmap.md`                | 5       | 요구사항, 가용성, 글로벌  |
-| `04_system_engineer/04_ai/ai_development_request_template.md` | 6       | 긴급, 수정, 승인          |
-| `04_system_engineer/04_ai/ai_markdown_design_patterns.md`     | 3       | 본문, 리소스, 로드 트리거 |
-| `04_system_engineer/04_ai/kiro_cli_command_reference.md`      | 8       | 책상, 시스템 프롬프트, 훅 |
-| **합계**                                                      | **22**  |                           |
+완료 — 다이어그램 한글 이슈 모두 수정되었습니다.
 
-완료된 파일 (2026-06-29 → 07-07 사이 수정됨):
+완료된 파일:
 - ✅ `asn_and_cloudflare_ddos.md`
 - ✅ `infra_monorepo_and_boilerplate.md`
 - ✅ `s3_gateway_endpoint_cross_account.md`
 - ✅ `vpc_peering_inter_region_guide.md`
 - ✅ `devops_toolchain.md`
+- ✅ `sre_roadmap.md`
+- ✅ `ai_development_request_template.md`
+- ✅ `ai_markdown_design_patterns.md`
+- ✅ `kiro_cli_command_reference.md` → FILE_SKIP diagram-kr 예외 처리
 
 🟡 주의: 번역 시 코드블록 내부만 수정, 본문 오염 금지. 단어 경계 검증 필수.
 
@@ -44,9 +44,10 @@ STYLE.md 규칙: 코드블록 내 다이어그램은 영문 사용 권장 (GitHu
 
 md-style-check 검사 대상에서 제외하는 파일입니다.
 
-| 파일                            | 사유                                   |
-|---------------------------------|----------------------------------------|
-| `02_basic_linux/vim_airline.md` | 외부 프로젝트(vim-airline) README 원본 |
+| 파일                                                     | 사유                                   |
+|----------------------------------------------------------|----------------------------------------|
+| `02_basic_linux/vim_airline.md`                          | 외부 프로젝트(vim-airline) README 원본 |
+| `04_system_engineer/04_ai/kiro_cli_command_reference.md` | Kiro CLI 문서 (다이어그램 한글 의도적) |
 
 ---
 

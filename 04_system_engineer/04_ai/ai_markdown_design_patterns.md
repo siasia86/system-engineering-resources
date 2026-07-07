@@ -105,9 +105,9 @@ structured AnalysisResult dicts.
 
 ```
 ┌───────────────────┐     ┌─────────────────────┐     ┌───────────────────┐
-│ Level 1: Metadata │────>│ Level 2: 본문       │────>│ Level 3: 리소스   │
-│ (항상 로드)       │     │ (트리거 시 로드)    │     │ (필요 시 로드)    │
-│ ~100 토큰/스킬    │     │ ~5,000 토큰 이하    │     │ 무제한            │
+│ Level 1: Metadata │────>│ Level 2: Body       │────>│ Level 3: Resource │
+│ (always loaded)   │     │ (on trigger)        │     │ (on demand)       │
+│ ~100 tokens/skill │     │ ~5,000 tokens max   │     │ unlimited         │
 └───────────────────┘     └─────────────────────┘     └───────────────────┘
 ```
 
