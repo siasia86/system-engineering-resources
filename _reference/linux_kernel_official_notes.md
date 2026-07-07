@@ -1,3 +1,4 @@
+---
 name: linux-kernel-official-notes
 description: Linux Kernel 내부 (namespace, cgroup, scheduler, netfilter, capabilities) 문서 작성 시 참조할 공식 소스. 02_basic_linux/, 03_advanced_linux/ 문서 생성/검토 시 참조.
 tags:
@@ -18,6 +19,7 @@ sources:
   - https://kernelnewbies.org/LinuxVersions
   - https://man7.org/linux/man-pages/man8/iptables.8.html
   - https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+---
 
 # Linux Kernel 공식 참조 노트
 

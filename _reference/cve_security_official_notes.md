@@ -1,3 +1,4 @@
+---
 name: cve-security-official-notes
 description: CVE/보안 취약점 문서 작성 시 참조할 공식 소스, API 엔드포인트, 검증 방법 정리. 06_security/01_cve/ 문서 생성/검토 시 참조.
 tags:
@@ -14,6 +15,7 @@ sources:
   - https://ubuntu.com/security/cves
   - https://security-tracker.debian.org/tracker/
   - https://alas.aws.amazon.com/
+---
 
 # CVE/보안 취약점 공식 참조 노트
 

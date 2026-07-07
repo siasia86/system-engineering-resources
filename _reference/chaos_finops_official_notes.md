@@ -71,13 +71,13 @@ sources:
 | Optimize | 비용 효율화                | RI/SP, Right-sizing, Spot, 유휴 제거    |
 | Operate  | 지속적 거버넌스            | Policy, 자동화, 팀별 예산 책임          |
 
-### FinOps Principles
+### FinOps Principles (원문 그대로)
 
 1. Teams need to collaborate
-2. Everyone takes ownership for their cloud usage
-3. A centralized team drives FinOps
-4. Reports should be accessible and timely
-5. Decisions are driven by the business value of cloud
+2. Everyone takes ownership for their technology usage
+3. A centralized FinOps function drives best practices
+4. FinOps data should be accessible, timely, and accurate
+5. Business value drives technology decisions
 6. Take advantage of the variable cost model of cloud
 
 ### AWS Cost Optimization Pillar
