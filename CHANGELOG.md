@@ -82,6 +82,18 @@
 - `postmortem_framework.md` — 5 Whys, Blameless Culture, Action Items 추적, 리뷰 프로세스
 - `chaos_engineering.md` — 가설 기반 실험, 폭발 반경 제어, Game Day, 성숙도 모델
 - `multi_region_architecture.md` — Active-Active/Passive, RPO/RTO 설계, Failover/Failback
+- `platform_engineering.md` — IDP 설계, Golden Path, CNCF Platform WP 기반 성숙도 모델
+- `oncall_design.md` — 로테이션, 25% 규칙, 런북, 에스컬레이션, 번아웃 방지
+- `team_topology.md` — 4가지 팀 유형, 3가지 상호작용 모드, Conway 법칙 역전
+- `tech_debt_management.md` — Fowler Quadrant, 측정 지표, 상환 우선순위 매트릭스
+- `vendor_evaluation.md` — PoC 설계, TCO 3년 산정, Lock-in 평가, Weighted Scoring
+- `legacy_modernization.md` — Strangler Fig, 6R 전략, 데이터 이중 쓰기, Shadow Mode
+
+#### 12_tech_stack — 신규 문서 1개
+- `cloud_cost_optimization.md` — FinOps 6 Principles, RI/SP 전략, Spot 활용, Right-sizing
+
+#### _reference — platform_engineering_official_notes.md 신규
+- CNCF Platforms White Paper + Platform Maturity Model 공식 출처 통합
 
 #### _reference — sre_operations_official_notes.md 신규
 - Google SRE Book/Workbook, PagerDuty, OpenSLO, ITIL v4, gh-ost, pt-osc 공식 출처 통합
