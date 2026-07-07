@@ -25,11 +25,15 @@
 
 ### 버전 선택 기준
 
-| 버전          | EOL     | 권장 여부            |
-|---------------|---------|----------------------|
-| PostgreSQL 14 | 2026-11 | 🟡 EOL 임박, 비권장  |
-| PostgreSQL 16 | 2028-11 | ✅ 안정적, 현재 권장 |
-| PostgreSQL 17 | 2029-11 | ✅ 신규 구축 권장    |
+| 버전          | EOL     | 현재 마이너 | 권장 여부                      |
+|---------------|---------|-------------|--------------------------------|
+| PostgreSQL 14 | 2026-11 | 14.23       | 🟡 EOL 임박, 마이그레이션 필요 |
+| PostgreSQL 15 | 2027-11 | 15.18       | ✅ 안정적                      |
+| PostgreSQL 16 | 2028-11 | 16.14       | ✅ 안정적, 운영 권장           |
+| PostgreSQL 17 | 2029-11 | 17.10       | ✅ 신규 구축 권장              |
+| PostgreSQL 18 | 2030-11 | 18.4        | ✅ 최신, 신규 구축 가능        |
+
+🟡 PostgreSQL 19 Beta 1이 2026-06-04에 출시되었습니다. GA는 2026년 9~10월 예정입니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -83,7 +87,7 @@ sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresq
     > /etc/apt/sources.list.d/pgdg.list'
 
 sudo apt update
-sudo apt install postgresql-17 -y
+sudo apt install postgresql-18 -y   # 또는 postgresql-17
 sudo systemctl enable --now postgresql
 ```
 
@@ -146,12 +150,12 @@ sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-
 sudo dnf -qy module disable postgresql
 
 # PostgreSQL 17 설치
-sudo dnf install -y postgresql17-server postgresql17-contrib
+sudo dnf install -y postgresql18-server postgresql18-contrib  # 또는 17
 
 # DB 클러스터 초기화
-sudo /usr/pgsql-17/bin/postgresql-17-setup initdb
+sudo /usr/pgsql-18/bin/postgresql-18-setup initdb  # 버전에 맞게
 
-sudo systemctl enable --now postgresql-17
+sudo systemctl enable --now postgresql-18
 ```
 
 ### 3-3. SELinux 설정
@@ -378,7 +382,7 @@ sudo firewall-cmd --list-all
 ```bash
 # 서비스 상태
 sudo systemctl status postgresql      # Ubuntu
-sudo systemctl status postgresql-17   # RHEL 계열
+sudo systemctl status postgresql-18   # RHEL 계열 (버전에 맞게)
 
 # 포트 리스닝 확인
 ss -tlnp | grep 5432
@@ -567,6 +571,6 @@ sudo -u postgres psql -c "SELECT pid, usename, datname, state, query FROM pg_sta
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-05-04
+**마지막 업데이트**: 2026-07-07
 
 © 2026 siasia86. Licensed under CC BY 4.0.
