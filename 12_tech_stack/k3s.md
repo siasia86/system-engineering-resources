@@ -15,14 +15,14 @@
 k3s는 Rancher Labs(SUSE)가 개발한 경량 Kubernetes 배포판. 단일 바이너리(~70MB)로 제공되며, 엣지/IoT/온프레미스 환경에 적합합니다.
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                     k3s vs k8s                               │
-│                                                              │
-│  k8s: etcd + kube-apiserver + kube-scheduler + ...           │
-│  k3s: All-in-one single binary                               │
-│       SQLite (기본) or etcd/PostgreSQL/MySQL                 │
-│       Flannel CNI + Traefik Ingress + CoreDNS 내장           │
-└──────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                     k3s vs k8s                                   │
+│                                                                  │
+│  k8s: etcd + kube-apiserver + kube-scheduler + ...               │
+│  k3s: All-in-one single binary                                   │
+│       SQLite (default) or etcd/PostgreSQL/MySQL                  │
+│       Flannel CNI + Traefik Ingress + CoreDNS built-in           │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
 - 표준 Kubernetes API 100% 호환
