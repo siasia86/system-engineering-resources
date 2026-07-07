@@ -107,6 +107,12 @@ SE/SRE/DBA 로드맵, 실무 운영, 도구, AI 활용, 법률.
 | [Chaos Engineering](04_system_engineer/02_operations/chaos_engineering.md)                   | 가설 실험, 폭발 반경, Game Day     |
 | [Multi-Region Architecture](04_system_engineer/02_operations/multi_region_architecture.md)   | Active-Active, RPO/RTO, Failover   |
 | [엔지니어링 용어](04_system_engineer/02_operations/engineering_terms.md)                     | 인프라/SRE 용어 정리               |
+| [Platform Engineering](04_system_engineer/02_operations/platform_engineering.md)             | IDP, Golden Path, Self-service     |
+| [On-Call Design](04_system_engineer/02_operations/oncall_design.md)                          | 로테이션, 보상, 런북, 번아웃       |
+| [Team Topology](04_system_engineer/02_operations/team_topology.md)                           | Stream-aligned/Platform/Enabling   |
+| [Tech Debt Management](04_system_engineer/02_operations/tech_debt_management.md)             | 분류, 측정, 상환 우선순위          |
+| [Vendor Evaluation](04_system_engineer/02_operations/vendor_evaluation.md)                   | PoC, TCO, Lock-in 평가             |
+| [Legacy Modernization](04_system_engineer/02_operations/legacy_modernization.md)             | Strangler Fig, 점진적 전환         |
 
 ### 도구
 
@@ -285,21 +291,22 @@ Python 프로그래밍 가이드.
 
 주요 인프라/DevOps 도구 가이드.
 
-| 문서                                                        | 설명                            |
-|-------------------------------------------------------------|---------------------------------|
-| [Ansible 기초](13_iac/01_ansible/ansible_basic_guide.md)    | 인벤토리, 플레이북, 롤          |
-| [Ansible Vault](13_iac/01_ansible/ansible_vault.md)         | 시크릿 암호화                   |
-| [Jenkins Pipeline](12_tech_stack/jenkins_pipeline.md)       | Declarative/Scripted Pipeline   |
-| [Apache Airflow](12_tech_stack/airflow.md)                  | DAG, Operator, 스케줄링         |
-| [AWS Step Functions](12_tech_stack/aws_step_functions.md)   | 상태 머신, 워크플로우           |
-| [Git 실무 가이드](12_tech_stack/git_guide.md)               | diff, log, fetch, stash, rebase |
-| [ArgoCD](12_tech_stack/argocd.md)                           | GitOps CD, Application 동기화   |
-| [GitHub Actions](12_tech_stack/github_actions.md)           | 워크플로우 자동화, Runner       |
-| [Helm](12_tech_stack/helm.md)                               | Kubernetes 패키지 매니저, Chart |
-| [Apache Kafka](12_tech_stack/kafka.md)                      | 분산 메시지 스트리밍, Topic     |
-| [Kubernetes 기본](12_tech_stack/kubernetes_basic.md)        | Pod/Deployment/Service, kubectl |
-| [Prometheus & Grafana](12_tech_stack/prometheus_grafana.md) | 메트릭 수집, PromQL, 대시보드   |
-| [Terraform](12_tech_stack/terraform.md)                     | IaC, HCL, State 관리, Module    |
+| 문서                                                                | 설명                            |
+|---------------------------------------------------------------------|---------------------------------|
+| [Ansible 기초](13_iac/01_ansible/ansible_basic_guide.md)            | 인벤토리, 플레이북, 롤          |
+| [Ansible Vault](13_iac/01_ansible/ansible_vault.md)                 | 시크릿 암호화                   |
+| [Jenkins Pipeline](12_tech_stack/jenkins_pipeline.md)               | Declarative/Scripted Pipeline   |
+| [Apache Airflow](12_tech_stack/airflow.md)                          | DAG, Operator, 스케줄링         |
+| [AWS Step Functions](12_tech_stack/aws_step_functions.md)           | 상태 머신, 워크플로우           |
+| [Git 실무 가이드](12_tech_stack/git_guide.md)                       | diff, log, fetch, stash, rebase |
+| [ArgoCD](12_tech_stack/argocd.md)                                   | GitOps CD, Application 동기화   |
+| [GitHub Actions](12_tech_stack/github_actions.md)                   | 워크플로우 자동화, Runner       |
+| [Helm](12_tech_stack/helm.md)                                       | Kubernetes 패키지 매니저, Chart |
+| [Apache Kafka](12_tech_stack/kafka.md)                              | 분산 메시지 스트리밍, Topic     |
+| [Kubernetes 기본](12_tech_stack/kubernetes_basic.md)                | Pod/Deployment/Service, kubectl |
+| [Prometheus & Grafana](12_tech_stack/prometheus_grafana.md)         | 메트릭 수집, PromQL, 대시보드   |
+| [Terraform](12_tech_stack/terraform.md)                             | IaC, HCL, State 관리, Module    |
+| [Cloud Cost Optimization](12_tech_stack/cloud_cost_optimization.md) | RI/SP, Spot, FinOps             |
 
 [⬆ 목차로 돌아가기](#목차)
 
