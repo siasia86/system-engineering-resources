@@ -73,12 +73,15 @@
 - `networking_official_notes.md` — 네트워크 프로토콜 RFC 참조
 - `postgresql_official_notes.md` — PostgreSQL 공식 문서 참조
 
-#### 04_system_engineer/02_operations — 시니어급 문서 5개 (신규)
+#### 04_system_engineer/02_operations — 시니어급 문서 8개 (신규)
 - `incident_management.md` — 장애 등급 분류, IC 역할, 에스컬레이션, State Document
 - `slo_error_budget.md` — SLI/SLO/SLA 정의, Error Budget 운영, Burn Rate Alert, OpenSLO
 - `capacity_planning.md` — 트래픽 예측, 리소스 산정, Headroom 설계, Load Testing
 - `zero_downtime_migration.md` — Expand-Contract, Dual Write, CDC, Canary 전환, 롤백 전략
 - `change_management.md` — Standard/Normal/Emergency 변경 등급, CAB, 배포 윈도우
+- `postmortem_framework.md` — 5 Whys, Blameless Culture, Action Items 추적, 리뷰 프로세스
+- `chaos_engineering.md` — 가설 기반 실험, 폭발 반경 제어, Game Day, 성숙도 모델
+- `multi_region_architecture.md` — Active-Active/Passive, RPO/RTO 설계, Failover/Failback
 
 #### _reference — sre_operations_official_notes.md 신규
 - Google SRE Book/Workbook, PagerDuty, OpenSLO, ITIL v4, gh-ost, pt-osc 공식 출처 통합
@@ -137,7 +140,7 @@
 #### vpn_protocol.md 사실 검증 수정
 - 세대 타임라인: OpenVPN 2012→2001, IKEv2 순서 교체
 - IPsec AES-GCM-16: SHOULD+ → MUST (RFC 8221)
-- OpenVPN TLS: "1.3 기본" → "1.2/1.3 (최고 지원 버전 자동 선택)"
+- OpenVPN TLS: "1.3 기본" → "1.2/1.3 (최상위 지원 버전 자동 선택)"
 - L2TP/IPsec 오버헤드: "~20% 증가" → 출처 없는 수치 제거
 
 [⬆ 목차로 돌아가기](#목차)
