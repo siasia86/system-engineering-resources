@@ -19,6 +19,59 @@
 - `vpn_protocol_official_notes.md` — VPN RFC 기반 참조 노트
 - INDEX.md 갱신 (VPN Protocol 항목 추가, 알파벳순 정렬)
 
+#### 03_advanced_linux — 신규 문서 6개
+- `ipc.md` — 프로세스 간 통신 (Pipe, Socket, Shared Memory, Message Queue)
+- `linux_virtual_fs.md` — VFS 추상화 계층, inode, dentry, superblock
+- `namespace.md` — Linux Namespace 7종 (pid, net, mnt, uts, ipc, user, cgroup)
+- `netfilter_tc.md` — Netfilter 훅 체인, iptables/nftables, TC 트래픽 제어
+- `scheduler.md` — CFS, RT, Deadline 스케줄러, nice, cgroup CPU
+- `virtual_memory.md` — 페이지 테이블, TLB, Swap, OOM Killer, NUMA
+
+#### 04_system_engineer/04_ai — 신규 문서 3개
+- `kiro_agent_lock.md` — Kiro 에이전트 동시 실행 방지
+- `kiro_model_guide.md` — Kiro 모델 선택 가이드
+- `kiro_setup_guide.md` — Kiro CLI 초기 설정
+
+#### 05_computer_science — 신규 문서 1개
+- `switch_vlan_mode.md` — Access/Trunk/Hybrid 모드, 802.1Q 태깅
+
+#### 06_security — 신규 문서 10개
+- `01_cve/` 서브디렉토리 생성 — CVE 5건 + LPE 공격 시나리오
+  - `cve_2026_31431_copy_fail.md`, `cve_2026_43284_dirty_frag.md`
+  - `cve_2026_43500_dirty_frag.md`, `cve_2026_43503_dirty_clone.md`
+  - `cve_2026_46300_fragnesia.md`, `cve_2026_lpe_attack_scenarios.md`
+- `02_web_cwe/` 서브디렉토리 생성 — CWE 4건
+  - `cwe_022_path_traversal.md`, `cwe_078_command_injection.md`
+  - `cwe_200_info_disclosure.md`, `cwe_434_file_upload.md`
+
+#### 08_debugging_linux — 신규 문서 1개
+- `oom_hang.md` — OOM Killer 분석, 행 진단, kdump, sysrq
+
+#### 09_database — 신규 문서 7개
+- `dbtrail/` 서브디렉토리 생성 — DB 포렌식/복구
+  - `architecture.md`, `forensics.md`, `recovery_guide.md`
+- `rdbms_index.md`, `rdbms_server_config.md`, `rdbms_slow_query.md`, `rdbms_tuning.md`
+
+#### 11_python — 신규 문서 2개
+- `python_file_io.md` — 파일 읽기/쓰기, encoding, pathlib, atomic write
+- `python_generators.md` — yield, send, generator expression, itertools
+
+#### 12_tech_stack — 신규 문서 4개
+- `01_data_pipeline/` 서브디렉토리 생성
+  - `game_log_pipeline.md`, `log_aggregation_100gb.md`, `log_aggregation_100tb.md`
+- `github_cli.md` — gh CLI 명령어, PR/Issue 자동화
+- `gstack.md` — 게임 인프라 기술 스택 조합
+- `loop_engineering.md` — AI 에이전트 루프 설계
+
+#### 13_iac — 신규 문서 1개
+- `01_ansible/molecule.md` — Ansible 역할 테스트 프레임워크
+
+#### _reference — 신규 참조 파일 4개
+- `cve_security_official_notes.md` — CVE/CWE 공식 출처 참조
+- `linux_kernel_official_notes.md` — 커널 릴리즈/기능 참조
+- `networking_official_notes.md` — 네트워크 프로토콜 RFC 참조
+- `postgresql_official_notes.md` — PostgreSQL 공식 문서 참조
+
 #### .kiro/prompts — fact-check.md 신규
 - 기술 사실 검증 전용 프롬프트 (RFC 대조, 할루시네이션 탐지, 비검증 수치 제거)
 - md-review.md에서 사실 검증 역할 분리
