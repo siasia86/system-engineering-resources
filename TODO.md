@@ -115,20 +115,22 @@ md-style-check 검사 대상에서 제외하는 파일입니다.
 │   ├── legal/                   (2: drm, ip_ownership)
 │   └── ai_tools/                (8: kiro_*, ai_patterns, harness, loop)
 ├── 98_image/                    (루트 유지, 이동 안 함)
-├── 99_archive/                  (33_sjyun + 51_siasia + 99_ETC 통합)
+├── 99_archive/
+│   ├── 01_sjyun/            (기존 33_sjyun_32_readme.md)
+│   ├── 02_siasia/           (기존 51_siasia)
+│   └── 03_aws_jobs/         (기존 99_ETC)
 ├── _reference/                  (유지)
 ├── .github/                     (유지)
 ├── .gitignore                   (루트 유지)
 ├── .gitleaks.toml               (루트 유지)
-└── _meta/
-    ├── README.md
-    ├── TODO.md
-    ├── CHANGELOG.md
-    ├── LICENSE.md
-    ├── license_guide.md
-    ├── md-style-check.py
-    ├── md-link-check.py
-    └── strip-footer-md.py
+├── README.md                    (루트 유지, GitHub 렌더링)
+├── TODO.md                      (루트 유지)
+├── CHANGELOG.md                 (루트 유지)
+├── LICENSE / LICENSE.md         (루트 유지)
+├── license_guide.md             (루트 유지)
+├── md-style-check.py            (루트 유지)
+├── md-link-check.py             (루트 유지)
+└── strip-footer-md.py           (루트 유지)
 ```
 
 #### 마이그레이션 계획
@@ -151,12 +153,16 @@ md-style-check 검사 대상에서 제외하는 파일입니다.
 - 이전 경로로의 리다이렉트/심볼릭 링크는 만들지 않음
 - 98_image/ 루트 유지 (이동 안 함) — 문서 depth 변경 시 상대경로(`../../98_image/`)만 조정
 - 삭제 대상: `00_readme.md/` (Kiro 설정 복사본), `90_DELETE/` (폐기 파일)
-- 통합 대상: `33_sjyun_32_readme.md/` + `51_siasia/` + `99_ETC/` → `99_archive/`
+- 통합 대상: `33_sjyun_32_readme.md/` → `99_archive/01_sjyun/`, `51_siasia/` → `99_archive/02_siasia/`, `99_ETC/` → `99_archive/03_aws_jobs/`
 - md-style-check.py 수정 필요:
   - `FILE_SKIP` 5개 항목 경로 패턴 갱신
-  - README.md를 `_meta/`로 이동 시 루트 README 제외 로직 조정 검토
+  - README.md 루트 유지 → 제외 로직 변경 불필요
+- .gitignore 수정: `51_siasia/`, `33_sjyun_32_readme.md/`, `#00_readme.md/`, `#99_ETC/` 제거 → `99_archive/` 추가
 - md-link-check.py: 상대경로 기반이므로 수정 불필요
 - strip-footer-md.py: 수정 불필요 (경로 하드코딩 없음)
+- ~/.kiro/skills/testing-guide/SKILL.md: 경로 수정 필요 (`05_computer_science/02_testing/` → `01_fundamentals/cs/testing/`)
+- ~/.kiro/markdown/STYLE.md L466: 예시 링크 경로 수정 (`../05_computer_science/TCP_state.md` → `../01_fundamentals/networking/TCP_state.md`)
+- ~/.kiro/agents, prompts, markdown/STYLE.md: 수정 불필요 (_reference 루트 유지)
 
 ---
 
