@@ -455,6 +455,7 @@ FILE_SKIP = {
     "02_basic_linux/vim_airline.md": {"diagram-width", "h1"},
     "04_system_engineer/02_operations/game_infra_kpi_presentation.md": {"diagram-kr"},
     "05_computer_science/network_headers.md": {"box-chars"},
+    "04_system_engineer/04_ai/kiro_cli_command_reference.md": {"diagram-kr"},
 }
 
 def _should_skip_for_file(filepath, check_name):
