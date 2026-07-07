@@ -28,6 +28,7 @@ description: _reference 디렉토리 인덱스. 기술별 공식 문서 참조 �
 | Platform Engineering | `_reference/platform_engineering_official_notes.md` | CNCF Platforms WP          | 2026-07-07 |
 | PostgreSQL           | `_reference/postgresql_official_notes.md`           | 18.4 (EOL 2030-11)            | 2026-07-07 |
 | SRE Operations       | `_reference/sre_operations_official_notes.md`       | Google SRE Book / ITIL v4     | 2026-07-07 |
+| Charset/Encoding   | `_reference/charset_encoding_official_notes.md`     | RFC 3629, Unicode 16.0      | 2026-07-07 |
 | Chaos/FinOps         | `_reference/chaos_finops_official_notes.md`         | principlesofchaos.org / finops.org | 2026-07-07 |
 
 ## 사용 규칙
