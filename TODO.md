@@ -115,7 +115,11 @@ md-style-check 검사 대상에서 제외하는 파일입니다.
 │   ├── legal/                   (2: drm, ip_ownership)
 │   └── ai_tools/                (8: kiro_*, ai_patterns, harness, loop)
 ├── 98_image/                    (루트 유지, 이동 안 함)
+├── 99_archive/                  (33_sjyun + 51_siasia + 99_ETC 통합)
 ├── _reference/                  (유지)
+├── .github/                     (유지)
+├── .gitignore                   (루트 유지)
+├── .gitleaks.toml               (루트 유지)
 └── _meta/
     ├── README.md
     ├── TODO.md
@@ -146,6 +150,8 @@ md-style-check 검사 대상에서 제외하는 파일입니다.
 - 단계별 커밋 (롤백 가능하도록)
 - 이전 경로로의 리다이렉트/심볼릭 링크는 만들지 않음
 - 98_image/ 루트 유지 (이동 안 함) — 문서 depth 변경 시 상대경로(`../../98_image/`)만 조정
+- 삭제 대상: `00_readme.md/` (Kiro 설정 복사본), `90_DELETE/` (폐기 파일)
+- 통합 대상: `33_sjyun_32_readme.md/` + `51_siasia/` + `99_ETC/` → `99_archive/`
 - md-style-check.py 수정 필요:
   - `FILE_SKIP` 5개 항목 경로 패턴 갱신
   - README.md를 `_meta/`로 이동 시 루트 README 제외 로직 조정 검토
