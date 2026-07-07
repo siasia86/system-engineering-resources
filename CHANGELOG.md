@@ -6,6 +6,62 @@
 
 ---
 
+## [2.3.0] - 2026-07-07
+
+### Added
+
+#### 12_tech_stack — 신규 문서 3개
+- `harness_engineering.md` — AI Harness Engineering (에이전트 환경 설계)
+- `vpn_protocol.md` (05_computer_science) — VPN 프로토콜 비교 (PPTP~WireGuard, RFC 대조 검증)
+- `zabbix_vs_prometheus.md` — 모니터링 도구 비교 (아키텍처, 수집, 알림, 확장성)
+
+#### _reference — 신규 참조 파일
+- `vpn_protocol_official_notes.md` — VPN RFC 기반 참조 노트
+- INDEX.md 갱신 (VPN Protocol 항목 추가, 알파벳순 정렬)
+
+#### .kiro/prompts — fact-check.md 신규
+- 기술 사실 검증 전용 프롬프트 (RFC 대조, 할루시네이션 탐지, 비검증 수치 제거)
+- md-review.md에서 사실 검증 역할 분리
+
+### Changed
+
+#### 12_tech_stack
+- `harness.md` → `harness_inc.md` 이름 변경 (CI/CD 플랫폼 명시)
+
+#### md-style-check.py
+- `_reference` 디렉토리 검사 제외 추가
+- `kiro_cli_command_reference.md` FILE_SKIP diagram-kr 예외 추가
+
+#### .kiro/prompts/md-review.md
+- `content(tech error)` 제거 → `content(typo,example mismatch,duplication,broken sentence)`
+- `@fact-check` 분리 안내 주석 추가
+- diagram 항목에 `arrow flow direction logical` 추가
+
+#### .kiro/skills/work-rules/SKILL.md
+- §15 Storage targets에 추론/기억 기반 작성 금지 규칙 상단 배치
+
+### Fixed
+
+#### 다이어그램 한글→영문 (8개 파일 완료)
+- `asn_and_cloudflare_ddos.md`, `infra_monorepo_and_boilerplate.md`
+- `s3_gateway_endpoint_cross_account.md`, `vpc_peering_inter_region_guide.md`
+- `devops_toolchain.md`, `sre_roadmap.md`
+- `ai_development_request_template.md`, `ai_markdown_design_patterns.md`
+
+#### 다이어그램 화살표 수정
+- `ai_development_request_template.md` — `------->` → `──────>` (Box Drawing 문자)
+- `vpn_protocol.md` — 다이어그램 `│`/`v` 위치, 박스 `┐`/`┘` 닫힘, Transport/Tunnel Mode 박스 수정
+
+#### vpn_protocol.md 사실 검증 수정
+- 세대 타임라인: OpenVPN 2012→2001, IKEv2 순서 교체
+- IPsec AES-GCM-16: SHOULD+ → MUST (RFC 8221)
+- OpenVPN TLS: "1.3 기본" → "1.2/1.3 (최고 지원 버전 자동 선택)"
+- L2TP/IPsec 오버헤드: "~20% 증가" → 출처 없는 수치 제거
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## [2.2.1] - 2026-06-21
 
 ### Fixed
@@ -236,6 +292,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-05-04
+**마지막 업데이트**: 2026-07-07
 
 © 2026 siasia86. Licensed under CC BY 4.0.
