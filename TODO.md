@@ -44,11 +44,11 @@ md-style-check 검사 대상에서 제외하는 파일입니다.
 
 | 순위 | 파일명                       | 카테고리           | 내용                                                    | 상태 |
 |------|------------------------------|--------------------|---------------------------------------------------------|------|
-| 1    | `incident_management.md`     | 04_system_engineer | 장애 등급 분류, 에스컬레이션, 커뮤니케이션, 지휘 체계   | ⬜   |
-| 2    | `slo_error_budget.md`        | 04_system_engineer | SLI 정의 → SLO 설정 → Error Budget 운영 → 의사결정 연동 | ⬜   |
-| 3    | `capacity_planning.md`       | 04_system_engineer | 트래픽 예측 → 서버 산정 → 비용 계산 프레임워크          | ⬜   |
-| 4    | `zero_downtime_migration.md` | 04_system_engineer | DB expand-contract, 트래픽 전환, 롤백 판단              | ⬜   |
-| 5    | `change_management.md`       | 04_system_engineer | 변경 등급, CAB, 배포 윈도우, 긴급 변경 프로세스         | ⬜   |
+| 1    | `incident_management.md`     | 04_system_engineer | 장애 등급 분류, 에스컬레이션, 커뮤니케이션, 지휘 체계   | ✅   |
+| 2    | `slo_error_budget.md`        | 04_system_engineer | SLI 정의 → SLO 설정 → Error Budget 운영 → 의사결정 연동 | ✅   |
+| 3    | `capacity_planning.md`       | 04_system_engineer | 트래픽 예측 → 서버 산정 → 비용 계산 프레임워크          | ✅   |
+| 4    | `zero_downtime_migration.md` | 04_system_engineer | DB expand-contract, 트래픽 전환, 롤백 판단              | ✅   |
+| 5    | `change_management.md`       | 04_system_engineer | 변경 등급, CAB, 배포 윈도우, 긴급 변경 프로세스         | ✅   |
 
 ### 후속 (우선순위 6~15)
 
