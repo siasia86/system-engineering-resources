@@ -883,12 +883,12 @@ class ChaosMonkey:
 
 **분산 시스템 설계**
 ```
-요구사항:                              
-- 초당 10만 요청 처리                  
-- 99.99% 가용성                        
-- 글로벌 서비스                        
+Requirements:                              
+- 100K requests per second                  
+- 99.99% availability                        
+- Global service                        
                                        
-아키텍처:                              
+Architecture:                              
 ┌─────────────────────────────────────┐
 │         Global Load Balancer        │
 │         (Route 53 + CloudFront)     │

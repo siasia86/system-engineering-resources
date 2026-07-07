@@ -44,24 +44,24 @@
 ### 환경별 흐름
 
 ```
-┌───────┐        ┌───────┐        ┌───────┐        ┌───────┐    
-│  dev  │------->│  qa   │------->│  stg  │------->│  prd  │    
-└───────┘        └───────┘        └───────┘        └───────┘    
-  개발자           QA 팀            운영 팀           운영 팀   
-  자유 배포        테스트 완료       prd 동일 검증     최종 배포
-                   후 승인          후 승인           후 승인   
+┌───────┐        ┌───────┐        ┌───────┐        ┌───────┐
+│  dev  │──────> │  qa   │──────> │  stg  │──────> │  prd  │
+└───────┘        └───────┘        └───────┘        └───────┘
+  Developer        QA Team          Ops Team          Ops Team
+  Free deploy      Test complete    prd-same verify   Final deploy
+                   then approve     then approve      then approve
 ```
 
 ### 핫픽스 흐름 (긴급)
 
 ```
-┌───────┐        ┌───────┐        ┌───────┐     
-│  dev  │------->│  stg  │------->│  prd  │     
-└───────┘        └───────┘        └───────┘     
-  긴급 수정        최소 검증         즉시 배포  
-  (QA 생략)        (30분 이내)       (승인 필수)
-                                                
-  ※ 핫픽스 후 반드시 qa 환경에 소급 반영        
+┌───────┐        ┌───────┐        ┌───────┐
+│  dev  │──────> │  stg  │──────> │  prd  │
+└───────┘        └───────┘        └───────┘
+  Hotfix           Min verify        Immediate deploy
+  (skip QA)        (within 30min)    (approval required)
+
+  * After hotfix, must backport to qa env
 ```
 
 ### 환경별 접근 권한
