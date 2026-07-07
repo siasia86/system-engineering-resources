@@ -208,6 +208,9 @@ Health Check Failure
 | Cross-region latency 과다 | 동기 복제 성능 영향   | Write forwarding 또는 비동기 전환        |
 | DR 훈련 시 실제 장애 발생 | 훈련 범위 초과        | 별도 환경 또는 canary 범위로 제한        |
 
+> Multi-Region 아키텍처 패턴(Active-Active, Active-Passive, Pilot Light)은 AWS Disaster Recovery 백서에서 분류합니다. RPO/RTO 매트릭스 기반으로 패턴을 선택합니다.
+> — https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html
+
 ## 참고 자료
 
 - AWS Disaster Recovery: [docs.aws.amazon.com](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-workloads-on-aws.html) — ★★★☆☆
