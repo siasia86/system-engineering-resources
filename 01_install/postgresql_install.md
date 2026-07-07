@@ -2,12 +2,12 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. Ubuntu 설치](#2-ubuntu-설치) / [3. RHEL 계열 설치](#3-rhel-계열-설치) |
+| 섹션                                                                                                                                                           |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. Ubuntu 설치](#2-ubuntu-설치) / [3. RHEL 계열 설치](#3-rhel-계열-설치)                                                                 |
 | [4. 초기 보안 설정](#4-초기-보안-설정) / [5. 기본 설정 (postgresql.conf)](#5-기본-설정-postgresqlconf) / [6. 접속 제어 (pg_hba.conf)](#6-접속-제어-pg_hbaconf) |
-| [7. 복제 설정](#7-복제-설정) / [8. 방화벽 설정](#8-방화벽-설정) / [9. 설치 검증](#9-설치-검증) / [10. 트러블슈팅](#10-트러블슈팅) |
-| [11. 기본 사용법](#11-기본-사용법) |
+| [7. 복제 설정](#7-복제-설정) / [8. 방화벽 설정](#8-방화벽-설정) / [9. 설치 검증](#9-설치-검증) / [10. 트러블슈팅](#10-트러블슈팅)                              |
+| [11. 기본 사용법](#11-기본-사용법)                                                                                                                             |
 
 ---
 
@@ -39,16 +39,16 @@
 
 ### Ubuntu 버전별 차이
 
-| 항목                   | Ubuntu 22.04 (Jammy)            | Ubuntu 24.04 (Noble)                    |
-|------------------------|---------------------------------|-----------------------------------------|
-| 기본 저장소 PostgreSQL | 14.x                            | 16.x                                    |
-| PGDG 최신 버전         | 17                              | 17 (18 출시 시 자동 반영)               |
-| DB 생성 로케일         | `LC_COLLATE 'en_US.UTF-8'` 가능 | `LOCALE 'C.UTF-8'` 사용 권장 (ICU 기반) |
-| 설정 파일 경로         | `/etc/postgresql/14/main/`      | `/etc/postgresql/17/main/`              |
-| 로그 경로              | `/var/log/postgresql/`          | `/var/log/postgresql/`                  |
+| 항목                   | Ubuntu 22.04 (Jammy)            | Ubuntu 24.04 (Noble)                        |
+|------------------------|---------------------------------|---------------------------------------------|
+| 기본 저장소 PostgreSQL | 14.x                            | 16.x                                        |
+| PGDG 최신 버전         | 17                              | 17 (18 출시 시 자동 반영)                   |
+| DB 생성 로케일         | `LC_COLLATE 'en_US.UTF-8'` 가능 | `LOCALE 'C.UTF-8'` 권장 (ICU provider 기본) |
+| 설정 파일 경로         | `/etc/postgresql/14/main/`      | `/etc/postgresql/17/main/`                  |
+| 로그 경로              | `/var/log/postgresql/`          | `/var/log/postgresql/`                      |
 
-🟡 Ubuntu 24.04는 PostgreSQL 17 기준으로 ICU 로케일을 사용합니다.
-`LC_COLLATE 'en_US.UTF-8'` 방식으로 DB 생성 시 오류가 발생하므로 `LOCALE 'C.UTF-8'`을 사용합니다.
+🟡 Ubuntu 24.04 + PostgreSQL 17은 ICU provider가 기본입니다.
+`LC_COLLATE 'en_US.UTF-8'` 방식은 해당 locale이 설치돼 있으면 동작하지만, 기본 설치에서는 locale 미존재로 오류가 발생할 수 있습니다. `LOCALE 'C.UTF-8'` 사용을 권장합니다.
 
 ### 2-1. 시스템 업데이트
 
@@ -203,7 +203,7 @@ ALTER USER postgres WITH ENCRYPTED PASSWORD 'SecurePassword123';
 
 ```sql
 -- DB 생성
--- PostgreSQL 17+: LOCALE 'C.UTF-8' 사용 (LC_COLLATE/LC_CTYPE은 ICU 환경에서 오류 발생)
+-- PostgreSQL 17+: LOCALE 'C.UTF-8' 권장 (ICU 기본 환경에서 locale 미설치 시 LC_COLLATE 오류 가능)
 CREATE DATABASE mydb
     ENCODING 'UTF8'
     LOCALE 'C.UTF-8'
