@@ -1,33 +1,33 @@
 # TODO
 
-md-style-check 잔여 이슈 및 신규 문서 작성 목록입니다.
+레포 구조 개편 및 잔여 이슈 목록입니다.
 
 🟡 완료된 항목은 `CHANGELOG.md`로 이동합니다. TODO에는 미완료 항목만 유지합니다.
 
 ## 목차
 
-| 섹션                                                                                                                                |
-|-------------------------------------------------------------------------------------------------------------------------------------|
-| [1. 다이어그램 한글→영문](#1-다이어그램-한글영문) / [2. 기타 잔여 이슈](#2-기타-잔여-이슈) / [3. 검사 예외 파일](#3-검사-예외-파일) |
-| [4. 신규 문서 — 시니어급 (20년차+)](#4-신규-문서--시니어급-20년차)                                                                  |
+| 섹션                                                                                       |
+|--------------------------------------------------------------------------------------------|
+| [1. 완료 사항](#1-완료-사항) / [2. 잔여 이슈](#2-잔여-이슈) / [3. 구조 개편](#3-구조-개편) |
 
 ---
 
-## 1. 다이어그램 한글→영문
+## 1. 완료 사항
 
-✅ 완료 — CHANGELOG.md [2.3.0] Fixed 참조.
+- ✅ 다이어그램 한글→영문 (CHANGELOG [2.3.0] 참조)
+- ✅ 시니어급 문서 15개 작성 완료 (§4 전체, CHANGELOG [2.3.0] 참조)
+- ✅ `00_readme.md/` 삭제
+- ✅ `90_DELETE/` 삭제
 
 ---
 
-## 2. 기타 잔여 이슈
+## 2. 잔여 이슈
 
 | 파일                                                     | 이슈 유형       | 설명                              |
 |----------------------------------------------------------|-----------------|-----------------------------------|
 | `04_system_engineer/04_ai/kiro_cli_command_reference.md` | _reference 규칙 | frontmatter 없음 (FILE_SKIP 예외) |
 
-## 3. 검사 예외 파일
-
-md-style-check 검사 대상에서 제외하는 파일입니다.
+### 검사 예외 파일
 
 | 파일                                                     | 사유                                   |
 |----------------------------------------------------------|----------------------------------------|
@@ -36,44 +36,9 @@ md-style-check 검사 대상에서 제외하는 파일입니다.
 
 ---
 
-## 4. 신규 문서 — 시니어급 (20년차+)
+## 3. 구조 개편
 
-현재 레포는 SE 2~3년차(중급)가 메인 타겟입니다. 아래 문서를 추가하여 시니어/아키텍트급 콘텐츠를 보강합니다.
-
-### 우선순위
-
-| 순위 | 파일명                       | 카테고리           | 내용                                                    | 상태 |
-|------|------------------------------|--------------------|---------------------------------------------------------|------|
-| 1    | `incident_management.md`     | 04_system_engineer | 장애 등급 분류, 에스컬레이션, 커뮤니케이션, 지휘 체계   | ✅   |
-| 2    | `slo_error_budget.md`        | 04_system_engineer | SLI 정의 → SLO 설정 → Error Budget 운영 → 의사결정 연동 | ✅   |
-| 3    | `capacity_planning.md`       | 04_system_engineer | 트래픽 예측 → 서버 산정 → 비용 계산 프레임워크          | ✅   |
-| 4    | `zero_downtime_migration.md` | 04_system_engineer | DB expand-contract, 트래픽 전환, 롤백 판단              | ✅   |
-| 5    | `change_management.md`       | 04_system_engineer | 변경 등급, CAB, 배포 윈도우, 긴급 변경 프로세스         | ✅   |
-
-### 후속 (우선순위 6~15)
-
-| 순위 | 파일명                         | 카테고리           | 내용                                               | 상태 |
-|------|--------------------------------|--------------------|----------------------------------------------------|------|
-| 6    | `postmortem_framework.md`      | 04_system_engineer | 타임라인, 5 Whys, Contributing Factors, 재발 방지  | ✅   |
-| 7    | `chaos_engineering.md`         | 04_system_engineer | 가설 → 실험 → 폭발 반경 제한 → 자동 롤백           | ✅   |
-| 8    | `multi_region_architecture.md` | 04_system_engineer | Active-Active/Standby, RPO/RTO 설계                | ✅   |
-| 9    | `platform_engineering.md`      | 04_system_engineer | IDP 설계, Golden Path, Self-service 인프라         | ✅   |
-| 10   | `oncall_design.md`             | 04_system_engineer | 로테이션, 보상, 번아웃 방지, 런북, 핸드오프        | ✅   |
-| 11   | `team_topology.md`             | 04_system_engineer | Stream-aligned/Platform/Enabling/Complicated 팀    | ✅   |
-| 12   | `tech_debt_management.md`      | 04_system_engineer | 기술 부채 분류, 측정, 상환 우선순위                | ✅   |
-| 13   | `cloud_cost_optimization.md`   | 12_tech_stack      | RI/SP 전략, Spot 활용, FinOps 프레임워크           | ✅   |
-| 14   | `vendor_evaluation.md`         | 04_system_engineer | 도구/서비스 선정 기준, PoC 설계, TCO, Lock-in 평가 | ✅   |
-| 15   | `legacy_modernization.md`      | 04_system_engineer | Strangler Fig, 단계별 분리, 데이터 이중 쓰기       | ✅   |
-
-### 다음 세션: 레포 구조 전면 개편
-
-§4 시니어 문서 15개 전부 완료. 다음 작업은 디렉토리 구조 마이그레이션입니다.
-
-#### 목표 구조 (안 C: 역할×단계 하이브리드)
-
-
-
-#### 변경 후 예상 tree
+### 목표 구조 (안 C: 역할 x 단계 하이브리드)
 
 ```
 32_system-engineering-resources/
@@ -115,15 +80,13 @@ md-style-check 검사 대상에서 제외하는 파일입니다.
 │   ├── legal/                   (2: drm, ip_ownership)
 │   └── ai_tools/                (8: kiro_*, ai_patterns, harness, loop)
 ├── 98_image/                    (루트 유지, 이동 안 함)
-├── 99_archive/
-│   ├── 01_sjyun/            (기존 33_sjyun_32_readme.md)
-│   ├── 02_siasia/           (기존 51_siasia)
-│   └── 03_aws_jobs/         (기존 99_ETC)
+├── 99_archive/                  (.gitignore, GitHub 미push)
+│   ├── 01_sjyun/                (기존 33_sjyun_32_readme.md)
+│   ├── 02_siasia/               (기존 51_siasia)
+│   └── 03_aws_jobs/             (기존 99_ETC)
 ├── _reference/                  (유지)
 ├── .github/                     (유지)
-├── .gitignore                   (루트 유지)
-├── .gitleaks.toml               (루트 유지)
-├── README.md                    (루트 유지, GitHub 렌더링)
+├── README.md                    (루트 유지)
 ├── TODO.md                      (루트 유지)
 ├── CHANGELOG.md                 (루트 유지)
 ├── LICENSE / LICENSE.md         (루트 유지)
@@ -133,36 +96,46 @@ md-style-check 검사 대상에서 제외하는 파일입니다.
 └── strip-footer-md.py           (루트 유지)
 ```
 
-#### 마이그레이션 계획
+### 마이그레이션 계획
 
 | 단계 | 작업                                     | 검증                 |
 |------|------------------------------------------|----------------------|
 | 1    | 매핑 테이블 작성 (현재 경로 → 신규 경로) | 파일 수 일치         |
 | 2    | 디렉토리 생성                            | tree 확인            |
 | 3    | git mv 실행 (history 보존)               | git status clean     |
-| 4    | README.md 전면 재작성 (6섹션)            | md-style-check 0건   |
+| 4    | README.md 전면 재작성 (6섹션, 루트 유지) | md-style-check 0건   |
 | 5    | 내부 링크 전수 수정 (문서 간 상대경로)   | md-link-check.py 0건 |
 | 6    | CHANGELOG.md [3.0.0] 항목 추가           | md-style-check 0건   |
 | 7    | _reference/INDEX.md 경로 미사용 확인     | 변경 불필요          |
 | 8    | GitHub Actions workflow 경로 확인        | push 후 green        |
 
-#### 주의사항
+### 스크립트/설정 수정 사항
+
+| 대상                                  | 수정 내용                                                                                      |
+|---------------------------------------|------------------------------------------------------------------------------------------------|
+| md-style-check.py                     | `FILE_SKIP` 5개 항목 경로 패턴 갱신                                                            |
+| .gitignore                            | `51_siasia/`, `33_sjyun_32_readme.md/`, `#00_readme.md/`, `#99_ETC/` 제거 → `99_archive/` 추가 |
+| ~/.kiro/skills/testing-guide/SKILL.md | `05_computer_science/02_testing/` → `01_fundamentals/cs/testing/`                              |
+| ~/.kiro/markdown/STYLE.md L466        | `../05_computer_science/TCP_state.md` → `../01_fundamentals/networking/TCP_state.md`           |
+
+### 수정 불필요 확인
+
+| 대상                               | 이유                            |
+|------------------------------------|---------------------------------|
+| md-link-check.py                   | 상대경로 기반 동작              |
+| strip-footer-md.py                 | 경로 하드코딩 없음              |
+| md-style-check.py README 제외 로직 | README.md 루트 유지             |
+| ~/.kiro/agents/*.json              | `_reference/INDEX.md` 루트 유지 |
+| ~/.kiro/prompts/*.md               | 경로 참조 없음                  |
+| _reference/                        | 루트 유지, 내부 경로 참조 없음  |
+
+### 주의사항
 
 - git mv 사용 필수 (history 보존)
 - 단계별 커밋 (롤백 가능하도록)
 - 이전 경로로의 리다이렉트/심볼릭 링크는 만들지 않음
-- 98_image/ 루트 유지 (이동 안 함) — 문서 depth 변경 시 상대경로(`../../98_image/`)만 조정
-- 삭제 대상: ~~`00_readme.md/`~~ ✅ 삭제 완료, ~~`90_DELETE/`~~ ✅ 삭제 완료
-- 통합 대상: `33_sjyun_32_readme.md/` → `99_archive/01_sjyun/`, `51_siasia/` → `99_archive/02_siasia/`, `99_ETC/` → `99_archive/03_aws_jobs/`
-- md-style-check.py 수정 필요:
-  - `FILE_SKIP` 5개 항목 경로 패턴 갱신
-  - README.md 루트 유지 → 제외 로직 변경 불필요
-- .gitignore 수정: `51_siasia/`, `33_sjyun_32_readme.md/`, `#00_readme.md/`, `#99_ETC/` 제거 → `99_archive/` 추가
-- md-link-check.py: 상대경로 기반이므로 수정 불필요
-- strip-footer-md.py: 수정 불필요 (경로 하드코딩 없음)
-- ~/.kiro/skills/testing-guide/SKILL.md: 경로 수정 필요 (`05_computer_science/02_testing/` → `01_fundamentals/cs/testing/`)
-- ~/.kiro/markdown/STYLE.md L466: 예시 링크 경로 수정 (`../05_computer_science/TCP_state.md` → `../01_fundamentals/networking/TCP_state.md`)
-- ~/.kiro/agents, prompts, markdown/STYLE.md: 수정 불필요 (_reference 루트 유지)
+- 98_image/ 루트 유지 (이동 안 함) — 문서 depth 변경 시 상대경로만 조정
+- `__pycache__/` — 마이그레이션 전 삭제 (자동 재생성)
 
 ---
 

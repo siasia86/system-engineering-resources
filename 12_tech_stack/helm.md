@@ -16,13 +16,13 @@
 Helm은 Kubernetes 패키지 매니저. 복잡한 K8s 매니페스트를 Chart로 패키징하여 배포, 업그레이드, 롤백을 관리합니다.
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                      Helm Flow                               │
-│                                                              │
-│  Chart (템플릿) + Values (설정) -> Manifest -> K8s 배포      │
-│                                                              │
-│  helm install / upgrade / rollback / uninstall               │
-└──────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────┐
+│                      Helm Flow                                     │
+│                                                                    │
+│  Chart (template) + Values (config) -> Manifest -> K8s deploy      │
+│                                                                    │
+│  helm install / upgrade / rollback / uninstall                     │
+└────────────────────────────────────────────────────────────────────┘
 ```
 
 - **패키지 관리**: 여러 K8s 리소스를 하나의 Chart로 묶어 배포합니다.
@@ -36,20 +36,20 @@ Helm은 Kubernetes 패키지 매니저. 복잡한 K8s 매니페스트를 Chart�
 ## 2. 아키텍처
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                    Helm v3 Architecture                      │
-│                                                              │
-│  helm CLI ──> Kubernetes API Server                          │
-│                      │                                       │
-│                       v                                      │
-│              Release (Secret으로 저장)                       │
-│              ┌─────────────────────────┐                     │
-│              │  Release History        │                     │
-│              │  revision 1: v1.0.0     │                     │
-│              │  revision 2: v1.1.0     │                     │
-│              │  revision 3: v1.2.0 ◄── │ current             │
-│              └─────────────────────────┘                     │
-└──────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────┐
+│                    Helm v3 Architecture                       │
+│                                                               │
+│  helm CLI ──> Kubernetes API Server                           │
+│                      │                                        │
+│                       v                                       │
+│              Release (stored as Secret)                       │
+│              ┌─────────────────────────┐                      │
+│              │  Release History        │                      │
+│              │  revision 1: v1.0.0     │                      │
+│              │  revision 2: v1.1.0     │                      │
+│              │  revision 3: v1.2.0 ◄── │ current              │
+│              └─────────────────────────┘                      │
+└───────────────────────────────────────────────────────────────┘
 ```
 
 > Helm v2는 Tiller 서버가 필요했으나, v3부터 제거되어 kubectl 권한으로 직접 동작합니다.
@@ -157,23 +157,23 @@ helm uninstall my-redis --keep-history   # 이력 유지
 ## 5. Chart 구조
 
 ```
-my-app/
-├── Chart.yaml           # Chart 메타데이터
-├── values.yaml          # 기본 Values
-├── values-dev.yaml      # 환경별 Values (관례)
-├── values-prod.yaml
-├── charts/              # 의존 Chart (서브차트)
-├── templates/
+my-app/                                                   
+├── Chart.yaml           # Chart 메타데이터               
+├── values.yaml          # 기본 Values                    
+├── values-dev.yaml      # 환경별 Values (관례)           
+├── values-prod.yaml                                      
+├── charts/              # 의존 Chart (서브차트)          
+├── templates/                                            
 │   ├── _helpers.tpl     # 재사용 템플릿 (named templates)
-│   ├── deployment.yaml
-│   ├── service.yaml
-│   ├── ingress.yaml
-│   ├── configmap.yaml
-│   ├── secret.yaml
-│   ├── hpa.yaml
-│   ├── serviceaccount.yaml
-│   └── NOTES.txt        # 설치 후 출력 메시지
-└── .helmignore
+│   ├── deployment.yaml                                   
+│   ├── service.yaml                                      
+│   ├── ingress.yaml                                      
+│   ├── configmap.yaml                                    
+│   ├── secret.yaml                                       
+│   ├── hpa.yaml                                          
+│   ├── serviceaccount.yaml                               
+│   └── NOTES.txt        # 설치 후 출력 메시지            
+└── .helmignore                                           
 ```
 
 ### Chart.yaml

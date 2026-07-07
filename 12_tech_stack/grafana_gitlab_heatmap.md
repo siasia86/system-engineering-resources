@@ -15,13 +15,13 @@
 Grafana OSS(무료)와 Infinity Datasource 플러그인을 사용하여 GitLab 커밋 기여도를 Heatmap(잔디)으로 시각화합니다. 별도 exporter나 중간 저장소 없이 GitLab API를 직접 조회합니다.
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                                                             │
-│  GitLab API ──> Infinity Datasource ──> Grafana Heatmap     │
-│                                                             │
-│  /groups/<id>/events       그룹 전체 커밋 이벤트            │
-│  /projects/<id>/commits    프로젝트별 커밋                  │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│  GitLab API ──> Infinity Datasource ──> Grafana Heatmap             │
+│                                                                     │
+│  /groups/<id>/events       group-wide commit events                 │
+│  /projects/<id>/commits    per-project commits                      │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
 | 항목       | 내용                                          |
@@ -261,10 +261,10 @@ Query B: /api/v4/events?action=pushed + Filter: author.username == "user2"
 패널을 그룹별로 나누려면 Dashboard에 **Row** 추가:
 
 ```
-Dashboard → Add → Row
-├── Row: team-a
+Dashboard → Add → Row         
+├── Row: team-a               
 │   └── Heatmap 패널 (Query A)
-└── Row: team-b
+└── Row: team-b               
     └── Heatmap 패널 (Query B)
 ```
 

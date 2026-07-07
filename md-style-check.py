@@ -290,6 +290,17 @@ def check_diagram_box_chars(content, strict=False):
                         issues.append(
                             f"박스 문자 오류: '{start_ch}...{end_ch}' ('{start_ch}'는 '{end_ch}'로 끝날 수 없음) | '{stripped[:50]}'"
                         )
+        # 박스 상/하단 라인에 ─와 ┐/┘ 사이 공백 혼입 검출
+        for i, line in enumerate(body.splitlines(), 1):
+            stripped = line.rstrip()
+            if re.search(r'─\s+┐', stripped):
+                issues.append(
+                    f"박스 상단 공백 혼입: ─ 와 ┐ 사이에 공백 | '{stripped[:60]}'"
+                )
+            if re.search(r'─\s+┘', stripped):
+                issues.append(
+                    f"박스 하단 공백 혼입: ─ 와 ┘ 사이에 공백 | '{stripped[:60]}'"
+                )
     return issues
 
 def check_diagram_korean(content, strict=False):
