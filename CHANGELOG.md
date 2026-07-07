@@ -35,7 +35,8 @@
 #### 05_computer_science — 신규 문서 1개
 - `switch_vlan_mode.md` — Access/Trunk/Hybrid 모드, 802.1Q 태깅
 
-#### 06_security — 신규 문서 10개
+#### 06_security — 신규 문서 11개
+- `network_attack_glossary.md` — 네트워크 공격 용어 사전 (DDoS, MITM, ARP Spoofing 등)
 - `01_cve/` 서브디렉토리 생성 — CVE 5건 + LPE 공격 시나리오
   - `cve_2026_31431_copy_fail.md`, `cve_2026_43284_dirty_frag.md`
   - `cve_2026_43500_dirty_frag.md`, `cve_2026_43503_dirty_clone.md`
@@ -76,7 +77,20 @@
 - 기술 사실 검증 전용 프롬프트 (RFC 대조, 할루시네이션 탐지, 비검증 수치 제거)
 - md-review.md에서 사실 검증 역할 분리
 
+#### 04_system_engineer/02_operations — 신규 문서 2개
+- `s3_object_lock.md` — S3 Object Lock (WORM, Governance/Compliance, 운영)
+- `s3_backup_tips.md` — EC2→S3 백업 운영 팁 (비용, 성능, 무결성, DB 백업)
+
+#### 99_ETC/01_AWS_jobs — 신규 문서 1개
+- `s3_cross_account_backup.md` — STS AssumeRole Cross-account 백업 (웹+CLI)
+
+#### 01_install — 업데이트
+- `postgresql_install.md` — PG18 추가, ICU provider 상세 설명, 최신 마이너 버전 반영
+
 ### Changed
+
+#### 12_tech_stack
+- `aws_network_firewall.md` — Resource ID placeholder 표준화 (보안 검사 통과)
 
 #### 12_tech_stack
 - `harness.md` → `harness_inc.md` 이름 변경 (CI/CD 플랫폼 명시)
@@ -89,6 +103,11 @@
 - `content(tech error)` 제거 → `content(typo,example mismatch,duplication,broken sentence)`
 - `@fact-check` 분리 안내 주석 추가
 - diagram 항목에 `arrow flow direction logical` 추가
+
+#### 스크립트
+- `md-style-check.py` — `_reference` 제외, FILE_SKIP diagram-kr 추가, `--no-*` 옵션 11개
+- `md-link-check.py` — 코드블록 파싱 수정 (라인 토글 방식)
+- `strip-footer-md.py` — 신규 유틸리티 (푸터 일괄 제거 스크립트)
 
 #### .kiro/skills/work-rules/SKILL.md
 - §15 Storage targets에 추론/기억 기반 작성 금지 규칙 상단 배치
