@@ -73,6 +73,16 @@
 - `networking_official_notes.md` — 네트워크 프로토콜 RFC 참조
 - `postgresql_official_notes.md` — PostgreSQL 공식 문서 참조
 
+#### 04_system_engineer/02_operations — 시니어급 문서 5개 (신규)
+- `incident_management.md` — 장애 등급 분류, IC 역할, 에스컬레이션, State Document
+- `slo_error_budget.md` — SLI/SLO/SLA 정의, Error Budget 운영, Burn Rate Alert, OpenSLO
+- `capacity_planning.md` — 트래픽 예측, 리소스 산정, Headroom 설계, Load Testing
+- `zero_downtime_migration.md` — Expand-Contract, Dual Write, CDC, Canary 전환, 롤백 전략
+- `change_management.md` — Standard/Normal/Emergency 변경 등급, CAB, 배포 윈도우
+
+#### _reference — sre_operations_official_notes.md 신규
+- Google SRE Book/Workbook, PagerDuty, OpenSLO, ITIL v4, gh-ost, pt-osc 공식 출처 통합
+
 #### .kiro/prompts — fact-check.md 신규
 - 기술 사실 검증 전용 프롬프트 (RFC 대조, 할루시네이션 탐지, 비검증 수치 제거)
 - md-review.md에서 사실 검증 역할 분리
