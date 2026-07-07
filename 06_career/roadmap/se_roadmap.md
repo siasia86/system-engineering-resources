@@ -867,19 +867,19 @@ resource "aws_instance" "web" {
 ### Junior → Mid Level
 
 **Linux+** (CompTIA)
-- 난이도: ⭐⭐
+- 난이도: ★★
 - 비용: $300
 - 유효기간: 3년
 - 추천: Linux 기초 확인용
 
 **LPIC-1** (Linux Professional Institute)
-- 난이도: ⭐⭐
+- 난이도: ★★
 - 비용: $200 × 2 (101, 102)
 - 유효기간: 평생
 - 추천: 실무 기초 검증
 
 **CompTIA Network+**
-- 난이도: ⭐⭐
+- 난이도: ★★
 - 비용: $300
 - 유효기간: 3년
 - 추천: 네트워킹 기초
@@ -887,25 +887,25 @@ resource "aws_instance" "web" {
 ### Mid → Senior Level
 
 **RHCSA** (Red Hat Certified System Administrator)
-- 난이도: ⭐⭐⭐
+- 난이도: ★★★
 - 비용: $400
 - 유효기간: 3년
 - 추천: 실무 능력 증명
 
 **RHCE** (Red Hat Certified Engineer)
-- 난이도: ⭐⭐⭐⭐
+- 난이도: ★★★★
 - 비용: $400
 - 유효기간: 3년
 - 추천: 고급 기술 증명
 
 **AWS Solutions Architect Associate**
-- 난이도: ⭐⭐⭐
+- 난이도: ★★★
 - 비용: $150
 - 유효기간: 3년
 - 추천: 클라우드 필수
 
 **LPIC-2**
-- 난이도: ⭐⭐⭐
+- 난이도: ★★★
 - 비용: $200 × 2 (201, 202)
 - 유효기간: 평생
 - 추천: Linux 고급
@@ -913,19 +913,19 @@ resource "aws_instance" "web" {
 ### Senior → Lead Level
 
 **AWS Solutions Architect Professional**
-- 난이도: ⭐⭐⭐⭐⭐
+- 난이도: ★★★★★
 - 비용: $300
 - 유효기간: 3년
 - 추천: 클라우드 전문가
 
 **RHCA** (Red Hat Certified Architect)
-- 난이도: ⭐⭐⭐⭐⭐
+- 난이도: ★★★★★
 - 비용: $2,000+
 - 유효기간: 3년
 - 추천: 전문성 증명
 
 **CCIE** (Cisco Certified Internetwork Expert)
-- 난이도: ⭐⭐⭐⭐⭐
+- 난이도: ★★★★★
 - 비용: $1,600 (Lab)
 - 유효기간: 3년
 - 추천: 네트워크 전문가

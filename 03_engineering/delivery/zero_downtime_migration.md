@@ -226,6 +226,10 @@ rollback_action:
 | 롤백 후에도 데이터 손실  | Contract 단계 이후 롤백 시도  | Contract 전 충분한 대기 (1주+) 확보    |
 | Canary 중 일부만 실패    | Session affinity 미설정       | Sticky session 또는 consistent hashing |
 
+> 무중단 마이그레이션 패턴(Strangler Fig, Blue-Green, Canary)은 Martin Fowler의 "Strangler Fig Application" 패턴(2004)과 AWS의 Migration Strategies(6 Rs)에 기반합니다.
+> — https://martinfowler.com/bliki/StranglerFigApplication.html
+> — https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-retiring-applications/apg-gloss.html
+
 ## 참고 자료
 
 - gh-ost: [github.com/github/gh-ost](https://github.com/github/gh-ost) — ★★★☆☆
