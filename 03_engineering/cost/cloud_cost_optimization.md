@@ -41,6 +41,9 @@
 | 5    | Business value drives technology decisions             |
 | 6    | Take advantage of the variable cost model of cloud     |
 
+> FinOps Foundation 공식 6 Principles 원문입니다.
+> — https://www.finops.org/framework/principles/
+
 ## 3. RI/SP 전략
 
 ### Reserved Instances vs Savings Plans
@@ -53,6 +56,10 @@
 | 기간      | 1년/3년               | 1년/3년              |
 | 결제 옵션 | 전액/부분/무선납      | 전액/부분/무선납     |
 
+> AWS 공식: RI는 최대 72% 할인, Savings Plans는 동일 할인율에 인스턴스 유형 유연성을 제공합니다.
+> — https://aws.amazon.com/savingsplans/pricing/
+> — https://aws.amazon.com/ec2/pricing/reserved-instances/
+
 ### 커버리지 전략
 
 | 계층          | 할당 비율 | 대상                            |
@@ -60,6 +67,9 @@
 | Base load     | 60~70%    | RI/SP (항상 사용하는 최소 용량) |
 | Variable load | 20~30%    | On-demand (일반 변동)           |
 | Peak load     | 5~10%     | Spot/On-demand (피크 시)        |
+
+> AWS Well-Architected Cost Optimization Pillar: "Use a mix of pricing models" — Base(RI/SP) + Variable(On-demand) + Peak(Spot) 계층 구조를 권장합니다.
+> — https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/select-the-best-pricing-model.html
 
 ### RI 구매 의사결정
 
@@ -82,6 +92,9 @@
 | 데이터 분석 (EMR, Spark) | 실시간 금융 거래  |
 | 테스트/QA 환경           | SLA 99.99% 서비스 |
 
+> AWS 공식: Spot Instance는 On-Demand 대비 최대 90% 할인이며, 2분 전 중단 알림(interruption notice)을 제공합니다.
+> — https://aws.amazon.com/ec2/spot/
+
 ### Spot 안정성 확보
 
 | 전략                  | 방법                             |
@@ -90,6 +103,9 @@
 | Capacity-optimized    | 가용 용량 기반 배치 전략         |
 | Grace period handling | 2분 중단 알림 활용 → 정상 종료   |
 | Fallback to On-demand | Spot 부족 시 자동 On-demand 전환 |
+
+> AWS의 "capacity-optimized" 배치 전략은 Spot 중단 확률이 가장 낮은 풀을 선택합니다. AWS 공식 best practice입니다.
+> — https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html
 
 ## 5. Right-sizing
 
@@ -101,6 +117,9 @@
 | Memory 평균  | < 30% (2주 평균)            | 인스턴스 축소      |
 | Network      | 거의 미사용                 | 작은 타입 전환     |
 | Storage IOPS | Provisioned 대비 < 10% 사용 | gp3 전환 또는 축소 |
+
+> AWS Compute Optimizer는 14일간의 CloudWatch 메트릭을 분석하여 right-sizing을 권장합니다. CPU < 20% 기준은 Trusted Advisor의 "Low Utilization" 임계값입니다.
+> — https://docs.aws.amazon.com/compute-optimizer/latest/ug/what-is-compute-optimizer.html
 
 ### Right-sizing 절차
 
@@ -124,6 +143,9 @@
 | NAT Gateway 대체   | VPC Endpoint, NAT Instance      | 30~60%      |
 | 데이터 전송 최적화 | 같은 AZ 배치, CloudFront 활용   | 20~50%      |
 
+> AWS 데이터 전송 요금: 같은 AZ 내 전송은 무료, AZ 간 $0.01/GB, 리전 간 $0.02/GB입니다. VPC Endpoint 사용 시 NAT Gateway 처리 비용($0.045/GB)을 절감합니다.
+> — https://aws.amazon.com/ec2/pricing/on-demand/#Data_Transfer
+
 ## 7. 거버넌스
 
 ### 태깅 전략
@@ -135,6 +157,9 @@
 | Service     | api-gateway      | 서비스별 추적 |
 | CostCenter  | CC-1234          | 부서 차지백   |
 | Owner       | user@example.com | 책임자 식별   |
+
+> AWS는 최소 태그 키로 Environment, Team/Project, CostCenter를 권장합니다. 미태깅 리소스는 AWS Cost Categories에서 "Untagged" 그룹으로 자동 분류됩니다.
+> — https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html
 
 ### 예산 알림
 
@@ -153,6 +178,10 @@
 | Infracost             | OSS          | Terraform PR 비용 표시    |
 | Kubecost              | K8s 비용     | Pod/Namespace별 비용 할당 |
 | CloudHealth           | 멀티클라우드 | 비용 관리, 거버넌스, 보고 |
+
+> Infracost는 Terraform plan에서 비용 변화를 PR 코멘트로 표시합니다 (OSS, 2020~). Kubecost는 CNCF Sandbox 프로젝트(2023)입니다.
+> — https://www.infracost.io/docs/
+> — https://www.cncf.io/projects/kubecost/
 
 ## 9. 트러블슈팅
 
