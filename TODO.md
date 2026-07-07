@@ -52,18 +52,25 @@ md-style-check 검사 대상에서 제외하는 파일입니다.
 
 ### 후속 (우선순위 6~15)
 
-| 순위 | 파일명                         | 카테고리           | 내용                                               |
-|------|--------------------------------|--------------------|----------------------------------------------------|
-| 6    | `postmortem_framework.md`      | 04_system_engineer | 타임라인, 5 Whys, Contributing Factors, 재발 방지  |
-| 7    | `chaos_engineering.md`         | 04_system_engineer | 가설 → 실험 → 폭발 반경 제한 → 자동 롤백           |
-| 8    | `multi_region_architecture.md` | 04_system_engineer | Active-Active/Standby, RPO/RTO 설계                |
-| 9    | `platform_engineering.md`      | 04_system_engineer | IDP 설계, Golden Path, Self-service 인프라         |
-| 10   | `oncall_design.md`             | 04_system_engineer | 로테이션, 보상, 번아웃 방지, 런북, 핸드오프        |
-| 11   | `team_topology.md`             | 04_system_engineer | Stream-aligned/Platform/Enabling/Complicated 팀    |
-| 12   | `tech_debt_management.md`      | 04_system_engineer | 기술 부채 분류, 측정, 상환 우선순위                |
-| 13   | `cloud_cost_optimization.md`   | 12_tech_stack      | RI/SP 전략, Spot 활용, FinOps 프레임워크           |
-| 14   | `vendor_evaluation.md`         | 04_system_engineer | 도구/서비스 선정 기준, PoC 설계, TCO, Lock-in 평가 |
-| 15   | `legacy_modernization.md`      | 04_system_engineer | Strangler Fig, 단계별 분리, 데이터 이중 쓰기       |
+| 순위 | 파일명                         | 카테고리           | 내용                                               | 상태 |
+|------|--------------------------------|--------------------|----------------------------------------------------|------|
+| 6    | `postmortem_framework.md`      | 04_system_engineer | 타임라인, 5 Whys, Contributing Factors, 재발 방지  | ✅   |
+| 7    | `chaos_engineering.md`         | 04_system_engineer | 가설 → 실험 → 폭발 반경 제한 → 자동 롤백           | ✅   |
+| 8    | `multi_region_architecture.md` | 04_system_engineer | Active-Active/Standby, RPO/RTO 설계                | ✅   |
+| 9    | `platform_engineering.md`      | 04_system_engineer | IDP 설계, Golden Path, Self-service 인프라         | ⬜   |
+| 10   | `oncall_design.md`             | 04_system_engineer | 로테이션, 보상, 번아웃 방지, 런북, 핸드오프        | ⬜   |
+| 11   | `team_topology.md`             | 04_system_engineer | Stream-aligned/Platform/Enabling/Complicated 팀    | ⬜   |
+| 12   | `tech_debt_management.md`      | 04_system_engineer | 기술 부채 분류, 측정, 상환 우선순위                | ⬜   |
+| 13   | `cloud_cost_optimization.md`   | 12_tech_stack      | RI/SP 전략, Spot 활용, FinOps 프레임워크           | ⬜   |
+| 14   | `vendor_evaluation.md`         | 04_system_engineer | 도구/서비스 선정 기준, PoC 설계, TCO, Lock-in 평가 | ⬜   |
+| 15   | `legacy_modernization.md`      | 04_system_engineer | Strangler Fig, 단계별 분리, 데이터 이중 쓰기       | ⬜   |
+
+### 다음 세션 작업 안내
+
+9~15번 문서 작성 시 참고:
+- **_reference 준비 상태**: 10, 13번은 기존 `sre_operations`/`chaos_finops`로 커버. 9번은 CNCF Platform White Paper 기반 별도 생성 필요 여부 판단. 11, 12, 14, 15번은 공식 출처 부재로 _reference 생성 불필요 (서적/블로그 기반).
+- **작업 절차**: _reference 확인 → 3개씩 문서 작성 → 표 정렬 → md-style-check → fact-check 3회
+- **배치**: 9~11 → 12~14 → 15 (3-3-1)
 
 ---
 
