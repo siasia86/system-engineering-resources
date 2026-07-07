@@ -32,6 +32,11 @@
 - 기존 디렉토리 README.md 12개 삭제
 - `00_readme.md/`, `90_DELETE/` 삭제
 
+### Fixed
+
+- `02_infrastructure/cloud_aws/vpc_peering_inter_region_guide.md` — 다이어그램 좌우 박스 비대칭 수정, fence 홀수 수정, 한글→영문
+- `02_infrastructure/cicd/infra_monorepo_and_boilerplate.md` — 중첩 코드블록 4-backtick 전환
+
 ### Removed
 
 - `00_readme.md/` — Kiro 설정 복사본 (불필요)
