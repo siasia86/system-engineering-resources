@@ -169,7 +169,7 @@ docs/runbooks/
 
 ### Runbook 템플릿
 
-```markdown
+````markdown
 # Runbook: [작업명]
 
 - **최종 수정**: YYYY-MM-DD
@@ -210,6 +210,7 @@ command here
 2. ...
 
 [⬆ 목차로 돌아가기](#목차)
+````
 
 ---
 
