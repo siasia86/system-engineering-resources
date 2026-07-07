@@ -15,22 +15,7 @@ md-style-check 잔여 이슈 및 신규 문서 작성 목록입니다.
 
 ## 1. 다이어그램 한글→영문
 
-STYLE.md 규칙: 코드블록 내 다이어그램은 영문 사용 권장 (GitHub 웹 폰트 호환).
-
-완료 — 다이어그램 한글 이슈 모두 수정되었습니다.
-
-완료된 파일:
-- ✅ `asn_and_cloudflare_ddos.md`
-- ✅ `infra_monorepo_and_boilerplate.md`
-- ✅ `s3_gateway_endpoint_cross_account.md`
-- ✅ `vpc_peering_inter_region_guide.md`
-- ✅ `devops_toolchain.md`
-- ✅ `sre_roadmap.md`
-- ✅ `ai_development_request_template.md`
-- ✅ `ai_markdown_design_patterns.md`
-- ✅ `kiro_cli_command_reference.md` → FILE_SKIP diagram-kr 예외 처리
-
-🟡 주의: 번역 시 코드블록 내부만 수정, 본문 오염 금지. 단어 경계 검증 필수.
+✅ 완료 — CHANGELOG.md [2.3.0] Fixed 참조.
 
 ---
 
