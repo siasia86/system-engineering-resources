@@ -128,7 +128,7 @@ When editing code:
 - Do not remove pre-existing dead code — mention it instead
 - Do not refactor adjacent code that isn't broken
 
-## 15. _reference directory rules
+## 15. reference directory rules
 
 `/root/32_system-engineering-resources/_reference/` is **official-homepage-based reference notes only** directory.
 
@@ -159,7 +159,16 @@ When **creating new** or **significantly modifying** a tech-related `.md` file:
 
 🟡 **Strict order**: create `_reference` → update INDEX → write `.md`. Reverse order prohibited.
 
-### _reference file structure
+⚠️ **Hard stop**: If you find yourself writing a tech `.md` file and realize no `_reference` exists for that technology:
+1. **STOP** writing the `.md` immediately (even mid-sentence)
+2. Create the `_reference` file first (scan official source)
+3. Update `_reference/INDEX.md`
+4. Resume `.md` writing
+
+This applies regardless of whether the task was explicitly requested or part of a batch.
+Skipping `_reference` because "it's faster" or "I'll do it after" is **never acceptable**.
+
+### reference file structure
 
 ```markdown
 ---
@@ -178,7 +187,7 @@ sources:
 
 🟡 Register only `INDEX.md` in agent resources. Read individual files on demand (context window savings)
 
-## 16. _reference post-write cross-verification obligation
+## 16. reference post-write cross-verification obligation
 
 When **creating new or adding content** to `_reference/` files, the following procedure is mandatory.
 
@@ -564,3 +573,98 @@ wc -l ~/.kiro/memory.md  # must be <= 100
 ```
 
 If over 100 lines: remove oldest entries from "최근 결정 사항" or archive them.
+
+## 26. TODO batch pre/post output obligation
+
+When executing TODO items in batches, the following outputs are **mandatory**.
+
+### Batch size
+
+- Default: **3 items** (write + verify cycle fits within context window)
+- Final batch even if only 1~2 items: Pre/Post output still mandatory (no skip)
+- Batch numbering: sequential from 1, persists across sessions (check TODO.md for last completed batch)
+
+### Pre-execution Brief
+
+Output as single block before starting:
+
+```
+=== Batch N: items A~B ===
+
+Step 1. _reference preparation
+  ├── A: [source file] → [action: existing / new / N/A (reason)]
+  ├── B: [source file] → [action]
+  └── C: [source file] → [action]
+
+Step 2. Write documents (N)
+Step 3. Table alignment (align script)
+Step 4. md-style-check (0 issues required)
+Step 5. fact-check (rounds per fact-check table below)
+  ├── Round 1: _reference cross-check (skip if N/A)
+  ├── Round 2: official source direct verification (lynx -dump)
+  └── Round 3: star rating + unverified numbers + exaggeration
+Step 6. Update TODO.md
+```
+
+- Format: fixed tree style above (inside code block)
+- "N/A" in _reference mapping must include reason in parentheses (e.g., `N/A (book-based, no official doc)`)
+- If "new" items exist in Step 1, Step 2 is blocked until Step 1 completes (dependency gate)
+- Round 1 shows "(skip if N/A)" — actual skip determined per fact-check round table
+
+### Post-execution Summary
+
+Output as single block after completion:
+
+```
+=== Batch N complete ===
+
+| Document | md-style-check | fact-check |
+|----------|----------------|------------|
+| A.md     | ✅ 0 issues    | ✅ 3 rounds |
+| B.md     | ✅ 0 issues (fix 1: diagram width) | ✅ 2 rounds (fix 1: number corrected) |
+
+TODO update: items A~B ⬜ → ✅
+README/CHANGELOG: [deferred to final batch / updated]
+```
+
+- If fixes occurred: note briefly in parentheses within the cell
+- If no fixes: just `✅ 0 issues` / `✅ N rounds`
+- README.md / CHANGELOG.md update: defer to final batch (avoid repeated edits), note "deferred" or "updated"
+
+### Resume after interruption
+
+On context compaction or session switch:
+
+1. Read `TODO.md` — check each item status (✅/⬜)
+2. Resume from next ⬜ item with Pre-execution Brief
+3. If batch partially complete: skip already ✅ items, continue remaining only
+4. Completion criteria: md-style-check 0 issues + all fact-check rounds passed + TODO.md marked ✅
+
+### fact-check failure handling
+
+1. Error found → fix the .md document immediately
+2. Re-verify from the failed Round onward (prior Rounds not re-run)
+3. Same error repeats 2x → root cause analysis:
+   - If .md misquoted _reference → fix .md (most cases)
+   - If _reference itself is suspected wrong → re-verify against official source (lynx -dump / API) before any _reference edit
+   - _reference modification requires: official source confirmation + `last_checked` date update + INDEX.md version sync
+   - Never modify _reference based on inference alone
+
+### Scope
+
+| Agent | Condition | Output |
+|-------|-----------|--------|
+| default chat | TODO §4 batch (1+ documents) | Pre + Post both |
+| doc-reviewer | 3+ file batch review | target list (Pre) + per-file result table (Post) |
+| all agents | single doc outside TODO §4 | may skip |
+
+doc-reviewer threshold is 3+ because single-file review is its normal operation and does not need ceremony.
+
+### fact-check round requirements
+
+| Target | Required rounds | Content |
+|--------|-----------------|---------|
+| _reference file | 2 | URL access + content verification against source |
+| .md (TODO §4, _reference exists) | 3 | _reference cross + official source + rating/numbers |
+| .md (TODO §4, _reference N/A) | 2 | official source direct + rating/numbers (Round 1 skipped) |
+| .md (other) | 1 | md-style-check pass is sufficient |
