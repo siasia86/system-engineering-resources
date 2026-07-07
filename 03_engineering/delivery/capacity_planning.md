@@ -27,6 +27,9 @@
 - **Load testing**: 실제 트래픽의 2x~3x로 stress test
 - **Headroom**: 항상 50% headroom 유지 (burst 대비)
 
+> Google SRE Workbook Ch.11 "Managing Load"에서 N+2 capacity와 50% headroom을 권장합니다.
+> — https://sre.google/workbook/managing-load/
+
 ## 2. 계획 절차
 
 ```
@@ -108,6 +111,9 @@ Example:
 | ML Inference    | G (GPU)              | GPU 가속 필요        |
 | Storage-heavy   | I (스토리지 최적화)  | 높은 IOPS 필요       |
 
+> AWS EC2 인스턴스 패밀리 분류: General Purpose(M), Compute Optimized(C), Memory Optimized(R), Storage Optimized(I), Accelerated Computing(G/P).
+> — https://aws.amazon.com/ec2/instance-types/
+
 ## 5. Headroom 설계
 
 ### Headroom 비율 가이드
@@ -118,6 +124,9 @@ Example:
 | 이벤트 전        | 50~100%       | 예측 불확실성 + Auto-scale lag |
 | AZ 장애 대비     | N+1 (33%)     | 3-AZ 중 1개 손실 시            |
 | Region 장애 대비 | N+1 (50%)     | 2-Region 중 1개 손실 시        |
+
+> AWS Well-Architected Framework (Reliability Pillar)에서 Multi-AZ는 N+1, Multi-Region은 Active-Active 또는 N+1 구성을 권장합니다.
+> — https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/
 
 ### Auto-scaling으로 대체 가능한 범위
 
@@ -148,6 +157,9 @@ Example:
 | Spot Instance     | 60~90% | Stateless worker, Batch     |
 | Right-sizing      | 20~40% | 과잉 프로비저닝된 리소스    |
 
+> AWS에 따르면 RI는 On-Demand 대비 최대 72% 절감, Spot은 최대 90% 절감이 가능합니다.
+> — https://aws.amazon.com/ec2/pricing/reserved-instances/
+
 ## 7. Load Testing
 
 ### 테스트 유형
@@ -158,6 +170,9 @@ Example:
 | Stress   | 한계점 및 장애 모드 확인   | 예상 피크의 2~3x        |
 | Soak     | 장시간 안정성 확인         | 정상 부하 8~24시간 유지 |
 | Spike    | 급격한 부하 증가 대응 확인 | 0 → 피크 즉시 전환      |
+
+> 부하 테스트 4유형(Baseline/Stress/Soak/Spike)은 k6 공식 문서의 분류를 따릅니다.
+> — https://grafana.com/docs/k6/latest/testing-guides/test-types/
 
 ### Load Test Checklist
 

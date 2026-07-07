@@ -160,6 +160,10 @@ CNCF WP에서의 정의: "a bundle often described as a golden path" — 빌드,
 | 경영진 지원 부족      | 가치 증명 실패         | DORA metrics + 비용 절감 데이터 제시 |
 | 셀프서비스가 느림     | 승인 프로세스 과다     | 자동 승인 규칙, Policy as Code       |
 
+> Platform Engineering은 Team Topologies(Skelton & Pais, 2019)의 "Platform Team" 개념에서 발전했습니다. Gartner는 2023년 Top Strategic Technology Trends에 선정했습니다.
+> — Skelton, Matthew & Pais, Manuel. "Team Topologies" (2019)
+> — https://www.gartner.com/en/articles/gartner-top-10-strategic-technology-trends-for-2023
+
 ## 참고 자료
 
 - CNCF Platforms White Paper: [tag-app-delivery.cncf.io](https://tag-app-delivery.cncf.io/whitepapers/platforms/) — ★★★★☆

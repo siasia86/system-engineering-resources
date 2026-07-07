@@ -153,6 +153,10 @@
 | 보안 취약점 반복 보고     | Dependency debt      | Renovate/Dependabot 도입 + 주간 업데이트 |
 | 상환 시간 확보 불가       | 경영진 이해 부족     | 이자 비용 정량화 + 비즈니스 영향 보고    |
 
+> 기술 부채(Technical Debt) 개념은 Ward Cunningham(1992)이 최초 제안했습니다. Martin Fowler의 Technical Debt Quadrant(2009)가 분류 체계로 널리 사용됩니다.
+> — https://martinfowler.com/bliki/TechnicalDebtQuadrant.html
+> — Cunningham, Ward. "The WyCash Portfolio Management System" (OOPSLA 1992)
+
 ## 참고 자료
 
 - Martin Fowler: [TechnicalDebt](https://martinfowler.com/bliki/TechnicalDebt.html) — ★★☆☆☆

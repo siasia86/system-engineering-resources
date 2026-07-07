@@ -167,6 +167,9 @@
 | Enabling 팀 효과 없음       | 코칭 아닌 대행      | Facilitating 모드 재확인, 기한 설정 |
 | Conway 법칙 역전이 안 됨    | 경영진 미참여       | 아키텍처 목표 + 팀 구조 동시 제안   |
 
+> 4가지 팀 유형(Stream-aligned, Platform, Enabling, Complicated Subsystem)과 3가지 상호작용 모드(Collaboration, X-as-a-Service, Facilitating)는 "Team Topologies" 원서에서 정의합니다.
+> — Skelton, Matthew & Pais, Manuel. "Team Topologies" (IT Revolution Press, 2019)
+
 ## 참고 자료
 
 - Skelton, M. & Pais, M. "Team Topologies" (2019) — ★★★★☆

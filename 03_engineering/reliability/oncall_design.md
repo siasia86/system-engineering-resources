@@ -194,6 +194,9 @@ SEV-N
 | 핸드오프 시 정보 유실   | 비동기 전달, 문서 미비 | 표준 핸드오프 템플릿 + 동기 미팅  |
 | 온콜 기피로 퇴사 증가   | 보상 부재, 과부하      | 보상 체계 도입, 인원 충원, 자동화 |
 
+> 온콜 설계의 핵심 원칙(25% cap, 2인 최소 로테이션, 연간 2회 이하 번아웃 지표)은 Google SRE Book Ch.11 "Being On-Call"에서 정립되었습니다.
+> — https://sre.google/sre-book/being-on-call/
+
 ## 참고 자료
 
 - Google SRE Book Ch.11: [Being On-Call](https://sre.google/sre-book/being-on-call/) — ★★★★☆
