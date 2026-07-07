@@ -16,13 +16,13 @@
 Prometheus는 오픈소스 시계열 모니터링 시스템. Grafana는 Prometheus 등 다양한 데이터 소스를 시각화하는 대시보드 도구입니다.
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                  Monitoring Stack                            │
-│                                                              │
-│  Targets ──> Prometheus (수집/저장) ──> Grafana (시각화)     │
-│                    │                                         │
-│                    └──> Alertmanager ──> Slack/PagerDuty     │
-└──────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                  Monitoring Stack                                   │
+│                                                                     │
+│  Targets ──> Prometheus (collect/store) ──> Grafana (visualize)     │
+│                    │                                                │
+│                    └──> Alertmanager ──> Slack/PagerDuty            │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
 - **Pull 방식**: Prometheus가 주기적으로 타겟의 `/metrics` 엔드포인트를 스크래핑합니다.
