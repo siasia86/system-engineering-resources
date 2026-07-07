@@ -168,6 +168,10 @@
 | Lock-in 후 가격 인상      | 계약 조건 미확인       | 인상 상한 조항, 멀티벤더 전략         |
 | 의사결정 지연             | 기준 불명확, 합의 부재 | Weighted scoring + ADR 작성           |
 
+> 벤더 평가 프레임워크는 Gartner의 Magic Quadrant 방법론과 NIST SP 800-53(보안 통제)을 참고하여 구성했습니다.
+> — https://www.gartner.com/en/research/methodologies/magic-quadrants-research
+> — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final
+
 ## 참고 자료
 
 - Thoughtworks Technology Radar: [thoughtworks.com/radar](https://www.thoughtworks.com/radar) — ★★★☆☆
