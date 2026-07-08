@@ -1,6 +1,11 @@
 ---
 name: chaos-finops-official-notes
 description: Chaos Engineering 및 FinOps 공식 문서 참조 노트.
+tags:
+  - chaos-engineering
+  - finops
+  - cost
+  - reliability
 last_checked: 2026-07-07
 sources:
   - https://principlesofchaos.org/

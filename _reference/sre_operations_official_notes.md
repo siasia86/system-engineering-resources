@@ -1,6 +1,12 @@
 ---
 name: sre-operations-official-notes
 description: SRE 운영 관련 공식 문서 참조 노트. Incident Management, SLO/Error Budget, Capacity Planning, Change Management, Postmortem.
+tags:
+  - sre
+  - incident
+  - oncall
+  - postmortem
+  - itil
 last_checked: 2026-07-07
 sources:
   - https://sre.google/sre-book/table-of-contents/

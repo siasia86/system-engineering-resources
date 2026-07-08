@@ -1,6 +1,11 @@
 ---
 name: ansible-official-notes
 description: Ansible 공식 문서 기반 핵심 개념, 버전, 구성요소 정리.
+tags:
+  - ansible
+  - iac
+  - automation
+  - configuration-management
 last_checked: 2026-07-03
 sources:
   - https://www.ansible.com/

@@ -1,6 +1,11 @@
 ---
 name: vpn-protocol-official-notes
 description: VPN 프로토콜(PPTP, L2TP, IPsec, IKEv2, OpenVPN, WireGuard) 공식 RFC/문서 기반 참조 노트.
+tags:
+  - vpn
+  - wireguard
+  - ipsec
+  - networking
 last_checked: 2026-06-29
 sources:
   - https://datatracker.ietf.org/doc/html/rfc2637

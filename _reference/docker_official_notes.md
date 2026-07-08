@@ -3,7 +3,9 @@ name: docker-official-notes
 description: Docker 공식 문서 기반 권장사항, deprecated, breaking changes 정리. 문서 작성/검토 시 참조.
 tags:
   - docker
-  - reference
+  - container
+  - compose
+  - runtime
 last_checked: 2026-07-03
 sources:
   - https://docs.docker.com/engine/install/

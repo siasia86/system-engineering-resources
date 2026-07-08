@@ -1,6 +1,11 @@
 ---
 name: grafana-official-notes
 description: Grafana 공식 문서 기반 핵심 개념, 버전, 데이터소스 정리.
+tags:
+  - grafana
+  - monitoring
+  - dashboard
+  - visualization
 last_checked: 2026-07-03
 sources:
   - https://grafana.com/docs/grafana/latest/introduction/
