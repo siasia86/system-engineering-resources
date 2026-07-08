@@ -172,6 +172,15 @@
 > — https://www.gartner.com/en/research/methodologies/magic-quadrants-research
 > — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final
 
+> TCO(Total Cost of Ownership) 평가 시 라이선스 비용만이 아닌 운영, 교육, 마이그레이션, 종속성 비용을 포함해야 합니다.
+> — AWS Well-Architected Framework, Cost Optimization Pillar: https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/
+
+> 보안 평가 시 SOC 2 Type II 보고서와 ISO 27001 인증을 기본 요구사항으로 설정합니다.
+> — https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2
+
+> Vendor Lock-in 평가: 데이터 이식성(export 가능 여부), API 표준 준수(OpenAPI 등), 계약 조건(exit clause)을 확인합니다.
+> — NIST SP 500-292: Cloud Computing Reference Architecture (https://www.nist.gov/publications/nist-cloud-computing-reference-architecture)
+
 ## 참고 자료
 
 - Thoughtworks Technology Radar: [thoughtworks.com/radar](https://www.thoughtworks.com/radar) — ★★★☆☆

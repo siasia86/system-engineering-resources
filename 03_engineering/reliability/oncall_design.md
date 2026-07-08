@@ -23,6 +23,7 @@
 ### Google 25% 규칙 (SRE Book Ch.11 원문)
 
 > "of the remainder, no more than 25% can be spent on-call, leaving up to another 25% on other types of operational, non-project work"
+> — Google SRE Book Ch.11: https://sre.google/sre-book/being-on-call/
 
 | 업무 구성      | 비율     |
 |----------------|----------|
@@ -194,8 +195,17 @@ SEV-N
 | 핸드오프 시 정보 유실   | 비동기 전달, 문서 미비 | 표준 핸드오프 템플릿 + 동기 미팅  |
 | 온콜 기피로 퇴사 증가   | 보상 부재, 과부하      | 보상 체계 도입, 인원 충원, 자동화 |
 
-> 온콜 설계의 핵심 원칙(25% cap, 2인 최소 로테이션, 연간 2회 이하 번아웃 지표)은 Google SRE Book Ch.11 "Being On-Call"에서 정립되었습니다.
+> 온콜 설계의 핵심 원칙(25% cap, 최소 2인 로테이션)은 Google SRE Book Ch.11 "Being On-Call"에서 정립되었습니다.
 > — https://sre.google/sre-book/being-on-call/
+
+> Google SRE Book Ch.11: 온콜 엔지니어의 업무 비중은 25% 이하여야 하며, 최소 2인 로테이션이 필수입니다. 위반 시 번아웃 위험이 급증합니다.
+> — https://sre.google/sre-book/being-on-call/
+
+> PagerDuty의 On-Call 모범 사례: override 시 명시적 handoff 필수, escalation policy 사전 정의 권장.
+> — https://www.pagerduty.com/resources/learn/call-rotations-schedules/
+
+> MTTR(Mean Time to Resolve)은 DORA 4 Key Metrics 중 하나로, 온콜 효율성의 핵심 KPI입니다.
+> — https://dora.dev/guides/dora-metrics-four-keys/
 
 ## 참고 자료
 

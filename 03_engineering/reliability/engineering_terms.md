@@ -149,6 +149,15 @@
 > MTTR/MTBF/MTTA 등 신뢰성 지표는 ITIL v4와 DORA(DevOps Research and Assessment) 보고서에서 업계 표준으로 정의합니다.
 > — https://dora.dev/guides/dora-metrics-four-keys/
 
+> MTBF(Mean Time Between Failures), MTTR(Mean Time To Repair), MTTA(Mean Time To Acknowledge)는 ITIL v4 서비스 관리 프레임워크에서 정의하는 핵심 신뢰성 지표입니다.
+> — ITIL 4 Foundation (Axelos, 2019)
+
+> 가용성 계산: Availability = MTBF / (MTBF + MTTR). "Five Nines"(99.999%)는 연간 다운타임 약 5분 16초를 의미합니다.
+> — https://sre.google/sre-book/availability-table/
+
+> SLI/SLO/SLA 구분, Error Budget, Toil 개념은 Google SRE Book에서 체계화되었습니다.
+> — https://sre.google/sre-book/service-level-objectives/
+
 ## 참고 자료
 
 - Google SRE Book: [sre.google/sre-book/table-of-contents](https://sre.google/sre-book/table-of-contents/) — ★★★★☆

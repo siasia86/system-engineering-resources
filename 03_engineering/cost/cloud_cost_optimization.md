@@ -32,14 +32,14 @@
 
 ### 6대 원칙 (FinOps Foundation 원문)
 
-| 번호 | 원칙                                                   |
-|------|--------------------------------------------------------|
-| 1    | Teams need to collaborate                              |
-| 2    | Everyone takes ownership for their technology usage    |
-| 3    | A centralized FinOps function drives best practices    |
-| 4    | FinOps data should be accessible, timely, and accurate |
-| 5    | Business value drives technology decisions             |
-| 6    | Take advantage of the variable cost model of cloud     |
+| 번호 | 원칙                                                    |
+|------|---------------------------------------------------------|
+| 1    | Teams need to collaborate                               |
+| 2    | Business value drives technology decisions              |
+| 3    | Everyone takes ownership for their technology usage     |
+| 4    | FinOps data should be accessible, timely, and accurate  |
+| 5    | FinOps should be enabled centrally                      |
+| 6    | Take advantage of the variable cost model of the cloud. |
 
 > FinOps Foundation 공식 6 Principles 원문입니다.
 > — https://www.finops.org/framework/principles/
@@ -179,9 +179,9 @@
 | Kubecost              | K8s 비용     | Pod/Namespace별 비용 할당 |
 | CloudHealth           | 멀티클라우드 | 비용 관리, 거버넌스, 보고 |
 
-> Infracost는 Terraform plan에서 비용 변화를 PR 코멘트로 표시합니다 (OSS, 2020~). Kubecost는 CNCF Sandbox 프로젝트(2023)입니다.
+> Infracost는 Terraform plan에서 비용 변화를 PR 코멘트로 표시합니다 (OSS, 2020~). OpenCost(Kubecost의 오픈소스 코어)는 CNCF Sandbox 프로젝트(2022)입니다.
 > — https://www.infracost.io/docs/
-> — https://www.cncf.io/projects/kubecost/
+> — https://www.cncf.io/projects/opencost/
 
 ## 9. 트러블슈팅
 

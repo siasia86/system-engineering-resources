@@ -211,6 +211,15 @@ Health Check Failure
 > Multi-Region 아키텍처 패턴(Active-Active, Active-Passive, Pilot Light)은 AWS Disaster Recovery 백서에서 분류합니다. RPO/RTO 매트릭스 기반으로 패턴을 선택합니다.
 > — https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html
 
+> AWS DR 전략 4단계: Backup & Restore(RPO 시간) < Pilot Light(RPO 분) < Warm Standby(RPO 초) < Active-Active(RPO ~0). 비용은 RPO/RTO 요구사항에 비례합니다.
+> — https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html
+
+> Route 53의 Health Check + Failover Routing은 DNS 기반 Multi-Region failover의 기본 메커니즘입니다. TTL 설정이 failover 시간을 결정합니다.
+> — https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-failover.html
+
+> Global Accelerator는 Anycast IP 기반으로 DNS TTL 의존 없이 즉시 failover를 제공합니다 (AWS 공식: "instant failover").
+> — https://aws.amazon.com/global-accelerator/
+
 ## 참고 자료
 
 - AWS Disaster Recovery: [docs.aws.amazon.com](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-workloads-on-aws.html) — ★★★☆☆

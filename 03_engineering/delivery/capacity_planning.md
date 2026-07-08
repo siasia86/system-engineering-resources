@@ -22,12 +22,12 @@
 
 ### Google 원칙
 
-- **Plan to fail**: N+2 capacity (N+1은 불충분, 동시 장애 고려)
+- **Plan to fail**: N+2 capacity (업계 best practice — 동시 장애 고려)
 - **Demand forecasting**: Linear regression 부족 → Seasonal decomposition
 - **Load testing**: 실제 트래픽의 2x~3x로 stress test
-- **Headroom**: 항상 50% headroom 유지 (burst 대비)
+- **Headroom**: 30~50% headroom 유지 (burst 대비, 워크로드에 따라 조정)
 
-> Google SRE Workbook Ch.11 "Managing Load"에서 N+2 capacity와 50% headroom을 권장합니다.
+> Google SRE Workbook Ch.11 "Managing Load"에서 redundancy와 load balancing 전략을 다룹니다. N+2 capacity와 50% headroom은 업계 통용 best practice입니다.
 > — https://sre.google/workbook/managing-load/
 
 ## 2. 계획 절차
