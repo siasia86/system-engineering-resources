@@ -17,7 +17,7 @@
 | 목적      | 장애로부터 학습하여 동일/유사 장애 재발 방지            |
 | 출처      | Google SRE Book Ch.15 "Postmortem Culture"              |
 | 핵심      | Blameless (비난 없는), 시스템 관점, Action 추적         |
-| 작성 시한 | 장애 종료 후 48시간 이내 (기억 정확도 유지)             |
+| 작성 시한 | 장애 종료 후 48시간 이내 (업계 권장, 기억 정확도 유지)  |
 | 리뷰 시한 | 작성 후 1주 이내 리뷰 미팅                              |
 | 연관 문서 | Incident Management (장애 중), Change Management (예방) |
 
@@ -32,7 +32,7 @@
 | 학습 목적          | 처벌이 아닌 개선을 위한 과정                      |
 | 투명성             | Postmortem은 조직 전체에 공유                     |
 
-> Blameless 문화는 Sidney Dekker의 "Just Culture" 이론에 기반합니다. Google SRE Book Ch.15에서 이를 엔지니어링 조직에 적용했습니다.
+> Blameless 문화는 의료/항공 산업의 "Just Culture" 개념에서 유래했습니다. Google SRE Book Ch.15에서 이를 소프트웨어 엔지니어링에 적용했습니다.
 > — https://sre.google/sre-book/postmortem-culture/
 
 ### Google 원칙 (SRE Book Ch.15)

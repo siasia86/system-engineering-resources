@@ -34,7 +34,7 @@
 
 ## 2. 장애 등급
 
-### Severity 분류
+### Severity 분류 (조직별 조정 필요)
 
 | 등급  | 이름     | 기준                               | 대응 시간 | 업데이트 주기 |
 |-------|----------|------------------------------------|-----------|---------------|
@@ -111,8 +111,8 @@ On-Call Engineer (초기 대응)
 - 5분마다 상황 요약: "현재 상태, 다음 조치, 예상 복구 시간"
 - 교대 시 명시적 선언: "IC를 [이름]에게 넘깁니다"
 
-> IC 역할은 미국 FEMA의 National Incident Management System(NIMS)에서 유래합니다. Google SRE가 이를 IT 운영에 도입했습니다.
-> — https://www.fema.gov/emergency-managers/nims
+> IC 역할은 미국의 Incident Command System(ICS)에서 유래합니다. Google SRE Book Ch.14에서 이를 명시적으로 참조합니다.
+> — https://sre.google/sre-book/managing-incidents/
 
 ## 4. 대응 프로세스
 
@@ -138,7 +138,8 @@ On-Call Engineer (초기 대응)
 
 ### Mitigate 우선 원칙
 
-> "Restore first, investigate later."
+> "Stop the bleeding, restore service, and preserve the evidence for root-causing." — Google SRE Book Ch.14
+> — https://sre.google/sre-book/managing-incidents/
 
 - 원인 분석보다 **영향 축소**를 먼저 수행합니다
 - 일반적인 Mitigate 순서:

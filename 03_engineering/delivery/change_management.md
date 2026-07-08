@@ -20,11 +20,6 @@
 | 범위 | 코드 배포, 인프라 변경, 설정 변경, DB 스키마 변경           |
 | 연관 | Incident Management (변경 실패 시), Zero-Downtime Migration |
 
-### 70% 법칙 (Google)
-
-> "most outages are caused by changes to a running system"
-> — Google SRE (commonly cited statistic from SRE talks)
-
 ## 2. 변경 등급
 
 ### ITIL v4 기반 분류
@@ -205,9 +200,16 @@ Change Failed
 | 변경 기록 누락       | 수동 기록 의존           | CI/CD + ITSM 자동 연동                     |
 | 금요일 배포 장애     | 배포 윈도우 미준수       | Pipeline에 윈도우 체크 gate 추가           |
 
-> 변경 관리 프레임워크는 ITIL v4 Change Enablement Practice를 기반으로 합니다. Google SRE는 "70% of outages are due to changes in a live system"이라고 밝혔습니다.
+> 변경 관리 프레임워크는 ITIL v4 Change Enablement Practice를 기반으로 합니다.
 > — ITIL 4: Create, Deliver and Support (Axelos, 2019)
 > — https://sre.google/sre-book/release-engineering/
+
+> ITIL v4에서 Change Enablement Practice는 Normal, Standard, Emergency 3개 유형으로 분류합니다. Google SRE Book에 따르면 프로덕션 장애의 대부분이 라이브 시스템 변경(deployment, config change)에서 기인합니다.
+> — ITIL 4: Create, Deliver and Support (Axelos, 2019)
+> — https://sre.google/sre-book/release-engineering/
+
+> CAB(Change Advisory Board) 모델은 ITIL v3에서 정립되었으며, ITIL v4에서는 자동화된 Standard Change 승인을 권장합니다.
+> — ITIL 4: Direct, Plan and Improve (Axelos, 2019)
 
 ## 참고 자료
 

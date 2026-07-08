@@ -278,6 +278,18 @@ spec:
 > — https://sre.google/sre-book/service-level-objectives/
 > — https://sre.google/workbook/error-budget-policy/
 
+> SLI(Service Level Indicator)는 측정값, SLO(Service Level Objective)는 목표값, SLA(Service Level Agreement)는 계약입니다. 이 3계층 구조는 Google SRE Book Ch.4에서 정의합니다.
+> — https://sre.google/sre-book/service-level-objectives/
+
+> Error Budget = 1 - SLO. 예: SLO 99.9% → Error Budget = 0.1% = 월 43.2분. Budget 소진 시 새 기능 배포를 중단하고 안정화에 집중합니다.
+> — https://sre.google/workbook/error-budget-policy/
+
+> Google SRE Workbook Ch.2: Error Budget Policy는 팀 간 합의 문서이며, budget 소진 시 행동(배포 동결, postmortem 필수 등)을 사전 정의합니다.
+> — https://sre.google/workbook/error-budget-policy/
+
+> Burn rate alert: 14.4x burn rate는 "이 속도가 지속되면 약 2일 내 월간 budget 전체 소진"을 의미합니다. Google SRE Workbook의 multi-window alerting에서 1시간 윈도우 기준 Page alert 임계값입니다.
+> — https://sre.google/workbook/alerting-on-slos/
+
 ## 참고 자료
 
 - Google SRE Book Ch.4: [Service Level Objectives](https://sre.google/sre-book/service-level-objectives/) — ★★★★☆

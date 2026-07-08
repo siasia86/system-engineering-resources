@@ -176,9 +176,18 @@ Martin Fowler (2004): 교살 무화과(Strangler Fig)가 숙주 나무를 서서
 | 데이터 불일치 발생        | Dual write 실패        | Outbox 패턴 + 보상 로직 + 모니터링 |
 | 경영진 지지 상실          | 가시적 성과 부족       | 초기 성공 사례 빠르게 확보 후 공유 |
 
-> 레거시 현대화 전략(Retire, Retain, Rehost, Replatform, Refactor, Rebuild)은 AWS의 6R 마이그레이션 전략에 기반합니다. Strangler Fig 패턴은 Martin Fowler(2004)가 제안했습니다.
+> 레거시 현대화 전략(Retire, Retain, Rehost, Replatform, Refactor, Repurchase)은 AWS의 6R 마이그레이션 전략에 기반합니다. Strangler Fig 패턴은 Martin Fowler(2004)가 제안했습니다.
 > — https://aws.amazon.com/blogs/enterprise-strategy/6-strategies-for-migrating-applications-to-the-cloud/
 > — https://martinfowler.com/bliki/StranglerFigApplication.html
+
+> AWS 6R 마이그레이션 전략: Retire, Retain, Rehost, Replatform, Refactor, Repurchase. AWS가 2016년 블로그에서 6R을 정립했습니다.
+> — https://aws.amazon.com/blogs/enterprise-strategy/6-strategies-for-migrating-applications-to-the-cloud/
+
+> Strangler Fig Pattern은 기존 시스템을 점진적으로 교체하는 패턴입니다. 핵심: 새 기능은 새 시스템에, 기존 기능은 점진적 이관.
+> — https://martinfowler.com/bliki/StranglerFigApplication.html
+
+> Anti-Corruption Layer(ACL)는 Domain-Driven Design(Eric Evans, 2003)에서 유래한 패턴으로, 레거시와 신규 시스템 간 변환 계층입니다.
+> — Evans, Eric. "Domain-Driven Design" Ch.14 (Addison-Wesley, 2003)
 
 ## 참고 자료
 
