@@ -230,6 +230,15 @@ rollback_action:
 > — https://martinfowler.com/bliki/StranglerFigApplication.html
 > — https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-retiring-applications/apg-gloss.html
 
+> Blue-Green Deployment는 Jez Humble & David Farley의 "Continuous Delivery"(2010)에서 체계화되었습니다. Canary Release는 Netflix에서 대중화되었습니다.
+> — Humble, Jez & Farley, David. "Continuous Delivery" (Addison-Wesley, 2010)
+
+> Expand and Contract(Parallel Change) 패턴은 DB 스키마 무중단 변경의 표준 접근입니다. 단계: 새 컬럼 추가 → 양쪽 쓰기 → 이전 컬럼 제거.
+> — https://martinfowler.com/bliki/ParallelChange.html
+
+> AWS DMS(Database Migration Service)는 CDC(Change Data Capture) 기반으로 무중단 DB 마이그레이션을 지원합니다.
+> — https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html
+
 ## 참고 자료
 
 - gh-ost: [github.com/github/gh-ost](https://github.com/github/gh-ost) — ★★★☆☆
