@@ -1,6 +1,10 @@
 ---
 name: github-references
 description: 참고할 만한 GitHub 저장소 목록 (AI/Agent, Packer/IaC, 도구).
+tags:
+  - github
+  - git
+  - repository
 last_checked: 2026-06-18
 sources:
   - https://github.com/addyosmani/agent-skills

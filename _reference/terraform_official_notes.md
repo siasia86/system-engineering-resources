@@ -1,6 +1,11 @@
 ---
 name: terraform-official-notes
 description: Terraform 공식 문서 기반 권장사항, 버전별 변경사항 정리. 문서 작성/검토 시 참조.
+tags:
+  - terraform
+  - iac
+  - aws
+  - infrastructure
 last_checked: 2026-07-03
 sources:
   - https://developer.hashicorp.com/terraform/language

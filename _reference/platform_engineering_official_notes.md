@@ -5,7 +5,7 @@ tags:
   - platform-engineering
   - idp
   - cncf
-  - reference
+  - team-topologies
 last_checked: 2026-07-07
 sources:
   - https://tag-app-delivery.cncf.io/whitepapers/platforms/

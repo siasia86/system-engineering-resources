@@ -1,5 +1,11 @@
 ---
 name: yaml-spec-notes
+description: YAML 1.2/1.1 스펙 참조 노트. Ansible, Kubernetes YAML 작성 시 참조.
+tags:
+  - yaml
+  - spec
+  - ansible
+  - kubernetes
 last_checked: 2026-05-26
 sources:
   - https://yaml.org/spec/1.2.2/
