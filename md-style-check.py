@@ -128,9 +128,9 @@ _OUTPUT_PATTERNS = re.compile(
     r'|^prefork:|^worker:|^event:'  # Apache MPM
     r'|^[가-힣].+:'  # 한글 항목 헤더 (사용 조건:, 장점:, 단점: 등)
     r'|^- '  # 불릿 리스트
-    r'|^[A-Z][A-Z_a-z ]+:'  # 대문자 시작 키 (CAP_NET_ADMIN:, PID Namespace: 등)
+    r'|^[A-Z][A-Z_a-z ]+:'  # 대문자 시작 영문 키 (CAP_NET_ADMIN:, PID Namespace: 등)
     r'|^[a-z_]+:'  # 소문자 키 (cpu:, memory: 등)
-    r'|^[가-힣/]'  # 한글 또는 한글/슬래시 시작 텍스트 블록
+    r'|^[가-힣/]'  # 한글 또는 슬래시(/) 시작 텍스트 블록
     r'|^[✓✗]'  # 체크마크 기호
 )
 
