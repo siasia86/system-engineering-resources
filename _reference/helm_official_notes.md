@@ -1,6 +1,11 @@
 ---
 name: helm-official-notes
 description: Helm 공식 문서 기반 핵심 개념, 버전, Chart 구조 정리.
+tags:
+  - helm
+  - kubernetes
+  - package-manager
+  - chart
 last_checked: 2026-07-03
 sources:
   - https://helm.sh/docs/intro/using_helm/

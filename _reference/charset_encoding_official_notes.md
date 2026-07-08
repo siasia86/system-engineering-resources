@@ -6,7 +6,6 @@ tags:
   - unicode
   - utf-8
   - charset
-  - reference
 last_checked: 2026-07-07
 sources:
   - https://www.unicode.org/standard/standard.html

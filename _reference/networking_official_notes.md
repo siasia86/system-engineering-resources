@@ -2,13 +2,12 @@
 name: networking-official-notes
 description: BGP/DDoS/CDN/VPC 관련 RFC, AWS, Cloudflare 공식 문서 참조 노트. 04_system_engineer/02_operations/ 네트워크 문서 생성/검토 시 참조.
 tags:
+  - networking
   - bgp
   - ddos
   - cdn
   - vpc
-  - cloudflare
   - aws
-  - reference
 last_checked: 2026-07-03
 sources:
   - https://datatracker.ietf.org/doc/html/rfc4271

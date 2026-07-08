@@ -1,10 +1,17 @@
 ---
+name: postgresql-official-notes
+description: PostgreSQL 공식 문서 기반 버전, 설정, 인증, 설치 참조 노트. 05_database/ 문서 생성/검토 시 참조.
 sources:
   - https://www.postgresql.org/support/versioning/
   - https://www.postgresql.org/docs/current/runtime-config.html
   - https://www.postgresql.org/docs/current/auth-password.html
   - https://wiki.postgresql.org/wiki/Apt
   - https://www.postgresql.org/download/linux/redhat/
+tags:
+  - postgresql
+  - rdbms
+  - database
+  - sql
 last_checked: 2026-07-07
 ---
 

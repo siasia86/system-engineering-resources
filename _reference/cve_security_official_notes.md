@@ -4,7 +4,8 @@ description: CVE/보안 취약점 문서 작성 시 참조할 공식 소스, API
 tags:
   - cve
   - security
-  - reference
+  - vulnerability
+  - nvd
 last_checked: 2026-06-29
 sources:
   - https://nvd.nist.gov/developers/vulnerabilities

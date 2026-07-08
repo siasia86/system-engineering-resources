@@ -1,6 +1,11 @@
 ---
 name: prometheus-official-notes
 description: Prometheus 공식 문서 기반 핵심 개념, 버전, 데이터 모델 정리.
+tags:
+  - prometheus
+  - monitoring
+  - alerting
+  - metrics
 last_checked: 2026-07-03
 sources:
   - https://prometheus.io/docs/introduction/overview/
