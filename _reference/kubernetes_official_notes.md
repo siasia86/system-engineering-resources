@@ -1,6 +1,11 @@
 ---
 name: kubernetes-official-notes
 description: Kubernetes 공식 문서 기반 핵심 개념, 버전, 아키텍처 정리.
+tags:
+  - kubernetes
+  - container
+  - orchestration
+  - cncf
 last_checked: 2026-07-03
 sources:
   - https://kubernetes.io/docs/concepts/overview/

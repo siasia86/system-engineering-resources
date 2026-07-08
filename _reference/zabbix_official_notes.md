@@ -1,6 +1,11 @@
 ---
 name: zabbix-official-notes
 description: Zabbix 공식 문서 기반 버전별 지원 OS, 릴리즈 정책, repo URL 패턴 정리.
+tags:
+  - zabbix
+  - monitoring
+  - alerting
+  - snmp
 last_checked: 2026-07-03
 sources:
   - https://www.zabbix.com/life_cycle_and_release_policy

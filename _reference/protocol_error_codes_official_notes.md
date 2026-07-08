@@ -1,6 +1,12 @@
 ---
 name: protocol-error-codes-official-notes
 description: HTTP/SMTP/FTP/DNS 응답 코드 공식 문서 기반 참조 노트.
+tags:
+  - http
+  - smtp
+  - ftp
+  - error-codes
+  - rfc
 last_checked: 2026-05-26
 sources:
   - https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml

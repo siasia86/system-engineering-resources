@@ -2,13 +2,11 @@
 name: linux-kernel-official-notes
 description: Linux Kernel 내부 (namespace, cgroup, scheduler, netfilter, capabilities) 문서 작성 시 참조할 공식 소스. 02_basic_linux/, 03_advanced_linux/ 문서 생성/검토 시 참조.
 tags:
+  - linux
   - kernel
   - namespace
   - cgroup
   - scheduler
-  - netfilter
-  - capabilities
-  - reference
 last_checked: 2026-07-03
 sources:
   - https://man7.org/linux/man-pages/man7/namespaces.7.html
