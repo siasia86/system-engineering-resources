@@ -34,7 +34,7 @@ sources:
 |----------------------|--------------------|------------------------------|
 | worker_processes     | auto               | CPU 코어 수에 맞춤           |
 | worker_connections   | 1024~65535         | ulimit -n 과 일치            |
-| keepalive_timeout    | 65                 | 기본값, CDN 뒤면 축소 가능   |
+| keepalive_timeout    | 75s (기본값)       | CDN 뒤면 60~65s로 축소 가능  |
 | client_max_body_size | 업로드 크기에 맞게 | 기본 1m, 파일 업로드 시 조정 |
 | server_tokens        | off                | 버전 정보 노출 방지          |
 | proxy_buffering      | on (기본)          | 백엔드 부하 감소             |
@@ -43,26 +43,26 @@ sources:
 
 ### 보안 설정
 
-| 항목                               | 설정                        | 근거                                   |
-|------------------------------------|-----------------------------|----------------------------------------|
-| ssl_protocols                      | TLSv1.2 TLSv1.3             | TLS 1.0/1.1 제거                       |
-| ssl_ciphers                        | Mozilla Intermediate 프로필 | ssl-config.mozilla.org                 |
-| ssl_prefer_server_ciphers          | on                          | 서버 측 암호 선택                      |
-| add_header X-Frame-Options         | DENY 또는 SAMEORIGIN        | Clickjacking 방지                      |
-| add_header X-Content-Type-Options  | nosniff                     | MIME sniffing 방지                     |
-| add_header X-XSS-Protection        | 0                           | 최신 브라우저에서 deprecated, CSP 사용 |
-| add_header Content-Security-Policy | default-src self            | XSS 방지 기본                          |
+| 항목                               | 설정                        | 근거                                                 |
+|------------------------------------|-----------------------------|------------------------------------------------------|
+| ssl_protocols                      | TLSv1.2 TLSv1.3             | TLS 1.0/1.1 제거                                     |
+| ssl_ciphers                        | Mozilla Intermediate 프로필 | ssl-config.mozilla.org                               |
+| ssl_prefer_server_ciphers          | off                         | Mozilla Intermediate 5.7 기준 (TLS 1.3에서는 무의미) |
+| add_header X-Frame-Options         | DENY 또는 SAMEORIGIN        | Clickjacking 방지                                    |
+| add_header X-Content-Type-Options  | nosniff                     | MIME sniffing 방지                                   |
+| add_header X-XSS-Protection        | 0                           | 최신 브라우저에서 deprecated, CSP 사용               |
+| add_header Content-Security-Policy | default-src self            | XSS 방지 기본                                        |
 
 - 출처: https://ssl-config.mozilla.org/
 - 출처: https://nginx.org/en/docs/http/ngx_http_ssl_module.html
 
 ### 디렉토리 보안
 
-| 설정                         | 목적                         |                     |                    |
-|------------------------------|------------------------------|---------------------|--------------------|
-| autoindex off                | 디렉토리 리스팅 차단         |                     |                    |
-| location ~ /\. { deny all; } | 숨김 파일(.htaccess 등) 차단 |                     |                    |
-| location ~ \.(conf           | sql                          | env)$ { deny all; } | 설정파일 접근 차단 |
+```nginx
+autoindex off;                              # 디렉토리 리스팅 차단
+location ~ /\. { deny all; }               # 숨김 파일(.htaccess 등) 차단
+location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
+```
 
 ### 파일 퍼미션 (ISMS-P 2.6.2, 2.10.3)
 
@@ -137,10 +137,12 @@ sources:
 
 ### 버전
 
-| 채널 | 버전 | LTS 종료 |
-|------|------|----------|
-| LTS  | 2.8  | 2028-Q2  |
-| LTS  | 3.0  | 2029-Q2  |
+| 채널 | 버전 | LTS 종료                 |
+|------|------|--------------------------|
+| LTS  | 3.4  | 2031-Q2                  |
+| LTS  | 3.2  | 2030-Q2                  |
+| LTS  | 3.0  | 2029-Q2                  |
+| LTS  | 2.8  | 2028-Q2 (critical fixes) |
 
 - 출처: https://www.haproxy.org/
 
