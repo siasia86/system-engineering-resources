@@ -89,7 +89,8 @@
 
 ### 원문
 
-> "Any organization that designs a system will produce a design whose structure is a copy of the organization's communication structure." — Melvin Conway, 1968
+> "Any organization that designs a system will produce a design whose structure is a copy of the organization's communication structure."
+> — Conway, Melvin. "How Do Committees Invent?" Datamation, 1968 — Melvin Conway, 1968
 
 ### Inverse Conway Maneuver
 
@@ -169,6 +170,15 @@
 
 > 4가지 팀 유형(Stream-aligned, Platform, Enabling, Complicated Subsystem)과 3가지 상호작용 모드(Collaboration, X-as-a-Service, Facilitating)는 "Team Topologies" 원서에서 정의합니다.
 > — Skelton, Matthew & Pais, Manuel. "Team Topologies" (IT Revolution Press, 2019)
+
+> Conway's Law(1968): "시스템 구조는 조직의 커뮤니케이션 구조를 반영한다." Team Topologies는 이를 역으로 활용합니다 (Inverse Conway Maneuver).
+> — Conway, Melvin. "How Do Committees Invent?" (1968)
+
+> Cognitive Load Theory를 팀 설계에 적용: 팀이 담당하는 도메인의 복잡도가 인지 부하 한계를 초과하면 분리가 필요합니다.
+> — Skelton & Pais. "Team Topologies" Ch.3 (2019)
+
+> 3가지 상호작용 모드(Collaboration, X-as-a-Service, Facilitating)는 팀 간 의존성을 명시적으로 관리하는 도구입니다.
+> — Skelton & Pais. "Team Topologies" Ch.7 (2019)
 
 ## 참고 자료
 

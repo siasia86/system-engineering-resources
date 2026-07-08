@@ -164,6 +164,15 @@ CNCF WP에서의 정의: "a bundle often described as a golden path" — 빌드,
 > — Skelton, Matthew & Pais, Manuel. "Team Topologies" (2019)
 > — https://www.gartner.com/en/articles/gartner-top-10-strategic-technology-trends-for-2023
 
+> Internal Developer Platform(IDP)의 핵심 요소: Self-service, Golden Path, Guardrails.
+> — https://platformengineering.org/blog/what-is-platform-engineering
+
+> CNCF Platforms White Paper(2023)에서 Platform Engineering의 정의와 best practice를 공식화했습니다.
+> — https://tag-app-delivery.cncf.io/whitepapers/platforms/
+
+> Platform as a Product 접근: 내부 개발자가 고객이며, adoption rate와 developer satisfaction이 핵심 KPI입니다.
+> — Skelton & Pais. "Team Topologies" Ch.5 (2019)
+
 ## 참고 자료
 
 - CNCF Platforms White Paper: [tag-app-delivery.cncf.io](https://tag-app-delivery.cncf.io/whitepapers/platforms/) — ★★★★☆

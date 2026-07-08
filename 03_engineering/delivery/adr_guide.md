@@ -441,6 +441,10 @@ AI가 기존 ADR을 참조하면 일관된 형식과 맥락을 유지할 수 있
 > — https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
 > — https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records
 
+> Michael Nygard의 원본 ADR 형식(2011)은 Title, Status, Context, Decision, Consequences 5개 필드로 구성됩니다. MADR(Markdown Any Decision Records)는 이를 확장한 대안입니다.
+> — https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
+> — https://adr.github.io/madr/
+
 ## 참고 자료
 
 - Nygard, Michael. "Documenting Architecture Decisions": [cognitect.com](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) — ★★☆☆☆

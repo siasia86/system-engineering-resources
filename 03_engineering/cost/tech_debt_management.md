@@ -29,6 +29,9 @@
 | Reckless (무모) | "시간 없으니 설계 생략"     | "계층화가 뭔지 몰랐음"         |
 | Prudent (신중)  | "지금 출시하고 나중에 개선" | "이제야 더 나은 방법을 알겠음" |
 
+> Martin Fowler의 Technical Debt Quadrant(2009)에서 정의한 2x2 매트릭스입니다.
+> — https://martinfowler.com/bliki/TechnicalDebtQuadrant.html
+
 ### 부채 유형별 분류
 
 | 유형                | 예시                              | 영향           |
@@ -51,6 +54,9 @@
 | Dependency Age             | 최신 버전 대비 경과 기간 | Renovate, Dependabot   |
 | MTTR (Mean Time to Repair) | 변경 후 복구까지 시간    | DORA metrics           |
 | Lead Time for Changes      | 커밋~배포 시간           | DORA metrics           |
+
+> DORA 4 Key Metrics(Deployment Frequency, Lead Time, Change Failure Rate, MTTR)는 "Accelerate" 연구(2018)에서 정립되었습니다.
+> — https://dora.dev/guides/dora-metrics-four-keys/
 
 ### 정성적 지표
 
@@ -81,6 +87,9 @@
 | Dedicated Sprint  | 분기별 1스프린트       | 대규모 리팩토링           |
 | Strangler Pattern | 점진적 교체            | 모놀리스 → 마이크로서비스 |
 
+> Strangler Fig Pattern은 Martin Fowler(2004)가 제안했습니다. "20% Time"은 Google의 엔지니어링 문화에서 유래한 개념입니다.
+> — https://martinfowler.com/bliki/StranglerFigApplication.html
+
 ### 상환하지 말아야 할 경우
 
 - 곧 폐기될 시스템
@@ -98,6 +107,9 @@
 | Dependency Update                  | 주간          | Dependency debt 누적 방지   |
 | Lint/SAST                          | CI 파이프라인 | Code debt 자동 탐지         |
 | ADR (Architecture Decision Record) | 변경 시       | 의사결정 맥락 보존          |
+
+> Thoughtworks Technology Radar에서 Lightweight ADR을 "Adopt"로 선정(2016)했습니다. CI 파이프라인의 SAST/Lint gate는 OWASP DevSecOps Guideline의 핵심 실천입니다.
+> — https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records
 
 ## 6. 커뮤니케이션
 
@@ -132,6 +144,10 @@
 | Renovate               | 의존성 관리 | 자동 PR 생성, 그룹핑           |
 | Dependabot             | 의존성 관리 | GitHub 네이티브, 보안 알림     |
 | Backstage TechInsights | 스코어카드  | 팀별 표준 준수 점수            |
+
+> SonarQube의 "Technical Debt" 메트릭은 수정에 필요한 예상 시간(effort)으로 측정됩니다. Backstage는 Spotify가 개발한 CNCF Incubating 프로젝트입니다.
+> — https://docs.sonarsource.com/sonarqube/latest/user-guide/metric-definitions/
+> — https://www.cncf.io/projects/backstage/
 
 ## 8. 안티패턴
 
