@@ -16,18 +16,19 @@
 |------|----------------------------------------------------------|
 | 목적 | 수요 대비 적정 용량 확보 (과소 = 장애, 과대 = 비용 낭비) |
 | 출처 | Google SRE Workbook Ch.11, AWS Well-Architected          |
-| 핵심 | N+2 용량 확보, 50% headroom, 계절성 분해                 |
+| 핵심 | N+1/N+2 용량 확보, 30~50% headroom, 계절성 분해          |
 | 주기 | 분기별 재평가 + 이벤트 전 임시 계획                      |
 | 연관 | SLO (성능 목표), Cost Optimization (비용 제약)           |
 
 ### Google 원칙
 
-- **Plan to fail**: N+2 capacity (업계 best practice — 동시 장애 고려)
+- **Plan to fail**: N+1 또는 N+2 capacity (Google은 N+1 사용, 금융/게임 등 고가용성 환경은 N+2)
 - **Demand forecasting**: Linear regression 부족 → Seasonal decomposition
 - **Load testing**: 실제 트래픽의 2x~3x로 stress test
 - **Headroom**: 30~50% headroom 유지 (burst 대비, 워크로드에 따라 조정)
 
-> Google SRE Workbook Ch.11 "Managing Load"에서 redundancy와 load balancing 전략을 다룹니다. N+2 capacity와 50% headroom은 업계 통용 best practice입니다.
+> Google SRE Workbook Ch.11 "Managing Load"에서 redundancy와 load balancing 전략을 다룹니다.
+> N+1은 Google SRE 표준, N+2는 금융/게임 등 보수적 환경 기준입니다. 30~50% headroom은 업계 통용 관행이며, 공식 문서에서 특정 수치를 명시하지는 않습니다.
 > — https://sre.google/workbook/managing-load/
 
 ## 2. 계획 절차
@@ -140,6 +141,8 @@ Example:
 
 ### TCO 구성 요소
 
+🟡 아래 비율은 일반적인 AWS 워크로드 기준 추정치입니다. 서비스 구성에 따라 편차가 큽니다.
+
 | 항목       | 비율 (일반적) | 상세                       |
 |------------|---------------|----------------------------|
 | Compute    | 50~65%        | EC2, ECS, Lambda           |
@@ -182,6 +185,17 @@ Example:
 - [ ] p50, p95, p99 latency + error rate 측정
 - [ ] Auto-scaling 동작 검증 (scale-out 시간 측정)
 - [ ] 테스트 후 리소스 정리
+
+### AWS Well-Architected 점검 질문
+
+용량 계획 리뷰 시 다음 질문을 확인합니다 (Performance Efficiency Pillar):
+
+- **PERF 1**: 최적 아키텍처를 어떻게 선택하는가?
+- **PERF 2**: 컴퓨팅 솔루션을 어떻게 선택하는가?
+- **PERF 4**: 리소스 성능을 어떻게 모니터링하는가?
+
+> AWS Well-Architected Performance Efficiency Pillar
+> — https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/
 
 ## 8. 운영 주기
 
