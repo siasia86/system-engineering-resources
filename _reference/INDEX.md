@@ -7,7 +7,7 @@ tags:
   - directory
 last_checked: 2026-07-08
 sources:
-  - /root/32_system-engineering-resources/_reference/
+  - self (이 파일이 인덱스 역할)
 ---
 
 # _reference INDEX
@@ -36,6 +36,7 @@ sources:
 | SRE Operations       | `_reference/sre_operations_official_notes.md`       | Google SRE Book / ITIL v4          | 2026-07-07 |
 | Terraform            | `_reference/terraform_official_notes.md`            | v1.15.7, AWS Provider v6.46.0      | 2026-07-03 |
 | VPN Protocol         | `_reference/vpn_protocol_official_notes.md`         | RFC 7296 / WireGuard 1.0           | 2026-06-29 |
+| Web Server           | `_reference/web_server_official_notes.md`           | Nginx 1.30.3, Apache 2.4.68        | 2026-07-08 |
 | YAML Spec            | `_reference/yaml_spec_notes.md`                     | 1.2 (1.1 호환)                     | 2026-05-26 |
 | Zabbix               | `_reference/zabbix_official_notes.md`               | 7.4.11 (LTS: 7.0)                  | 2026-07-03 |
 
@@ -44,7 +45,7 @@ sources:
 - `.md` 파일 작성/수정 전 해당 기술의 참조 파일 존재 여부 확인
 - 없으면 공식 홈페이지 스캔 후 생성 (`lynx -dump` 또는 GitHub/PyPI API)
 - 있으면 `last_checked` 날짜 확인 — 6개월 이상 경과 시 재확인 권장
-- 파일 경로: `/root/32_system-engineering-resources/_reference/{기술명}_official_notes.md`
+- 파일 경로: `_reference/{기술명}_official_notes.md`
 
 ## frontmatter 양식
 
