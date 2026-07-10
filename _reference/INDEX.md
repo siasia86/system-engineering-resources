@@ -29,6 +29,7 @@ sources:
 | Kubernetes           | `_reference/kubernetes_official_notes.md`           | v1.36.2                            | 2026-07-03 |
 | Linux Kernel         | `_reference/linux_kernel_official_notes.md`         | namespace, cgroup, scheduler       | 2026-07-03 |
 | MySQL                | `_reference/mysql_official_notes.md`                | 8.4.10 LTS, 9.7.1 Innovation       | 2026-07-10 |
+| GRAID SupremeRAID  | `_reference/graid_supremeraid_official_notes.md`    | 1.5.0, 2.0.0 (Linux)               | 2026-07-10 |
 | Networking           | `_reference/networking_official_notes.md`           | BGP, DDoS, CDN, VPC                | 2026-07-03 |
 | Platform Engineering | `_reference/platform_engineering_official_notes.md` | CNCF Platforms WP                  | 2026-07-07 |
 | PostgreSQL           | `_reference/postgresql_official_notes.md`           | 18.4 (EOL 2030-11)                 | 2026-07-07 |
