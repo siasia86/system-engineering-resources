@@ -416,7 +416,7 @@ python3 -c "import sys; print(sys.byteorder)"
 
 ## 11. 캐시 구조 (L1/L2/L3)
 
-🟡 성능 차이의 핵심 요인. CPU와 메모리 사이의 속도 격차를 해소합니다.
+🟡 성능 차이의 핵심 요인. CPU와 메모리 사이의 속도 격차를 해소합니다. 지연 시간은 세대/모델에 따라 다르며, 아래 수치는 업계 통상 범위입니다.
 
 ### 캐시 계층
 
@@ -548,17 +548,17 @@ RISC (4 instructions, pipelined):
 | 1978  | Intel 8086 — x86 아키텍처의 시작                   | CISC |
 | 1980  | Patterson & Ditzel, "RISC" 개념 논문 발표          | RISC |
 | 1981  | Berkeley RISC-I 프로젝트 시작                      | RISC |
-| 1983  | Stanford MIPS 프로젝트 (Hennessy)                  | RISC |
+| 1981  | Stanford MIPS 프로젝트 시작 (Hennessy, 1981~1984)  | RISC |
 | 1985  | ARM1 — Acorn RISC Machine 최초 칩                  | RISC |
 | 1985  | Intel 80386 — 32bit x86 (IA-32)                    | CISC |
-| 1991  | ARM6 — Apple Newton에 탑재                         | RISC |
+| 1993  | ARM610 — Apple Newton에 탑재                       | RISC |
 | 1995  | Intel Pentium Pro — 내부 RISC 마이크로옵 변환 도입 | 융합 |
 | 2003  | AMD64 (x86-64) — 64bit 확장                        | CISC |
 | 2010  | RISC-V 프로젝트 시작 (UC Berkeley)                 | RISC |
 | 2011  | ARM Cortex-A15 — 서버 시장 진출 시도               | RISC |
 | 2018  | AWS Graviton 1 — ARM 기반 클라우드 서버            | RISC |
 | 2020  | Apple M1 — ARM 기반 데스크톱 전환                  | RISC |
-| 2023  | AWS Graviton 4 — ARM 서버 성능 경쟁력 입증         | RISC |
+| 2023  | AWS Graviton 4 발표 (GA 2024) — ARM 서버 경쟁력 입증 | RISC |
 | 2024~ | RISC-V 서버 칩 등장 (SiFive 등), 생태계 확장 중    | RISC |
 
 ### 흐름 요약
