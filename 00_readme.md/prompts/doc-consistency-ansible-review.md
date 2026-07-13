@@ -26,12 +26,12 @@ Method:
 - box files: SSH to Windows → `Test-Path D:\Masang\VHD\boxes\*.box`
 - VM state: SSH to Windows → `Get-VM | Select Name,State`
 
-Output: Korean, ✅❌🟡 per item, show specific mismatches with file:line
+Output: Korean, ✅ ❌ 🟡 per item, show specific mismatches with file:line
 
 Loop (max 3 iterations):
 1. Run base doc-consistency-review checks
 2. Run additional Ansible-specific checks
-3. Fix all ❌/🟡 issues
+3. Fix all ❌ /🟡 issues
 4. Re-review
 5. Repeat until clean or 3 iterations completed
 6. Final summary: iterations run, issues fixed, remaining issues
