@@ -15,23 +15,23 @@
 ## 1. 튜닝 계층
 
 ```
-효과 큼
+High Impact
   │
   │  ┌───────────────────────────────────────────┐
-  │  │ 1. 설계 (Design)                          │
-  │  │    정규화/반정규화, 파티션, 테이블 분리    │
+  │  │ 1. Design                                 │
+  │  │    Normalization, Partition, Table Split  │
   │  ├───────────────────────────────────────────┤
-  │  │ 2. 쿼리 (SQL)                             │
-  │  │    인덱스, EXPLAIN, JOIN, 서브쿼리        │
+  │  │ 2. SQL Query                              │
+  │  │    Index, EXPLAIN, JOIN, Subquery         │
   │  ├───────────────────────────────────────────┤
-  │  │ 3. 서버 설정 (Configuration)              │
-  │  │    buffer pool, connections, log           │
+  │  │ 3. Configuration                          │
+  │  │    buffer pool, connections, log          │
   │  ├───────────────────────────────────────────┤
-  │  │ 4. 인프라 (Infrastructure)                │
-  │  │    SSD, 메모리, CPU, 네트워크             │
+  │  │ 4. Infrastructure                         │
+  │  │    SSD, Memory, CPU, Network              │
   │  └───────────────────────────────────────────┘
   v
-효과 작음
+Low Impact
 ```
 
 | 계층      | 효과  | 비용                 | 빈도                      |
