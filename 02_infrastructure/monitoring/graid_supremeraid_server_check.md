@@ -29,7 +29,7 @@ SupremeRAID (GPU 기반 NVMe RAID) 환경의 정기 점검 절차를 정리합�
 ├─────────┬─────────┬─────────┬─────────┬────────────────┤
 │ NVMe 0  │ NVMe 1  │ NVMe 2  │ NVMe 3  │  ...           │
 └─────────┴─────────┴─────────┴─────────┴────────────────┘
-
+                                                          
 ```
 
 ### RAID 논리 구성 요소
@@ -236,6 +236,43 @@ graidctl describe drive_group <dg_id> | grep Firmware
 
 ## 7. Consistency Check 운영
 
+### 개요
+
+Consistency Check(CC)는 RAID 어레이의 패리티/미러 데이터 정합성을 검증하는 백그라운드 작업입니다. 드라이브 간 데이터 불일치를 사전에 탐지하여 silent data corruption을 방지합니다.
+
+| 항목           | 내용                                    |
+|----------------|-----------------------------------------|
+| 목적           | 패리티/미러 정합성 검증, 비트 부패 탐지 |
+| 권장 주기      | 월 1회 (공식 FAQ)                       |
+| 예상 속도      | ~10 GB/sec (드라이브 성능 의존)         |
+| 예상 소요 시간 | 10TB DG → 약 17분                       |
+| 운영 중 I/O    | 가능 (백그라운드 실행, I/O 영향 최소)   |
+| RAID 0 지원    | ❌ (패리티 없음, CC 불가)               |
+| 지원 RAID 레벨 | RAID 1, 5, 6, 10                        |
+
+### 동작 원리
+
+```
+┌─────────────────────────────────────────────────────────┐ 
+│               Consistency Check Process                  │
+├─────────────────────────────────────────────────────────┤ 
+│  1. Read data strips from all PDs in DG                 │ 
+│  2. Recalculate parity from data strips                 │ 
+│  3. Compare calculated parity vs stored parity          │ 
+│  4. If mismatch:                                        │ 
+│     - auto_fix: overwrite stored parity (recommended)   │ 
+│     - stop_on_error: halt and report                    │ 
+│  5. Continue until all strips checked                   │ 
+└─────────────────────────────────────────────────────────┘ 
+```
+
+### Policy 옵션
+
+| Policy        | 동작                         | 사용 시나리오           |
+|---------------|------------------------------|-------------------------|
+| auto_fix      | 불일치 발견 시 자동으로 복구 | 일반 운영 환경 (권장)   |
+| stop_on_error | 불일치 발견 시 중지 후 보고  | 원인 분석이 필요한 경우 |
+
 ### 권장 설정
 
 | 항목         | 권장 값        |
@@ -247,6 +284,9 @@ graidctl describe drive_group <dg_id> | grep Firmware
 ### CC 설정 변경
 
 ```bash
+# 현재 CC 설정 확인
+graidctl describe consistency_check
+
 # 정책 변경
 graidctl set consistency_check --policy auto_fix
 
@@ -257,20 +297,91 @@ graidctl set consistency_check --help
 ### CC 수동 실행
 
 ```bash
+# 특정 DG에 대해 실행
 graidctl start consistency_check <dg_id>
+
+# 진행 상태 확인 (progress %)
 graidctl describe consistency_check
-graidctl stop consistency_check <dg_id>   # 필요 시
+
+# 중지 (필요 시 — 재시작하면 처음부터)
+graidctl stop consistency_check <dg_id>
 ```
 
 ### CC 결과 해석
 
-| 결과      | 의미                     | 조치               |
-|-----------|--------------------------|--------------------|
-| COMPLETED | 정상 완료, 에러 없음     | 없음               |
-| FIXED     | 불일치 발견 후 자동 복구 | 이벤트 로그 확인   |
-| ERROR     | 복구 불가 불일치         | 드라이브 상태 확인 |
+| 결과      | 의미                     | 조치                            |
+|-----------|--------------------------|---------------------------------|
+| COMPLETED | 정상 완료, 에러 없음     | 없음                            |
+| FIXED     | 불일치 발견 후 자동 복구 | 이벤트 로그 확인, PD SMART 점검 |
+| ERROR     | 복구 불가 불일치         | 드라이브 상태 확인, 교체 검토   |
 
-🟡 RAID 0에서는 CC 미지원 (패리티 없음).
+### CC 주의사항
+
+- CC 실행 중 드라이버 업데이트/리부팅 금지 — 완료 대기 후 진행합니다
+- CC는 백그라운드로 실행되며 I/O 성능에 미미한 영향을 줍니다
+- RAID 0 DG에서는 CC를 시작할 수 없습니다 (패리티 없음)
+- CC 중 PD 장애 발생 시 CC는 자동 중단되고 리빌드가 우선 실행됩니다
+- `FIXED` 결과가 반복 발생하면 해당 PD의 SMART를 확인하고 교체를 검토합니다
+
+🟡 CC에서 `FIXED`가 한 번 나오는 것은 정상적인 비트 부패 복구입니다. 동일 PD에서 반복 발생 시 드라이브 열화를 의심합니다.
+
+### Live 운영 시 주의사항
+
+#### 커널/OS 업데이트
+
+| 항목                     | 규칙                                                   |
+|--------------------------|--------------------------------------------------------|
+| 커널 업데이트 전         | 공식 지원 목록 확인 필수 (https://docs.graidtech.com/) |
+| 미지원 커널 부팅 시      | graid.ko 로드 실패 → 볼륨 접근 불가 (데이터 유실 아님) |
+| 커널 + 드라이버 동시작업 | 금지 — 하나씩 순차 진행                                |
+| 롤백 계획                | 이전 커널 GRUB 엔트리 유지 필수                        |
+| unattended-upgrades      | linux-image 자동 업데이트 제외 설정 권장               |
+
+#### 드라이버 업그레이드
+
+| 현재 버전 | 대상 버전       | 경로                                    |
+|-----------|-----------------|-----------------------------------------|
+| 1.x       | 2.0.0 Update 93 | 1.x → 1.7.2 Update 67 → 2.0.0 Update 93 |
+| 1.7.2+    | 2.0.0 Update 93 | 직접 업그레이드 가능                    |
+
+- 1.x에서 2.0.0으로 **직접 업그레이드 불가** — 반드시 1.7.2 Update 67 경유합니다
+- 업그레이드 중 DG가 일시적으로 `TRANSFORMING` 상태 진입 가능 → `OPTIMAL` 복귀 확인 후 서비스 재개합니다
+- 2.0.0부터 V2 라이선스 필요 — 업그레이드 전 사전 확보합니다
+
+#### GPU 관련
+
+- SupremeRAID GPU는 `nvidia-smi`에서 항상 100% utilization 표시 → 정상 (polling mechanism)
+- GPU를 일반 CUDA/AI 워크로드와 공유할 수 없습니다
+- GPU 물리 교체 시 새 라이선스 키가 필요합니다 (시리얼 넘버 종속)
+- GPU 온도는 `nvidia-smi` 또는 `graidctl show controller` (v1.5) / `graidctl describe controller` (v2.0+)로 확인합니다
+
+#### 리빌드 중 운영
+
+| 항목               | 규칙                                       |
+|--------------------|--------------------------------------------|
+| 리빌드 중 I/O      | 가능하나 성능 저하 (백그라운드 대역 사용)  |
+| 리빌드 중 리부팅   | 가능 — 재부팅 후 리빌드 자동 재개          |
+| 리빌드 중 2차 장애 | RAID 5: 데이터 유실, RAID 6: 1대 추가 허용 |
+| 리빌드 우선순위    | CC/초기화보다 우선 실행                    |
+
+#### 서버 간 디스크 이관
+
+- SSD를 물리적으로 다른 서버로 이동 가능합니다
+- 데이터 + SupremeRAID 메타데이터가 드라이브에 저장되어 있습니다
+- 대상 서버에 동일 버전 SupremeRAID 소프트웨어 + 유효 라이선스가 필요합니다
+- 드라이브 순서가 바뀌어도 정상 인식됩니다
+
+#### 알림 설정 (권장)
+
+```bash
+# SMTP 알림 설정 (이벤트 발생 시 이메일 발송)
+graidctl set alert --smtp-server <smtp_host> --smtp-port 587 \
+  --sender <sender@example.com> --recipient <admin@example.com>
+```
+
+- severity 필터: Warning, Error, Info 선택 가능합니다
+- PD/DG/VD 상태 변경 시 즉시 알림을 발송합니다
+- 일일 점검을 대체하지는 않지만 장애 초기 대응 시간을 단축합니다
 
 [⬆ 목차로 돌아가기](#목차)
 
