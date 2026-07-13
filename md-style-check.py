@@ -495,6 +495,8 @@ REFERENCE_SKIP = {"footer"}
 KIRO_SKIP = {"footer"}
 # INDEX.md는 _reference 규칙 적용 제외
 INDEX_SKIP = {"reference"}
+# 99_archive 파일은 푸터 불필요
+ARCHIVE_SKIP = {"footer"}
 
 # 파일별 특정 검사 항목 제외 (경로 패턴: 검사명 집합)
 FILE_SKIP = {
@@ -526,6 +528,7 @@ def check_file(path, strict=False, skip_checks=None):
     is_reference = '/_reference/' in path or path.startswith('_reference/') or path.startswith('./_reference/')
     is_kiro = '.kiro' in path
     is_index = os.path.basename(path) == 'INDEX.md'
+    is_archive = "/99_archive/" in path or path.startswith("99_archive/") or path.startswith("./99_archive/")
     all_issues = []
 
     for key, name, fn in CHECKS:
@@ -534,6 +537,8 @@ def check_file(path, strict=False, skip_checks=None):
         if is_kiro and key in KIRO_SKIP:
             continue
         if is_index and key in INDEX_SKIP:
+            continue
+        if is_archive and key in ARCHIVE_SKIP:
             continue
         if _should_skip_for_file(path, key):
             continue
