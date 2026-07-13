@@ -79,7 +79,7 @@ MySQL 8.4 기본 Storage Engine. ACID 트랜잭션을 완벽히 지원하며, �
 
 ```
 ┌──────────────────────────────────────────────────┐ 
-│                 InnoDB Architecture              │
+│                 InnoDB Architecture              │ 
 │                                                  │ 
 │  ┌──────────────────────────────────────┐        │ 
 │  │         Buffer Pool (Memory)         │        │ 
@@ -118,11 +118,11 @@ Clustered Index (Primary Key):
 │          │ 10 │ 50 │100 │               │    
 │          └─┬──┴─┬──┴─┬──┘               │    
 │            v    v    v                  │    
-│  ┌──────┐ ┌──────┐ ┌──────┐             │     
-│  │Leaf: │ │Leaf: │ │Leaf: │             │     
-│  │PK+Row│ │PK+Row│ │PK+Row│  ← data     │      
-│  │ Data │ │ Data │ │ Data │    stored   │     
-│  └──────┘ └──────┘ └──────┘    in leaf  │     
+│  ┌──────┐ ┌──────┐ ┌──────┐             │    
+│  │Leaf: │ │Leaf: │ │Leaf: │             │    
+│  │PK+Row│ │PK+Row│ │PK+Row│  ← data     │    
+│  │ Data │ │ Data │ │ Data │    stored   │    
+│  └──────┘ └──────┘ └──────┘    in leaf  │    
 └─────────────────────────────────────────┘    
                                                
 Secondary Index:                               
@@ -461,7 +461,7 @@ INSERT INTO export_data VALUES (1, 'item_a', 100.50);
 
 ```
 Source Server                 Blackhole "Dummy"     Replica
-┌──────────┐  binlog   ┌──────────────┐ filtered  ┌──────────┐ 
+┌──────────┐  binlog   ┌──────────────┐ filtered  ┌──────────┐   
 │  mysqld  │ ────────> │mysqld        │ ────────> │  mysqld  │   
 │ (source) │           │(BLACKHOLE    │           │(replica) │   
 │          │           │ default eng) │           │          │   
