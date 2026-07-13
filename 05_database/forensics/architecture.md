@@ -27,9 +27,9 @@ Source MySQL                    bintrail                        Storage
                                                                │ (index)  │
                                                                └────┬─────┘
                                                                     │      
-                                              ┌─────────────────────┼──────
-                                              v                     v         v
-                                        query/recover       reconstruct   verify
+                                              ┌─────────────────────┼─────────────┐
+                                              v                     v             v
+                                        query/recover       reconstruct         verify
 ```
 
 ### 동작 순서
@@ -51,10 +51,10 @@ MySQL                           bintrail
   │                                │
   │─── ROTATE_EVENT ──────────────>│
   │─── TABLE_MAP_EVENT ───────────>│  (table ID mapping)
-  │─── WRITE_ROWS_EVENT ─────────>│  (INSERT)
-  │─── UPDATE_ROWS_EVENT ────────>│  (UPDATE: before+after)
-  │─── DELETE_ROWS_EVENT ────────>│  (DELETE: before image)
-  │─── GTID_LOG_EVENT ───────────>│  (transaction ID)
+  │─── WRITE_ROWS_EVENT ──────────>│  (INSERT)
+  │─── UPDATE_ROWS_EVENT ─────────>│  (UPDATE: before+after)
+  │─── DELETE_ROWS_EVENT ─────────>│  (DELETE: before image)
+  │─── GTID_LOG_EVENT ────────────>│  (transaction ID)
   │─── XID_EVENT ─────────────────>│  (commit)
   │                                │
   │   (continuous stream, connection stays open)
