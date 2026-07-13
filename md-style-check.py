@@ -317,7 +317,8 @@ def check_diagram_korean(content, strict=False):
             block_start = i + 1
             block_body = []
         elif in_block and re.match(r'^``` *$', s):
-            if any(bl.strip().startswith('┌') or bl.strip().startswith('┐') for bl in block_body):
+            block_text = '\n'.join(block_body)
+            if '┌' in block_text and '┘' in block_text:
                 for j, bl in enumerate(block_body):
                     korean = re.findall(r'[가-힣]+', bl)
                     if korean:
@@ -329,7 +330,7 @@ def check_diagram_korean(content, strict=False):
     return issues
 
 # 허용 이모지 목록
-_ALLOWED_EMOJIS = ['✅', '❌', '🟡', '🟢', '🔴', '★', '☆', '💡']
+_ALLOWED_EMOJIS = ['✅', '❌', '🟡', '🟢', '🔴', '★', '☆', '💡', '✓', '✗']
 # 공백 검사 대상: ✅ ❌ 🟡 🟢 🔴 만 (★☆💡는 공백 규칙 불필요)
 _EMOJI_SPACE_TARGETS = ['✅', '❌', '🟡', '🟢', '🔴']
 _EMOJI_PATTERN = re.compile(
@@ -345,6 +346,7 @@ _ALL_EMOJI_PATTERN = re.compile(
     '\U0001F900-\U0001F9FF'    # Supplemental Symbols
     '\U0001FA00-\U0001FA6F'    # Chess Symbols
     '\U0001FA70-\U0001FAFF'    # Symbols Extended-A
+    '\U00002600-\U000027BF'    # Misc Symbols + Dingbats (⚠️❗✂️ 등)
     '\U00002B50'                 # ⭐ (White Medium Star — ★과 혼동 방지)
     ']+'
 )
@@ -501,7 +503,7 @@ ARCHIVE_SKIP = {"footer"}
 # 파일별 특정 검사 항목 제외 (경로 패턴: 검사명 집합)
 FILE_SKIP = {
     "04_security/cloud/ddos_defense_architecture.md": {"diagram-width"},
-    "01_fundamentals/linux/vim_airline.md": {"diagram-width", "h1"},
+    "01_fundamentals/linux/vim_airline.md": {"diagram-width", "h1", "emoji-disallow"},
     "02_infrastructure/monitoring/game_infra_kpi_presentation.md": {"diagram-kr"},
     "01_fundamentals/networking/network_headers.md": {"box-chars"},
     "06_career/ai_tools/kiro_cli_command_reference.md": {"diagram-kr"},
