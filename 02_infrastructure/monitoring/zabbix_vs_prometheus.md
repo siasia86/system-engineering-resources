@@ -207,7 +207,7 @@
 │           ^                         ^               │
 │           │                         │               │
 └───────────│─────────────────────────│───────────────┘
-           │                         │
+            │                         │
   Physical Servers            Kubernetes Pods
   Network Devices             Microservices
   SNMP/IPMI                   /metrics endpoint
