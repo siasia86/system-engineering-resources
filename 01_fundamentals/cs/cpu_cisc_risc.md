@@ -4,13 +4,13 @@ CPU 명령어 집합 아키텍처(ISA)의 두 가지 설계 철학을 비교합�
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. CISC](#1-cisc) / [2. RISC](#2-risc) / [3. CISC vs RISC 비교](#3-cisc-vs-risc-비교) |
-| [4. 파이프라인 차이](#4-파이프라인-차이) / [5. 대표 프로세서](#5-대표-프로세서) / [6. 현대 CPU의 융합](#6-현대-cpu의-융합) |
+| 섹션                                                                                                                                                                  |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [1. CISC](#1-cisc) / [2. RISC](#2-risc) / [3. CISC vs RISC 비교](#3-cisc-vs-risc-비교)                                                                                |
+| [4. 파이프라인 차이](#4-파이프라인-차이) / [5. 대표 프로세서](#5-대표-프로세서) / [6. 현대 CPU의 융합](#6-현대-cpu의-융합)                                            |
 | [7. 서버/클라우드 환경에서의 선택](#7-서버클라우드-환경에서의-선택) / [8. 실무 Tip](#8-실무-tip) / [9. 비유로 이해하는 CISC vs RISC](#9-비유로-이해하는-cisc-vs-risc) |
-| [10. 엔디안(Endianness)](#10-엔디안endianness) / [11. 캐시 구조 (L1/L2/L3)](#11-캐시-구조-l1l2l3) / [12. 명령어 실행 과정](#12-명령어-실행-과정) |
-| [13. CISC/RISC 역사 타임라인](#13-ciscrisc-역사-타임라인) |
+| [10. 엔디안(Endianness)](#10-엔디안endianness) / [11. 캐시 구조 (L1/L2/L3)](#11-캐시-구조-l1l2l3) / [12. 명령어 실행 과정](#12-명령어-실행-과정)                      |
+| [13. CISC/RISC 역사 타임라인](#13-ciscrisc-역사-타임라인)                                                                                                             |
 
 
 ---
@@ -541,25 +541,25 @@ RISC (4 instructions, pipelined):
 
 🔴 배경 지식. 필수는 아니지만 설계 철학의 흐름을 이해하는 데 도움이 됩니다.
 
-| 연도  | 사건                                               | 분류 |
-|-------|----------------------------------------------------|------|
-| 1964  | IBM System/360 — 최초의 범용 ISA, CISC의 원형      | CISC |
-| 1971  | Intel 4004 — 최초의 상용 마이크로프로세서          | CISC |
-| 1978  | Intel 8086 — x86 아키텍처의 시작                   | CISC |
-| 1980  | Patterson & Ditzel, "RISC" 개념 논문 발표          | RISC |
-| 1981  | Berkeley RISC-I 프로젝트 시작                      | RISC |
-| 1981  | Stanford MIPS 프로젝트 시작 (Hennessy, 1981~1984)  | RISC |
-| 1985  | ARM1 — Acorn RISC Machine 최초 칩                  | RISC |
-| 1985  | Intel 80386 — 32bit x86 (IA-32)                    | CISC |
-| 1993  | ARM610 — Apple Newton에 탑재                       | RISC |
-| 1995  | Intel Pentium Pro — 내부 RISC 마이크로옵 변환 도입 | 융합 |
-| 2003  | AMD64 (x86-64) — 64bit 확장                        | CISC |
-| 2010  | RISC-V 프로젝트 시작 (UC Berkeley)                 | RISC |
-| 2011  | ARM Cortex-A15 — 서버 시장 진출 시도               | RISC |
-| 2018  | AWS Graviton 1 — ARM 기반 클라우드 서버            | RISC |
-| 2020  | Apple M1 — ARM 기반 데스크톱 전환                  | RISC |
+| 연도  | 사건                                                 | 분류 |
+|-------|------------------------------------------------------|------|
+| 1964  | IBM System/360 — 최초의 범용 ISA, CISC의 원형        | CISC |
+| 1971  | Intel 4004 — 최초의 상용 마이크로프로세서            | CISC |
+| 1978  | Intel 8086 — x86 아키텍처의 시작                     | CISC |
+| 1980  | Patterson & Ditzel, "RISC" 개념 논문 발표            | RISC |
+| 1981  | Berkeley RISC-I 프로젝트 시작                        | RISC |
+| 1981  | Stanford MIPS 프로젝트 시작 (Hennessy, 1981~1984)    | RISC |
+| 1985  | ARM1 — Acorn RISC Machine 최초 칩                    | RISC |
+| 1985  | Intel 80386 — 32bit x86 (IA-32)                      | CISC |
+| 1993  | ARM610 — Apple Newton에 탑재                         | RISC |
+| 1995  | Intel Pentium Pro — 내부 RISC 마이크로옵 변환 도입   | 융합 |
+| 2003  | AMD64 (x86-64) — 64bit 확장                          | CISC |
+| 2010  | RISC-V 프로젝트 시작 (UC Berkeley)                   | RISC |
+| 2011  | ARM Cortex-A15 — 서버 시장 진출 시도                 | RISC |
+| 2018  | AWS Graviton 1 — ARM 기반 클라우드 서버              | RISC |
+| 2020  | Apple M1 — ARM 기반 데스크톱 전환                    | RISC |
 | 2023  | AWS Graviton 4 발표 (GA 2024) — ARM 서버 경쟁력 입증 | RISC |
-| 2024~ | RISC-V 서버 칩 등장 (SiFive 등), 생태계 확장 중    | RISC |
+| 2024~ | RISC-V 서버 칩 등장 (SiFive 등), 생태계 확장 중      | RISC |
 
 ### 흐름 요약
 
