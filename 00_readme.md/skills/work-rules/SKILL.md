@@ -159,7 +159,7 @@ When **creating new** or **significantly modifying** a tech-related `.md` file:
 
 🟡 **Strict order**: create `_reference` → update INDEX → write `.md`. Reverse order prohibited.
 
-⚠️ **Hard stop**: If you find yourself writing a tech `.md` file and realize no `_reference` exists for that technology:
+🟡 **Hard stop**: If you find yourself writing a tech `.md` file and realize no `_reference` exists for that technology:
 1. **STOP** writing the `.md` immediately (even mid-sentence)
 2. Create the `_reference` file first (scan official source)
 3. Update `_reference/INDEX.md`
@@ -635,7 +635,7 @@ README/CHANGELOG: [deferred to final batch / updated]
 
 On context compaction or session switch:
 
-1. Read `TODO.md` — check each item status (✅/⬜)
+1. Read `TODO.md` — check each item status (✅ /⬜)
 2. Resume from next ⬜ item with Pre-execution Brief
 3. If batch partially complete: skip already ✅ items, continue remaining only
 4. Completion criteria: md-style-check 0 issues + all fact-check rounds passed + TODO.md marked ✅
@@ -652,19 +652,19 @@ On context compaction or session switch:
 
 ### Scope
 
-| Agent | Condition | Output |
-|-------|-----------|--------|
-| default chat | TODO §4 batch (1+ documents) | Pre + Post both |
-| doc-reviewer | 3+ file batch review | target list (Pre) + per-file result table (Post) |
-| all agents | single doc outside TODO §4 | may skip |
+| Agent        | Condition                    | Output                                           |
+|--------------|------------------------------|--------------------------------------------------|
+| default chat | TODO §4 batch (1+ documents) | Pre + Post both                                  |
+| doc-reviewer | 3+ file batch review         | target list (Pre) + per-file result table (Post) |
+| all agents   | single doc outside TODO §4   | may skip                                         |
 
 doc-reviewer threshold is 3+ because single-file review is its normal operation and does not need ceremony.
 
 ### fact-check round requirements
 
-| Target | Required rounds | Content |
-|--------|-----------------|---------|
-| _reference file | 2 | URL access + content verification against source |
-| .md (TODO §4, _reference exists) | 3 | _reference cross + official source + rating/numbers |
-| .md (TODO §4, _reference N/A) | 2 | official source direct + rating/numbers (Round 1 skipped) |
-| .md (other) | 1 | md-style-check pass is sufficient |
+| Target                           | Required rounds | Content                                                   |
+|----------------------------------|-----------------|-----------------------------------------------------------|
+| _reference file                  | 2               | URL access + content verification against source          |
+| .md (TODO §4, _reference exists) | 3               | _reference cross + official source + rating/numbers       |
+| .md (TODO §4, _reference N/A)    | 2               | official source direct + rating/numbers (Round 1 skipped) |
+| .md (other)                      | 1               | md-style-check pass is sufficient                         |

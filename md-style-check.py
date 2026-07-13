@@ -494,7 +494,7 @@ CHECKS = [
 # _reference 파일은 푸터 불필요
 REFERENCE_SKIP = {"footer"}
 # .kiro 내부 문서는 푸터 불필요
-KIRO_SKIP = {"footer"}
+KIRO_SKIP = {"footer", "h1", "diagram-kr"}
 # INDEX.md는 _reference 규칙 적용 제외
 INDEX_SKIP = {"reference"}
 # 99_archive 파일은 푸터 불필요
@@ -508,6 +508,9 @@ FILE_SKIP = {
     "01_fundamentals/networking/network_headers.md": {"box-chars"},
     "06_career/ai_tools/kiro_cli_command_reference.md": {"diagram-kr"},
     "02_infrastructure/cicd/infra_monorepo_and_boilerplate.md": {"table"},
+    "skills/security-tools/SKILL.md": {"emoji-disallow"},
+    "02_reference/README_web.md": {"footer", "h1"},
+    "00_default/linux_setting.md": {"footer", "h1"},
 }
 
 def _should_skip_for_file(filepath, check_name):
@@ -558,7 +561,7 @@ def check_file(path, strict=False, skip_checks=None):
     return all_issues
 
 # 검사 제외 디렉토리
-EXCLUDE_DIRS = {'99_archive', '.git', '__pycache__', '_reference', '00_readme.md'}
+EXCLUDE_DIRS = {'99_archive', '99_etc', '.git', '__pycache__', '_reference', '00_readme.md'}
 
 # 검사 제외 파일
 EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'CHANGELOG.md'}

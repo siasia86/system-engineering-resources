@@ -75,24 +75,24 @@ For any range [min, max], always test:
 
 Derive edge cases from 5 axes. Pick at least 1 from each applicable axis.
 
-| Axis     | Question                                  | Examples                                |
-|----------|-------------------------------------------|-----------------------------------------|
-| Input    | Empty, max length, special chars?         | null, 0, MAX_INT, unicode, newline      |
-| Environment | Disk full, OOM, network down?          | DNS fail, read-only mount, low bandwidth|
-| State    | Initial, mid-failure, post-restart?       | uninitialized, partial write, cold start|
-| Time     | Concurrency, timeout, order reversal?     | simultaneous write, expired token       |
-| Resource | Exhaustion, contention, limit reached?    | FD exhausted, pool full, PID limit      |
+| Axis        | Question                               | Examples                                 |
+|-------------|----------------------------------------|------------------------------------------|
+| Input       | Empty, max length, special chars?      | null, 0, MAX_INT, unicode, newline       |
+| Environment | Disk full, OOM, network down?          | DNS fail, read-only mount, low bandwidth |
+| State       | Initial, mid-failure, post-restart?    | uninitialized, partial write, cold start |
+| Time        | Concurrency, timeout, order reversal?  | simultaneous write, expired token        |
+| Resource    | Exhaustion, contention, limit reached? | FD exhausted, pool full, PID limit       |
 
 Reference: `file:///root/32_system-engineering-resources/01_fundamentals/cs/testing/04_test_design/edge_case_testing.md`
 
 ### Terminology
 
-| Term           | Meaning                                    |
-|----------------|--------------------------------------------|
-| Edge case      | Boundary of valid range                    |
-| Corner case    | Multiple boundaries intersecting           |
-| Degenerate case| Extremely simple/empty input               |
-| Race condition | Timing-dependent concurrent conflict       |
+| Term            | Meaning                              |
+|-----------------|--------------------------------------|
+| Edge case       | Boundary of valid range              |
+| Corner case     | Multiple boundaries intersecting     |
+| Degenerate case | Extremely simple/empty input         |
+| Race condition  | Timing-dependent concurrent conflict |
 
 ## Infrastructure Testing
 
@@ -115,13 +115,13 @@ Reference: `file:///root/32_system-engineering-resources/01_fundamentals/cs/test
 
 ### Container / Docker Testing
 
-| 대상             | 검증 명령어                                          |              |
-|------------------|------------------------------------------------------|--------------|
-| Dockerfile lint  | `hadolint Dockerfile`                                |              |
-| Image build      | `docker build --no-cache -t test .`                  |              |
-| Container health | `docker inspect --format='{{.State.Health.Status}}'` |              |
-| Compose syntax   | `docker compose config`                              |              |
-| Port binding     | `ss -tlnp` 으로 포트 확인                              |              |
+| 대상             | 검증 명령어                                          | 
+|------------------|------------------------------------------------------|
+| Dockerfile lint  | `hadolint Dockerfile`                                |
+| Image build      | `docker build --no-cache -t test .`                  |
+| Container health | `docker inspect --format='{{.State.Health.Status}}'` |
+| Compose syntax   | `docker compose config`                              |
+| Port binding     | `ss -tlnp` 으로 포트 확인                            |
 
 ### Post-Change Verification Pattern
 

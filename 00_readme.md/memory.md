@@ -4,24 +4,24 @@
 
 ## 환경
 
-| 항목 | 값 |
-|------|------|
-| Ansible 서버 | 10.200.90.155 (Linux, Python 3.14, kernel 6.8.0-124) |
-| Hyper-V 호스트 | 10.200.101.101 (Windows 10 Pro) |
-| Docker | 29.5.3 (cgroup v2) |
-| SSH 키 | ~/.ssh/id_ed25519 |
-| venv | /home/sjyun/.venv |
-| AWS 프로필 | 01_re (123456789012) |
+| 항목           | 값                                                   |
+|----------------|------------------------------------------------------|
+| Ansible 서버   | 10.200.90.155 (Linux, Python 3.14, kernel 6.8.0-124) |
+| Hyper-V 호스트 | 10.200.101.101 (Windows 10 Pro)                      |
+| Docker         | 29.5.3 (cgroup v2)                                   |
+| SSH 키         | ~/.ssh/id_ed25519                                    |
+| venv           | /home/sjyun/.venv                                    |
+| AWS 프로필     | 01_re (123456789012)                                 |
 
 ## 프로젝트 경로
 
-| 프로젝트 | 경로 |
-|----------|------|
-| Ansible 학습 | /opt/00_chobo_ansible/ |
-| 기술 문서 | /root/32_system-engineering-resources/ |
-| AWS 작업 | /home/sjyun/03_aws/ |
-| 스크립트 | /root/sj_del/ |
-| 로그 | /var/log/sjyun/ansible/ |
+| 프로젝트     | 경로                                   |
+|--------------|----------------------------------------|
+| Ansible 학습 | /opt/00_chobo_ansible/                 |
+| 기술 문서    | /root/32_system-engineering-resources/ |
+| AWS 작업     | /home/sjyun/03_aws/                    |
+| 스크립트     | /root/sj_del/                          |
+| 로그         | /var/log/sjyun/ansible/                |
 
 ## 작업 규칙 요약
 

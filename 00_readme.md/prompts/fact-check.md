@@ -44,7 +44,7 @@ Fact-check markdown @${1}
 
 ## Output
 
-Korean, ✅❌🟡 per item
+Korean, ✅ ❌ 🟡 per item
 
 ```
 === Fact Check: {filename} ===
@@ -57,7 +57,7 @@ Korean, ✅❌🟡 per item
 
 ## Loop (max 2 iterations)
 
-1. 핵심 사실 추출 + 공식 출처 대조 → ❌/🟡 목록
+1. 핵심 사실 추출 + 공식 출처 대조 → ❌ /🟡 목록
 2. 오류만 수정 (추가 금지)
 3. 재검증 → 잔여 이슈 확인
 4. Final summary: 검증 항목 수, 정확 수, 수정 수, 잔여 이슈
