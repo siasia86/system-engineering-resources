@@ -1,4 +1,5 @@
 # YAML 문법 가이드
+<!-- reference: _reference/yaml_spec_notes.md -->
 
 Ansible, Docker Compose, Kubernetes 등 IaC 도구에서 공통으로 사용하는 YAML 문법 정리입니다.
 

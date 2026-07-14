@@ -1,4 +1,5 @@
 # Terraform
+<!-- reference: _reference/terraform_official_notes.md -->
 
 ## 목차
 

@@ -1,4 +1,5 @@
 # VPN Protocol
+<!-- reference: _reference/vpn_protocol_official_notes.md -->
 
 VPN(Virtual Private Network) 터널링 프로토콜의 개념, 동작 원리, 보안 수준을 비교합니다. PPTP부터 WireGuard까지 세대별 발전 흐름을 다룹니다.
 

@@ -76,6 +76,29 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 | 로그 디렉토리   | 750         | root:root   |
 | SSL 인증서      | 600         | root:root   |
 
+### 버전별 주요 변경사항 (Nginx)
+
+| 버전    | 변경 사항                                            | 영향                            |
+|---------|------------------------------------------------------|---------------------------------|
+| 1.25.1+ | `listen` 줄 `http2` 파라미터 deprecated              | `http2 on;` 별도 디렉티브 사용  |
+| 1.25.1+ | `listen ... quic` QUIC/HTTP3 실험적 지원             | `http3 on;` 별도 디렉티브       |
+| 1.19.0+ | `ssl_protocols` 기본값에 TLSv1.3 포함                | 별도 명시 없어도 TLS 1.3 활성화 |
+<!-- unverified: Nginx 1.19.0 ssl_protocols TLSv1.3 기본 포함 — CHANGES 직접 확인 필요 -->
+| 1.15.0+ | `listen` 줄에 `ssl` 없이 `ssl_certificate` 사용 가능 | 설정 간소화                     |
+<!-- unverified: Nginx 1.15.0 ssl 없이 ssl_certificate — CHANGES 직접 확인 필요 -->
+| 1.9.5+  | stream 모듈 (TCP/UDP 프록시) 추가                    | `stream {}` 블록 사용 가능      |
+<!-- unverified: Nginx 1.9.5 stream 모듈 — CHANGES 직접 확인 필요 -->
+
+### 버전별 주요 변경사항 (Apache)
+
+| 버전    | 변경 사항                               | 영향                          |
+|---------|-----------------------------------------|-------------------------------|
+| 2.4.58+ | mod_http2 개선, TLS 1.3 early data 지원 | H2 성능 향상                  |
+<!-- unverified: Apache 2.4.58 mod_http2 early data — CHANGES 직접 확인 필요 -->
+| 2.4.49  | CVE-2021-41773 (path traversal)         | 즉시 패치 필수                |
+| 2.4.52+ | mod_proxy_http2 백엔드 H2 지원          | 리버스 프록시 H2 pass-through |
+| 2.4+    | event MPM 기본                          | prefork에서 전환 권장         |
+
 ## 2. Apache HTTP Server
 
 ### 버전 (확인일: 2026-07-08)
@@ -160,12 +183,71 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 
 ## 4. TLS 설정 공통 (Mozilla SSL Configuration Generator)
 
-| 프로필       | 대상            | 최소 TLS | 암호 강도 |
-|--------------|-----------------|----------|-----------|
-| Modern       | 최신 클라이언트 | TLS 1.3  | 높음      |
-| Intermediate | 범용 (권장)     | TLS 1.2  | 중간      |
-| Old          | 레거시 호환     | TLS 1.0  | 낮음      |
-
-- 프로덕션 권장: Intermediate
-- 출처: https://ssl-config.mozilla.org/
+- 출처: https://ssl-config.mozilla.org/guidelines/5.7.json (v5.7, 확인일: 2026-07-14)
 - 검증: https://www.ssllabs.com/ssltest/ (A+ 목표)
+
+### 프로필 비교
+
+| 프로필       | 대상            | 최소 TLS | 대상 클라이언트                       |
+|--------------|-----------------|----------|---------------------------------------|
+| Modern       | 최신 클라이언트 | TLS 1.3  | Firefox 63+, Chrome 70+, Safari 12.1+ |
+| Intermediate | 범용 (권장)     | TLS 1.2  | Firefox 27+, Chrome 31+, IE 11/Win7   |
+| Old          | 레거시 호환     | TLS 1.0  | 매우 오래된 클라이언트 (비권장)       |
+
+### Intermediate 프로필 상세 (프로덕션 권장)
+
+| 항목                      | 값                |
+|---------------------------|-------------------|
+| ssl_protocols             | TLSv1.2 TLSv1.3   |
+| ssl_prefer_server_ciphers | off               |
+| HSTS max-age              | 63072000 (2년)    |
+| DH param size             | 2048bit           |
+| RSA key size              | 2048bit           |
+| OCSP Stapling             | on                |
+| 인증서 최대 수명          | 366일 (권장 90일) |
+
+### Intermediate ssl_ciphers (OpenSSL 표기)
+
+```
+ECDHE-ECDSA-AES128-GCM-SHA256
+ECDHE-RSA-AES128-GCM-SHA256
+ECDHE-ECDSA-AES256-GCM-SHA384
+ECDHE-RSA-AES256-GCM-SHA384
+ECDHE-ECDSA-CHACHA20-POLY1305
+ECDHE-RSA-CHACHA20-POLY1305
+DHE-RSA-AES128-GCM-SHA256
+DHE-RSA-AES256-GCM-SHA384
+DHE-RSA-CHACHA20-POLY1305
+```
+
+### Nginx 적용 예시
+
+```nginx
+ssl_protocols       TLSv1.2 TLSv1.3;
+ssl_ciphers         ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305;
+ssl_prefer_server_ciphers off;
+ssl_session_timeout 1d;
+ssl_session_cache   shared:SSL:10m;
+ssl_session_tickets off;
+ssl_stapling        on;
+ssl_stapling_verify on;
+add_header Strict-Transport-Security "max-age=63072000" always;
+```
+
+### Apache 적용 예시
+
+```apache
+SSLProtocol             all -SSLv3 -TLSv1 -TLSv1.1
+SSLCipherSuite          ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305
+SSLHonorCipherOrder     off
+SSLSessionTickets       off
+SSLUseStapling On
+SSLStaplingCache "shmcb:logs/ssl_stapling(32768)"
+Header always set Strict-Transport-Security "max-age=63072000"
+```
+
+### 주의사항
+
+- `HIGH:!aNULL:!MD5`는 구식 표현. 현재 권장되지 않음 (약한 cipher 포함 가능)
+- `ssl_prefer_server_ciphers off`: TLS 1.3에서는 서버 순서가 무의미, 1.2에서도 모든 cipher가 강력하므로 off 권장
+- Nginx 1.25.1+에서 `listen 443 ssl http2;`의 `http2`는 deprecated → `http2 on;` 별도 디렉티브 사용
