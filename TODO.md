@@ -6,9 +6,9 @@
 
 ## 목차
 
-| 섹션                                                                                 |
-|--------------------------------------------------------------------------------------|
-| [1. 잔여 이슈](#1-잔여-이슈) / [2. md-style-check.py 개선](#2-md-style-checkpy-개선) |
+| 섹션                                                                                                                                     |
+|------------------------------------------------------------------------------------------------------------------------------------------|
+| [1. 잔여 이슈](#1-잔여-이슈) / [2. md-style-check.py 개선](#2-md-style-checkpy-개선) / [3. reference 미검증](#3-_reference-미검증-항목)  |
 
 ---
 
@@ -66,3 +66,19 @@ code-review (2026-07-07) 결과 기반 개선 항목입니다.
 **마지막 업데이트**: 2026-07-07
 
 © 2026 siasia86. Licensed under CC BY 4.0.
+
+---
+
+## 3. _reference 미검증 항목
+
+fact-check에서 도구(lynx/curl)로 확인 불가했던 항목입니다. CHANGES 파일 직접 확인 시 해결됩니다.
+
+| _reference 파일                | 항목                                         | 상태 |
+|--------------------------------|----------------------------------------------|------|
+| `web_server_official_notes.md` | Nginx 1.19.0 ssl_protocols TLSv1.3 기본 포함 | ⬜   |
+| `web_server_official_notes.md` | Nginx 1.15.0 ssl 없이 ssl_certificate 가능   | ⬜   |
+| `web_server_official_notes.md` | Nginx 1.9.5 stream 모듈 추가                 | ⬜   |
+| `web_server_official_notes.md` | Apache 2.4.58 mod_http2 TLS 1.3 early data   | ⬜   |
+
+- `grep -r "unverified" _reference/` 로 전체 미확인 항목 조회 가능
+- 확인 완료 시: _reference 내 `<!-- unverified: -->` 주석 제거 + 이 표 ⬜ → ✅
