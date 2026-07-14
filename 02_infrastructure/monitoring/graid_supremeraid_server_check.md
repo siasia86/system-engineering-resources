@@ -391,29 +391,48 @@ CC 실행 시 시스템은 DG 내 각 디스크의 데이터를 비교하여 불
 
 ### Policy 옵션
 
-| Policy        | 동작                         | 사용 시나리오           |
-|---------------|------------------------------|-------------------------|
-| auto_fix      | 불일치 발견 시 자동으로 복구 | 일반 운영 환경 (권장)   |
-| stop_on_error | 불일치 발견 시 중지 후 보고  | 원인 분석이 필요한 경우 |
+| Policy        | 동작                                       | 사용 시나리오           |
+|---------------|--------------------------------------------|-------------------------|
+| auto_fix      | 불일치 발견 시 자동으로 복구               | 일반 운영 환경 (권장)   |
+| stop_on_error | 불일치 발견 시 CC 중지, 이벤트 로그에 기록 | 원인 분석이 필요한 경우 |
 
 ### 권장 설정
 
-| 항목         | 권장 값        |
-|--------------|----------------|
-| Schedule     | 월 1회         |
-| Policy       | auto_fix       |
-| Excluded DGs | [] (전체 포함) |
+| 항목         | 권장 값                         |
+|--------------|---------------------------------|
+| Schedule     | 월 1회                          |
+| Policy       | auto_fix                        |
+| Excluded DGs | 없음 (모든 DG를 CC 대상에 포함) |
+
+### CC 최초 설정 절차 (권장 순서)
+
+기본 설정(`stop_on_error`, schedule off)에서 운영 권장 설정으로 전환하는 절차입니다.
+
+```bash
+# 1. 현재 설정 확인
+graidctl describe consistency_check
+
+# 2. 먼저 stop_on_error 상태에서 수동 1회 실행 (현황 파악)
+graidctl start consistency_check <dg_id>
+graidctl describe consistency_check
+# 결과 확인: 에러 0건이면 auto_fix 전환 안전
+
+# 3. auto_fix로 전환
+graidctl set consistency_check --policy auto_fix
+
+# 4. 스케줄 활성화 (월 1회)
+graidctl set consistency_check --schedule-mode on
+```
+
+🟡 처음부터 `auto_fix`로 전환하지 않는 이유: 기존 불일치가 있을 경우 원인 파악 없이 자동 수정되므로, 최초 1회는 `stop_on_error`로 실행하여 불일치 건수를 먼저 확인합니다.
 
 ### CC 설정 변경
 
 ```bash
-# 현재 CC 설정 확인
-graidctl describe consistency_check
-
 # 정책 변경
 graidctl set consistency_check --policy auto_fix
 
-# 스케줄 활성화 (옵션은 --help로 확인)
+# 스케줄 옵션 확인
 graidctl set consistency_check --help
 ```
 
@@ -440,13 +459,19 @@ graidctl stop consistency_check <dg_id>
 
 ### CC 주의사항
 
-- CC 실행 중 드라이버 업데이트/리부팅 금지 — 완료 대기 후 진행합니다.
-- CC는 백그라운드로 실행되며 I/O 성능에 미미한 영향을 줍니다.
-- RAID 0 DG에서는 CC를 시작할 수 없습니다 (패리티 없음)
-- CC 중 PD 장애 발생 시 CC는 자동 중단되고 리빌드가 우선 실행됩니다.
-- `FIXED` 결과가 반복 발생하면 해당 PD의 SMART를 확인하고 교체를 검토합니다.
+**공식 문서 근거:**
 
-🟡 CC에서 `FIXED`가 한 번 나오는 것은 정상적인 비트 부패 복구입니다. 동일 PD에서 반복 발생 시 드라이브 열화를 의심합니다.
+- RAID 0 DG에서는 CC를 시작할 수 없습니다.
+
+> "The consistency check function is not supported on SupremeRAID™ systems configured in RAID0 mode because RAID0 does not provide data redundancy."
+>
+> — SupremeRAID Linux User Guide v1.7.2 (p.13)
+
+**운영 권장 사항 (공식 문서 미기재):**
+
+- CC 실행 중 드라이버 업데이트/리부팅을 피하고, CC 완료 후 진행합니다.
+- CC 중 PD 장애 발생 시 리빌드를 우선 확인합니다.
+- `FIXED` 결과가 동일 PD에서 반복 발생하면 해당 PD의 SMART를 확인하고 교체를 검토합니다.
 
 ### Live 운영 시 주의사항
 
