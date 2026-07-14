@@ -54,35 +54,33 @@ SupremeRAID는 **GPU를 RAID 컨트롤러로 사용**하는 NVMe RAID 솔루션�
 
 #### NVMe SSD (물리 디스크)
 
-- 일반 서버에서는 NVMe SSD가 OS에 직접 `/dev/nvme0n1`으로 노출됩니다.
-- SupremeRAID 환경에서는 NVMe SSD가 PD로 전환되면 일반 네임스페이스(`/dev/nvmeXn1`)에서 해제되어 OS에 블록 디바이스로 노출되지 않습니다.
-- SupremeRAID GPU가 SSD를 점유하고 I/O를 관리합니다.
-- 물리적으로 분리된 SSD는 `/dev/gpdX` 경로로만 접근합니다.
+- 일반 서버에서는 NVMe SSD가 OS에 `/dev/nvme0n1`으로 직접 노출됩니다.
+- `graidctl create physical_drive` 실행 시 해당 SSD는 OS 네임스페이스(`/dev/nvmeXn1`)에서 해제됩니다.
+- 해제된 SSD는 `/dev/gpdX` 경로로만 노출되며, SMART 조회 등 관리 명령에 사용됩니다.
 
 #### GPU Card (하드웨어 RAID 엔진)
 
-- GPU의 수천 개 CUDA 코어가 패리티 계산(RAID 5/6) 또는 미러링(RAID 1/10)을 수행합니다.
-- CPU는 RAID 연산에서 완전히 해방됩니다 — 애플리케이션에 CPU 100% 사용 가능합니다.
-- GPU가 죽어도 **데이터는 SSD에 보존**됩니다 (메타데이터가 SSD에 저장)
+- CUDA 코어가 RAID 5/6의 패리티 계산 또는 RAID 1/10의 미러 복제를 수행합니다.
+- 패리티 연산이 GPU에서 처리되므로 호스트 CPU의 RAID 관련 부하가 발생하지 않습니다.
+- RAID 메타데이터는 SSD에 저장되므로, GPU 장애 시에도 데이터는 SSD에 보존됩니다.
 
 #### graid.ko (커널 모듈)
 
-- Linux 커널에 로드되는 드라이버 모듈입니다.
-- GPU와 NVMe SSD 사이의 I/O 경로를 관리합니다.
-- OS가 Virtual Drive(`/dev/gdgXnY`)를 일반 블록 디바이스로 인식할 수 있게 합니다.
-- 커널 버전에 종속 — 지원되지 않는 커널에서는 로드 실패합니다.
+- Linux 커널에 로드되는 드라이버입니다.
+- OS의 블록 I/O 요청을 인터셉트하여 GPU로 전달하고, GPU 처리 결과를 SSD에 기록합니다.
+- Virtual Drive(`/dev/gdgXnY`)를 커널에 블록 디바이스로 등록합니다.
+- 커널 버전에 종속됩니다 — 미지원 커널에서는 모듈 로드가 실패합니다.
 
 #### graidctl / graid_server (사용자 공간)
 
-- `graid_server`: 백그라운드 데몬. GPU와 통신하며 RAID 상태를 관리합니다.
-- `graidctl`: CLI 관리 도구. 사용자가 RAID를 생성/조회/삭제/교체하는 인터페이스입니다.
-- `graid-mgr` (1.6+): GUI/API 관리 인터페이스입니다.
+- `graid_server`: 백그라운드 데몬. GPU 펌웨어와 통신하여 RAID 상태 모니터링 및 이벤트 수집을 수행합니다.
+- `graidctl`: CLI 도구. PD/DG/VD 생성, 삭제, 교체, CC 실행 등 모든 관리 작업을 수행합니다.
+- `graid-mgr` (1.6+): 웹 기반 GUI/REST API 인터페이스입니다.
 
 #### Linux / Windows OS (최상위)
 
-- OS는 Virtual Drive(`/dev/gdgXnY`)만 인식합니다.
-- OS에서 일반 블록 디바이스와 동일하게 `mkfs`, `mount`, `fio`를 사용할 수 있습니다.
-- 물리 NVMe SSD(`/dev/nvmeXn1`)는 OS에서 보이지 않습니다.
+- OS는 Virtual Drive(`/dev/gdgXnY`)를 일반 블록 디바이스로 인식합니다.
+- `mkfs`, `mount`, `fio` 등 표준 블록 디바이스 명령어가 그대로 동작합니다.
 
 ### 데이터 흐름
 
