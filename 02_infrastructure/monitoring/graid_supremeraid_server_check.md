@@ -62,7 +62,7 @@ SupremeRAID는 **GPU를 RAID 컨트롤러로 사용**하는 NVMe RAID 솔루션�
 
 - CUDA 코어가 RAID 5/6의 패리티 계산 또는 RAID 1/10의 미러 복제를 수행합니다.
 - 패리티 연산이 GPU에서 처리되므로 호스트 CPU의 RAID 관련 부하가 발생하지 않습니다.
-- RAID 메타데이터는 SSD에 저장되므로, GPU 장애 시에도 데이터는 SSD에 보존됩니다.
+- RAID 메타데이터는 SSD에 저장됩니다. GPU 교체 시 새 라이선스 키와 함께 복구 절차를 진행할 수 있습니다.
 
 #### graid.ko (커널 모듈)
 
@@ -104,7 +104,7 @@ Application writes to /dev/gdg0n1
           │                                                              
           v                                                              
 ┌─────────────────────────┐                                              
-│  NVMe SSD 0, 1, 2 ...  │  data + parity distributed across SSDs        
+│  NVMe SSD 0, 1, 2 ...   │  data + parity distributed across SSDs        
 └─────────────────────────┘                                              
 ```
 
@@ -112,7 +112,7 @@ Application writes to /dev/gdg0n1
 
 | 구성 요소      | 약칭 | 디바이스 경로 | 설명                                 |
 |----------------|------|---------------|--------------------------------------|
-| Physical Drive | PD   | `/dev/gpdX`   | OS에서 분리된 NVMe SSD               |
+| Physical Drive | PD   | `/dev/gpdX`   | RAID 전용으로 할당된 NVMe SSD        |
 | Drive Group    | DG   | -             | RAID 레벨이 적용된 PD 그룹           |
 | Virtual Drive  | VD   | `/dev/gdgXnY` | OS에 노출되는 볼륨 (mkfs/mount 대상) |
 | Controller     | CX   | -             | GPU RAID 컨트롤러 (온도, 팬, SN)     |
@@ -161,8 +161,8 @@ Application usage
 
 - **GPU가 RAID 컨트롤러** — 별도 RAID 카드 불필요합니다.
 - **NVMe 성능 보존** — CPU가 패리티 계산을 하지 않으므로 SSD 원래 속도를 유지합니다.
-- **OS와 SSD가 분리** — OS는 물리 SSD를 볼 수 없고 VD만 인식합니다.
-- **데이터는 SSD에 저장** — GPU 장애 시에도 데이터는 SSD에 보존됩니다 (GPU 교체 후 복구 가능)
+- **VD만 블록 디바이스로 노출** — OS는 PD를 직접 마운트할 수 없으며, VD(`/dev/gdgXnY`)만 파일시스템으로 사용합니다.
+- **RAID 메타데이터가 SSD에 저장됨** — GPU 교체 절차가 공식 문서에 존재하며, SSD를 다른 서버로 이관할 수 있습니다.
 - **커널 종속** — 미지원 커널 부팅 시 볼륨 접근 불가 (데이터 유실 아님)
 
 ### graidctl CLI 구조 (v1.5+)
@@ -570,9 +570,34 @@ graidctl list event
 
 ### 9.2 컨트롤러 장애 (GPU 실패)
 
-1. 듀얼 컨트롤러 구성: auto_failover로 자동 인수
-2. 단일 컨트롤러: 재부팅 → GPU 교체 (새 라이선스 키 필요)
-3. 데이터는 SSD에 보존됨
+#### 듀얼 컨트롤러 구성
+
+- active/active 구성에서 Primary GPU 장애 시, 모든 SSD가 Secondary GPU로 자동 인수(failover)됩니다.
+- 수동 설정 불필요 — SupremeRAID가 자동으로 최적 컨트롤러를 선택합니다.
+
+> 출처 (FAQ): "If the primary SupremeRAID™ controller fails, all SSDs will seamlessly be managed by the remaining operational SupremeRAID™ controller."
+
+#### 단일 컨트롤러 구성 — GPU 교체 절차
+
+공식 문서 "Replacing a SupremeRAID™ Card" 섹션 기준입니다.
+
+```bash
+# 1. 서버 전원 OFF
+
+# 2. 장애 GPU 물리 제거, 새 GPU 장착
+
+# 3. 서버 부팅 후 새 라이선스 키 적용
+graidctl apply license <NEW_LICENSE_KEY>
+
+# 4. RAID 상태 확인
+graidctl list controller
+graidctl list drive_group
+# 기대: DG STATE = OPTIMAL (메타데이터가 SSD에 있으므로 자동 인식)
+```
+
+🟡 GPU 교체 전 반드시 교체용 라이선스 키를 확보해야 합니다. 라이선스는 GPU 시리얼 넘버에 종속됩니다.
+
+> 출처 (FAQ): "Before doing this, please ensure you have the replacement license key to hand as each SupremeRAID™ GPU requires a unique license key."
 
 ### 9.3 에스컬레이션 기준
 
