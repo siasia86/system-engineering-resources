@@ -1,7 +1,7 @@
 # GRAID SupremeRAID 서버 점검 가이드
 <!-- reference: _reference/graid_supremeraid_official_notes.md -->
 
-SupremeRAID (GPU 기반 NVMe RAID) 환경의 정기 점검 절차를 정리합니다. 서버/구성에 관계없이 적용 가능한 범용 가이드입니다.
+SupremeRAID (GPU 기반 NVMe RAID) 환경의 정기 점검 절차를 정리합니다. 하드웨어 모델(SR-1010/SR-1000)이나 RAID 레벨(5/6/10)에 관계없이 적용 가능합니다.
 
 ## 목차
 
@@ -77,7 +77,7 @@ SupremeRAID는 **GPU를 RAID 컨트롤러로 사용**하는 NVMe RAID 솔루션�
 #### Linux / Windows OS (최상위)
 
 - OS는 Virtual Drive(`/dev/gdgXnY`)만 인식합니다.
-- 일반 블록 디바이스와 동일하게 `mkfs`, `mount`, `fio` 등 사용 가능합니다.
+- OS에서 일반 블록 디바이스와 동일하게 `mkfs`, `mount`, `fio`를 사용할 수 있습니다.
 - 물리 NVMe SSD(`/dev/nvmeXn1`)는 OS에서 보이지 않습니다.
 
 ### 데이터 흐름
@@ -501,7 +501,7 @@ graidctl set alert --smtp-server <smtp_host> --smtp-port 587 \
   --sender <sender@example.com> --recipient <admin@example.com>
 ```
 
-- severity 필터: Warning, Error, Info 선택 가능합니다.
+- severity 필터로 Warning, Error, Info를 선택할 수 있습니다.
 - PD/DG/VD 상태 변경 시 즉시 알림을 발송합니다.
 - 일일 점검을 대체하지는 않지만 장애 초기 대응 시간을 단축합니다.
 
