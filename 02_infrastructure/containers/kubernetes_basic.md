@@ -1,4 +1,5 @@
 # Kubernetes 기본
+<!-- reference: _reference/kubernetes_official_notes.md -->
 
 ## 목차
 

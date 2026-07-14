@@ -1,4 +1,5 @@
 # Character Set & Encoding 가이드
+<!-- reference: _reference/charset_encoding_official_notes.md -->
 
 ## 목차
 
