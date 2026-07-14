@@ -446,14 +446,24 @@ _PERIOD_MISSING_PATTERN = re.compile(
 def check_period_missing(content, strict=False):
     """합니다체 종결어미 뒤 마침표 누락 검사 (STYLE.md § 10). 코드블록/인용구/헤더/표/불릿 제외."""
     issues = []
-    clean = strip_code_blocks(content)
-    for i, line in enumerate(clean.splitlines(), 1):
+    all_lines = content.split('\n')
+    in_block = False
+    for i, line in enumerate(all_lines, 1):
+        s = line.rstrip()
+        if not in_block and s.startswith('```'):
+            in_block = True
+            continue
+        elif in_block and re.match(r'^`{3,}\s*$', s):
+            in_block = False
+            continue
+        if in_block:
+            continue
         stripped = line.strip()
         if (not stripped
                 or stripped.startswith(('#', '|', '*', '!', '>', '©', '-', '['))):
             continue
         if _PERIOD_MISSING_PATTERN.search(stripped):
-            issues.append(f"L{i}: 마침표 누락 → '{stripped[-30:]}'")
+            issues.append(f"L{i}: 마침표 누락 → '{stripped[-40:]}'")
     return issues
 
 # 과장 표현 패턴
