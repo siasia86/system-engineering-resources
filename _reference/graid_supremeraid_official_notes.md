@@ -7,11 +7,12 @@ tags:
   - nvme
   - raid
   - storage
-last_checked: 2026-07-10
+last_checked: 2026-07-14
 sources:
   - https://docs.graidtech.com/sr/
   - https://docs.graidtech.com/sr/user-guide/linux/2.0.0/
   - https://www.graidtech.com/faq/
+  - https://download.graidtech.com/document/user-guide/supreme-raid/linux/1.7.2/SupremeRAID-Linux-User-Guide-v1.7.2-20250630.pdf
 ---
 
 # GRAID SupremeRAID 공식 문서 참조 노트

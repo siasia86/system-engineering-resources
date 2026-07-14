@@ -376,21 +376,18 @@ Consistency Check(CC)는 RAID 어레이의 패리티/미러 데이터 정합성�
 | RAID 0 지원    | ❌ (패리티 없음, CC 불가)               |
 | 지원 RAID 레벨 | RAID 1, 5, 6, 10                        |
 
-### 동작 원리
 
-```
-┌─────────────────────────────────────────────────────────┐ 
-│               Consistency Check Process                  │
-├─────────────────────────────────────────────────────────┤ 
-│  1. Read data strips from all PDs in DG                 │ 
-│  2. Recalculate parity from data strips                 │ 
-│  3. Compare calculated parity vs stored parity          │ 
-│  4. If mismatch:                                        │ 
-│     - auto_fix: overwrite stored parity (recommended)   │ 
-│     - stop_on_error: halt and report                    │ 
-│  5. Continue until all strips checked                   │ 
-└─────────────────────────────────────────────────────────┘ 
-```
+### 동작 원리 (공식 문서)
+
+CC 실행 시 시스템은 DG 내 각 디스크의 데이터를 비교하여 불일치나 오류를 탐지합니다. 관리자가 설정한 정책에 따라 오류를 자동 수정(`auto_fix`)하거나, 검사를 중지하고 오류를 보고(`stop_on_error`)합니다. 이를 통해 silent data corruption을 조기에 탐지하고 복구합니다.
+
+> "The consistency check function allows administrators to ensure that the data stored on the SupremeRAID™ system is intact and uncorrupted. While running the consistency check, the system compares the data on each disk to identify any discrepancies or errors. Depending on the settings chosen by the administrator, the consistency check function can either automatically fix any errors that are found or stop the check and alert the administrator to any detected errors."
+>
+> — SupremeRAID Linux User Guide v1.7.2 (p.13)
+
+> "This process aids in the early detection and rectification of silent data corruption."
+>
+> — graidtech.com/faq/ (Data Integrity)
 
 ### Policy 옵션
 
