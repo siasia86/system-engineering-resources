@@ -55,7 +55,7 @@ SupremeRAID는 **GPU를 RAID 컨트롤러로 사용**하는 NVMe RAID 솔루션�
 #### NVMe SSD (물리 디스크)
 
 - 일반 서버에서는 NVMe SSD가 OS에 직접 `/dev/nvme0n1`으로 노출됩니다.
-- SupremeRAID 환경에서는 NVMe SSD가 **OS에서 분리**됩니다 — OS가 직접 접근 불가합니다.
+- SupremeRAID 환경에서는 NVMe SSD가 PD로 전환되면 일반 네임스페이스(`/dev/nvmeXn1`)에서 해제되어 OS에 블록 디바이스로 노출되지 않습니다.
 - SupremeRAID GPU가 SSD를 점유하고 I/O를 관리합니다.
 - 물리적으로 분리된 SSD는 `/dev/gpdX` 경로로만 접근합니다.
 
