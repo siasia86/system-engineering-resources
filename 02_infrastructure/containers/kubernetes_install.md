@@ -1,4 +1,5 @@
 # Kubernetes 설치 가이드
+<!-- reference: _reference/kubernetes_official_notes.md -->
 
 ## 목차
 
