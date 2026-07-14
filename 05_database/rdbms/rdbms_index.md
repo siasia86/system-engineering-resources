@@ -25,7 +25,7 @@ Index는 테이블의 특정 컬럼에 대한 **검색 속도를 높이기 위�
 | DELETE 속도 | 느림 (인덱스 갱신 필요) | 빠름                         |
 | 저장 공간   | 추가 공간 필요          | 없음                         |
 
-### 인덱스 갱신은 자동으로 발생합니다
+### 인덱스 갱신은 자동으로 발생합니다.
 
 DML(INSERT/UPDATE/DELETE) 실행 시 RDBMS 엔진이 해당 테이블의 **모든 인덱스를 자동으로 갱신**합니다. 별도 명령이 필요 없습니다.
 
@@ -106,8 +106,8 @@ CREATE INDEX idx_sessions_hash ON sessions USING hash (session_id);
 실무에서 Hash를 거의 안 쓰는 이유:
 
 - MySQL: InnoDB 미지원, MEMORY 엔진 전용 (서버 재시작 시 데이터 소멸)
-- B-Tree로 충분: 등치 검색도 O(log n)으로 충분히 빠릅니다 (100만 행 ≈ 20회 비교)
-- 대부분의 쿼리는 범위/정렬을 함께 사용합니다
+- B-Tree로 충분: 등치 검색도 O(log n)으로 충분히 빠릅니다. (100만 행 ≈ 20회 비교)
+- 대부분의 쿼리는 범위/정렬을 함께 사용합니다.
 
 세션 키, 캐시 키 같은 순수 등치 검색 전용이 아니면 B-Tree가 범용적입니다.
 
@@ -152,10 +152,10 @@ CREATE INDEX idx_users_email ON users (email);
 
 실행 시 내부 동작:
 
-1. `users` 테이블의 모든 행에서 `email` 값을 읽습니다
-2. `email` 값을 정렬하여 B+Tree 구조로 구성합니다
-3. 각 Leaf Node에 (email 값, PK값) 쌍을 저장합니다
-4. 시스템 카탈로그에 인덱스 메타데이터를 등록합니다
+1. `users` 테이블의 모든 행에서 `email` 값을 읽습니다.
+2. `email` 값을 정렬하여 B+Tree 구조로 구성합니다.
+3. 각 Leaf Node에 (email 값, PK값) 쌍을 저장합니다.
+4. 시스템 카탈로그에 인덱스 메타데이터를 등록합니다.
 
 생성 시 주의사항:
 
@@ -221,7 +221,7 @@ Internal 노드에 데이터가 없으므로 한 페이지(16KB)에 키를 더 �
 
 **2. 범위 검색이 빠릅니다**
 
-시작 Leaf를 찾은 후 Linked List로 순차 이동합니다 (Sequential I/O).
+시작 Leaf를 찾은 후 Linked List로 순차 이동합니다. (Sequential I/O).
 
 **3. Full Scan도 효율적입니다**
 
