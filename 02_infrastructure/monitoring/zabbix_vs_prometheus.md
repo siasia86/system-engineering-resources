@@ -1,4 +1,5 @@
 # Zabbix vs Prometheus
+<!-- reference: _reference/zabbix_official_notes.md, _reference/prometheus_official_notes.md -->
 
 인프라 모니터링 도구인 Zabbix와 Prometheus의 아키텍처, 수집 방식, 확장성, 운영 복잡도를 비교합니다.
 
