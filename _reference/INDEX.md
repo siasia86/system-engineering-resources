@@ -5,7 +5,7 @@ tags:
   - index
   - reference
   - directory
-last_checked: 2026-07-08
+last_checked: 2026-07-14
 sources:
   - self (이 파일이 인덱스 역할)
 ---
@@ -22,6 +22,7 @@ sources:
 | Charset/Encoding     | `_reference/charset_encoding_official_notes.md`     | RFC 3629, Unicode 16.0             | 2026-07-07 |
 | CVE/Security         | `_reference/cve_security_official_notes.md`         | NVD API 2.0, CISA KEV              | 2026-06-29 |
 | Docker               | `_reference/docker_official_notes.md`               | Engine 29.6.1, Compose v5.3.0      | 2026-07-03 |
+| Epsilon-Delta (Math) | `_reference/epsilon_delta_math_notes.md`            | Rudin Ch.4, Weierstrass            | 2026-07-14 |
 | GitHub References    | `_reference/github_references.md`                   | -                                  | 2026-06-18 |
 | Grafana              | `_reference/grafana_official_notes.md`              | v13.1.0                            | 2026-07-03 |
 | Helm                 | `_reference/helm_official_notes.md`                 | v4.2.2                             | 2026-07-03 |
@@ -29,7 +30,7 @@ sources:
 | Kubernetes           | `_reference/kubernetes_official_notes.md`           | v1.36.2                            | 2026-07-03 |
 | Linux Kernel         | `_reference/linux_kernel_official_notes.md`         | namespace, cgroup, scheduler       | 2026-07-03 |
 | MySQL                | `_reference/mysql_official_notes.md`                | 8.4.10 LTS, 9.7.1 Innovation       | 2026-07-10 |
-| GRAID SupremeRAID  | `_reference/graid_supremeraid_official_notes.md`    | 1.5.0, 2.0.0 (Linux)               | 2026-07-10 |
+| GRAID SupremeRAID    | `_reference/graid_supremeraid_official_notes.md`    | 1.5.0, 2.0.0 (Linux)               | 2026-07-10 |
 | Networking           | `_reference/networking_official_notes.md`           | BGP, DDoS, CDN, VPC                | 2026-07-03 |
 | Platform Engineering | `_reference/platform_engineering_official_notes.md` | CNCF Platforms WP                  | 2026-07-07 |
 | PostgreSQL           | `_reference/postgresql_official_notes.md`           | 18.4 (EOL 2030-11)                 | 2026-07-07 |
