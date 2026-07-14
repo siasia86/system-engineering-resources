@@ -1,4 +1,5 @@
 # Prometheus & Grafana
+<!-- reference: _reference/prometheus_official_notes.md, _reference/grafana_official_notes.md -->
 
 ## 목차
 
