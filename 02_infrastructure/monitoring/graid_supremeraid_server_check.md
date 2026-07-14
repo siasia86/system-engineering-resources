@@ -135,6 +135,160 @@ Virtual Drive (VD, /dev/gdgXnY)
 Application usage                                
 ```
 
+#### systemd 서비스 구조 및 부팅 순서
+
+graid-sr-installer 실행 시 아래 service unit 파일이 자동 설치됩니다.
+
+| 파일                                                     | 역할                                       |
+|----------------------------------------------------------|--------------------------------------------|
+| `/usr/lib/systemd/system/graid.service`                  | 메인 서비스 (graid_server 데몬)            |
+| `/usr/lib/systemd/system/graidcore@.service`             | GPU 코어 인스턴스 (템플릿 unit)            |
+| `/etc/systemd/system/sysinit.target.wants/graid.service` | `systemctl enable` 시 생성되는 심볼릭 링크 |
+
+🟡 Debian 계열에서 `/lib/systemd/system/`은 `/usr/lib/systemd/system/`의 심볼릭 링크이므로 동일 파일이 두 경로에 보입니다.
+
+| 경로                       | 용도                                            |
+|----------------------------|-------------------------------------------------|
+| `/usr/lib/systemd/system/` | 패키지/installer가 설치하는 unit 위치           |
+| `/etc/systemd/system/`     | 관리자가 직접 생성하거나 override하는 unit 위치 |
+
+**부팅 순서:**
+
+```
+1. local-fs.target        (OS 파티션 마운트)
+2. graidcore@0, @1        (GPU 초기화)
+3. graid.service          (graid_server 시작, VD 인식)
+4. fstab mount            (x-systemd.requires=graid.service → VD 마운트)
+5. sysinit.target 완료
+6. 이후 서비스 시작
+```
+
+**graid.service unit 전체 (`/usr/lib/systemd/system/graid.service`):**
+
+```ini
+[Unit]
+Description="Graid Server"
+Wants=graidcore@0.service graidcore@1.service
+After=local-fs.target graidcore@0.service graidcore@1.service
+Before=sysinit.target shutdown.target
+Conflicts=shutdown.target
+DefaultDependencies=no
+
+[Service]
+Type=notify
+ExecStartPre=/usr/bin/graid_server_pre.sh
+ExecStart=/usr/bin/graid_server
+KillMode=process
+Restart=no
+RestartSec=55s
+TimeoutStopSec=60s
+OOMScoreAdjust=-1000
+LimitNOFILE=65536
+
+[Install]
+WantedBy=sysinit.target
+```
+
+**[Unit] 섹션:**
+
+| 설정                                            | 의미                                                          |
+|-------------------------------------------------|---------------------------------------------------------------|
+| `Wants=graidcore@0.service graidcore@1.service` | GPU 코어 서비스를 함께 시작 요청 (실패해도 graid는 시작 시도) |
+| `After=local-fs.target`                         | OS 파일시스템 마운트 완료 후 시작                             |
+| `After=graidcore@0.service graidcore@1.service` | GPU 코어 초기화 완료 후 시작                                  |
+| `Before=sysinit.target`                         | sysinit 완료 전에 graid 준비 보장                             |
+| `Before=shutdown.target`                        | 셧다운 절차 시작 전에 graid가 먼저 정리됨                     |
+| `Conflicts=shutdown.target`                     | shutdown 진입 시 graid.service 자동 중지                      |
+| `DefaultDependencies=no`                        | systemd 기본 의존성 무시 (부팅 초기 실행을 위해 직접 제어)    |
+
+**[Service] 섹션:**
+
+| 설정                                        | 의미                                                     |
+|---------------------------------------------|----------------------------------------------------------|
+| `Type=notify`                               | graid_server가 준비 완료 시 systemd에 알림 (sd_notify)   |
+| `ExecStartPre=/usr/bin/graid_server_pre.sh` | graid_server 시작 전 사전 스크립트 실행 (환경 초기화)    |
+| `ExecStart=/usr/bin/graid_server`           | 메인 데몬 바이너리                                       |
+| `KillMode=process`                          | 중지 시 메인 프로세스만 종료 (자식 프로세스는 별도 처리) |
+| `Restart=no`                                | 비정상 종료 시 자동 재시작하지 않음 (수동 개입 필요)     |
+| `RestartSec=55s`                            | 재시작 시 55초 대기 (Restart=no이므로 실질적으로 미사용) |
+| `TimeoutStopSec=60s`                        | 종료 시 60초 대기 후 강제 종료                           |
+| `OOMScoreAdjust=-1000`                      | OOM Killer 대상에서 제외 (최저 점수)                     |
+| `LimitNOFILE=65536`                         | 프로세스 최대 열린 파일 수 65536                         |
+
+**[Install] 섹션:**
+
+| 설정                      | 의미                                                           |
+|---------------------------|----------------------------------------------------------------|
+| `WantedBy=sysinit.target` | `systemctl enable` 시 sysinit.target.wants/에 심볼릭 링크 생성 |
+
+🟡 `Restart=no` 설정으로 인해 graid_server가 비정상 종료되면 자동 복구되지 않습니다. 장애 감지 시 수동으로 `systemctl start graid` 실행이 필요합니다.
+
+**상태 확인:**
+
+```bash
+systemctl status graid.service
+systemctl status graidcore@0.service
+# 또는
+systemctl is-active graid.service graidcore@0.service graidcore@1.service
+```
+
+> 출처: SupremeRAID Linux User Guide v1.7.2 (p.62) — `systemctl enable graid` / `systemctl start graid`
+
+#### VD 자동 마운트 설정 (fstab)
+
+VD 생성 후 `/etc/fstab`에 등록하여 부팅 시 자동 마운트를 설정합니다. graid.service가 시작된 후 마운트되도록 의존성을 명시해야 합니다.
+
+> "It is critically important to follow these instructions to guarantee that the RAID group mounts automatically during system boot and to avoid any improper or unclear shutdown processes that could cause the RAID group to enter resync mode."
+>
+> — SupremeRAID Linux User Guide v1.7.2 (p.96)
+
+**Debian 계열 (Ubuntu):**
+
+```bash
+# /etc/fstab
+/dev/disk/by-id/<VD_ID>  /mnt/<name>  xfs  x-systemd.requires=graid.service,nofail  0  0
+```
+
+**RHEL 계열 (Rocky, CentOS):**
+
+```bash
+# /etc/fstab
+/dev/disk/by-id/<VD_ID>  /mnt/<name>  xfs  x-systemd.wants=graid.service,x-systemd.automount,nofail  0  0
+```
+
+| 옵션                               | 의미                                  |
+|------------------------------------|---------------------------------------|
+| `x-systemd.requires=graid.service` | graid.service 시작 후 마운트 (Debian) |
+| `x-systemd.wants=graid.service`    | graid.service 시작 후 마운트 (RHEL)   |
+| `x-systemd.automount`              | 접근 시 자동 마운트 (RHEL)            |
+| `nofail`                           | 마운트 실패 시 부팅 중단하지 않음     |
+
+> 출처: SupremeRAID Linux User Guide v1.7.2 (p.152)
+
+🟡 `nofail` 없이 VD 마운트가 실패하면 시스템이 emergency mode로 진입합니다. 반드시 포함합니다.
+
+#### 추가 옵션: discard (v1.6.1+)
+
+파일 삭제 시 SSD에 deallocate(TRIM) 명령을 전달하여 write amplification을 줄이고 SSD 수명을 연장합니다.
+
+```bash
+# discard 포함 예시 (Debian)
+/dev/disk/by-id/<VD_ID>  /mnt/<name>  xfs  x-systemd.requires=graid.service,nofail,discard  0  0
+```
+
+> "To ensure the filesystem can take advantage of this capability and issue discard commands when files are deleted, it must be mounted with the discard option."
+>
+> — SupremeRAID Linux User Guide v1.7.2 (p.19)
+
+| 조건                              | 동작                                           |
+|-----------------------------------|------------------------------------------------|
+| SSD가 deallocate + 제로 반환 지원 | deallocate 명령 전달 (자동 활성화)             |
+| SSD가 제로 반환 미지원            | write zeros 명령으로 대체 (데이터 정합성 보장) |
+| 최소 discard 범위                 | 4KB (LBA 정렬)                                 |
+| 최대 discard 범위                 | ~400 GiB / 명령                                |
+
+🟡 `discard` 옵션은 Linux driver v1.6.1 이상에서만 지원됩니다. 이전 버전에서는 무시됩니다.
+
 ### 지원 사양
 
 | 항목                   | 값                        |
@@ -758,6 +912,6 @@ graidctl list drive_group
 
 **작성일**: 2026-07-10
 
-**마지막 업데이트**: 2026-07-10
+**마지막 업데이트**: 2026-07-14
 
 © 2026 siasia86. Licensed under CC BY 4.0.
