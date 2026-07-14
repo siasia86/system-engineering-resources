@@ -20,7 +20,6 @@ SupremeRAID (GPU 기반 NVMe RAID) 환경의 정기 점검 절차를 정리합�
 
 SupremeRAID는 **GPU를 RAID 컨트롤러로 사용**하는 NVMe RAID 솔루션입니다. 일반 HW RAID 카드(MegaRAID 등)는 전용 ARM/PPC CPU로 패리티를 계산하지만, SupremeRAID는 GPU(CUDA 코어)의 병렬 연산 능력을 활용하여 NVMe SSD의 원래 성능을 유지하면서 RAID 보호를 제공합니다.
 
-> 출처: https://www.graidtech.com/ | https://docs.graidtech.com/sr/
 
 | 항목          | 일반 HW RAID (MegaRAID 등) | SupremeRAID              |
 |---------------|----------------------------|--------------------------|
@@ -31,6 +30,9 @@ SupremeRAID는 **GPU를 RAID 컨트롤러로 사용**하는 NVMe RAID 솔루션�
 | 연결 방식     | SAS/SATA 백플레인          | PCIe 직접 연결           |
 | 디바이스 경로 | `/dev/sdX`                 | `/dev/gdgXnY`            |
 | 관리 도구     | storcli / megacli          | graidctl                 |
+
+
+> 출처: https://www.graidtech.com/ | https://docs.graidtech.com/sr/
 
 ### 아키텍처 스택
 
