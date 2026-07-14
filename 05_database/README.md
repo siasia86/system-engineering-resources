@@ -4,15 +4,16 @@ RDBMS와 NoSQL 운영. 쿼리 최적화, 복제, 백업, 장애 복구를 다룹
 
 ## 구조
 
-| 디렉토리                     | 설명                                               | 문서 수 |
-|------------------------------|----------------------------------------------------|---------|
-| [rdbms/](./rdbms/)           | RDBMS 이론 — Index, Join, Lock, 정규화, 실행 계획  | 8       |
-| [operations/](./operations/) | DB 운영 — 설치, 복제, 파티션, 백업(Xtrabackup), HA | 9       |
-| [nosql/](./nosql/)           | NoSQL — Redis, MongoDB, Elasticsearch 설치 및 운영 | 6       |
-| [forensics/](./forensics/)   | DB 포렌식 — 아키텍처 분석, 장애 복구 가이드        | 3       |
+| 디렉토리                     | 설명                                                   | 문서 수 |
+|------------------------------|--------------------------------------------------------|---------|
+| [rdbms/](./rdbms/)           | RDBMS 이론 — Index, Join, Lock, 정규화, Storage Engine | 9       |
+| [operations/](./operations/) | DB 운영 — 설치, 복제, 파티션, 백업(Xtrabackup), HA     | 9       |
+| [nosql/](./nosql/)           | NoSQL — Redis, MongoDB, Elasticsearch 설치 및 운영     | 6       |
+| [forensics/](./forensics/)   | DB 포렌식 — 아키텍처 분석, 장애 복구 가이드            | 3       |
 
 ## 주요 문서
 
+- [mysql_storage_engine.md](./rdbms/mysql_storage_engine.md) — InnoDB, MyISAM, Storage Engine 비교
 - [rdbms_index.md](./rdbms/rdbms_index.md) — B-Tree, 커버링 인덱스, 실행 계획
 - [rdbms_replication.md](./operations/rdbms_replication.md) — Master-Slave, GTID, 지연 감시
 - [percona_xtrabackup_guide.md](./operations/percona_xtrabackup_guide.md) — 무중단 물리 백업
@@ -38,6 +39,6 @@ SQL 기본 문법. [01_fundamentals/linux/](../01_fundamentals/linux/) 파일시
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-07-14
 
 © 2026 siasia86. Licensed under CC BY 4.0.
