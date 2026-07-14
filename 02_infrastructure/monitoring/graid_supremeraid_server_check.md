@@ -16,7 +16,21 @@ SupremeRAID (GPU 기반 NVMe RAID) 환경의 정기 점검 절차를 정리합�
 
 ## 1. 개요
 
-### SupremeRAID 아키텍처
+### SupremeRAID란
+
+SupremeRAID는 **GPU를 RAID 컨트롤러로 사용**하는 NVMe RAID 솔루션입니다. 일반 HW RAID 카드(MegaRAID 등)는 전용 ARM/PPC CPU로 패리티를 계산하지만, SupremeRAID는 GPU(CUDA 코어)의 병렬 연산 능력을 활용하여 NVMe SSD의 원래 성능을 유지하면서 RAID 보호를 제공합니다.
+
+| 항목          | 일반 HW RAID (MegaRAID 등) | SupremeRAID              |
+|---------------|----------------------------|--------------------------|
+| 연산 장치     | 전용 ARM/PPC CPU           | GPU (CUDA cores)         |
+| NVMe 지원     | 불가 또는 성능 병목        | 네이티브 NVMe, 성능 유지 |
+| IOPS          | ~100만                     | ~1,400만+ (공식)         |
+| 대역폭        | ~12 GB/s                   | ~110 GB/s (공식)         |
+| 연결 방식     | SAS/SATA 백플레인          | PCIe 직접 연결           |
+| 디바이스 경로 | `/dev/sdX`                 | `/dev/gdgXnY`            |
+| 관리 도구     | storcli / megacli          | graidctl                 |
+
+### 아키텍처 스택
 
 ```
 ┌────────────────────────────────────────────────────────┐
@@ -30,17 +44,124 @@ SupremeRAID (GPU 기반 NVMe RAID) 환경의 정기 점검 절차를 정리합�
 ├─────────┬─────────┬─────────┬─────────┬────────────────┤
 │ NVMe 0  │ NVMe 1  │ NVMe 2  │ NVMe 3  │  ...           │
 └─────────┴─────────┴─────────┴─────────┴────────────────┘
-                                                          
+```
+
+### 계층별 상세 설명
+
+#### NVMe SSD (물리 디스크)
+
+- 일반 서버에서는 NVMe SSD가 OS에 직접 `/dev/nvme0n1`으로 노출됩니다
+- SupremeRAID 환경에서는 NVMe SSD가 **OS에서 분리**됩니다 — OS가 직접 접근 불가합니다
+- SupremeRAID GPU가 SSD를 점유하고 I/O를 관리합니다
+- 물리적으로 분리된 SSD는 `/dev/gpdX` 경로로만 접근합니다
+
+#### GPU Card (하드웨어 RAID 엔진)
+
+- GPU의 수천 개 CUDA 코어가 패리티 계산(RAID 5/6) 또는 미러링(RAID 1/10)을 수행합니다
+- CPU는 RAID 연산에서 완전히 해방됩니다 — 애플리케이션에 CPU 100% 사용 가능합니다
+- GPU가 죽어도 **데이터는 SSD에 보존**됩니다 (메타데이터가 SSD에 저장)
+
+#### graid.ko (커널 모듈)
+
+- Linux 커널에 로드되는 드라이버 모듈입니다
+- GPU와 NVMe SSD 사이의 I/O 경로를 관리합니다
+- OS가 Virtual Drive(`/dev/gdgXnY`)를 일반 블록 디바이스로 인식할 수 있게 합니다
+- 커널 버전에 종속 — 지원되지 않는 커널에서는 로드 실패합니다
+
+#### graidctl / graid_server (사용자 공간)
+
+- `graid_server`: 백그라운드 데몬. GPU와 통신하며 RAID 상태를 관리합니다
+- `graidctl`: CLI 관리 도구. 사용자가 RAID를 생성/조회/삭제/교체하는 인터페이스입니다
+- `graid-mgr` (1.6+): GUI/API 관리 인터페이스입니다
+
+#### Linux / Windows OS (최상위)
+
+- OS는 Virtual Drive(`/dev/gdgXnY`)만 인식합니다
+- 일반 블록 디바이스와 동일하게 `mkfs`, `mount`, `fio` 등 사용 가능합니다
+- 물리 NVMe SSD(`/dev/nvmeXn1`)는 OS에서 보이지 않습니다
+
+### 데이터 흐름
+
+```
+Application writes to /dev/gdg0n1                                        
+         │                                                               
+         v                                                               
+┌─────────────────────────┐                                              
+│   OS (Block Layer)      │  normal block I/O request                    
+└─────────┬───────────────┘                                              
+          │                                                              
+          v                                                              
+┌─────────────────────────┐                                              
+│   graid.ko              │  intercept I/O, forward to GPU               
+└─────────┬───────────────┘                                              
+          │                                                              
+          v                                                              
+┌─────────────────────────┐                                              
+│   GPU (CUDA cores)      │  parity calc (RAID 5/6) or mirror (RAID 1/10)
+└─────────┬───────────────┘                                              
+          │                                                              
+          v                                                              
+┌─────────────────────────┐                                              
+│  NVMe SSD 0, 1, 2 ...  │  data + parity distributed across SSDs        
+└─────────────────────────┘                                              
 ```
 
 ### RAID 논리 구성 요소
 
-| 구성 요소      | 약칭 | 디바이스 경로 | 설명                       |
-|----------------|------|---------------|----------------------------|
-| Physical Drive | PD   | `/dev/gpdX`   | OS에서 분리된 NVMe SSD     |
-| Drive Group    | DG   | -             | RAID 레벨이 적용된 PD 그룹 |
-| Virtual Drive  | VD   | `/dev/gdgXnY` | OS에 노출되는 볼륨         |
-| Controller     | CX   | -             | GPU RAID 컨트롤러          |
+| 구성 요소      | 약칭 | 디바이스 경로 | 설명                                 |
+|----------------|------|---------------|--------------------------------------|
+| Physical Drive | PD   | `/dev/gpdX`   | OS에서 분리된 NVMe SSD               |
+| Drive Group    | DG   | -             | RAID 레벨이 적용된 PD 그룹           |
+| Virtual Drive  | VD   | `/dev/gdgXnY` | OS에 노출되는 볼륨 (mkfs/mount 대상) |
+| Controller     | CX   | -             | GPU RAID 컨트롤러 (온도, 팬, SN)     |
+
+#### 구성 흐름
+
+```
+NVMe SSD                                         
+    │  graidctl create physical_drive            
+    v                                            
+Physical Drive (PD, /dev/gpdX)                   
+    │  graidctl create drive_group --raid-level 5
+    v                                            
+Drive Group (DG)                                 
+    │  graidctl create virtual_drive             
+    v                                            
+Virtual Drive (VD, /dev/gdgXnY)                  
+    │  mkfs.xfs / mount                          
+    v                                            
+Application usage                                
+```
+
+### 지원 사양
+
+| 항목                   | 값                        |
+|------------------------|---------------------------|
+| 지원 RAID 레벨         | 0, 1, 5, 6, 10            |
+| 최대 Physical Drive 수 | 32                        |
+| 최대 Drive Group 수    | 8                         |
+| 최대 Virtual Drive 수  | 1,023 / Drive Group       |
+| Dual Controller (HA)   | 지원 (Linux만)            |
+| NVMe-oF                | 지원 (Remote RAID Volume) |
+| SAS/SATA               | 지원 (scsi_drive)         |
+
+### RAID 레벨별 최소 드라이브
+
+| RAID | 최소 드라이브 | 패리티/미러       | 허용 장애 수 |
+|------|---------------|-------------------|--------------|
+| 0    | 1             | 없음              | 0            |
+| 1    | 2             | 미러링            | 1            |
+| 5    | 3             | 단일 패리티       | 1            |
+| 6    | 4             | 이중 패리티       | 2            |
+| 10   | 2             | 미러 + 스트라이프 | 1 per mirror |
+
+### 핵심 포인트
+
+- **GPU가 RAID 컨트롤러** — 별도 RAID 카드 불필요합니다
+- **NVMe 성능 보존** — CPU가 패리티 계산을 하지 않으므로 SSD 원래 속도를 유지합니다
+- **OS와 SSD가 분리** — OS는 물리 SSD를 볼 수 없고 VD만 인식합니다
+- **데이터는 SSD에 저장** — GPU 장애 시에도 데이터는 SSD에 보존됩니다 (GPU 교체 후 복구 가능)
+- **커널 종속** — 미지원 커널 부팅 시 볼륨 접근 불가 (데이터 유실 아님)
 
 ### graidctl CLI 구조 (v1.5+)
 
