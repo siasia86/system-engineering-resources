@@ -1,4 +1,5 @@
 # CVE 문서 작성 템플릿
+<!-- reference: _reference/cve_security_official_notes.md -->
 
 > 🟡 이 파일은 새 CVE 문서 추가 시 참조하는 작성 규칙·테스트 방법을 정의합니다.
 

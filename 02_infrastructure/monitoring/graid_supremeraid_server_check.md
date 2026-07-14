@@ -1,4 +1,5 @@
 # GRAID SupremeRAID 서버 점검 가이드
+<!-- reference: _reference/graid_supremeraid_official_notes.md -->
 
 SupremeRAID (GPU 기반 NVMe RAID) 환경의 정기 점검 절차를 정리합니다. 서버/구성에 관계없이 적용 가능한 범용 가이드입니다.
 
