@@ -1,4 +1,5 @@
 # MySQL Storage Engine
+<!-- reference: _reference/mysql_official_notes.md -->
 
 MySQL의 Pluggable Storage Engine 아키텍처와 각 엔진의 상세 특성을 정리합니다.
 
