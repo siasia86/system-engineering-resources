@@ -50,35 +50,35 @@ SupremeRAID는 **GPU를 RAID 컨트롤러로 사용**하는 NVMe RAID 솔루션�
 
 #### NVMe SSD (물리 디스크)
 
-- 일반 서버에서는 NVMe SSD가 OS에 직접 `/dev/nvme0n1`으로 노출됩니다
-- SupremeRAID 환경에서는 NVMe SSD가 **OS에서 분리**됩니다 — OS가 직접 접근 불가합니다
-- SupremeRAID GPU가 SSD를 점유하고 I/O를 관리합니다
-- 물리적으로 분리된 SSD는 `/dev/gpdX` 경로로만 접근합니다
+- 일반 서버에서는 NVMe SSD가 OS에 직접 `/dev/nvme0n1`으로 노출됩니다.
+- SupremeRAID 환경에서는 NVMe SSD가 **OS에서 분리**됩니다 — OS가 직접 접근 불가합니다.
+- SupremeRAID GPU가 SSD를 점유하고 I/O를 관리합니다.
+- 물리적으로 분리된 SSD는 `/dev/gpdX` 경로로만 접근합니다.
 
 #### GPU Card (하드웨어 RAID 엔진)
 
-- GPU의 수천 개 CUDA 코어가 패리티 계산(RAID 5/6) 또는 미러링(RAID 1/10)을 수행합니다
-- CPU는 RAID 연산에서 완전히 해방됩니다 — 애플리케이션에 CPU 100% 사용 가능합니다
+- GPU의 수천 개 CUDA 코어가 패리티 계산(RAID 5/6) 또는 미러링(RAID 1/10)을 수행합니다.
+- CPU는 RAID 연산에서 완전히 해방됩니다 — 애플리케이션에 CPU 100% 사용 가능합니다.
 - GPU가 죽어도 **데이터는 SSD에 보존**됩니다 (메타데이터가 SSD에 저장)
 
 #### graid.ko (커널 모듈)
 
-- Linux 커널에 로드되는 드라이버 모듈입니다
-- GPU와 NVMe SSD 사이의 I/O 경로를 관리합니다
-- OS가 Virtual Drive(`/dev/gdgXnY`)를 일반 블록 디바이스로 인식할 수 있게 합니다
-- 커널 버전에 종속 — 지원되지 않는 커널에서는 로드 실패합니다
+- Linux 커널에 로드되는 드라이버 모듈입니다.
+- GPU와 NVMe SSD 사이의 I/O 경로를 관리합니다.
+- OS가 Virtual Drive(`/dev/gdgXnY`)를 일반 블록 디바이스로 인식할 수 있게 합니다.
+- 커널 버전에 종속 — 지원되지 않는 커널에서는 로드 실패합니다.
 
 #### graidctl / graid_server (사용자 공간)
 
-- `graid_server`: 백그라운드 데몬. GPU와 통신하며 RAID 상태를 관리합니다
-- `graidctl`: CLI 관리 도구. 사용자가 RAID를 생성/조회/삭제/교체하는 인터페이스입니다
-- `graid-mgr` (1.6+): GUI/API 관리 인터페이스입니다
+- `graid_server`: 백그라운드 데몬. GPU와 통신하며 RAID 상태를 관리합니다.
+- `graidctl`: CLI 관리 도구. 사용자가 RAID를 생성/조회/삭제/교체하는 인터페이스입니다.
+- `graid-mgr` (1.6+): GUI/API 관리 인터페이스입니다.
 
 #### Linux / Windows OS (최상위)
 
-- OS는 Virtual Drive(`/dev/gdgXnY`)만 인식합니다
-- 일반 블록 디바이스와 동일하게 `mkfs`, `mount`, `fio` 등 사용 가능합니다
-- 물리 NVMe SSD(`/dev/nvmeXn1`)는 OS에서 보이지 않습니다
+- OS는 Virtual Drive(`/dev/gdgXnY`)만 인식합니다.
+- 일반 블록 디바이스와 동일하게 `mkfs`, `mount`, `fio` 등 사용 가능합니다.
+- 물리 NVMe SSD(`/dev/nvmeXn1`)는 OS에서 보이지 않습니다.
 
 ### 데이터 흐름
 
@@ -157,9 +157,9 @@ Application usage
 
 ### 핵심 포인트
 
-- **GPU가 RAID 컨트롤러** — 별도 RAID 카드 불필요합니다
-- **NVMe 성능 보존** — CPU가 패리티 계산을 하지 않으므로 SSD 원래 속도를 유지합니다
-- **OS와 SSD가 분리** — OS는 물리 SSD를 볼 수 없고 VD만 인식합니다
+- **GPU가 RAID 컨트롤러** — 별도 RAID 카드 불필요합니다.
+- **NVMe 성능 보존** — CPU가 패리티 계산을 하지 않으므로 SSD 원래 속도를 유지합니다.
+- **OS와 SSD가 분리** — OS는 물리 SSD를 볼 수 없고 VD만 인식합니다.
 - **데이터는 SSD에 저장** — GPU 장애 시에도 데이터는 SSD에 보존됩니다 (GPU 교체 후 복구 가능)
 - **커널 종속** — 미지원 커널 부팅 시 볼륨 접근 불가 (데이터 유실 아님)
 
@@ -439,11 +439,11 @@ graidctl stop consistency_check <dg_id>
 
 ### CC 주의사항
 
-- CC 실행 중 드라이버 업데이트/리부팅 금지 — 완료 대기 후 진행합니다
-- CC는 백그라운드로 실행되며 I/O 성능에 미미한 영향을 줍니다
+- CC 실행 중 드라이버 업데이트/리부팅 금지 — 완료 대기 후 진행합니다.
+- CC는 백그라운드로 실행되며 I/O 성능에 미미한 영향을 줍니다.
 - RAID 0 DG에서는 CC를 시작할 수 없습니다 (패리티 없음)
-- CC 중 PD 장애 발생 시 CC는 자동 중단되고 리빌드가 우선 실행됩니다
-- `FIXED` 결과가 반복 발생하면 해당 PD의 SMART를 확인하고 교체를 검토합니다
+- CC 중 PD 장애 발생 시 CC는 자동 중단되고 리빌드가 우선 실행됩니다.
+- `FIXED` 결과가 반복 발생하면 해당 PD의 SMART를 확인하고 교체를 검토합니다.
 
 🟡 CC에서 `FIXED`가 한 번 나오는 것은 정상적인 비트 부패 복구입니다. 동일 PD에서 반복 발생 시 드라이브 열화를 의심합니다.
 
@@ -466,16 +466,16 @@ graidctl stop consistency_check <dg_id>
 | 1.x       | 2.0.0 Update 93 | 1.x → 1.7.2 Update 67 → 2.0.0 Update 93 |
 | 1.7.2+    | 2.0.0 Update 93 | 직접 업그레이드 가능                    |
 
-- 1.x에서 2.0.0으로 **직접 업그레이드 불가** — 반드시 1.7.2 Update 67 경유합니다
-- 업그레이드 중 DG가 일시적으로 `TRANSFORMING` 상태 진입 가능 → `OPTIMAL` 복귀 확인 후 서비스 재개합니다
-- 2.0.0부터 V2 라이선스 필요 — 업그레이드 전 사전 확보합니다
+- 1.x에서 2.0.0으로 **직접 업그레이드 불가** — 반드시 1.7.2 Update 67 경유합니다.
+- 업그레이드 중 DG가 일시적으로 `TRANSFORMING` 상태 진입 가능 → `OPTIMAL` 복귀 확인 후 서비스 재개합니다.
+- 2.0.0부터 V2 라이선스 필요 — 업그레이드 전 사전 확보합니다.
 
 #### GPU 관련
 
 - SupremeRAID GPU는 `nvidia-smi`에서 항상 100% utilization 표시 → 정상 (polling mechanism)
-- GPU를 일반 CUDA/AI 워크로드와 공유할 수 없습니다
+- GPU를 일반 CUDA/AI 워크로드와 공유할 수 없습니다.
 - GPU 물리 교체 시 새 라이선스 키가 필요합니다 (시리얼 넘버 종속)
-- GPU 온도는 `nvidia-smi` 또는 `graidctl show controller` (v1.5) / `graidctl describe controller` (v2.0+)로 확인합니다
+- GPU 온도는 `nvidia-smi` 또는 `graidctl show controller` (v1.5) / `graidctl describe controller` (v2.0+)로 확인합니다.
 
 #### 리빌드 중 운영
 
@@ -488,10 +488,10 @@ graidctl stop consistency_check <dg_id>
 
 #### 서버 간 디스크 이관
 
-- SSD를 물리적으로 다른 서버로 이동 가능합니다
-- 데이터 + SupremeRAID 메타데이터가 드라이브에 저장되어 있습니다
-- 대상 서버에 동일 버전 SupremeRAID 소프트웨어 + 유효 라이선스가 필요합니다
-- 드라이브 순서가 바뀌어도 정상 인식됩니다
+- SSD를 물리적으로 다른 서버로 이동 가능합니다.
+- 데이터 + SupremeRAID 메타데이터가 드라이브에 저장되어 있습니다.
+- 대상 서버에 동일 버전 SupremeRAID 소프트웨어 + 유효 라이선스가 필요합니다.
+- 드라이브 순서가 바뀌어도 정상 인식됩니다.
 
 #### 알림 설정 (권장)
 
@@ -501,9 +501,9 @@ graidctl set alert --smtp-server <smtp_host> --smtp-port 587 \
   --sender <sender@example.com> --recipient <admin@example.com>
 ```
 
-- severity 필터: Warning, Error, Info 선택 가능합니다
-- PD/DG/VD 상태 변경 시 즉시 알림을 발송합니다
-- 일일 점검을 대체하지는 않지만 장애 초기 대응 시간을 단축합니다
+- severity 필터: Warning, Error, Info 선택 가능합니다.
+- PD/DG/VD 상태 변경 시 즉시 알림을 발송합니다.
+- 일일 점검을 대체하지는 않지만 장애 초기 대응 시간을 단축합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
