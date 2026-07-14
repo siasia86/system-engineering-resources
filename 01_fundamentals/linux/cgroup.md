@@ -1,5 +1,5 @@
 # cgroup
-<!-- reference: _reference/docker_official_notes.md -->
+<!-- reference: _reference/linux_kernel_official_notes.md, _reference/docker_official_notes.md -->
 
 ## 목차
 

@@ -1,4 +1,5 @@
 # ArgoCD
+<!-- reference: _reference/argocd_official_notes.md -->
 
 ## 목차
 
