@@ -1,4 +1,5 @@
 # Docker 설치 및 Compose 운영 가이드
+<!-- reference: _reference/docker_official_notes.md -->
 
 ## 목차
 
