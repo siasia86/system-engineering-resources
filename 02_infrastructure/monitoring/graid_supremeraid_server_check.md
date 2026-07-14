@@ -222,12 +222,12 @@ graidctl list event
 
 ### 3.3 정상 상태 기준
 
-| 컴포넌트   | 정상 상태 | 비정상 시 조치         |
-|------------|-----------|------------------------|
-| Controller | ONLINE    | 즉시 에스컬레이션      |
-| DG         | OPTIMAL   | DEGRADED → 디스크 교체 |
-| VD         | OPTIMAL   | DEGRADED → DG 확인     |
-| PD         | ONLINE    | FAILED → 교체 절차     |
+| 컴포넌트   | 정상 상태 | 비정상 시 조치                         |
+|------------|-----------|----------------------------------------|
+| Controller | ONLINE    | 즉시 벤더(GRAID) 지원 요청 + §9.2 절차 |
+| DG         | OPTIMAL   | DEGRADED → 디스크 교체                 |
+| VD         | OPTIMAL   | DEGRADED → DG 확인                     |
+| PD         | ONLINE    | FAILED → 교체 절차                     |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -329,7 +329,7 @@ for dev in /dev/gpd*; do
 done
 ```
 
-수명 예측 공식:
+수명 예측 공식 (운영 경험 기반 추정, NVMe Health Information Log 필드 활용):
 
 ```
 남은 수명(월) = (100 - percentage_used) ÷ (월간 증가율)
