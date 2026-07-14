@@ -45,3 +45,20 @@ description: Defines the mandatory footer template for all .md files — GitHub 
 - `**작성일**`은 최초 생성일 — 이후 수정 시 변경하지 않음
 - 날짜 형식: `YYYY-MM-DD` (예: `2026-05-21`)
 - 파일 수정 후 푸터 날짜 업데이트를 빠뜨리면 안 됨
+
+## _reference citation
+
+If the document references `_reference/` material, add immediately after the H1 title:
+
+```markdown
+# 문서 제목
+<!-- reference: _reference/example_notes.md -->
+
+본문 시작...
+```
+
+- Position: immediately after H1 (before any blank line or body text)
+- Format: `<!-- reference: _reference/<filename>.md -->`
+- Multiple: `<!-- reference: _reference/a.md, _reference/b.md -->`
+- Omit if no `_reference/` was used
+- This does NOT replace the `참고 자료` section at the bottom — both coexist

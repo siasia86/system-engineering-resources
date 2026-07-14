@@ -105,6 +105,33 @@ sudo python3 /root/32_system-engineering-resources/md-style-check.py <path>
 - Fix all reported issues before presenting the result
 - Use `--strict` / `-s` flag to check without whitelist (for full review)
 
+### md quality tools
+
+| Tool                     | Path                                   | Usage                              |
+|--------------------------|----------------------------------------|------------------------------------|
+| md-style-check.py        | /root/32_system-engineering-resources/ | Style check (mandatory)            |
+| fix_table_align.py       | /root/sj_del/                          | Auto-fix table alignment           |
+| trim_diagram_trailing.py | /root/sj_del/                          | Remove trailing spaces in diagrams |
+
+- `fix_table_align.py`: run when md-style-check reports table alignment issues
+- `trim_diagram_trailing.py`: run after diagram padding to remove unnecessary trailing spaces
+- Both tools support `-d` (dry-run), `-v` (verbose), `-D` (directory recursive)
+
+### _reference citation rule
+
+When creating or modifying a `.md` file that references `_reference/` content, add an HTML comment immediately after the H1 title:
+
+```markdown
+# Document Title
+<!-- reference: _reference/filename.md -->
+```
+
+- Multiple references: `<!-- reference: _reference/a.md, _reference/b.md -->`
+- Only add when `_reference/` was actually consulted during writing
+- Do NOT add if the document is purely original content (no _reference used)
+- This is separate from `_reference/INDEX.md` updates — both are required independently
+- Enables `grep -r "reference:" --include="*.md"` for traceability
+
 ## 12. Post-change verification
 After any infrastructure or code change, verify in order:
 1. Syntax/lint pass (terraform validate, shellcheck, ansible --syntax-check)
