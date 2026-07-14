@@ -272,7 +272,30 @@ df -h /dev/gdg*
 nvidia-smi --query-gpu=temperature.gpu,fan.speed --format=csv,noheader
 ```
 
-🟡 SupremeRAID GPU는 항상 100% utilization 표시 — 정상입니다 (polling mechanism).
+#### 출력 예시 (`nvidia-smi` 전체)
+
+```
+|   0  NVIDIA RTX A2000               On  |   00000000:A0:00.0 Off |                 Off* |
+| 30%   47C    P2             32W /   70W |    1330MiB /   6138MiB |    100%   E. Process |
+|=========================================================================================|
+|    0   N/A  N/A       606      C   /usr/bin/graid_core                          1316MiB |
+```
+
+#### 확인 항목
+
+| 항목     | 위치         | 정상 범위     | 비고                             |
+|----------|--------------|---------------|----------------------------------|
+| Fan      | `30%`        | 제조사별 상이 | 팬 0%이면 팬 고장 의심           |
+| Temp     | `47C`        | < 80°C        | 지속 80°C 이상 시 공기 흐름 확인 |
+| Pwr      | `32W / 70W`  | Cap 미만      | Cap 도달 시 throttling 발생      |
+| GPU-Util | `100%`       | 항상 100%     | SupremeRAID 정상 동작 (polling)  |
+| Process  | `graid_core` | 존재          | 없으면 서비스 장애               |
+
+🟡 `GPU-Util 100%`와 `graid_core` 프로세스 존재가 정상 상태의 핵심 지표입니다.
+
+> "The SupremeRAID™ GPU utilization shows 100% at all times. This is to be expected due to a polling mechanism requirement."
+>
+> — graidtech.com/faq/
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -282,6 +305,16 @@ nvidia-smi --query-gpu=temperature.gpu,fan.speed --format=csv,noheader
 
 ### 5.1 Consistency Check 실행
 
+CC는 DG가 OPTIMAL 또는 PARTIALLY_DEGRADED 상태일 때 실행 가능하며, 운영 중(서비스 가동 상태)에서도 실행할 수 있습니다.
+
+> "These checks can be performed on a regular schedule or manually initiated as needed."
+>
+> — SupremeRAID Linux User Guide v1.7.2 (p.13)
+
+> "A consistency check can only run when the DG is in OPTIMAL or PARTIALLY_DEGRADED state."
+>
+> — SupremeRAID Linux User Guide v1.7.2 (p.122)
+
 ```bash
 # 각 DG에 대해 실행
 graidctl start consistency_check <dg_id>
@@ -290,7 +323,7 @@ graidctl start consistency_check <dg_id>
 graidctl describe consistency_check
 ```
 
-🟡 예상 속도: ~10 GB/sec. 10TB DG ≈ 17분.
+🟡 예상 속도: ~10 GB/sec (FAQ 기준). 10TB DG ≈ 17분. CC 중 드라이브 읽기 대역을 사용하므로 I/O 성능에 영향이 있을 수 있습니다.
 
 ### 5.2 SMART 상세
 
