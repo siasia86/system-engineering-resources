@@ -437,6 +437,25 @@ def check_banmal(content, strict=False):
             issues.append(f"L{i}: {stripped[:80]}")
     return issues
 
+
+# 합니다체 마침표 누락 패턴
+_PERIOD_MISSING_PATTERN = re.compile(
+    r'[가-힣](니다|합니다|됩니다|있습니다|없습니다|않습니다|아닙니다|입니다)$'
+)
+
+def check_period_missing(content, strict=False):
+    """합니다체 종결어미 뒤 마침표 누락 검사 (STYLE.md § 10). 코드블록/인용구/헤더/표/불릿 제외."""
+    issues = []
+    clean = strip_code_blocks(content)
+    for i, line in enumerate(clean.splitlines(), 1):
+        stripped = line.strip()
+        if (not stripped
+                or stripped.startswith(('#', '|', '*', '!', '>', '©', '-', '['))):
+            continue
+        if _PERIOD_MISSING_PATTERN.search(stripped):
+            issues.append(f"L{i}: 마침표 누락 → '{stripped[-30:]}'")
+    return issues
+
 # 과장 표현 패턴
 _EXAGGERATION_PATTERN  = re.compile(r'완전한|완벽한|최고의|최강의|완전 |완벽 |최고 |최강 ')
 _EXAGGERATION_WHITELIST = re.compile(
@@ -486,6 +505,7 @@ CHECKS = [
     ("emoji-disallow",  "비허용 이모지",     check_emoji_disallowed),
     ("bold-paren",      "bold 괄호",         check_bold_parentheses),
     ("banmal",          "반말체 종결어미",   check_banmal),
+    ("period",          "마침표 누락",       check_period_missing),
     ("exaggeration",    "과장 표현",         check_exaggeration),
     ("footer",          "푸터",              check_footer),
     ("reference",       "_reference 규칙",   check_reference),
@@ -636,6 +656,7 @@ def parse_args():
     skip_group.add_argument('--no-h1', action='store_true', help='H1 개수 검사 제외')
     skip_group.add_argument('--no-box-chars', action='store_true', help='박스 문자 정합 검사 제외')
     skip_group.add_argument('--no-bold-paren', action='store_true', help='bold 괄호 검사 제외')
+    skip_group.add_argument('--no-period', action='store_true', help='마침표 누락 검사 제외')
     skip_group.add_argument('--no-reference', action='store_true', help='_reference 규칙 검사 제외')
 
     parser.add_argument('-s', '--strict', action='store_true',
@@ -684,6 +705,7 @@ def main():
         if args.no_banmal: skip_checks.append('banmal')
         if args.no_exaggeration: skip_checks.append('exaggeration')
         if args.no_footer: skip_checks.append('footer')
+        if args.no_period: skip_checks.append('period')
         if args.no_reference: skip_checks.append('reference')
         issues = check_file(fpath, strict=args.strict, skip_checks=skip_checks)
         rel = fpath.replace('/root/32_system-engineering-resources/', '')
