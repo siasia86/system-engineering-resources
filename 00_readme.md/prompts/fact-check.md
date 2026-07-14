@@ -16,7 +16,9 @@ Fact-check markdown @${1}
 5. **unverified-numbers**: 출처 없는 수치(%, 줄 수, 성능 비교, 배수)가 있으면 출처 명시 또는 제거
 6. **hallucination**: 실제로 존재하지 않는 기능, 옵션, 명령어, 파라미터가 기술되어 있는지
 7. **timeline-order**: 연도/세대 순서가 실제 발표/릴리즈 순서와 일치하는지
-8. **cross-reference**: 동일 레포 내 _reference/ 파일과 수치/사실이 모순되지 않는지
+8. **cross-reference**: _reference/ 파일과 수치/사실이 모순되지 않는지 검증
+   - 대상 파일에 `<!-- reference: _reference/xxx.md -->` 주석이 있으면 해당 파일을 1차 대조 소스로 사용
+   - 주석이 없으면 파일명/주제 기반으로 관련 _reference/ 탐색
 
 ## 검증 방법
 
@@ -41,6 +43,7 @@ Fact-check markdown @${1}
 - "더 정확하게"를 이유로 표현을 확장/수식하는 행위 ❌
 - 출처 없이 수치를 다른 수치로 교체하는 행위 ❌
 - 검증 불가 항목을 추론으로 채우는 행위 ❌
+- AI 훈련 데이터/기억에 의존한 "~인 것으로 알고 있다" 식 검증 ❌ — 반드시 도구(lynx/curl/grep)로 확인
 
 ## Output
 
@@ -54,6 +57,7 @@ Korean, ✅ ❌ 🟡 per item
 ```
 
 수정 시: 오류 항목만 최소 변경, diff 표시
+- ❌ 항목은 검증 출처(URL, RFC 번호, 또는 _reference 파일 경로) 필수 병기. ✅ 항목은 출처 생략 가능
 
 ## Loop (max 2 iterations)
 
