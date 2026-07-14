@@ -1,4 +1,5 @@
 # Nginx 설치 가이드
+<!-- reference: _reference/web_server_official_notes.md -->
 
 ## 목차
 
@@ -313,19 +314,31 @@ sudo certbot renew --dry-run
 
 ### SSL 설정 (수동)
 
+🟡 Nginx 1.25.1+에서 `listen` 줄의 `http2` 파라미터는 deprecated입니다. `http2 on;` 별도 디렉티브를 사용합니다.
+
 ```nginx
 server {
-    listen 443 ssl http2;
+    listen 443 ssl;            # Nginx 1.25.1+: http2 파라미터 제거
+    http2 on;                  # Nginx 1.25.1+: 별도 디렉티브
     server_name example.com;
 
     ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-    ssl_protocols       TLSv1.2 TLSv1.3;
-    ssl_ciphers         HIGH:!aNULL:!MD5;
-    ssl_session_cache   shared:SSL:10m;
-    ssl_session_timeout 10m;
 
-    add_header Strict-Transport-Security "max-age=31536000" always;
+    # Mozilla Intermediate v5.7 (ssl-config.mozilla.org)
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_ciphers         ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305;
+    ssl_prefer_server_ciphers off;
+    ssl_session_cache   shared:SSL:10m;
+    ssl_session_timeout 1d;
+    ssl_session_tickets off;
+
+    # OCSP Stapling
+    ssl_stapling        on;
+    ssl_stapling_verify on;
+
+    # HSTS (2년)
+    add_header Strict-Transport-Security "max-age=63072000" always;
 
     location / {
         proxy_pass http://127.0.0.1:3000;

@@ -1,4 +1,5 @@
 # 에러 코드 레퍼런스
+<!-- reference: _reference/protocol_error_codes_official_notes.md -->
 
 ## 목차
 
