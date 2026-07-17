@@ -43,6 +43,7 @@ sources:
 | YAML Spec            | `_reference/yaml_spec_notes.md`                     | 1.2 (1.1 호환)                     | 2026-05-26 | O    |
 | Zabbix               | `_reference/zabbix_official_notes.md`               | 7.4.11 (LTS: 7.0)                  | 2026-07-03 | O    |
 | Android ADB          | `_reference/android_adb_official_notes.md`          | platform-tools 37.0.1, logcat    | 2026-07-16 | O    |
+| Linux Filesystem     | `_reference/linux_filesystem_official_notes.md`     | ext4, XFS, Btrfs, VFS               | 2026-07-17 | O    |
 
 
 ## 사용 규칙
