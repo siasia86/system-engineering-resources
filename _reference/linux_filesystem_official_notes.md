@@ -84,7 +84,7 @@ sources:
 | 항목                   | 값                                          | 출처                     |
 |------------------------|---------------------------------------------|--------------------------|
 | 최대 파일 크기         | 8 EiB                                       | docs.kernel.org/xfs      |
-| 최대 볼륨 크기         | 8 EiB                                       | docs.kernel.org/xfs      |
+| 최대 볼륨 크기         | 16 EiB                                      | docs.kernel.org/xfs      |
 | 할당 그룹 (AG)         | 병렬 I/O용 독립 관리 영역                   | docs.kernel.org/xfs      |
 | 저널                   | metadata only (기본), external 로그 가능    | xfs.wiki.kernel.org      |
 | 온라인 확장            | 지원 (xfs_growfs)                           | xfs_growfs.8             |
@@ -107,7 +107,7 @@ sources:
 
 | 항목               | 값                                          | 출처                  |
 |--------------------|---------------------------------------------|-----------------------|
-| 최대 파일 크기     | 16 EiB                                      | btrfs.readthedocs.io  |
+| 최대 파일 크기     | 8 EiB (VFS 제한, 이론 16 EiB)               | btrfs.readthedocs.io  |
 | 최대 볼륨 크기     | 16 EiB                                      | btrfs.readthedocs.io  |
 | Copy-on-Write      | 전체 파일시스템 CoW                         | docs.kernel.org/btrfs |
 | 스냅샷             | 서브볼륨 단위, O(1) 생성                    | docs.kernel.org/btrfs |
