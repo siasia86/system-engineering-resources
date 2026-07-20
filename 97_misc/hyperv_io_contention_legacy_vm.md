@@ -15,11 +15,11 @@ Hyper-V 클러스터에서 디스크 I/O 경합 발생 시 레거시 VM(CentOS 5
 
 클러스터 내 다른 VM의 디스크 I/O 폭증은 CentOS 5.11 VM에 **직접적인 영향**을 줍니다.
 
-| 상황                         | CentOS 5.11 영향                              |
-|------------------------------|-----------------------------------------------|
-| 다른 VM I/O 폭증 (경미)     | latency 증가, 응답 지연                       |
-| 다른 VM I/O 폭증 (심각)     | I/O timeout → 파일시스템 read-only 전환       |
-| 물리 디스크 큐 포화          | 커널 panic 가능 (30초 timeout 초과 시)        |
+| 상황                    | CentOS 5.11 영향                        |
+|-------------------------|-----------------------------------------|
+| 다른 VM I/O 폭증 (경미) | latency 증가, 응답 지연                 |
+| 다른 VM I/O 폭증 (심각) | I/O timeout → 파일시스템 read-only 전환 |
+| 물리 디스크 큐 포화     | 커널 panic 가능 (30초 timeout 초과 시)  |
 
 CentOS 5.11은 다음 이유로 최신 VM보다 더 심각한 영향을 받습니다:
 
@@ -43,26 +43,26 @@ VM-A (Windows)  VM-B (CentOS 5.11)  VM-C (Linux 7.x+)
   (synthetic)      (queue depth=1)        (synthetic)
       │                │                     │
       v                v                     v
-┌────────────────────────────────────────────────────┐
-│              Hyper-V Host Storage Stack             │
-│         (NTFS / ReFS / CSV, shared queue)          │
-└────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────┐
+│             Hyper-V Host Storage Stack               │
+│         (NTFS / ReFS / CSV, shared queue)            │
+└──────────────────────────────────────────────────────┘
       │
       v
-┌────────────────────────────────────────────────────┐
-│          Physical Storage (LUN / SSD / HDD)        │
-└────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────┐
+│          Physical Storage (LUN / SSD / HDD)          │
+└──────────────────────────────────────────────────────┘
 ```
 
 ### 경합 발생 조건
 
-| 조건                                  | 설명                                         |
-|---------------------------------------|----------------------------------------------|
-| 동일 물리 디스크에 VHD 공존           | 가장 흔한 원인                               |
-| CSV(Cluster Shared Volume) 공유       | 클러스터 노드 간 I/O redirection 오버헤드    |
-| Storage QoS 미설정                    | VM 간 IOPS 격리 없음 (선착순 소비)           |
-| Dynamic VHD 사용                      | 조각화로 random I/O 증가                     |
-| iSCSI/SMB 스토리지                    | 네트워크 대역폭 경합 추가                    |
+| 조건                            | 설명                                      |
+|---------------------------------|-------------------------------------------|
+| 동일 물리 디스크에 VHD 공존     | 가장 흔한 원인                            |
+| CSV(Cluster Shared Volume) 공유 | 클러스터 노드 간 I/O redirection 오버헤드 |
+| Storage QoS 미설정              | VM 간 IOPS 격리 없음 (선착순 소비)        |
+| Dynamic VHD 사용                | 조각화로 random I/O 증가                  |
+| iSCSI/SMB 스토리지              | 네트워크 대역폭 경합 추가                 |
 
 ### I/O 격리 부재
 
@@ -82,26 +82,26 @@ Microsoft 공식 문서에서도 Storage QoS의 목적을 "Mitigate noisy neighb
 
 ### 기술 제약 비교
 
-| 항목                        | CentOS 5.11                   | 최신 Linux (7.x+)        |
-|-----------------------------|-------------------------------|---------------------------|
-| 커널 버전                   | 2.6.18 (2006년)               | 3.10+ / 4.x+             |
-| LIS (Integration Services)  | 미지원                        | Built-in (커널 내장)      |
-| 디스크 드라이버             | IDE 에뮬레이션                | storvsc (VMBus synthetic) |
-| 네트워크 드라이버           | 에뮬레이션 (legacy NIC)      | netvsc (VMBus synthetic)  |
-| I/O scheduler               | CFQ (단일 큐)                 | blk-mq (멀티큐)          |
-| VM Generation                | 1만 가능                      | 1 또는 2                 |
-| 동적 메모리                 | 미지원                        | 지원                      |
-| EOL                          | 2017-03-31                    | 지원 중                   |
+| 항목                       | CentOS 5.11             | 최신 Linux (7.x+)         |
+|----------------------------|-------------------------|---------------------------|
+| 커널 버전                  | 2.6.18 (2006년)         | 3.10+ / 4.x+              |
+| LIS (Integration Services) | 미지원                  | Built-in (커널 내장)      |
+| 디스크 드라이버            | IDE 에뮬레이션          | storvsc (VMBus synthetic) |
+| 네트워크 드라이버          | 에뮬레이션 (legacy NIC) | netvsc (VMBus synthetic)  |
+| I/O scheduler              | CFQ (단일 큐)           | blk-mq (멀티큐)           |
+| VM Generation              | 1만 가능                | 1 또는 2                  |
+| 동적 메모리                | 미지원                  | 지원                      |
+| EOL                        | 2017-03-31              | 지원 중                   |
 
 ### IDE 에뮬레이션 vs Synthetic 드라이버
 
-| 항목         | IDE 에뮬레이션                | storvsc (Synthetic)        |
-|--------------|-------------------------------|----------------------------|
-| I/O 경로     | 전체 디바이스 에뮬레이션      | VMBus 직접 통신            |
-| CPU 오버헤드 | 높음 (매 I/O마다 trap 발생)   | 낮음 (hypercall)           |
-| 큐 깊이      | 1 (한 번에 1개 요청만 처리)   | 64+ (병렬 처리)            |
-| 최대 IOPS    | ~5,000                        | ~50,000+                   |
-| latency      | 높음                          | 낮음                       |
+| 항목         | IDE 에뮬레이션              | storvsc (Synthetic) |
+|--------------|-----------------------------|---------------------|
+| I/O 경로     | 전체 디바이스 에뮬레이션    | VMBus 직접 통신     |
+| CPU 오버헤드 | 높음 (매 I/O마다 trap 발생) | 낮음 (hypercall)    |
+| 큐 깊이      | 1 (한 번에 1개 요청만 처리) | 64+ (병렬 처리)     |
+| 최대 IOPS    | ~5,000                      | ~50,000+            |
+| latency      | 높음                        | 낮음                |
 
 IDE 에뮬레이션은 큐 깊이가 1이므로, 물리 디스크가 바빠지면 단일 요청의 완료를 기다리는 동안 모든 I/O가 차단됩니다. 이것이 CentOS 5.11이 I/O 경합에 특히 취약한 핵심 원인입니다.
 
@@ -141,13 +141,13 @@ EXT3-fs (sda1): Remounting filesystem read-only
 
 ### 시스템 상태 지표
 
-| 지표                         | 정상                | I/O 경합 발생 시        |
-|------------------------------|---------------------|-------------------------|
-| load average                 | < vCPU 수           | CPU idle인데 수십~수백  |
-| D state 프로세스 수          | 0~2개               | 수십 개                 |
-| `iostat` await (ms)          | < 10                | 수백~수천               |
-| `vmstat` wa (I/O wait %)     | < 5%                | 50%+                    |
-| dmesg I/O error              | 없음                | timeout/lost interrupt  |
+| 지표                     | 정상      | I/O 경합 발생 시       |
+|--------------------------|-----------|------------------------|
+| load average             | < vCPU 수 | CPU idle인데 수십~수백 |
+| D state 프로세스 수      | 0~2개     | 수십 개                |
+| `iostat` await (ms)      | < 10      | 수백~수천              |
+| `vmstat` wa (I/O wait %) | < 5%      | 50%+                   |
+| dmesg I/O error          | 없음      | timeout/lost interrupt |
 
 ### 진단 명령어 (Guest)
 
@@ -193,15 +193,15 @@ Jul 15 17:34:53 Hermes-Game shutdown[10807]: shutting down for system reboot
 
 #### 분석
 
-| 항목                    | 값                                                   |
-|-------------------------|------------------------------------------------------|
-| 발생 시각               | 2026-07-15 16:38:24 (2 VM 동시)                     |
-| SCSI 주소               | `sd 1:0:0:1` (동일 컨트롤러, LUN 1)                 |
-| 디바이스                | `sdc1` (두 VM 모두 동일 위치)                        |
-| 파일시스템              | EXT4                                                 |
-| timeout                 | 60초 (기본 30초에서 변경된 상태)                     |
-| 드라이버                | SCSI synthetic (storvsc) — LIS 설치됨                |
-| 복구                    | Hermes-Game: 약 56분 후 수동 reboot                  |
+| 항목       | 값                                    |
+|------------|---------------------------------------|
+| 발생 시각  | 2026-07-15 16:38:24 (2 VM 동시)       |
+| SCSI 주소  | `sd 1:0:0:1` (동일 컨트롤러, LUN 1)   |
+| 디바이스   | `sdc1` (두 VM 모두 동일 위치)         |
+| 파일시스템 | EXT4                                  |
+| timeout    | 60초 (기본 30초에서 변경된 상태)      |
+| 드라이버   | SCSI synthetic (storvsc) — LIS 설치됨 |
+| 복구       | Hermes-Game: 약 56분 후 수동 reboot   |
 
 #### 동시 발생이 의미하는 것
 
@@ -234,14 +234,14 @@ Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-FailoverClustering/Op
 
 ## 5. 완화 방법
 
-| 우선순위 | 방법               | 설명                                        | 효과    | 위험도 |
-|----------|--------------------|---------------------------------------------|---------|--------|
-| 1        | VHD 물리 분리      | CentOS VM의 VHD를 전용 물리 디스크/LUN 배치 | ★★★★★   | 낮음   |
-| 2        | Storage QoS 적용   | Min IOPS 보장 정책                          | ★★★★☆   | 낮음   |
-| 3        | Fixed VHD 전환     | Dynamic VHD → Fixed VHD (조각화 방지)       | ★★★☆☆   | 중간   |
-| 4        | I/O timeout 증가   | 게스트 내 timeout 값 조정                   | ★★☆☆☆   | 낮음   |
-| 5        | VM 이관            | I/O 부하 낮은 노드로 Live Migration         | ★★★☆☆   | 낮음   |
-| 6        | OS 업그레이드      | CentOS 5 → 지원 OS (storvsc 활용)          | ★★★★★   | 높음   |
+| 우선순위 | 방법             | 설명                                        | 효과  | 위험도 |
+|----------|------------------|---------------------------------------------|-------|--------|
+| 1        | VHD 물리 분리    | CentOS VM의 VHD를 전용 물리 디스크/LUN 배치 | ★★★★★ | 낮음   |
+| 2        | Storage QoS 적용 | Min IOPS 보장 정책                          | ★★★★☆ | 낮음   |
+| 3        | Fixed VHD 전환   | Dynamic VHD → Fixed VHD (조각화 방지)       | ★★★☆☆ | 중간   |
+| 4        | I/O timeout 증가 | 게스트 내 timeout 값 조정                   | ★★☆☆☆ | 낮음   |
+| 5        | VM 이관          | I/O 부하 낮은 노드로 Live Migration         | ★★★☆☆ | 낮음   |
+| 6        | OS 업그레이드    | CentOS 5 → 지원 OS (storvsc 활용)           | ★★★★★ | 높음   |
 
 ### 5.1 VHD 물리 분리
 
@@ -261,21 +261,21 @@ Windows Server 2016+ 환경에서 SOFS 또는 CSV 사용 시 적용 가능합니
 
 #### 전제 조건
 
-| 요구사항                            | 설명                                           |
-|-------------------------------------|------------------------------------------------|
-| Windows Server 2016 이상            | 모든 클러스터 노드 동일 버전                   |
-| Failover Cluster                    | 필수                                           |
-| 스토리지 유형                       | SOFS 클러스터 또는 CSV (로컬 디스크 미지원)    |
-| Hyper-V 역할                        | 컴퓨트 노드에 설치                             |
+| 요구사항                 | 설명                                        |
+|--------------------------|---------------------------------------------|
+| Windows Server 2016 이상 | 모든 클러스터 노드 동일 버전                |
+| Failover Cluster         | 필수                                        |
+| 스토리지 유형            | SOFS 클러스터 또는 CSV (로컬 디스크 미지원) |
+| Hyper-V 역할             | 컴퓨트 노드에 설치                          |
 
 🟡 **로컬 디스크(C:\, D:\ 등)에 직접 배치된 VHD에는 Storage QoS가 적용되지 않습니다.** CSV 또는 SOFS 경로에 있어야 합니다.
 
 #### 정책 유형
 
-| 유형        | 동작                                                     | 사용 시나리오                 |
-|-------------|----------------------------------------------------------|-------------------------------|
-| Dedicated   | VHD별로 개별 Min/Max IOPS 적용                           | 중요 VM 개별 보호             |
-| Aggregated  | 정책에 할당된 모든 VHD의 합산 Min/Max 적용               | VM 그룹 단위 제한             |
+| 유형       | 동작                                       | 사용 시나리오     |
+|------------|--------------------------------------------|-------------------|
+| Dedicated  | VHD별로 개별 Min/Max IOPS 적용             | 중요 VM 개별 보호 |
+| Aggregated | 정책에 할당된 모든 VHD의 합산 Min/Max 적용 | VM 그룹 단위 제한 |
 
 #### Normalized IOPS 개념 (Microsoft 정의)
 
@@ -319,11 +319,11 @@ Get-StorageQoSVolume | Format-Table MountPoint, IOPS, Latency, Status
 
 #### Status 필드 의미
 
-| Status                  | 의미                                              | 조치                       |
-|-------------------------|---------------------------------------------------|----------------------------|
-| Ok                      | 정상 동작, Min IOPS 충족                         | 없음                       |
-| InsufficientThroughput  | Min IOPS 할당 불가 (물리 디스크 성능 부족)       | Min 값 하향 또는 디스크 증설 |
-| UnknownPolicyId         | VM에 할당된 정책이 파일서버에 없음               | 정책 재생성 또는 VM에서 제거 |
+| Status                 | 의미                                       | 조치                         |
+|------------------------|--------------------------------------------|------------------------------|
+| Ok                     | 정상 동작, Min IOPS 충족                   | 없음                         |
+| InsufficientThroughput | Min IOPS 할당 불가 (물리 디스크 성능 부족) | Min 값 하향 또는 디스크 증설 |
+| UnknownPolicyId        | VM에 할당된 정책이 파일서버에 없음         | 정책 재생성 또는 VM에서 제거 |
 
 🟡 `InsufficientThroughput`는 물리 디스크의 총 IOPS보다 모든 VM의 Min IOPS 합이 큰 경우 발생합니다. 이 상태에서는 QoS가 보장을 제공하지 못합니다.
 
@@ -373,12 +373,12 @@ echo 'echo 120 > /sys/block/sda/device/timeout' >> /etc/rc.local
 
 CentOS 5.11 → 지원 OS로 교체하면 storvsc synthetic 드라이버를 사용할 수 있습니다.
 
-| 교체 대상         | 커널          | storvsc | LIS Built-in |
-|-------------------|---------------|---------|--------------|
-| Rocky Linux 8.x   | 4.18          | ✅      | ✅           |
-| Rocky Linux 9.x   | 5.14          | ✅      | ✅           |
-| AlmaLinux 8.x     | 4.18          | ✅      | ✅           |
-| Ubuntu 22.04 LTS  | 5.15          | ✅      | ✅           |
+| 교체 대상        | 커널 | storvsc | LIS Built-in |
+|------------------|------|---------|--------------|
+| Rocky Linux 8.x  | 4.18 | ✅      | ✅           |
+| Rocky Linux 9.x  | 5.14 | ✅      | ✅           |
+| AlmaLinux 8.x    | 4.18 | ✅      | ✅           |
+| Ubuntu 22.04 LTS | 5.15 | ✅      | ✅           |
 
 🟡 CentOS 5.11에서 구동 중인 애플리케이션의 호환성 검증이 선행되어야 합니다.
 
@@ -423,12 +423,12 @@ watch -n 2 "ps aux | awk '\$8 ~ /D/'"
 
 ### 알람 기준 (권장)
 
-| 지표                             | 경고 (Warning) | 위험 (Critical) |
-|----------------------------------|----------------|-----------------|
-| Host Physical Disk Queue Length  | > 10           | > 30            |
-| Host Avg. Disk sec/Read          | > 20ms         | > 100ms         |
-| Guest iostat await               | > 50ms         | > 500ms         |
-| Guest D state process count      | > 5            | > 20            |
+| 지표                            | 경고 (Warning) | 위험 (Critical) |
+|---------------------------------|----------------|-----------------|
+| Host Physical Disk Queue Length | > 10           | > 30            |
+| Host Avg. Disk sec/Read         | > 20ms         | > 100ms         |
+| Guest iostat await              | > 50ms         | > 500ms         |
+| Guest D state process count     | > 5            | > 20            |
 
 [⬆ 목차로 돌아가기](#목차)
 
