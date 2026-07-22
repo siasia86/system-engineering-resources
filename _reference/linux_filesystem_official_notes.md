@@ -8,7 +8,7 @@ tags:
   - xfs
   - btrfs
   - vfs
-last_checked: 2026-07-17
+last_checked: 2026-07-22
 sources:
   - https://docs.kernel.org/filesystems/index.html
   - https://docs.kernel.org/filesystems/ext4/index.html
@@ -152,3 +152,131 @@ sources:
 | ext4 journal 모드   | 메타+데이터 모두 저널 (가장 안전, 느림)        | docs.kernel.org/ext4     |
 | XFS 저널            | metadata only (데이터 저널링 없음)             | docs.kernel.org/xfs      |
 | Btrfs               | CoW 기반 — 전통적 저널 불필요                  | docs.kernel.org/btrfs    |
+
+## 7. fsck/e2fsck 옵션 (공식 man page 기반)
+
+### 공식 소스
+
+| 소스       | URL                                                   | 용도             |
+|------------|-------------------------------------------------------|------------------|
+| fsck.8     | https://man7.org/linux/man-pages/man8/fsck.8.html     | fsck wrapper     |
+| e2fsck.8   | https://man7.org/linux/man-pages/man8/e2fsck.8.html   | ext2/3/4 fsck    |
+| xfs_repair | https://man7.org/linux/man-pages/man8/xfs_repair.8.html | XFS fsck       |
+| tune2fs.8  | https://man7.org/linux/man-pages/man8/tune2fs.8.html  | ext 자동 검사 설정 |
+
+### fsck (wrapper) — 파일시스템 종류별 자동 호출
+
+```bash
+fsck /dev/sdb          # 파일시스템 자동 감지 → fsck.ext4 또는 xfs_repair 호출
+fsck -t ext4 /dev/sdb  # 명시적 타입 지정
+fsck -A                # fstab의 모든 파일시스템 검사 (pass > 0)
+fsck -AR -y            # 부팅 시 자동 검사 (initscripts 사용)
+```
+
+### e2fsck (ext2/ext3/ext4) 옵션
+
+출처: https://man7.org/linux/man-pages/man8/e2fsck.8.html
+
+| 옵션            | 설명                                              | 비고                        |
+|-----------------|---------------------------------------------------|-----------------------------|
+| `-f`            | 강제 검사 (clean 상태여도)                        | 항상 사용 권장              |
+| `-y`            | 모든 질문에 yes 응답                              | 무인 실행 시                |
+| `-n`            | 읽기 전용 (no 응답, 수정 안 함)                   | 마운트 상태에서도 안전      |
+| `-p`            | 자동 복구 (안전한 것만, preen)                    | 부팅 시 자동 fsck           |
+| `-v`            | 상세 출력                                         |                             |
+| `-C 0`          | 진행률 표시 (fd=0, stdout)                        | 대용량 볼륨                 |
+| `-D`            | 디렉토리 최적화 (re-indexing)                     |                             |
+| `-b superblock` | 대체 superblock 사용                              | primary 손상 시             |
+| `-B blocksize`  | 블록 크기 강제 지정                               |                             |
+| `-c`            | badblocks 검사 (시간 소요)                        |                             |
+| `-k`            | -c와 함께, 기존 bad block 목록 유지               |                             |
+| `-l file`       | bad block 목록 추가                               |                             |
+| `-L file`       | bad block 목록 교체                               |                             |
+| `-j path`       | 외부 journal 경로 지정                            |                             |
+| `-F`            | 버퍼 캐시 flush 후 검사                           |                             |
+| `-d`            | 디버그 출력                                       |                             |
+| `-t`            | 타이밍 통계                                       |                             |
+| `-V`            | 버전 출력                                         |                             |
+
+### 옵션 조합 제약 (man page 명시)
+
+| 조합        | 가능 | 근거 (man page 원문)                                           |
+|-------------|------|----------------------------------------------------------------|
+| `-y` + `-n` | ❌   | "may not be specified at the same time as the -n or -p"        |
+| `-y` + `-p` | ❌   | 동일                                                           |
+| `-n` + `-p` | ❌   | "may not be specified at the same time as the -p or -y"        |
+| `-f` + `-y` | ✅   |                                                                |
+| `-f` + `-p` | ✅   |                                                                |
+| `-c` + `-n` | ❌   | "-n option is specified, and -c, -l, or -L options are not"    |
+
+### Exit Code (man page 원문)
+
+| 코드 | 의미                                    |
+|------|-----------------------------------------|
+| 0    | No errors                               |
+| 1    | File system errors corrected            |
+| 2    | File system errors corrected, reboot    |
+| 4    | File system errors left uncorrected     |
+| 8    | Operational error                       |
+| 16   | Usage or syntax error                   |
+| 32   | E2fsck canceled by user request         |
+| 128  | Shared library error                    |
+
+🟡 Exit code는 OR 합산입니다. 예: 1+2=3 → "에러 수정 + 재부팅 필요".
+
+### xfs_repair (XFS)
+
+출처: https://man7.org/linux/man-pages/man8/xfs_repair.8.html
+
+| 옵션 | 설명                              | 비고                   |
+|------|-----------------------------------|------------------------|
+| `-n` | 읽기 전용 (수정 안 함)            | 손상 여부만 확인       |
+| `-v` | 상세 출력                         |                        |
+| `-L` | 로그 초기화 (dirty log 강제 제거) | 🔴 데이터 유실 가능    |
+| `-d` | 위험 복구 모드 (마운트 상태 허용) | 🔴 비상 시만 사용      |
+
+🟡 XFS는 `fsck.xfs`가 존재하지만 아무것도 안 합니다 (no-op). 실제 복구는 `xfs_repair`를 사용합니다.
+
+### tune2fs 자동 검사 설정
+
+출처: https://man7.org/linux/man-pages/man8/tune2fs.8.html
+
+```bash
+# mount count 기반 자동 검사 (N회 마운트 후 fsck 실행)
+tune2fs -c 30 /dev/sdb
+
+# 시간 기반 자동 검사 (d=day, m=month, w=week)
+tune2fs -i 30d /dev/sdb
+
+# 자동 검사 비활성화
+tune2fs -c 0 -i 0 /dev/sdb
+
+# 현재 설정 확인
+tune2fs -l /dev/sdb | grep -i "mount count\|maximum\|check interval"
+```
+
+### fstab pass 필드 (부팅 시 자동 fsck)
+
+출처: https://man7.org/linux/man-pages/man5/fstab.5.html
+
+| pass 값 | 동작                                      | 용도              |
+|---------|-------------------------------------------|-------------------|
+| 0       | fsck 실행 안 함                           | swap, tmpfs 등    |
+| 1       | 루트 파일시스템 (가장 먼저 검사)          | / 전용            |
+| 2       | 루트 외 파일시스템 (1 완료 후 병렬 검사)  | /home, /data 등   |
+
+```
+# fstab 예시
+UUID=...  /        ext4  defaults  0 1    ← 루트, 먼저 검사
+UUID=...  /data    ext4  defaults  0 2    ← 루트 후 검사
+UUID=...  /backup  ext4  defaults  0 0    ← 검사 안 함
+```
+
+### 실행 전 필수 조건
+
+| 조건                 | 이유                                         |
+|----------------------|----------------------------------------------|
+| 마운트 해제 필수     | 마운트 상태에서 수정 시 추가 손상 가능        |
+| 또는 read-only 마운트 | `-n` 옵션만 안전                            |
+| 백업 권장            | 심각한 손상 시 fsck가 데이터를 삭제할 수 있음 |
+| single-user 모드 권장 | 다른 프로세스의 파일 접근 방지              |
