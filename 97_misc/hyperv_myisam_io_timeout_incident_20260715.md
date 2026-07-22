@@ -4,33 +4,33 @@ CentOS 5.11 게임 DB 서버에서 동시 발생한 SCSI timeout → EXT4 read-o
 
 ## 장애 상황 요약
 
-| 항목                   | 내용                                                                 |
-|------------------------|----------------------------------------------------------------------|
-| 장애 일시              | 2026-07-15 (화) 16:38:24 KST                                         |
-| I/O 포화 시작          | 16:36:20경 (StorageVSP 최초 경고: 16:36:32)                          |
-| 장애 지속              | 약 2시간 (16:38 ~ 18:31 수동 reboot)                                 |
-| 호스트                 | Windows Server 2022 (Build 20348), Hyper-V, Vmbus 3.0                |
-| 스토리지               | 외장 스토리지 (CSV: ClusterStorage\Volume1, Volume2)                 |
-| 전체 VM 수             | 12대+ (CentOS 5.11 x 6, Windows x ?, Debian x ?, RedHat x ?)         |
-| 장애 VM                | CentOS 5.11 전체 6대 (DBA 증언 + 3대 로그 확인)                      |
-| 비 CentOS VM           | Windows/Debian/RedHat — 동일 지연 겪었으나 장애 없음                 |
-| MySQL 버전             | 4.0.27 / 4.1.24 (2008년 EOL)                                         |
-| 엔진                   | MyISAM (트랜잭션 미지원, crash recovery 없음)                        |
-| 피해                   | MyISAM 테이블 파손 — GalaxyDB 12개, HermesDB 2개, 나머지 미확인      |
-| **트리거 (확정)**      | MV-Live VM의 `_backup.vhdx` 대량 READ 작업 (주기적 I/O 작업)         |
-| **근본 원인**          | CSV 전체 I/O 대역폭 포화 (최대 latency 116초)                        |
-| **CentOS만 장애 이유** | storvsc (LIS 4.1.3-2) 구버전: 60초 timeout 후 즉시 abort, retry 없음 |
+| 항목                   | 내용                                                                                 |
+|------------------------|--------------------------------------------------------------------------------------|
+| 장애 일시              | 2026-07-15 (화) 16:38:24 KST                                                         |
+| I/O 포화 시작          | 16:36:20경 (StorageVSP 최초 경고: 16:36:32)                                          |
+| 장애 지속              | 약 2시간 (16:38 ~ 18:31 수동 reboot)                                                 |
+| 호스트                 | Windows Server 2022 (Build 20348), Hyper-V, Vmbus 3.0                                |
+| 스토리지               | 외장 스토리지 (CSV: ClusterStorage\Volume1, Volume2)                                 |
+| 전체 VM 수             | 12대+ (CentOS 5.11 x 6, Windows x ?, Debian x ?, RedHat x ?)                         |
+| 장애 VM                | CentOS 5.11 전체 6대 (DBA 증언 + 3대 로그 확인)                                      |
+| 비 CentOS VM           | Windows/Debian/RedHat — 동일 지연 겪었으나 장애 없음                                 |
+| MySQL 버전             | 4.0.27 / 4.1.24 (2008년 EOL)                                                         |
+| 엔진                   | MyISAM (트랜잭션 미지원, crash recovery 없음)                                        |
+| 피해                   | MyISAM 테이블 파손 — GalaxyDB 12개, AcheronDB 10개, HermesDB 2개, CassiopeaDB 미확인 |
+| **트리거 (확정)**      | MV-Live VM의 `_backup.vhdx` 대량 READ 작업 (주기적 I/O 작업)                         |
+| **근본 원인**          | CSV 전체 I/O 대역폭 포화 (최대 latency 116초)                                        |
+| **CentOS만 장애 이유** | storvsc (LIS 4.1.3-2) 구버전: 60초 timeout 후 즉시 abort, retry 없음                 |
 
 ### DBA 증언 vs 로그 증거
 
-| 구분        | DBA 증언  | 로그 증거                                 |
-|-------------|-----------|-------------------------------------------|
-| CassiopeaDB | 장애 발생 | ✅ kernel: timing out command, waited 60s |
-| HermesDB    | 장애 발생 | ✅ kernel: timing out command, waited 60s |
-| GalaxyDB    | 장애 발생 | ✅ kernel: timing out command, waited 60s |
-| AcheronDB   | 장애 발생 | 🟡 messages.1 유실 (장애 시점 로그 없음)  |
-| TestDB      | 장애 발생 | 🟡 messages.1 유실 (장애 시점 로그 없음)  |
-| 6번째 VM    | 장애 발생 | ❌ 로그 미수집                            |
+| 구분        | DBA 증언  | 로그 증거                                     |
+|-------------|-----------|-----------------------------------------------|
+| CassiopeaDB | 장애 발생 | ✅ kernel: timing out command, waited 60s     |
+| HermesDB    | 장애 발생 | ✅ kernel: timing out command, waited 60s     |
+| GalaxyDB    | 장애 발생 | ✅ kernel: timing out command, waited 60s     |
+| AcheronDB   | 장애 발생 | ✅ slow log: REPAIR TABLE t_inven00~09 (10건) |
+| TestDB      | 장애 발생 | 🟡 messages.1 유실 (장애 시점 로그 없음)      |
+| 6번째 VM    | 장애 발생 | ❌ 로그 미수집                                |
 
 ## 목차
 
@@ -376,11 +376,17 @@ MyISAM write 중단:
 
 ### 파손된 테이블 (slow log 기반)
 
-| VM          | REPAIR TABLE 실행 내역                         | 수량   |
-|-------------|------------------------------------------------|--------|
-| GalaxyDB    | t_inven00~09, t_characters, t_pets             | 12     |
-| HermesDB    | t_inven03, t_stash07                           | 2      |
-| CassiopeaDB | (장애 시점 error log 유실 — rotation 과정에서) | 미확인 |
+| VM          | REPAIR TABLE 실행 내역               | 시각               | 수량   |
+|-------------|--------------------------------------|--------------------|--------|
+| GalaxyDB    | t_inven00~09, t_characters, t_pets   | 260715 20:21~20:47 | 12     |
+| AcheronDB   | t_inven00~09                         | 260715 20:57~21:06 | 10     |
+| HermesDB    | t_inven03, t_stash07                 | 260715 20:07~20:08 | 2      |
+| TestDB      | CHECK TABLE만 실행 (REPAIR 없음)     | 260715 20:10       | 0      |
+| CassiopeaDB | (slow log에 260715 기록 없음 — 유실) | —                  | 미확인 |
+
+- **AcheronDB**: messages.1은 유실되었으나, **slow log에서 REPAIR TABLE 10건 확인** → 장애 및 파손 확정
+- **TestDB**: CHECK TABLE만 수행, REPAIR 미실행 → 파손 없거나 경미
+- **CassiopeaDB**: MySQL이 crash 상태에서 slow log 기록 불가 + rotation으로 유실
 
 ### mysql-error.log 유실 원인
 
