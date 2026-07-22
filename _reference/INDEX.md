@@ -42,6 +42,7 @@ sources:
 | Web Server           | `_reference/web_server_official_notes.md`           | Nginx 1.30.3, Apache 2.4.68        | 2026-07-08 | O    |
 | YAML Spec            | `_reference/yaml_spec_notes.md`                     | 1.2 (1.1 호환)                     | 2026-05-26 | O    |
 | Zabbix               | `_reference/zabbix_official_notes.md`               | 7.4.11 (LTS: 7.0)                  | 2026-07-03 | O    |
+| e4fsprogs (CentOS 5)  | `_reference/e4fsprogs_centos5_notes.md`             | 1.41.12-4.el5_10, fsck.ext4    | 2026-07-22 | O    |
 | Android ADB          | `_reference/android_adb_official_notes.md`          | platform-tools 37.0.1, logcat    | 2026-07-16 | O    |
 | Linux Filesystem     | `_reference/linux_filesystem_official_notes.md`     | ext4, XFS, Btrfs, VFS               | 2026-07-17 | O    |
 
