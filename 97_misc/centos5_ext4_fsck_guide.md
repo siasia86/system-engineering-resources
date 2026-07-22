@@ -4,10 +4,10 @@ CentOS 5.11 환경에서 EXT4 파일시스템의 fsck 실행 방법, 자동 검�
 
 ## 목차
 
-| 섹션                                                                                                                  |
-|-----------------------------------------------------------------------------------------------------------------------|
-| [1. 패키지 구조](#1-패키지-구조) / [2. fsck.ext4 사용법](#2-fsckext4-사용법) / [3. 자동 검사 설정](#3-자동-검사-설정) |
-| [4. SCSI timeout 영구 등록](#4-scsi-timeout-영구-등록) / [5. 실행 절차](#5-실행-절차) / [6. 참고 자료](#6-참고-자료)  |
+| 섹션                                                                                                                                                          |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [1. 패키지 구조](#1-패키지-구조) / [2. fsck.ext4 사용법](#2-fsckext4-사용법) / [3. 자동 검사 설정](#3-자동-검사-설정)                                         |
+| [4. SCSI timeout 영구 등록](#4-scsi-timeout-영구-등록) / [5. fsck 실행 확인](#5-fsck-실행-확인) / [6. 실행 절차](#6-실행-절차) / [7. 참고 자료](#7-참고-자료) |
 
 ---
 
@@ -107,6 +107,52 @@ fsck.ext4 -fv /dev/sdb
 fsck.ext4 -b 32768 -fy /dev/sdb
 ```
 
+### 주의: /dev/sdX vs /dev/sdX1 (파티션 지정)
+
+**파티션이 있는 디스크에서는 반드시 파티션 장치(`/dev/sde1`)를 지정합니다.**
+
+#### 실제 사례
+
+```bash
+# ❌ 디스크 전체 지정 — superblock 못 찾음
+[root@gamedb-srv01 /]# fsck.ext4 -nf /dev/sde
+e4fsck 1.41.12 (17-May-2010)
+fsck.ext4: Superblock invalid, trying backup blocks...
+fsck.ext4: Bad magic number in super-block while trying to open /dev/sde
+
+# ✅ 파티션 지정 — 정상 검사
+[root@gamedb-srv01 /]# fsck.ext4 -nf /dev/sde1
+e4fsck 1.41.12 (17-May-2010)
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/dev/sde1: 185/6553600 files (88.1% non-contiguous), 574321/26214055 blocks
+```
+
+#### 판별 방법
+
+```bash
+# 마운트된 장치명 확인 (이것을 그대로 사용)
+df -hT | grep data
+# /dev/sde1     ext4     100G  ...  /data    ← sde1 사용
+# /dev/sdb      ext4     100G  ...  /data    ← sdb 사용 (whole disk)
+
+# 파티션 유무 확인
+fdisk -l /dev/sde | grep sde
+# /dev/sde1 ... Linux   ← 파티션 있음 → fsck.ext4 /dev/sde1
+# (출력 없음)           ← 파티션 없음 → fsck.ext4 /dev/sde
+```
+
+| 구조                      | fsck 대상         | 예시                                            |
+|---------------------------|-------------------|-------------------------------------------------|
+| 파티션 있음 (`sde1` 존재) | `/dev/sde1`       | `fsck.ext4 -fy /dev/sde1`                       |
+| 파티션 없음 (whole disk)  | `/dev/sde`        | `fsck.ext4 -fy /dev/sde`                        |
+| LVM                       | `/dev/mapper/...` | `fsck.ext4 -fy /dev/mapper/VolGroup00-LogVol00` |
+
+🔴 **`-n` 없이** 잘못된 장치(`/dev/sde`)에 fsck를 실행하면 파티션 테이블이 손상될 수 있습니다. 항상 `df -hT`에서 보이는 장치명을 사용합니다.
+
 ### 백업 superblock 위치 확인
 
 ```bash
@@ -152,12 +198,39 @@ tune4fs -i 30d /dev/sdb
 tune4fs -c 0 -i 0 /dev/sdb
 ```
 
+### 사전 확인 (fstab pass 설정 전 필수)
+
+CentOS 5의 기본 파일시스템은 EXT3이므로, 부팅 시 fsck가 EXT4를 올바르게 호출하는지 확인해야 합니다.
+
+```bash
+# 1. e4fsprogs 설치 확인
+rpm -q e4fsprogs
+# e4fsprogs-1.41.12-4.el5_10 ← 이 출력이 나와야 함
+
+# 2. fsck.ext4 바이너리 존재 확인
+ls -la /sbin/fsck.ext4
+# /sbin/fsck.ext4 ← 파일 존재해야 함
+
+# 3. fsck wrapper가 ext4를 올바르게 호출하는지 테스트 (-N: dry-run)
+fsck -N /dev/sdb
+# [/sbin/fsck.ext4 (1) -- /data] fsck.ext4 /dev/sdb ← 이렇게 나와야 함
+```
+
+| 확인 결과                 | 조치                                 |
+|---------------------------|--------------------------------------|
+| e4fsprogs 미설치          | `yum install e4fsprogs` 후 pass 설정 |
+| `/sbin/fsck.ext4` 없음    | e4fsprogs 재설치                     |
+| `fsck -N`에서 ext4 미인식 | e4fsprogs 재설치 후 재확인           |
+| 3개 모두 정상             | fstab pass=2 설정 가능               |
+
+🔴 e4fsprogs 미설치 상태에서 fstab pass=2를 설정하면 부팅 시 fsck가 건너뛰어져 검사가 실행되지 않습니다.
+
 ### 방법 3: fstab pass 필드
 
 ```bash
 # /etc/fstab
-UUID="29b0c7b1-..."  /masang            ext4  defaults  0 2
-UUID="3240c380-..."  /masang/Server/log  ext4  defaults  0 2
+UUID="xxxxxxxx-..."  /data            ext4  defaults  0 2
+UUID="yyyyyyyy-..."  /data/log  ext4  defaults  0 2
 ```
 
 | pass 값 | 동작                                |
@@ -177,8 +250,8 @@ tune4fs -c 30 /dev/sdc
 
 # fstab pass 필드도 2로 설정 (mount count 도달 시만 실행됨)
 # /etc/fstab:
-# UUID=...  /masang            ext4  defaults  0 2
-# UUID=...  /masang/Server/log ext4  defaults  0 2
+# UUID=...  /data            ext4  defaults  0 2
+# UUID=...  /data/log ext4  defaults  0 2
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -254,7 +327,86 @@ cat /sys/block/sdb/device/timeout
 
 ---
 
-## 5. 실행 절차
+## 5. fsck 실행 확인
+
+부팅 후 fsck가 정상적으로 실행되었는지 확인하는 방법입니다.
+
+### 방법 1: tune4fs — Last checked 시각 (가장 확실)
+
+```bash
+tune4fs -l /dev/sdb | grep -i "last checked"
+# Last checked:         Wed Jul 22 14:50:00 2026
+
+# 비교: 마지막 부팅 시각
+who -b
+# system boot  2026-07-22 14:48
+```
+
+| Last checked vs 부팅 시각 | 판정               |
+|---------------------------|--------------------|
+| 거의 일치 (수 분 이내)    | ✅ fsck 실행됨     |
+| 수일~수주 전              | ❌ fsck 실행 안 됨 |
+
+### 방법 2: Mount count 확인
+
+```bash
+tune4fs -l /dev/sdb | grep -i "mount count\|maximum"
+# Mount count:          1
+# Maximum mount count:  30
+```
+
+| Mount count   | 의미                              |
+|---------------|-----------------------------------|
+| 1 (부팅 직후) | ✅ fsck 실행 후 카운터 리셋됨     |
+| 15, 29 등     | ❌ fsck 미실행 (카운터 계속 증가) |
+
+### 방법 3: dmesg 확인
+
+```bash
+dmesg | grep -i "fsck\|e4fsck\|checking.*ext"
+```
+
+| 출력 내용                                                             | 판정                       |
+|-----------------------------------------------------------------------|----------------------------|
+| (fsck 관련 출력 없음)                                                 | ✅ 정상 마운트 (경고 없음) |
+| `warning: maximal mount count reached, running e2fsck is recommended` | ❌ fsck 미실행             |
+| `warning: checktime reached, running e2fsck is recommended`           | ❌ fsck 미실행             |
+
+🟡 dmesg에 경고가 출력되면 fsck가 실행되지 **않은** 것입니다. 커널은 "실행해야 한다"고 경고만 하고 그대로 마운트합니다.
+
+### 방법 4: /var/log/boot.log
+
+```bash
+grep -i "fsck\|Checking filesystem\|clean\|MODIFIED" /var/log/boot.log
+```
+
+| 출력                                   | 의미                  |
+|----------------------------------------|-----------------------|
+| `Checking filesystem /dev/sdb: clean.` | ✅ fsck 실행, 정상    |
+| `FILE SYSTEM WAS MODIFIED`             | ✅ fsck 실행 + 수정됨 |
+| (출력 없음)                            | ❌ fsck 미실행        |
+
+### 확인 요약
+
+```bash
+# 한 번에 확인하는 스크립트
+echo "=== Last checked ==="
+tune4fs -l /dev/sdb 2>/dev/null | grep "Last checked"
+tune4fs -l /dev/sdc 2>/dev/null | grep "Last checked"
+echo ""
+echo "=== Mount count ==="
+tune4fs -l /dev/sdb 2>/dev/null | grep -i "mount count"
+tune4fs -l /dev/sdc 2>/dev/null | grep -i "mount count"
+echo ""
+echo "=== Boot time ==="
+who -b
+```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 6. 실행 절차
 
 ### 정기 점검 시 (계획된 다운타임)
 
@@ -266,8 +418,8 @@ cat /sys/block/sdb/device/timeout
 service mysqld stop
 
 # 3. 마운트 해제 (역순)
-umount /masang/Server/log    # sdc (하위 먼저)
-umount /masang               # sdb
+umount /data/log    # sdc (하위 먼저)
+umount /data               # sdb
 
 # 4. fsck 실행
 fsck.ext4 -fy -C 0 /dev/sdb
@@ -278,8 +430,8 @@ echo "sdb: $?"
 # 0 = 정상, 1 = 수정됨, 2 = 수정+재부팅
 
 # 6. 재마운트
-mount /masang
-mount /masang/Server/log
+mount /data
+mount /data/log
 
 # 7. MySQL 시작
 service mysqld start
@@ -294,8 +446,8 @@ mysqlcheck --check --all-databases
 # 1. single-user 모드 진입 또는 rescue 부팅
 
 # 2. 마운트 해제 확인
-umount /masang/Server/log 2>/dev/null
-umount /masang 2>/dev/null
+umount /data/log 2>/dev/null
+umount /data 2>/dev/null
 
 # 3. 강제 검사 + 자동 복구
 fsck.ext4 -fy -C 0 /dev/sdb
@@ -303,12 +455,12 @@ fsck.ext4 -fy -C 0 /dev/sdc
 
 # 4. exit code 4 (미수정) 시 — 수동 개입 필요
 # lost+found 확인
-ls -la /masang/lost+found/
-ls -la /masang/Server/log/lost+found/
+ls -la /data/lost+found/
+ls -la /data/log/lost+found/
 
 # 5. 재마운트 후 MySQL 검증
-mount /masang
-mount /masang/Server/log
+mount /data
+mount /data/log
 service mysqld start
 mysqlcheck --repair --all-databases
 ```
@@ -317,21 +469,21 @@ mysqlcheck --repair --all-databases
 
 ```bash
 # lost+found에 파일이 있으면 (fsck가 고아 파일 이동)
-ls /masang/lost+found/
+ls /data/lost+found/
 
 # 파일 타입 확인 (이름이 inode 번호)
-file /masang/lost+found/#12345
+file /data/lost+found/#12345
 
 # MySQL 데이터라면 원래 경로로 복원
 # (파일 내용을 확인하여 원래 테이블 식별)
-strings /masang/lost+found/#12345 | head
+strings /data/lost+found/#12345 | head
 ```
 
 [⬆ 목차로 돌아가기](#목차)
 
 ---
 
-## 6. 참고 자료
+## 7. 참고 자료
 
 - e2fsck man page: [man7.org](https://man7.org/linux/man-pages/man8/e2fsck.8.html) — ★★★☆☆
 - tune2fs man page: [man7.org](https://man7.org/linux/man-pages/man8/tune2fs.8.html) — ★★★☆☆
