@@ -581,7 +581,8 @@ Export-Csv -Path "$dir\csv_volume.csv" -NoTypeInformation -Encoding UTF8
 위 내용을 하나의 스크립트로 저장하여 장애 시 즉시 실행합니다.
 
 ```powershell
-# 스크립트 위치: _scripts/windows/collect_incident_logs.ps1
+# 스크립트 위치: 96_scripts/windows/collect_incident_logs.ps1
+# Python 버전: 96_scripts/windows/collect_incident_logs.py
 # 호스트에 복사 후 실행: C:\scripts\collect_incident_logs.ps1
 # 실행: .\collect_incident_logs.ps1
 # 결과: C:\temp\incident_YYYYMMDD_HHMMSS\ 디렉토리에 전체 수집
