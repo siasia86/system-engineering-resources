@@ -4,7 +4,7 @@
 collect_incident_logs.py - Windows Server 장애 사후 로그 일괄 수집
 
 장애 발생 후 원인 분석에 필요한 Event Log, 성능 카운터, VM 상태,
-시스템 정보를 C:\\temp\\incident_YYYYMMDD_HHMMSS\ 에 수집합니다.
+시스템 정보를 C:/temp/incident_YYYYMMDD_HHMMSS/ 에 수집합니다.
 
 사용법:
     python collect_incident_logs.py                기본 (7일, 5분)
@@ -18,6 +18,7 @@ VERSION = "26.07.23"
 import argparse
 import ctypes
 import os
+import shutil
 import subprocess
 import sys
 from datetime import datetime
@@ -58,7 +59,7 @@ def run_ps(cmd, dry_run=False):
     result = subprocess.run(full_cmd, capture_output=True, text=True, timeout=600)
     if result.returncode != 0 and result.stderr.strip():
         # Ignore common non-critical errors
-        if "NoMatchingEventsFound" not in result.stderr:
+        if "NoMatchingEventsFound" not in result.stderr and "인식되지 않습니다" not in result.stderr:
             print(f"  {_c('WARN', _YELLOW)}: {result.stderr.strip()[:200]}")
     return result.stdout
 
@@ -115,7 +116,7 @@ def collect_event_logs(out_dir, days, dry_run=False):
 def collect_perf_counters(out_dir, duration, interval, dry_run=False):
     """Collect Performance Counters."""
     max_samples = duration // interval
-    print(_c(f"[2/6] Performance Counters ({duration}s, {max_samples} samples)...", _YELLOW))
+    print(_c(f"[6/6] Performance Counters ({duration}s, {max_samples} samples)...", _YELLOW))
 
     filepath = os.path.join(out_dir, "perfmon_snapshot.csv")
     counters = [
@@ -137,7 +138,7 @@ def collect_perf_counters(out_dir, duration, interval, dry_run=False):
         print(f"  [dry-run] Get-Counter ... -MaxSamples {max_samples}")
         return
 
-    print(f"  Collecting {max_samples} samples ({duration}s)...")
+    print(f"  Collecting {max_samples} samples ({duration}s)... 완료까지 약 {duration}초 대기")
     run_ps(cmd)
     if os.path.exists(filepath):
         size = os.path.getsize(filepath)
@@ -148,7 +149,7 @@ def collect_perf_counters(out_dir, duration, interval, dry_run=False):
 
 def collect_vm_status(out_dir, dry_run=False):
     """Collect VM status."""
-    print(_c("[3/6] VM Status...", _YELLOW))
+    print(_c("[2/6] VM Status...", _YELLOW))
 
     queries = [
         ("vm_status", "Get-VM | Select-Object Name, State, CPUUsage, MemoryAssigned, MemoryDemand, Uptime, Status, Version"),
@@ -165,12 +166,15 @@ def collect_vm_status(out_dir, dry_run=False):
 
 def collect_system_info(out_dir, dry_run=False):
     """Collect system information."""
-    print(_c("[4/6] System Info...", _YELLOW))
+    print(_c("[3/6] System Info...", _YELLOW))
 
     # systeminfo
     sysinfo_path = os.path.join(out_dir, "systeminfo.txt")
     if not dry_run:
-        result = subprocess.run(['systeminfo'], capture_output=True, text=True, timeout=120)
+        try:
+            result = subprocess.run(['systeminfo'], capture_output=True, text=True, timeout=180)
+        except subprocess.TimeoutExpired:
+            result = type('obj', (), {"stdout": "systeminfo: timeout (180s)"})()
         with open(sysinfo_path, 'w', encoding='utf-8') as f:
             f.write(result.stdout)
     else:
@@ -192,7 +196,7 @@ def collect_system_info(out_dir, dry_run=False):
 
 def collect_overcommit(out_dir, dry_run=False):
     """Collect overcommit information."""
-    print(_c("[5/6] Overcommit Check...", _YELLOW))
+    print(_c("[4/6] Overcommit Check...", _YELLOW))
 
     cmd = """
 $totalLogical = (Get-CimInstance Win32_Processor | Measure-Object -Property NumberOfLogicalProcessors -Sum).Sum
@@ -202,10 +206,10 @@ $totalVMRAM = (Get-VM | Where-Object State -eq 'Running' | Measure-Object -Prope
 [PSCustomObject]@{
     PhysicalCores = $totalLogical
     TotalVCPU = $totalVCPU
-    CPURatio = "$([math]::Round($totalVCPU/$totalLogical,1)):1"
+    CPURatio = "$(if($totalLogical -gt 0){[math]::Round($totalVCPU/$totalLogical,1)}else{0}):1"
     PhysicalRAM_GB = [math]::Round($totalRAM/1GB,0)
     VMAssigned_GB = [math]::Round($totalVMRAM/1GB,0)
-    MemoryRatio = "$([math]::Round($totalVMRAM/$totalRAM*100,0))%"
+    MemoryRatio = "$(if($totalRAM -gt 0){[math]::Round($totalVMRAM/$totalRAM*100,0)}else{0})%"
 }
 """
     filepath = os.path.join(out_dir, "overcommit.csv")
@@ -219,7 +223,7 @@ $totalVMRAM = (Get-VM | Where-Object State -eq 'Running' | Measure-Object -Prope
 
 def print_summary(out_dir):
     """Print collection summary."""
-    print(_c("\n[6/6] Summary...", _YELLOW))
+    print(_c("\n[5/6] Summary...", _YELLOW))
     total_size = 0
     files = []
     for f in sorted(os.listdir(out_dir)):
@@ -254,7 +258,7 @@ def parse_args():
             "\nNotes:\n"
             "  - 관리자 권한 필요 (Event Log, Hyper-V cmdlet)\n"
             "  - 성능 카운터 수집 중 대기 시간 발생 (기본 5분)\n"
-            "  - 출력: C:\\temp\\incident_YYYYMMDD_HHMMSS\\\n"
+            "  - 출력: C:\\temp\\incident_YYYYMMDD_HHMMSS\n"
         )
     )
     parser.add_argument('-V', '--version', action='version', version=f'%(prog)s {VERSION}')
@@ -275,6 +279,12 @@ def main():
         sys.exit(1)
 
 
+    # Check PowerShell available
+
+    if not shutil.which("powershell"):
+        print(f"{_c('ERROR', _RED)}: powershell.exe를 찾을 수 없습니다")
+        sys.exit(1)
+
     # Check admin privileges
 
     if not ctypes.windll.shell32.IsUserAnAdmin():
@@ -290,7 +300,14 @@ def main():
     out_dir = f"C:\\temp\\incident_{timestamp}"
 
     if not args.dry_run:
-        os.makedirs(out_dir, exist_ok=True)
+        try:
+            os.makedirs(out_dir, exist_ok=True)
+        except PermissionError:
+            print(f"{_c('ERROR', _RED)}: {out_dir} 생성 권한 없음")
+            sys.exit(1)
+        except OSError as e:
+            print(f"{_c('ERROR', _RED)}: 디렉토리 생성 실패: {e}")
+            sys.exit(1)
 
     print(_c("=== Incident Log Collection ===", _CYAN))
     print(f"  Output: {_c(out_dir, _CYAN)}")
@@ -302,13 +319,13 @@ def main():
     # Collect
     collect_event_logs(out_dir, args.days, args.dry_run)
     print()
-    collect_perf_counters(out_dir, args.perf_duration, args.perf_interval, args.dry_run)
-    print()
     collect_vm_status(out_dir, args.dry_run)
     print()
     collect_system_info(out_dir, args.dry_run)
     print()
     collect_overcommit(out_dir, args.dry_run)
+    print()
+    collect_perf_counters(out_dir, args.perf_duration, args.perf_interval, args.dry_run)
 
     if not args.dry_run:
         print_summary(out_dir)
