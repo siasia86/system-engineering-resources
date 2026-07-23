@@ -4,12 +4,12 @@ Windows Server 2022 (Hyper-V 호스트 포함) 환경에서 CPU, Memory, Disk I/
 
 ## 목차
 
-| 섹션                                                                                                                             |
-|----------------------------------------------------------------------------------------------------------------------------------|
-| [1. 분석 도구 개요](#1-분석-도구-개요) / [2. CPU 분석](#2-cpu-분석) / [3. Memory 분석](#3-memory-분석)                           |
-| [4. Disk I/O 분석](#4-disk-io-분석) / [5. Network 분석](#5-network-분석) / [6. Hyper-V 호스트 분석](#6-hyper-v-호스트-분석)      |
-| [7. Event Log 기반 분석](#7-event-log-기반-분석) / [8. 종합 분석 스크립트](#8-종합-분석-스크립트)                                   |
-| [9. 장애 사후 로그 수집](#9-장애-사후-로그-수집) / [10. 참고 자료](#10-참고-자료) |
+| 섹션                                                                                                                        |
+|-----------------------------------------------------------------------------------------------------------------------------|
+| [1. 분석 도구 개요](#1-분석-도구-개요) / [2. CPU 분석](#2-cpu-분석) / [3. Memory 분석](#3-memory-분석)                      |
+| [4. Disk I/O 분석](#4-disk-io-분석) / [5. Network 분석](#5-network-분석) / [6. Hyper-V 호스트 분석](#6-hyper-v-호스트-분석) |
+| [7. Event Log 기반 분석](#7-event-log-기반-분석) / [8. 종합 분석 스크립트](#8-종합-분석-스크립트)                           |
+| [9. 장애 사후 로그 수집](#9-장애-사후-로그-수집) / [10. 참고 자료](#10-참고-자료)                                           |
 
 ---
 
@@ -470,6 +470,141 @@ logman stop "ServerPerf"
 # 삭제
 logman delete "ServerPerf"
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 9. 장애 사후 로그 수집
+
+장애 발생 후 원인 분석을 위해 `C:\temp\`에 각종 로그를 수집하는 절차입니다. 시간이 지나면 이벤트 로그가 순환(overwrite)되므로 **장애 인지 즉시** 수집합니다.
+
+### 수집 디렉토리 생성
+
+```powershell
+$dir = "C:\temp\incident_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
+New-Item -ItemType Directory -Path $dir -Force
+```
+
+### Event Log 수집
+
+```powershell
+# System (disk, ntfs, storvsc 등)
+Get-WinEvent -FilterHashtable @{
+    LogName='System'
+    StartTime=(Get-Date).AddDays(-7)
+} | Select-Object TimeCreated, ProviderName, Id, LevelDisplayName, Message |
+Export-Csv -Path "$dir\event_system.csv" -NoTypeInformation -Encoding UTF8
+
+# Application (VSS, 앱 에러)
+Get-WinEvent -FilterHashtable @{
+    LogName='Application'
+    StartTime=(Get-Date).AddDays(-7)
+} 2>$null | Select-Object TimeCreated, ProviderName, Id, LevelDisplayName, Message |
+Export-Csv -Path "$dir\event_application.csv" -NoTypeInformation -Encoding UTF8
+
+# Hyper-V StorageVSP (VM I/O latency)
+Get-WinEvent -LogName 'Microsoft-Windows-Hyper-V-StorageVSP-Admin' 2>$null |
+Select-Object TimeCreated, Id, LevelDisplayName, Message |
+Export-Csv -Path "$dir\event_StorageVSP.csv" -NoTypeInformation -Encoding UTF8
+
+# Hyper-V Worker (VM 상태)
+Get-WinEvent -LogName 'Microsoft-Windows-Hyper-V-Worker-Admin' 2>$null |
+Select-Object TimeCreated, Id, LevelDisplayName, Message |
+Export-Csv -Path "$dir\event_HyperV_Worker.csv" -NoTypeInformation -Encoding UTF8
+
+# Hyper-V VMMS (VM 관리)
+Get-WinEvent -LogName 'Microsoft-Windows-Hyper-V-VMMS-Operational' 2>$null |
+Select-Object TimeCreated, Id, LevelDisplayName, Message |
+Export-Csv -Path "$dir\event_HyperV_VMMS.csv" -NoTypeInformation -Encoding UTF8
+
+# Storport (물리 디스크)
+Get-WinEvent -LogName 'Microsoft-Windows-Storage-Storport/Operational' 2>$null |
+Select-Object TimeCreated, Id, LevelDisplayName, Message |
+Export-Csv -Path "$dir\event_Storport.csv" -NoTypeInformation -Encoding UTF8
+```
+
+### 성능 카운터 스냅샷
+
+```powershell
+# 현재 시점 주요 카운터 (10초 간격, 30회 = 5분)
+$counters = @(
+    '\Processor(_Total)\% Processor Time',
+    '\Memory\Available MBytes',
+    '\PhysicalDisk(*)\Avg. Disk sec/Read',
+    '\PhysicalDisk(*)\Avg. Disk sec/Write',
+    '\PhysicalDisk(*)\Current Disk Queue Length',
+    '\Hyper-V Virtual Storage Device(*)\Latency'
+)
+
+Get-Counter -Counter $counters -SampleInterval 10 -MaxSamples 30 |
+Export-Counter -Path "$dir\perfmon_snapshot.csv" -FileFormat CSV
+```
+
+### VM 상태 수집
+
+```powershell
+# VM 목록 + 상태
+Get-VM | Select Name, State, CPUUsage, MemoryAssigned, Uptime, Status |
+Export-Csv -Path "$dir\vm_status.csv" -NoTypeInformation -Encoding UTF8
+
+# VM별 VHD 배치
+Get-VM | Get-VMHardDiskDrive | Select VMName, ControllerType, ControllerNumber, ControllerLocation, Path |
+Export-Csv -Path "$dir\vm_vhd_path.csv" -NoTypeInformation -Encoding UTF8
+
+# VM별 네트워크
+Get-VM | Get-VMNetworkAdapter | Select VMName, SwitchName, MacAddress, IPAddresses |
+Export-Csv -Path "$dir\vm_network.csv" -NoTypeInformation -Encoding UTF8
+```
+
+### 시스템 정보 수집
+
+```powershell
+# OS/하드웨어 정보
+systeminfo > "$dir\systeminfo.txt"
+
+# 디스크 정보
+Get-PhysicalDisk | Select FriendlyName, MediaType, Size, HealthStatus, OperationalStatus |
+Export-Csv -Path "$dir\physical_disk.csv" -NoTypeInformation -Encoding UTF8
+
+# iSCSI 세션 (있는 경우)
+Get-IscsiSession 2>$null | Select TargetNodeAddress, IsConnected, NumberOfConnections |
+Export-Csv -Path "$dir\iscsi_session.csv" -NoTypeInformation -Encoding UTF8
+
+# 클러스터 볼륨 (CSV)
+Get-ClusterSharedVolume 2>$null | Select Name, State, OwnerNode |
+Export-Csv -Path "$dir\csv_volume.csv" -NoTypeInformation -Encoding UTF8
+```
+
+### 일괄 수집 스크립트
+
+위 내용을 하나의 스크립트로 저장하여 장애 시 즉시 실행합니다.
+
+```powershell
+# 스크립트 위치: _scripts/windows/collect_incident_logs.ps1
+# 호스트에 복사 후 실행: C:\scripts\collect_incident_logs.ps1
+# 실행: .\collect_incident_logs.ps1
+# 결과: C:\temp\incident_YYYYMMDD_HHMMSS\ 디렉토리에 전체 수집
+```
+
+### 수집 파일 목록
+
+| 파일                    | 내용                     | 분석 목적               |
+|-------------------------|--------------------------|-------------------------|
+| event_system.csv        | System 이벤트 (7일)      | disk/ntfs 에러          |
+| event_application.csv   | Application 이벤트 (7일) | VSS/앱 에러             |
+| event_StorageVSP.csv    | VM I/O latency 경고      | noisy neighbor/I/O 포화 |
+| event_HyperV_Worker.csv | VM 상태 변경             | VM 장애 시점            |
+| event_HyperV_VMMS.csv   | VM 관리 작업             | 스냅샷/백업 트리거      |
+| event_Storport.csv      | 물리 디스크 에러         | 디스크 고장             |
+| perfmon_snapshot.csv    | 성능 카운터 (5분)        | 현재 부하 상태          |
+| vm_status.csv           | VM 목록/상태             | 영향 범위 파악          |
+| vm_vhd_path.csv         | VHD 경로                 | 볼륨 집중도 확인        |
+| vm_network.csv          | VM 네트워크              | IP/MAC 확인             |
+| physical_disk.csv       | 물리 디스크 상태         | 디스크 건강 상태        |
+| systeminfo.txt          | OS/하드웨어 요약         | 환경 파악               |
+
+🟡 수집 후 `C:\temp\incident_*` 디렉토리를 분석 서버로 복사하여 외부 분석을 진행합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
