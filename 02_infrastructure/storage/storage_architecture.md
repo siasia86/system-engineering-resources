@@ -18,15 +18,27 @@
 스토리지 아키텍처는 서버가 데이터를 저장하고 접근하는 방식을 결정합니다. 연결 방식에 따라 성능, 공유 가능성, 비용, 관리 복잡도가 달라집니다.
 
 ```
-┌───────────────────┬─────────────────────┬─────────────────────┐
-│       DAS         │        SAN          │        NAS          │
-├───────────────────┼─────────────────────┼─────────────────────┤
-│ Server --- Disk   │ Server --- FC/iSCSI │ Server --- NFS/SMB  │
-│ (direct attach)   │    --- Switch ---   │    --- Ethernet --- │
-│                   │    --- Storage ---  │    --- NAS Device   │
-│                   │                     │                     │
-│ Block Level       │ Block Level         │ File Level          │
-└───────────────────┴─────────────────────┴─────────────────────┘
+┌────────────────────────────────────────────────────────────────────┐
+│                    Storage Architecture                            │
+├────────────┬──────────────┬──────────────┬─────────────────────────┤
+│    DAS     │     SAN      │     NAS      │     Object Storage      │
+├────────────┼──────────────┼──────────────┼─────────────────────────┤
+│ Server-Disk│ FC / iSCSI   │ NFS / SMB    │ HTTP / S3 API           │
+│ (direct)   │ (dedicated)  │ (ethernet)   │ (REST)                  │
+│            │              │              │                         │
+│ Block      │ Block        │ File         │ Object                  │
+├────────────┴──────────────┴──────────────┴─────────────────────────┤
+│                                                                    │
+│  SDS (Software-Defined Storage)                                    │
+│  Ceph, vSAN, Longhorn — Block + File + Object on commodity HW      │
+│                                                                    │
+│  HCI (Hyper-Converged Infrastructure)                              │
+│  Compute + Storage + Network in single node (Nutanix, vSAN)        │
+│                                                                    │
+│  Unified Storage                                                   │
+│  Block + File in single appliance (NetApp, PowerStore)             │
+│                                                                    │
+└────────────────────────────────────────────────────────────────────┘
 ```
 
 [⬆ 목차로 돌아가기](#목차)
