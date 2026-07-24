@@ -42,6 +42,22 @@
 | Virtualization Engineer     | 가상화 인프라 설계/운영   | VMware, Hyper-V, Proxmox                  |
 | IT Operations (ITOM)        | ITSM 기반 운영 관리       | ITIL, 변경관리, 인시던트, CMDB            |
 
+
+### System Engineer 상세
+
+IT System Engineer는 서버/네트워크/스토리지 등 인프라를 설계·구축하는 역할입니다. INCOSE가 정의하는 Systems Engineering(복합 시스템의 수명주기 전반을 관리하는 학제간 분야)과는 구분됩니다.
+
+| 항목        | 내용                                                       |
+|-------------|------------------------------------------------------------|
+| 정의        | 서버/OS/미들웨어 인프라를 설계·구축·인수인계하는 엔지니어  |
+| 관여 시점   | 프로젝트 초기(설계) ~ 구축 완료(인수인계)                  |
+| 주요 업무   | HW 사이징, OS 설치/hardening, 미들웨어 구성, HA/DR 설계    |
+| 성능 업무   | 벤치마크, 부하 테스트, 커널/DB 파라미터 튜닝               |
+| 인수인계    | 운영팀(SysAdmin)에 구축 결과물 전달, 운영 매뉴얼 작성      |
+| 주요 자격증 | RHCE, LPIC-2/3, VCP, AWS SAA/SAP, MCSE (legacy)            |
+| 경력 경로   | SE → Cloud Architect, SE → SRE, SE → Pre-sales Engineer    |
+| 한국 현실   | SI 프로젝트 구축 인력, MSP 마이그레이션 담당으로 가장 많음 |
+
 ### 목표/초점 비교 (주요 5개 직군)
 
 | 구분        | DevOps                     | Cloud                     | SRE                            | SE                    | Platform                  |
