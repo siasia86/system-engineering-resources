@@ -136,6 +136,27 @@ Windows Server 2008, 2008 R2, 2012 Hyper-V에서 CentOS 5.11을 운영할 때의
 | 백업 일관성 | 비일관 (크래시 일관만)     | VSS 연동 (일관 백업)    |
 | I/O 성능    | ~5,000 IOPS                | ~50,000+ IOPS           |
 
+**[근거] storvsc 큐 깊이 vs IDE 에뮬레이션**
+
+Linux 커널 `hv_storvsc` 드라이버는 SCSI 호스트 템플릿에서 LUN당 명령 큐 깊이를 깊게 정의합니다. 현재 mainline 기준 `cmd_per_lun = 2048`이며, LIS/커널 버전에 따라 실제 값은 다르지만 모두 IDE 에뮬레이션의 단일 명령 한계(큐 깊이 1)보다 훨씬 큽니다. 위 표의 `64+`는 보수적 하한값입니다.
+
+```c
+// drivers/scsi/storvsc_drv.c
+static struct scsi_host_template scsi_driver = {
+	.cmd_per_lun =		2048,
+	.track_queue_depth =	1,
+};
+```
+
+반면 Hyper-V Generation 1 VM의 IDE 컨트롤러는 legacy 하드웨어 에뮬레이션이며 명령 큐잉(NCQ/TCQ)을 지원하지 않아 큐 깊이가 사실상 1입니다. Microsoft 공식 문서는 IDE를 legacy 에뮬레이션으로 규정합니다.
+
+> "Generation 1 virtual machines use legacy BIOS firmware and provide compatibility with legacy applications that require older hardware support, including 32-bit systems and legacy hardware emulation such as IDE controllers and virtual floppy disk files."
+
+출처:
+
+- Linux kernel `storvsc` driver: [drivers/scsi/storvsc_drv.c](https://github.com/torvalds/linux/blob/master/drivers/scsi/storvsc_drv.c) — ★★★★☆
+- Hyper-V feature terminology (Microsoft): [learn.microsoft.com](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/features-terminology) — ★★★☆☆
+
 ### 실제 동작 시나리오
 
 | 시나리오                    | LIS 없음                   | LIS 있음           |
