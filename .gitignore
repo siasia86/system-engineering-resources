@@ -32,7 +32,7 @@ notes/
 *.old
 
 # Archive
-99_archive/
+#99_archive/
 
 # duplication directory
 *masang*
