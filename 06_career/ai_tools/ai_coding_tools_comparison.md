@@ -11,12 +11,12 @@
 
 ## 1. 개요
 
-2026년 7월 기준 주요 AI 코딩 도구 5종 비교입니다.
+2026년 7월 기준 주요 AI 코딩 도구 10종 비교입니다.
 
 | 도구              | 제조사              | 카테고리                                | 기반 모델                              |
 |-------------------|---------------------|-----------------------------------------|----------------------------------------|
-| Kiro              | AWS                 | AI IDE / CLI / Web / Mobile             | Claude Sonnet 4.6 / Opus 4.8 등        |
-| Claude Code       | Anthropic           | AI 코딩 에이전트 (CLI/IDE/Web/Desktop)  | Claude Mythos 5 / Opus 4.8 등          |
+| Kiro              | AWS                 | AI IDE / CLI / Web / Mobile             | Claude Sonnet 4.6 / Opus 4.5 등        |
+| Claude Code       | Anthropic           | AI 코딩 에이전트 (CLI/IDE/Web/Desktop)  | Claude 계열 (기본), 서드파티 연동 가능 |
 | OpenAI Agents SDK | OpenAI              | 멀티에이전트 프레임워크 (Python/TS SDK) | GPT-5.6 Sol / Terra 등                 |
 | Cursor            | Anysphere           | AI IDE (VS Code fork)                   | Claude / GPT / Gemini 멀티모델         |
 | GitHub Copilot    | Microsoft           | IDE 플러그인                            | GPT-5.6 / Claude Sonnet 등             |
@@ -154,7 +154,7 @@ Microsoft / GitHub이 만든 IDE 플러그인 형태의 AI 코딩 도구입니�
 
 ### Windsurf
 
-Cognition AI(구 Codeium)가 만든 VS Code fork 기반 AI IDE입니다. Cascade 에이전트 모드와 멀티파일 편집이 특징이며, Devin과 같은 회사 제품입니다.
+Codeium에서 리브랜딩한 VS Code fork 기반 AI IDE로, 현재 Cognition AI 소속입니다. Cascade 에이전트 모드와 멀티파일 편집이 특징이며, Devin과 같은 회사 제품입니다.
 
 #### 주요 특징
 
@@ -166,6 +166,8 @@ Cognition AI(구 Codeium)가 만든 VS Code fork 기반 AI IDE입니다. Cascade
 - Flows: 반복 작업 자동화
 
 #### 가격 (2026-07-27 기준)
+
+🟡 `windsurf.com/pricing`은 `devin.ai/pricing`으로 리다이렉트되어 Devin과 동일한 가격 페이지를 공유합니다.
 
 | 플랜  | 가격                          |
 |-------|-------------------------------|
@@ -266,22 +268,21 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 
 ### 핵심 기능
 
-| 기능                  | Kiro          | Claude Code    | Agents SDK   | Cursor            | Copilot          |
-|-----------------------|---------------|----------------|--------------|-------------------|------------------|
-| IDE 통합              | ✅ (기본)     | 🟡 (플러그인)  | ❌ (CLI/SDK) | ✅ (기본)         | ✅ (플러그인)    |
-| 터미널 CLI            | ✅            | ✅ (주력)      | ✅           | ❌                | 🟡 (Copilot CLI) |
-| 자동완성 (Tab)        | ✅            | ❌             | ❌           | ✅                | ✅               |
-| 에이전트 모드         | ✅            | ✅             | ✅           | ✅                | ✅               |
-| 멀티에이전트          | 🟡            | ✅             | ✅           | ✅                | ❌               |
-| MCP 지원              | ✅            | ✅             | ✅           | ✅                | ✅               |
-| 커스텀 에이전트 정의  | ✅ (파일)     | ✅ (CLAUDE.md) | ✅ (코드)    | ✅ (.cursorrules) | 🟡               |
-| Skills / 재사용 패턴  | ✅ (SKILL.md) | ✅ (Skills)    | ✅ (SDK)     | ✅ (Notepads)     | ❌               |
-| Hooks / 이벤트 자동화 | ✅            | ✅             | ❌           | ✅                | ✅               |
-| Git / PR 연동         | ✅            | ✅             | ✅           | ✅                | ✅ (주력)        |
-| 음성 에이전트         | ❌            | ❌             | ✅           | ❌                | ❌               |
-| 멀티모델 선택         | ✅            | 🟡 (서드파티)  | ❌           | ✅                | 🟡               |
-| AWS 통합              | ✅ (강점)     | ✅ (Bedrock)   | ❌           | ❌                | ❌               |
-| GitHub Actions 통합   | ❌            | ✅             | ❌           | ❌                | ✅ (강점)        |
+| 기능                  | Kiro          | Claude Code    | Cursor            | Copilot          |
+|-----------------------|---------------|----------------|-------------------|------------------|
+| IDE 통합              | ✅ (기본)     | 🟡 (플러그인)  | ✅ (기본)         | ✅ (플러그인)    |
+| 터미널 CLI            | ✅            | ✅ (주력)      | ❌                | 🟡 (Copilot CLI) |
+| 자동완성 (Tab)        | ✅            | ❌             | ✅                | ✅               |
+| 에이전트 모드         | ✅            | ✅             | ✅                | ✅               |
+| 멀티에이전트          | 🟡            | ✅             | ✅                | ❌               |
+| MCP 지원              | ✅            | ✅             | ✅                | ✅               |
+| 커스텀 에이전트 정의  | ✅ (파일)     | ✅ (CLAUDE.md) | ✅ (.cursorrules) | 🟡               |
+| Skills / 재사용 패턴  | ✅ (SKILL.md) | ✅ (Skills)    | ✅ (Notepads)     | ❌               |
+| Hooks / 이벤트 자동화 | ✅            | ✅             | ✅                | ✅               |
+| Git / PR 연동         | ✅            | ✅             | ✅                | ✅ (주력)        |
+| 멀티모델 선택         | ✅            | 🟡 (서드파티)  | ✅                | 🟡               |
+| AWS 통합              | ✅ (강점)     | ✅ (Bedrock)   | ❌                | ❌               |
+| GitHub Actions 통합   | ❌            | ✅             | ❌                | ✅ (강점)        |
 
 ### 커스터마이징 방식 비교
 
@@ -301,16 +302,15 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 
 ### 개인 플랜
 
-| 도구        | Free                        | 기본 유료                              | 고급 유료                            |
-|-------------|-----------------------------|----------------------------------------|--------------------------------------|
-| Kiro        | $0 (50 크레딧/월)           | Pro $20 (1,000 크레딧/월)              | Pro+ $40 / Pro Max $100 / Power $200 |
-| Claude Code | —                           | Pro $20/월 (포함)                      | Max $100/월 (포함)                   |
-| Agents SDK  | —                           | API 종량제 (GPT-5.6 Sol $5/$30 per 1M) | —                                    |
-| Cursor      | Hobby (무료, 제한적)        | Individual $20/월                      | Teams $40/user/월                    |
-| Copilot     | Free (2,000 completions/월) | Pro $10/월                             | Pro+ $39/월 / Max $100/월            |
+| 도구        | Free                        | 기본 유료                 | 고급 유료                            |
+|-------------|-----------------------------|---------------------------|--------------------------------------|
+| Kiro        | $0 (50 크레딧/월)           | Pro $20 (1,000 크레딧/월) | Pro+ $40 / Pro Max $100 / Power $200 |
+| Claude Code | —                           | Pro $20/월 (포함)         | Max $100/월 (포함)                   |
+| Cursor      | Hobby (무료, 제한적)        | Individual $20/월         | Teams $40/user/월                    |
+| Copilot     | Free (2,000 completions/월) | Pro $10/월                | Pro+ $39/월 / Max $100/월            |
 
 🟡 Claude Code는 별도 요금 없이 Claude Pro/Max 구독에 포함됩니다.
-🟡 OpenAI Agents SDK는 API 토큰 사용량 기반 종량제입니다. ChatGPT 내 Codex 기능(Pro/Team)은 별도 구독 포함입니다.
+🟡 IDE형 도구가 아닌 OpenAI Agents SDK는 §3 기능 비교에서 제외했으며, 가격은 API 토큰 사용량 기반 종량제입니다 (예: GPT-5.6 Sol $5.00/$30.00 per 1M tokens).
 
 ---
 
@@ -409,7 +409,7 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 - BenchLM Coding: [benchlm.ai/best/coding](https://benchlm.ai/best/coding) — ★★★☆☆
 - Kiro Pricing: [kiro.dev/pricing](https://kiro.dev/pricing) — ★★★☆☆
 - OpenAI Agents SDK: [github.com/openai/openai-agents-python](https://github.com/openai/openai-agents-python) — ★★★☆☆
-- OpenAI Codex (ChatGPT): [platform.openai.com/docs/codex](https://platform.openai.com/docs/codex) — ★★★☆☆
+- OpenAI Codex (ChatGPT 내 코딩 에이전트 기능, Agents SDK와는 별개 제품): [platform.openai.com/docs/codex](https://platform.openai.com/docs/codex) — ★★★☆☆
 - OpenAI Models: [platform.openai.com/docs/models](https://platform.openai.com/docs/models) — ★★★☆☆
 - GitHub Copilot: [github.com/features/copilot](https://github.com/features/copilot) — ★★★☆☆
 - Cursor Pricing: [cursor.com/pricing](https://www.cursor.com/pricing) — ★★★☆☆
