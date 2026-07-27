@@ -72,6 +72,9 @@ Anthropic이 만든 AI 코딩 에이전트입니다. 터미널 CLI, IDE 확장(V
 - Git 연동, 테스트 실행, bash 명령 실행 등 직접 수행
 - CLAUDE.md: 프로젝트별 컨텍스트·규칙 정의 파일
 - Permission 모드: 작업별 승인 범위 설정 (Auto / Manual)
+- Skills: 재사용 가능한 작업 패턴 정의 (`.claude/skills/`)
+- Hooks: 이벤트 기반 자동화 (SessionStart, UserPromptSubmit, PreToolUse, PostToolUse 등)
+- 서드파티 모델 연동: Bedrock, Vertex AI 등 (기본은 Claude)
 - MCP 서버 연동 지원
 - GitHub Actions, VS Code, JetBrains, 웹, 데스크탑 앱 통합
 
@@ -122,6 +125,7 @@ Anysphere가 만든 VS Code fork 기반 AI IDE입니다. 멀티모델(Claude / G
 - Chat: 코드베이스 컨텍스트 인식 대화
 - Agent 모드 (Composer): 파일 생성·수정·실행을 자동으로 수행
 - Background Agent (Cloud): 원격 서버에서 에이전트 자율 실행
+- Parallel Agents: 여러 에이전트를 동시에 실행하여 병렬 작업
 - `.cursor/rules`: 프로젝트·글로벌 AI 동작 규칙 정의 (`.cursorrules`는 deprecated)
 - Notepads: 재사용 가능한 컨텍스트 스니펫
 - Bugbot: PR 코드 리뷰 자동화
@@ -142,6 +146,8 @@ Microsoft / GitHub이 만든 IDE 플러그인 형태의 AI 코딩 도구입니�
 - Workspace Agents: ChatGPT 내에서 GitHub 작업 트리거
 - MCP Registry 지원
 - GitHub 전체 생태계 통합 (Actions, PR, Security)
+- Copilot CLI: 터미널에서 명령어 설명·제안 (`gh copilot explain`, `gh copilot suggest`)
+- Hooks: 코딩 에이전트 이벤트 기반 자동화
 - 기업 정책·콘텐츠 필터링 관리 지원
 
 ---
@@ -263,17 +269,17 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 | 기능                       | Kiro         | Claude Code   | Agents SDK    | Cursor        | Copilot       |
 |----------------------------|--------------|---------------|---------------|---------------|---------------|
 | IDE 통합                   | ✅ (기본)    | 🟡 (플러그인) | ❌ (CLI/SDK)  | ✅ (기본)     | ✅ (플러그인) |
-| 터미널 CLI                 | ✅           | ✅ (주력)     | ✅            | ❌            | ❌            |
+| 터미널 CLI                 | ✅           | ✅ (주력)     | ✅            | ❌            | 🟡 (Copilot CLI) |
 | 자동완성 (Tab)             | ✅           | ❌            | ❌            | ✅            | ✅            |
 | 에이전트 모드              | ✅           | ✅            | ✅            | ✅            | ✅            |
-| 멀티에이전트               | 🟡           | 🟡            | ✅            | ❌            | ❌            |
+| 멀티에이전트               | 🟡           | ✅            | ✅            | ✅            | ❌            |
 | MCP 지원                   | ✅           | ✅            | ✅            | ✅            | ✅            |
 | 커스텀 에이전트 정의       | ✅ (파일)    | ✅ (CLAUDE.md)| ✅ (코드)     | ✅ (.cursorrules) | 🟡       |
-| Skills / 재사용 패턴       | ✅ (SKILL.md)| ❌            | ✅ (SDK)      | ✅ (Notepads) | ❌            |
-| Hooks / 이벤트 자동화      | ✅           | ❌            | ❌            | ✅            | ❌            |
+| Skills / 재사용 패턴       | ✅ (SKILL.md)| ✅ (Skills)   | ✅ (SDK)      | ✅ (Notepads) | ❌            |
+| Hooks / 이벤트 자동화      | ✅           | ✅            | ❌            | ✅            | ✅            |
 | Git / PR 연동              | ✅           | ✅            | ✅            | ✅            | ✅ (주력)     |
 | 음성 에이전트              | ❌           | ❌            | ✅            | ❌            | ❌            |
-| 멀티모델 선택              | ✅           | ❌            | ❌            | ✅            | 🟡            |
+| 멀티모델 선택              | ✅           | 🟡 (서드파티) | ❌            | ✅            | 🟡            |
 | AWS 통합                   | ✅ (강점)    | ✅ (Bedrock)  | ❌            | ❌            | ❌            |
 | GitHub Actions 통합        | ❌           | ✅            | ❌            | ❌            | ✅ (강점)     |
 
