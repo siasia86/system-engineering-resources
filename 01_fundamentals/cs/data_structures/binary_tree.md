@@ -121,6 +121,8 @@
 ### 기본 노드 및 순회
 
 ```python
+from collections import deque
+
 class Node:
     def __init__(self, val):
         self.val = val
@@ -145,9 +147,10 @@ def postorder(node):
 def levelorder(root):
     if not root:
         return []
-    queue, result = [root], []
+    queue = deque([root])
+    result = []
     while queue:
-        node = queue.pop(0)
+        node = queue.popleft()       # list.pop(0)은 O(n) — deque.popleft()는 O(1)
         result.append(node.val)
         if node.left:
             queue.append(node.left)
