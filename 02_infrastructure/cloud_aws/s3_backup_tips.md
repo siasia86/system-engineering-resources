@@ -520,7 +520,7 @@ aws ec2 stop-instances --instance-ids i-verify-server
 - AWS S3 User Guide: [docs.aws.amazon.com/AmazonS3/latest/userguide](https://docs.aws.amazon.com/AmazonS3/latest/userguide/) — ★★★☆☆
 - AWS S3 Pricing: [aws.amazon.com/s3/pricing](https://aws.amazon.com/s3/pricing/) — ★★★☆☆
 - [s3_object_lock.md](s3_object_lock.md)
-- [s3_cross_account_backup.md](../../99_archive/03_aws_jobs/01_AWS_jobs/s3_cross_account_backup.md)
+- s3_cross_account_backup.md (private repo: 34_system-engineering-resources_private)
 
 ---
 
