@@ -185,7 +185,7 @@ def check_tables(content, strict=False):
         if not data_rows:
             continue
         ncols = max(len(r) for r in data_rows)
-        if ncols <= 1:
+        if ncols == 0:
             continue
         col_widths = [
             max((dw(r[i]) if i < len(r) else 0) for r in data_rows)
