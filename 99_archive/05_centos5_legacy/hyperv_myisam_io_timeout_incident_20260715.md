@@ -1,6 +1,6 @@
 # Hyper-V MyISAM I/O Timeout 장애 분석 (2026-07-15)
 
-CentOS 5.11 게임 DB 서버에서 동시 발생한 SCSI timeout → EXT4 read-only → MyISAM 테이블 파손 장애를 분석합니다.
+CentOS 5.11 게임 DB 서버에서 동시 발생한 SCSI timeout → EXT4 read-only → MyISAM 테이블 파손 장애 분석 문서
 
 ## 장애 상황 요약
 
@@ -12,18 +12,18 @@ CentOS 5.11 게임 DB 서버에서 동시 발생한 SCSI timeout → EXT4 read-o
 | 호스트                 | Windows Server 2022 (Build 20348), Hyper-V, Vmbus 3.0                                |
 | 스토리지               | 외장 스토리지 (CSV: ClusterStorage\Volume1, Volume2)                                 |
 | 전체 VM 수             | 12대+ (CentOS 5.11 x 6, Windows x ?, Debian x ?, RedHat x ?)                         |
-| 장애 VM                | CentOS 5.11 전체 6대 (DBA 증언 + 3대 로그 확인)                                      |
-| 비 CentOS VM           | Windows/Debian/RedHat — 동일 지연 겪었으나 장애 없음                                 |
-| MySQL 버전             | 4.0.27 / 4.1.24 (2008년 EOL)                                                         |
+| 장애 VM                | CentOS 5.11 전체 6대 (DBA 확인 + 3대 로그 확인)                                      |
+| CentOS-5.11 제외 VM    | Windows/Debian/RedHat — 동일 지연 겪었으나 장애 없음                                 |
+| MySQL 버전             | 4.0.27 (EOL 2008) / 4.1.24 (EOL 2009)                                                |
 | 엔진                   | MyISAM (트랜잭션 미지원, crash recovery 없음)                                        |
 | 피해                   | MyISAM 테이블 파손 — GalaxyDB 12개, AcheronDB 10개, HermesDB 2개, CassiopeaDB 미확인 |
 | **트리거 (확정)**      | MV-Live VM의 `_backup.vhdx` 대량 READ 작업 (주기적 I/O 작업)                         |
 | **근본 원인**          | CSV 전체 I/O 대역폭 포화 (최대 latency 116초)                                        |
 | **CentOS만 장애 이유** | storvsc (LIS 4.1.3-2) 구버전: 60초 timeout 후 즉시 abort, retry 없음                 |
 
-### DBA 증언 vs 로그 증거
+### DBA 확인 및 확인 된 로그
 
-| 구분        | DBA 증언  | 로그 증거                                     |
+| 구분        | DBA 확인  | 확인된 로그                                   |
 |-------------|-----------|-----------------------------------------------|
 | CassiopeaDB | 장애 발생 | ✅ kernel: timing out command, waited 60s     |
 | HermesDB    | 장애 발생 | ✅ kernel: timing out command, waited 60s     |
@@ -105,7 +105,7 @@ CentOS 5.11 게임 DB 서버에서 동시 발생한 SCSI timeout → EXT4 read-o
 |---------------------|--------------------|-----------|--------------|----------------|
 | 2026-07-06 (일)     | 오전 12~1시        | 247건     | ~14초        | ❌ (60초 미만) |
 | 2026-07-13 (일)     | 오전 12~1시        | 271건     | ~14초        | ❌ (60초 미만) |
-| **2026-07-15 (화)** | **오후 4:36~4:38** | **352건** | **116초**    | ✅ (60초 초과) |
+| **2026-07-15 (수)** | **오후 4:36~4:38** | **352건** | **116초**    | ✅ (60초 초과) |
 
 - 매주 일요일 새벽: 동일 작업이 실행되나 latency 14초 수준 → 장애 없음
 - 7/15 오후: **동일 작업이 업무 시간에 실행** + I/O 부하 중첩 → latency 116초 → 장애
@@ -114,12 +114,11 @@ CentOS 5.11 게임 DB 서버에서 동시 발생한 SCSI timeout → EXT4 read-o
 
 | 후보                          | 가능성 | 근거                                           |
 |-------------------------------|--------|------------------------------------------------|
-| Hyper-V Replica (전체 동기화) | ★★★★☆  | 주기적 + `_backup.vhdx` READ + 스케줄러에 없음 |
-| 스토리지 스냅샷/복제          | ★★★☆☆  | 외장 스토리지에서 볼륨 레벨 복제               |
-| 서비스 기반 VHD 백업          | ★★★☆☆  | Windows 서비스로 등록된 백업 에이전트          |
+| Hyper-V Replica (전체 동기화) | ★★★☆☆  | 주기적 + `_backup.vhdx` READ + 스케줄러에 없음 |
+| 스토리지 스냅샷/복제          | ★★☆☆☆  | 외장 스토리지에서 볼륨 레벨 복제               |
+| 서비스 기반 VHD 백업          | ★☆☆☆☆  | Windows 서비스로 등록된 백업 에이전트 미확인   |
 | 수동 복사                     | ★☆☆☆☆  | 매주 반복 + 새벽 실행 → 수동 가능성 낮음       |
 
-🟡 호스트에서 `Get-VMReplication` 또는 `Get-Service | Where {$_.DisplayName -match 'backup|replica'}` 로 확인 필요.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -188,7 +187,7 @@ Jul 15 16:38:25 CassiopeaDB kernel: EXT4-fs (sdb): ext4_da_writepages: jbd2_star
 | VMBus 채널 재연결 | 미지원                                        | 지원                                       |
 | 결과              | EXT4 journal abort → read-only                | I/O 지연만 발생, 정상 완료                 |
 
-### 호스트 StorageVSP 로그가 증명
+### 호스트 StorageVSP 로그 확인
 
 ```
 모든 VHD: "상태 = SRB_STATUS_SUCCESS"
@@ -247,7 +246,7 @@ VM (CentOS)                         호스트 (Hyper-V)                 스토�
 - CentOS 커널 로그: "timing out command, waited 60s" (abort 처리)
 - 결과: 호스트는 성공으로 봤지만, CentOS는 60초에 이미 포기한 상태
 
-### /sys/block/sdX/device/timeout 이란
+### /sys/block/sdX/device/timeout 이란?
 
 Linux 커널이 SCSI 디스크에 보낸 I/O 요청의 **최대 대기 시간(초)**입니다.
 
@@ -260,8 +259,8 @@ cat /sys/block/sda/device/timeout
 | 항목       | 설명                                                        |
 |------------|-------------------------------------------------------------|
 | 파일 위치  | `/sys/block/sdX/device/timeout` (디스크별 개별 설정)        |
-| 기본값     | 30초 (Linux 커널 기본)                                      |
-| 이 환경 값 | 60초 (누군가 변경한 상태)                                   |
+| 기본값     | 60초 (RHEL 5.11 커널 패치, vanilla 커널은 30초)             |
+| 이 환경 값 | 60초 (RHEL 5.11 기본값, rc.local/udev 설정 없음)            |
 | 단위       | 초 (seconds)                                                |
 | 동작       | I/O 요청 전송 후 이 시간 내에 완료 응답이 없으면 abort 처리 |
 | 영향 범위  | 해당 블록 디바이스(sda, sdb, sdc 등)에 대한 모든 I/O        |
@@ -292,11 +291,10 @@ VMBus → 호스트 → 스토리지
 
 | timeout 값  | 이번 장애 시 결과 (max latency 116초)              |
 |-------------|----------------------------------------------------|
-| 30초        | 🔴 abort (기본값이었으면 더 빨리 장애 발생)        |
 | 60초 (현재) | 🔴 abort — 82초 걸린 I/O도 실패 처리               |
 | 120초       | 🟡 116초 이내 모두 완료 → **장애 미발생** (지연만) |
 | 180초       | ✅ 여유 있게 통과                                  |
-| 0 (무한)    | ❌ 설정 불가 — 진짜 디스크 고장 시 영원히 hang     |
+| 0           | ❌ 즉시 timeout (0초 = 의미 없음) — 모든 I/O 실패  |
 
 🟡 timeout 증가는 "파손 vs 서비스 멈춤" 중 **멈춤을 선택**하는 것입니다. 게임 DB에서는 테이블 파손(복구 수십 분~수 시간)보다 일시적 멈춤이 낫습니다.
 
@@ -433,8 +431,8 @@ e2fsck를 실행하지 않고 계속 마운트하여 운영 → 잠재 메타데
 
 | 순위 | 조치                                                        | 효과  |
 |------|-------------------------------------------------------------|-------|
-| 1    | **MV-Live 주기적 I/O 작업 식별 및 시간/대역폭 제한**        | ★★★★★ |
-| 2    | `e2fsck -f /dev/sdb` + `e2fsck -f /dev/sdc` 실행 (6대 전체) | ★★★★★ |
+| 1    | **MV-Live 주기적 I/O 작업 식별 및 시간/대역폭 제한**        | ★★★☆☆ |
+| 2    | `e2fsck -f /dev/sdb` + `e2fsck -f /dev/sdc` 실행 (6대 전체) | ★☆☆☆☆ |
 | 3    | CentOS SCSI timeout 120초 이상으로 증가                     | ★★★☆☆ |
 
 ### 단기 조치
@@ -482,7 +480,7 @@ Get-VM | Where-Object {$_.Name -match 'LH.*DB|Cassiopea|Hermes|Galaxy|Acheron|Te
 Get-VMHardDiskDrive | Select VMName, ControllerNumber, ControllerLocation, Path
 ```
 
-### Storage QoS 설정
+### Storage QoS 설정 (테스트 진행 후 적용할것)
 
 ```powershell
 # DB VM 보호 정책
@@ -492,6 +490,8 @@ Get-VM "*DB*" | Get-VMHardDiskDrive | Set-VMHardDiskDrive -QoSPolicyID $gp.Polic
 ```
 
 ### 게스트 SCSI timeout 증가
+
+현재는 장애 발생 유무보다, DB 테이블이 깨지지 않는 것을 목표로 180초 설정한 상태
 
 ```bash
 # 현재 값 확인
@@ -506,6 +506,7 @@ echo 120 > /sys/block/sdc/device/timeout
 echo 'echo 120 > /sys/block/sdb/device/timeout' >> /etc/rc.local
 echo 'echo 120 > /sys/block/sdc/device/timeout' >> /etc/rc.local
 ```
+
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -610,19 +611,6 @@ scsi_times_out() → BLK_EH_RESET_TIMER (retry)
 - VMBus 채널 재연결 지원 (storvsc_host_reset_handler)
 - timeout 기본값 180초 (vs LIS 4.x의 60초)
 
-### 분석: 동일 장애 상황 시뮬레이션
-
-2026-07-15 장애 당시 CSV latency 최대 116초를 기준으로 비교합니다.
-
-| 시나리오                  | LIS 4.1.3-2 (장애 서버)     | 최신 storvsc (5.x+)          |
-|---------------------------|-----------------------------|------------------------------|
-| latency 50초              | ✅ 정상 (timeout 60초 미만) | ✅ 정상                      |
-| latency 65초              | ❌ abort → read-only        | ✅ 정상 (timeout 180초 미만) |
-| latency 116초 (최대 관측) | ❌ abort → read-only        | ✅ 정상 (180초 미만)         |
-| latency 185초 (가정)      | ❌ abort → read-only        | 🟡 1차 retry 후 성공 가능    |
-| latency 300초+ (가정)     | ❌ abort → read-only        | ❌ 3차 abort → read-only     |
-
-🟡 timeout을 120초로 변경하면 116초 latency에서 생존하지만, retry 로직이 없으므로 120초를 1초라도 초과하면 즉시 abort됩니다.
 
 ### 분석: LIS 버전 히스토리와 EOL
 
@@ -638,7 +626,7 @@ scsi_times_out() → BLK_EH_RESET_TIMER (retry)
 - LIS 4.1.3-2가 **CentOS 5용 마지막 릴리스**입니다
 - 이후 LIS는 RHEL 7+(커널 3.10+) 전용으로 전환되었습니다
 - 2019년 이후 RHEL 7+/8+는 커널 내장 `hv_*` 드라이버를 사용하며 별도 LIS 설치가 불필요합니다
-- Microsoft Download Center의 LIS 다운로드 페이지는 **폐쇄**되었습니다
+- Microsoft Download Center의 LIS 다운로드 페이지는 폐쇄 되었습니다
 
 ### 분석: 패키지 구조 해부
 
@@ -701,7 +689,7 @@ service hv_kvp_daemon status 2>/dev/null
 dmesg | grep -i "hyper\|vmbus\|storvsc\|netvsc"
 ```
 
-### 확정 결론
+### 요약
 
 | 항목               | 확인 결과                                                         |
 |--------------------|-------------------------------------------------------------------|
