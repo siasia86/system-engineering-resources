@@ -2,10 +2,10 @@
 
 ## 목차
 
-| 섹션 |
-|------|
+| 섹션                                                                                                                         |
+|------------------------------------------------------------------------------------------------------------------------------|
 | [1. iptables 기초](#1-iptables-기초) / [2. iptables 실전 룰셋](#2-iptables-실전-룰셋) / [3. nftables 기초](#3-nftables-기초) |
-| [4. nftables 실전 룰셋](#4-nftables-실전-룰셋) / [5. iptables vs nftables 비교](#5-iptables-vs-nftables-비교) |
+| [4. nftables 실전 룰셋](#4-nftables-실전-룰셋) / [5. iptables vs nftables 비교](#5-iptables-vs-nftables-비교)                |
 
 ---
 
