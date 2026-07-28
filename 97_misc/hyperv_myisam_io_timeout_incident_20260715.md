@@ -34,11 +34,12 @@ CentOS 5.11 게임 DB 서버에서 동시 발생한 SCSI timeout → EXT4 read-o
 
 ## 목차
 
-| 섹션                                                                                                                                                              |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [1. 장애 환경](#1-장애-환경) / [2. 트리거 확정](#2-트리거-확정) / [3. 장애 타임라인](#3-장애-타임라인)                                                            |
-| [4. CentOS만 장애 발생한 이유](#4-centos만-장애-발생한-이유) / [5. MyISAM 파손 메커니즘](#5-myisam-파손-메커니즘) / [6. MySQL 로그 분석](#6-mysql-로그-분석)      |
-| [7. 피해 증폭 요인](#7-피해-증폭-요인) / [8. 재발 방지 조치](#8-재발-방지-조치) / [9. 호스트 확인 명령어](#9-호스트-확인-명령어) / [10. 참고 자료](#10-참고-자료) |
+| 섹션                                                                                                                                                         |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [1. 장애 환경](#1-장애-환경) / [2. 트리거 확정](#2-트리거-확정) / [3. 장애 타임라인](#3-장애-타임라인)                                                       |
+| [4. CentOS만 장애 발생한 이유](#4-centos만-장애-발생한-이유) / [5. MyISAM 파손 메커니즘](#5-myisam-파손-메커니즘) / [6. MySQL 로그 분석](#6-mysql-로그-분석) |
+| [7. 피해 증폭 요인](#7-피해-증폭-요인) / [8. 재발 방지 조치](#8-재발-방지-조치) / [9. 호스트 확인 명령어](#9-호스트-확인-명령어)                             |
+| [10. LIS 드라이버 검증](#10-lis-드라이버-검증-2026-07-28) / [11. 참고 자료](#11-참고-자료)                                                                   |
 
 ---
 
@@ -510,7 +511,214 @@ echo 'echo 120 > /sys/block/sdc/device/timeout' >> /etc/rc.local
 
 ---
 
-## 10. 참고 자료
+## 10. LIS 드라이버 검증 (2026-07-28)
+
+장애 서버에서 직접 확인한 LIS 설치 상태 및 분석입니다.
+
+### 설치된 패키지
+
+```
+[root@gamedb-srv01 ~]# rpm -qa | grep -i "microsoft\|hyper\|kmod"
+kmod-microsoft-hyper-v-PAE-4.1.3.2-20170307
+microsoft-hyper-v-4.1.3.2-20170307
+microsoft-hyper-v-debuginfo-4.1.3.2-20170307
+```
+
+| 패키지                        | 역할                              | 빌드 날짜  |
+|-------------------------------|-----------------------------------|------------|
+| `kmod-microsoft-hyper-v-PAE`  | 커널 모듈 (PAE 커널용 storvsc 등) | 2017-03-07 |
+| `microsoft-hyper-v`           | 유저스페이스 데몬 (KVP, VSS 등)   | 2017-03-07 |
+| `microsoft-hyper-v-debuginfo` | 디버그 심볼                       | 2017-03-07 |
+
+### 로드된 커널 모듈
+
+```
+[root@gamedb-srv01 ~]# lsmod | grep -i hv_
+hv_netvsc              31232  0
+hv_balloon             17952  0 [permanent]
+hv_utils               20988  1
+hv_storvsc             20884  6
+hv_vmbus               39608  7 hv_netvsc,hv_balloon,hyperv_fb,hv_utils,hyperv_keyboard,hid_hyperv,hv_storvsc
+```
+
+| 모듈         | 사용 카운트 | 역할                         |
+|--------------|-------------|------------------------------|
+| `hv_vmbus`   | 7           | Hyper-V 통신 버스 (최상위)   |
+| `hv_storvsc` | 6           | SCSI 디스크 드라이버 (6 LUN) |
+| `hv_netvsc`  | 0           | 네트워크 드라이버            |
+| `hv_balloon` | 0 (perm)    | Dynamic Memory               |
+| `hv_utils`   | 1           | KVP, Shutdown, TimeSync IC   |
+
+### 분석: storvsc 에러 처리 경로 비교
+
+LIS 4.1.3-2의 `hv_storvsc`와 최신 커널(5.x+)의 `hv_storvsc`의 에러 처리 차이입니다.
+
+#### LIS 4.1.3-2 (CentOS 5.11, 장애 서버)
+
+```
+SCSI command 전송
+     │
+     v  (응답 대기)
+60초 경과 (timeout)
+     │
+     v
+scsi_times_out()
+     │
+     v
+storvsc_command_done() → status = DID_ABORT
+     │
+     v  (상위 계층 통보)
+sd: command abort
+     │
+     v
+EXT4: I/O error → journal abort → remount read-only
+     │
+     v
+MyISAM: write 중단 → MYI/MYD 불일치 → 테이블 파손
+```
+
+- retry 로직 없음 (abort 즉시)
+- VMBus 채널 재연결 미지원
+- SCSI error handler (eh_host_reset_handler) 미구현
+
+#### 최신 커널 in-kernel storvsc (5.x+)
+
+```
+SCSI command 전송
+     │
+     v  (응답 대기)
+timeout 경과
+     │
+     v
+scsi_times_out() → BLK_EH_RESET_TIMER (retry)
+     │
+     ├── 1차: command retry (재전송)
+     │         │
+     │         v  성공 → 정상 완료
+     │
+     ├── 2차: storvsc_host_reset_handler() (VMBus 채널 리셋)
+     │         │
+     │         v  성공 → 정상 완료
+     │
+     └── 3차: abort (최종 실패)
+              │
+              v
+         I/O error (여기서야 상위 통보)
+```
+
+- 단계적 복구: retry → channel reset → abort
+- VMBus 채널 재연결 지원 (storvsc_host_reset_handler)
+- timeout 기본값 180초 (vs LIS 4.x의 60초)
+
+### 분석: 동일 장애 상황 시뮬레이션
+
+2026-07-15 장애 당시 CSV latency 최대 116초를 기준으로 비교합니다.
+
+| 시나리오                  | LIS 4.1.3-2 (장애 서버)     | 최신 storvsc (5.x+)          |
+|---------------------------|-----------------------------|------------------------------|
+| latency 50초              | ✅ 정상 (timeout 60초 미만) | ✅ 정상                      |
+| latency 65초              | ❌ abort → read-only        | ✅ 정상 (timeout 180초 미만) |
+| latency 116초 (최대 관측) | ❌ abort → read-only        | ✅ 정상 (180초 미만)         |
+| latency 185초 (가정)      | ❌ abort → read-only        | 🟡 1차 retry 후 성공 가능    |
+| latency 300초+ (가정)     | ❌ abort → read-only        | ❌ 3차 abort → read-only     |
+
+🟡 timeout을 120초로 변경하면 116초 latency에서 생존하지만, retry 로직이 없으므로 120초를 1초라도 초과하면 즉시 abort됩니다.
+
+### 분석: LIS 버전 히스토리와 EOL
+
+| LIS 버전 | 릴리스     | 지원 커널                   | CentOS 5 지원 |
+|----------|------------|-----------------------------|---------------|
+| 3.5      | 2014       | 2.6.18~2.6.32               | ✅            |
+| 4.0      | 2015       | 2.6.32~3.x                  | ✅            |
+| 4.1.3-2  | 2017-03-07 | 2.6.18 (PAE), 2.6.32        | ✅ (마지막)   |
+| 4.2      | 2017       | 3.10+ (RHEL 7 전용)         | ❌            |
+| 4.3      | 2019       | 3.10+ (RHEL 7 전용)         | ❌            |
+| —        | 2019+      | in-kernel (별도 LIS 불필요) | ❌            |
+
+- LIS 4.1.3-2가 **CentOS 5용 마지막 릴리스**입니다
+- 이후 LIS는 RHEL 7+(커널 3.10+) 전용으로 전환되었습니다
+- 2019년 이후 RHEL 7+/8+는 커널 내장 `hv_*` 드라이버를 사용하며 별도 LIS 설치가 불필요합니다
+- Microsoft Download Center의 LIS 다운로드 페이지는 **폐쇄**되었습니다
+
+### 분석: 패키지 구조 해부
+
+```
+microsoft-hyper-v-4.1.3.2-20170307 (메타 패키지)
+├── /usr/sbin/hv_kvp_daemon          KVP (Key-Value Pair) 데몬
+├── /usr/sbin/hv_vss_daemon          VSS (Volume Shadow Copy) 데몬
+├── /usr/sbin/hv_fcopy_daemon        File Copy 데몬
+└── /etc/init.d/hv_kvp_daemon        SysV init 스크립트
+
+kmod-microsoft-hyper-v-PAE-4.1.3.2-20170307 (커널 모듈)
+├── /lib/modules/2.6.18-419.el5PAE/extra/microsoft-hyper-v/
+│   ├── hv_vmbus.ko                  VMBus 통신 (최상위)
+│   ├── hv_storvsc.ko                SCSI 스토리지
+│   ├── hv_netvsc.ko                 네트워크
+│   ├── hv_utils.ko                  KVP/Shutdown/TimeSync IC
+│   ├── hv_balloon.ko                Dynamic Memory
+│   ├── hyperv_fb.ko                 프레임버퍼 (비디오)
+│   └── hid_hyperv.ko                HID 입력 장치
+└── /etc/depmod.d/hyperv.conf        모듈 의존성
+```
+
+🟡 모듈은 `/lib/modules/.../extra/` 에 위치합니다. 커널 내장 모듈(`/lib/modules/.../kernel/`)이 아닌 외부 설치 모듈입니다.
+
+### 확인 명령어 모음
+
+```bash
+# ── LIS 패키지 확인 ──
+rpm -qa | grep -i "microsoft\|hyper\|kmod"
+rpm -ql microsoft-hyper-v | head -20
+rpm -ql kmod-microsoft-hyper-v-PAE | head -20
+
+# ── 커널 모듈 상태 ──
+lsmod | grep -i "hv_\|vmbus\|hyperv"
+modinfo hv_storvsc
+modinfo hv_vmbus
+
+# ── storvsc 디스크 매핑 ──
+ls -la /sys/block/sd*/device/driver
+cat /sys/block/sd*/device/model
+cat /sys/block/sd*/device/vendor
+
+# ── SCSI timeout 현재 값 ──
+for d in /sys/block/sd?/device/timeout; do
+    echo "$(basename $(dirname $(dirname $d))): $(cat $d)초"
+done
+
+# ── storvsc 큐 깊이 ──
+cat /sys/block/sd*/device/queue_depth
+
+# ── VMBus 채널 상태 ──
+ls /sys/bus/vmbus/devices/ 2>/dev/null
+cat /proc/interrupts | grep -i hyperv
+
+# ── LIS 데몬 동작 확인 ──
+ps aux | grep hv_
+service hv_kvp_daemon status 2>/dev/null
+
+# ── 커널 링 버퍼에서 Hyper-V 관련 메시지 ──
+dmesg | grep -i "hyper\|vmbus\|storvsc\|netvsc"
+```
+
+### 확정 결론
+
+| 항목               | 확인 결과                                                         |
+|--------------------|-------------------------------------------------------------------|
+| LIS 버전           | **4.1.3-2** (2017-03-07 빌드) — CentOS 5용 마지막 릴리스          |
+| storvsc 동작       | `hv_storvsc` 로드 + 6개 디바이스 → SCSI 큐 사용 중                |
+| timeout 기본값     | 60초 (장애 로그 "waited 60s"와 일치)                              |
+| retry 로직         | **없음** — abort only (단계적 복구 미지원)                        |
+| 최신 커널과 차이   | retry → channel reset → abort 3단계 vs abort only                 |
+| 업데이트 가능성    | ❌ LIS EOL + Download Center 폐쇄 + 커널 2.6.18 제약              |
+| timeout 120초 완화 | 116초 latency에서 생존 가능, 그러나 retry 없어 초과 시 즉시 abort |
+| 근본 해결          | OS 마이그레이션 (x86_64 + 최신 커널) → in-kernel storvsc 확보     |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 11. 참고 자료
 
 ### 호스트/Hyper-V
 
@@ -545,6 +753,6 @@ echo 'echo 120 > /sys/block/sdc/device/timeout' >> /etc/rc.local
 
 **작성일**: 2026-07-20
 
-**마지막 업데이트**: 2026-07-20
+**마지막 업데이트**: 2026-07-28
 
 © 2026 siasia86. Licensed under CC BY 4.0.
