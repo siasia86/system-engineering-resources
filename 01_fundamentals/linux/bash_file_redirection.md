@@ -2,11 +2,11 @@
 
 ## 목차
 
-| 섹션 |
-|------|
-| [1. 개요](#1-개요) / [2. File Descriptor 기본](#2-file-descriptor-기본) / [3. Output Redirection](#3-output-redirection) |
+| 섹션                                                                                                                         |
+|------------------------------------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. File Descriptor 기본](#2-file-descriptor-기본) / [3. Output Redirection](#3-output-redirection)     |
 | [4. Input Redirection](#4-input-redirection) / [5. 조합 패턴](#5-조합-패턴) / [6. Crontab 리다이렉션](#6-crontab-리다이렉션) |
-| [7. 실무 예시](#7-실무-예시) |
+| [7. 실무 예시](#7-실무-예시)                                                                                                 |
 
 ---
 

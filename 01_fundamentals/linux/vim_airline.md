@@ -2,11 +2,11 @@
 
 ## 목차
 
-| 섹션 |
-|------|
+| 섹션                                                                                                                                |
+|-------------------------------------------------------------------------------------------------------------------------------------|
 | [Straightforward customization](#straightforward-customization) / [Themes](#themes) / [Automatic truncation](#automatic-truncation) |
-| [Smarter tab line](#smarter-tab-line) / [Seamless integration](#seamless-integration) / [Extras](#extras) |
-| [Configurable and extensible](#configurable-and-extensible) |
+| [Smarter tab line](#smarter-tab-line) / [Seamless integration](#seamless-integration) / [Extras](#extras)                           |
+| [Configurable and extensible](#configurable-and-extensible)                                                                         |
 
 
 ---
