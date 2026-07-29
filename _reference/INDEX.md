@@ -47,6 +47,7 @@ sources:
 | Windows Server 2022 Monitoring | `_reference/windows_server_2022_monitoring_notes.md` | Get-Counter, 카운터, 임계치 | 2026-07-23 | O    |
 | Linux Filesystem     | `_reference/linux_filesystem_official_notes.md`     | ext4, XFS, Btrfs, VFS               | 2026-07-17 | O    |
 | AI 코딩 도구         | `_reference/ai_coding_tools_official_notes.md`      | 가격·모델·벤치마크 (2026-07-27)     | 2026-07-27 | O    |
+| Rust                 | `_reference/rust_official_notes.md`                 | 1.97.1, Edition 2021, 주요 크레이트 | 2026-07-29 | O    |
 
 
 ## 사용 규칙

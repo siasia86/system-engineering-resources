@@ -161,7 +161,7 @@ async fn udp_client(addr: &str, msg: &[u8]) -> anyhow::Result<String> {
 
 ```toml
 [dependencies]
-reqwest = { version = "0.12", features = ["json"] }
+reqwest = { version = "0.13", features = ["json"] }
 tokio = { version = "1", features = ["full"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
@@ -272,7 +272,7 @@ async fn get_with_retry(client: &Client, url: &str, retries: u32) -> anyhow::Res
 
 ```toml
 [dependencies]
-axum = "0.7"
+axum = "0.8"
 tokio = { version = "1", features = ["full"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
