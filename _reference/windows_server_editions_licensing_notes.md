@@ -16,6 +16,7 @@ sources:
   - https://learn.microsoft.com/en-us/windows-server/get-started/automatic-vm-activation
   - https://learn.microsoft.com/en-us/lifecycle/products/windows-server-2022
   - https://learn.microsoft.com/en-us/lifecycle/products/windows-server-2025
+  - https://learn.microsoft.com/en-us/lifecycle/faq/extended-security-updates
 ---
 
 # Windows Server 에디션 및 라이선스 참조 노트
@@ -227,3 +228,39 @@ Get-WindowsEdition -Online
 | Network Controller (SDN) | ❌                     | ✅                     |
 | 가격 (대략)              | 기준                   | Standard × 5~7배       |
 | 적합 환경                | 저밀도, 소규모         | 고밀도 가상화, HCI     |
+
+## 10. ESU (Extended Security Updates) 핵심 사실
+
+> 출처: learn.microsoft.com/en-us/lifecycle/faq/extended-security-updates (2026-07-29)
+
+### 비용 구조
+
+- Year 1~3 모두: OS 라이선스 전체 가격의 **100%** (연간)
+- 3년 총 비용 = OS 라이선스 × 3배
+- 누적 구매 필수: Year 2 구매 시 Year 1 선행 구매 필요
+
+### 무료 조건
+
+- Azure VM: **무료 자동 적용**
+- Azure Arc 연동 on-premises: **유료** (Azure Arc 에이전트 설치 필요)
+
+### 적용 버전별 ESU 종료일
+
+| 버전                   | Extended 종료 | ESU 최대 종료   |
+|------------------------|---------------|-----------------|
+| Windows Server 2012/R2 | 2023-10-10    | 2026-10-13 (Y3) |
+| Windows Server 2016    | 2027-01-12    | 2030-01-08 (Y3) |
+| Windows Server 2019    | 2029-01-09    | 2032-01-13 (Y3) |
+
+### 수명주기 지원 단계 구분 (라이선스 비용 기준)
+
+| 단계            | 추가 비용             | 제공 내용                             |
+|-----------------|-----------------------|---------------------------------------|
+| Mainstream 지원 | 없음                  | 보안 패치 + 기능 업데이트 + 버그 수정 |
+| Extended 지원   | 없음                  | 보안 패치만                           |
+| ESU Year 1~3    | OS 라이선스 × 100%/년 | 보안 패치만 (Critical/Important)      |
+| ESU 종료 후     | —                     | 패치 없음, 마이그레이션 필수          |
+
+🟡 "무료 지원"의 의미: OS 라이선스 구매를 전제로, Mainstream/Extended 기간 중 추가 비용 없이 패치를 받는 것.
+
+
