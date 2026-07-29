@@ -191,7 +191,7 @@ Global Cross-Region은 지원되나 Kiro가 In-Region 정책 사용 → 미제�
 | 순위 | 모델            | 제조사    | BenchLM 점수 | 비고                        |
 |------|-----------------|-----------|--------------|-----------------------------|
 | 1    | Claude Opus 4.8 | Anthropic | 85.2         | sourced avg                 |
-| 2    | GPT-5.4         | OpenAI    | 79.2         | OSWorld-Verified 최고       |
+| 2    | GPT-5.4         | OpenAI    | 79.2         | OSWorld-Verified 1위        |
 | 3    | Claude Opus 4.6 | Anthropic | 76.9         | ScreenSpot Pro 강점         |
 | 4    | Qwen3.7 Plus    | Alibaba   | 75.6         | —                           |
 | 5    | Claude Opus 4.5 | Anthropic | 58.1         | JSON displayScore 직접 확인 |
@@ -209,7 +209,7 @@ Global Cross-Region은 지원되나 Kiro가 In-Region 정책 사용 → 미제�
 | 3    | GPT-5.6 Sol     | OpenAI    | 78.2         |
 
 - 오픈 웨이트 최고: MiniMax M3 (68.8)
-- 최고 속도: Grok 4.2 (233 tokens/sec)
+- 속도 1위(Fastest measured): Grok 4.2 (233 tokens/sec)
 - 코딩 가성비: GPT-5.6 Sol ($30 output/1M)
 
 ---

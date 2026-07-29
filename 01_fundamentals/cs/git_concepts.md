@@ -458,7 +458,7 @@ git gc --prune=now --aggressive
 - Pro Git Book: [git-scm.com/book](https://git-scm.com/book/ko/v2) — ★★★★☆
 - Git Reference: [git-scm.com/docs](https://git-scm.com/docs) — ★★★☆☆
 - Git Internals: [git-scm.com/book/en/v2/Git-Internals-Git-Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects) — ★★★★☆
-- [git_guide.md](./git_guide.md)
+- [git_guide.md](../../02_infrastructure/cicd/git_guide.md)
 
 ---
 
