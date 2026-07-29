@@ -50,31 +50,34 @@ Datacenter 라이선스 1개 = 서버 1대 + VM 무제한
 
 ### 기능 비교
 
-| 기능                               | Standard | Datacenter | 비고                        |
-|------------------------------------|----------|------------|-----------------------------|
-| Hyper-V                            | ✅       | ✅         |                             |
-| Failover Clustering                | ✅       | ✅         |                             |
-| Storage Spaces                     | ✅       | ✅         |                             |
-| Storage Spaces Direct (S2D)        | ❌       | ✅         | HCI 클러스터 (S2D) 필수     |
-| Storage Replica                    | ✅ 제한  | ✅         | Standard: 1볼륨, 최대 2TB   |
-| Shielded VMs (Host Guardian)       | ❌       | ✅         | 보안 VM 격리                |
-| AVMA 호스트                        | ❌       | ✅         | 게스트 자동 활성화 불가     |
-| SDN 전체 스택                      | ❌       | ✅         | Software Defined Networking |
-| Software-defined Datacenter (SDDC) | ❌       | ✅         |                             |
+| 기능                               | Standard | Datacenter | 비고                                  |
+|------------------------------------|----------|------------|---------------------------------------|
+| Hyper-V                            | ✅       | ✅         |                                       |
+| Failover Clustering                | ✅       | ✅         |                                       |
+| Storage Spaces                     | ✅       | ✅         |                                       |
+| Storage Spaces Direct (S2D)        | ❌       | ✅         | HCI 클러스터 (S2D) 필수               |
+| Storage Replica                    | ✅ 제한  | ✅         | Standard: 1볼륨, 최대 2TB             |
+| Shielded VMs (Host Guardian)       | ❌       | ✅         | 보안 VM 격리                          |
+| AVMA 호스트                        | ❌       | ✅         | 게스트 자동 활성화 불가               |
+| Network Controller (SDN)           | ❌       | ✅         | Software-Defined Networking 핵심 역할 |
+| Software-defined Datacenter (SDDC) | ❌       | ✅         |                                       |
 
 ### 선택 기준
 
 ```
 VM을 많이 운영하는가?
   │
-  ├── 예 (VM 3개 이상) → Datacenter
-  │   이유: VM당 Standard 라이선스 추가 비용 > Datacenter 단가
+  ├── VM 11개 이상 → Datacenter (비용 효율: Standard 6개 = $7,056 > DC $6,771)
   │
-  └── 아니오 (VM 0~2개) → Standard
-      이유: Datacenter 대비 약 1/6 가격
+  ├── VM 3~10개   → 상황별 선택
+  │   - 비용만 고려: Standard (Standard 5개 = $5,880 < DC $6,771)
+  │   - 기능 필요 (S2D, Shielded VM, AVMA 호스트): Datacenter
+  │   - 관리 편의 (VM 무제한): Datacenter
+  │
+  └── VM 0~2개 → Standard (Datacenter 대비 약 1/6 가격)
 ```
 
-🟡 VM 4개 이상이면 Datacenter가 비용 효율적입니다. (Standard 2개 구매 비용이 Datacenter 단가를 초과)
+🟡 순수 비용 기준: VM **11개 이상**이면 Datacenter가 효율적입니다 (섹션 3 비교표 참고).
 
 [⬆ 목차로 돌아가기](#목차)
 
