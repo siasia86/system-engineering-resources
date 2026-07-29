@@ -67,7 +67,7 @@ sources:
 | Shielded VMs (Host Guardian) | ❌       | ✅         | 보안 VM 격리                                 |
 | AVMA (호스트 역할)           | ❌¹      | ✅         | 게스트 자동 활성화 호스트                    |
 | Nano Server (container base) | ✅       | ✅         |                                              |
-| SDN 전체 스택                | ❌       | ✅         | Software Defined Networking                  |
+| Network Controller (SDN)     | ❌       | ✅         | SDN 핵심 역할 (MS 공식 기능명)               |
 | Storage Replica              | 제한적   | ✅         | Standard: 1볼륨+2TB 제한, Datacenter: 무제한 |
 
 > ¹ Standard는 AVMA 게스트로만 활성화 가능 (호스트로 동작 불가)
@@ -217,13 +217,13 @@ Get-WindowsEdition -Online
 
 ## 9. 라이선스 모델 요약
 
-| 항목                  | Standard               | Datacenter             |
-|-----------------------|------------------------|------------------------|
-| 라이선스 기준         | Per Core (최소 16코어) | Per Core (최소 16코어) |
-| 게스트 VM 포함        | 2개                    | 무제한                 |
-| AVMA 호스트           | ❌                     | ✅                     |
-| Storage Spaces Direct | ❌                     | ✅                     |
-| Shielded VM           | ❌                     | ✅                     |
-| SDN 전체 스택         | ❌                     | ✅                     |
-| 가격 (대략)           | 기준                   | Standard × 5~7배       |
-| 적합 환경             | 저밀도, 소규모         | 고밀도 가상화, HCI     |
+| 항목                     | Standard               | Datacenter             |
+|--------------------------|------------------------|------------------------|
+| 라이선스 기준            | Per Core (최소 16코어) | Per Core (최소 16코어) |
+| 게스트 VM 포함           | 2개                    | 무제한                 |
+| AVMA 호스트              | ❌                     | ✅                     |
+| Storage Spaces Direct    | ❌                     | ✅                     |
+| Shielded VM              | ❌                     | ✅                     |
+| Network Controller (SDN) | ❌                     | ✅                     |
+| 가격 (대략)              | 기준                   | Standard × 5~7배       |
+| 적합 환경                | 저밀도, 소규모         | 고밀도 가상화, HCI     |

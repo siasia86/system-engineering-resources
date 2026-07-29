@@ -14,11 +14,11 @@
 
 ## 1. 잔여 이슈
 
-| 파일                                                      | 이슈 유형  | 설명                                                                               |
-|-----------------------------------------------------------|------------|------------------------------------------------------------------------------------|
-| `06_career/ai_tools/kiro_cli_command_reference.md`        | _reference | frontmatter 없음 (FILE_SKIP 예외)                                                  |
-| `[private] hyperv_version_centos5_compatibility.md`       | fact-check | ESU 종료일 오류: `2024 (Y4)` → `2023-01-10` (on-premises Y3 기준, 2026-07-27 확인) |
-| `[private] hyperv_myisam_io_timeout_incident_20260715.md` | fact-check | Storage QoS 미설정: 2022는 기능 지원됨, "(기능 지원됨, 미적용)" 명시 필요          |
+| 파일                                                                               | 이슈 유형  | 설명                                                                               |
+|------------------------------------------------------------------------------------|------------|------------------------------------------------------------------------------------|
+| `06_career/ai_tools/kiro_cli_command_reference.md`                                 | _reference | frontmatter 없음 (FILE_SKIP 예외)                                                  |
+| `[private] hyperv_version_centos5_compatibility.md` (34_system~ 비공개 레포)       | fact-check | ESU 종료일 오류: `2024 (Y4)` → `2023-01-10` (on-premises Y3 기준, 2026-07-27 확인) |
+| `[private] hyperv_myisam_io_timeout_incident_20260715.md` (34_system~ 비공개 레포) | fact-check | Storage QoS 미설정: 2022는 기능 지원됨, "(기능 지원됨, 미적용)" 명시 필요          |
 
 ### 검사 예외 파일
 
