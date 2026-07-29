@@ -37,7 +37,7 @@ sources:
 | U+0800 ~ U+FFFF    | 3               | 1110xxxx 10xxxxxx 10xxxxxx          |
 | U+10000 ~ U+10FFFF | 4               | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx |
 
-- ASCII 완전 호환 (0x00~0x7F 동일)
+- ASCII 하위 호환 (U+0000~U+007F는 1바이트, 값 동일)
 - 자기 동기화(self-synchronizing): 어느 바이트에서든 문자 경계 식별 가능
 - 출처: RFC 3629 (2003), https://datatracker.ietf.org/doc/html/rfc3629
 
