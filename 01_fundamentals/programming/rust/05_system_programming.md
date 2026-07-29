@@ -255,7 +255,7 @@ fn get_config_from_env() {
 
 ```toml
 [dependencies]
-signal-hook = "0.3"
+signal-hook = "0.4"
 ```
 
 ```rust
@@ -439,7 +439,7 @@ fn disk_free(path: &str) -> io::Result<(u64, u64)> {
 
 ```toml
 [dependencies]
-nix = { version = "0.29", features = ["fs", "process", "signal"] }
+nix = { version = "0.31", features = ["fs", "process", "signal"] }
 ```
 
 ```rust
