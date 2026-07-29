@@ -28,12 +28,12 @@ sources:
 
 ### Google 정의 — 장애 관리 역할
 
-| 역할                    | 책임                                                |
-|-------------------------|-----------------------------------------------------|
-| Incident Commander (IC) | 전체 조율, 의사결정, 커뮤니케이션 위임              |
-| Operations Lead         | 실제 복구 작업 수행, IC에게 상황 보고               |
-| Communications Lead     | 이해관계자 업데이트, 상태 페이지 관리               |
-| Planning Lead           | 장기 장애 시 교대/자원 계획                         |
+| 역할                    | 책임                                   |
+|-------------------------|----------------------------------------|
+| Incident Commander (IC) | 전체 조율, 의사결정, 커뮤니케이션 위임 |
+| Operations Lead         | 실제 복구 작업 수행, IC에게 상황 보고  |
+| Communications Lead     | 이해관계자 업데이트, 상태 페이지 관리  |
+| Planning Lead           | 장기 장애 시 교대/자원 계획            |
 
 ### 장애 관리 원칙 (Google SRE Book)
 
@@ -76,10 +76,10 @@ sources:
 
 ### 용어 정의 (공식)
 
-| 용어 | Google 정의                                                          |
-|------|----------------------------------------------------------------------|
-| SLI  | A carefully defined quantitative measure of some aspect of the level of service |
-| SLO  | A target value or range of values for a service level that is measured by an SLI |
+| 용어 | Google 정의                                                                                                  |
+|------|--------------------------------------------------------------------------------------------------------------|
+| SLI  | A carefully defined quantitative measure of some aspect of the level of service                              |
+| SLO  | A target value or range of values for a service level that is measured by an SLI                             |
 | SLA  | An explicit or implicit contract with your users that includes consequences of meeting (or missing) the SLOs |
 
 ### Error Budget 공식
@@ -107,13 +107,13 @@ Error Budget = 0.1% = 43.2 minutes/month
 
 출처: sre.google/sre-book/availability-table/
 
-| 가용성   | 연간 다운타임 | 월간 다운타임 | 주간 다운타임 |
-|----------|---------------|---------------|---------------|
-| 99%      | 3.65일        | 7.31시간      | 1.68시간      |
-| 99.9%    | 8.77시간      | 43.83분       | 10.08분       |
-| 99.95%   | 4.38시간      | 21.92분       | 5.04분        |
-| 99.99%   | 52.60분       | 4.38분        | 1.01분        |
-| 99.999%  | 5.26분        | 26.30초       | 6.05초        |
+| 가용성  | 연간 다운타임 | 월간 다운타임 | 주간 다운타임 |
+|---------|---------------|---------------|---------------|
+| 99%     | 3.65일        | 7.31시간      | 1.68시간      |
+| 99.9%   | 8.77시간      | 43.83분       | 10.08분       |
+| 99.95%  | 4.38시간      | 21.92분       | 5.04분        |
+| 99.99%  | 52.60분       | 4.38분        | 1.01분        |
+| 99.999% | 5.26분        | 26.30초       | 6.05초        |
 
 ### OpenSLO Spec (확인일: 2026-07-07)
 
@@ -174,11 +174,11 @@ spec:
 
 ### 변경 등급 (ITIL v4 기반)
 
-| 등급      | 승인           | 예시                           |
-|-----------|----------------|--------------------------------|
-| Standard  | 사전 승인      | 패치 적용, 설정 변경           |
-| Normal    | CAB 승인       | 새 서비스 배포, DB 마이그레이션 |
-| Emergency | 긴급 승인 (1인) | SEV-1 핫픽스, 보안 패치        |
+| 등급      | 승인            | 예시                            |
+|-----------|-----------------|---------------------------------|
+| Standard  | 사전 승인       | 패치 적용, 설정 변경            |
+| Normal    | CAB 승인        | 새 서비스 배포, DB 마이그레이션 |
+| Emergency | 긴급 승인 (1인) | SEV-1 핫픽스, 보안 패치         |
 
 ## 5. Postmortem (확인일: 2026-07-07)
 
