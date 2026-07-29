@@ -78,11 +78,11 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 
 ### 버전별 주요 변경사항 (Nginx)
 
-| 버전    | 변경 사항                                            | 영향                            |
-|---------|------------------------------------------------------|---------------------------------|
-| 1.25.1+ | `listen` 줄 `http2` 파라미터 deprecated              | `http2 on;` 별도 디렉티브 사용  |
-| 1.25.1+ | `listen ... quic` QUIC/HTTP3 실험적 지원             | `http3 on;` 별도 디렉티브       |
-| 1.19.0+ | `ssl_protocols` 기본값에 TLSv1.3 포함                | 별도 명시 없어도 TLS 1.3 활성화 |
+| 버전    | 변경 사항                                | 영향                            |
+|---------|------------------------------------------|---------------------------------|
+| 1.25.1+ | `listen` 줄 `http2` 파라미터 deprecated  | `http2 on;` 별도 디렉티브 사용  |
+| 1.25.1+ | `listen ... quic` QUIC/HTTP3 실험적 지원 | `http3 on;` 별도 디렉티브       |
+| 1.19.0+ | `ssl_protocols` 기본값에 TLSv1.3 포함    | 별도 명시 없어도 TLS 1.3 활성화 |
 <!-- unverified: Nginx 1.19.0 ssl_protocols TLSv1.3 기본 포함 — CHANGES 직접 확인 필요 -->
 | 1.15.0+ | `listen` 줄에 `ssl` 없이 `ssl_certificate` 사용 가능 | 설정 간소화                     |
 <!-- unverified: Nginx 1.15.0 ssl 없이 ssl_certificate — CHANGES 직접 확인 필요 -->
@@ -91,13 +91,14 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 
 ### 버전별 주요 변경사항 (Apache)
 
-| 버전    | 변경 사항                               | 영향                          |
-|---------|-----------------------------------------|-------------------------------|
-| 2.4.58+ | mod_http2 개선, TLS 1.3 early data 지원 | H2 성능 향상                  |
+| 버전    | 변경 사항                               | 영향         |
+|---------|-----------------------------------------|--------------|
+| 2.4.58+ | mod_http2 개선, TLS 1.3 early data 지원 | H2 성능 향상 |
 <!-- unverified: Apache 2.4.58 mod_http2 early data — CHANGES 직접 확인 필요 -->
-| 2.4.49  | CVE-2021-41773 (path traversal)         | 즉시 패치 필수                |
-| 2.4.52+ | mod_proxy_http2 백엔드 H2 지원          | 리버스 프록시 H2 pass-through |
-| 2.4+    | event MPM 기본                          | prefork에서 전환 권장         |
+| 2.4.49  | CVE-2021-41773 (path traversal) | 즉시 패치 필수                |
+|---------|---------------------------------|-------------------------------|
+| 2.4.52+ | mod_proxy_http2 백엔드 H2 지원  | 리버스 프록시 H2 pass-through |
+| 2.4+    | event MPM 기본                  | prefork에서 전환 권장         |
 
 ## 2. Apache HTTP Server
 

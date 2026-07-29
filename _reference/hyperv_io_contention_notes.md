@@ -54,10 +54,10 @@ Physical Storage (LUN / SSD / HDD)
 
 ### 배포 시나리오 (Microsoft 공식)
 
-| 시나리오                              | 요구사항                                          |
-|---------------------------------------|---------------------------------------------------|
-| Hyper-V + Scale-Out File Server       | SOFS 클러스터 + Hyper-V 컴퓨트 노드              |
-| Hyper-V + Cluster Shared Volumes      | Failover Cluster + Hyper-V 역할 + CSV            |
+| 시나리오                         | 요구사항                              |
+|----------------------------------|---------------------------------------|
+| Hyper-V + Scale-Out File Server  | SOFS 클러스터 + Hyper-V 컴퓨트 노드   |
+| Hyper-V + Cluster Shared Volumes | Failover Cluster + Hyper-V 역할 + CSV |
 
 - Windows Server 2016 이상 필수
 - 정책 속성: PolicyId, MinimumIOPS, MaximumIOPS, ParentPolicy, PolicyType
@@ -77,17 +77,17 @@ Physical Storage (LUN / SSD / HDD)
 
 ### 정책 유형 (공식 문서)
 
-| 유형        | 공식 설명                                                              |
-|-------------|------------------------------------------------------------------------|
-| Dedicated   | "the maximum and minimum throughputs are managed for individual VHD/VHDx" |
-| Aggregated  | "the specified MinimumIOPS MaximumIOPS and Bandwidth are shared among all flows assigned to the policy" |
+| 유형       | 공식 설명                                                                                               |
+|------------|---------------------------------------------------------------------------------------------------------|
+| Dedicated  | "the maximum and minimum throughputs are managed for individual VHD/VHDx"                               |
+| Aggregated | "the specified MinimumIOPS MaximumIOPS and Bandwidth are shared among all flows assigned to the policy" |
 
 ### Status 필드 (공식 문서)
 
-| Status                 | 공식 설명                                                    |
-|------------------------|--------------------------------------------------------------|
-| Ok                     | No issues exist                                              |
-| InsufficientThroughput | A policy is applied, but the Minimum IOPS cannot be delivered |
+| Status                 | 공식 설명                                                           |
+|------------------------|---------------------------------------------------------------------|
+| Ok                     | No issues exist                                                     |
+| InsufficientThroughput | A policy is applied, but the Minimum IOPS cannot be delivered       |
 | UnknownPolicyId        | A policy was assigned to the VM but is missing from the file server |
 
 ### PowerShell 명령어
@@ -120,26 +120,26 @@ Get-StorageQoSVolume | Format-Table MountPoint, IOPS, Latency, Status
 
 ### CentOS 5.11 기술 제약
 
-| 항목                    | CentOS 5.11 상태                | 최신 Linux (7.x+)      |
-|-------------------------|---------------------------------|-------------------------|
-| 커널 버전              | 2.6.18                          | 3.10+ / 4.x+           |
-| LIS (Integration Services) | 미지원 (공식 문서에서 삭제) | Built-in                |
-| 디스크 드라이버        | IDE 에뮬레이션                  | storvsc (synthetic)     |
-| 네트워크 드라이버      | 에뮬레이션 (legacy NIC)        | netvsc (synthetic)      |
-| I/O scheduler          | CFQ (단일 큐)                   | blk-mq (멀티큐)        |
-| Generation             | 1만 가능                        | 1 또는 2               |
-| 동적 메모리           | 미지원                          | 지원                    |
-| SCSI 부팅             | 불가                            | Generation 2 가능       |
+| 항목                       | CentOS 5.11 상태            | 최신 Linux (7.x+)   |
+|----------------------------|-----------------------------|---------------------|
+| 커널 버전                  | 2.6.18                      | 3.10+ / 4.x+        |
+| LIS (Integration Services) | 미지원 (공식 문서에서 삭제) | Built-in            |
+| 디스크 드라이버            | IDE 에뮬레이션              | storvsc (synthetic) |
+| 네트워크 드라이버          | 에뮬레이션 (legacy NIC)     | netvsc (synthetic)  |
+| I/O scheduler              | CFQ (단일 큐)               | blk-mq (멀티큐)     |
+| Generation                 | 1만 가능                    | 1 또는 2            |
+| 동적 메모리                | 미지원                      | 지원                |
+| SCSI 부팅                  | 불가                        | Generation 2 가능   |
 
 ### IDE vs Synthetic 드라이버 성능 차이
 
-| 항목        | IDE 에뮬레이션         | storvsc (Synthetic)   |
-|-------------|------------------------|-----------------------|
-| 경로        | 전체 디바이스 에뮬레이션 | VMBus 직접 통신     |
-| CPU 오버헤드 | 높음 (trap 발생)       | 낮음 (hypercall)     |
-| 큐 깊이     | 1 (단일 요청)          | 64+ (병렬 처리)     |
-| 최대 IOPS   | ~5,000                 | ~50,000+             |
-| latency     | 높음                   | 낮음                  |
+| 항목         | IDE 에뮬레이션           | storvsc (Synthetic) |
+|--------------|--------------------------|---------------------|
+| 경로         | 전체 디바이스 에뮬레이션 | VMBus 직접 통신     |
+| CPU 오버헤드 | 높음 (trap 발생)         | 낮음 (hypercall)    |
+| 큐 깊이      | 1 (단일 요청)            | 64+ (병렬 처리)     |
+| 최대 IOPS    | ~5,000                   | ~50,000+            |
+| latency      | 높음                     | 낮음                |
 
 ## 4. I/O 경합 시 CentOS 5.11 증상
 
@@ -181,14 +181,14 @@ Filesystem remount read-only or kernel panic
 
 ## 5. 완화 방법
 
-| 우선순위 | 방법                     | 설명                                          | 효과    |
-|----------|--------------------------|-----------------------------------------------|---------|
-| 1        | VHD 물리 분리            | CentOS VM의 VHD를 전용 물리 디스크/LUN 배치   | ★★★★★   |
-| 2        | Storage QoS 적용         | Min IOPS 보장 정책 (SOFS/CSV 환경 필수)       | ★★★★☆   |
-| 3        | Fixed VHD 사용           | Dynamic VHD → Fixed VHD (조각화 방지)         | ★★★☆☆   |
-| 4        | I/O timeout 증가         | 게스트 내 `/sys/block/sda/device/timeout` 값  | ★★☆☆☆   |
-| 5        | VM 이관                  | I/O 부하 낮은 노드로 Live Migration           | ★★★☆☆   |
-| 6        | OS 업그레이드            | CentOS 5 → 지원 OS (storvsc 사용 가능)       | ★★★★★   |
+| 우선순위 | 방법             | 설명                                         | 효과  |
+|----------|------------------|----------------------------------------------|-------|
+| 1        | VHD 물리 분리    | CentOS VM의 VHD를 전용 물리 디스크/LUN 배치  | ★★★★★ |
+| 2        | Storage QoS 적용 | Min IOPS 보장 정책 (SOFS/CSV 환경 필수)      | ★★★★☆ |
+| 3        | Fixed VHD 사용   | Dynamic VHD → Fixed VHD (조각화 방지)        | ★★★☆☆ |
+| 4        | I/O timeout 증가 | 게스트 내 `/sys/block/sda/device/timeout` 값 | ★★☆☆☆ |
+| 5        | VM 이관          | I/O 부하 낮은 노드로 Live Migration          | ★★★☆☆ |
+| 6        | OS 업그레이드    | CentOS 5 → 지원 OS (storvsc 사용 가능)       | ★★★★★ |
 
 ### I/O timeout 조정 (게스트 내)
 

@@ -16,9 +16,9 @@ sources:
 
 ## 1. 출처
 
-| 출처 | URL | 유형 |
-|------|-----|------|
-| CNCF Platforms White Paper | https://tag-app-delivery.cncf.io/whitepapers/platforms/ | CNCF TAG 공식 |
+| 출처                                | URL                                                                       | 유형          |
+|-------------------------------------|---------------------------------------------------------------------------|---------------|
+| CNCF Platforms White Paper          | https://tag-app-delivery.cncf.io/whitepapers/platforms/                   | CNCF TAG 공식 |
 | Platform Engineering Maturity Model | https://tag-app-delivery.cncf.io/whitepapers/platform-eng-maturity-model/ | CNCF TAG 공식 |
 
 ## 2. 핵심 정의 (CNCF WP 원문)
