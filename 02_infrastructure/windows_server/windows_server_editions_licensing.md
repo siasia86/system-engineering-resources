@@ -98,81 +98,10 @@ docker run --isolation hyperv mcr.microsoft.com/windows/servercore:ltsc2022
 | Software-defined Datacenter (SDDC) | ❌       | ✅         |                                       |
 
 
-### Datacenter 전용 기능 개념 설명
+### Datacenter 전용 기능 개념
 
-#### HCI / Storage Spaces Direct (S2D)
-
-**HCI (Hyper-Converged Infrastructure)**: 서버의 컴퓨트(CPU·RAM)와 스토리지(디스크)를 하나의 클러스터로 통합하는 인프라 구조입니다. 별도의 스토리지 장비 없이 서버 내장 디스크를 클러스터 전체가 공유 스토리지로 사용합니다.
-
-**Storage Spaces Direct (S2D)**: Windows Server Datacenter의 HCI 핵심 기능입니다. 여러 서버의 내장 디스크를 묶어 소프트웨어 기반 스토리지 풀을 만듭니다.
-
-```
-[서버 A]  [서버 B]  [서버 C]
-NVMe/SSD  NVMe/SSD  NVMe/SSD
-    │         │         │
-    └────S2D 스토리지 풀────┘
-         (공유 볼륨)
-              │
-    Hyper-V VM들이 공유 볼륨 사용
-```
-
-| 항목         | 내용                                      |
-|--------------|-------------------------------------------|
-| 필요 서버 수 | 최소 2대 (권장 4대 이상)                  |
-| 에디션       | **Datacenter만**                          |
-| 대체 제품    | EMC, NetApp 등 외장 스토리지              |
-| 사용 예      | Azure Stack HCI, 소규모 프라이빗 클라우드 |
-
-#### Shielded VM (보호된 가상 머신)
-
-악의적인 Hyper-V 관리자나 침해된 호스트로부터 VM을 보호하는 기능입니다.
-
-```
-일반 VM: 호스트 관리자가 VM 디스크·메모리 직접 접근 가능
-               ↓
-Shielded VM: BitLocker로 VM 디스크 암호화 + vTPM
-             호스트가 "승인된 호스트"인지 검증 후에만 VM 기동
-```
-
-| 항목      | 내용                                            |
-|-----------|-------------------------------------------------|
-| 핵심 구성 | vTPM + BitLocker 암호화 + Host Guardian Service |
-| 에디션    | Shielded VM 호스트: **Datacenter만**            |
-| 보호 대상 | 악성 내부자, 침해된 하이퍼바이저                |
-| 게스트 OS | Windows Server 2012+ (Generation 2 VM)          |
-
-#### Network Controller (SDN)
-
-**SDN (Software-Defined Networking)**: 네트워크 장비(스위치·라우터)를 소프트웨어로 중앙 제어하는 개념입니다. **Network Controller**는 Windows Server Datacenter에서 SDN을 구현하는 핵심 역할입니다.
-
-```
-[Network Controller]  ← 중앙 관리 (API)
-        │
-   ┌────┴────┐
-   │         │
-[vSwitch A] [vSwitch B]   ← 가상 스위치 소프트웨어 제어
-   │         │
- VM들      VM들
-```
-
-| 항목      | 내용                                                    |
-|-----------|---------------------------------------------------------|
-| 기능      | 가상 네트워크 생성·변경·삭제 자동화                     |
-| 에디션    | **Datacenter만**                                        |
-| 구성 요소 | Network Controller, Software Load Balancer, RAS Gateway |
-| 사용 예   | 멀티테넌트 호스팅, 대규모 데이터센터 자동화             |
-
-#### SDDC (Software-Defined Datacenter)
-
-컴퓨트·스토리지·네트워크를 모두 소프트웨어로 정의하고 자동화하는 데이터센터 개념입니다. S2D + Network Controller(SDN) + Hyper-V의 조합으로 구성됩니다.
-
-```
-SDDC = S2D (스토리지) + SDN (네트워크) + Hyper-V (컴퓨트)
-       ──────────────────────────────────────────
-       모두 Datacenter 에디션 전용 기능
-```
-
-🟡 SDDC는 하나의 설치 기능이 아니라, Datacenter 에디션의 여러 기능을 함께 사용하는 **아키텍처 개념**입니다.
+> 💡 S2D, Shielded VM, Network Controller(SDN), SDDC, Failover Cluster, Hotpatch, Generation 2 VM 등의 개념은
+> [windows_server_key_concepts.md](./windows_server_key_concepts.md)를 참고합니다.
 
 ### 선택 기준
 
@@ -231,16 +160,11 @@ VM을 많이 운영하는가?
 | 11~12개 | 6개              | $7,056          | $6,771          | **Datacenter 유리** |
 
 🟡 VM 11개 이상이면 Datacenter가 비용 효율적입니다.
-### CAL (Client Access License) 개념
+### CAL (Client Access License)
 
 CAL은 Windows Server에 **접속하는 권한**에 대한 라이선스입니다. OS 라이선스와 별개로 구매해야 합니다.
 
-```
-서버 라이선스 (Per Core)   → 서버 운영 권한
-CAL                        → 서버에 접속하는 사람/디바이스 권한
-
-두 가지 모두 필요
-```
+> 💡 User CAL·Device CAL·External Connector 상세 개념은 [windows_server_key_concepts.md](./windows_server_key_concepts.md) 참고.
 
 #### CAL 종류
 
