@@ -6,6 +6,88 @@
 
 ---
 
+## [3.1.0] - 2026-07-29
+
+### Added
+
+> 3.0.0 구조 개편(git mv) 이후 mtime 초기화로 인해
+> 이번 세션 신규 작성 파일만 기재. 이전(migrated) 파일은 제외.
+
+#### 01_fundamentals/cs — 신규 문서 2개
+- `version_control_concepts.md` — VCS 3세대 분류, 중앙집중형 vs 분산형 아키텍처, SVN 저장소/Working Copy 구조, 리비전 모델, 브랜치 전략, 병합 원리, 잠금 모델, 인프라 활용(hooks/백업)
+- `git_concepts.md` — Git 객체 모델(blob/tree/commit/tag), DAG 구조, 참조 시스템(HEAD/branch/tag), 작업 영역 3단계, reset 3종류, 브랜치 전략(Trunk-based/GitHub Flow/GitFlow), merge vs rebase, 원격 저장소, 훅 자동화, GitOps + IaC 활용
+
+#### 02_infrastructure/cicd — 신규 문서 1개
+- `svn_guide.md` — SVN CLI 실무 가이드 (checkout/update/commit/diff/log/branch/merge/충돌해결/속성/잠금/externals/서버설정/실무팁 전 명령어)
+
+#### _reference — 신규 참조 파일 2개
+- `svn_official_notes.md` — Apache Subversion 1.14.5 버전 현황, FSFS 포맷, 프로토콜, 잠금 모델, svn:* 속성, svnadmin 명령어, Git 비교
+- `git_official_notes.md` — Git 2.55.0 버전 현황, 4가지 객체 모델, SHA-1/SHA-256, HEAD/branch/tag 참조 구조, merge 전략(ort 2.34+ 기본), reflog, packfile, 주요 설정값
+
+#### _reference/INDEX.md — 항목 추가
+- SVN (Subversion) 1.14.5 (LTS)
+- Git 2.55.0
+
+### Fixed
+
+#### _reference — 팩트체크 수정
+- `rust_official_notes.md` — `last_checked` 2026-07-29 갱신, "fully enabling" 직역 → "전체 활성화" (과장 표현 검사 통과)
+- `git_official_notes.md` — merge 기본 전략 `Recursive` → `ort (Git 2.34+)` 수정
+- `git_concepts.md` — §7 merge vs rebase 다이어그램에 ort 관련 주석 추가
+- `ai_coding_tools_official_notes.md` — "최고" 표현 → "1위" / "속도 1위(Fastest measured)" 수정
+- `charset_encoding_official_notes.md` — "ASCII 하위 호환 (U+0000~U+007F는 1바이트, 값 동일)"으로 수정 (RFC 3629 원문 기반, 과장 표현 제거)
+- `svn_official_notes.md` — 다이어그램 내부 한글(`개발자`) → 영문(`Dev A/B/C`) 수정
+
+#### _reference — 표 정렬 일괄 수정 (14개 파일)
+- `INDEX.md`, `android_adb_official_notes.md`, `chaos_finops_official_notes.md`
+- `charset_encoding_official_notes.md`, `e4fsprogs_centos5_notes.md`, `github_references.md`
+- `hyperv_io_contention_notes.md`, `hyperv_version_comparison_notes.md`
+- `linux_filesystem_official_notes.md`, `linux_kernel_official_notes.md`
+- `platform_engineering_official_notes.md`, `sre_operations_official_notes.md`
+- `web_server_official_notes.md`, `ai_coding_tools_official_notes.md`
+- md-style-check `_reference/` 37개 파일 0건 통과
+
+### Removed
+- `01_fundamentals/programming/rust/temp_factcheck_20260729.md` — 임시 팩트체크 메모 파일 삭제
+
+---
+
+## [3.0.3] - 2026-07-28
+
+### Added
+
+#### 01_fundamentals/programming/rust — 신규 문서 11개
+- `01_ownership_borrowing.md`, `02_error_handling.md`, `03_traits_generics.md`
+- `04_concurrency.md`, `05_system_programming.md`, `06_networking.md`
+- `07_cli_tools.md`, `08_crates_ecosystem.md`, `09_testing.md`
+- `10_practical_examples.md`, `rust_roadmap_for_se.md`
+
+### Fixed
+
+#### 표 정렬 일괄 수정 (~90개 파일)
+- `01_fundamentals/` (linux, networking, cs, programming/python) — 표 display width 기준 재정렬
+- `02_infrastructure/` (cicd, containers, iac, monitoring, web_server)
+- `04_security/` (cloud, cve, hardening)
+- `05_database/nosql`, `05_database/operations`, `97_misc/`
+
+### Removed
+
+#### 97_misc → 99_archive/05_centos5_legacy 이동 (6개 파일)
+- `centos5_aws_migration_assessment.md`, `centos5_ext4_fsck_guide.md`
+- `centos5_gamedb_hyperv_host_compatibility.md`, `hyperv_io_contention_legacy_vm.md`
+- `hyperv_myisam_io_timeout_incident_20260715.md`, `hyperv_version_centos5_compatibility.md`
+
+---
+
+## [3.0.2] - 2026-07-27
+
+### Changed
+
+- `06_career/ai_tools/ai_coding_tools_comparison.md` — AI 코딩 도구 비교 내용 갱신
+- `97_misc/similar_repos.md` — 유사 저장소 목록 갱신
+
+---
+
 ## [3.0.0] - 2026-07-07
 
 ### Changed
@@ -426,6 +508,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-07-29
 
 © 2026 siasia86. Licensed under CC BY 4.0.
