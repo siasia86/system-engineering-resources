@@ -75,7 +75,7 @@ char = Unicode scalar value (U+0000 ~ U+D7FF, U+E000 ~ U+10FFFF)
 
 ### NLL (Non-Lexical Lifetime)
 
-- Rust 2018 Edition 도입 (1.31), 모든 Edition에 완전 활성화는 **Rust 1.63**.
+- Rust 2018 Edition 도입 (1.31), 모든 Edition에 전체 활성화는 **Rust 1.63**.
 - 참조의 생존 범위를 블록이 아닌 **마지막 사용 시점**으로 계산.
 - 결과: 같은 스코프 내에서 불변 참조 종료 후 가변 참조 허용.
 
