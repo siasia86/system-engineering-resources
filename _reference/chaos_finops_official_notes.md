@@ -40,25 +40,25 @@ sources:
 
 출처: litmuschaos.io
 
-| 항목       | 값                                      |
-|------------|-----------------------------------------|
-| 유형       | CNCF Incubating Project                 |
-| 실행 환경  | Kubernetes                              |
-| 언어       | Go                                      |
-| 실험 정의  | ChaosEngine, ChaosExperiment CRD (YAML) |
-| 관찰       | Prometheus metrics, Resilience Score    |
+| 항목      | 값                                      |
+|-----------|-----------------------------------------|
+| 유형      | CNCF Incubating Project                 |
+| 실행 환경 | Kubernetes                              |
+| 언어      | Go                                      |
+| 실험 정의 | ChaosEngine, ChaosExperiment CRD (YAML) |
+| 관찰      | Prometheus metrics, Resilience Score    |
 
 ### AWS Fault Injection Service (FIS)
 
 출처: docs.aws.amazon.com/fis/
 
-| 항목        | 값                                          |
-|-------------|---------------------------------------------|
-| 유형        | AWS 관리형 서비스                           |
-| 대상        | EC2, ECS, EKS, RDS, Network                |
-| 실험 정의   | Experiment template (JSON)                  |
-| Stop 조건   | CloudWatch alarm 기반 자동 중단             |
-| IAM         | fis:CreateExperimentTemplate 권한 필요      |
+| 항목      | 값                                     |
+|-----------|----------------------------------------|
+| 유형      | AWS 관리형 서비스                      |
+| 대상      | EC2, ECS, EKS, RDS, Network            |
+| 실험 정의 | Experiment template (JSON)             |
+| Stop 조건 | CloudWatch alarm 기반 자동 중단        |
+| IAM       | fis:CreateExperimentTemplate 권한 필요 |
 
 ## 2. FinOps (확인일: 2026-07-07)
 
@@ -70,11 +70,11 @@ sources:
 
 ### FinOps Lifecycle (3 Phase)
 
-| Phase    | 목적                       | 활동                                    |
-|----------|----------------------------|-----------------------------------------|
-| Inform   | 비용 가시성 확보           | 태깅, 할당, 대시보드, 예산 알림         |
-| Optimize | 비용 효율화                | RI/SP, Right-sizing, Spot, 유휴 제거    |
-| Operate  | 지속적 거버넌스            | Policy, 자동화, 팀별 예산 책임          |
+| Phase    | 목적             | 활동                                 |
+|----------|------------------|--------------------------------------|
+| Inform   | 비용 가시성 확보 | 태깅, 할당, 대시보드, 예산 알림      |
+| Optimize | 비용 효율화      | RI/SP, Right-sizing, Spot, 유휴 제거 |
+| Operate  | 지속적 거버넌스  | Policy, 자동화, 팀별 예산 책임       |
 
 ### FinOps Principles (원문 그대로)
 
@@ -98,8 +98,8 @@ sources:
 
 ### 절감 도구 비교
 
-| 도구               | 약정 기간 | 절감율  | 유연성   |
-|--------------------|-----------|---------|----------|
-| Reserved Instances | 1~3년    | 30~72%  | 낮음     |
-| Savings Plans      | 1~3년    | 20~66%  | 중간     |
-| Spot Instances     | 없음     | 60~90%  | 중단 위험 |
+| 도구               | 약정 기간 | 절감율 | 유연성    |
+|--------------------|-----------|--------|-----------|
+| Reserved Instances | 1~3년     | 30~72% | 낮음      |
+| Savings Plans      | 1~3년     | 20~66% | 중간      |
+| Spot Instances     | 없음      | 60~90% | 중단 위험 |
