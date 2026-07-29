@@ -64,14 +64,6 @@ code-review (2026-07-07) 결과 기반 개선 항목입니다.
 
 ---
 
-**작성일**: 2026-06-21
-
-**마지막 업데이트**: 2026-07-07
-
-© 2026 siasia86. Licensed under CC BY 4.0.
-
----
-
 ## 3. _reference 미검증 항목
 
 fact-check에서 도구(lynx/curl)로 확인 불가했던 항목입니다. CHANGES 파일 직접 확인 시 해결됩니다.
@@ -85,3 +77,13 @@ fact-check에서 도구(lynx/curl)로 확인 불가했던 항목입니다. CHANG
 
 - `grep -r "unverified" _reference/` 로 전체 미확인 항목 조회 가능
 - 확인 완료 시: _reference 내 `<!-- unverified: -->` 주석 제거 + 이 표 ⬜ → ✅
+
+
+---
+
+**작성일**: 2026-06-21
+
+**마지막 업데이트**: 2026-07-07
+
+© 2026 siasia86. Licensed under CC BY 4.0.
+
