@@ -30,12 +30,12 @@ sources:
 
 바이트 범위 (RFC 3629 Table):
 
-| 코드 포인트 범위      | UTF-8 바이트 수 | 선두 비트 패턴               |
-|-----------------------|-----------------|------------------------------|
-| U+0000 ~ U+007F      | 1               | 0xxxxxxx                     |
-| U+0080 ~ U+07FF      | 2               | 110xxxxx 10xxxxxx            |
-| U+0800 ~ U+FFFF      | 3               | 1110xxxx 10xxxxxx 10xxxxxx   |
-| U+10000 ~ U+10FFFF   | 4               | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx |
+| 코드 포인트 범위   | UTF-8 바이트 수 | 선두 비트 패턴                      |
+|--------------------|-----------------|-------------------------------------|
+| U+0000 ~ U+007F    | 1               | 0xxxxxxx                            |
+| U+0080 ~ U+07FF    | 2               | 110xxxxx 10xxxxxx                   |
+| U+0800 ~ U+FFFF    | 3               | 1110xxxx 10xxxxxx 10xxxxxx          |
+| U+10000 ~ U+10FFFF | 4               | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx |
 
 - ASCII 완전 호환 (0x00~0x7F 동일)
 - 자기 동기화(self-synchronizing): 어느 바이트에서든 문자 경계 식별 가능
@@ -45,13 +45,13 @@ sources:
 
 Unicode FAQ 공식 값:
 
-| 인코딩     | BOM (hex)   |
-|------------|-------------|
-| UTF-8      | EF BB BF    |
-| UTF-16 BE  | FE FF       |
-| UTF-16 LE  | FF FE       |
-| UTF-32 BE  | 00 00 FE FF |
-| UTF-32 LE  | FF FE 00 00 |
+| 인코딩    | BOM (hex)   |
+|-----------|-------------|
+| UTF-8     | EF BB BF    |
+| UTF-16 BE | FE FF       |
+| UTF-16 LE | FF FE       |
+| UTF-32 BE | 00 00 FE FF |
+| UTF-32 LE | FF FE 00 00 |
 
 - UTF-8 BOM은 선택사항 (Linux에서는 사용 안 함, Windows 메모장은 기본 추가)
 - 출처: https://www.unicode.org/faq/utf_bom.html
@@ -82,11 +82,11 @@ Unicode FAQ 공식 값:
 
 ### utf8 vs utf8mb4
 
-| 항목       | utf8 (utf8mb3)      | utf8mb4              |
-|------------|---------------------|----------------------|
-| 최대 바이트 | 3                   | 4                    |
-| BMP 외 문자 | ❌ (이모지 불가)    | ✅                   |
-| MySQL 8.0  | deprecated alias    | 기본 charset         |
+| 항목        | utf8 (utf8mb3)   | utf8mb4      |
+|-------------|------------------|--------------|
+| 최대 바이트 | 3                | 4            |
+| BMP 외 문자 | ❌ (이모지 불가) | ✅           |
+| MySQL 8.0   | deprecated alias | 기본 charset |
 
 - MySQL 8.0 기본: `utf8mb4` + `utf8mb4_0900_ai_ci` collation
 - `utf8`은 `utf8mb3`의 alias (향후 제거 예정)
