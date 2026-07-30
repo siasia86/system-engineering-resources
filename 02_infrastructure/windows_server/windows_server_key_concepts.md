@@ -50,7 +50,7 @@ Windows Server 운영에 필요한 핵심 기술 개념을 정리합니다.
 | Two-way Mirror   | 2개         | 양방향 미러링, 1개 디스크 장애 허용 | ~50%      |
 | Three-way Mirror | 3개         | 삼방향 미러링, 2개 디스크 장애 허용 | ~33%      |
 | Single Parity    | 3개         | RAID 5 유사, 1개 디스크 장애 허용   | ~67%      |
-| Dual Parity      | 7개         | RAID 6 유사, 2개 디스크 장애 허용   | ~50%      |
+| Dual Parity      | 4개 이상    | RAID 6 유사, 2개 디스크 장애 허용   | 50~80%    |
 
 ---
 
@@ -102,6 +102,8 @@ Storage Spaces를 **클러스터 전체**로 확장한 기능입니다. 각 서�
 ```
 
 🟡 S2D는 Storage Spaces의 확장이므로 Mirror/Parity 복원력 유형이 동일하게 적용됩니다.
+
+🟡 Dual Parity의 "4개 이상"은 fault domain(S2D에서는 서버 노드) 기준입니다. 단일 서버 Storage Spaces에서는 디스크 수 기준이 다를 수 있습니다.
 
 ---
 
@@ -513,13 +515,21 @@ Datacenter 에디션 호스트가 게스트 VM을 **인터넷 연결 없이 자�
 | Failover Cluster | 모든 노드가 Datacenter이고 활성화되어 있어야 함                |
 | AVMA 키          | 게스트에 AVMA 전용 키(`slmgr /ipk <AVMA키>`) 입력 필요         |
 
-#### AVMA 키 (Windows Server 2022 기준)
+#### AVMA 키
 
-| 게스트 에디션 | AVMA 키                       |
-|---------------|-------------------------------|
-| Datacenter    | W3GNR-8DDXR-2TFRP-H8P33-DV9BG |
-| Standard      | YDFWN-MJ9JR-3DYRK-FXXRW-78VHK |
-| Essentials    | JJTNX-Q7P7F-K6DG8-BB6DS-2PDJT |
+> 출처: learn.microsoft.com/en-us/windows-server/get-started/automatic-vm-activation
+
+| 호스트 버전 | 게스트 에디션             | AVMA 키                       |
+|-------------|---------------------------|-------------------------------|
+| 2025        | Datacenter                | YQB4H-NKHHJ-Q6K4R-4VMY6-VCH67 |
+| 2025        | Datacenter: Azure Edition | 6NMQ9-T38WF-6MFGM-QYGYM-88J4F |
+| 2025        | Standard                  | WWVGQ-PNHV9-B89P4-8GGM9-9HPQ4 |
+| 2022        | Datacenter                | W3GNR-8DDXR-2TFRP-H8P33-DV9BG |
+| 2022        | Datacenter: Azure Edition | F7TB6-YKN8Y-FCC6R-KQ484-VMK3J |
+| 2022        | Standard                  | YDFWN-MJ9JR-3DYRK-FXXRW-78VHK |
+| 2019        | Datacenter                | H3RNG-8C32Q-Q8FRX-6TDXV-WMBMW |
+| 2019        | Standard                  | TNK62-RXVTB-4P47B-2D623-4GF74 |
+| 2019        | Essentials                | 2CTP7-NHT64-BP62M-FV6GG-HFV28 |
 
 🟡 AVMA 키는 활성화 목적으로만 사용됩니다. 라이선스 구매 의무는 별도입니다.
 
@@ -575,13 +585,13 @@ Datacenter 에디션 호스트가 게스트 VM을 **인터넷 연결 없이 자�
 Hotpatch(월별): 기준선 위에 메모리 패치, 재부팅 불필요
 ```
 
-| 항목        | 내용                                                           |
-|-------------|----------------------------------------------------------------|
-| 에디션      | **Datacenter: Azure만** (on-premises Standard/Datacenter 불가) |
-| 환경        | Azure VM 또는 Azure Arc 연결 on-premises 서버                  |
-| 패치 범위   | Critical·Important 등급 Windows 보안 업데이트                  |
-| 재부팅 주기 | 연 4회(분기별 기본 업데이트)로 감소                            |
-| 이점        | 패치 적용 시간 단축, 서비스 가용성 향상                        |
+| 항목        | 내용                                                                                                      |
+|-------------|-----------------------------------------------------------------------------------------------------------|
+| 에디션      | Azure VM/Azure Local: **Datacenter: Azure Edition** / Azure Arc on-premises: **2025 Datacenter·Standard** |
+| 환경        | Azure VM, Azure Local (2022·2025), Azure Arc 연결 on-premises (2025만 지원)                               |
+| 패치 범위   | Critical·Important 등급 Windows 보안 업데이트                                                             |
+| 재부팅 주기 | 연 4회(분기별 기본 업데이트)로 감소                                                                       |
+| 이점        | 패치 적용 시간 단축, 서비스 가용성 향상                                                                   |
 
 ---
 
