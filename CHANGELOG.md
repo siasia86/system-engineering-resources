@@ -41,7 +41,7 @@
 #### _reference — 표 정렬 일괄 수정 (14개 파일)
 - `INDEX.md`, `android_adb_official_notes.md`, `chaos_finops_official_notes.md`
 - `charset_encoding_official_notes.md`, `e4fsprogs_centos5_notes.md`, `github_references.md`
-- `hyperv_io_contention_notes.md`, `hyperv_version_comparison_notes.md`
+- `hyperv_centos5_io_contention_notes.md`, `hyperv_version_comparison_notes.md`
 - `linux_filesystem_official_notes.md`, `linux_kernel_official_notes.md`
 - `platform_engineering_official_notes.md`, `sre_operations_official_notes.md`
 - `web_server_official_notes.md`, `ai_coding_tools_official_notes.md`
