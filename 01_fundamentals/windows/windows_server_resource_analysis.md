@@ -1,5 +1,7 @@
 # Windows Server 2022 서버 리소스 분석
 
+<!-- reference: _reference/windows_server_2022_monitoring_notes.md -->
+
 Windows Server 2022 (Hyper-V 호스트 포함) 환경에서 CPU, Memory, Disk I/O, Network 리소스를 분석하는 방법을 정리합니다.
 
 ## 목차
