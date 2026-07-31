@@ -537,6 +537,96 @@ docker run --isolation hyperv mcr.microsoft.com/windows/servercore:ltsc2022
 
 🟡 Standard에서 Hyper-V 격리 컨테이너가 2개로 제한되는 이유: 각 컨테이너가 전용 경량 VM을 사용하므로 게스트 VM 카운트와 동일하게 취급됩니다.
 
+### Windows 컨테이너 격리 구현 — Linux 대응 개념
+
+Linux 컨테이너가 namespace + cgroups로 격리를 구현하듯, Windows 컨테이너도 동일한 역할을 하는 자체 구현체를 사용합니다.
+
+#### Linux vs Windows 격리 기술 대응표
+
+| 역할            | Linux                              | Windows (Process 격리)                   |
+|-----------------|------------------------------------|------------------------------------------|
+| 프로세스 격리   | PID namespace (`CLONE_NEWPID`)     | Job Object + Silo                        |
+| 파일시스템 격리 | mount namespace + overlay FS       | Windows Container Isolation FS (WCIFS)   |
+| 네트워크 격리   | network namespace (`CLONE_NEWNET`) | Host Networking Service (HNS)            |
+| 사용자 격리     | user namespace (`CLONE_NEWUSER`)   | Object Manager namespace                 |
+| 리소스 제한     | cgroups (v1/v2)                    | Job Object (CPU·메모리·프로세스 수 제한) |
+| 레지스트리 격리 | 없음 (Linux 개념 아님)             | Registry namespace (Windows 고유)        |
+| 루트 파일시스템 | union mount (overlay2, aufs)       | Layer Storage (계층형 이미지)            |
+
+> 출처: learn.microsoft.com/en-us/virtualization/windowscontainers/manage-containers/hyperv-container
+> "With process isolation, multiple container instances run concurrently on a given host
+> with isolation provided through namespace, resource control, and other process isolation
+> technologies. This is approximately the same as how Linux containers run."
+
+#### Windows namespace 격리 대상 (Process 격리)
+
+공식 문서에 명시된 격리 항목:
+
+```
+격리되는 namespace
+  ├── file system          (Linux: mount namespace)
+  ├── registry             (Windows 고유)
+  ├── network ports        (Linux: network namespace)
+  ├── process/thread ID    (Linux: PID namespace)
+  └── Object Manager namespace
+```
+
+#### Job Object — Windows의 cgroups 대응
+
+> "A job object allows groups of processes to be managed as a unit.
+> Examples include enforcing limits such as working set size and process priority
+> or terminating all processes associated with a job."
+
+```
+Linux cgroups               Windows Job Object
+  ├── cpu (CPU 시간 제한)   ←→  CPU rate limit
+  ├── memory (메모리 제한)  ←→  Working set size limit
+  ├── pids (프로세스 수)    ←→  Active process limit
+  └── blkio (I/O 제한)          (Job Object에서 직접 지원 없음)
+```
+
+#### HNS (Host Networking Service)
+
+Linux의 network namespace + veth pair에 대응하는 Windows 컨테이너 네트워크 구현체입니다.
+
+```
+[컨테이너 A]     [컨테이너 B]
+    │                │
+  vNIC            vNIC        (각 컨테이너 전용 가상 NIC)
+    │                │
+    └──── HNS (가상 스위치) ────┘
+                │
+          호스트 물리 NIC
+```
+
+| 항목               | Linux                    | Windows                       |
+|--------------------|--------------------------|-------------------------------|
+| 네트워크 격리 구현 | network namespace + veth | HNS + vNIC                    |
+| 관리 서비스        | 커널 내장                | Host Networking Service (HNS) |
+| 연동 서비스        | containerd / runc        | Host Compute Service (HCS)    |
+
+#### Hyper-V 격리 — 경량 VM 구조
+
+Process 격리와 달리 각 컨테이너가 전용 경량 Hyper-V VM 안에서 실행됩니다. namespace/cgroups가 아닌 하드웨어 수준 격리입니다.
+
+```
+Process isolation (namespace)          Hyper-V isolation (VM)
+┌──────────────────────────────┐       ┌──────────────────────────────┐
+│   Host Windows Kernel        │       │   Host Windows Kernel        │
+│  ┌────────┐  ┌────────┐      │       │  ┌───────────────────────┐   │
+│  │ App A  │  │ App B  │      │       │  │  Lightweight VM       │   │
+│  │ (Silo) │  │ (Silo) │      │       │  │  ┌─────────────────┐  │   │
+│  └────────┘  └────────┘      │       │  │  │ Dedicated Kernel│  │   │
+│  shared kernel, ns isolation │       │  │  │  App A          │  │   │
+└──────────────────────────────┘       │  │  └─────────────────┘  │   │
+                                       │  └───────────────────────┘   │
+                                      │  hardware-level isolation     │
+                                       └──────────────────────────────┘
+```
+
+🟡 Windows Process 격리는 Linux 컨테이너와 동일한 원리(namespace + 리소스 제한)를 사용하지만, 구현체 이름이 다릅니다. Hyper-V 격리는 namespace가 아닌 VM으로 격리하므로 완전히 다른 접근법입니다.
+
+
 ---
 
 ### AVMA (Automatic Virtual Machine Activation)
