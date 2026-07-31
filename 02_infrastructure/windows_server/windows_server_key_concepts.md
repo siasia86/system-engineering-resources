@@ -50,6 +50,10 @@ Windows Server 운영에 필요한 핵심 기술 개념을 정리합니다.
 | AD       | [Kerberos / NTLM](#인증-프로토콜)                                       |
 | AD       | [GPO](#gpo-group-policy-object)                                         |
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 1. 스토리지
 
 ### Storage Spaces
@@ -235,6 +239,10 @@ Node A 장애 발생
 ```
 
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 2. 보안
 
 ### vTPM (Virtual Trusted Platform Module)
@@ -394,6 +402,10 @@ Shielded VM 인프라의 핵심 서비스입니다. 호스트가 신뢰할 수 �
 | 독립 배치 | 별도 AD 포리스트에 배치 권장 (관리 도메인과 분리) |
 
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 3. 네트워크
 
 ### SDN (Software-Defined Networking)
@@ -480,6 +492,10 @@ SDN 환경에서 가상 네트워크와 물리 네트워크(또는 외부 네트
 | 사용 예    | 온프레미스 ↔ 클라우드 연결, 테넌트 간 네트워크 격리       |
 
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 4. 가상화
 
 ### Hyper-V 컨테이너 격리 모드
@@ -562,6 +578,10 @@ Datacenter 에디션 호스트가 게스트 VM을 **인터넷 연결 없이 자�
 
 🟡 AVMA 키는 활성화 목적으로만 사용됩니다. 라이선스 구매 의무는 별도입니다.
 
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 5. 운영
 
@@ -657,6 +677,10 @@ Install-WindowsFeature -Name Web-Server -IncludeManagementTools
 🟡 Microsoft 공식 권장은 **Server Core**입니다. Desktop Experience는 레거시 도구 호환이 필요한 경우에만 선택합니다.
 
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 6. 라이선스
 
 ### Volume License 유형
@@ -747,6 +771,10 @@ CAL                        → 그 서버에 접속할 권한
 
 🟡 External Connector는 외부 사용자(비직원)에 대한 접속 권한만 포함합니다. 내부 직원 접속에는 별도 CAL이 여전히 필요합니다.
 
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 7. Active Directory (AD)
 
@@ -859,6 +887,10 @@ Get-ADUser -Filter * -Properties * | Select-Object Name, SamAccountName, Enabled
 # 컴퓨터 계정 조회
 Get-ADComputer -Filter * | Select-Object Name, OperatingSystem
 ```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 참고 자료
 
