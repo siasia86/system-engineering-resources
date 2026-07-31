@@ -1,6 +1,6 @@
 ---
-name: hyperv-io-contention-notes
-description: Hyper-V 클러스터 디스크 I/O 경합이 레거시 VM(CentOS 5.x)에 미치는 영향. Storage QoS, Verified Boot, LIS 지원 범위 정리.
+name: hyperv-centos5-io-contention-notes
+description: Hyper-V 클러스터 디스크 I/O 경합이 레거시 VM(CentOS 5.x)에 미치는 영향. Storage QoS, LIS 지원 범위, CentOS 5.11 특화 증상 정리.
 tags:
   - hyper-v
   - storage
@@ -16,7 +16,7 @@ sources:
   - https://docs.kernel.org/admin-guide/blockdev/
 ---
 
-# Hyper-V 클러스터 I/O 경합 참조 노트
+# Hyper-V 클러스터 I/O 경합 참조 노트 — CentOS 5.x 특화
 
 ## 1. Hyper-V Storage Stack 구조
 
