@@ -165,7 +165,7 @@ Set-VMHardDiskDrive -VMName "VM01" -ControllerNumber 0 -ControllerLocation 0 `
 
 # flow별 IOPS 실시간 모니터링
 Get-StorageQosFlow | Sort-Object -Property StorageNodeIOPS -Descending |
-    Format-Table VMName, FilePath, InitiatorIOPS, StorageNodeIOPS, Latency, Status
+    Format-Table VMName, FilePath, InitiatorIOPS, InitiatorLatency, StorageNodeIOPS, Status
 ```
 
 ---
@@ -178,8 +178,8 @@ Get-StorageQosFlow | Sort-Object -Property StorageNodeIOPS -Descending |
 
 | 카운터                                          | 임계 기준 | 의미           |
 |-------------------------------------------------|-----------|----------------|
-| `Physical Disk(*)\Avg. Disk sec/Read`           | > 20ms    | 읽기 지연 높음 |
-| `Physical Disk(*)\Avg. Disk sec/Write`          | > 20ms    | 쓰기 지연 높음 |
+| `Physical Disk(*)\Avg. Disk sec/Read`           | > 50ms    | 읽기 지연 높음 |
+| `Physical Disk(*)\Avg. Disk sec/Write`          | > 50ms    | 쓰기 지연 높음 |
 | `Physical Disk(*)\Avg. Disk Read Queue Length`  | > 2       | 읽기 큐 적체   |
 | `Physical Disk(*)\Avg. Disk Write Queue Length` | > 2       | 쓰기 큐 적체   |
 | `Physical Disk(*)\Disk Transfers/sec`           | 사양 대비 | 총 IOPS        |
@@ -207,7 +207,7 @@ Get-Counter "\Hyper-V Virtual Storage Device(*)\Read Operations/sec",
 
 # Storage QoS flow 실시간 모니터링
 Get-StorageQosFlow | Sort-Object -Property StorageNodeIOPS -Descending |
-    Format-Table VMName, FilePath, InitiatorIOPS, StorageNodeIOPS, Latency, Status
+    Format-Table VMName, FilePath, InitiatorIOPS, InitiatorLatency, StorageNodeIOPS, Status
 ```
 
 ---
