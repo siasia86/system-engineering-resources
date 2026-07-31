@@ -495,6 +495,9 @@ fn find_by_hostname<'a>(servers: &'a [Server], name: &str) -> Option<&'a Server>
 
 ## 통계
 
+
+## 통계
+
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
 ![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
@@ -506,6 +509,6 @@ fn find_by_hostname<'a>(servers: &'a [Server], name: &str) -> Option<&'a Server>
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-07-28
+**마지막 업데이트**: 2026-07-31
 
 © 2026 siasia86. Licensed under CC BY 4.0.
