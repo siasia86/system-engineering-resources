@@ -1,6 +1,6 @@
 # Windows Server 핵심 개념
 
-<!-- reference: _reference/windows_server_editions_licensing_notes.md -->
+<!-- reference: _reference/windows_server_concepts_notes.md -->
 
 Windows Server 운영에 필요한 핵심 기술 개념을 정리합니다.
 에디션·라이선스 비교는 [windows_server_editions_licensing.md](./windows_server_editions_licensing.md)를 참고합니다.
@@ -128,6 +128,8 @@ CSV
 | 주요 용도  | Hyper-V VM 스토리지, Scale-Out File Server                 |
 | 특징       | 노드 간 볼륨 소유권 이전 없이 Failover 가능                |
 | S2D와 관계 | S2D 클러스터는 CSV를 기반으로 동작                         |
+
+🟡 ReFS로 CSV 구성 시 **redirected mode**로 동작합니다 — 모든 쓰기가 coordinator 노드를 경유하므로 Direct I/O 이점이 상실됩니다. Hyper-V VM 스토리지에는 NTFS 권장합니다.
 
 ---
 
@@ -403,12 +405,12 @@ SDN의 핵심 관리 구성 요소입니다. 데이터센터 내 가상·물리 
 [VM 가상 네트워크]         [SDN 호환 스위치]
 ```
 
-| 항목       | 내용                                                 |
-|------------|------------------------------------------------------|
-| 에디션     | **Datacenter만**                                     |
-| 구성       | 최소 3대 클러스터 권장 (HA)                          |
-| 관리 대상  | 가상 네트워크, ACL, QoS, vSwitch 정책, 물리 네트워크 |
-| 인터페이스 | REST API (Windows Admin Center, SCVMM, PowerShell)   |
+| 항목       | 내용                                                    |
+|------------|---------------------------------------------------------|
+| 에디션     | **Datacenter만**                                        |
+| 구성       | 최소 3 VM 권장 (HA), 물리 호스트 배포 금지·전용 VM 필수 |
+| 관리 대상  | 가상 네트워크, ACL, QoS, vSwitch 정책, 물리 네트워크    |
+| 인터페이스 | REST API (Windows Admin Center, SCVMM, PowerShell)      |
 
 ---
 
@@ -590,7 +592,7 @@ Hotpatch(월별): 기준선 위에 메모리 패치, 재부팅 불필요
 | 에디션      | Azure VM/Azure Local: **Datacenter: Azure Edition** / Azure Arc on-premises: **2025 Datacenter·Standard** |
 | 환경        | Azure VM, Azure Local (2022·2025), Azure Arc 연결 on-premises (2025만 지원)                               |
 | 패치 범위   | Critical·Important 등급 Windows 보안 업데이트                                                             |
-| 재부팅 주기 | 연 4회(분기별 기본 업데이트)로 감소                                                                       |
+| 재부팅 주기 | 월별 패치 기준 최대 12회 → 분기별 baseline 4회로 감소                                                     |
 | 이점        | 패치 적용 시간 단축, 서비스 가용성 향상                                                                   |
 
 ---
