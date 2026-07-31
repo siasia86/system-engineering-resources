@@ -11,6 +11,7 @@ Windows Server 운영에 필요한 핵심 기술 개념을 정리합니다.
 |------------------------------------------------------------------------------|
 | [1. 스토리지](#1-스토리지) / [2. 보안](#2-보안) / [3. 네트워크](#3-네트워크) |
 | [4. 가상화](#4-가상화) / [5. 운영](#5-운영) / [6. 라이선스](#6-라이선스)     |
+| [7. Active Directory (AD)](#7-active-directory-ad)                           |
 
 ---
 
@@ -198,6 +199,18 @@ Node A 장애 발생
   RPO > 0 (일부 데이터 손실 가능), 장거리 사이트 간 적합
 ```
 
+
+### 개념 인덱스
+
+| 용어                        | 링크                            |
+|-----------------------------|---------------------------------|
+| Storage Spaces              | [→](#storage-spaces)            |
+| Storage Spaces Direct (S2D) | [→](#storage-spaces-direct-s2d) |
+| Cluster Shared Volume (CSV) | [→](#cluster-shared-volume-csv) |
+| Failover Clustering         | [→](#failover-clustering)       |
+| Quorum                      | [→](#쿼럼-quorum-개념)          |
+| Storage Replica             | [→](#storage-replica)           |
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -360,6 +373,18 @@ Shielded VM 인프라의 핵심 서비스입니다. 호스트가 신뢰할 수 �
 | 증명 모드 | TPM 기반 (보안 강도 높음) / AD 기반 (구축 간편)   |
 | 독립 배치 | 별도 AD 포리스트에 배치 권장 (관리 도메인과 분리) |
 
+
+### 개념 인덱스
+
+| 용어                        | 링크                                       |
+|-----------------------------|--------------------------------------------|
+| vTPM                        | [→](#vtpm-virtual-trusted-platform-module) |
+| BitLocker                   | [→](#bitlocker)                            |
+| Secure Boot                 | [→](#secure-boot)                          |
+| Generation 1 vs 2 VM        | [→](#generation-1-vs-generation-2-vm)      |
+| Shielded VM                 | [→](#shielded-vm-보호된-가상-머신)         |
+| Host Guardian Service (HGS) | [→](#host-guardian-service-hgs)            |
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -449,6 +474,16 @@ SDN 환경에서 가상 네트워크와 물리 네트워크(또는 외부 네트
 | 멀티테넌트 | 테넌트별 격리된 VPN/라우팅 정책 지원                      |
 | 사용 예    | 온프레미스 ↔ 클라우드 연결, 테넌트 간 네트워크 격리       |
 
+
+### 개념 인덱스
+
+| 용어                         | 링크                                  |
+|------------------------------|---------------------------------------|
+| SDN                          | [→](#sdn-software-defined-networking) |
+| Network Controller           | [→](#network-controller)              |
+| Software Load Balancer (SLB) | [→](#software-load-balancer-slb)      |
+| RAS Gateway                  | [→](#ras-gateway)                     |
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -534,6 +569,14 @@ Datacenter 에디션 호스트가 게스트 VM을 **인터넷 연결 없이 자�
 | 2019        | Essentials                | 2CTP7-NHT64-BP62M-FV6GG-HFV28 |
 
 🟡 AVMA 키는 활성화 목적으로만 사용됩니다. 라이선스 구매 의무는 별도입니다.
+
+
+### 개념 인덱스
+
+| 용어                       | 링크                                            |
+|----------------------------|-------------------------------------------------|
+| Hyper-V 컨테이너 격리 모드 | [→](#hyper-v-컨테이너-격리-모드)                |
+| AVMA                       | [→](#avma-automatic-virtual-machine-activation) |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -632,6 +675,15 @@ Install-WindowsFeature -Name Web-Server -IncludeManagementTools
 
 🟡 Microsoft 공식 권장은 **Server Core**입니다. Desktop Experience는 레거시 도구 호환이 필요한 경우에만 선택합니다.
 
+
+### 개념 인덱스
+
+| 용어                              | 링크                                    |
+|-----------------------------------|-----------------------------------------|
+| SDDC                              | [→](#sddc-software-defined-datacenter)  |
+| Hotpatch                          | [→](#hotpatch)                          |
+| Server Core vs Desktop Experience | [→](#server-core-vs-desktop-experience) |
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -726,6 +778,142 @@ CAL                        → 그 서버에 접속할 권한
 
 🟡 External Connector는 외부 사용자(비직원)에 대한 접속 권한만 포함합니다. 내부 직원 접속에는 별도 CAL이 여전히 필요합니다.
 
+
+### 개념 인덱스
+
+| 용어                    | 링크                                 |
+|-------------------------|--------------------------------------|
+| Volume License 유형     | [→](#volume-license-유형)            |
+| Software Assurance (SA) | [→](#software-assurance-sa)          |
+| CAL                     | [→](#cal-client-access-license-상세) |
+| External Connector      | [→](#external-connector-상세)        |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 7. Active Directory (AD)
+
+Windows Server의 디렉터리 서비스입니다. 네트워크상의 사용자·컴퓨터·리소스를 중앙에서 인증·권한 부여·관리합니다.
+
+> "AD DS stores information about objects on the network and makes this information easy
+> for administrators and users to find and use."
+> — learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview
+
+### AD DS 구성 요소
+
+#### 논리 구조
+
+```
+Forest (최상위 보안 경계)
+  └── Domain Tree
+        └── Domain (보안/관리 단위)
+              └── OU (Organizational Unit, 정책 적용 단위)
+                    └── Object (사용자, 컴퓨터, 그룹 등)
+```
+
+| 구성 요소                    | 역할                                                          |
+|------------------------------|---------------------------------------------------------------|
+| **Forest**                   | AD의 최상위 보안·관리 경계. 동일 Schema와 Global Catalog 공유 |
+| **Domain Tree**              | 연속된 DNS 네임스페이스를 가진 도메인 계층                    |
+| **Domain**                   | 인증·정책의 기본 단위. 도메인 컨트롤러(DC)가 관리             |
+| **OU (Organizational Unit)** | 도메인 내 객체 그룹. GPO 적용 단위                            |
+| **Object**                   | 사용자, 컴퓨터, 그룹, 프린터 등 디렉터리에 저장되는 개체      |
+
+#### 물리 구조
+
+| 구성 요소                  | 역할                                                                             |
+|----------------------------|----------------------------------------------------------------------------------|
+| **Domain Controller (DC)** | AD DS 데이터베이스 호스팅·복제·인증 처리 서버                                    |
+| **Read-Only DC (RODC)**    | 읽기 전용 DC. 지사·비신뢰 환경 배치용                                            |
+| **Global Catalog (GC)**    | Forest 전체 객체의 부분 속성을 캐시. UPN 로그인·유니버설 그룹 멤버십 확인에 사용 |
+| **Site**                   | 물리적 네트워크 위치 단위. 복제 트래픽 제어에 사용                               |
+
+---
+
+### FSMO (Flexible Single Master Operation) 역할
+
+AD DS는 일부 작업을 단일 DC에서만 처리합니다. 이 역할을 FSMO라고 합니다.
+
+| 범위       | FSMO 역할             | 설명                                                          |
+|------------|-----------------------|---------------------------------------------------------------|
+| **Forest** | Schema Master         | Schema 수정 권한 (Forest에 1개)                               |
+| **Forest** | Domain Naming Master  | 도메인 추가·제거 권한 (Forest에 1개)                          |
+| **Domain** | PDC Emulator          | 시간 동기화 기준, 암호 변경 즉시 반영, 레거시 클라이언트 지원 |
+| **Domain** | RID Master            | 도메인 내 객체 SID 생성을 위한 RID 풀 관리                    |
+| **Domain** | Infrastructure Master | 도메인 간 객체 참조(phantom) 갱신                             |
+
+🟡 FSMO 역할 5개 중 **PDC Emulator**가 가장 중요합니다. 장애 시 시간 동기화·암호 정책에 즉시 영향이 생깁니다.
+
+---
+
+### 인증 프로토콜
+
+| 프로토콜     | 사용 환경                      | 특징                                 |
+|--------------|--------------------------------|--------------------------------------|
+| **Kerberos** | 도메인 환경 (기본)             | 티켓 기반, 상호 인증, 안전           |
+| **NTLM**     | 워크그룹, 레거시, IP 직접 접속 | Challenge-Response, 서버 신원 미검증 |
+
+```
+Kerberos 인증 흐름
+  1. 클라이언트 → KDC(DC): AS-REQ (TGT 요청)
+  2. KDC → 클라이언트: AS-REP (TGT 발급)
+  3. 클라이언트 → KDC: TGS-REQ (서비스 티켓 요청)
+  4. KDC → 클라이언트: TGS-REP (서비스 티켓 발급)
+  5. 클라이언트 → 서버: AP-REQ (서비스 티켓 제시)
+```
+
+---
+
+### GPO (Group Policy Object)
+
+도메인·OU에 적용하는 정책 설정 모음입니다. 보안 설정, 소프트웨어 배포, 스크립트 실행 등을 중앙에서 제어합니다.
+
+| 항목      | 내용                                                           |
+|-----------|----------------------------------------------------------------|
+| 적용 순서 | Local → Site → Domain → OU (하위 OU가 상위 덮어씀)             |
+| 적용 대상 | 사용자 계정 또는 컴퓨터 계정                                   |
+| 갱신 주기 | 기본 90분 ±30분 랜덤 오프셋 (DC: 5분), 수동: `gpupdate /force` |
+| 우선순위  | Block Inheritance, Enforced(No Override) 설정으로 조정         |
+
+---
+
+### 주요 명령어
+
+```powershell
+# DC 정보 확인
+Get-ADDomainController -Filter *
+
+# FSMO 역할 보유 DC 확인
+netdom query fsmo
+
+# AD 복제 상태 확인
+repadmin /replsummary
+repadmin /showrepl
+
+# GPO 목록 확인
+Get-GPO -All | Select-Object DisplayName, GpoStatus
+
+# GPO 강제 갱신
+gpupdate /force
+
+# 사용자 계정 조회
+Get-ADUser -Filter * -Properties * | Select-Object Name, SamAccountName, Enabled
+
+# 컴퓨터 계정 조회
+Get-ADComputer -Filter * | Select-Object Name, OperatingSystem
+```
+
+### 개념 인덱스
+
+| 용어                          | 링크                                             |
+|-------------------------------|--------------------------------------------------|
+| Forest / Domain / OU          | [→](#논리-구조)                                  |
+| Domain Controller / RODC / GC | [→](#물리-구조)                                  |
+| FSMO 5개 역할                 | [→](#fsmo-flexible-single-master-operation-역할) |
+| Kerberos / NTLM               | [→](#인증-프로토콜)                              |
+| GPO                           | [→](#gpo-group-policy-object)                    |
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -740,6 +928,8 @@ CAL                        → 그 서버에 접속할 권한
 - Microsoft: [Automatic VM Activation](https://learn.microsoft.com/en-us/windows-server/get-started/automatic-vm-activation) — ★★★☆☆
 - Microsoft: [Client Access Licenses](https://www.microsoft.com/en-us/licensing/product-licensing/client-access-license) — ★★★☆☆
 - Microsoft: [Volume Licensing overview](https://www.microsoft.com/en-us/licensing/how-to-buy/volume-licensing) — ★★★☆☆
+- Microsoft: [AD DS Overview](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview) — ★★★☆☆
+- Microsoft: [FSMO Role Placement](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/planning-operations-master-role-placement) — ★★★☆☆
 - [windows_server_editions_licensing.md](./windows_server_editions_licensing.md)
 
 ---
@@ -749,6 +939,6 @@ CAL                        → 그 서버에 접속할 권한
 
 **작성일**: 2026-07-29
 
-**마지막 업데이트**: 2026-07-29
+**마지막 업데이트**: 2026-07-31
 
 © 2026 siasia86. Licensed under CC BY 4.0.
