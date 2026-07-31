@@ -998,8 +998,16 @@ Get-ADComputer -Filter * | Select-Object Name, OperatingSystem
 
 ---
 
-![문서 언어](https://img.shields.io/badge/language-korean-blue)
-![에디션](https://img.shields.io/badge/edition-2022%20%2F%202025-blue)
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
 
 **작성일**: 2026-07-29
 
