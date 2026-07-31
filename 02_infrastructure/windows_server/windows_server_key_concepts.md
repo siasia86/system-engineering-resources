@@ -551,7 +551,7 @@ Linux 컨테이너가 namespace + cgroups로 격리를 구현하듯, Windows 컨
 | 사용자 격리     | user namespace (`CLONE_NEWUSER`)   | Object Manager namespace                 |
 | 리소스 제한     | cgroups (v1/v2)                    | Job Object (CPU·메모리·프로세스 수 제한) |
 | 레지스트리 격리 | 없음 (Linux 개념 아님)             | Registry namespace (Windows 고유)        |
-| 루트 파일시스템 | union mount (overlay2, aufs)       | Layer Storage (계층형 이미지)            |
+| 루트 파일시스템 | union mount (overlay2)             | Layer Storage (계층형 이미지)            |
 
 > 출처: learn.microsoft.com/en-us/virtualization/windowscontainers/manage-containers/hyperv-container
 > "With process isolation, multiple container instances run concurrently on a given host
@@ -582,7 +582,7 @@ Linux cgroups               Windows Job Object
   ├── cpu (CPU 시간 제한)   ←→  CPU rate limit
   ├── memory (메모리 제한)  ←→  Working set size limit
   ├── pids (프로세스 수)    ←→  Active process limit
-  └── blkio (I/O 제한)          (Job Object에서 직접 지원 없음)
+  └── blkio (I/O 제한)      ←→  I/O rate limit (SetIoRateControlInformationJobObject)
 ```
 
 #### HNS (Host Networking Service)
