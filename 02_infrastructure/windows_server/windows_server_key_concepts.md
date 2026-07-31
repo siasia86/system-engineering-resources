@@ -15,6 +15,41 @@ Windows Server 운영에 필요한 핵심 기술 개념을 정리합니다.
 
 ---
 
+## 전체 개념 인덱스
+
+| 섹션     | 용어                                                                    |
+|----------|-------------------------------------------------------------------------|
+| 스토리지 | [Storage Spaces](#storage-spaces)                                       |
+| 스토리지 | [Storage Spaces Direct (S2D)](#storage-spaces-direct-s2d)               |
+| 스토리지 | [Cluster Shared Volume (CSV)](#cluster-shared-volume-csv)               |
+| 스토리지 | [Failover Clustering](#failover-clustering)                             |
+| 스토리지 | [Quorum](#쿼럼-quorum-개념)                                             |
+| 스토리지 | [Storage Replica](#storage-replica)                                     |
+| 보안     | [vTPM](#vtpm-virtual-trusted-platform-module)                           |
+| 보안     | [BitLocker](#bitlocker)                                                 |
+| 보안     | [Secure Boot](#secure-boot)                                             |
+| 보안     | [Generation 1 vs 2 VM](#generation-1-vs-generation-2-vm)                |
+| 보안     | [Shielded VM](#shielded-vm-보호된-가상-머신)                            |
+| 보안     | [Host Guardian Service (HGS)](#host-guardian-service-hgs)               |
+| 네트워크 | [SDN](#sdn-software-defined-networking)                                 |
+| 네트워크 | [Network Controller](#network-controller)                               |
+| 네트워크 | [Software Load Balancer (SLB)](#software-load-balancer-slb)             |
+| 네트워크 | [RAS Gateway](#ras-gateway)                                             |
+| 가상화   | [Hyper-V 컨테이너 격리 모드](#hyper-v-컨테이너-격리-모드)               |
+| 가상화   | [AVMA](#avma-automatic-virtual-machine-activation)                      |
+| 운영     | [SDDC](#sddc-software-defined-datacenter)                               |
+| 운영     | [Hotpatch](#hotpatch)                                                   |
+| 운영     | [Server Core vs Desktop Experience](#server-core-vs-desktop-experience) |
+| 라이선스 | [Volume License 유형](#volume-license-유형)                             |
+| 라이선스 | [Software Assurance (SA)](#software-assurance-sa)                       |
+| 라이선스 | [CAL](#cal-client-access-license-상세)                                  |
+| 라이선스 | [External Connector](#external-connector-상세)                          |
+| AD       | [Forest / Domain / OU](#논리-구조)                                      |
+| AD       | [Domain Controller / RODC / GC](#물리-구조)                             |
+| AD       | [FSMO 5개 역할](#fsmo-flexible-single-master-operation-역할)            |
+| AD       | [Kerberos / NTLM](#인증-프로토콜)                                       |
+| AD       | [GPO](#gpo-group-policy-object)                                         |
+
 ## 1. 스토리지
 
 ### Storage Spaces
@@ -200,21 +235,6 @@ Node A 장애 발생
 ```
 
 
-### 개념 인덱스
-
-| 용어                        | 링크                            |
-|-----------------------------|---------------------------------|
-| Storage Spaces              | [→](#storage-spaces)            |
-| Storage Spaces Direct (S2D) | [→](#storage-spaces-direct-s2d) |
-| Cluster Shared Volume (CSV) | [→](#cluster-shared-volume-csv) |
-| Failover Clustering         | [→](#failover-clustering)       |
-| Quorum                      | [→](#쿼럼-quorum-개념)          |
-| Storage Replica             | [→](#storage-replica)           |
-
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 2. 보안
 
 ### vTPM (Virtual Trusted Platform Module)
@@ -374,21 +394,6 @@ Shielded VM 인프라의 핵심 서비스입니다. 호스트가 신뢰할 수 �
 | 독립 배치 | 별도 AD 포리스트에 배치 권장 (관리 도메인과 분리) |
 
 
-### 개념 인덱스
-
-| 용어                        | 링크                                       |
-|-----------------------------|--------------------------------------------|
-| vTPM                        | [→](#vtpm-virtual-trusted-platform-module) |
-| BitLocker                   | [→](#bitlocker)                            |
-| Secure Boot                 | [→](#secure-boot)                          |
-| Generation 1 vs 2 VM        | [→](#generation-1-vs-generation-2-vm)      |
-| Shielded VM                 | [→](#shielded-vm-보호된-가상-머신)         |
-| Host Guardian Service (HGS) | [→](#host-guardian-service-hgs)            |
-
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 3. 네트워크
 
 ### SDN (Software-Defined Networking)
@@ -475,19 +480,6 @@ SDN 환경에서 가상 네트워크와 물리 네트워크(또는 외부 네트
 | 사용 예    | 온프레미스 ↔ 클라우드 연결, 테넌트 간 네트워크 격리       |
 
 
-### 개념 인덱스
-
-| 용어                         | 링크                                  |
-|------------------------------|---------------------------------------|
-| SDN                          | [→](#sdn-software-defined-networking) |
-| Network Controller           | [→](#network-controller)              |
-| Software Load Balancer (SLB) | [→](#software-load-balancer-slb)      |
-| RAS Gateway                  | [→](#ras-gateway)                     |
-
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 4. 가상화
 
 ### Hyper-V 컨테이너 격리 모드
@@ -570,17 +562,6 @@ Datacenter 에디션 호스트가 게스트 VM을 **인터넷 연결 없이 자�
 
 🟡 AVMA 키는 활성화 목적으로만 사용됩니다. 라이선스 구매 의무는 별도입니다.
 
-
-### 개념 인덱스
-
-| 용어                       | 링크                                            |
-|----------------------------|-------------------------------------------------|
-| Hyper-V 컨테이너 격리 모드 | [→](#hyper-v-컨테이너-격리-모드)                |
-| AVMA                       | [→](#avma-automatic-virtual-machine-activation) |
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## 5. 운영
 
@@ -676,18 +657,6 @@ Install-WindowsFeature -Name Web-Server -IncludeManagementTools
 🟡 Microsoft 공식 권장은 **Server Core**입니다. Desktop Experience는 레거시 도구 호환이 필요한 경우에만 선택합니다.
 
 
-### 개념 인덱스
-
-| 용어                              | 링크                                    |
-|-----------------------------------|-----------------------------------------|
-| SDDC                              | [→](#sddc-software-defined-datacenter)  |
-| Hotpatch                          | [→](#hotpatch)                          |
-| Server Core vs Desktop Experience | [→](#server-core-vs-desktop-experience) |
-
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 6. 라이선스
 
 ### Volume License 유형
@@ -778,19 +747,6 @@ CAL                        → 그 서버에 접속할 권한
 
 🟡 External Connector는 외부 사용자(비직원)에 대한 접속 권한만 포함합니다. 내부 직원 접속에는 별도 CAL이 여전히 필요합니다.
 
-
-### 개념 인덱스
-
-| 용어                    | 링크                                 |
-|-------------------------|--------------------------------------|
-| Volume License 유형     | [→](#volume-license-유형)            |
-| Software Assurance (SA) | [→](#software-assurance-sa)          |
-| CAL                     | [→](#cal-client-access-license-상세) |
-| External Connector      | [→](#external-connector-상세)        |
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## 7. Active Directory (AD)
 
@@ -903,20 +859,6 @@ Get-ADUser -Filter * -Properties * | Select-Object Name, SamAccountName, Enabled
 # 컴퓨터 계정 조회
 Get-ADComputer -Filter * | Select-Object Name, OperatingSystem
 ```
-
-### 개념 인덱스
-
-| 용어                          | 링크                                             |
-|-------------------------------|--------------------------------------------------|
-| Forest / Domain / OU          | [→](#논리-구조)                                  |
-| Domain Controller / RODC / GC | [→](#물리-구조)                                  |
-| FSMO 5개 역할                 | [→](#fsmo-flexible-single-master-operation-역할) |
-| Kerberos / NTLM               | [→](#인증-프로토콜)                              |
-| GPO                           | [→](#gpo-group-policy-object)                    |
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## 참고 자료
 
