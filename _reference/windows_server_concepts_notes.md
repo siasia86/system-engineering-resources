@@ -10,7 +10,7 @@ tags:
   - sdn
   - storage-replica
   - hotpatch
-last_checked: 2026-07-30
+last_checked: 2026-07-31
 sources:
   - https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/hyper-v-on-windows-server
   - https://learn.microsoft.com/en-us/windows-server/failover-clustering/failover-clustering-overview
@@ -47,13 +47,13 @@ Hyper-V는 Windows Server에 내장된 하드웨어 기반 가상화(Type-1 하�
 
 ### VHD vs VHDX
 
-| 항목      | VHD              | VHDX              |
-|-----------|------------------|-------------------|
-| 최대 크기 | 2 TB             | 64 TB             |
-| 블록 크기 | 512 bytes        | 1 MB (성능 향상)  |
-| 내장 저널 | ❌               | ✅ (손상 방지)    |
-| 지원 버전 | Hyper-V 2008+    | Hyper-V 2012+     |
-| 권장      | 레거시 호환 시만 | 신규 VM 기본 권장 |
+| 항목      | VHD              | VHDX                                      |
+|-----------|------------------|-------------------------------------------|
+| 최대 크기 | 2 TB             | 64 TB                                     |
+| 섹터 크기 | 512 bytes (고정) | 512 bytes 또는 4 KB (논리 섹터 선택 가능) |
+| 내장 저널 | ❌               | ✅ (손상 방지)                            |
+| 지원 버전 | Hyper-V 2008+    | Hyper-V 2012+                             |
+| 권장      | 레거시 호환 시만 | 신규 VM 기본 권장                         |
 
 ### Live Migration vs Quick Migration
 
@@ -97,6 +97,8 @@ Hyper-V는 Windows Server에 내장된 하드웨어 기반 가상화(Type-1 하�
 - Hyper-V 고가용성 VM, S2D 배포 시 필수
 - NTFS 기반, ReFS도 지원 (2016+)
 
+🟡 ReFS로 CSV 구성 시 **redirected mode**로 동작 — 모든 쓰기가 coordinator 노드를 경유합니다. Direct I/O 이점이 상실되므로 Hyper-V VM 스토리지에는 NTFS 권장.
+
 ## 3. Storage Spaces Direct (S2D)
 
 ### 공식 정의
@@ -108,14 +110,14 @@ Hyper-V는 Windows Server에 내장된 하드웨어 기반 가상화(Type-1 하�
 서버 내 로컬 디스크(HDD/SSD/NVMe)를 클러스터링하여 공유 스토리지 풀을 구성합니다.
 SAN/NAS 없이 HCI(Hyper-Converged Infrastructure)를 구현하는 핵심 기술입니다.
 
-| 항목        | 내용                                             |
-|-------------|--------------------------------------------------|
-| 필요 에디션 | **Datacenter** 전용 (Standard 미지원)            |
-| 최소 노드   | 2노드 (권장 4노드 이상)                          |
-| 지원 디스크 | NVMe, SSD(캐시), HDD(용량)                       |
-| 지원 버전   | Windows Server 2016+, Azure Local                |
-| 네트워크    | RDMA(RoCE 또는 iWARP) 권장, 최소 10 GbE          |
-| 복원력      | Mirror(2-way, 3-way), Parity, Mirror-accelerated |
+| 항목        | 내용                                                          |
+|-------------|---------------------------------------------------------------|
+| 필요 에디션 | **Datacenter** 전용 (Standard 미지원)                         |
+| 최소 노드   | 2노드 (권장 4노드 이상)                                       |
+| 지원 디스크 | NVMe, SSD(캐시), HDD(용량)                                    |
+| 지원 버전   | Windows Server 2016+, Azure Local                             |
+| 네트워크    | 최소 10 GbE (2~3노드 소규모), 25 GbE + RDMA 권장 (4노드 이상) |
+| 복원력      | Mirror(2-way, 3-way), Parity, Mirror-accelerated              |
 
 ### S2D 계층 구조
 
@@ -182,24 +184,24 @@ Applications / Hyper-V VMs
 
 Software-Defined Networking의 핵심 역할. 네트워크 정책을 중앙에서 프로그래밍 방식으로 관리합니다.
 
-| 항목        | 내용                                 |
-|-------------|--------------------------------------|
-| 필요 에디션 | **Datacenter** 전용                  |
-| 도입 버전   | Windows Server 2016                  |
-| 관리 대상   | 가상 네트워크, ACL, QoS, 로드 밸런서 |
-| 구성        | 최소 3노드 고가용성 권장             |
+| 항목        | 내용                                                          |
+|-------------|---------------------------------------------------------------|
+| 필요 에디션 | **Datacenter** 전용                                           |
+| 도입 버전   | Windows Server 2016                                           |
+| 관리 대상   | 가상 네트워크, ACL, QoS, 로드 밸런서                          |
+| 구성        | 최소 3 VM 고가용성 권장 (물리 호스트 배포 금지, 전용 VM 필수) |
 
 ## 7. Hotpatch
 
 재부팅 없이 보안 패치를 적용하는 기술입니다.
 
-| 항목        | 내용                                                        |
-|-------------|-------------------------------------------------------------|
-| 필요 에디션 | **Datacenter: Azure Edition** 전용                          |
-| 지원 환경   | Azure VM / Azure Local: 2022·2025 Datacenter: Azure Edition |
-| 도입 버전   | Windows Server 2022 (공개 미리 보기)                        |
-| 패치 주기   | 분기별 기준 패치 + 월별 Hotpatch (재부팅 불필요)            |
-| 효과        | 연간 재부팅 횟수 12회 → 4회 수준으로 감소                   |
+| 항목        | 내용                                                         |
+|-------------|--------------------------------------------------------------|
+| 필요 에디션 | **Datacenter: Azure Edition** 전용                           |
+| 지원 환경   | Azure VM / Azure Local: 2022·2025 Datacenter: Azure Edition  |
+| 도입 버전   | Windows Server 2022 Datacenter: Azure Edition                |
+| 패치 주기   | 분기별 기준 패치 + 월별 Hotpatch (재부팅 불필요)             |
+| 효과        | 월별 패치 기준 최대 12회 재부팅 → 분기별 baseline 4회로 감소 |
 
 > 출처: learn.microsoft.com/en-us/windows-server/get-started/hotpatch
 
