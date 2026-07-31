@@ -620,7 +620,7 @@ Process isolation (namespace)          Hyper-V isolation (VM)
 │  shared kernel, ns isolation │       │  │  │  App A          │  │   │
 └──────────────────────────────┘       │  │  └─────────────────┘  │   │
                                        │  └───────────────────────┘   │
-                                      │  hardware-level isolation     │
+                                       │  hardware-level isolation    │
                                        └──────────────────────────────┘
 ```
 
