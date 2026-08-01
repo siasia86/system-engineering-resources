@@ -52,6 +52,8 @@ sources:
 | Windows Server Concepts        | `_reference/windows_server_concepts_notes.md`           | Hyper-V, S2D, Failover Cluster, Shielded VM, SDN | 2026-07-29 | O    |
 | SVN (Subversion)               | `_reference/svn_official_notes.md`                      | 1.14.5 (LTS)                                     | 2026-07-29 | O    |
 | Git                            | `_reference/git_official_notes.md`                      | 2.55.0                                           | 2026-07-29 | O    |
+| eBPF / bpftrace            | `_reference/ebpf_bpftrace_official_notes.md`            | libbpf v1.7.0, bpftrace v0.26.1                  | 2026-08-01 | O    |
+| Linux Process / Memory / IPC | `_reference/linux_process_official_notes.md`          | fork/exec/wait, mmap, OOM, pipe/shm/mq           | 2026-08-01 | O    |
 
 
 ## 사용 규칙

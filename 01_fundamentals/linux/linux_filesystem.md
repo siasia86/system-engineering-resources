@@ -1,4 +1,5 @@
 # Linux Filesystem — 디스크 파일시스템
+<!-- reference: _reference/linux_filesystem_official_notes.md -->
 
 Linux 디스크 파일시스템의 구조, 주요 파일시스템 비교, 마운트/관리 명령어를 정리합니다.
 

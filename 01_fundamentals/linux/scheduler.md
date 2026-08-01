@@ -1,4 +1,5 @@
 # Linux Scheduler — CPU 스케줄러
+<!-- reference: _reference/linux_kernel_official_notes.md -->
 
 Linux CFS(Completely Fair Scheduler)와 CPU 스케줄링 메커니즘을 정리합니다.
 
