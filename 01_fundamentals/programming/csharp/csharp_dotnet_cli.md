@@ -184,7 +184,7 @@ dotnet publish -c Release -r linux-x64 \
   -p:PublishSingleFile=true \
   -p:EnableCompressionInSingleFile=true
 
-# AOT (Ahead-of-Time) 컴파일 (.NET 8+)
+# AOT (Ahead-of-Time) 컴파일 (.NET 7+)
 dotnet publish -c Release -r linux-x64 \
   -p:PublishAot=true
 ```
