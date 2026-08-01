@@ -1,4 +1,5 @@
 # ltrace - 라이브러리 함수 추적 도구
+<!-- reference: _reference/ltrace_official_notes.md -->
 
 ## 목차
 

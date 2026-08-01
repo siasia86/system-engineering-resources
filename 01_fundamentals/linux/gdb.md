@@ -1,4 +1,5 @@
 # gdb - GNU Debugger
+<!-- reference: _reference/gdb_official_notes.md -->
 
 ## 목차
 

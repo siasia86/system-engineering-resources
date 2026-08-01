@@ -6,6 +6,47 @@
 
 ---
 
+## [3.3.0] - 2026-08-01
+
+### Added
+
+#### _reference — 신규 참조 파일 8개 (Batch 1~4)
+- `gdb_official_notes.md` — GDB 17.2, break/run/bt/step/next, -p attach, --batch, 약어 규칙 (gdb.1/GNU FTP)
+- `strace_official_notes.md` — strace v7.1, syscall/signal 추적, -e trace 필터, --seccomp-bpf (strace.1/GitHub)
+- `ltrace_official_notes.md` — ltrace 0.8.1, 동적 라이브러리 함수 추적, -e/-l/-x 필터, --demangle (ltrace.1/GitLab)
+- `valgrind_official_notes.md` — Valgrind 3.27.1, Memcheck(definitely/indirectly/possibly lost), Callgrind/Helgrind/Massif (valgrind.org)
+- `perf_official_notes.md` — perf stat/record/report/top/trace/probe 서브커맨드, --list-cmds/-vv (perf.1/kernel wiki)
+- `lsof_official_notes.md` — lsof 4.99.7, FD/TYPE 필드, -p/-i/-u/-a/-n/-P/-t 옵션 (lsof.8/GitHub)
+- `iotop_official_notes.md` — iotop v1.31, Linux 2.6.20+, --only/--batch/--processes, Total vs Current (iotop.8/GitHub)
+- `tcpdump_official_notes.md` — tcpdump 4.99.6, BPF 필터 문법, -w pcap/-r/-n/-nn/-X/-Q (tcpdump.1)
+- `bash_shell_official_notes.md` — Bash 5.3, interactive/non-interactive §6.3, PS1/BASH_ENV, 리다이렉션 §3.6 (bash manual)
+- `vim_official_notes.md` — Vim 9.2, Normal/Insert/Visual/Command/Replace 모드, 주요 명령어 (vimhelp.org/vim.1)
+
+#### _reference/INDEX.md — 항목 추가
+- Batch 1~4 신규 10개 항목 등록
+
+### Fixed
+
+#### 01_fundamentals/linux — `<!-- reference:` 연결 추가
+- `gdb.md` → `gdb_official_notes.md`
+- `strace.md` → `strace_official_notes.md`
+- `ltrace.md` → `ltrace_official_notes.md`
+- `valgrind.md` → `valgrind_official_notes.md`
+- `perf.md` → `perf_official_notes.md`
+- `lsof.md` → `lsof_official_notes.md`
+- `iotop.md` → `iotop_official_notes.md`
+- `tcpdump.md` → `tcpdump_official_notes.md`
+- `shell_interactive_mode.md` → `bash_shell_official_notes.md`
+- `vim.md` → `vim_official_notes.md`
+- `vim_airline.md` → `vim_official_notes.md`
+- `bash_file_redirection.md` — reference 병기 추가 (kernel + bash_shell)
+- `bash_math.md` — reference 병기 추가 (kernel + bash_shell)
+- `bash_trap_complete_guide.md` — reference 병기 추가 (kernel + bash_shell)
+- `vim_airline.md` — H1 12개 → H2로 변환 (문서 구조 정규화)
+- `root_password_recovery.md` — 절차 문서 확인 (_reference 불필요)
+
+---
+
 ## [3.2.0] - 2026-08-01
 
 ### Added

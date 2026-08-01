@@ -52,8 +52,18 @@ sources:
 | Windows Server Concepts        | `_reference/windows_server_concepts_notes.md`           | Hyper-V, S2D, Failover Cluster, Shielded VM, SDN | 2026-07-29 | O    |
 | SVN (Subversion)               | `_reference/svn_official_notes.md`                      | 1.14.5 (LTS)                                     | 2026-07-29 | O    |
 | Git                            | `_reference/git_official_notes.md`                      | 2.55.0                                           | 2026-07-29 | O    |
-| eBPF / bpftrace            | `_reference/ebpf_bpftrace_official_notes.md`            | libbpf v1.7.0, bpftrace v0.26.1                  | 2026-08-01 | O    |
-| Linux Process / Memory / IPC | `_reference/linux_process_official_notes.md`          | fork/exec/wait, mmap, OOM, pipe/shm/mq           | 2026-08-01 | O    |
+| eBPF / bpftrace                | `_reference/ebpf_bpftrace_official_notes.md`            | libbpf v1.7.0, bpftrace v0.26.1                  | 2026-08-01 | O    |
+| Linux Process / Memory / IPC   | `_reference/linux_process_official_notes.md`            | fork/exec/wait, mmap, OOM, pipe/shm/mq           | 2026-08-01 | O    |
+| GDB                            | `_reference/gdb_official_notes.md`                      | 17.2, breakpoint/watchpoint/bt, ptrace attach    | 2026-08-01 | O    |
+| strace                         | `_reference/strace_official_notes.md`                   | v7.1, syscall/signal 추적, -e trace 필터         | 2026-08-01 | O    |
+| ltrace                         | `_reference/ltrace_official_notes.md`                   | 0.8.1, 동적 라이브러리 함수 추적                 | 2026-08-01 | O    |
+| Valgrind                       | `_reference/valgrind_official_notes.md`                 | 3.27.1, Memcheck/Callgrind/Helgrind/Massif       | 2026-08-01 | O    |
+| perf                           | `_reference/perf_official_notes.md`                     | stat/record/report/top/trace 서브커맨드          | 2026-08-01 | O    |
+| lsof                           | `_reference/lsof_official_notes.md`                     | 4.99.7, FD/TYPE 필드, -i/-p/-u/-a 필터           | 2026-08-01 | O    |
+| iotop                          | `_reference/iotop_official_notes.md`                    | v1.31, I/O 모니터링, --only/--batch/--processes  | 2026-08-01 | O    |
+| tcpdump                        | `_reference/tcpdump_official_notes.md`                  | 4.99.6, BPF 필터, -w pcap, -n/-nn/-X 옵션        | 2026-08-01 | O    |
+| Bash Shell                     | `_reference/bash_shell_official_notes.md`               | 5.3, interactive/non-interactive, 리다이렉션     | 2026-08-01 | O    |
+| Vim                            | `_reference/vim_official_notes.md`                      | 9.2, Normal/Insert/Visual/Command 모드           | 2026-08-01 | O    |
 
 
 ## 사용 규칙

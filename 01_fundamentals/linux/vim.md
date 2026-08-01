@@ -1,4 +1,5 @@
 # Vim 사용법
+<!-- reference: _reference/vim_official_notes.md -->
 
 ## 목차
 
