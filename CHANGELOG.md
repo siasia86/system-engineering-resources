@@ -6,6 +6,23 @@
 
 ---
 
+## [3.4.0] - 2026-08-02
+
+### Added
+
+#### _reference — 신규 참조 파일 1개
+- `csharp_official_notes.md` — .NET 10 LTS/C# 14, LTS/STS/EOL 버전 대응표, 타입 시스템, async/await, 언어 기능 (C# 3~14), dotnet CLI/NuGet/msbuild-props, deprecated (releases-index.json/Language-Version-History.md 기반, fact-check 완료)
+
+#### 01_fundamentals/programming/csharp — 신규 디렉토리 및 문서 5개
+- `README.md` — 학습 순서, 빠른 참조, 주요 개념 요약
+- `csharp_key_concepts.md` — 타입 시스템, 값/참조 형식, struct vs class, record, nullable, NRT, null 연산자, pattern matching, primary constructor, required, global using, .NET 버전 대응표
+- `csharp_oop.md` — 클래스 구성 요소, 접근 제한자, 상속, 인터페이스(default members C# 8+), 추상 클래스, 다형성, 제네릭 제약
+- `csharp_async.md` — async/await 기초, 반환 타입(Task/ValueTask/void), 병렬 실행, ConfigureAwait, async 스트림(C# 8+), CancellationToken, 안티패턴
+- `csharp_linq.md` — 람다, Func/Action/Predicate, 쿼리/메서드 문법, 연산자(필터/변환/집계/정렬/그룹화/조인), 지연/즉시 실행, ToLookup/Zip
+- `csharp_dotnet_cli.md` — dotnet new/build/run/test/publish, .csproj PropertyGroup, NuGet 관리, self-contained/AOT 게시, xUnit/NUnit/MSTest 구조
+
+---
+
 ## [3.3.0] - 2026-08-01
 
 ### Added
@@ -577,6 +594,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-08-01
+**마지막 업데이트**: 2026-08-02
 
 © 2026 siasia86. Licensed under CC BY 4.0.
