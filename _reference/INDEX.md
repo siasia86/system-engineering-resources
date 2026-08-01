@@ -64,6 +64,7 @@ sources:
 | tcpdump                        | `_reference/tcpdump_official_notes.md`                  | 4.99.6, BPF 필터, -w pcap, -n/-nn/-X 옵션        | 2026-08-01 | O    |
 | Bash Shell                     | `_reference/bash_shell_official_notes.md`               | 5.3, interactive/non-interactive, 리다이렉션     | 2026-08-01 | O    |
 | Vim                            | `_reference/vim_official_notes.md`                      | 9.2, Normal/Insert/Visual/Command 모드           | 2026-08-01 | O    |
+| C# / .NET                      | `_reference/csharp_official_notes.md`                   | .NET 10 LTS/C# 14, async/await, NRT, dotnet CLI  | 2026-08-02 | O    |
 
 
 ## 사용 규칙
