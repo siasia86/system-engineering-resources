@@ -1,4 +1,5 @@
 # Bash 수학 연산
+<!-- reference: _reference/linux_kernel_official_notes.md -->
 
 ## 목차
 

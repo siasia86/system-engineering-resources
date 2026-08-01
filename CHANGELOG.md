@@ -6,6 +6,34 @@
 
 ---
 
+## [3.2.0] - 2026-08-01
+
+### Added
+
+#### _reference — 신규 참조 파일 2개
+- `ebpf_bpftrace_official_notes.md` — eBPF 개요, BPF Map 타입(bpf.2 기반), bpftrace 프로브 타입, 활용 도구(Cilium/Falco/Katran), CAP_BPF(Linux 5.8+), libbpf v1.7.0, bpftrace v0.26.1
+- `linux_process_official_notes.md` — Process Lifecycle(fork/execve/wait man page 기반), Virtual Memory(mmap.2/MM concepts), OOM killer(oom_score_adj, overcommit_memory), IPC(pipe/shmget/mq_overview), 시스템 프로세스(PID0/1/2)
+
+#### _reference/INDEX.md — 항목 추가
+- eBPF / bpftrace — libbpf v1.7.0, bpftrace v0.26.1
+- Linux Process / Memory / IPC — fork/exec/wait, mmap, OOM, pipe/shm/mq
+
+### Fixed
+
+#### 01_fundamentals/linux — `<!-- reference:` 연결 15개 추가
+- `linux_filesystem.md`, `linux_virtual_fs.md` → `linux_filesystem_official_notes.md`
+- `scheduler.md`, `netfilter_tc.md`, `seccomp_capabilities.md` → `linux_kernel_official_notes.md`
+- `bash_file_redirection.md`, `bash_math.md`, `bash_trap_complete_guide.md` → `linux_kernel_official_notes.md`
+- `ebpf.md`, `bpftrace.md` → `ebpf_bpftrace_official_notes.md` (기존 kernel_notes에서 교체)
+- `process_lifecycle.md`, `linux_system_processes.md` → `linux_process_official_notes.md` (기존 kernel_notes에서 교체)
+- `virtual_memory.md` → `linux_process_official_notes.md` (기존 kernel_notes에서 교체)
+- `ipc.md`, `oom_hang.md` → `linux_kernel_official_notes.md` + `linux_process_official_notes.md` (병기)
+
+#### _reference — fact-check 수정
+- `linux_process_official_notes.md` — `overcommit_memory` 출처 `MM concepts` → `proc_sys_vm.5` 교체 (직접 접근 가능한 man page 기반)
+
+---
+
 ## [3.1.0] - 2026-07-29
 
 ### Added
@@ -508,6 +536,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-07-29
+**마지막 업데이트**: 2026-08-01
 
 © 2026 siasia86. Licensed under CC BY 4.0.

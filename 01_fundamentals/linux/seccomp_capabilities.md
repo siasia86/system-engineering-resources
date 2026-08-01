@@ -1,4 +1,5 @@
 # Seccomp / Capabilities — 컨테이너 보안
+<!-- reference: _reference/linux_kernel_official_notes.md -->
 
 Linux Capabilities와 Seccomp을 이용한 권한 최소화 및 시스템 콜 제한을 정리합니다.
 

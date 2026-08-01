@@ -1,4 +1,5 @@
 # Virtual Memory — 가상 메모리
+<!-- reference: _reference/linux_process_official_notes.md -->
 
 Linux 가상 메모리 시스템의 구조, 동작 원리, 트러블슈팅을 정리합니다.
 

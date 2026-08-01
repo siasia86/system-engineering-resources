@@ -1,4 +1,5 @@
 # /proc & /sys — Linux 가상 파일시스템
+<!-- reference: _reference/linux_filesystem_official_notes.md -->
 
 ## 목차
 

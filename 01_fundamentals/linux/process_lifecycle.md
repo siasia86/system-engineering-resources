@@ -1,4 +1,5 @@
 # Process Lifecycle — fork / exec / wait / exit
+<!-- reference: _reference/linux_process_official_notes.md -->
 
 ## 목차
 

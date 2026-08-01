@@ -1,4 +1,5 @@
 # Bash trap 가이드
+<!-- reference: _reference/linux_kernel_official_notes.md -->
 
 ## 목차
 
