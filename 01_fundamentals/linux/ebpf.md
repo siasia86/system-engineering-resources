@@ -1,4 +1,5 @@
 # eBPF — Extended Berkeley Packet Filter
+<!-- reference: _reference/ebpf_bpftrace_official_notes.md -->
 
 커널 코드 수정 없이 커널 내부를 동적으로 추적·필터링하는 기술을 정리합니다.
 

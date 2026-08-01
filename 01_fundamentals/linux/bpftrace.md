@@ -1,4 +1,5 @@
 # bpftrace - eBPF 기반 동적 추적 도구
+<!-- reference: _reference/ebpf_bpftrace_official_notes.md -->
 
 ## 목차
 

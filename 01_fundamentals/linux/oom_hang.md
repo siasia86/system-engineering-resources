@@ -1,4 +1,5 @@
 # OOM / Hang 트러블슈팅
+<!-- reference: _reference/linux_kernel_official_notes.md, _reference/linux_process_official_notes.md -->
 
 Linux 시스템에서 발생하는 OOM(Out of Memory)과 Hang(응답 없음) 현상의 개념, 원인, 대처 방안을 정리합니다.
 

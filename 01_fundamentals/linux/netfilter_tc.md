@@ -1,4 +1,5 @@
 # netfilter / tc — 네트워크 제어
+<!-- reference: _reference/linux_kernel_official_notes.md -->
 
 Linux 패킷 필터링(netfilter/iptables)과 트래픽 제어(tc)를 정리합니다.
 

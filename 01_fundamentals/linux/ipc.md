@@ -1,4 +1,5 @@
 # IPC — 프로세스 간 통신
+<!-- reference: _reference/linux_kernel_official_notes.md, _reference/linux_process_official_notes.md -->
 
 Linux에서 프로세스 간 데이터를 주고받는 메커니즘을 정리합니다.
 
