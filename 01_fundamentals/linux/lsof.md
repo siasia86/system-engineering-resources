@@ -1,4 +1,5 @@
 # lsof - List Open Files
+<!-- reference: _reference/lsof_official_notes.md -->
 
 ## 목차
 

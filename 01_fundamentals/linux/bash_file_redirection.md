@@ -1,5 +1,5 @@
 # Bash File Input/Output Redirections
-<!-- reference: _reference/linux_kernel_official_notes.md -->
+<!-- reference: _reference/linux_kernel_official_notes.md, _reference/bash_shell_official_notes.md -->
 
 ## 목차
 

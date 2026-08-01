@@ -1,4 +1,5 @@
 # Shell Interactive / Non-interactive 모드
+<!-- reference: _reference/bash_shell_official_notes.md -->
 
 ## 목차
 

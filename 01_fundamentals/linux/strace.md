@@ -1,4 +1,5 @@
 # strace - 시스템 콜 추적 도구
+<!-- reference: _reference/strace_official_notes.md -->
 
 ## 목차
 
