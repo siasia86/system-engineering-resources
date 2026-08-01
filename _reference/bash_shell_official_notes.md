@@ -44,7 +44,7 @@ sources:
 | 인터랙티브 셸 판별          | `$-`에 `i` 포함 여부 또는 `$PS1` 설정 여부로 확인      | bash manual |
 | 인터랙티브 판별 방법 (공식) | `bash -i`, `-c` 없이 터미널 연결 시 인터랙티브         | bash manual |
 | PS1 설정                    | 인터랙티브 셸에서만 기본 설정됨                        | bash manual |
-| BASH_ENV 사용               | 비인터랙티브 셸에서만 참조 (로그인 여부 무관)          | bash manual |
+| BASH_ENV 사용               | 쉘 스크립트 실행 시 참조 (비인터랙티브 스크립트)       | bash manual |
 | 인터랙티브 동작             | job control, history, `interactive_comments` 옵션 활성 | bash manual |
 | SIGHUP 처리                 | 인터랙티브 셸 종료 시 자식에게 SIGHUP 재전송           | bash manual |
 | 에러 처리 차이              | 비인터랙티브 셸에서 syntax error 발생 시 종료          | bash manual |
