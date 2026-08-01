@@ -39,25 +39,25 @@ sources:
 
 ### 검증된 사실 (2026-08-01)
 
-| 옵션              | 동작                                          | 출처     |
-|-------------------|-----------------------------------------------|----------|
-| `-p <pid>`        | 실행 중인 프로세스에 attach                   | strace.1 |
-| `-f`              | fork/clone된 자식 프로세스도 추적             | strace.1 |
-| `-o <file>`       | 출력 파일 지정                                | strace.1 |
-| `-e trace=<set>`  | 추적할 syscall 집합 지정 (`-e t=<set>` 약어)  | strace.1 |
-| `-e signal=<set>` | 추적할 시그널 집합 지정 (`-e s=<set>` 약어)   | strace.1 |
-| `-T`              | 각 syscall 소요 시간 출력                     | strace.1 |
-| `-c`              | syscall별 호출 횟수 및 시간 집계 후 요약 출력 | strace.1 |
-| `-tt`             | 마이크로초 단위 타임스탬프 출력               | strace.1 |
-| `-ttt`            | epoch 기준 초 + 마이크로초 출력               | strace.1 |
-| `-r`              | 상대 타임스탬프 출력                          | strace.1 |
-| `-s <size>`       | 출력 문자열 최대 길이 지정 (기본 32)          | strace.1 |
-| `-x`              | 문자열 인수를 16진수로 출력                   | strace.1 |
-| `-v`              | verbose (abbrev 없이 상세 출력)               | strace.1 |
-| `-b <syscall>`    | 해당 syscall 도달 시 detach                   | strace.1 |
-| `-E <var>=<val>`  | 환경 변수 추가/수정 후 실행                   | strace.1 |
-| `-u <username>`   | 지정 사용자 권한으로 명령어 실행              | strace.1 |
-| `--seccomp-bpf`   | seccomp-BPF 필터로 추적 가속                  | strace.1 |
+| 옵션              | 동작                                             | 출처     |
+|-------------------|--------------------------------------------------|----------|
+| `-p <pid>`        | 실행 중인 프로세스에 attach                      | strace.1 |
+| `-f`              | fork/clone된 자식 프로세스도 추적                | strace.1 |
+| `-o <file>`       | 출력 파일 지정                                   | strace.1 |
+| `-e trace=<set>`  | 추적할 syscall 집합 지정 (`-e t=<set>` 약어)     | strace.1 |
+| `-e signal=<set>` | 추적할 시그널 집합 지정 (`-e s=<set>` 약어)      | strace.1 |
+| `-T`              | 각 syscall 소요 시간 출력                        | strace.1 |
+| `-c`              | syscall별 호출 횟수 및 시간 집계 후 요약 출력    | strace.1 |
+| `-tt`             | 마이크로초 단위 타임스탬프 출력                  | strace.1 |
+| `-ttt`            | epoch 기준 초 + 마이크로초 출력                  | strace.1 |
+| `-r`              | 상대 타임스탬프 출력                             | strace.1 |
+| `-s <size>`       | 출력 문자열 최대 길이 지정 (기본 32)             | strace.1 |
+| `-x`              | 문자열 인수를 16진수로 출력                      | strace.1 |
+| `-v`              | verbose (abbrev 없이 상세 출력)                  | strace.1 |
+| `-b <syscall>`    | 지정 syscall 도달 시 detach (현재 execve만 지원) | strace.1 |
+| `-E <var>=<val>`  | 환경 변수 추가/수정 후 실행                      | strace.1 |
+| `-u <username>`   | 지정 사용자 권한으로 명령어 실행                 | strace.1 |
+| `--seccomp-bpf`   | seccomp-BPF 필터로 추적 가속                     | strace.1 |
 
 ## 3. -e trace 필터 문법
 
