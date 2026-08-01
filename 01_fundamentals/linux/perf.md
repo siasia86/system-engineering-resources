@@ -1,4 +1,5 @@
 # perf - Linux 성능 분석 도구
+<!-- reference: _reference/perf_official_notes.md -->
 
 ## 목차
 

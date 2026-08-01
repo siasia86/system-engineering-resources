@@ -1,4 +1,5 @@
 # vim-airline
+<!-- reference: _reference/vim_official_notes.md -->
 
 ## 목차
 
@@ -70,7 +71,7 @@ This means:
 For a better look, those sections can be colored differently, depending on various conditions
 (e.g. the mode or whether the current file is 'modified')
 
-# Features
+## Features
 
 *  Tiny core written with extensibility in mind ([open/closed principle][8]).
 *  Integrates with a variety of plugins, including: [vim-bufferline][6],
@@ -260,7 +261,7 @@ Completely transform the statusline to your liking.  Build out the statusline as
 
 ![allyourbase](https://f.cloud.github.com/assets/306502/1022714/e150034a-0da7-11e3-94a5-ca9d58a297e8.png)
 
-# Rationale
+## Rationale
 
 There's already [powerline][2], why yet another statusline?
 
@@ -270,11 +271,11 @@ What about [vim-powerline][1]?
 
 *  vim-powerline has been deprecated in favor of the newer, unifying powerline, which is under active development; the new version is written in python at the core and exposes various bindings such that it can style statuslines not only in vim, but also tmux, bash, zsh, and others.
 
-# Where did the name come from?
+## Where did the name come from?
 
 I wrote the initial version on an airplane, and since it's light as air it turned out to be a good name.  Thanks for flying vim!
 
-# Installation
+## Installation
 
 This plugin follows the standard runtime path structure, and as such it can be installed with a variety of plugin managers:
 
@@ -290,21 +291,21 @@ This plugin follows the standard runtime path structure, and as such it can be i
 | pack feature (native Vim 8 package feature) | `git clone https://github.com/vim-airline/vim-airline ~/.vim/pack/dist/start/vim-airline`<br/>Remember to run `:helptags` to generate help tags |
 | manual                                      | copy all of the files into your `~/.vim` directory                                                                                              |
 
-# Documentation
+## Documentation
 
 `:help airline`
 
-# Integrating with powerline fonts
+## Integrating with powerline fonts
 
 For the nice looking powerline symbols to appear, you will need to install a patched font.  Instructions can be found in the official powerline [documentation][20].  Prepatched fonts can be found in the [powerline-fonts][3] repository.
 
 Finally, you can add the convenience variable `let g:airline_powerline_fonts = 1` to your vimrc which will automatically populate the `g:airline_symbols` dictionary with the powerline symbols.
 
-# FAQ
+## FAQ
 
 Solutions to common problems can be found in the [Wiki][27].
 
-# Performance
+## Performance
 
 Whoa!  Everything got slow all of a sudden...
 
@@ -320,17 +321,17 @@ Also, you can enable caching of the various syntax highlighting groups. This wil
 
 In addition you might want to check out the [dark_minimal theme][56], which does not change highlighting groups once they are defined. Also please check the [FAQ][27] for more information on how to diagnose and fix the problem.
 
-# Screenshots
+## Screenshots
 
 A full list of screenshots for various themes can be found in the [Wiki][14].
 
-# Maintainers
+## Maintainers
 
 The project is currently being maintained by [Bailey Ling][41], [Christian Brabandt][42], and [Mike Hartington][44].
 
 If you are interested in becoming a maintainer (we always welcome more maintainers), please [go here][43].
 
-# License
+## License
 
 [MIT License][58]. Copyright (c) 2013-2019 Bailey Ling & Contributors.
 

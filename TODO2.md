@@ -27,14 +27,14 @@
 
 | # | 작업                                       | 상태 |
 |---|--------------------------------------------|------|
-| 1 | `_reference/gdb_official_notes.md` 작성    | ⬜   |
-| 2 | `_reference/strace_official_notes.md` 작성 | ⬜   |
-| 3 | `_reference/ltrace_official_notes.md` 작성 | ⬜   |
-| 4 | `_reference/INDEX.md` 3건 등록             | ⬜   |
-| 5 | `gdb.md` → `<!-- reference:` 삽입          | ⬜   |
-| 6 | `strace.md` → `<!-- reference:` 삽입       | ⬜   |
-| 7 | `ltrace.md` → `<!-- reference:` 삽입       | ⬜   |
-| 8 | md-style-check 3파일 0건 확인              | ⬜   |
+| 1 | `_reference/gdb_official_notes.md` 작성    | ✅   |
+| 2 | `_reference/strace_official_notes.md` 작성 | ✅   |
+| 3 | `_reference/ltrace_official_notes.md` 작성 | ✅   |
+| 4 | `_reference/INDEX.md` 3건 등록             | ✅   |
+| 5 | `gdb.md` → `<!-- reference:` 삽입          | ✅   |
+| 6 | `strace.md` → `<!-- reference:` 삽입       | ✅   |
+| 7 | `ltrace.md` → `<!-- reference:` 삽입       | ✅   |
+| 8 | md-style-check 3파일 0건 확인              | ✅   |
 
 ### 공식 소스 URL
 
@@ -57,14 +57,14 @@
 
 | # | 작업                                         | 상태 |
 |---|----------------------------------------------|------|
-| 1 | `_reference/valgrind_official_notes.md` 작성 | ⬜   |
-| 2 | `_reference/perf_official_notes.md` 작성     | ⬜   |
-| 3 | `_reference/lsof_official_notes.md` 작성     | ⬜   |
-| 4 | `_reference/INDEX.md` 3건 등록               | ⬜   |
-| 5 | `valgrind.md` → `<!-- reference:` 삽입       | ⬜   |
-| 6 | `perf.md` → `<!-- reference:` 삽입           | ⬜   |
-| 7 | `lsof.md` → `<!-- reference:` 삽입           | ⬜   |
-| 8 | md-style-check 3파일 0건 확인                | ⬜   |
+| 1 | `_reference/valgrind_official_notes.md` 작성 | ✅   |
+| 2 | `_reference/perf_official_notes.md` 작성     | ✅   |
+| 3 | `_reference/lsof_official_notes.md` 작성     | ✅   |
+| 4 | `_reference/INDEX.md` 3건 등록               | ✅   |
+| 5 | `valgrind.md` → `<!-- reference:` 삽입       | ✅   |
+| 6 | `perf.md` → `<!-- reference:` 삽입           | ✅   |
+| 7 | `lsof.md` → `<!-- reference:` 삽입           | ✅   |
+| 8 | md-style-check 3파일 0건 확인                | ✅   |
 
 ### 공식 소스 URL
 
@@ -87,17 +87,17 @@
 
 | #  | 작업                                                            | 상태 |
 |----|-----------------------------------------------------------------|------|
-| 1  | `_reference/iotop_official_notes.md` 작성                       | ⬜   |
-| 2  | `_reference/tcpdump_official_notes.md` 작성                     | ⬜   |
-| 3  | `_reference/bash_shell_official_notes.md` 작성                  | ⬜   |
-| 4  | `_reference/INDEX.md` 3건 등록                                  | ⬜   |
-| 5  | `iotop.md` → `<!-- reference:` 삽입                             | ⬜   |
-| 6  | `tcpdump.md` → `<!-- reference:` 삽입                           | ⬜   |
-| 7  | `shell_interactive_mode.md` → `<!-- reference:` 삽입            | ⬜   |
-| 8  | `bash_file_redirection.md` 추가 연결 (bash_shell → kernel 병기) | ⬜   |
-| 9  | `bash_math.md` 추가 연결                                        | ⬜   |
-| 10 | `bash_trap_complete_guide.md` 추가 연결                         | ⬜   |
-| 11 | md-style-check 대상 파일 0건 확인                               | ⬜   |
+| 1  | `_reference/iotop_official_notes.md` 작성                       | ✅   |
+| 2  | `_reference/tcpdump_official_notes.md` 작성                     | ✅   |
+| 3  | `_reference/bash_shell_official_notes.md` 작성                  | ✅   |
+| 4  | `_reference/INDEX.md` 3건 등록                                  | ✅   |
+| 5  | `iotop.md` → `<!-- reference:` 삽입                             | ✅   |
+| 6  | `tcpdump.md` → `<!-- reference:` 삽입                           | ✅   |
+| 7  | `shell_interactive_mode.md` → `<!-- reference:` 삽입            | ✅   |
+| 8  | `bash_file_redirection.md` 추가 연결 (bash_shell → kernel 병기) | ✅   |
+| 9  | `bash_math.md` 추가 연결                                        | ✅   |
+| 10 | `bash_trap_complete_guide.md` 추가 연결                         | ✅   |
+| 11 | md-style-check 대상 파일 0건 확인                               | ✅   |
 
 ### 공식 소스 URL
 
@@ -124,13 +124,13 @@
 
 | # | 작업                                                                 | 상태 |
 |---|----------------------------------------------------------------------|------|
-| 1 | `_reference/vim_official_notes.md` 작성                              | ⬜   |
-| 2 | `_reference/INDEX.md` 1건 등록                                       | ⬜   |
-| 3 | `vim.md` → `<!-- reference:` 삽입                                    | ⬜   |
-| 4 | `vim_airline.md` H1 구조 수정 (H1 12개 → H2 변환)                    | ⬜   |
-| 5 | `vim_airline.md` → `<!-- reference:` 삽입                            | ⬜   |
-| 6 | `root_password_recovery.md` 재검토 (절차 문서, ref 불필요 최종 확인) | ⬜   |
-| 7 | md-style-check 대상 파일 0건 확인                                    | ⬜   |
+| 1 | `_reference/vim_official_notes.md` 작성                              | ✅   |
+| 2 | `_reference/INDEX.md` 1건 등록                                       | ✅   |
+| 3 | `vim.md` → `<!-- reference:` 삽입                                    | ✅   |
+| 4 | `vim_airline.md` H1 구조 수정 (H1 12개 → H2 변환)                    | ✅   |
+| 5 | `vim_airline.md` → `<!-- reference:` 삽입                            | ✅   |
+| 6 | `root_password_recovery.md` 재검토 (절차 문서, ref 불필요 최종 확인) | ✅   |
+| 7 | md-style-check 대상 파일 0건 확인                                    | ✅   |
 
 ### 공식 소스 URL
 
@@ -159,12 +159,12 @@
 
 ## 완료 현황
 
-| 배치    | 대상 파일                                    | 상태 | 완료일 |
-|---------|----------------------------------------------|------|--------|
-| Batch 1 | gdb.md / strace.md / ltrace.md               | ⬜   | -      |
-| Batch 2 | valgrind.md / perf.md / lsof.md              | ⬜   | -      |
-| Batch 3 | iotop.md / tcpdump.md / shell_interactive.md | ⬜   | -      |
-| Batch 4 | root_password.md / vim.md / vim_airline.md   | ⬜   | -      |
+| 배치    | 대상 파일                                    | 상태 | 완료일     |
+|---------|----------------------------------------------|------|------------|
+| Batch 1 | gdb.md / strace.md / ltrace.md               | ✅   | 2026-08-01 |
+| Batch 2 | valgrind.md / perf.md / lsof.md              | ✅   | 2026-08-01 |
+| Batch 3 | iotop.md / tcpdump.md / shell_interactive.md | ✅   | 2026-08-01 |
+| Batch 4 | root_password.md / vim.md / vim_airline.md   | ✅   | 2026-08-01 |
 
 ---
 
