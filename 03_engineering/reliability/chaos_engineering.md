@@ -137,16 +137,16 @@ abort_if:
 
 ## 6. 도구
 
-| 도구         | 유형            | 환경        | 특징                           |
-|--------------|-----------------|-------------|--------------------------------|
-| AWS FIS      | 관리형 서비스   | AWS         | Stop condition, IAM 통합       |
-| LitmusChaos  | CNCF Incubating | Kubernetes  | CRD 기반, Resilience Score     |
-| Chaos Monkey | Netflix OSS     | Cloud 범용  | 랜덤 인스턴스 종료 (원조)      |
-| Gremlin      | 상용 SaaS       | 멀티 환경   | GUI, 안전 장치, 팀 관리        |
-| tc netem     | Linux 내장      | Linux       | 네트워크 지연/손실/대역폭 제한 |
-| toxiproxy    | Shopify OSS     | Application | TCP 프록시 기반 장애 주입      |
+| 도구         | 유형           | 환경        | 특징                           |
+|--------------|----------------|-------------|--------------------------------|
+| AWS FIS      | 관리형 서비스  | AWS         | Stop condition, IAM 통합       |
+| LitmusChaos  | CNCF Graduated | Kubernetes  | CRD 기반, Resilience Score     |
+| Chaos Monkey | Netflix OSS    | Cloud 범용  | 랜덤 인스턴스 종료 (원조)      |
+| Gremlin      | 상용 SaaS      | 멀티 환경   | GUI, 안전 장치, 팀 관리        |
+| tc netem     | Linux 내장     | Linux       | 네트워크 지연/손실/대역폭 제한 |
+| toxiproxy    | Shopify OSS    | Application | TCP 프록시 기반 장애 주입      |
 
-> LitmusChaos는 2022년 CNCF Incubating 프로젝트로 승격되었습니다. AWS FIS는 2021년 GA로 출시되었습니다.
+> LitmusChaos는 2022년 CNCF Incubating 승격, 2025년 CNCF Graduated로 졸업되었습니다. AWS FIS는 2021년 GA로 출시되었습니다.
 > — https://www.cncf.io/projects/litmus/
 > — https://aws.amazon.com/fis/
 
