@@ -19,7 +19,7 @@
 | CPU    | 1 core   | 4 core 이상    |
 | RAM    | 1 GB     | 4 GB 이상      |
 | 디스크 | 10 GB    | SSD 50 GB 이상 |
-| JDK    | JDK 17+  | JDK 21         |
+| JDK    | JDK 21+  | JDK 21/25      |
 | 포트   | 8080/tcp | 8080/tcp       |
 
 ### Jenkins vs GitHub Actions 비교
