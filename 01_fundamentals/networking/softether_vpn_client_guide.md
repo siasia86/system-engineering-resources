@@ -2,11 +2,11 @@
 
 ## 목차
 
-| 섹션                                                                                                                               |
-|------------------------------------------------------------------------------------------------------------------------------------|
-| [1. 개요](#1-개요) / [2. 설치 — Ubuntu](#2-설치-ubuntu) / [3. 설치 — Rocky Linux](#3-설치-rocky-linux)                             |
-| [4. VPN 연결 설정](#4-vpn-연결-설정) / [5. IP 할당 및 확인](#5-ip-할당-및-확인) / [6. systemd 서비스 등록](#6-systemd-서비스-등록) |
-| [7. 주요 vpncmd 명령어](#7-주요-vpncmd-명령어) / [8. 트러블슈팅](#8-트러블슈팅)                                                    |
+| 섹션                                                                                                                                                 |
+|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. 설치 — Ubuntu](#2-설치-ubuntu) / [3. 설치 — Rocky Linux](#3-설치-rocky-linux)                                               |
+| [4. VPN 연결 설정](#4-vpn-연결-설정) / [5. IP 할당 및 확인](#5-ip-할당-및-확인) / [6. systemd 서비스 등록](#6-systemd-서비스-등록)                   |
+| [7. 주요 vpncmd 명령어](#7-주요-vpncmd-명령어) / [8. 트러블슈팅](#8-트러블슈팅) / [9. 타 VPN 클라이언트](#9-타-vpn-클라이언트로-softether-서버-접속) |
 
 ---
 
@@ -21,6 +21,52 @@ SoftEther VPN은 멀티 프로토콜을 지원하는 오픈소스 VPN 소프트�
 | 라이선스  | Apache 2.0                                          |
 | 최신 버전 | v4.44-9807-rtm (2026-08 기준)                       |
 | GitHub    | https://github.com/SoftEtherVPN/SoftEtherVPN_Stable |
+
+### 동작 원리
+
+SoftEther VPN은 커널 가상 NIC(`tun`)와 Virtual Hub(소프트웨어 스위치)를 결합하여 Ethernet over HTTPS 터널을 구성합니다.
+
+```
+Linux Host
+┌──────────────────────────────────────────────────────────────────┐
+│  App (curl, ssh, ...)                                            │
+│       |                                                          │
+│  Kernel Routing Table                                            │
+│       |                                                          │
+│  [vpn_vpn0] TUN NIC  <---- vpnclient daemon (Ethernet/HTTPS) ───>│
+│                              (Ethernet over HTTPS)               │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+```
+                                      |
+                              SoftEther VPN Server
+                     ┌───────────────────────────────────────┐
+                     │  Virtual Hub (software L2 switch)     │
+                     │  ┌────────────┐  ┌────────────┐       │
+                     │  │   NIC 1    │  │   NIC 2    │       │
+                     │  └────────────┘  └────────────┘       │
+                     └───────────────────────────────────────┘
+```
+
+- vpnclient 데몬이 서버와 TCP(443/992/1194) 연결을 맺고 Ethernet 프레임을 캡슐화합니다.
+- 커널에 `vpn_<nicname>` TUN 인터페이스가 생성되며, IP 할당 후 트래픽이 흐릅니다.
+- Virtual Hub는 소프트웨어 L2 스위치로, 연결된 클라이언트 간 Ethernet 프레임을 교환합니다.
+
+### 서버 지원 프로토콜 및 포트
+
+SoftEther Server는 단일 프로세스로 여러 프로토콜을 동시에 수신합니다.
+
+| 프로토콜          | 기본 포트     | 클라이언트                              |
+|-------------------|---------------|-----------------------------------------|
+| SoftEther SSL-VPN | TCP 443, 992  | vpnclient (본 문서)                     |
+| OpenVPN           | TCP/UDP 1194  | OpenVPN 클라이언트                      |
+| L2TP/IPsec        | UDP 500, 4500 | Windows/iOS/Android 기본 VPN 클라이언트 |
+| MS-SSTP           | TCP 443       | Windows 기본 VPN 클라이언트             |
+| EtherIP/IPsec     | UDP 500, 4500 | Cisco 라우터 등                         |
+| 관리 (vpncmd)     | TCP 5555      | vpncmd 원격 관리                        |
+
+🟡 992 포트는 IANA pop3s 번호를 재활용합니다. 443이 차단된 방화벽 환경에서 대체 포트로 사용합니다.
 
 ### 바이너리 종류
 
@@ -151,6 +197,76 @@ VPN Client> AccountConnect myconn
 VPN Client> AccountStatusGet myconn
 ```
 
+### 인증 방식 3종
+
+SoftEther 클라이언트는 3가지 인증 방식을 지원합니다.
+
+| 인증 방식         | 명령어                | TYPE 옵션  | 비고                            |
+|-------------------|-----------------------|------------|---------------------------------|
+| 패스워드          | `AccountPasswordSet`  | `standard` | 일반 사용자명 + 패스워드        |
+| RADIUS            | `AccountPasswordSet`  | `radius`   | RADIUS 서버 위임, OTP 연동 가능 |
+| 클라이언트 인증서 | `AccountCertSet`      | —          | 인증서 파일(.pfx/.p12) 지정     |
+| 익명              | `AccountAnonymousSet` | —          | 인증 없음, 테스트용             |
+
+#### 패스워드 인증 (standard / radius)
+
+```
+VPN Client> AccountPasswordSet myconn /PASSWORD:SecurePassword123 /TYPE:standard
+```
+
+#### 클라이언트 인증서 인증
+
+```
+# 인증서(.pfx) 파일을 vpnclient가 읽을 수 있는 경로에 배치
+VPN Client> AccountCertSet myconn /LOADCERT:/etc/vpn/client.crt /LOADKEY:/etc/vpn/client.key
+```
+
+#### 서버 인증서 검증 활성화
+
+서버 인증서를 검증하면 MITM 공격을 방어할 수 있습니다.
+
+```
+# 서버 CA 인증서 등록
+VPN Client> AccountServerCertSet myconn /LOADCERT:/etc/vpn/server-ca.crt
+
+# 검증 활성화
+VPN Client> AccountServerCertEnable myconn
+
+# 검증 비활성화 (자체 서명 인증서 환경)
+VPN Client> AccountServerCertDisable myconn
+```
+
+### Proxy 경유 연결
+
+방화벽이 직접 TCP 443 연결을 차단하는 경우 HTTP/SOCKS 프록시를 경유합니다.
+
+#### HTTP Proxy
+
+```
+VPN Client> AccountProxyHttp myconn /SERVER:proxy.example.com:8080
+```
+
+#### SOCKS Proxy
+
+```
+VPN Client> AccountProxySocks myconn /SERVER:proxy.example.com:1080
+```
+
+#### Proxy 해제
+
+```
+VPN Client> AccountProxyNone myconn
+```
+
+### 재연결 설정
+
+연결 끊김 시 자동 재시도 횟수와 간격을 설정합니다.
+
+```
+# NUM: 재시도 횟수 (0 = 무한), INTERVAL: 재시도 간격(초)
+VPN Client> AccountRetrySet myconn /NUM:0 /INTERVAL:15
+```
+
 [⬆ 목차로 돌아가기](#목차)
 
 ## 5. IP 할당 및 확인
@@ -172,6 +288,45 @@ dhclient vpn_vpn0
 ```bash
 ip addr show vpn_vpn0
 ping -c 3 192.0.2.1
+```
+
+### Full Tunnel 라우팅
+
+모든 트래픽(0.0.0.0/0)을 VPN을 통해 라우팅합니다.
+
+```bash
+# 기존 기본 경로 확인
+ip route show default
+
+# VPN 서버 IP(192.0.2.1)만 현재 게이트웨이로 유지 (VPN 연결 유지용)
+GW=$(ip route show default | awk '/via/{print $3; exit}')
+ip route add 192.0.2.1 via "$GW"
+
+# 기본 경로를 VPN NIC으로 변경
+ip route del default
+ip route add default dev vpn_vpn0
+```
+
+🟡 Full Tunnel 적용 시 VPN 서버 IP 경로를 먼저 추가하지 않으면 VPN 연결이 끊깁니다.
+
+### Split Tunnel 라우팅
+
+특정 대역만 VPN으로 라우팅하고 나머지는 기존 경로를 유지합니다.
+
+```bash
+# 사내망(10.0.0.0/8)만 VPN으로 라우팅
+ip route add 10.0.0.0/8 dev vpn_vpn0
+
+# 여러 대역 추가
+ip route add 172.16.0.0/12 dev vpn_vpn0
+ip route add 192.168.0.0/16 dev vpn_vpn0
+```
+
+### 라우팅 확인
+
+```bash
+ip route show
+ip route get 10.0.0.1      # 10.0.0.1 패킷이 어느 인터페이스로 나가는지 확인
 ```
 
 ### 연결 해제
@@ -224,19 +379,77 @@ cd /opt/vpnclient && ./vpncmd
 
 ### 명령어 목록
 
-| 명령어                          | 설명           |
-|---------------------------------|----------------|
-| `NicCreate <name>`              | 가상 NIC 생성  |
-| `NicList`                       | 가상 NIC 목록  |
-| `NicDelete <name>`              | 가상 NIC 삭제  |
-| `AccountCreate <name> ...`      | VPN 계정 생성  |
-| `AccountList`                   | 계정 목록      |
-| `AccountGet <name>`             | 계정 상세 확인 |
-| `AccountPasswordSet <name> ...` | 패스워드 설정  |
-| `AccountConnect <name>`         | VPN 연결       |
-| `AccountDisconnect <name>`      | VPN 연결 해제  |
-| `AccountStatusGet <name>`       | 연결 상태 확인 |
-| `AccountDelete <name>`          | 계정 삭제      |
+#### 가상 NIC 관리
+
+| 명령어                 | 설명               |
+|------------------------|--------------------|
+| `NicCreate <name>`     | 가상 NIC 생성      |
+| `NicList`              | 가상 NIC 목록 확인 |
+| `NicDelete <name>`     | 가상 NIC 삭제      |
+| `NicEnable <name>`     | 가상 NIC 활성화    |
+| `NicDisable <name>`    | 가상 NIC 비활성화  |
+| `NicGetSetting <name>` | 가상 NIC 설정 확인 |
+
+#### 계정 관리
+
+| 명령어                                  | 설명                   |
+|-----------------------------------------|------------------------|
+| `AccountCreate <name> ...`              | VPN 계정 생성          |
+| `AccountList`                           | 계정 목록 확인         |
+| `AccountGet <name>`                     | 계정 상세 확인         |
+| `AccountSet <name> ...`                 | 계정 기본 정보 수정    |
+| `AccountRename <name> /NEWNAME:<new>`   | 계정 이름 변경         |
+| `AccountDelete <name>`                  | 계정 삭제              |
+| `AccountExport <name> /SAVEPATH:<path>` | 계정 설정 내보내기     |
+| `AccountImport /LOADPATH:<path>`        | 계정 설정 가져오기     |
+| `AccountStartupSet <name>`              | 부팅 시 자동 연결 등록 |
+| `AccountStartupRemove <name>`           | 자동 연결 해제         |
+
+#### 인증 설정
+
+| 명령어                                          | 설명                   |
+|-------------------------------------------------|------------------------|
+| `AccountPasswordSet <name> /PASSWORD:x /TYPE:y` | 패스워드 인증 설정     |
+| `AccountAnonymousSet <name>`                    | 익명 인증 설정         |
+| `AccountCertSet <name> /LOADCERT:x /LOADKEY:y`  | 클라이언트 인증서 설정 |
+| `AccountCertGet <name>`                         | 클라이언트 인증서 확인 |
+| `AccountUsernameSet <name> /USERNAME:x`         | 사용자명 변경          |
+
+#### 서버 인증서 검증
+
+| 명령어                                         | 설명                      |
+|------------------------------------------------|---------------------------|
+| `AccountServerCertEnable <name>`               | 서버 인증서 검증 활성화   |
+| `AccountServerCertDisable <name>`              | 서버 인증서 검증 비활성화 |
+| `AccountServerCertSet <name> /LOADCERT:<path>` | 서버 CA 인증서 등록       |
+| `AccountServerCertGet <name>`                  | 서버 CA 인증서 확인       |
+| `AccountServerCertDelete <name>`               | 서버 CA 인증서 삭제       |
+
+#### 연결 제어
+
+| 명령어                                      | 설명                  |
+|---------------------------------------------|-----------------------|
+| `AccountConnect <name>`                     | VPN 연결              |
+| `AccountDisconnect <name>`                  | VPN 연결 해제         |
+| `AccountStatusGet <name>`                   | 연결 상태 확인        |
+| `AccountRetrySet <name> /NUM:n /INTERVAL:s` | 재연결 횟수·간격 설정 |
+
+#### 프록시 설정
+
+| 명령어                                           | 설명              |
+|--------------------------------------------------|-------------------|
+| `AccountProxyNone <name>`                        | 직접 연결 (기본)  |
+| `AccountProxyHttp <name> /SERVER:<host>:<port>`  | HTTP 프록시 경유  |
+| `AccountProxySocks <name> /SERVER:<host>:<port>` | SOCKS 프록시 경유 |
+
+#### 기타
+
+| 명령어         | 설명                |
+|----------------|---------------------|
+| `VersionGet`   | vpnclient 버전 확인 |
+| `PasswordSet`  | 관리 비밀번호 설정  |
+| `RemoteEnable` | 원격 관리 허용      |
+| `KeepEnable`   | Keep-Alive 활성화   |
 
 ### 계정 생성 ~ 삭제 전체 흐름
 
@@ -376,6 +589,135 @@ ip addr show vpn_vpn0
 ```
 
 🟡 정확한 패스워드 형식은 서버 관리자에게 확인합니다. 서버 설정에 따라 OTP 단독 입력 방식일 수 있습니다.
+
+### 연결이 반복적으로 끊기는 경우
+
+```bash
+# 1. AccountStatusGet으로 연결 상태 확인
+VPN Client> AccountStatusGet myconn
+
+# 2. 재연결 설정 확인 — 무한 재시도 설정
+VPN Client> AccountRetrySet myconn /NUM:0 /INTERVAL:15
+
+# 3. Keep-Alive 활성화
+VPN Client> KeepEnable
+VPN Client> KeepSet /HOST:8.8.8.8 /PORT:80 /INTERVAL:50 /PROTOCOL:tcp
+```
+
+### 방화벽이 443을 차단하는 경우
+
+SoftEther Server의 리스너 포트 우선순위 순서로 시도합니다.
+
+```
+# 443 차단 → 992 시도
+VPN Client> AccountCreate myconn /SERVER:192.0.2.1:992 /HUB:VPN /USERNAME:Secureuser123 /NICNAME:vpn0
+
+# 992 차단 → 1194 시도
+VPN Client> AccountCreate myconn /SERVER:192.0.2.1:1194 /HUB:VPN /USERNAME:Secureuser123 /NICNAME:vpn0
+```
+
+🟡 포트 변경은 서버가 해당 포트에 리스너를 열어 두고 있는 경우에만 동작합니다.
+
+### 라우팅 충돌 (VPN 연결 후 인터넷 불통)
+
+Full Tunnel 설정 시 VPN 서버 IP 경로를 미리 추가하지 않아 발생합니다.
+
+```bash
+# 현재 기본 경로 확인
+ip route show default
+
+# VPN 서버 IP 직접 경로 추가 (VPN 연결용)
+GW=$(ip route show default | awk '/via/{print $3; exit}')
+ip route add 192.0.2.1 via "$GW"
+
+# 기본 경로를 VPN NIC으로 변경
+ip route del default
+ip route add default dev vpn_vpn0
+```
+
+### vpncmd 접속 불가 (Connection refused)
+
+```bash
+# vpnclient 프로세스 확인
+ps aux | grep vpnclient
+
+# 재시작
+cd /opt/vpnclient
+./vpnclient stop
+sleep 2
+./vpnclient start
+
+# 관리 포트(5555) 리스닝 확인
+ss -tlnp | grep 5555
+```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 9. 타 VPN 클라이언트로 SoftEther 서버 접속
+
+SoftEther VPN Server는 vpnclient 외에도 OS 기본 VPN 클라이언트로 접속할 수 있습니다.
+
+### L2TP/IPsec (Windows / iOS / Android)
+
+SoftEther Server에서 L2TP 활성화 후, 각 OS 기본 VPN 클라이언트로 접속합니다.
+
+| 항목              | 값                |
+|-------------------|-------------------|
+| VPN 종류          | L2TP/IPsec        |
+| 서버 주소         | SoftEther 서버 IP |
+| 사전 공유 키(PSK) | 서버 설정 값      |
+| 사용자명          | VPN 계정 사용자명 |
+| 패스워드          | VPN 계정 패스워드 |
+
+```bash
+# Linux에서 strongSwan으로 L2TP/IPsec 접속 예시
+apt install -y strongswan xl2tpd
+
+# /etc/ipsec.conf
+cat << 'IPSEC' > /etc/ipsec.conf
+conn softether-l2tp
+  authby=secret
+  auto=start
+  keyexchange=ikev1
+  left=%defaultroute
+  right=192.0.2.1
+  type=transport
+  esp=aes128-sha1-modp1024!
+  ike=aes128-sha1-modp1024!
+  ikelifetime=8h
+  keylife=1h
+IPSEC
+
+# /etc/ipsec.secrets
+echo ": PSK "SecureKey123"" > /etc/ipsec.secrets
+```
+
+### OpenVPN 클라이언트로 접속
+
+SoftEther Server에서 OpenVPN 구성 파일(.ovpn)을 받아 사용합니다.
+
+```bash
+apt install -y openvpn
+
+# 서버 관리자에게 받은 .ovpn 파일로 연결
+openvpn --config softether-server.ovpn --daemon
+
+# 연결 상태 확인
+ip addr show tun0
+```
+
+### 프로토콜별 접속 방법 비교
+
+| 클라이언트          | 프로토콜       | 포트         | 장점                       | 단점                           |
+|---------------------|----------------|--------------|----------------------------|--------------------------------|
+| vpnclient (본 문서) | SoftEther 독자 | TCP 443/992  | 방화벽 우회, 고성능        | SoftEther 클라이언트 설치 필요 |
+| OS 기본 VPN         | L2TP/IPsec     | UDP 500/4500 | 설치 불필요                | NAT 환경 제약                  |
+| OpenVPN 클라이언트  | OpenVPN        | TCP/UDP 1194 | 오픈소스, 광범위한 OS 지원 | 클라이언트 설치 필요           |
+| Windows 기본 VPN    | MS-SSTP        | TCP 443      | Windows 내장               | Windows 전용                   |
+
+> 관련 프로토콜 상세: [vpn_protocol_concepts.md](./vpn_protocol_concepts.md)
 
 [⬆ 목차로 돌아가기](#목차)
 
