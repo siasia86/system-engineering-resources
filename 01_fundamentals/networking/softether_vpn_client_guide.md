@@ -19,7 +19,7 @@ SoftEther VPN은 멀티 프로토콜을 지원하는 오픈소스 VPN 소프트�
 |-----------|-----------------------------------------------------|
 | 언어      | C                                                   |
 | 라이선스  | Apache 2.0                                          |
-| 최신 버전 | v4.43-9799-beta (2026-05 기준)                      |
+| 최신 버전 | v4.44-9807-rtm (2026-08 기준)                       |
 | GitHub    | https://github.com/SoftEtherVPN/SoftEtherVPN_Stable |
 
 ### 바이너리 종류
@@ -45,7 +45,7 @@ apt install -y gcc make libssl-dev libreadline-dev libncurses-dev wget
 ### 소스 다운로드 및 빌드
 
 ```bash
-wget https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/v4.43-9799-beta/softether-vpnclient-v4.43-9799-beta-2023.08.31-linux-x64-64bit.tar.gz
+wget https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/v4.43-9799-beta/softether-vpnclient-v4.44-9807-rtm-2025.05.07-linux-x64-64bit.tar.gz
 tar xzf softether-vpnclient-*.tar.gz
 cd vpnclient
 make
@@ -72,7 +72,7 @@ dnf install -y gcc make openssl-devel readline-devel ncurses-devel wget
 ### 소스 다운로드 및 빌드
 
 ```bash
-wget https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/v4.43-9799-beta/softether-vpnclient-v4.43-9799-beta-2023.08.31-linux-x64-64bit.tar.gz
+wget https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/v4.43-9799-beta/softether-vpnclient-v4.44-9807-rtm-2025.05.07-linux-x64-64bit.tar.gz
 tar xzf softether-vpnclient-*.tar.gz
 cd vpnclient
 make
@@ -399,6 +399,6 @@ ip addr show vpn_vpn0
 
 **작성일**: 2026-05-11
 
-**마지막 업데이트**: 2026-05-11
+**마지막 업데이트**: 2026-08-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.
