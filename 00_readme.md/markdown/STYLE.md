@@ -463,5 +463,5 @@ H3 제목 형식: `` ### `/command` — 한글 설명 ``
 - Redis Patterns: [redis.io/docs/manual/patterns](https://redis.io/docs/manual/patterns/) — ★★★☆☆
 - RFC 793: Transmission Control Protocol
 - Stevens, W. Richard. "TCP/IP Illustrated, Volume 1"
-- [관련 내부 문서](../01_fundamentals/networking/TCP_state.md)
+- [관련 내부 문서](../01_fundamentals/networking/tcp_state_concepts.md)
 ```

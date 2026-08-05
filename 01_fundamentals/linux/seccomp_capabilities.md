@@ -219,7 +219,7 @@ strace ./myapp 2>&1 | grep "EPERM\|EACCES"
 
 - Linux man pages — capabilities: [man7.org/linux/man-pages/man7/capabilities.7.html](https://man7.org/linux/man-pages/man7/capabilities.7.html) — ★★★☆☆
 - Docker seccomp: [docs.docker.com/engine/security/seccomp](https://docs.docker.com/engine/security/seccomp/) — ★★★☆☆
-- [namespace.md](namespace.md)
+- [namespace_concepts.md](namespace_concepts.md)
 
 ---
 

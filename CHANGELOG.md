@@ -80,12 +80,12 @@
 
 #### 01_fundamentals/linux — `<!-- reference:` 연결 15개 추가
 - `linux_filesystem.md`, `linux_virtual_fs.md` → `linux_filesystem_official_notes.md`
-- `scheduler.md`, `netfilter_tc.md`, `seccomp_capabilities.md` → `linux_kernel_official_notes.md`
+- `scheduler_concepts.md`, `netfilter_tc.md`, `seccomp_capabilities.md` → `linux_kernel_official_notes.md`
 - `bash_file_redirection.md`, `bash_math.md`, `bash_trap_complete_guide.md` → `linux_kernel_official_notes.md`
 - `ebpf.md`, `bpftrace.md` → `ebpf_bpftrace_official_notes.md` (기존 kernel_notes에서 교체)
 - `process_lifecycle.md`, `linux_system_processes.md` → `linux_process_official_notes.md` (기존 kernel_notes에서 교체)
-- `virtual_memory.md` → `linux_process_official_notes.md` (기존 kernel_notes에서 교체)
-- `ipc.md`, `oom_hang.md` → `linux_kernel_official_notes.md` + `linux_process_official_notes.md` (병기)
+- `virtual_memory_concepts.md` → `linux_process_official_notes.md` (기존 kernel_notes에서 교체)
+- `ipc_concepts.md`, `oom_hang.md` → `linux_kernel_official_notes.md` + `linux_process_official_notes.md` (병기)
 
 #### _reference — fact-check 수정
 - `linux_process_official_notes.md` — `overcommit_memory` 출처 `MM concepts` → `proc_sys_vm.5` 교체 (직접 접근 가능한 man page 기반)
@@ -217,7 +217,7 @@
 
 #### 12_tech_stack — 신규 문서 3개
 - `harness_engineering.md` — AI Harness Engineering (에이전트 환경 설계)
-- `vpn_protocol.md` (05_computer_science) — VPN 프로토콜 비교 (PPTP~WireGuard, RFC 대조 검증)
+- `vpn_protocol_concepts.md` (05_computer_science) — VPN 프로토콜 비교 (PPTP~WireGuard, RFC 대조 검증)
 - `zabbix_vs_prometheus.md` — 모니터링 도구 비교 (아키텍처, 수집, 알림, 확장성)
 
 #### _reference — 신규 참조 파일
@@ -225,12 +225,12 @@
 - INDEX.md 갱신 (VPN Protocol 항목 추가, 알파벳순 정렬)
 
 #### 03_advanced_linux — 신규 문서 6개
-- `ipc.md` — 프로세스 간 통신 (Pipe, Socket, Shared Memory, Message Queue)
+- `ipc_concepts.md` — 프로세스 간 통신 (Pipe, Socket, Shared Memory, Message Queue)
 - `linux_virtual_fs.md` — VFS 추상화 계층, inode, dentry, superblock
-- `namespace.md` — Linux Namespace 7종 (pid, net, mnt, uts, ipc, user, cgroup)
+- `namespace_concepts.md` — Linux Namespace 7종 (pid, net, mnt, uts, ipc, user, cgroup)
 - `netfilter_tc.md` — Netfilter 훅 체인, iptables/nftables, TC 트래픽 제어
-- `scheduler.md` — CFS, RT, Deadline 스케줄러, nice, cgroup CPU
-- `virtual_memory.md` — 페이지 테이블, TLB, Swap, OOM Killer, NUMA
+- `scheduler_concepts.md` — CFS, RT, Deadline 스케줄러, nice, cgroup CPU
+- `virtual_memory_concepts.md` — 페이지 테이블, TLB, Swap, OOM Killer, NUMA
 
 #### 04_system_engineer/04_ai — 신규 문서 3개
 - `kiro_agent_lock.md` — Kiro 에이전트 동시 실행 방지
@@ -352,9 +352,9 @@
 
 #### 다이어그램 화살표 수정
 - `ai_development_request_template.md` — `------->` → `──────>` (Box Drawing 문자)
-- `vpn_protocol.md` — 다이어그램 `│`/`v` 위치, 박스 `┐`/`┘` 닫힘, Transport/Tunnel Mode 박스 수정
+- `vpn_protocol_concepts.md` — 다이어그램 `│`/`v` 위치, 박스 `┐`/`┘` 닫힘, Transport/Tunnel Mode 박스 수정
 
-#### vpn_protocol.md 사실 검증 수정
+#### vpn_protocol_concepts.md 사실 검증 수정
 - 세대 타임라인: OpenVPN 2012→2001, IKEv2 순서 교체
 - IPsec AES-GCM-16: SHOULD+ → MUST (RFC 8221)
 - OpenVPN TLS: "1.3 기본" → "1.2/1.3 (최상위 지원 버전 자동 선택)"

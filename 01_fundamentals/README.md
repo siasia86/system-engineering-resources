@@ -14,8 +14,8 @@
 ## 주요 문서
 
 - [bash_trap_complete_guide.md](./linux/bash_trap_complete_guide.md) — 시그널 핸들링과 cleanup 패턴
-- [virtual_memory.md](./linux/virtual_memory.md) — 페이지 테이블, TLB, OOM 원리
-- [TCP_state.md](./networking/TCP_state.md) — TCP 상태 전이, TIME_WAIT 문제
+- [virtual_memory_concepts.md](./linux/virtual_memory_concepts.md) — 페이지 테이블, TLB, OOM 원리
+- [tcp_state_concepts.md](./networking/tcp_state_concepts.md) — TCP 상태 전이, TIME_WAIT 문제
 - [ipv4_addressing_guide.md](./networking/ipv4_addressing_guide.md) — 서브넷팅, CIDR, AWS VPC 매핑
 - [process_lifecycle.md](./linux/process_lifecycle.md) — fork/exec, zombie/orphan 처리
 

@@ -176,7 +176,7 @@
 |-------------------------------|--------------------------------------------------|------|
 | `linux_filesystem.md`         | `linux_filesystem_official_notes.md`             | ✅   |
 | `linux_virtual_fs.md`         | `linux_filesystem_official_notes.md`             | ✅   |
-| `scheduler.md`                | `linux_kernel_official_notes.md`                 | ✅   |
+| `scheduler_concepts.md`                | `linux_kernel_official_notes.md`                 | ✅   |
 | `netfilter_tc.md`             | `linux_kernel_official_notes.md`                 | ✅   |
 | `seccomp_capabilities.md`     | `linux_kernel_official_notes.md`                 | ✅   |
 | `bash_file_redirection.md`    | `linux_kernel_official_notes.md`                 | ✅   |
@@ -186,8 +186,8 @@
 | `bpftrace.md`                 | `ebpf_bpftrace_official_notes.md`                | ✅   |
 | `process_lifecycle.md`        | `linux_process_official_notes.md`                | ✅   |
 | `linux_system_processes.md`   | `linux_process_official_notes.md`                | ✅   |
-| `ipc.md`                      | kernel_notes + `linux_process_official_notes.md` | ✅   |
-| `virtual_memory.md`           | `linux_process_official_notes.md`                | ✅   |
+| `ipc_concepts.md`                      | kernel_notes + `linux_process_official_notes.md` | ✅   |
+| `virtual_memory_concepts.md`           | `linux_process_official_notes.md`                | ✅   |
 | `oom_hang.md`                 | kernel_notes + `linux_process_official_notes.md` | ✅   |
 
 ### 신규 `_reference` 2개 작성 및 fact-check 완료
