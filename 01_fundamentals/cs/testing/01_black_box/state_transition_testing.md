@@ -129,7 +129,7 @@ CLOSED → SYN_SENT → ESTABLISHED → FIN_WAIT_1 → FIN_WAIT_2 → TIME_WAIT 
 ## 참고 자료
 
 - ISTQB Foundation Level Syllabus — ★★★☆☆
-- [TCP 상태 전이](../../../networking/TCP_state.md)
+- [TCP 상태 전이](../../../networking/tcp_state_concepts.md)
 - [결정 테이블 테스트](decision_table_testing.md)
 
 ---

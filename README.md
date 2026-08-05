@@ -30,12 +30,12 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Shell 인터랙티브 모드](01_fundamentals/linux/shell_interactive_mode.md)        | interactive/non-interactive |
 | [Vim 사용법](01_fundamentals/linux/vim.md)                                      | 기본 명령어, 모드, 설정     |
 | [시스템 프로세스](01_fundamentals/linux/linux_system_processes.md)              | init, systemd, 데몬         |
-| [Namespace](01_fundamentals/linux/namespace.md)                                 | 7종 namespace, 격리         |
-| [Cgroup](01_fundamentals/linux/cgroup.md)                                       | v1/v2, 리소스 제한          |
-| [Scheduler](01_fundamentals/linux/scheduler.md)                                 | CFS, RT, Deadline           |
-| [Virtual Memory](01_fundamentals/linux/virtual_memory.md)                       | 페이지 테이블, TLB, OOM     |
+| [Namespace](01_fundamentals/linux/namespace_concepts.md)                                 | 7종 namespace, 격리         |
+| [Cgroup](01_fundamentals/linux/cgroup_concepts.md)                                       | v1/v2, 리소스 제한          |
+| [Scheduler](01_fundamentals/linux/scheduler_concepts.md)                                 | CFS, RT, Deadline           |
+| [Virtual Memory](01_fundamentals/linux/virtual_memory_concepts.md)                       | 페이지 테이블, TLB, OOM     |
 | [VFS](01_fundamentals/linux/linux_virtual_fs.md)                                | inode, dentry, superblock   |
-| [IPC](01_fundamentals/linux/ipc.md)                                             | Pipe, Socket, SHM, MQ       |
+| [IPC](01_fundamentals/linux/ipc_concepts.md)                                             | Pipe, Socket, SHM, MQ       |
 | [Netfilter/TC](01_fundamentals/linux/netfilter_tc.md)                           | iptables/nftables, TC       |
 | [eBPF](01_fundamentals/linux/ebpf.md)                                           | eBPF 프로그래밍, 맵         |
 | [bpftrace](01_fundamentals/linux/bpftrace.md)                                   | 동적 추적, 커널 분석        |
@@ -59,13 +59,13 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 |---------------------------------------------------------------------------|------------------------------|
 | [IPv4 주소 체계](01_fundamentals/networking/ipv4_addressing_guide.md)     | 서브넷, CIDR, AWS VPC        |
 | [IPv6 주소 체계](01_fundamentals/networking/ipv6_addressing_guide.md)     | 주소 구조, 표기법, SLAAC     |
-| [TCP 상태 전이](01_fundamentals/networking/TCP_state.md)                  | 3/4-Way Handshake, TIME_WAIT |
+| [TCP 상태 전이](01_fundamentals/networking/tcp_state_concepts.md)                  | 3/4-Way Handshake, TIME_WAIT |
 | [패킷 분석](01_fundamentals/networking/packet_analysis.md)                | IP/TCP/UDP 헤더, PROXY Proto |
 | [네트워크 헤더](01_fundamentals/networking/network_headers.md)            | Ethernet, ARP, DNS, TLS      |
 | [HTTP 메서드](01_fundamentals/networking/http_methods.md)                 | GET/POST/PUT/DELETE/PATCH    |
 | [tcpdump 예제](01_fundamentals/networking/tcpdump_examples.md)            | 패킷 캡처 실전 예제          |
 | [Switch VLAN Mode](01_fundamentals/networking/switch_vlan_mode.md)        | Access/Trunk/Hybrid          |
-| [VPN Protocol](01_fundamentals/networking/vpn_protocol.md)                | PPTP~WireGuard 비교          |
+| [VPN Protocol](01_fundamentals/networking/vpn_protocol_concepts.md)                | PPTP~WireGuard 비교          |
 | [에러 코드](01_fundamentals/networking/error_codes.md)                    | HTTP/SMTP/FTP 상태 코드      |
 | [ASN/DDoS 대응](01_fundamentals/networking/asn_and_cloudflare_ddos.md)    | ASN 운영, Cloudflare         |
 | [CDN/Proxy/Origin](01_fundamentals/networking/cdn_proxy_origin_ip.md)     | CDN 구조, Origin IP 보호     |
@@ -75,7 +75,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 | 문서                                                    | 설명                         |
 |---------------------------------------------------------|------------------------------|
-| [CPU CISC vs RISC](01_fundamentals/cs/cpu_cisc_risc.md) | 명령어 집합 아키텍처 비교    |
+| [CPU CISC vs RISC](01_fundamentals/cs/cpu_cisc_risc_concepts.md) | 명령어 집합 아키텍처 비교    |
 | [자료구조](01_fundamentals/cs/data_structures/)         | Array, Stack, Queue, Tree 등 |
 | [테스팅](01_fundamentals/cs/testing/)                   | Black/White Box, 테스트 레벨 |
 
