@@ -282,6 +282,7 @@ Context Window Usage:
 - 추가 대상 예시: HMAC, AEAD, GRE, ISAKMP, HKDF, SPI, MOBIKE, PFS, DPI, MPPE, LCP, Curve25519 ...
 - 생략 가능 예시: TCP, UDP, IP, TLS, VPN, SSH, DNS, HTTP — 일반적으로 알려진 약어
 - 동일 문서 내 두 번째 등장부터는 설명 생략
+- **인용구는 표 전체가 끝난 뒤에 배치** — 표 중간에 삽입하면 마크다운 렌더러가 표를 두 개로 분리함
 
 ```markdown
 - DPI(패킷 검사) 환경에서 SoftEther가 유리합니다.

@@ -53,6 +53,7 @@ Rules:
 - No `💡` emoji — the blockquote itself signals an explanation
 - `🟡` reserved for warnings/cautions only — do not use for term explanations
 - Omit explanation on second and subsequent occurrences in the same document
+- **Place blockquotes after the entire table, never inside it** — a blockquote mid-table splits the table into two separate tables in Markdown rendering
 
 ```markdown
 - DPI environments make SoftEther advantageous.
