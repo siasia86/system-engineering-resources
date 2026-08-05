@@ -86,7 +86,7 @@
 시스템 프롬프트, 이전 대화 내용, 등록된 파일, 도구 정의 등이 모두 컨텍스트에 포함됩니다.
 `/context` 명령어로 이 컨텍스트에 파일을 추가하거나, 현재 사용량을 확인할 수 있습니다.
 
-> 💡 Context Window 개념 상세는 [섹션 4. Context Window](#4-context-window-개념) 참고
+> Context Window 개념 상세는 [섹션 4. Context Window](#4-context-window-개념) 참고
 
 #### 서브커맨드
 

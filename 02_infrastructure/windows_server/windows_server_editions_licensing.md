@@ -100,7 +100,7 @@ docker run --isolation hyperv mcr.microsoft.com/windows/servercore:ltsc2022
 
 ### Datacenter 전용 기능 개념
 
-> 💡 S2D, Shielded VM, Network Controller(SDN), SDDC, Failover Cluster, Hotpatch, Generation 2 VM 등의 개념은
+> S2D, Shielded VM, Network Controller(SDN), SDDC, Failover Cluster, Hotpatch, Generation 2 VM 등의 개념은
 > [windows_server_key_concepts.md](./windows_server_key_concepts.md)를 참고합니다.
 
 ### 선택 기준
@@ -164,7 +164,7 @@ VM을 많이 운영하는가?
 
 CAL은 Windows Server에 **접속하는 권한**에 대한 라이선스입니다. OS 라이선스와 별개로 구매해야 합니다.
 
-> 💡 User CAL·Device CAL·External Connector 상세 개념은 [windows_server_key_concepts.md](./windows_server_key_concepts.md) 참고.
+> User CAL·Device CAL·External Connector 상세 개념은 [windows_server_key_concepts.md](./windows_server_key_concepts.md) 참고.
 
 #### CAL 종류
 
