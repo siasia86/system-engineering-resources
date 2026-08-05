@@ -41,6 +41,28 @@ List targets → show impact → confirm before proceeding
 - Detailed rules: see `file://~/.kiro/markdown/STYLE.md`
 - output language: Korean
 
+### 용어 인라인 설명 규칙
+
+시스템 엔지니어(SE)에게도 생소할 수 있는 약어·전문용어가 본문에서 **처음 등장**할 때, 바로 아래 인용구(`>`)로 2~3줄 설명을 추가합니다.
+
+판단 기준: "10년차 SE가 바로 알기 어려운 약어/전문용어"
+- 추가 대상 예시: HMAC, AEAD, GRE, ISAKMP, HKDF, SPI, MOBIKE, PFS, DPI, MPPE, LCP, NCP, IPCP, Curve25519, Noise IK, BLAKE2 ...
+- 생략 가능 예시: TCP, UDP, IP, TLS, VPN, SSH, DNS, HTTP — 일반적으로 알려진 약어
+
+규칙:
+- `💡` 이모지 사용 금지 — 인용구(`>`) 자체가 부연 설명임을 나타냄
+- `🟡` 는 경고/주의 전용으로 예약 — 용어 설명에 사용 금지
+- 동일 문서 내 두 번째 등장부터는 설명 생략
+- 인용구 내부는 합니다체 문체 규칙 적용 제외
+
+```markdown
+- DPI(패킷 검사) 환경에서 SoftEther가 유리합니다.
+
+> DPI(Deep Packet Inspection): 방화벽이 패킷 페이로드까지 분석하여
+> VPN 트래픽을 식별·차단하는 기법입니다. 포트만 보는 일반 방화벽보다
+> 정교하며, TLS 핑거프린트로 VPN을 탐지할 수 있습니다.
+```
+
 ## 5. Naming convention
 format: `[env]-[category]-[service]-[detail]`
 env: dev / qa / stg / prd
