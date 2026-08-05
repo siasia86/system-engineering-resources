@@ -57,21 +57,21 @@ Receiver (Host B)
 #### WireGuard 터널 통과 — `curl http://192.0.2.1` 요청
 
 ```
-─── 원본 패킷 (터널 진입 전) ────────────────────────────────────────
+─── Original Packet (before tunnel entry) ──────────────────────────
   IP  Src: 10.0.0.2      Dst: 192.0.2.1
   TCP Src: 54321         Dst: 80
   HTTP Payload: "GET / HTTP/1.1\r\nHost: 192.0.2.1"
 
-─── WireGuard 캡슐화 후 (인터넷 구간에 실제로 흐르는 패킷) ──────────
-  IP  Src: 192.0.2.100   Dst: 203.0.113.1     <-- 공인 IP만 노출
+─── After WireGuard Encapsulation (actual packet on Internet) ───────
+  IP  Src: 192.0.2.100   Dst: 203.0.113.1     <-- only public IP visible
   UDP Src: 51820         Dst: 51820
   [ WireGuard Header: Type | Receiver ID | Counter ]
   [ ChaCha20-Poly1305 Encrypted {
-        IP  Src: 10.0.0.2  Dst: 192.0.2.1     <-- 원본 IP (숨겨짐)
+        IP  Src: 10.0.0.2  Dst: 192.0.2.1     <-- original IP (hidden)
         TCP Src: 54321     Dst: 80
-        HTTP: "GET / HTTP/1.1..."              <-- 내용 (숨겨짐)
+        HTTP: "GET / HTTP/1.1..."              <-- payload (hidden)
     }
-    Auth Tag (16 bytes)                        <-- 무결성 태그
+    Auth Tag (16 bytes)                        <-- integrity tag
   ]
 ```
 
@@ -81,14 +81,14 @@ Receiver (Host B)
 #### 프로토콜별 캡슐화 레이어 비교
 
 ```
-원본: [ IP | TCP | HTTP ]
+Original: [ IP | TCP | HTTP ]
 
 IPsec (ESP):
   [ Outer IP | ESP Hdr | Encrypted(IP | TCP | HTTP) | ESP Trailer | Auth Tag ]
 
 L2TP/IPsec:
   [ Outer IP | UDP/4500 | ESP | UDP/1701 | L2TP | PPP | IP | TCP | HTTP ]
-  └──────────── IPsec 암호화 범위 ──────────────────────────────┘
+  └─────────── IPsec encryption scope ──────────────────────────┘
 
 OpenVPN (UDP):
   [ Outer IP | UDP/1194 | OpenVPN Hdr | HMAC | Encrypted(IP | TCP | HTTP) ]
@@ -98,7 +98,7 @@ WireGuard:
 
 SoftEther (SSL-VPN):
   [ Outer IP | TCP/443 | TLS Record | Ethernet Frame(IP | TCP | HTTP) ]
-  └── HTTPS 트래픽과 동일하게 보임 ──┘
+  └── looks identical to HTTPS traffic ─┘
 ```
 
 #### tcpdump로 본 캡슐화 전/후
@@ -184,13 +184,13 @@ NAT-T는 IKE 협상 중 양단이 UDP 4500으로 자동 전환하며, RFC 3947/3
 Application (curl, ssh, ...)
     │
     v
-TCP (신뢰성 담당: ACK, 재전송, 흐름제어, 순서 보장)
+TCP (reliability: ACK, retransmit, flow control, ordering)
     │
     v
-IP 패킷
+IP Packet
     │
-    v  ── VPN 캡슐화 ──
-UDP (전송 수단: 비연결, 신뢰성 없음)
+    v  ── VPN Encapsulation ──
+UDP (transport: connectionless, no reliability)
     │
     v
 Internet
@@ -205,15 +205,15 @@ UDP 구간에서 패킷이 유실되면 내부 TCP가 타임아웃 후 자동 �
 VPN 터널 자체를 TCP로 구성하면 내부/외부 두 TCP 재전송 로직이 충돌합니다.
 
 ```
-[TCP meltdown 발생 시나리오]
+[TCP meltdown scenario]
 
-외부 TCP: 패킷 유실 감지 → 재전송 대기 (윈도우 축소)
+Outer TCP: loss detected -> retransmit wait (window shrink)
     │
-    └─ 내부 TCP: 동시에 타임아웃 감지 → 자체 재전송 시도
+    └─ Inner TCP: timeout simultaneously -> retransmit attempt
                     │
-                    └─ 외부 TCP가 아직 대기 중 → 내부 재전송 패킷도 지연
+                    └─ Outer TCP still waiting -> inner retransmit also delayed
                             │
-                            └─ 내부 TCP RTT 급증 → 추가 타임아웃 → 연쇄 재전송
+                            └─ Inner TCP RTT spike -> more timeouts -> cascade
 ```
 
 외부를 UDP로 쓰면 재전송 판단은 내부 TCP 하나만 합니다.
@@ -301,21 +301,23 @@ GRE 헤더에는 Key(터널 ID)와 Sequence Number가 포함되며, PPP 프레�
 2012년 Moxie Marlinspike와 David Hulton이 MS-CHAPv2가 사실상 단일 DES 키 3개로 분리된다는 점을 이용해 CloudCracker 서비스로 24시간 이내에 100% 해독 가능함을 공개했습니다.
 
 ```
-MS-CHAPv2 Challenge-Response 구조:
+MS-CHAPv2 Challenge-Response structure:
 Server Challenge (8 bytes)
        │
        v
 Client NTLM Hash (16 bytes)
        │
-       v  3개 DES 키로 분할 (7+7+2 bytes)
+       v  split into 3 DES keys (7+7+2 bytes)
        ├── DES(key1, challenge) ──> Response_1  (8 bytes)
        ├── DES(key2, challenge) ──> Response_2  (8 bytes)
        └── DES(key3+00000, challenge) ──> Response_3  (8 bytes)
 
-→ 마지막 키가 2 bytes 유효 → 전수조사 65,536가지
-→ key3 해독 후 key1, key2도 DES brute-force로 해독
-→ NTLM Hash → 원본 패스워드 복구 가능
+-> last key has only 2 effective bytes -> brute-force: 65,536 values
+-> once key3 cracked, key1 & key2 via DES brute-force
+-> NTLM Hash -> original password recoverable
 ```
+
+> NTLM Hash(NT LAN Manager Hash): Windows 패스워드를 MD4 해시로 변환한 값입니다. MS-CHAPv2 크랙 시 NTLM Hash가 노출되며, 이를 통해 원본 패스워드까지 복구 가능합니다.
 
 ### 보안 취약점 정리
 
@@ -358,13 +360,13 @@ Layer 2 Tunneling Protocol. Cisco의 L2F와 Microsoft의 PPTP를 통합하여 IE
 ```
 LAC                                    LNS
  │                                      │
- ├── SCCRQ (Start-Control-Conn Req) ──> │   Tunnel 수립 요청
- │ <── SCCRP (Reply)                ─── │   Tunnel 수립 응답
- ├── SCCCN (Connected)              ──> │   Tunnel 확립
+ ├── SCCRQ (Start-Control-Conn Req) ──> │   Tunnel setup request
+ │ <── SCCRP (Reply)                ─── │   Tunnel setup response
+ ├── SCCCN (Connected)              ──> │   Tunnel established
  │                                      │
- ├── ICRQ  (Incoming-Call Req)      ──> │   Session 요청
- │ <── ICRP (Reply)                 ─── │   Session 응답
- ├── ICCN  (Connected)              ──> │   Session 확립
+ ├── ICRQ  (Incoming-Call Req)      ──> │   Session request
+ │ <── ICRP (Reply)                 ─── │   Session response
+ ├── ICCN  (Connected)              ──> │   Session established
  │                                      │
  │  [PPP data via L2TP Data Channel]    │
  ├──────────────────────────────────>   │
@@ -426,15 +428,17 @@ Internet Protocol Security. IETF가 정의한 IP 계층 보안 프로토콜 스�
 
 ```
 Transport Mode (Host-to-Host):
-원본:  [ IP Hdr(A→B) | TCP | Data ]
-결과:  [ IP Hdr(A→B) | ESP Hdr | TCP | Data | ESP Trailer | ESP Auth ]
-        (원본 IP 유지)  (암호화 범위: TCP~ESP Trailer)
+Original: [ IP Hdr(A->B) | TCP | Data ]
+Result:   [ IP Hdr(A->B) | ESP Hdr | TCP | Data | ESP Trailer | ESP Auth ]
+          (original IP kept) (encrypted: TCP to ESP Trailer)
 
 Tunnel Mode (Gateway-to-Gateway):
-원본:  [ IP Hdr(A→B) | TCP | Data ]
-결과:  [ New IP Hdr(GW1→GW2) | ESP Hdr | IP Hdr(A→B) | TCP | Data | ESP Trailer | ESP Auth ]
-        (게이트웨이 IP)          (암호화 범위: 원본 IP 헤더 포함 전체)
+Original: [ IP Hdr(A->B) | TCP | Data ]
+Result:   [ New IP Hdr(GW1->GW2) | ESP Hdr | IP Hdr(A->B) | TCP | Data | ESP Trailer | ESP Auth ]
+          (gateway IP)           (encrypted: entire original packet incl. inner IP)
 ```
+
+> Tunnel Mode에서 원본 IP 헤더 전체가 암호화되므로 통신 당사자의 IP 주소가 외부에 노출되지 않습니다. Site-to-Site VPN에서 게이트웨이(GW1↔GW2) 간 터널을 구성할 때 사용합니다.
 
 - **Transport Mode**: 호스트 간 직접 암호화. 원본 IP 헤더 노출. 주로 호스트-호스트 보안에 사용됩니다.
 - **Tunnel Mode**: 게이트웨이가 원본 패킷 전체를 새 IP 패킷으로 감쌉니다. Site-to-Site VPN의 표준 방식입니다.
@@ -451,24 +455,26 @@ IPsec은 두 개의 데이터베이스로 정책과 세션을 관리합니다.
 > SPI(Security Parameter Index): 32비트 값으로 수신 측이 어떤 SA(Security Association)를 사용하여 패킷을 처리할지 식별하는 인덱스입니다. 발신자가 패킷 헤더에 포함시켜 전송하면, 수신자는 SPI로 SAD를 조회하여 복호화 파라미터를 찾습니다.
 
 ```
-Outbound 패킷 처리 흐름:
+Outbound packet processing flow:
 
 Packet (src:A, dst:B, proto:TCP)
         │
         v
-    [SPD 조회] ── 트래픽 셀렉터 매칭
+    [SPD lookup] ── traffic selector matching
         │
-        ├── Bypass  ──> 암호화 없이 전송
-        ├── Discard ──> 패킷 폐기
-        └── Protect ──> [SAD 조회]
+        ├── Bypass  ──> forward without encryption
+        ├── Discard ──> drop packet
+        └── Protect ──> [SAD lookup]
                               │
-                        SA 존재? ──No──> IKE 협상 후 SA 생성
+                        SA exists? ──No──> trigger IKE, create SA
                               │
                              Yes
                               │
                               v
-                         ESP/AH 적용 후 전송
+                         apply ESP/AH, then forward
 ```
+
+> Traffic Selector: 출발지/목적지 IP·포트·프로토콜 범위를 정의하여 어떤 트래픽에 IPsec을 적용할지 결정하는 필터입니다. IKEv2에서 TSi(Initiator), TSr(Responder) 쌍으로 협상합니다.
 
 SA (Security Association) 주요 필드:
 
@@ -486,27 +492,27 @@ SA (Security Association) 주요 필드:
 IKEv1은 두 단계로 SA를 협상합니다.
 
 ```
-Phase 1 — IKE SA 수립 (Main Mode, 6 messages):
+Phase 1 — IKE SA establishment (Main Mode, 6 messages):
 
 Initiator                           Responder
-    │── SA (암호화 제안)           ──>  │
-    │ <── SA (선택된 제안)         ───  │
-    │── KE + Nonce (DH 공개값)    ──>  │
+    │── SA (cipher proposal)       ──>  │
+    │ <── SA (chosen proposal)     ───  │
+    │── KE + Nonce (DH pubkey)    ──>  │
     │ <── KE + Nonce              ───  │
-    │  (DH 완료 → 공유 비밀 생성)       │
-    │── ID + AUTH (암호화됨)      ──>  │
+    │  (DH done -> shared secret)       │
+    │── ID + AUTH (encrypted)    ──>  │
     │ <── ID + AUTH               ───  │
-    │  (ISAKMP SA 확립)                │
+    │  (ISAKMP SA established)         │
+
+Phase 2 — IPsec SA establishment (Quick Mode, 3 messages):
+
+    │── SA + Nonce + ID (encrypted)──> │
+    │ <── SA + Nonce + ID         ───  │
+    │── Hash (confirm)            ──>  │
+    │  (Child SA = ESP/AH SA established)│
+```
 
 > ISAKMP(Internet Security Association and Key Management Protocol, RFC 2408): IKE의 메시지 형식과 SA 협상 절차를 정의하는 프레임워크입니다. IKEv1/v2 모두 ISAKMP 메시지 구조를 기반으로 동작합니다.
-
-Phase 2 — IPsec SA 수립 (Quick Mode, 3 messages):
-
-    │── SA + Nonce + ID (암호화)  ──>  │
-    │ <── SA + Nonce + ID         ───  │
-    │── Hash (확인)               ──>  │
-    │  (Child SA = ESP/AH SA 확립)     │
-```
 
 ### 필수 암호 알고리즘 (RFC 8221, 2017)
 
@@ -541,23 +547,23 @@ L2TP/IPsec은 IPsec이 먼저 수립된 후 그 안에서 L2TP가 동작합니�
 ```
 1. IKE Phase 1 (UDP 500 → 4500)
    Client ── IKE_SA_INIT ──> Server
-   (IPsec 보안 채널 수립)
+   (IPsec secure channel established)
 
 2. IKE Phase 2 (UDP 4500, ESP Tunnel Mode)
    Client ── IKE_AUTH ──> Server
-   (IPsec SA 수립 → 이후 UDP 1701 트래픽을 ESP로 보호)
+   (IPsec SA ready -> subsequent UDP 1701 traffic protected by ESP)
 
-3. L2TP Tunnel 수립 (UDP 1701, IPsec 내부)
+3. L2TP Tunnel setup (UDP 1701, inside IPsec)
    Client ── SCCRQ ──> Server
    Client ── ICRQ  ──> Server
-   (L2TP Session 확립)
+   (L2TP Session established)
 
-4. PPP 협상 (L2TP 내부)
-   LCP → Authentication → NCP (IP 주소 할당)
+4. PPP negotiation (inside L2TP)
+   LCP -> Authentication -> NCP (IP address assignment)
+   (VPN IP acquired)
+```
 
 > LCP(Link Control Protocol): PPP 링크 파라미터(MRU, 인증 방식)를 협상하는 제어 프로토콜입니다. NCP(Network Control Protocol)는 상위 네트워크 프로토콜 설정을 담당하며, IP 주소 할당은 NCP의 일종인 IPCP(IP Control Protocol)가 처리합니다.
-   (VPN IP 획득)
-```
 
 ### 패킷 구조 및 오버헤드
 
@@ -607,28 +613,28 @@ IKEv2는 IKEv1의 9개 메시지를 4개로 압축했습니다.
 Initiator                                       Responder
     │                                               │
     │── IKE_SA_INIT (1) ─────────────────────────>  │
-    │   SAi1 (암호화 제안)                           │
-    │   KEi (DH 공개값)                              │
+    │   SAi1 (cipher proposal)                       │
+    │   KEi (DH pubkey)                              │
     │   Ni (Nonce)                                   │
     │                                               │
     │ <── IKE_SA_INIT (2) ────────────────────────  │
-    │     SAr1 (선택된 제안)                         │
-    │     KEr (DH 공개값)                            │
+    │     SAr1 (chosen proposal)                     │
+    │     KEr (DH pubkey)                            │
     │     Nr (Nonce)                                 │
-    │     (여기서 DH 완료 → SK_d, SK_a, SK_e 파생)  │
+    │     (DH done -> SK_d, SK_a, SK_e derived)      │
     │                                               │
-    │── IKE_AUTH (3) ───────────────────────────>   │  [암호화]
+    │── IKE_AUTH (3) ───────────────────────────>   │  [encrypted]
     │   IDi (Initiator ID)                          │
-    │   AUTH (서명 또는 PSK 증명)                   │
-    │   SAi2 (Child SA 제안)                        │
-    │   TSi, TSr (트래픽 셀렉터)                    │
+    │   AUTH (signature or PSK proof)               │
+    │   SAi2 (Child SA proposal)                    │
+    │   TSi, TSr (traffic selectors)                │
     │                                               │
-    │ <── IKE_AUTH (4) ─────────────────────────    │  [암호화]
+    │ <── IKE_AUTH (4) ─────────────────────────    │  [encrypted]
     │     IDr (Responder ID)                        │
     │     AUTH                                      │
-    │     SAr2 (Child SA 선택)                      │
+    │     SAr2 (Child SA selected)                  │
     │     TSi, TSr                                  │
-    │     (IKE SA + Child SA 확립 완료)             │
+    │     (IKE SA + Child SA established)           │
 ```
 
 IKE_SA_INIT에서 DH 키 교환이 완료되므로, IKE_AUTH부터는 모든 페이로드가 암호화됩니다.
@@ -654,14 +660,14 @@ Phone (Wi-Fi 192.168.1.10)
      │─── IKE SA established ─────────────────> VPN Gateway (1.2.3.4)
      │    Child SA: ESP Tunnel
      │
-     │  (Wi-Fi 해제 → LTE 연결 → IP 변경)
+     │  (Wi-Fi down -> LTE up -> IP changed)
      │
 Phone (LTE 10.20.30.50)
      │
      │─── INFORMATIONAL [ UPDATE_SA_ADDRESSES ] ─> VPN Gateway
-     │    (새 IP 주소 통보, 재인증 없음)
+     │    (notify new IP, no re-authentication)
      │
-     │─── IKE SA 유지 (동일 SPI, 동일 세션) ────> VPN Gateway
+     │─── IKE SA maintained (same SPI, same session) ──> VPN Gateway
 ```
 
 MOBIKE 동작 조건: 양단이 RFC 4555를 지원해야 하며, IKE_AUTH에서 MOBIKE_SUPPORTED 알림을 교환합니다.
@@ -671,9 +677,9 @@ MOBIKE 동작 조건: 양단이 RFC 4555를 지원해야 하며, IKE_AUTH에서 
 IKE SA 또는 Child SA의 수명이 만료되기 전에 새 SA를 협상하여 끊김 없이 갱신합니다.
 
 ```
-Initiator ── CREATE_CHILD_SA (새 DH 포함) ──> Responder
-Initiator <── CREATE_CHILD_SA (응답)       ─── Responder
-(기존 SA와 새 SA 동시 존재 → 기존 SA 삭제)
+Initiator ── CREATE_CHILD_SA (new DH included) ──> Responder
+Initiator <── CREATE_CHILD_SA (response)   ─── Responder
+(old SA and new SA coexist -> old SA deleted)
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -735,20 +741,22 @@ Control Channel에 추가 보호 레이어를 적용하는 두 가지 방식입�
 ### Data Channel 암호화 흐름
 
 ```
-평문 패킷
+Plaintext packet
     │
     v
-AES-256-GCM 암호화
+AES-256-GCM encryption
     │
     v
-암호문 + GCM Auth Tag (16 bytes)
+Ciphertext + GCM Auth Tag (16 bytes)
     │
-    v   (tls-auth 사용 시 추가 HMAC)
+    v   (additional HMAC if tls-auth enabled)
 OpenVPN Data Header (Packet ID + Key ID)
     │
     v
-UDP/TCP 전송
+UDP/TCP transmission
 ```
+
+> tls-auth: OpenVPN 제어 채널 패킷에 HMAC 서명을 추가하는 기능입니다. HMAC 불일치 패킷은 TLS 핸드셰이크 전에 즉시 폐기되어 DoS/포트 스캔 방어 효과가 있습니다. tls-crypt는 한 단계 더 나아가 HMAC 대신 제어 채널 전체를 암호화합니다.
 
 OpenVPN은 Encrypt-then-MAC 방식을 사용합니다. 암호화 후 MAC을 계산하므로, MAC 검증 실패 시 복호화 전에 패킷을 폐기합니다. (RFC 7366)
 
@@ -819,9 +827,9 @@ Initiator                                      Responder
     │ <── Handshake Response ──────────────────    │
     │     ephemeral public key (Er)                │
     │     empty AEAD (confirm)                     │
-    │     (DH: Er*Ei, Er*Si → session keys 파생)   │
+    │     (DH: Er*Ei, Er*Si -> session keys derived)│
     │                                              │
-    │  (핸드셰이크 완료 — 1 RTT)                   │
+    │  (handshake complete — 1 RTT)                │
     │                                              │
     │── Data Packet ─────────────────────────>     │
     │   Counter + ChaCha20-Poly1305(Payload)       │
@@ -834,12 +842,12 @@ Initiator                                      Responder
 WireGuard는 IP 라우팅 테이블 대신 **공개키 ↔ AllowedIPs 매핑**으로 패킷을 라우팅합니다.
 
 ```
-송신 시 (Outbound):
-패킷의 목적지 IP ── AllowedIPs 매핑 조회 ──> Peer의 공개키 결정
-                                              ──> 해당 Peer의 세션 키로 암호화
+Outbound:
+Dst IP ── AllowedIPs lookup ──> Peer public key determined
+                              ──> encrypt with that peer's session key
 
-수신 시 (Inbound):
-복호화 후 패킷 소스 IP ── 해당 Peer의 AllowedIPs에 포함? ──> 허용/폐기
+Inbound:
+decrypt -> check source IP against peer's AllowedIPs ──> allow/drop
 ```
 
 설정 예시:
@@ -852,7 +860,7 @@ Address    = 10.0.0.2/24
 [Peer]
 PublicKey  = <server-public-key>
 Endpoint   = vpn.example.com:51820
-AllowedIPs = 0.0.0.0/0   # 모든 트래픽을 VPN으로
+AllowedIPs = 0.0.0.0/0   # route all traffic through VPN
 ```
 
 AllowedIPs = `0.0.0.0/0`이면 모든 트래픽이 VPN을 통과하고, 특정 CIDR만 지정하면 Split Tunnel로 동작합니다.
@@ -863,10 +871,10 @@ WireGuard는 명시적 세션 개념이 없습니다. 패킷을 수신하면 소
 
 ```
 Client (IP: 1.2.3.4) ── Data Packet ──> Server
-Server: "Peer X의 Endpoint = 1.2.3.4:12345 로 기록"
+Server: "record Peer X endpoint = 1.2.3.4:12345"
 
-Client (IP: 5.6.7.8 로 변경) ── Data Packet ──> Server
-Server: "Peer X의 Endpoint = 5.6.7.8:54321 로 자동 갱신"
+Client (IP changed to 5.6.7.8) ── Data Packet ──> Server
+Server: "auto-update Peer X endpoint = 5.6.7.8:54321"
 ```
 
 ### DoS 방어 — Cookie 메커니즘
@@ -874,12 +882,14 @@ Server: "Peer X의 Endpoint = 5.6.7.8:54321 로 자동 갱신"
 핸드셰이크 요청이 과도할 때 Responder는 CPU 집약적인 DH 연산 전에 Cookie(MAC 기반 챌린지)를 요청합니다.
 
 ```
-과부하 상태:
+Under load:
 Initiator ── Handshake Initiation ──> Responder
-Initiator <── Cookie Reply (MAC2 챌린지) ─── Responder
+Initiator <── Cookie Reply (MAC2 challenge) ─── Responder
 Initiator ── Handshake Initiation (with MAC2) ──> Responder
-(MAC2 검증 후에만 DH 연산 수행)
+(DH computation only after MAC2 verified)
 ```
+
+> WireGuard Cookie 메커니즘: 과부하 시 Responder가 MAC2 챌린지를 전송하여, Initiator가 올바른 MAC2를 포함한 메시지를 재전송할 때만 DH 연산을 수행합니다. 이로써 IP 위조 기반 DH 연산 소모 공격(DDoS)을 방어합니다.
 
 ### 장단점
 
@@ -959,23 +969,23 @@ Initiator ── Handshake Initiation (with MAC2) ──> Responder
 ### 환경별 판단 기준
 
 ```
-신규 구축인가?
+New deployment?
       │
       ├── Yes
       │       │
-      │       ├── 모바일/로밍 중요? ────────> IKEv2 또는 WireGuard
+      │       ├── Mobile/roaming critical? ──> IKEv2 or WireGuard
       │       │
-      │       ├── 방화벽 우회 필요? ─────────> OpenVPN (TCP 443)
+      │       ├── Firewall bypass needed? ───> OpenVPN (TCP 443)
       │       │
       │       ├── Site-to-Site? ──────────────> IKEv2/IPsec
       │       │
-      │       └── 고성능 P2P? ────────────────> WireGuard
+      │       └── High-perf P2P? ─────────────> WireGuard
       │
-      └── No (레거시 유지)
+      └── No (legacy maintenance)
               │
-              ├── PPTP? ─────────────────────> 즉시 마이그레이션 계획 수립
+              ├── PPTP? ─────────────────────> plan migration immediately
               │
-              └── L2TP/IPsec? ───────────────> IKEv2로 마이그레이션 검토
+              └── L2TP/IPsec? ───────────────> consider migrating to IKEv2
 ```
 
 ### AWS VPN 연동
@@ -990,14 +1000,14 @@ Initiator ── Handshake Initiation (with MAC2) ──> Responder
 ### 보안 수준 요약
 
 ```
-보안 강도 (높음 → 낮음):
+Security strength (high -> low):
 
-WireGuard         ── 최신 암호, 코드 최소, PFS 항상 보장
-IKEv2/IPsec (AES-GCM) ── RFC 표준, AEAD, 넓은 호환성
-OpenVPN (TLS 1.3) ── 성숙한 구현, 20년+ 감사 이력
-L2TP/IPsec        ── IPsec 수준이나 이중 캡슐화 오버헤드
+WireGuard         ── modern ciphers, minimal code, PFS always
+IKEv2/IPsec (AES-GCM) ── RFC standard, AEAD, broad compatibility
+OpenVPN (TLS 1.3) ── mature implementation, 20+ years audit history
+L2TP/IPsec        ── IPsec-level security, double encapsulation overhead
 ─────────────────────────────────────────────────────
-PPTP              ── ❌ 사용 금지 (2012년 완전 해독)
+PPTP              ── ❌ do not use (fully cracked in 2012)
 ```
 
 [⬆ 목차로 돌아가기](#목차)
