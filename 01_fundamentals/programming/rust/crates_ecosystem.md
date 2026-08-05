@@ -40,7 +40,7 @@ edition = "2021"
 rust-version = "1.70"
 
 [dependencies]
-tokio = { version = "1.40", features = ["full"] }
+tokio = { version = "1.53", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
 anyhow = "1.0"
 
@@ -355,6 +355,6 @@ cargo audit --deny warnings
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-07-31
+**마지막 업데이트**: 2026-08-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.
