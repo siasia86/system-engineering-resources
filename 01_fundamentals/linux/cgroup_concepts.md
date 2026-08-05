@@ -821,7 +821,7 @@ MemoryMax=512M
 CPUQuota=50%
 ```
 
-> 💡 `/proc`, `/sys`, `/sys/fs/cgroup` 상세 비교는 [linux_virtual_fs.md](./linux_virtual_fs.md) 참고
+> `/proc`, `/sys`, `/sys/fs/cgroup` 상세 비교는 [linux_virtual_fs.md](./linux_virtual_fs.md) 참고
 
 [⬆ 목차로 돌아가기](#목차)
 
