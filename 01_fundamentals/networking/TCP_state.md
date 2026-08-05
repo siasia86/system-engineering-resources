@@ -182,15 +182,18 @@ setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
 **Linux 커널 튜닝:**
 ```bash
-# TIME_WAIT 시간 단축
+# FIN_WAIT_2 orphan 소켓 타이머 단축 (TIME_WAIT 타이머와 다름)
+# tcp_fin_timeout = FIN_WAIT_2 상태의 orphan 연결 유지 시간 (기본 60초)
 sysctl -w net.ipv4.tcp_fin_timeout=30
 
-# TIME_WAIT 소켓 재사용 허용
+# TIME_WAIT 소켓 재사용 허용 (outgoing 연결만, 서버 측 비권장)
 sysctl -w net.ipv4.tcp_tw_reuse=1
 
-# TIME_WAIT 소켓 빠른 재활용
-sysctl -w net.ipv4.tcp_tw_recycle=1  # 주의: 최신 커널에서 제거됨
+# tcp_tw_recycle: 커널 4.12에서 제거됨 (NAT 환경 버그로 인해)
+# sysctl -w net.ipv4.tcp_tw_recycle=1  # ❌ 4.12+ 커널에서 사용 불가
 ```
+
+🟡 Linux의 TIME_WAIT 타이머(60초)는 `TCP_TIMEWAIT_LEN` 커널 상수로 하드코딩되어 있어 sysctl로 변경할 수 없습니다. `tcp_fin_timeout`은 FIN_WAIT_2 orphan 연결 타이머이며 별도 설정입니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -352,6 +355,6 @@ sysctl -w net.ipv4.ip_local_port_range="10000 65535"
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-04-22
+**마지막 업데이트**: 2026-08-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.
