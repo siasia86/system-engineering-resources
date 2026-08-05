@@ -613,15 +613,15 @@ IKEv2는 IKEv1의 9개 메시지를 4개로 압축했습니다.
 Initiator                                       Responder
     │                                               │
     │── IKE_SA_INIT (1) ─────────────────────────>  │
-    │   SAi1 (cipher proposal)                       │
-    │   KEi (DH pubkey)                              │
-    │   Ni (Nonce)                                   │
+    │   SAi1 (cipher proposal)                      │
+    │   KEi (DH pubkey)                             │
+    │   Ni (Nonce)                                  │
     │                                               │
     │ <── IKE_SA_INIT (2) ────────────────────────  │
-    │     SAr1 (chosen proposal)                     │
-    │     KEr (DH pubkey)                            │
-    │     Nr (Nonce)                                 │
-    │     (DH done -> SK_d, SK_a, SK_e derived)      │
+    │     SAr1 (chosen proposal)                    │
+    │     KEr (DH pubkey)                           │
+    │     Nr (Nonce)                                │
+    │     (DH done -> SK_d, SK_a, SK_e derived)     │
     │                                               │
     │── IKE_AUTH (3) ───────────────────────────>   │  [encrypted]
     │   IDi (Initiator ID)                          │
@@ -817,22 +817,22 @@ WireGuard는 Noise Protocol Framework의 IK 패턴을 사용합니다. "I"는 In
 
 ```
 Initiator                                      Responder
-    │                                              │
-    │── Handshake Initiation ─────────────────>    │
-    │   ephemeral public key (Ei)                  │
-    │   encrypted static public key (Si, AEAD)     │
-    │   encrypted timestamp (AEAD)                 │
-    │   (Curve25519 DH: Ei*Sr, Si*Sr)              │
-    │                                              │
-    │ <── Handshake Response ──────────────────    │
-    │     ephemeral public key (Er)                │
-    │     empty AEAD (confirm)                     │
+    │                                               │
+    │── Handshake Initiation ─────────────────>     │
+    │   ephemeral public key (Ei)                   │
+    │   encrypted static public key (Si, AEAD)      │
+    │   encrypted timestamp (AEAD)                  │
+    │   (Curve25519 DH: Ei*Sr, Si*Sr)               │
+    │                                               │
+    │ <── Handshake Response ──────────────────     │
+    │     ephemeral public key (Er)                 │
+    │     empty AEAD (confirm)                      │
     │     (DH: Er*Ei, Er*Si -> session keys derived)│
-    │                                              │
-    │  (handshake complete — 1 RTT)                │
-    │                                              │
-    │── Data Packet ─────────────────────────>     │
-    │   Counter + ChaCha20-Poly1305(Payload)       │
+    │                                               │
+    │  (handshake complete — 1 RTT)                 │
+    │                                               │
+    │── Data Packet ─────────────────────────>      │
+    │   Counter + ChaCha20-Poly1305(Payload)        │
 ```
 
 세션 키는 핸드셰이크마다 새로 파생되어 **Perfect Forward Secrecy**를 보장합니다. 핸드셰이크는 기본 **3분마다 자동 갱신**됩니다.
