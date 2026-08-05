@@ -494,21 +494,21 @@ IKEv1은 두 단계로 SA를 협상합니다.
 ```
 Phase 1 — IKE SA establishment (Main Mode, 6 messages):
 
-Initiator                           Responder
-    │── SA (cipher proposal)       ──>  │
-    │ <── SA (chosen proposal)     ───  │
-    │── KE + Nonce (DH pubkey)    ──>  │
-    │ <── KE + Nonce              ───  │
-    │  (DH done -> shared secret)       │
-    │── ID + AUTH (encrypted)    ──>  │
-    │ <── ID + AUTH               ───  │
-    │  (ISAKMP SA established)         │
+Initiator                               Responder
+    │── SA (cipher proposal)        ──>  │
+    │ <── SA (chosen proposal)      ───  │
+    │── KE + Nonce (DH pubkey)      ──>  │
+    │ <── KE + Nonce                ───  │
+    │  (DH done -> shared secret)        │
+    │── ID + AUTH (encrypted)       ──>  │
+    │ <── ID + AUTH                 ───  │
+    │  (ISAKMP SA established)           │
 
 Phase 2 — IPsec SA establishment (Quick Mode, 3 messages):
 
-    │── SA + Nonce + ID (encrypted)──> │
-    │ <── SA + Nonce + ID         ───  │
-    │── Hash (confirm)            ──>  │
+    │── SA + Nonce + ID (encrypted) ──>  │
+    │ <── SA + Nonce + ID           ───  │
+    │── Hash (confirm)              ──>  │
     │  (Child SA = ESP/AH SA established)│
 ```
 
