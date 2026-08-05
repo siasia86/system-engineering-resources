@@ -30,12 +30,12 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Shell 인터랙티브 모드](01_fundamentals/linux/shell_interactive_mode.md)        | interactive/non-interactive |
 | [Vim 사용법](01_fundamentals/linux/vim.md)                                      | 기본 명령어, 모드, 설정     |
 | [시스템 프로세스](01_fundamentals/linux/linux_system_processes.md)              | init, systemd, 데몬         |
-| [Namespace](01_fundamentals/linux/namespace_concepts.md)                                 | 7종 namespace, 격리         |
-| [Cgroup](01_fundamentals/linux/cgroup_concepts.md)                                       | v1/v2, 리소스 제한          |
-| [Scheduler](01_fundamentals/linux/scheduler_concepts.md)                                 | CFS, RT, Deadline           |
-| [Virtual Memory](01_fundamentals/linux/virtual_memory_concepts.md)                       | 페이지 테이블, TLB, OOM     |
+| [Namespace](01_fundamentals/linux/namespace_concepts.md)                        | 7종 namespace, 격리         |
+| [Cgroup](01_fundamentals/linux/cgroup_concepts.md)                              | v1/v2, 리소스 제한          |
+| [Scheduler](01_fundamentals/linux/scheduler_concepts.md)                        | CFS, RT, Deadline           |
+| [Virtual Memory](01_fundamentals/linux/virtual_memory_concepts.md)              | 페이지 테이블, TLB, OOM     |
 | [VFS](01_fundamentals/linux/linux_virtual_fs.md)                                | inode, dentry, superblock   |
-| [IPC](01_fundamentals/linux/ipc_concepts.md)                                             | Pipe, Socket, SHM, MQ       |
+| [IPC](01_fundamentals/linux/ipc_concepts.md)                                    | Pipe, Socket, SHM, MQ       |
 | [Netfilter/TC](01_fundamentals/linux/netfilter_tc.md)                           | iptables/nftables, TC       |
 | [eBPF](01_fundamentals/linux/ebpf.md)                                           | eBPF 프로그래밍, 맵         |
 | [bpftrace](01_fundamentals/linux/bpftrace.md)                                   | 동적 추적, 커널 분석        |
@@ -55,29 +55,31 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Networking
 
-| 문서                                                                      | 설명                         |
-|---------------------------------------------------------------------------|------------------------------|
-| [IPv4 주소 체계](01_fundamentals/networking/ipv4_addressing_guide.md)     | 서브넷, CIDR, AWS VPC        |
-| [IPv6 주소 체계](01_fundamentals/networking/ipv6_addressing_guide.md)     | 주소 구조, 표기법, SLAAC     |
-| [TCP 상태 전이](01_fundamentals/networking/tcp_state_concepts.md)                  | 3/4-Way Handshake, TIME_WAIT |
-| [패킷 분석](01_fundamentals/networking/packet_analysis.md)                | IP/TCP/UDP 헤더, PROXY Proto |
-| [네트워크 헤더](01_fundamentals/networking/network_headers.md)            | Ethernet, ARP, DNS, TLS      |
-| [HTTP 메서드](01_fundamentals/networking/http_methods.md)                 | GET/POST/PUT/DELETE/PATCH    |
-| [tcpdump 예제](01_fundamentals/networking/tcpdump_examples.md)            | 패킷 캡처 실전 예제          |
-| [Switch VLAN Mode](01_fundamentals/networking/switch_vlan_mode.md)        | Access/Trunk/Hybrid          |
-| [VPN Protocol](01_fundamentals/networking/vpn_protocol_concepts.md)                | PPTP~WireGuard 비교          |
-| [에러 코드](01_fundamentals/networking/error_codes.md)                    | HTTP/SMTP/FTP 상태 코드      |
-| [ASN/DDoS 대응](01_fundamentals/networking/asn_and_cloudflare_ddos.md)    | ASN 운영, Cloudflare         |
-| [CDN/Proxy/Origin](01_fundamentals/networking/cdn_proxy_origin_ip.md)     | CDN 구조, Origin IP 보호     |
-| [SoftEther VPN](01_fundamentals/networking/softether_vpn_client_guide.md) | SoftEther 클라이언트 설정    |
+| 문서                                                                             | 설명                         |
+|----------------------------------------------------------------------------------|------------------------------|
+| [IPv4 주소 체계](01_fundamentals/networking/ipv4_addressing_guide.md)            | 서브넷, CIDR, AWS VPC        |
+| [IPv6 주소 체계](01_fundamentals/networking/ipv6_addressing_guide.md)            | 주소 구조, 표기법, SLAAC     |
+| [TCP 상태 전이](01_fundamentals/networking/tcp_state_concepts.md)                | 3/4-Way Handshake, TIME_WAIT |
+| [패킷 분석](01_fundamentals/networking/packet_analysis.md)                       | IP/TCP/UDP 헤더, PROXY Proto |
+| [네트워크 헤더](01_fundamentals/networking/network_headers.md)                   | Ethernet, ARP, DNS, TLS      |
+| [HTTP 메서드](01_fundamentals/networking/http_methods.md)                        | GET/POST/PUT/DELETE/PATCH    |
+| [tcpdump 예제](01_fundamentals/networking/tcpdump_examples.md)                   | 패킷 캡처 실전 예제          |
+| [Switch VLAN Mode](01_fundamentals/networking/switch_vlan_mode.md)               | Access/Trunk/Hybrid          |
+| [VPN Protocol](01_fundamentals/networking/vpn_protocol_concepts.md)              | PPTP~WireGuard 비교          |
+| [에러 코드](01_fundamentals/networking/error_codes.md)                           | HTTP/SMTP/FTP 상태 코드      |
+| [ASN/DDoS 대응](01_fundamentals/networking/asn_and_cloudflare_ddos.md)           | ASN 운영, Cloudflare         |
+| [CDN/Proxy/Origin](01_fundamentals/networking/cdn_proxy_origin_ip.md)            | CDN 구조, Origin IP 보호     |
+| [SoftEther VPN Client](01_fundamentals/networking/softether_vpn_client_guide.md) | SoftEther 클라이언트 설정    |
+| [SoftEther VPN Server](01_fundamentals/networking/softether_vpn_server_guide.md) | SoftEther 서버 설치·설정     |
+| [VPN 프로토콜 선택 가이드](01_fundamentals/networking/vpn_comparison_blog.md)    | 프로토콜 비교·시나리오 선택  |
 
 ### CS
 
-| 문서                                                    | 설명                         |
-|---------------------------------------------------------|------------------------------|
+| 문서                                                             | 설명                         |
+|------------------------------------------------------------------|------------------------------|
 | [CPU CISC vs RISC](01_fundamentals/cs/cpu_cisc_risc_concepts.md) | 명령어 집합 아키텍처 비교    |
-| [자료구조](01_fundamentals/cs/data_structures/)         | Array, Stack, Queue, Tree 등 |
-| [테스팅](01_fundamentals/cs/testing/)                   | Black/White Box, 테스트 레벨 |
+| [자료구조](01_fundamentals/cs/data_structures/)                  | Array, Stack, Queue, Tree 등 |
+| [테스팅](01_fundamentals/cs/testing/)                            | Black/White Box, 테스트 레벨 |
 
 ### Math
 
@@ -340,17 +342,17 @@ RDBMS, NoSQL, 운영, 포렌식.
 
 ### AI Tools
 
-| 문서                                                                         | 설명                  |
-|------------------------------------------------------------------------------|-----------------------|
-| [Kiro CLI 레퍼런스](06_career/ai_tools/kiro_cli_command_reference.md)        | 명령어 전체 정리      |
-| [Kiro 모델 가이드](06_career/ai_tools/kiro_model_guide.md)                   | 모델 선택 기준        |
-| [Kiro 설정 가이드](06_career/ai_tools/kiro_setup_guide.md)                   | CLI 초기 설정         |
-| [Kiro Agent Lock](06_career/ai_tools/kiro_agent_lock.md)                     | 동시 실행 방지        |
-| [AI 개발 요청 템플릿](06_career/ai_tools/ai_development_request_template.md) | AI 활용 요청 양식     |
-| [AI Markdown 패턴](06_career/ai_tools/ai_markdown_design_patterns.md)        | 에이전트용 문서 패턴  |
-| [AI 코딩 도구 비교](06_career/ai_tools/ai_coding_tools_comparison.md)         | Kiro·Claude Code·Codex·Cursor·Copilot 비교 |
-| [Harness Engineering](06_career/ai_tools/harness_engineering.md)             | AI 에이전트 환경 설계 |
-| [Loop Engineering](06_career/ai_tools/loop_engineering.md)                   | AI 루프 설계          |
+| 문서                                                                         | 설명                                       |
+|------------------------------------------------------------------------------|--------------------------------------------|
+| [Kiro CLI 레퍼런스](06_career/ai_tools/kiro_cli_command_reference.md)        | 명령어 전체 정리                           |
+| [Kiro 모델 가이드](06_career/ai_tools/kiro_model_guide.md)                   | 모델 선택 기준                             |
+| [Kiro 설정 가이드](06_career/ai_tools/kiro_setup_guide.md)                   | CLI 초기 설정                              |
+| [Kiro Agent Lock](06_career/ai_tools/kiro_agent_lock.md)                     | 동시 실행 방지                             |
+| [AI 개발 요청 템플릿](06_career/ai_tools/ai_development_request_template.md) | AI 활용 요청 양식                          |
+| [AI Markdown 패턴](06_career/ai_tools/ai_markdown_design_patterns.md)        | 에이전트용 문서 패턴                       |
+| [AI 코딩 도구 비교](06_career/ai_tools/ai_coding_tools_comparison.md)        | Kiro·Claude Code·Codex·Cursor·Copilot 비교 |
+| [Harness Engineering](06_career/ai_tools/harness_engineering.md)             | AI 에이전트 환경 설계                      |
+| [Loop Engineering](06_career/ai_tools/loop_engineering.md)                   | AI 루프 설계                               |
 
 [⬆ 목차로 돌아가기](#목차)
 

@@ -6,6 +6,28 @@
 
 ---
 
+## [3.6.0] - 2026-08-05
+
+### Added
+
+#### VPN 문서 3종 신규 추가
+
+| 파일                                                       | 내용                                                                                           |
+|------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| `01_fundamentals/networking/softether_vpn_server_guide.md` | SoftEther VPN Server 설치·초기설정·L2TP/IPsec·OpenVPN·방화벽·systemd·명령어·트러블슈팅         |
+| `01_fundamentals/networking/vpn_comparison_blog.md`        | VPN 프로토콜 선택 가이드 — 보안·성능·방화벽 통과·시나리오별 선택·플로우차트                    |
+| `_reference/softether_official_notes.md`                   | SoftEther 공식 스펙 및 소스코드 기반 참조 노트 (GlobalConst.h, Server.h, softether.org/3-spec) |
+
+#### fact-check 수정
+
+- `01_fundamentals/networking/vpn_comparison_blog.md` — WireGuard 연도 2018 → 2016 (ePrint 2016/914 기준)
+
+### Removed
+
+- `TODO2.md` — T1/T2 작업 완료 확인 후 삭제
+
+---
+
 ## [3.5.0] - 2026-08-05
 
 ### Changed
