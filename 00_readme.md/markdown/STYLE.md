@@ -278,6 +278,11 @@ Context Window Usage:
 `💡` 이모지는 사용하지 않습니다. 인용구 자체가 부연 설명임을 나타냅니다.
 `🟡`는 경고/주의 전용으로 예약하여 의미를 희석하지 않습니다.
 
+판단 기준: 시스템 엔지니어(SE)에게도 생소할 수 있는 약어·전문용어.
+- 추가 대상 예시: HMAC, AEAD, GRE, ISAKMP, HKDF, SPI, MOBIKE, PFS, DPI, MPPE, LCP, Curve25519 ...
+- 생략 가능 예시: TCP, UDP, IP, TLS, VPN, SSH, DNS, HTTP — 일반적으로 알려진 약어
+- 동일 문서 내 두 번째 등장부터는 설명 생략
+
 ```markdown
 - DPI(패킷 검사) 환경에서 SoftEther가 유리합니다.
 
