@@ -104,7 +104,7 @@ cgroupDriver: systemd
 ```
 
 🟡 kubeadm v1.22+는 `cgroupDriver` 미설정 시 자동으로 `systemd`로 설정합니다.
-🟡 Kubernetes v1.37부터 containerd 1.x(RuntimeConfig CRI RPC 미지원)는 kubelet과 호환 불가 예정입니다.
+🟡 Kubernetes v1.38부터 containerd 1.x(RuntimeConfig CRI RPC 미지원)는 kubelet과 호환 불가 예정입니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -262,6 +262,6 @@ sysctl net.ipv4.ip_forward
 
 **작성일**: 2026-05-26
 
-**마지막 업데이트**: 2026-05-26
+**마지막 업데이트**: 2026-08-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

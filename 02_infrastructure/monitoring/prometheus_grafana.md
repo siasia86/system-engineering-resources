@@ -137,7 +137,7 @@ scrape_configs:
 
 services:
   prometheus:
-    image: prom/prometheus:v3.4.0
+    image: prom/prometheus:v3.13.2
     ports:
       - "9090:9090"
     volumes:
@@ -150,14 +150,14 @@ services:
       - '--web.enable-lifecycle'
 
   alertmanager:
-    image: prom/alertmanager:v0.28.1
+    image: prom/alertmanager:v0.33.1
     ports:
       - "9093:9093"
     volumes:
       - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
   grafana:
-    image: grafana/grafana:11.6.1
+    image: grafana/grafana:13.1.2
     ports:
       - "3000:3000"
     environment:
@@ -168,7 +168,7 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning
 
   node-exporter:
-    image: prom/node-exporter:v1.9.1
+    image: prom/node-exporter:v1.12.1
     ports:
       - "9100:9100"
     volumes:
@@ -630,6 +630,6 @@ curl -s http://localhost:9090/api/v1/status/tsdb | jq '.data.headStats'
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-08-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.
