@@ -48,6 +48,112 @@ Receiver (Host B)
 | 무결성 | HMAC/AEAD 태그로 전송 중 변조를 탐지합니다.                   |
 | 인증   | 상대방이 신뢰된 피어임을 키 교환/인증서로 검증합니다.         |
 
+### 캡슐화 구체 예시
+
+#### WireGuard 터널 통과 — `curl http://192.0.2.1` 요청
+
+```
+─── 원본 패킷 (터널 진입 전) ────────────────────────────────────────
+  IP  Src: 10.0.0.2      Dst: 192.0.2.1
+  TCP Src: 54321         Dst: 80
+  HTTP Payload: "GET / HTTP/1.1\r\nHost: 192.0.2.1"
+
+─── WireGuard 캡슐화 후 (인터넷 구간에 실제로 흐르는 패킷) ──────────
+  IP  Src: 192.0.2.100   Dst: 203.0.113.1     <-- 공인 IP만 노출
+  UDP Src: 51820         Dst: 51820
+  [ WireGuard Header: Type | Receiver ID | Counter ]
+  [ ChaCha20-Poly1305 Encrypted {
+        IP  Src: 10.0.0.2  Dst: 192.0.2.1     <-- 원본 IP (숨겨짐)
+        TCP Src: 54321     Dst: 80
+        HTTP: "GET / HTTP/1.1..."              <-- 내용 (숨겨짐)
+    }
+    Auth Tag (16 bytes)                        <-- 무결성 태그
+  ]
+```
+
+중간자(ISP, 공유기)가 볼 수 있는 것: `192.0.2.100 → 203.0.113.1 UDP/51820` 뿐
+중간자가 볼 수 없는 것: 목적지(`192.0.2.1`), 포트(`80`), 내용(`GET /...`)
+
+#### 프로토콜별 캡슐화 레이어 비교
+
+```
+원본: [ IP | TCP | HTTP ]
+
+IPsec (ESP):
+  [ Outer IP | ESP Hdr | Encrypted(IP | TCP | HTTP) | ESP Trailer | Auth Tag ]
+
+L2TP/IPsec:
+  [ Outer IP | UDP/4500 | ESP | UDP/1701 | L2TP | PPP | IP | TCP | HTTP ]
+  └──────────── IPsec 암호화 범위 ──────────────────────────────┘
+
+OpenVPN (UDP):
+  [ Outer IP | UDP/1194 | OpenVPN Hdr | HMAC | Encrypted(IP | TCP | HTTP) ]
+
+WireGuard:
+  [ Outer IP | UDP/51820 | WG Hdr | ChaCha20(IP | TCP | HTTP) | Auth Tag ]
+
+SoftEther (SSL-VPN):
+  [ Outer IP | TCP/443 | TLS Record | Ethernet Frame(IP | TCP | HTTP) ]
+  └── HTTPS 트래픽과 동일하게 보임 ──┘
+```
+
+#### tcpdump로 본 캡슐화 전/후
+
+터널 없이 직접 연결 시 — 내용이 그대로 노출됩니다.
+
+```
+$ tcpdump -i eth0 -n port 80
+
+12:00:01.001 IP 10.0.0.2.54321 > 192.0.2.1.80: Flags [S]
+12:00:01.002 IP 192.0.2.1.80 > 10.0.0.2.54321: Flags [S.] ack 1
+12:00:01.003 IP 10.0.0.2.54321 > 192.0.2.1.80: Flags [P.] length 77
+    GET / HTTP/1.1
+    Host: 192.0.2.1
+```
+
+WireGuard 터널 통과 시 — 인터넷 구간(`eth0`)에서 관찰합니다.
+
+```
+$ tcpdump -i eth0 -n udp port 51820
+
+12:00:01.001 IP 192.0.2.100.51820 > 203.0.113.1.51820: UDP, length 148
+12:00:01.002 IP 203.0.113.1.51820 > 192.0.2.100.51820: UDP, length 92
+12:00:01.003 IP 192.0.2.100.51820 > 203.0.113.1.51820: UDP, length 148
+```
+
+`192.0.2.100 ↔ 203.0.113.1 UDP` 트래픽만 보이고 내부 목적지·포트·내용은 전혀 보이지 않습니다.
+
+WireGuard 터널 내부 — 서버 측 `wg0` 인터페이스에서 관찰합니다.
+
+```
+$ tcpdump -i wg0 -n
+
+12:00:01.001 IP 10.0.0.2.54321 > 192.0.2.1.80: Flags [S]
+12:00:01.002 IP 192.0.2.1.80 > 10.0.0.2.54321: Flags [S.]
+12:00:01.003 IP 10.0.0.2.54321 > 192.0.2.1.80: Flags [P.] GET / HTTP/1.1
+```
+
+복호화된 원본 패킷이 그대로 보입니다.
+
+SoftEther SSL-VPN 터널 통과 시 — 인터넷 구간(`eth0`)에서 관찰합니다.
+
+```
+$ tcpdump -i eth0 -n tcp port 443
+
+12:00:01.001 IP 192.0.2.100.52341 > 203.0.113.1.443: Flags [P.] length 183
+12:00:01.002 IP 203.0.113.1.443 > 192.0.2.100.52341: Flags [P.] length 91
+```
+
+일반 HTTPS 트래픽과 구분이 안 됩니다. DPI 장비도 내부 VPN 트래픽 식별이 어렵습니다.
+
+| 관찰 지점                  | 보이는 것                              | 보이지 않는 것           |
+|----------------------------|----------------------------------------|--------------------------|
+| `eth0` (인터넷 구간)       | 터널 엔드포인트 IP/포트, 암호화된 길이 | 목적지, 원본 포트, 내용  |
+| `wg0` / `tun0` (터널 내부) | 복호화된 원본 패킷 전체                | -                        |
+| SoftEther `eth0` (TCP 443) | HTTPS 트래픽과 동일하게 보임           | VPN 여부조차 식별 어려움 |
+
+
+
 ### NAT-T (NAT Traversal) 원리
 
 IPsec ESP는 IP Protocol 50으로 전송되는데, NAT 장비는 TCP/UDP 포트를 기반으로 변환하므로 ESP 패킷을 처리하지 못합니다. 이를 해결하기 위해 ESP를 UDP로 감싸는 NAT-T(RFC 3947)를 사용합니다.
