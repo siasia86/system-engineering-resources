@@ -150,13 +150,13 @@ $ tcpdump -i eth0 -n tcp port 443
 
 일반 HTTPS 트래픽과 구분이 안 됩니다. DPI 장비도 내부 VPN 트래픽 식별이 어렵습니다.
 
-> DPI(Deep Packet Inspection): 방화벽이 패킷 헤더뿐 아니라 페이로드 내용까지 분석하여 특정 애플리케이션이나 프로토콜을 식별·차단하는 기법입니다. 포트만 보는 일반 방화벽과 달리 TLS 핑거프린트나 트래픽 패턴으로 VPN을 탐지합니다.
-
 | 관찰 지점                  | 보이는 것                              | 보이지 않는 것           |
 |----------------------------|----------------------------------------|--------------------------|
 | `eth0` (인터넷 구간)       | 터널 엔드포인트 IP/포트, 암호화된 길이 | 목적지, 원본 포트, 내용  |
 | `wg0` / `tun0` (터널 내부) | 복호화된 원본 패킷 전체                | -                        |
 | SoftEther `eth0` (TCP 443) | HTTPS 트래픽과 동일하게 보임           | VPN 여부조차 식별 어려움 |
+
+> DPI(Deep Packet Inspection): 방화벽이 패킷 헤더뿐 아니라 페이로드 내용까지 분석하여 특정 애플리케이션이나 프로토콜을 식별·차단하는 기법입니다. 포트만 보는 일반 방화벽과 달리 TLS 핑거프린트나 트래픽 패턴으로 VPN을 탐지합니다.
 
 
 
@@ -260,19 +260,19 @@ PPTP ──> L2TP/IPsec ──> OpenVPN ──> L2TPv3 ──> IKEv2 ──> Wir
 
 Point-to-Point Tunneling Protocol. Microsoft가 1996년 개발한 최초의 상용 VPN 프로토콜입니다. RFC 2637(Informational — IETF 비표준)로 등록되어 있으며, 현재는 보안 취약점으로 사용이 금지됩니다.
 
-| 항목   | 값                               |
-|--------|----------------------------------|
-| 개발사 | Microsoft                        |
-| RFC    | RFC 2637 (Informational, 비표준) |
-| 포트   | TCP 1723 + GRE (Protocol 47)     |
-
-> GRE(Generic Routing Encapsulation, RFC 2784): IP 패킷을 다른 IP 패킷 안에 캡슐화하는 터널링 프로토콜입니다. TCP/UDP가 아닌 IP Protocol 47번을 사용하므로 NAT 장비가 포트 변환을 할 수 없어 NAT 통과가 어렵습니다.
+| 항목      | 값                                   |
+|-----------|--------------------------------------|
+| 개발사    | Microsoft                            |
+| RFC       | RFC 2637 (Informational, 비표준)     |
+| 포트      | TCP 1723 + GRE (Protocol 47)         |
 | 암호화    | MPPE (RC4, 40~128bit)                |
-
-> MPPE(Microsoft Point-to-Point Encryption): PPP 프레임을 RC4 스트림 암호로 암호화하는 Microsoft 독자 규격입니다. MS-CHAPv2에서 파생된 키를 사용하며, MS-CHAPv2가 크랙되면 MPPE 세션 키도 자동으로 노출됩니다.
 | 인증      | MS-CHAPv2                            |
 | 보안 상태 | ❌ 완전히 크랙됨 (2012년 Moxie 공개) |
 | 현재 용도 | 레거시 호환 외 사용 금지             |
+
+> GRE(Generic Routing Encapsulation, RFC 2784): IP 패킷을 다른 IP 패킷 안에 캡슐화하는 터널링 프로토콜입니다. TCP/UDP가 아닌 IP Protocol 47번을 사용하므로 NAT 장비가 포트 변환을 할 수 없어 NAT 통과가 어렵습니다.
+
+> MPPE(Microsoft Point-to-Point Encryption): PPP 프레임을 RC4 스트림 암호로 암호화하는 Microsoft 독자 규격입니다. MS-CHAPv2에서 파생된 키를 사용하며, MS-CHAPv2가 크랙되면 MPPE 세션 키도 자동으로 노출됩니다.
 
 ### 동작 구조
 
@@ -588,8 +588,6 @@ L2TP/IPsec은 IPsec이 먼저 수립된 후 그 안에서 L2TP가 동작합니�
 
 Internet Key Exchange version 2. RFC 7296(2014)에 정의된 IPsec 키 교환 프로토콜입니다. IKEv1의 복잡성을 줄이고 모바일 환경 지원(MOBIKE)을 추가했습니다.
 
-> MOBIKE(IKEv2 Mobility and Multihoming, RFC 4555): IKE SA를 재협상 없이 유지한 채 IP 주소가 변경되어도 세션을 지속하는 기능입니다. Wi-Fi ↔ LTE 전환 시 VPN 연결이 끊기지 않는 핵심 메커니즘입니다.
-
 | 항목         | 값                                         |
 |--------------|--------------------------------------------|
 | 표준         | RFC 7296 (2014), RFC 4555 (MOBIKE)         |
@@ -598,6 +596,8 @@ Internet Key Exchange version 2. RFC 7296(2014)에 정의된 IPsec 키 교환 �
 | 특징         | MOBIKE — 네트워크 전환 시 세션 유지        |
 | OS 기본 지원 | Windows 7+, macOS 10.11+, iOS, Android 11+ |
 | 핵심 강점    | 모바일 로밍, 빠른 재연결                   |
+
+> MOBIKE(IKEv2 Mobility and Multihoming, RFC 4555): IKE SA를 재협상 없이 유지한 채 IP 주소가 변경되어도 세션을 지속하는 기능입니다. Wi-Fi ↔ LTE 전환 시 VPN 연결이 끊기지 않는 핵심 메커니즘입니다.
 
 ### IKEv2 4개 메시지 교환 흐름
 
@@ -786,16 +786,16 @@ Jason A. Donenfeld이 설계한 현대적 VPN 프로토콜입니다. 2020년 Lin
 
 WireGuard는 알고리즘 협상 없이 고정된 최신 암호화 스위트를 사용합니다.
 
-| 역할         | 알고리즘        | 표준     |
-|--------------|-----------------|----------|
-| 대칭 암호화  | ChaCha20        | RFC 8439 |
-| 인증 태그    | Poly1305 (AEAD) | RFC 8439 |
-| ECDH 키 교환 | Curve25519      | RFC 7748 |
-
-> Curve25519: Daniel J. Bernstein이 설계한 타원 곡선 Diffie-Hellman 키 교환 알고리즘(RFC 7748)입니다. 128비트 보안 수준을 제공하며, 타이밍 공격에 강하고 구현이 단순합니다. WireGuard의 키 교환과 정적 키 인증에 모두 사용됩니다.
+| 역할          | 알고리즘        | 표준     |
+|---------------|-----------------|----------|
+| 대칭 암호화   | ChaCha20        | RFC 8439 |
+| 인증 태그     | Poly1305 (AEAD) | RFC 8439 |
+| ECDH 키 교환  | Curve25519      | RFC 7748 |
 | 해싱/MAC      | BLAKE2s         | RFC 7693 |
 | 해시테이블 키 | SipHash24       | —        |
 | 키 파생       | HKDF            | RFC 5869 |
+
+> Curve25519: Daniel J. Bernstein이 설계한 타원 곡선 Diffie-Hellman 키 교환 알고리즘(RFC 7748)입니다. 128비트 보안 수준을 제공하며, 타이밍 공격에 강하고 구현이 단순합니다. WireGuard의 키 교환과 정적 키 인증에 모두 사용됩니다.
 
 > HKDF(HMAC-based Key Derivation Function, RFC 5869): 마스터 시크릿에서 여러 개의 암호화 키를 안전하게 파생하는 함수입니다. Extract 단계에서 엔트로피를 정규화하고 Expand 단계에서 필요한 길이의 키를 생성합니다.
 
@@ -803,7 +803,7 @@ WireGuard는 알고리즘 협상 없이 고정된 최신 암호화 스위트를 
 
 ### Noise IK 핸드셰이크 (1-RTT)
 
-> Noise Protocol Framework: Jason Donenfeld가 WireGuard 설계에 채택한 암호화 핸드셰이크 프레임워크입니다. IK 패턴은 Initiator의 임시 키(I)와 Responder의 정적 키(K)를 사용하는 1-RTT 방식으로, TLS 1.3 핸드셰이크보다 단순하고 검증이 용이합니다.
+> Noise Protocol Framework: Jason Donenfeld가 WireGuard 설계에 채택한 암호화 핸드셰이크 프레임워크입니다. IK 패턴에서 I는 Initiator가 자신의 정적 키를 전송함을, K는 Responder의 정적 키가 사전에 알려짐(Known)을 의미합니다. 1-RTT로 상호 인증과 키 교환을 완료합니다.
 
 WireGuard는 Noise Protocol Framework의 IK 패턴을 사용합니다. "I"는 Initiator의 정적 키가 첫 메시지에 포함(Identity), "K"는 Responder의 키가 미리 알려져 있다(Known)는 의미입니다.
 
@@ -900,13 +900,11 @@ Initiator ── Handshake Initiation (with MAC2) ──> Responder
 
 ### 보안 / 성능 / 운용성 종합 비교
 
-| 항목            | PPTP       | L2TP/IPsec   | IKEv2/IPsec | OpenVPN     | WireGuard |
-|-----------------|------------|--------------|-------------|-------------|-----------|
-| 보안            | ❌ 크랙됨  | ✅ 강력      | ✅ 강력     | ✅ 강력     | ✅ 최신   |
-| 암호화 알고리즘 | RC4 (취약) | AES-CBC/GCM  | AES-GCM     | AES-256-GCM | ChaCha20  |
-| PFS             | ❌         | 설정 시 가능 | ✅          | ✅          | ✅ 항상   |
-
-> PFS(Perfect Forward Secrecy): 세션 키가 노출되더라도 과거의 다른 세션 키는 영향을 받지 않도록 매 세션마다 독립적인 키를 생성하는 특성입니다. Diffie-Hellman 임시 키 교환(Ephemeral DH)으로 구현하며, 장기 키 탈취 시 과거 통신 내용을 보호합니다.
+| 항목            | PPTP       | L2TP/IPsec    | IKEv2/IPsec | OpenVPN       | WireGuard   |
+|-----------------|------------|---------------|-------------|---------------|-------------|
+| 보안            | ❌ 크랙됨  | ✅ 강력       | ✅ 강력     | ✅ 강력       | ✅ 최신     |
+| 암호화 알고리즘 | RC4 (취약) | AES-CBC/GCM   | AES-GCM     | AES-256-GCM   | ChaCha20    |
+| PFS             | ❌         | 설정 시 가능  | ✅          | ✅            | ✅ 항상     |
 | 속도            | 빠름       | 보통          | 빠름        | 보통          | 최상        |
 | 오버헤드        | ~8 bytes   | ~76 bytes     | ~58 bytes   | ~30 bytes     | ~32 bytes   |
 | NAT 통과        | 어려움     | NAT-T 필수    | 내장        | TCP 443 가능  | UDP 단일    |
@@ -916,6 +914,8 @@ Initiator ── Handshake Initiation (with MAC2) ──> Responder
 | OS 기본 지원    | Windows    | 대부분        | 대부분      | ❌ 클라이언트 | Linux 5.6+  |
 | 표준 / RFC      | RFC 2637   | RFC 2661+4301 | RFC 7296    | 비표준        | 비표준      |
 | 상태            | 폐기       | 레거시        | 현역        | 현역          | 현역        |
+
+> PFS(Perfect Forward Secrecy): 세션 키가 노출되더라도 과거의 다른 세션 키는 영향을 받지 않도록 매 세션마다 독립적인 키를 생성하는 특성입니다. Diffie-Hellman 임시 키 교환(Ephemeral DH)으로 구현하며, 장기 키 탈취 시 과거 통신 내용을 보호합니다.
 
 ### 포트 / 프로토콜 요약
 
