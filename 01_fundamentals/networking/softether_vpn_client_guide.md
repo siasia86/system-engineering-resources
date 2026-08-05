@@ -45,7 +45,7 @@ apt install -y gcc make libssl-dev libreadline-dev libncurses-dev wget
 ### 소스 다운로드 및 빌드
 
 ```bash
-wget https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/v4.43-9799-beta/softether-vpnclient-v4.44-9807-rtm-2025.05.07-linux-x64-64bit.tar.gz
+wget https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/v4.44-9807-rtm/softether-vpnclient-v4.44-9807-rtm-2025.04.16-linux-x64-64bit.tar.gz
 tar xzf softether-vpnclient-*.tar.gz
 cd vpnclient
 make
@@ -72,7 +72,7 @@ dnf install -y gcc make openssl-devel readline-devel ncurses-devel wget
 ### 소스 다운로드 및 빌드
 
 ```bash
-wget https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/v4.43-9799-beta/softether-vpnclient-v4.44-9807-rtm-2025.05.07-linux-x64-64bit.tar.gz
+wget https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/v4.44-9807-rtm/softether-vpnclient-v4.44-9807-rtm-2025.04.16-linux-x64-64bit.tar.gz
 tar xzf softether-vpnclient-*.tar.gz
 cd vpnclient
 make
