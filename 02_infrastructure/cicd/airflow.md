@@ -319,8 +319,8 @@ airflow dags list-import-errors
 ### pip 설치
 
 ```bash
-pip install "apache-airflow==3.2.1" \
-  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.2.1/constraints-3.11.txt"
+pip install "apache-airflow==3.3.0" \
+  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.3.0/constraints-3.11.txt"
 
 # 프로바이더 추가
 pip install apache-airflow-providers-amazon
@@ -823,6 +823,6 @@ airflow tasks states-for-dag-run my_dag manual__2026-04-27T00:00:00+00:00
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-08-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.
