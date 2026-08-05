@@ -6,6 +6,42 @@
 
 ---
 
+## [3.5.0] - 2026-08-05
+
+### Changed
+
+#### 파일명 변경 — 개념 문서 _concepts 접미어 통일 (8개)
+
+| 구 파일명                    | 신 파일명                             |
+|------------------------------|---------------------------------------|
+| `linux/ipc.md`               | `linux/ipc_concepts.md`               |
+| `linux/virtual_memory.md`    | `linux/virtual_memory_concepts.md`    |
+| `linux/scheduler.md`         | `linux/scheduler_concepts.md`         |
+| `linux/namespace.md`         | `linux/namespace_concepts.md`         |
+| `linux/cgroup.md`            | `linux/cgroup_concepts.md`            |
+| `networking/TCP_state.md`    | `networking/tcp_state_concepts.md`    |
+| `networking/vpn_protocol.md` | `networking/vpn_protocol_concepts.md` |
+| `cs/cpu_cisc_risc.md`        | `cs/cpu_cisc_risc_concepts.md`        |
+
+- 내부 참조 링크 12개 파일 일괄 수정 (README.md, CHANGELOG.md, TODO2.md, STYLE.md 등)
+- `TODO2.md` 작업 전체 완료 (Batch 1~4 ✅ ) → 파일 삭제
+
+### Fixed
+
+#### fact-check 수정 (02_infrastructure)
+- `devops_toolchain.md` — Terraform/Ansible/Docker/Compose/K8s/Helm/ArgoCD/Prometheus/Grafana 버전 갱신
+- `container_runtime.md` — containerd 1.x 비호환 시점 v1.37 → v1.38
+- `zabbix_vs_prometheus.md` — Prometheus v3.13.0 → v3.13.2
+- `prometheus_grafana.md` — Prometheus/Alertmanager/Grafana/node-exporter 이미지 버전 갱신
+- `airflow.md` — Airflow 3.2.1 → 3.3.0
+
+#### fact-check 수정 (01_fundamentals)
+- `softether_vpn_client_guide.md` — v4.43-9799-beta → v4.44-9807-rtm (2026-08 기준)
+- `crates_ecosystem.md` — tokio version 1.40 → 1.53
+- `TCP_state.md` (→ tcp_state_concepts.md) — tcp_fin_timeout이 FIN_WAIT_2 타이머임을 명확히 수정, tcp_tw_recycle 제거 커널 버전(4.12) 명시
+
+---
+
 ## [3.4.0] - 2026-08-02
 
 ### Added
