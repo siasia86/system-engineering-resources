@@ -475,7 +475,7 @@ Network
 
 - Linux man pages: [man7.org/linux/man-pages](https://man7.org/linux/man-pages/man7/ipc_namespaces.7.html) — ★★★☆☆
 - Linux man pages — svipc: [man7.org/linux/man-pages/man7/svipc.7.html](https://man7.org/linux/man-pages/man7/svipc.7.html) — ★★★☆☆
-- [namespace.md](namespace.md)
+- [namespace_concepts.md](namespace_concepts.md)
 - [strace.md](./strace.md)
 
 ---

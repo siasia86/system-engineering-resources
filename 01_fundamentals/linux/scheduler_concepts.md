@@ -197,7 +197,7 @@ cat /proc/sys/kernel/sched_rt_runtime_us   # 기본 950000 (95%)
 ## 참고 자료
 
 - Linux Kernel Docs: [kernel.org/doc/html/latest/scheduler](https://www.kernel.org/doc/html/latest/scheduler/) — ★★★☆☆
-- [cgroup.md](cgroup.md)
+- [cgroup_concepts.md](cgroup_concepts.md)
 
 ---
 

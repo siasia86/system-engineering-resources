@@ -534,7 +534,7 @@ sudo sysctl --system
 - Linux man page namespaces(7): [man7.org/linux/man-pages/man7/namespaces.7.html](https://man7.org/linux/man-pages/man7/namespaces.7.html) — ★★★★☆
 - Linux man page unshare(1): [man7.org/linux/man-pages/man1/unshare.1.html](https://man7.org/linux/man-pages/man1/unshare.1.html) — ★★★☆☆
 - LWN.net Namespaces series: [lwn.net/Articles/531114](https://lwn.net/Articles/531114/) — ★★★★☆
-- [cgroup.md](./cgroup.md)
+- [cgroup_concepts.md](./cgroup_concepts.md)
 - [process_lifecycle.md](./process_lifecycle.md)
 - [docker.md 섹션 11](../../02_infrastructure/containers/docker.md#11-cgroup-namespace)
 
