@@ -356,7 +356,7 @@ CREATE PROCEDURE get_users_paged(
 BEGIN
     DECLARE p_offset INT DEFAULT (p_page - 1) * p_per_page;
 
-    SELECT SQL_CALC_FOUND_ROWS  -- deprecated since MySQL 8.0.17; use COUNT(*) OVER() instead
+    SELECT SQL_CALC_FOUND_ROWS  -- deprecated since MySQL 8.0.17; FOUND_ROWS() 대신 별도 COUNT(*) 쿼리 권장
         user_id, username, email
     FROM users
     WHERE deleted_at IS NULL
