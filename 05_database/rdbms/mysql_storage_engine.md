@@ -172,14 +172,14 @@ Transaction A (READ):          Transaction B (WRITE):
 
 ### 주요 설정 파라미터
 
-| 파라미터                         | 기본값   | 설명                                  |
-|----------------------------------|----------|---------------------------------------|
-| `innodb_buffer_pool_size`        | 128MB    | 버퍼 풀 크기 (총 RAM의 70~80% 권장)   |
-| `innodb_log_file_size`           | 48MB     | Redo Log 파일 크기                    |
-| `innodb_flush_log_at_trx_commit` | 1        | 1=ACID 보장, 2=1초 지연, 0=OS 의존    |
-| `innodb_file_per_table`          | ON       | 테이블별 .ibd 파일 분리               |
-| `innodb_io_capacity`             | 10000    | 백그라운드 I/O 처리량 (IOPS 기준)     |
-| `innodb_flush_method`            | O_DIRECT | Linux 기본값 (8.4+), 이중 버퍼링 방지 |
+| 파라미터                         | 기본값   | 설명                                                         |
+|----------------------------------|----------|--------------------------------------------------------------|
+| `innodb_buffer_pool_size`        | 128MB    | 버퍼 풀 크기 (총 RAM의 70~80% 권장)                          |
+| `innodb_log_file_size`           | 48MB     | Redo Log 파일 크기 (8.4+: `innodb_redo_log_capacity`로 대체) |
+| `innodb_flush_log_at_trx_commit` | 1        | 1=ACID 보장, 2=1초 지연, 0=OS 의존                           |
+| `innodb_file_per_table`          | ON       | 테이블별 .ibd 파일 분리                                      |
+| `innodb_io_capacity`             | 10000    | 백그라운드 I/O 처리량 (IOPS 기준)                            |
+| `innodb_flush_method`            | O_DIRECT | Linux 기본값 (8.4+), 이중 버퍼링 방지                        |
 
 ### 적합한 워크로드
 
