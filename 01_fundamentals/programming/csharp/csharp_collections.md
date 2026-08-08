@@ -333,7 +333,7 @@ IList<int> list = new List<int>();   // 구현 교체 용이
 IDictionary<string, int> dict = new Dictionary<string, int>();
 
 // 4. foreach 대신 span/array — 성능 민감한 내부 루프
-Span<int> span = list.CollectionsMarshal_AsSpan(); // .NET 5+
+Span<int> span = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list); // .NET 5+
 ```
 
 [⬆ 목차로 돌아가기](#목차)
