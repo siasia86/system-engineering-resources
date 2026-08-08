@@ -279,6 +279,45 @@ global using System.Collections.Generic;
 global using System.Linq;
 ```
 
+### field 키워드 (C# 14)
+
+auto-property의 backing field에 접근하는 컨텍스트 키워드입니다.
+getter/setter 한쪽에만 로직을 추가할 때 별도 필드 선언이 불필요합니다.
+
+```csharp
+public class Config
+{
+    // C# 14 이전 — backing field 직접 선언
+    private string _host = "localhost";
+    public string Host
+    {
+        get => _host;
+        set => _host = value?.Trim() ?? throw new ArgumentNullException(nameof(value));
+    }
+
+    // C# 14 — field 키워드로 backing field 접근 (backing field 선언 불필요)
+    public string Host2
+    {
+        get;
+        set => field = value?.Trim() ?? throw new ArgumentNullException(nameof(value));
+    }
+
+    // 유효성 검사 + 알림 패턴
+    public int Port
+    {
+        get => field;
+        set
+        {
+            if (value is < 1 or > 65535)
+                throw new ArgumentOutOfRangeException(nameof(value));
+            field = value;
+        }
+    } = 8080; // 초기값 설정
+}
+```
+
+🟡 `field`는 C# 13에서 preview였다가 C# 14에서 정식 도입되었습니다. `.NET 10 / C# 14` 프로젝트에서 사용 가능합니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
