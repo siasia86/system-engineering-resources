@@ -192,7 +192,8 @@ async def main():
     tasks = [worker(str(i), (5 - i) * 0.2) for i in range(5)]
 
     # 완료된 순서대로 처리 (빠른 것 먼저)
-    async for coro in asyncio.as_completed(tasks):
+    # as_completed()는 일반 이터레이터 — async for가 아닌 for 사용
+    for coro in asyncio.as_completed(tasks):
         result = await coro
         print(f"처리: {result}")
 ```

@@ -110,12 +110,12 @@ Exception
 ### 자주 쓰는 예외 생성 패턴
 
 ```csharp
-// 인수 검증 (C# 11+: ArgumentException.ThrowIfNull)
-ArgumentNullException.ThrowIfNull(name);
-ArgumentException.ThrowIfNullOrEmpty(name);
-ArgumentOutOfRangeException.ThrowIfNegative(count);
+// 인수 검증 — throw helper (.NET 6+)
+ArgumentNullException.ThrowIfNull(name);                     // .NET 6+
+ArgumentException.ThrowIfNullOrWhiteSpace(name);             // .NET 8+
+ArgumentOutOfRangeException.ThrowIfNegative(count);          // .NET 8+
 
-// C# 10 이하 방식
+// C# 10 이하 / 정밀한 메시지가 필요한 경우
 if (name is null)
     throw new ArgumentNullException(nameof(name));
 
@@ -242,19 +242,24 @@ public async Task<Order> GetOrderAsync(int id)
 ### AggregateException (Task.WhenAll)
 
 ```csharp
+var tasks = new[] { task1, task2, task3 };
 try
 {
-    await Task.WhenAll(task1, task2, task3);
+    await Task.WhenAll(tasks);
 }
-catch (AggregateException aggEx)
+catch
 {
-    // 여러 Task 동시 실패 시 AggregateException
-    foreach (var inner in aggEx.InnerExceptions)
-        Console.WriteLine(inner.Message);
+    // await Task.WhenAll()은 AggregateException을 unwrap하여 첫 번째 예외를 던짐
+    // → catch (AggregateException)으로는 잡히지 않음
+    foreach (var t in tasks.Where(t => t.IsFaulted))
+    {
+        foreach (var ex in t.Exception!.InnerExceptions)
+            Console.WriteLine(ex.Message);
+    }
 }
 ```
 
-🟡 `await Task.WhenAll()` 은 첫 번째 예외만 unwrap하여 던집니다. 모든 예외를 얻으려면 각 Task의 `.Exception` 프로퍼티를 확인하거나 `AggregateException`을 직접 처리합니다.
+🟡 `await Task.WhenAll()` 은 `AggregateException`을 unwrap하여 **첫 번째 예외만** 던집니다. 모든 예외를 얻으려면 각 Task의 `.Exception.InnerExceptions` 프로퍼티를 순회합니다. `await` 없이 `.Wait()`을 사용하면 `AggregateException`이 그대로 전파됩니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

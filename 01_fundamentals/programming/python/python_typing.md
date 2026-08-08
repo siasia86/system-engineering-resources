@@ -150,7 +150,9 @@ class Config:
 ### TYPE_CHECKING — 순환 import 방지
 
 ```python
-from __future__ import annotations  # 지연 평가 (Python 3.10+에서 기본화 예정)
+from __future__ import annotations  # 어노테이션 지연 평가 (PEP 563, Python 3.7+)
+# 🟡 "기본화" 계획(PEP 563)은 Python 3.10 도입 예정이었으나 취소됨.
+#    현재(Python 3.13 기준) 기본화되지 않음 — 필요 시 명시적 import 필요.
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
