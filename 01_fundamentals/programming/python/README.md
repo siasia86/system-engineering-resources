@@ -37,6 +37,12 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 - **[제너레이터](python_generators.md)** - 제너레이터, yield, 이터레이터
 - **[컨텍스트 매니저](python_context_managers.md)** - with문, __enter__/__exit__, contextlib
 
+### 타입 시스템
+- **[타입 힌트](python_typing.md)** - typing 모듈, dataclass, TypedDict, Protocol, Generic
+
+### 비동기
+- **[비동기 프로그래밍](python_async.md)** - asyncio, async/await, Task, gather, 비동기 I/O
+
 ### 실전
 - **[패키지](python_packages.md)** - 패키지 구조, __init__.py, import
 - **[Python 로깅](python_logging.md)** - logging 모듈 가이드
@@ -73,12 +79,14 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 1. [데코레이터](python_decorators.md) - 함수 확장
 2. [제너레이터](python_generators.md) - 메모리 효율적 처리
 3. [컨텍스트 매니저](python_context_managers.md) - 리소스 관리
-4. [패키지](python_packages.md) - 모듈 구조화
-5. [모듈 속성](python_magic_attributes.md) - 모듈 시스템 이해
-6. [subprocess](python_subprocess.md) - 외부 명령 실행
-7. [JSON/YAML](python_json_yaml.md) - 설정 파일 처리
-8. [argparse](python_argparse.md) - CLI 도구 제작
-9. [가상환경](python_virtual_env.md) - 환경 관리
+4. [타입 힌트](python_typing.md) - 타입 시스템, dataclass, Protocol
+5. [비동기 프로그래밍](python_async.md) - asyncio, async/await, 동시 실행
+6. [패키지](python_packages.md) - 모듈 구조화
+7. [모듈 속성](python_magic_attributes.md) - 모듈 시스템 이해
+8. [subprocess](python_subprocess.md) - 외부 명령 실행
+9. [JSON/YAML](python_json_yaml.md) - 설정 파일 처리
+10. [argparse](python_argparse.md) - CLI 도구 제작
+11. [가상환경](python_virtual_env.md) - 환경 관리
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -237,6 +245,6 @@ logging.info("작업 시작")
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-08-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.
