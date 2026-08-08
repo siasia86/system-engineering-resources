@@ -66,7 +66,7 @@ sources:
 | Storage Spaces Direct (S2D)  | ❌       | ✅         | HCI 클러스터 구성 필요                       |
 | Failover Clustering          | ✅       | ✅         |                                              |
 | Shielded VMs (Host Guardian) | ❌       | ✅         | 보안 VM 격리                                 |
-| AVMA (호스트 역할)           | ❌¹      | ✅         | 게스트 자동 활성화 호스트                    |
+| AVMA (호스트 역할)           | ❌ ¹     | ✅         | 게스트 자동 활성화 호스트                    |
 | Nano Server (container base) | ✅       | ✅         |                                              |
 | Network Controller (SDN)     | ❌       | ✅         | SDN 핵심 역할 (MS 공식 기능명)               |
 | Storage Replica              | 제한적   | ✅         | Standard: 1볼륨+2TB 제한, Datacenter: 무제한 |
