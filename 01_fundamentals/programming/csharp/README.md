@@ -25,6 +25,12 @@ C# 핵심 개념부터 .NET 생태계까지 다루는 학습 자료입니다.
 ### 함수형 / 쿼리
 - **[LINQ](csharp_linq.md)** — LINQ, 람다, 함수형 패턴, 컬렉션 연산
 
+### 예외 처리
+- **[예외 처리](csharp_exceptions.md)** — try/catch/finally, 예외 계층, 커스텀 예외, 비동기 예외
+
+### 컬렉션
+- **[컬렉션](csharp_collections.md)** — List, Dictionary, HashSet, 스레드 안전, 불변 컬렉션
+
 ### 빌드 / 생태계
 - **[dotnet CLI](csharp_dotnet_cli.md)** — dotnet 명령어, .csproj, NuGet, 빌드/테스트
 
@@ -35,9 +41,11 @@ C# 핵심 개념부터 .NET 생태계까지 다루는 학습 자료입니다.
 ```
 1. csharp_key_concepts.md   — 타입 시스템, 값/참조 형식, record, nullable 이해
 2. csharp_oop.md            — 클래스, 상속, 인터페이스 패턴 이해
-3. csharp_linq.md           — 람다, LINQ 쿼리 패턴 이해
-4. csharp_async.md          — 비동기 모델, Task, 취소 패턴
-5. csharp_dotnet_cli.md     — 프로젝트 생성, 빌드, 배포, 패키지 관리
+3. csharp_collections.md    — 컬렉션 타입 선택, 성능, 스레드 안전
+4. csharp_linq.md           — 람다, LINQ 쿼리 패턴 이해
+5. csharp_exceptions.md     — 예외 처리, 커스텀 예외, 비동기 예외
+6. csharp_async.md          — 비동기 모델, Task, 취소 패턴
+7. csharp_dotnet_cli.md     — 프로젝트 생성, 빌드, 배포, 패키지 관리
 ```
 
 ---
@@ -60,20 +68,22 @@ C# 핵심 개념부터 .NET 생태계까지 다루는 학습 자료입니다.
 
 ## 주요 개념
 
-| 개념             | 한 줄 설명                                            |
-|------------------|-------------------------------------------------------|
-| 값 형식          | struct/enum — 스택 할당, 복사 시 독립적               |
-| 참조 형식        | class/interface/배열 — 힙 할당, 참조 복사             |
-| record           | C# 9+, 불변 데이터 모델링, 값 기반 동등성             |
-| nullable         | `T?` — 값 형식은 C# 2+, 참조 형식은 C# 8+ (NRT)       |
-| async/await      | C# 5+, Task 기반 비동기 모델, 스레드 블로킹 없이 대기 |
-| LINQ             | C# 3+, 컬렉션/DB/XML을 동일 문법으로 쿼리             |
-| pattern matching | C# 7+~14 지속 확장, is/switch 식 패턴                 |
+| 개념             | 한 줄 설명                                                       |
+|------------------|------------------------------------------------------------------|
+| 값 형식          | struct/enum — 스택 할당, 복사 시 독립적                          |
+| 참조 형식        | class/interface/배열 — 힙 할당, 참조 복사                        |
+| record           | C# 9+, 불변 데이터 모델링, 값 기반 동등성                        |
+| nullable         | `T?` — 값 형식은 C# 2+, 참조 형식은 C# 8+ (NRT)                  |
+| async/await      | C# 5+, Task 기반 비동기 모델, 스레드 블로킹 없이 대기            |
+| LINQ             | C# 3+, 컬렉션/DB/XML을 동일 문법으로 쿼리                        |
+| pattern matching | C# 7+~14 지속 확장, is/switch 식 패턴                            |
+| 컬렉션           | List/Dictionary/HashSet — 용도별 선택, Concurrent/Immutable 계열 |
+| 예외 처리        | try/catch/when, 커스텀 예외, AggregateException                  |
 
 ---
 
 **작성일**: 2026-08-02
 
-**마지막 업데이트**: 2026-08-02
+**마지막 업데이트**: 2026-08-08
 
 © 2026 siasia86. Licensed under CC BY 4.0.
