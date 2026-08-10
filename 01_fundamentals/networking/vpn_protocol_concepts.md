@@ -1,7 +1,7 @@
 # VPN Protocol
 <!-- reference: _reference/vpn_protocol_official_notes.md -->
 
-VPN(Virtual Private Network) 터널링 프로토콜의 개념, 동작 원리, 보안 수준을 비교합니다. PPTP부터 WireGuard까지 세대별 발전 흐름과 각 프로토콜의 내부 동작을 다룹니다.
+VPN(Virtual Private Network) 터널링 프로토콜의 개념, 동작 원리, 보안 수준을 비교합니다. PPTP부터 WireGuard까지 세대별 발전 흐름과 각 프로토콜의 내부 동작을 다룹니다. OpenVPN은 표준 RFC가 없는 소프트웨어 구현체이지만, 현장에서 프로토콜 수준으로 취급되므로 비교 대상에 포함합니다.
 
 ## 목차
 
@@ -692,7 +692,7 @@ Initiator <── CREATE_CHILD_SA (response)   ─── Responder
 
 ## 7. OpenVPN
 
-SSL/TLS 기반 오픈소스 VPN입니다. 일반적으로 유저스페이스에서 동작하며 Control Channel과 Data Channel을 분리합니다. TCP 443을 사용할 수 있어 일부 방화벽 환경에서 도달성이 좋아질 수 있지만, HTTPS와 동일하거나 DPI를 항상 우회하는 것은 아닙니다.
+SSL/TLS 기반 오픈소스 VPN 소프트웨어입니다. IETF 표준 프로토콜이 아니라 OpenVPN Technologies가 정의한 독자 터널 포맷을 사용하며, 호환 공개 사양이 없어 구현체가 사양을 정의합니다. 일반적으로 유저스페이스에서 동작하며 Control Channel과 Data Channel을 분리합니다. TCP 443을 사용할 수 있어 일부 방화벽 환경에서 도달성이 좋아질 수 있지만, HTTPS와 동일하거나 DPI를 항상 우회하는 것은 아닙니다.
 
 | 항목      | 값                                                       |
 |-----------|----------------------------------------------------------|
@@ -908,6 +908,8 @@ Initiator ── Handshake Initiation (with MAC2) ──> Responder
 ---
 
 ## 9. 프로토콜 비교
+
+🟡 이 섹션의 비교 대상 중 OpenVPN은 표준 프로토콜이 아닌 소프트웨어 구현체입니다. 나머지(PPTP·L2TP·IPsec·IKEv2·WireGuard)는 공개 사양 또는 RFC가 존재합니다.
 
 ### 보안 / 성능 / 운용성 종합 비교
 
