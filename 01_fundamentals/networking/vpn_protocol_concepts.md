@@ -575,7 +575,7 @@ L2TP/IPsec은 IPsec이 먼저 수립된 후 그 안에서 L2TP가 동작합니�
 ┌────────────────────────────────────────────────────────────────────────────┐
 │ Outer IP │ UDP 4500 │ ESP Hdr │ UDP 1701 │ L2TP │ PPP │ Inner IP │ Payload │
 └────────────────────────────────────────────────────────────────────────────┘
-  IPv4/UDP/ESP headers, IV/Nonce (cipher에 따라 다름), padding, ICV, and L2TP/PPP headers vary by implementation, cipher, and MTU.
+  IPv4/UDP/ESP headers, IV/Nonce (varies by cipher: CBC uses IV, GCM/ChaCha20 uses Nonce), padding, ICV, and L2TP/PPP headers vary by implementation, cipher, and MTU.
   └── UDP 1701 onward is protected by ESP ───────────────────────────────────┘
 ```
 
