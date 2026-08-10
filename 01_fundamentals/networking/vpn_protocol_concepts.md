@@ -91,7 +91,8 @@ L2TP/IPsec:
   └─────────── IPsec encryption scope ──────────────────────────┘
 
 OpenVPN (UDP):
-  [ Outer IP | UDP/1194 | OpenVPN Hdr | Authenticated encrypted VPN payload ]
+  [ Outer IP | UDP/1194 | OpenVPN Hdr | Packet ID | TAG | * Encrypted payload * ]
+  (2.5+ default: AEAD — AES-256-GCM / ChaCha20-Poly1305; non-AEAD: [ HMAC | IV | Packet ID | * payload * ])
 
 WireGuard:
   [ Outer IP | UDP/51820 | WG Hdr | ChaCha20(IP | TCP | HTTP) | Auth Tag ]
@@ -273,7 +274,7 @@ Point-to-Point Tunneling Protocol. Microsoft와 협력사들이 1990년대에 �
 
 > GRE(Generic Routing Encapsulation, RFC 2784): IP 패킷을 다른 IP 패킷 안에 캡슐화하는 터널링 프로토콜입니다. TCP/UDP가 아닌 IP Protocol 47번을 사용하므로 NAT 장비가 포트 변환을 할 수 없어 NAT 통과가 어렵습니다.
 
-> MPPE(Microsoft Point-to-Point Encryption): PPP 프레임을 RC4 스트림 암호로 암호화하는 Microsoft 독자 규격입니다. MS-CHAPv2에서 파생된 키를 사용하며, MS-CHAPv2가 크랙되면 MPPE 세션 키도 자동으로 노출됩니다.
+> MPPE(Microsoft Point-to-Point Encryption): PPP 프레임을 RC4 스트림 암호로 암호화하는 Microsoft 독자 규격입니다. MS-CHAPv2에서 파생된 키를 사용하며, MS-CHAPv2 공격으로 NT Hash가 획득되면 MPPE 세션 키도 파생 가능한 상태가 됩니다.
 
 ### 동작 구조
 
@@ -677,7 +678,7 @@ MOBIKE 동작 조건: 양단이 RFC 4555를 지원해야 하며, IKE_AUTH에서 
 
 ### CREATE_CHILD_SA — SA 갱신
 
-IKE SA 또는 Child SA의 수명이 만료되기 전에 새 SA를 협상하여 끊김 없이 갱신합니다.
+IKE SA 또는 Child SA의 수명이 만료되기 전에 새 SA를 협상하여 트래픽 중단을 최소화하며 갱신합니다.
 
 ```
 Initiator ── CREATE_CHILD_SA (optional KE for PFS) ──> Responder
@@ -794,7 +795,7 @@ Jason A. Donenfeld이 설계한 현대적 VPN 프로토콜입니다. 2020년 Lin
 
 ### 암호 프리미티브
 
-WireGuard는 알고리즘 협상 없이 고정된 최신 암호화 스위트를 사용합니다.
+WireGuard는 알고리즘 협상 없이 설계 시점에 선택된 고정 암호화 스위트를 사용합니다.
 
 | 역할          | 알고리즘        | 표준     |
 |---------------|-----------------|----------|
@@ -867,7 +868,7 @@ AllowedIPs = `0.0.0.0/0`이면 모든 트래픽이 VPN을 통과하고, 특정 C
 
 ### Silent Peer / Roaming
 
-WireGuard는 명시적 세션 개념이 없습니다. 패킷을 수신하면 소스 IP와 포트를 자동으로 Endpoint로 갱신합니다. 이를 통해 클라이언트 IP가 변경되어도 자동으로 Roaming이 지원됩니다.
+WireGuard는 명시적 세션 개념이 없습니다. 패킷을 수신하면 소스 IP와 포트를 Endpoint로 갱신합니다. 클라이언트 IP가 변경되어도 다음 패킷 수신 시 Roaming이 동작합니다.
 
 ```
 Client (IP: 1.2.3.4) ── Data Packet ──> Server
