@@ -38,7 +38,7 @@ sources:
 | Protocol Error Codes           | `_reference/protocol_error_codes_official_notes.md`     | RFC 9110 / RFC 5321 / RFC 959                    | 2026-05-26 | O    |
 | SRE Operations                 | `_reference/sre_operations_official_notes.md`           | Google SRE Book / ITIL v4                        | 2026-07-07 | X    |
 | Terraform                      | `_reference/terraform_official_notes.md`                | v1.15.7, AWS Provider v6.46.0                    | 2026-07-03 | O    |
-| VPN Protocol                   | `_reference/vpn_protocol_official_notes.md`             | RFC 7296 / WireGuard 1.0                         | 2026-06-29 | O    |
+| VPN Protocol                   | `_reference/vpn_protocol_official_notes.md`             | RFC 7296 / WireGuard protocol                    | 2026-08-10 | O    |
 | Web Server                     | `_reference/web_server_official_notes.md`               | Nginx 1.30.3, Apache 2.4.68                      | 2026-07-08 | O    |
 | YAML Spec                      | `_reference/yaml_spec_notes.md`                         | 1.2 (1.1 호환)                                   | 2026-05-26 | O    |
 | Zabbix                         | `_reference/zabbix_official_notes.md`                   | 7.4.11 (LTS: 7.0)                                | 2026-07-03 | O    |
