@@ -50,7 +50,7 @@ Receiver (Host B)
 
 > AEAD(Authenticated Encryption with Associated Data): 암호화와 무결성 검증을 동시에 수행하는 암호화 방식입니다. AES-GCM, ChaCha20-Poly1305가 대표적이며, 별도의 MAC 계산 없이 단일 패스로 처리합니다.
 
-> HMAC(Hash-based Message Authentication Code): 해시 함수(SHA-256 등)와 비밀 키를 조합하여 메시지 무결성과 인증을 동시에 검증하는 알고리즘입니다. 송신자와 수신자가 동일한 비밀 키를 공유하며, 수신 측은 HMAC 태그를 재계산하여 전송 중 변조 여부를 확인합니다.
+> HMAC(Hash-based Message Authentication Code): 해시 함수(SHA-256 등)와 비밀 키를 조합하여 메시지 무결성과 데이터 출처 인증을 검증하는 알고리즘입니다. 송신자와 수신자가 동일한 비밀 키를 공유하며, 수신 측은 HMAC 태그를 재계산하여 전송 중 변조 여부를 확인합니다. HMAC만으로는 사용자 신원이나 공개키 기반의 비부인성을 보장하지 않습니다.
 
 ### 캡슐화 구체 예시
 
@@ -91,14 +91,14 @@ L2TP/IPsec:
   └─────────── IPsec encryption scope ──────────────────────────┘
 
 OpenVPN (UDP):
-  [ Outer IP | UDP/1194 | OpenVPN Hdr | HMAC | Encrypted(IP | TCP | HTTP) ]
+  [ Outer IP | UDP/1194 | OpenVPN Hdr | Authenticated encrypted VPN payload ]
 
 WireGuard:
   [ Outer IP | UDP/51820 | WG Hdr | ChaCha20(IP | TCP | HTTP) | Auth Tag ]
 
 SoftEther (SSL-VPN):
-  [ Outer IP | TCP/443 | TLS Record | Ethernet Frame(IP | TCP | HTTP) ]
-  └── looks identical to HTTPS traffic ─┘
+  [ Outer IP | TCP/443 | SSL-VPN stream | Encrypted VPN payload ]
+  └── TCP 443 사용이 HTTPS와의 완전한 동일성을 보장하지 않음 ─┘
 ```
 
 #### tcpdump로 본 캡슐화 전/후
@@ -148,13 +148,13 @@ $ tcpdump -i eth0 -n tcp port 443
 12:00:01.002 IP 203.0.113.1.443 > 192.0.2.100.52341: Flags [P.] length 91
 ```
 
-일반 HTTPS 트래픽과 구분이 안 됩니다. DPI 장비도 내부 VPN 트래픽 식별이 어렵습니다.
+TCP 443으로 전달되더라도 TLS 지문, 트래픽 패턴, 서버 동작 특성으로 VPN 트래픽이 식별될 수 있습니다.
 
-| 관찰 지점                  | 보이는 것                              | 보이지 않는 것           |
-|----------------------------|----------------------------------------|--------------------------|
-| `eth0` (인터넷 구간)       | 터널 엔드포인트 IP/포트, 암호화된 길이 | 목적지, 원본 포트, 내용  |
-| `wg0` / `tun0` (터널 내부) | 복호화된 원본 패킷 전체                | -                        |
-| SoftEther `eth0` (TCP 443) | HTTPS 트래픽과 동일하게 보임           | VPN 여부조차 식별 어려움 |
+| 관찰 지점                  | 보이는 것                              | 보이지 않는 것          |
+|----------------------------|----------------------------------------|-------------------------|
+| `eth0` (인터넷 구간)       | 터널 엔드포인트 IP/포트, 암호화된 길이 | 목적지, 원본 포트, 내용 |
+| `wg0` / `tun0` (터널 내부) | 복호화된 원본 패킷 전체                | -                       |
+| SoftEther `eth0` (TCP 443) | 암호화된 TCP 443 트래픽과 VPN 패턴     | 내부 목적지·내용        |
 
 > DPI(Deep Packet Inspection): 방화벽이 패킷 헤더뿐 아니라 페이로드 내용까지 분석하여 특정 애플리케이션이나 프로토콜을 식별·차단하는 기법입니다. 포트만 보는 일반 방화벽과 달리 TLS 핑거프린트나 트래픽 패턴으로 VPN을 탐지합니다.
 
@@ -162,7 +162,7 @@ $ tcpdump -i eth0 -n tcp port 443
 
 ### NAT-T (NAT Traversal) 원리
 
-IPsec ESP는 IP Protocol 50으로 전송되는데, NAT 장비는 TCP/UDP 포트를 기반으로 변환하므로 ESP 패킷을 처리하지 못합니다. 이를 해결하기 위해 ESP를 UDP로 감싸는 NAT-T(RFC 3947)를 사용합니다.
+IPsec ESP는 IP Protocol 50으로 전송됩니다. 일부 NAT 장비는 ESP를 일반적인 TCP/UDP 흐름처럼 처리하지 못하므로, NAT 환경에서는 ESP를 UDP로 감싸는 NAT-T(RFC 3947)를 사용합니다.
 
 ```
 Without NAT-T (ESP blocked by NAT):
@@ -176,7 +176,7 @@ NAT-T는 IKE 협상 중 양단이 UDP 4500으로 자동 전환하며, RFC 3947/3
 
 ### UDP 터널과 TCP 신뢰성
 
-대부분의 VPN은 내부 TCP 트래픽을 UDP로 감싸서 전송합니다. 신뢰성은 어디서 보장되는지 설명합니다.
+UDP 기반 VPN은 내부 IP 패킷을 UDP 데이터그램으로 감싸서 전송합니다. 내부 TCP 트래픽의 신뢰성이 어느 계층에서 보장되는지 설명합니다.
 
 #### 계층별 역할 분리
 
@@ -197,12 +197,12 @@ Internet
 ```
 
 VPN은 IP 패킷 전체를 캡슐화하므로 내부 TCP 계층이 그대로 살아 있습니다.
-UDP 구간에서 패킷이 유실되면 내부 TCP가 타임아웃 후 자동 재전송합니다.
-애플리케이션 입장에서는 VPN 터널의 존재를 알 수 없습니다.
+UDP 구간에서 패킷이 유실되면 내부 TCP가 이를 감지하여 타임아웃 후 재전송할 수 있습니다. 내부 UDP 트래픽에는 이와 같은 재전송 보장이 없으며, 애플리케이션은 일반적으로 VPN 터널의 존재를 직접 알지 못합니다.
+VPN 터널은 일반적으로 애플리케이션에 투명하게 동작합니다.
 
 #### VPN이 UDP를 선호하는 이유 — TCP meltdown
 
-VPN 터널 자체를 TCP로 구성하면 내부/외부 두 TCP 재전송 로직이 충돌합니다.
+VPN 터널 자체를 TCP로 구성하면 내부/외부 TCP가 손실·혼잡을 각각 제어하여 Head-of-Line Blocking과 혼잡 제어 상호작용이 발생할 수 있습니다.
 
 ```
 [TCP meltdown scenario]
@@ -216,28 +216,29 @@ Outer TCP: loss detected -> retransmit wait (window shrink)
                             └─ Inner TCP RTT spike -> more timeouts -> cascade
 ```
 
-외부를 UDP로 쓰면 재전송 판단은 내부 TCP 하나만 합니다.
-두 레이어가 독립적으로 동작하여 연쇄 지연이 발생하지 않습니다.
+외부를 UDP로 사용하면 신뢰성 있는 전송 계층이 중복되지 않아 이런 TCP-over-TCP 상호작용을 줄일 수 있습니다. 단, 내부 UDP 트래픽의 신뢰성까지 자동으로 추가되는 것은 아닙니다.
 
 #### 프로토콜별 전송 방식
 
-| VPN           | 기본 전송    | TCP 모드   | TCP meltdown 위험 | 비고                        |
-|---------------|--------------|------------|-------------------|-----------------------------|
-| WireGuard     | UDP 전용     | ❌ 불가    | 없음              | UDP 차단 환경 사용 불가     |
-| IPsec (IKEv2) | UDP 500/4500 | ❌ 불가    | 없음              | NAT-T로 UDP 캡슐화          |
-| OpenVPN       | UDP 1194     | ✅ TCP 443 | 🟡 있음           | TCP 모드는 방화벽 우회용    |
-| SoftEther     | TCP 443/992  | TCP 기본   | 🟡 있음           | 병렬 TCP 1~32개로 영향 분산 |
+| VPN           | 기본 전송    | TCP 모드   | TCP meltdown 위험 | 비고                                 |
+|---------------|--------------|------------|-------------------|--------------------------------------|
+| WireGuard     | UDP 전용     | ❌ 불가    | 없음              | UDP 차단 환경 사용 불가              |
+| IPsec (IKEv2) | UDP 500/4500 | ❌ 불가    | 없음              | NAT-T로 UDP 캡슐화                   |
+| OpenVPN       | UDP 1194     | ✅ TCP 443 | 🟡 있음           | TCP 모드는 방화벽 우회용             |
+| SoftEther     | TCP 443/992  | TCP 기본   | 🟡 있음           | 여러 TCP 연결 사용 시 영향 완화 가능 |
 
 🟡 OpenVPN/SoftEther의 TCP 모드는 UDP가 차단된 환경에서의 대안입니다. 성능보다 통과 가능성을 우선할 때 사용하며, 안정적인 네트워크에서는 UDP 모드 대비 처리량이 낮을 수 있습니다.
 
 ### 세대별 발전
 
 ```
-1996        1999           2001        2005        2006       2020
+주요 등장·표준화 시점(대략)
+
+1996        1999           2001        2005        2014       2020
  │           │              │           │           │          │
  v           v              v           v           v          v
-PPTP ──> L2TP/IPsec ──> OpenVPN ──> L2TPv3 ──> IKEv2 ──> WireGuard
-(dead)   (legacy)       (mature)   (service)   (mobile)   (modern)
+PPTP ──> L2TPv2/IPsec ──> OpenVPN ──> L2TPv3 ──> IKEv2 ──> WireGuard
+(legacy)  (legacy)       (mature)   (L2 service) (RFC 7296) (Linux 5.6)
 ```
 
 ### OSI 계층별 동작 위치
@@ -258,17 +259,17 @@ PPTP ──> L2TP/IPsec ──> OpenVPN ──> L2TPv3 ──> IKEv2 ──> Wir
 
 ## 2. PPTP
 
-Point-to-Point Tunneling Protocol. Microsoft가 1996년 개발한 최초의 상용 VPN 프로토콜입니다. RFC 2637(Informational — IETF 비표준)로 등록되어 있으며, 현재는 보안 취약점으로 사용이 금지됩니다.
+Point-to-Point Tunneling Protocol. Microsoft와 협력사들이 1990년대에 개발한 VPN 프로토콜입니다. RFC 2637(Informational — IETF 비표준)로 등록되어 있으며, 현재는 알려진 취약점 때문에 신규 사용을 피해야 합니다.
 
-| 항목      | 값                                   |
-|-----------|--------------------------------------|
-| 개발사    | Microsoft                            |
-| RFC       | RFC 2637 (Informational, 비표준)     |
-| 포트      | TCP 1723 + GRE (Protocol 47)         |
-| 암호화    | MPPE (RC4, 40~128bit)                |
-| 인증      | MS-CHAPv2                            |
-| 보안 상태 | ❌ 완전히 크랙됨 (2012년 Moxie 공개) |
-| 현재 용도 | 레거시 호환 외 사용 금지             |
+| 항목      | 값                               |
+|-----------|----------------------------------|
+| 개발사    | Microsoft 및 협력사              |
+| RFC       | RFC 2637 (Informational, 비표준) |
+| 포트      | TCP 1723 + GRE (Protocol 47)     |
+| 암호화    | MPPE (레거시 RC4 기반)           |
+| 인증      | MS-CHAPv2                        |
+| 보안 상태 | ❌ 취약 — 신규 사용 금지         |
+| 현재 용도 | 레거시 호환 외 사용 금지         |
 
 > GRE(Generic Routing Encapsulation, RFC 2784): IP 패킷을 다른 IP 패킷 안에 캡슐화하는 터널링 프로토콜입니다. TCP/UDP가 아닌 IP Protocol 47번을 사용하므로 NAT 장비가 포트 변환을 할 수 없어 NAT 통과가 어렵습니다.
 
@@ -292,13 +293,13 @@ PPTP는 제어 채널(TCP 1723)과 데이터 채널(GRE)을 분리하여 운용�
 └───────────────────────────────────────────────────────────┘
 ```
 
-GRE 헤더에는 Key(터널 ID)와 Sequence Number가 포함되며, PPP 프레임을 그대로 캡슐화합니다.
+PPTP의 확장 GRE 헤더에는 협상된 플래그에 따라 Key, Sequence Number, Acknowledgment Number 필드가 포함될 수 있으며, PPP 프레임을 캡슐화합니다.
 
 > PPP(Point-to-Point Protocol, RFC 1661): 두 노드 간 직렬 링크에서 인증(PAP/CHAP), IP 주소 할당(IPCP), 압축(CCP)을 처리하는 데이터 링크 계층 프로토콜입니다. PPTP/L2TP는 PPP를 터널 안에서 재활용하여 인증과 IP 할당을 처리합니다.
 
 ### MS-CHAPv2 크랙 메커니즘
 
-2012년 Moxie Marlinspike와 David Hulton이 MS-CHAPv2가 사실상 단일 DES 키 3개로 분리된다는 점을 이용해 CloudCracker 서비스로 24시간 이내에 100% 해독 가능함을 공개했습니다.
+2012년 공개된 공격은 MS-CHAPv2 응답이 사실상 세 개의 DES 키로 구성된다는 점을 이용했습니다. 마지막 키의 유효 엔트로피가 작아 실용적인 오프라인 크래킹이 가능하므로, MS-CHAPv2는 안전한 VPN 인증 방식으로 사용할 수 없습니다.
 
 ```
 MS-CHAPv2 Challenge-Response structure:
@@ -307,26 +308,26 @@ Server Challenge (8 bytes)
        v
 Client NTLM Hash (16 bytes)
        │
-       v  split into 3 DES keys (7+7+2 bytes)
-       ├── DES(key1, challenge) ──> Response_1  (8 bytes)
-       ├── DES(key2, challenge) ──> Response_2  (8 bytes)
-       └── DES(key3+00000, challenge) ──> Response_3  (8 bytes)
+       v  split into 3 DES keys (7+7+7 bytes, zero-padded to 21)
+       ├── DES(Hash[0..6],          challenge) ──> Response_1  (8 bytes)
+       ├── DES(Hash[7..13],         challenge) ──> Response_2  (8 bytes)
+       └── DES(Hash[14..15]+0x00×5, challenge) ──> Response_3  (8 bytes)
 
--> last key has only 2 effective bytes -> brute-force: 65,536 values
+-> 3rd key: Hash[14..15] (2 effective bytes) + 5 zero bytes -> brute-force: 65,536 (2^16)
 -> once key3 cracked, key1 & key2 via DES brute-force
--> NTLM Hash -> original password recoverable
+-> NTLM Hash 획득 가능 -> 원문 패스워드 복구 여부는 패스워드 강도와 사전 공격에 좌우됨
 ```
 
-> NTLM Hash(NT LAN Manager Hash): Windows 패스워드를 MD4 해시로 변환한 값입니다. MS-CHAPv2 크랙 시 NTLM Hash가 노출되며, 이를 통해 원본 패스워드까지 복구 가능합니다.
+> NT Hash(NT LAN Manager Hash): Windows 패스워드에서 파생되는 MD4 기반 해시 값입니다. MS-CHAPv2 공격으로 NT Hash를 얻을 수 있지만, 원문 패스워드 복구는 패스워드 강도와 공격자의 사전·무차별 대입 능력에 따라 달라집니다.
 
 ### 보안 취약점 정리
 
-| 취약점            | 영향                                       |
-|-------------------|--------------------------------------------|
-| MS-CHAPv2 크랙    | 2012년 CloudCracker로 24h 이내 100% 해독   |
-| RC4 스트림 암호   | 키 재사용 취약, bit-flipping 공격 가능     |
-| GRE 무결성 없음   | ACK 번호 예측으로 패킷 주입/세션 탈취 가능 |
-| MPPE 키 파생 취약 | MS-CHAPv2 해독 시 MPPE 세션 키도 자동 노출 |
+| 취약점          | 영향                                       |
+|-----------------|--------------------------------------------|
+| MS-CHAPv2 취약  | 실용적인 오프라인 크래킹 공격에 취약       |
+| RC4 기반 MPPE   | 현재 보안 요구사항에 부적합한 레거시 암호  |
+| GRE 무결성 없음 | 암호학적 무결성 보호가 없어 변조 위험      |
+| MPPE 키 파생    | 인증 키가 노출되면 세션 보호도 영향을 받음 |
 
 🟡 PPTP는 어떤 환경에서도 신규 도입하면 안 됩니다. 기존 레거시 시스템에서만 잔존합니다.
 
@@ -336,14 +337,14 @@ Client NTLM Hash (16 bytes)
 
 ## 3. L2TP
 
-Layer 2 Tunneling Protocol. Cisco의 L2F와 Microsoft의 PPTP를 통합하여 IETF가 표준화한 프로토콜입니다. **자체 암호화가 없어** 반드시 IPsec과 조합해야 합니다.
+Layer 2 Tunneling Protocol. Cisco의 L2F와 Microsoft의 PPTP를 통합하여 IETF가 표준화한 프로토콜입니다. **자체 암호화가 없어**, 보안 통신에는 IPsec과 조합해야 합니다.
 
 | 항목        | 값                                               |
 |-------------|--------------------------------------------------|
 | 표준        | RFC 2661 (L2TPv2, 1999), RFC 3931 (L2TPv3, 2005) |
 | 포트        | UDP 1701                                         |
 | 자체 암호화 | ❌ 없음 — IPsec 조합 필수                        |
-| 인증        | 제어 메시지에 선택적 CHAP/HMAC-MD5               |
+| 인증        | PPP 인증(PAP/CHAP 등); L2TP 자체만으로 보안 부족 |
 | 구성 요소   | LAC (Access Concentrator) + LNS (Network Server) |
 
 ### 핵심 구성 요소
@@ -512,15 +513,18 @@ Phase 2 — IPsec SA establishment (Quick Mode, 3 messages):
     │  (Child SA = ESP/AH SA established)│
 ```
 
-> ISAKMP(Internet Security Association and Key Management Protocol, RFC 2408): IKE의 메시지 형식과 SA 협상 절차를 정의하는 프레임워크입니다. IKEv1/v2 모두 ISAKMP 메시지 구조를 기반으로 동작합니다.
+> ISAKMP(Internet Security Association and Key Management Protocol, RFC 2408): IKEv1에서 사용된 SA 관리 프레임워크와 메시지 형식을 정의합니다. IKEv2는 별도의 메시지 형식과 교환 절차를 정의하므로 IKEv1과 동일한 ISAKMP 구조로 설명하면 안 됩니다.
 
 ### 필수 암호 알고리즘 (RFC 8221, 2017)
 
-| 용도   | MUST                | SHOULD             | MAY              |
-|--------|---------------------|--------------------|------------------|
-| 암호화 | AES-CBC, AES-GCM-16 | ChaCha20-Poly1305  | AES-CCM-8        |
-| 무결성 | HMAC-SHA-256-128    | AES-GMAC           | HMAC-SHA-512-256 |
-| DH     | Group 14 (2048bit)  | Group 19 (ECP-256) | Group 20         |
+| 용도    | MUST                     | SHOULD                       | MAY      |
+|---------|--------------------------|------------------------------|----------|
+| 암호화  | AES-CBC, AES-GCM-16      | ChaCha20-Poly1305, AES-CCM-8 |          |
+| 무결성  | HMAC-SHA-256-128*        | HMAC-SHA-512-256             | AES-GMAC |
+| DH 그룹 | 별도 IKEv2 지침에서 결정 |                              |          |
+
+* AEAD cipher(AES-GCM, ChaCha20-Poly1305) 사용 시 `AUTH_NONE`은 **MUST**입니다(RFC 8221 — AEAD-only 조건).
+  non-AEAD cipher 사용 시 `AUTH_NONE`은 **MUST NOT**이며, `HMAC-SHA-256-128`(MUST) 같은 별도 무결성 알고리즘이 필요합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -529,33 +533,32 @@ Phase 2 — IPsec SA establishment (Quick Mode, 3 messages):
 
 ## 5. L2TP/IPsec
 
-L2TP 터널을 IPsec ESP Tunnel Mode로 감싸는 조합입니다. L2TP가 PPP 세션을 제공하고, IPsec이 암호화를 담당합니다. Windows/macOS/iOS에 기본 내장되어 있어 별도 클라이언트 없이 사용 가능합니다.
+L2TP 터널을 IPsec ESP로 보호하는 조합입니다. RFC 3193에서는 Transport Mode를 반드시 지원하고 Tunnel Mode를 선택 사항으로 둡니다. L2TP가 PPP 세션을 제공하고 IPsec이 보호를 담당합니다. 주요 운영체제에 기본 지원이 있지만 버전·정책에 따라 차이가 있습니다.
 
-| 항목         | 값                                                 |
-|--------------|----------------------------------------------------|
-| 포트         | UDP 500 (IKE) + UDP 4500 (NAT-T) + UDP 1701 (L2TP) |
-| 암호화       | IPsec ESP (AES-256 권장)                           |
-| 인증         | IKE PSK 또는 X.509 인증서                          |
-| 이중 캡슐화  | ✅ (L2TP over IPsec)                               |
-| NAT 통과     | NAT-T (UDP 4500) 필수                              |
-| OS 기본 지원 | Windows, macOS, iOS, Android                       |
+| 항목         | 값                                                     |
+|--------------|--------------------------------------------------------|
+| 포트         | UDP 500 (IKE), UDP 4500 (NAT-T), UDP 1701 (IPsec 내부) |
+| 암호화       | IPsec ESP (운영 정책에 따른 AEAD 권장)                 |
+| 인증         | IKE PSK 또는 X.509 인증서                              |
+| 이중 캡슐화  | ✅ (L2TP over IPsec)                                   |
+| NAT 통과     | NAT 환경에서 UDP 4500 사용                             |
+| OS 기본 지원 | 운영체제·버전에 따라 다름                              |
 
 ### 연결 수립 순서
 
 L2TP/IPsec은 IPsec이 먼저 수립된 후 그 안에서 L2TP가 동작합니다.
 
 ```
-1. IKE Phase 1 (UDP 500 → 4500)
+1. IKE_SA_INIT (UDP 500, NAT 감지 후 필요 시 UDP 4500)
    Client ── IKE_SA_INIT ──> Server
-   (IPsec secure channel established)
+   (암호 알고리즘·DH·Nonce 협상)
 
-2. IKE Phase 2 (UDP 4500, ESP Tunnel Mode)
+2. IKE_AUTH (암호화된 IKE 메시지)
    Client ── IKE_AUTH ──> Server
-   (IPsec SA ready -> subsequent UDP 1701 traffic protected by ESP)
+   (IKE SA와 Child SA 인증·수립)
 
-3. L2TP Tunnel setup (UDP 1701, inside IPsec)
-   Client ── SCCRQ ──> Server
-   Client ── ICRQ  ──> Server
+3. L2TP over protected IPsec (UDP 1701)
+   Client ── SCCRQ / ICRQ ──> Server
    (L2TP Session established)
 
 4. PPP negotiation (inside L2TP)
@@ -571,11 +574,11 @@ L2TP/IPsec은 IPsec이 먼저 수립된 후 그 안에서 L2TP가 동작합니�
 ┌────────────────────────────────────────────────────────────────────────────┐
 │ Outer IP │ UDP 4500 │ ESP Hdr │ UDP 1701 │ L2TP │ PPP │ Inner IP │ Payload │
 └────────────────────────────────────────────────────────────────────────────┘
-  20 bytes   8 bytes   8 bytes   8 bytes   8 bytes 4 bytes  20 bytes
-  └── NAT-T ──┘  └────────── IPsec encryption range ────────────────────────┘
+  IPv4/UDP/ESP headers, IV/Nonce (cipher에 따라 다름), padding, ICV, and L2TP/PPP headers vary by implementation, cipher, and MTU.
+  └── UDP 1701 onward is protected by ESP ───────────────────────────────────┘
 ```
 
-오버헤드 합계: 약 **76 bytes** (NAT-T 환경 기준). WireGuard 32 bytes 대비 2배 이상입니다.
+오버헤드는 고정된 단일 값이 아니므로, 실제 MTU는 선택한 ESP 알고리즘과 NAT-T 여부를 기준으로 계산해야 합니다.
 
 ### 장단점
 
@@ -594,20 +597,20 @@ L2TP/IPsec은 IPsec이 먼저 수립된 후 그 안에서 L2TP가 동작합니�
 
 Internet Key Exchange version 2. RFC 7296(2014)에 정의된 IPsec 키 교환 프로토콜입니다. IKEv1의 복잡성을 줄이고 모바일 환경 지원(MOBIKE)을 추가했습니다.
 
-| 항목         | 값                                         |
-|--------------|--------------------------------------------|
-| 표준         | RFC 7296 (2014), RFC 4555 (MOBIKE)         |
-| 포트         | UDP 500 + UDP 4500 (NAT-T)                 |
-| 암호화       | IPsec ESP (AES-GCM, ChaCha20-Poly1305 등)  |
-| 특징         | MOBIKE — 네트워크 전환 시 세션 유지        |
-| OS 기본 지원 | Windows 7+, macOS 10.11+, iOS, Android 11+ |
-| 핵심 강점    | 모바일 로밍, 빠른 재연결                   |
+| 항목         | 값                                             |
+|--------------|------------------------------------------------|
+| 표준         | RFC 7296 (2014), RFC 4555 (MOBIKE)             |
+| 포트         | UDP 500 + UDP 4500 (NAT-T)                     |
+| 암호화       | IPsec ESP (AES-GCM, ChaCha20-Poly1305 등)      |
+| 특징         | MOBIKE — 네트워크 전환 시 세션 유지            |
+| OS 기본 지원 | Windows/macOS/iOS/Android 등(버전·정책별 차이) |
+| 핵심 강점    | 모바일 로밍, 빠른 재연결                       |
 
-> MOBIKE(IKEv2 Mobility and Multihoming, RFC 4555): IKE SA를 재협상 없이 유지한 채 IP 주소가 변경되어도 세션을 지속하는 기능입니다. Wi-Fi ↔ LTE 전환 시 VPN 연결이 끊기지 않는 핵심 메커니즘입니다.
+> MOBIKE(IKEv2 Mobility and Multihoming, RFC 4555): 양단과 네트워크가 지원하는 경우 IKE SA를 재협상하지 않고 주소 변경에 대응하여 세션을 지속할 수 있는 기능입니다. Wi-Fi ↔ LTE 전환 시 연결 유지를 지원하지만, 구현·정책·네트워크 상태에 따라 재연결이 필요할 수 있습니다.
 
 ### IKEv2 4개 메시지 교환 흐름
 
-IKEv2는 IKEv1의 9개 메시지를 4개로 압축했습니다.
+IKEv2는 기본 케이스에서 IKEv1의 9개 메시지를 4개로 압축했습니다(EAP 인증 사용 시 IKE_AUTH 내 추가 교환 발생).
 
 ```
 Initiator                                       Responder
@@ -647,12 +650,12 @@ IKE_SA_INIT에서 DH 키 교환이 완료되므로, IKE_AUTH부터는 모든 페
 | NAT 감지       | 별도 확장 필요                | IKE_SA_INIT에 내장           |
 | 모바일 지원    | ❌                            | ✅ MOBIKE (RFC 4555)         |
 | Dead Peer 감지 | 별도 RFC (RFC 3706)           | 내장 Liveness Check          |
-| EAP 인증       | 제한적                        | 완전 지원 (RFC 7296 §2.16)   |
-| 취약점         | Aggressive Mode PSK 노출 위험 | 없음                         |
+| EAP 인증       | 제한적                        | 지원 (RFC 7296 §2.16)        |
+| 취약점         | Aggressive Mode PSK 노출 위험 | 구현·구성 취약점은 별도 검토 |
 
 ### MOBIKE (RFC 4555) — 모바일 네트워크 전환
 
-클라이언트 IP가 변경될 때 VPN 세션을 재인증 없이 유지합니다. Wi-Fi → LTE 전환 시에도 끊김 없이 동작합니다.
+클라이언트 IP가 변경될 때 IKE SA를 유지하면서 VPN 세션을 지속할 수 있습니다. Wi-Fi → LTE 전환 시에도 연결 유지를 지원하지만, 구현·네트워크 상태에 따라 재연결이 필요할 수 있습니다.
 
 ```
 Phone (Wi-Fi 192.168.1.10)
@@ -677,7 +680,7 @@ MOBIKE 동작 조건: 양단이 RFC 4555를 지원해야 하며, IKE_AUTH에서 
 IKE SA 또는 Child SA의 수명이 만료되기 전에 새 SA를 협상하여 끊김 없이 갱신합니다.
 
 ```
-Initiator ── CREATE_CHILD_SA (new DH included) ──> Responder
+Initiator ── CREATE_CHILD_SA (optional KE for PFS) ──> Responder
 Initiator <── CREATE_CHILD_SA (response)   ─── Responder
 (old SA and new SA coexist -> old SA deleted)
 ```
@@ -688,16 +691,16 @@ Initiator <── CREATE_CHILD_SA (response)   ─── Responder
 
 ## 7. OpenVPN
 
-SSL/TLS 기반 오픈소스 VPN입니다. 유저스페이스에서 동작하며 TLS 위에 Control Channel과 Data Channel을 분리하여 운용합니다. TCP 443 사용으로 방화벽/DPI 우회에 강점이 있습니다.
+SSL/TLS 기반 오픈소스 VPN입니다. 일반적으로 유저스페이스에서 동작하며 Control Channel과 Data Channel을 분리합니다. TCP 443을 사용할 수 있어 일부 방화벽 환경에서 도달성이 좋아질 수 있지만, HTTPS와 동일하거나 DPI를 항상 우회하는 것은 아닙니다.
 
-| 항목      | 값                                 |
-|-----------|------------------------------------|
-| 라이선스  | GPLv2                              |
-| 포트      | UDP 1194 (기본) 또는 TCP 443 위장  |
-| 암호화    | OpenSSL (AES-256-GCM, TLS 1.2/1.3) |
-| 인증      | X.509 인증서, PSK, LDAP, RADIUS    |
-| 모드      | TUN (Layer 3) / TAP (Layer 2)      |
-| 코드 규모 | ~100,000줄 (WireGuard 대비 25배)   |
+| 항목      | 값                                                       |
+|-----------|----------------------------------------------------------|
+| 라이선스  | GPLv2                                                    |
+| 포트      | UDP 1194 (일반적 기본값) 또는 TCP 443                    |
+| 암호화    | OpenSSL 기반, 설정한 TLS·data cipher                     |
+| 인증      | X.509, 사용자명/비밀번호, LDAP/RADIUS, 레거시 static key |
+| 모드      | TUN (Layer 3) / TAP (Layer 2)                            |
+| 구현 규모 | 버전·빌드·구성에 따라 다름                               |
 
 ### Control Channel / Data Channel 분리 구조
 
@@ -712,9 +715,9 @@ OpenVPN Packet Structure:
           ┌─────────────────────┴─────────────────────┐
           │                                           │
    [Control Channel]                          [Data Channel]
-   TLS 1.2/1.3 handshake                     AES-256-GCM + HMAC
-   Cert exchange, session key negotiation     Actual VPN traffic
-   Periodic renegotiation                     Encrypt-then-MAC
+   TLS 1.2/1.3 handshake                     Actual VPN traffic
+   Cert exchange, session key negotiation     AEAD or cipher + HMAC
+   Periodic renegotiation                     Data key management
    tls-auth / tls-crypt protection available
 ```
 
@@ -744,33 +747,32 @@ Control Channel에 추가 보호 레이어를 적용하는 두 가지 방식입�
 Plaintext packet
     │
     v
-AES-256-GCM encryption
+Configured AEAD cipher encryption
     │
     v
 Ciphertext + GCM Auth Tag (16 bytes)
     │
-    v   (additional HMAC if tls-auth enabled)
+    v
 OpenVPN Data Header (Packet ID + Key ID)
     │
     v
 UDP/TCP transmission
 ```
 
-> tls-auth: OpenVPN 제어 채널 패킷에 HMAC 서명을 추가하는 기능입니다. HMAC 불일치 패킷은 TLS 핸드셰이크 전에 즉시 폐기되어 DoS/포트 스캔 방어 효과가 있습니다. tls-crypt는 한 단계 더 나아가 HMAC 대신 제어 채널 전체를 암호화합니다.
+> tls-auth: OpenVPN 제어 채널 패킷에 HMAC 서명을 추가하는 기능입니다. HMAC 불일치 패킷은 TLS 핸드셰이크 전에 즉시 폐기되어 DoS/포트 스캔 방어 효과가 있습니다. tls-crypt는 HMAC 인증을 적용하면서 제어 채널 전체를 암호화하여 내용을 숨깁니다.
 
-OpenVPN은 Encrypt-then-MAC 방식을 사용합니다. 암호화 후 MAC을 계산하므로, MAC 검증 실패 시 복호화 전에 패킷을 폐기합니다. (RFC 7366)
+OpenVPN 2.6 문서 기준으로 비-AEAD data cipher는 Encrypt-then-MAC을 사용합니다. AES-GCM 같은 AEAD cipher에서는 cipher 자체의 인증 태그를 사용하며 별도 `--auth` HMAC은 data channel에 적용되지 않습니다.
 
 ### 장단점
 
-| 장점                         | 단점                                      |
-|------------------------------|-------------------------------------------|
-| TCP 443 사용으로 방화벽 우회 | 유저스페이스 동작 — 커널 대비 처리량 낮음 |
-| 모든 OS 지원                 | 클라이언트 소프트웨어 설치 필요           |
-| 20년+ 보안 감사 이력         | 설정 복잡 (PKI 인프라 필요)               |
-| 유연한 인증 연동             | TCP 모드 시 TCP-over-TCP 문제             |
-| tls-crypt으로 서버 은닉 가능 | 코드 규모 크고 공격 표면 넓음             |
+| 장점                                       | 단점                                          |
+|--------------------------------------------|-----------------------------------------------|
+| TCP 443 사용으로 일부 환경에서 도달성 개선 | 유저스페이스 동작 — 처리량은 구성·플랫폼 의존 |
+| 다양한 OS 지원                             | 클라이언트 소프트웨어 설치 필요               |
+| 유연한 인증 연동                           | TCP 모드 시 TCP-over-TCP 문제                 |
+| tls-crypt으로 제어 채널 보호               | 설정과 구현 범위가 커질 수 있음               |
 
-🟡 TCP 모드(TCP 443)는 방화벽 우회에 유효하지만, TCP-over-TCP로 인한 성능 저하가 발생합니다. 가능하면 UDP 모드를 사용합니다.
+🟡 TCP 모드(TCP 443)는 일부 네트워크에서 연결 가능성을 높일 수 있지만 HTTPS와 동일한 위장을 보장하지 않습니다. TCP-over-TCP로 성능 저하가 발생할 수 있으므로, 정책상 허용되는 안정적인 네트워크에서는 UDP 모드를 우선 검토합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -780,15 +782,15 @@ OpenVPN은 Encrypt-then-MAC 방식을 사용합니다. 암호화 후 MAC을 계�
 
 Jason A. Donenfeld이 설계한 현대적 VPN 프로토콜입니다. 2020년 Linux 커널 5.6에 공식 통합되었습니다. Noise Protocol Framework 기반의 단순한 설계와 최소한의 암호 프리미티브가 특징입니다.
 
-| 항목      | 값                                      |
-|-----------|-----------------------------------------|
-| 개발자    | Jason A. Donenfeld                      |
-| 라이선스  | GPLv2 (Linux), MIT (Go userspace)       |
-| 포트      | UDP 단일 포트 (기본 51820)              |
-| 암호화    | ChaCha20, Poly1305, Curve25519, BLAKE2s |
-| 코드 규모 | ~4,000줄 (커널 모듈)                    |
-| 커널 통합 | Linux 5.6+, FreeBSD, Windows, macOS     |
-| 키 교환   | Noise Protocol Framework (IK pattern)   |
+| 항목      | 값                                          |
+|-----------|---------------------------------------------|
+| 개발자    | Jason A. Donenfeld                          |
+| 라이선스  | GPLv2 (Linux), MIT (Go userspace)           |
+| 포트      | UDP 단일 포트 (기본 51820)                  |
+| 암호화    | ChaCha20, Poly1305, Curve25519, BLAKE2s     |
+| 구현 규모 | 작고 단순한 설계를 지향함                   |
+| 지원 구현 | Linux kernel, FreeBSD 및 Windows/macOS 구현 |
+| 키 교환   | Noise Protocol Framework (IK pattern)       |
 
 ### 암호 프리미티브
 
@@ -813,8 +815,6 @@ WireGuard는 알고리즘 협상 없이 고정된 최신 암호화 스위트를 
 
 > Noise Protocol Framework: Jason Donenfeld가 WireGuard 설계에 채택한 암호화 핸드셰이크 프레임워크입니다. IK 패턴에서 I는 Initiator가 자신의 정적 키를 전송함을, K는 Responder의 정적 키가 사전에 알려짐(Known)을 의미합니다. 1-RTT로 상호 인증과 키 교환을 완료합니다.
 
-WireGuard는 Noise Protocol Framework의 IK 패턴을 사용합니다. "I"는 Initiator의 정적 키가 첫 메시지에 포함(Identity), "K"는 Responder의 키가 미리 알려져 있다(Known)는 의미입니다.
-
 ```
 Initiator                                      Responder
     │                                               │
@@ -835,7 +835,7 @@ Initiator                                      Responder
     │   Counter + ChaCha20-Poly1305(Payload)        │
 ```
 
-세션 키는 핸드셰이크마다 새로 파생되어 **Perfect Forward Secrecy**를 보장합니다. 핸드셰이크는 기본 **3분마다 자동 갱신**됩니다.
+세션 키는 핸드셰이크마다 새로 파생되어 **Perfect Forward Secrecy**를 제공합니다. WireGuard의 `REKEY_AFTER_TIME` 기본값은 120초(2분)이며, 메시지 수명·트래픽·재키 조건에 따라 핸드셰이크가 수행됩니다.
 
 ### Cryptokey Routing
 
@@ -895,11 +895,11 @@ Initiator ── Handshake Initiation (with MAC2) ──> Responder
 
 | 장점                       | 단점                                   |
 |----------------------------|----------------------------------------|
-| 4,000줄 — 코드 감사 용이   | 고정 암호 스위트 (알고리즘 선택 불가)  |
+| 단순한 설계                | 고정 암호 스위트 (알고리즘 선택 불가)  |
 | 커널 공간 처리 — 높은 성능 | UDP only — 일부 방화벽/DPI 차단 가능   |
 | 1-RTT 핸드셰이크           | 동적 IP 할당 미내장 (wg-quick 등 별도) |
 | Roaming 지원               | TCP 443 위장 불가                      |
-| PFS 자동 보장 (3분 갱신)   | 연결 상태 없음 — 로깅/감사 어려움      |
+| PFS 자동 보장 (세션 재키)  | 연결 상태 없음 — 로깅/감사 어려움      |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -910,43 +910,43 @@ Initiator ── Handshake Initiation (with MAC2) ──> Responder
 
 ### 보안 / 성능 / 운용성 종합 비교
 
-| 항목            | PPTP       | L2TP/IPsec    | IKEv2/IPsec | OpenVPN       | WireGuard   |
-|-----------------|------------|---------------|-------------|---------------|-------------|
-| 보안            | ❌ 크랙됨  | ✅ 강력       | ✅ 강력     | ✅ 강력       | ✅ 최신     |
-| 암호화 알고리즘 | RC4 (취약) | AES-CBC/GCM   | AES-GCM     | AES-256-GCM   | ChaCha20    |
-| PFS             | ❌         | 설정 시 가능  | ✅          | ✅            | ✅ 항상     |
-| 속도            | 빠름       | 보통          | 빠름        | 보통          | 최상        |
-| 오버헤드        | ~8 bytes   | ~76 bytes     | ~58 bytes   | ~30 bytes     | ~32 bytes   |
-| NAT 통과        | 어려움     | NAT-T 필수    | 내장        | TCP 443 가능  | UDP 단일    |
-| 모바일 로밍     | ❌         | 보통          | ✅ MOBIKE   | 보통          | ✅ 자동     |
-| 방화벽 우회     | 어려움     | 어려움        | 보통        | ✅ TCP 443    | ❌ UDP only |
-| 코드 규모       | 소         | 대            | 중          | 대 (~100K줄)  | 소 (~4K줄)  |
-| OS 기본 지원    | Windows    | 대부분        | 대부분      | ❌ 클라이언트 | Linux 5.6+  |
-| 표준 / RFC      | RFC 2637   | RFC 2661+4301 | RFC 7296    | 비표준        | 비표준      |
-| 상태            | 폐기       | 레거시        | 현역        | 현역          | 현역        |
+| 항목            | PPTP                         | L2TP/IPsec       | IKEv2/IPsec      | OpenVPN          | WireGuard             |
+|-----------------|------------------------------|------------------|------------------|------------------|-----------------------|
+| 보안            | ❌ 취약                      | 구성에 따라 다름 | 구성에 따라 다름 | 구성에 따라 다름 | 구성에 따라 다름      |
+| 암호화 알고리즘 | RC4 (취약)                   | AES-CBC/GCM      | AES-GCM          | 설정한 cipher    | ChaCha20              |
+| PFS             | ❌                           | 설정 시 가능     | 설정 시 가능     | 구성에 따름      | 세션 재키             |
+| 속도            | 환경 의존                    | 환경 의존        | 환경 의존        | 환경 의존        | 환경 의존             |
+| 오버헤드        | 구현·암호화 방식에 따라 가변 | 가변             | 가변             | 가변             | 데이터 패킷 기준 가변 |
+| NAT 통과        | 어려움                       | NAT-T 사용       | NAT-T 사용       | TCP/UDP 선택     | UDP 단일              |
+| 모바일 로밍     | ❌                           | 제한적           | ✅ MOBIKE        | 구현·구성 의존   | ✅ Endpoint 갱신      |
+| 방화벽 도달성   | 낮음                         | 낮음             | 보통             | TCP 443 가능     | UDP 정책 의존         |
+| 구현 규모       | 레거시                       | 구현별 상이      | 구현별 상이      | 구현별 상이      | 단순한 설계           |
+| OS 기본 지원    | Windows                      | 운영체제별 상이  | 운영체제별 상이  | 클라이언트 필요  | 다양한 구현           |
+| 표준 / RFC      | RFC 2637                     | RFC 2661+4301    | RFC 7296         | 비표준           | 비표준                |
+| 상태            | 폐기                         | 레거시           | 현역             | 현역             | 현역                  |
 
 > PFS(Perfect Forward Secrecy): 세션 키가 노출되더라도 과거의 다른 세션 키는 영향을 받지 않도록 매 세션마다 독립적인 키를 생성하는 특성입니다. Diffie-Hellman 임시 키 교환(Ephemeral DH)으로 구현하며, 장기 키 탈취 시 과거 통신 내용을 보호합니다.
 
 ### 포트 / 프로토콜 요약
 
-| VPN 프로토콜 | 필요 포트 / 프로토콜            | 방화벽 규칙                        |
-|--------------|---------------------------------|------------------------------------|
-| PPTP         | TCP 1723 + GRE (IP Protocol 47) | GRE 허용 필요 — NAT 통과 어려움    |
-| L2TP/IPsec   | UDP 500, 4500, 1701             | 3개 포트 허용                      |
-| IKEv2        | UDP 500, 4500                   | 2개 포트 허용                      |
-| OpenVPN      | UDP 1194 또는 TCP 443           | 단일 포트 (TCP 443은 HTTPS와 동일) |
-| WireGuard    | UDP 51820 (변경 가능)           | 단일 UDP 포트 허용                 |
+| VPN 프로토콜 | 필요 포트 / 프로토콜             | 방화벽 규칙                                   |
+|--------------|----------------------------------|-----------------------------------------------|
+| PPTP         | TCP 1723 + GRE (IP Protocol 47)  | GRE 허용 필요 — NAT 통과 어려움               |
+| L2TP/IPsec   | UDP 500, 4500; 1701은 IPsec 내부 | NAT 환경에서 500/4500 허용                    |
+| IKEv2        | UDP 500, 4500                    | 2개 포트 허용                                 |
+| OpenVPN      | UDP 1194 또는 TCP 443            | 단일 포트 (TCP 443이 HTTPS와 동일하지는 않음) |
+| WireGuard    | UDP 51820 (변경 가능)            | 단일 UDP 포트 허용                            |
 
 ### 핸드셰이크 메시지 수 비교
 
-| 프로토콜        | 메시지 수 | RTT 수 | 비고                            |
-|-----------------|-----------|--------|---------------------------------|
-| PPTP            | 10+       | 5+     | TCP + PPP 협상 포함             |
-| IKEv1 Main Mode | 9         | 4.5    | Phase 1(6) + Phase 2(3)         |
-| L2TP/IPsec      | 15+       | 7+     | IKE + L2TP + PPP 전체           |
-| IKEv2           | 4         | 2      | IKE_SA_INIT(2) + IKE_AUTH(2)    |
-| OpenVPN         | TLS 1.3   | 1      | TLS 1.3 0-RTT 가능              |
-| WireGuard       | 2         | 1      | Noise IK: Initiation + Response |
+| 프로토콜        | 대표 교환              | RTT/메시지 특성                     | 비고                                |
+|-----------------|------------------------|-------------------------------------|-------------------------------------|
+| PPTP            | TCP + 제어 채널 + PPP  | 구현·인증 협상에 따라 다름          | GRE data channel                    |
+| IKEv1 Main Mode | Main Mode + Quick Mode | Main 6개, Quick 3개 메시지          | 구성에 따라 달라짐                  |
+| L2TP/IPsec      | IKE + L2TP + PPP       | 각 단계와 인증 방식에 따라 다름     | 고정 RTT로 비교하기 어려움          |
+| IKEv2           | IKE_SA_INIT + IKE_AUTH | 기본 4개 메시지, 보통 2 RTT         | EAP 사용 시 추가 교환 가능          |
+| OpenVPN         | TLS + VPN control      | TLS 버전·구성·재개 여부에 따라 다름 | 0-RTT를 일반 동작으로 간주하지 않음 |
+| WireGuard       | Initiation + Response  | 기본 2개 메시지, 1 RTT              | Noise IK                            |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -956,15 +956,15 @@ Initiator ── Handshake Initiation (with MAC2) ──> Responder
 
 ### 용도별 권장 프로토콜
 
-| 용도                      | 권장 프로토콜        | 이유                                     |
-|---------------------------|----------------------|------------------------------------------|
-| Site-to-Site (IDC/Cloud)  | IKEv2/IPsec          | AWS/GCP/Azure VPN 기본, 장비 호환성 최상 |
-| 모바일 Remote Access      | IKEv2 또는 WireGuard | MOBIKE/Roaming으로 끊김 없는 전환        |
-| 검열 우회 / DPI 회피      | OpenVPN (TCP 443)    | HTTPS 트래픽과 구분 불가                 |
-| 고성능 (게임, 스트리밍)   | WireGuard            | 최소 오버헤드, 커널 공간 처리            |
-| 클라이언트 설치 불가 환경 | IKEv2/IPsec          | OS 기본 내장, 추가 설치 없음             |
-| 레거시 장비 호환          | L2TP/IPsec           | 구형 라우터/방화벽 지원                  |
-| ❌ 사용 금지              | PPTP                 | 2012년 크랙됨 — 사용 금지                |
+| 용도                      | 권장 프로토콜        | 이유                                           |
+|---------------------------|----------------------|------------------------------------------------|
+| Site-to-Site (IDC/Cloud)  | IKEv2/IPsec          | AWS/GCP/Azure에서 표준 지원, 장비 호환성 우수  |
+| 모바일 Remote Access      | IKEv2 또는 WireGuard | MOBIKE/Roaming으로 네트워크 전환 시 연결 유지  |
+| 제한된 방화벽 환경        | OpenVPN (TCP 443)    | 일부 환경에서 도달성 개선; 식별 불가 보장 없음 |
+| 고성능 (게임, 스트리밍)   | WireGuard            | 최소 오버헤드, 커널 공간 처리                  |
+| 클라이언트 설치 불가 환경 | IKEv2/IPsec          | OS 기본 내장, 추가 설치 없음                   |
+| 레거시 장비 호환          | L2TP/IPsec           | 구형 라우터/방화벽 지원                        |
+| ❌ 사용 금지              | PPTP                 | 알려진 취약점으로 신규 사용 금지               |
 
 ### 환경별 판단 기준
 
@@ -990,24 +990,24 @@ New deployment?
 
 ### AWS VPN 연동
 
-| AWS 서비스       | 지원 프로토콜         | 비고                               |
-|------------------|-----------------------|------------------------------------|
-| Site-to-Site VPN | IKEv1/IKEv2 + IPsec   | BGP 또는 Static 라우팅             |
-| Client VPN       | OpenVPN (mutual auth) | ACM 인증서 기반                    |
-| EC2 자체 구축    | WireGuard, OpenVPN 등 | AMI에 직접 설치, SG 포트 허용 필요 |
-| Transit Gateway  | IPsec (IKEv2 권장)    | 다중 VPC/계정 연결                 |
+| AWS 서비스       | 지원 프로토콜                   | 비고                               |
+|------------------|---------------------------------|------------------------------------|
+| Site-to-Site VPN | IKEv1/IKEv2 + IPsec             | BGP 또는 Static 라우팅             |
+| Client VPN       | OpenVPN 기반                    | 인증서·사용자 인증 등 구성 지원    |
+| EC2 자체 구축    | WireGuard, OpenVPN 등           | AMI에 직접 설치, SG 포트 허용 필요 |
+| Transit Gateway  | VPN attachment 또는 TGW Connect | VPN은 IPsec, Connect는 GRE/BGP     |
 
 ### 보안 수준 요약
 
 ```
-Security strength (high -> low):
+Security assessment:
 
-WireGuard         ── modern ciphers, minimal code, PFS always
-IKEv2/IPsec (AES-GCM) ── RFC standard, AEAD, broad compatibility
-OpenVPN (TLS 1.3) ── mature implementation, 20+ years audit history
-L2TP/IPsec        ── IPsec-level security, double encapsulation overhead
+WireGuard         ── 고정된 현대적 암호 조합, 세션 재키
+IKEv2/IPsec       ── 표준 기반, 알고리즘·구성·구현 검토 필요
+OpenVPN           ── TLS와 data cipher 구성 및 인증 방식 검토 필요
+L2TP/IPsec        ── IPsec 구성에 의존, 레거시 호환성 중심
 ─────────────────────────────────────────────────────
-PPTP              ── ❌ do not use (fully cracked in 2012)
+PPTP              ── ❌ 신규 사용 금지
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -1036,6 +1036,6 @@ PPTP              ── ❌ do not use (fully cracked in 2012)
 
 **작성일**: 2026-06-29
 
-**마지막 업데이트**: 2026-08-05
+**마지막 업데이트**: 2026-08-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.
