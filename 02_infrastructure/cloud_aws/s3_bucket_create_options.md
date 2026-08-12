@@ -360,11 +360,77 @@ aws s3api put-bucket-encryption \
 
 ---
 
+
+## 부록. STS(Security Token Service) 개요
+
+S3 버킷 생성 옵션과 직접적인 관계는 없지만, SSE-KMS(섹션 8.2)와 Cross-account 접근에서 반드시 이해가 필요한 개념입니다. 상세 설정은 [sts_assume_role.md](sts_assume_role.md)를 참고합니다.
+
+> STS(Security Token Service): IAM 영구 키 대신 임시 자격증명을 발급하는 AWS 서비스입니다.
+> 유효 기간이 지나면 자동으로 만료되므로 키 유출 피해 범위를 줄일 수 있습니다.
+
+### AssumeRole 흐름
+
+```
+A계정 EC2                     AWS STS                      B계정
+     │                            │                            │
+     ├── AssumeRole 요청 ────────>│                            │
+     │   (B계정 Role ARN)         │── Trust Policy 검증 ──────>│
+     │                            │<── 허용 ───────────────────┤
+     │<── 임시 자격증명 반환 ─────┤                            │
+     │   (AccessKeyId             │                            │
+     │    SecretAccessKey         │                            │
+     │    SessionToken            │                            │
+     │    Expiration)             │                            │
+     │                            │                            │
+     ├── S3 PutObject ────────────┼───────────────────────────>│
+     │   (임시 자격증명 포함)     │                            │ B계정 S3 + KMS
+```
+
+### 임시 자격증명 구성
+
+| 항목            | 내용                                    |
+|-----------------|-----------------------------------------|
+| AccessKeyId     | 임시 액세스 키 ID                       |
+| SecretAccessKey | 임시 시크릿 키                          |
+| SessionToken    | 임시 세션 토큰 (필수, 없으면 인증 실패) |
+| Expiration      | 만료 시각 (기본 1시간, 최대 12시간)     |
+
+🟡 SessionToken은 일반 API 호출 시 `AWS_SESSION_TOKEN` 환경변수 또는 헤더에 반드시 포함해야 합니다. 누락 시 `InvalidClientTokenId` 오류가 발생합니다.
+
+### STS 임시 자격증명 vs IAM 영구 키
+
+| 항목          | IAM 영구 키                  | STS 임시 자격증명         |
+|---------------|------------------------------|---------------------------|
+| 유효 기간     | 만료 없음 (수동 삭제 전까지) | 15분~12시간 (설정 가능)   |
+| 키 유출 시    | 즉시 악용 가능               | 만료 후 자동 무효화       |
+| 권한 범위     | IAM Policy 전체              | AssumeRole 시점 Policy만  |
+| Cross-account | 별도 IAM 사용자 생성 필요    | 역할 위임으로 간단히 처리 |
+| 감사 추적     | CloudTrail: IAM 사용자       | CloudTrail: 역할 + 세션명 |
+| 자격증명 개수 | 키 최대 2개                  | 필요 시마다 발급          |
+
+### Cross-account S3 + SSE-KMS 권한 체크포인트
+
+SSE-KMS 버킷에 Cross-account로 접근할 때 권한이 누락되기 쉬운 지점입니다.
+
+| 계층 | 위치          | 설정 내용                        | 누락 시 증상        |
+|------|---------------|----------------------------------|---------------------|
+| 1    | A계정 IAM     | sts:AssumeRole 허용              | AssumeRole API 실패 |
+| 2    | B계정 Role    | Trust Policy에 A계정 허용        | AccessDenied (STS)  |
+| 3    | B계정 Role    | s3:PutObject, s3:GetObject       | AccessDenied (S3)   |
+| 4    | B계정 KMS Key | kms:GenerateDataKey, kms:Decrypt | AccessDenied (KMS)  |
+
+계층 3까지 설정하고 계층 4를 누락하는 경우가 가장 흔합니다. S3 권한은 있어도 KMS가 막으면 업로드 자체가 실패합니다.
+
+상세 설정(Trust Policy, IAM Policy 전문, CLI 예시)은 [sts_assume_role.md](sts_assume_role.md) 참고.
+
+---
+
 ## 참고 자료
 
 - AWS Documentation: [docs.aws.amazon.com/s3](https://docs.aws.amazon.com/s3/latest/userguide/creating-bucket.html) — ★★★☆☆
 - AWS Documentation: [S3 Express One Zone](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-express-one-zone.html) — ★★★☆☆
 - [s3_object_lock.md](s3_object_lock.md)
+- [sts_assume_role.md](sts_assume_role.md)
 
 ---
 
