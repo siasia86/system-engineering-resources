@@ -436,6 +436,7 @@ H3 제목 형식: `` ### `/command` — 한글 설명 ``
 | 이메일    | `user@example.com`  |
 | IP 주소   | `192.0.2.1`         |
 | S3 버킷   | `my-bucket`         |
+| AWS 계정  | `123456789012`      |
 
 - IP 주소 : RFC 5737 documentation range
 
