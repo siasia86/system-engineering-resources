@@ -11,7 +11,7 @@
 | Docker         | 29.5.3 (cgroup v2)                                   |
 | SSH 키         | ~/.ssh/id_ed25519                                    |
 | venv           | /home/sjyun/.venv                                    |
-| AWS 프로필     | 01_re (123456789012)                                 |
+| AWS 프로필     | 01_re                                                |
 
 ## 프로젝트 경로
 
