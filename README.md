@@ -78,8 +78,16 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | 문서                                                             | 설명                         |
 |------------------------------------------------------------------|------------------------------|
 | [CPU CISC vs RISC](01_fundamentals/cs/cpu_cisc_risc_concepts.md) | 명령어 집합 아키텍처 비교    |
+| [Git 개념](01_fundamentals/cs/git_concepts.md)                   | 내부 구조, 객체 모델         |
+| [버전 관리 개념](01_fundamentals/cs/version_control_concepts.md) | VCS 비교, 브랜치 전략        |
 | [자료구조](01_fundamentals/cs/data_structures/)                  | Array, Stack, Queue, Tree 등 |
 | [테스팅](01_fundamentals/cs/testing/)                            | Black/White Box, 테스트 레벨 |
+
+### Windows
+
+| 문서                                                                                    | 설명                   |
+|-----------------------------------------------------------------------------------------|------------------------|
+| [Windows 서버 리소스 분석](01_fundamentals/windows/windows_server_resource_analysis.md) | CPU/메모리/디스크 분석 |
 
 ### Math
 
@@ -89,10 +97,14 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Programming
 
-| 문서                                                                               | 설명              |
-|------------------------------------------------------------------------------------|-------------------|
-| [Python 가이드](01_fundamentals/programming/python/)                               | 클래스~subprocess |
-| [언어 비교](01_fundamentals/programming/c_cpp_csharp_go_python_bash_comparison.md) | 6개 언어 비교     |
+| 문서                                                                               | 설명                        |
+|------------------------------------------------------------------------------------|-----------------------------|
+| [Python 가이드](01_fundamentals/programming/python/)                               | 클래스~subprocess (25개)    |
+| [C# 가이드](01_fundamentals/programming/csharp/)                                   | async, LINQ, OOP, 예외 처리 |
+| [Rust 가이드](01_fundamentals/programming/rust/)                                   | 소유권, 동시성, 에러 처리   |
+| [언어 비교](01_fundamentals/programming/c_cpp_csharp_go_python_bash_comparison.md) | 6개 언어 비교               |
+| [Rust SE 로드맵](01_fundamentals/programming/rust_roadmap_for_se.md)               | SE 관점 Rust 학습 경로      |
+| [LSP 가이드](01_fundamentals/programming/lsp_guide.md)                             | Language Server Protocol    |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -115,19 +127,26 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Kubernetes 기본](02_infrastructure/containers/kubernetes_basic.md)                  | Pod, Deployment, Service   |
 | [k3s](02_infrastructure/containers/k3s.md)                                           | 경량 K8s, SQLite 기반      |
 | [Helm](02_infrastructure/containers/helm.md)                                         | Chart, Values, Release     |
+| [n8n Docker](02_infrastructure/containers/n8n_docker_cheatsheet.md)                  | n8n 치트시트               |
 
 ### CI/CD
 
-| 문서                                                               | 설명                     |
-|--------------------------------------------------------------------|--------------------------|
-| [Jenkins Pipeline](02_infrastructure/cicd/jenkins_pipeline.md)     | Declarative/Scripted     |
-| [GitHub Actions](02_infrastructure/cicd/github_actions.md)         | 워크플로우, Runner       |
-| [GitHub CLI](02_infrastructure/cicd/github_cli.md)                 | gh 명령어, PR/Issue      |
-| [ArgoCD](02_infrastructure/cicd/argocd.md)                         | GitOps CD, Application   |
-| [Harness](02_infrastructure/cicd/harness_inc.md)                   | CI/CD 플랫폼             |
-| [Git 가이드](02_infrastructure/cicd/git_guide.md)                  | diff, log, rebase, stash |
-| [Airflow](02_infrastructure/cicd/airflow.md)                       | DAG, Operator, 스케줄링  |
-| [AWS Step Functions](02_infrastructure/cicd/aws_step_functions.md) | 상태 머신, 워크플로우    |
+| 문서                                                                       | 설명                          |
+|----------------------------------------------------------------------------|-------------------------------|
+| [Jenkins 설치](02_infrastructure/cicd/jenkins_install.md)                  | 설치, 플러그인, 초기 설정     |
+| [Jenkins Pipeline](02_infrastructure/cicd/jenkins_pipeline.md)             | Declarative/Scripted          |
+| [GitHub Actions](02_infrastructure/cicd/github_actions.md)                 | 워크플로우, Runner            |
+| [GitHub CLI](02_infrastructure/cicd/github_cli.md)                         | gh 명령어, PR/Issue           |
+| [ArgoCD](02_infrastructure/cicd/argocd.md)                                 | GitOps CD, Application        |
+| [Harness](02_infrastructure/cicd/harness_inc.md)                           | CI/CD 플랫폼                  |
+| [Git 가이드](02_infrastructure/cicd/git_guide.md)                          | diff, log, rebase, stash      |
+| [Airflow](02_infrastructure/cicd/airflow.md)                               | DAG, Operator, 스케줄링       |
+| [AWS Step Functions](02_infrastructure/cicd/aws_step_functions.md)         | 상태 머신, 워크플로우         |
+| [SVN 가이드](02_infrastructure/cicd/svn_guide.md)                          | Subversion 기본               |
+| [Ansible vs Jenkins](02_infrastructure/cicd/ansible_vs_jenkins.md)         | 도구 비교                     |
+| [DevOps Toolchain](02_infrastructure/cicd/devops_toolchain.md)             | 전체 파이프라인 도구 맵       |
+| [Infra Monorepo](02_infrastructure/cicd/infra_monorepo_and_boilerplate.md) | 모노레포 구조, 보일러플레이트 |
+| [.gitignore 패턴](02_infrastructure/cicd/gitignore_patterns.md)            | 언어별 패턴 정리              |
 
 ### IaC
 
@@ -159,13 +178,23 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Cloud (AWS)
 
-| 문서                                                                                    | 설명                 |
-|-----------------------------------------------------------------------------------------|----------------------|
-| [S3 Gateway Endpoint](02_infrastructure/cloud_aws/s3_gateway_endpoint_cross_account.md) | 크로스 계정 S3 접근  |
-| [S3 Object Lock](02_infrastructure/cloud_aws/s3_object_lock.md)                         | WORM, Compliance     |
-| [S3 백업 팁](02_infrastructure/cloud_aws/s3_backup_tips.md)                             | 비용/성능/무결성     |
-| [VPC Peering](02_infrastructure/cloud_aws/vpc_peering_inter_region_guide.md)            | Inter-Region Peering |
-| [AWS Network Firewall](02_infrastructure/cloud_aws/aws_network_firewall.md)             | 관리형 방화벽        |
+| 문서                                                                                    | 설명                       |
+|-----------------------------------------------------------------------------------------|----------------------------|
+| [S3 버킷 생성 옵션](02_infrastructure/cloud_aws/s3_bucket_create_options.md)            | SSE, 버전관리, Object Lock |
+| [S3 Gateway Endpoint](02_infrastructure/cloud_aws/s3_gateway_endpoint_cross_account.md) | 크로스 계정 S3 접근        |
+| [S3 Object Lock](02_infrastructure/cloud_aws/s3_object_lock.md)                         | WORM, Compliance           |
+| [S3 백업 팁](02_infrastructure/cloud_aws/s3_backup_tips.md)                             | 비용/성능/무결성           |
+| [STS AssumeRole](02_infrastructure/cloud_aws/sts_assume_role.md)                        | 크로스 계정 역할 위임      |
+| [백업 도구 비교](02_infrastructure/cloud_aws/backup_tools_comparison.md)                | AWS Backup vs 직접 구현    |
+| [VPC Peering](02_infrastructure/cloud_aws/vpc_peering_inter_region_guide.md)            | Inter-Region Peering       |
+| [AWS Network Firewall](02_infrastructure/cloud_aws/aws_network_firewall.md)             | 관리형 방화벽              |
+
+### Windows Server
+
+| 문서                                                                                           | 설명                 |
+|------------------------------------------------------------------------------------------------|----------------------|
+| [Windows Server 에디션](02_infrastructure/windows_server/windows_server_editions_licensing.md) | 에디션/라이선스 비교 |
+| [Windows Server 핵심 개념](02_infrastructure/windows_server/windows_server_key_concepts.md)    | AD, DNS, 역할 서비스 |
 
 ### Data Pipeline
 
@@ -237,14 +266,17 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Hardening
 
-| 문서                                                             | 설명                         |
-|------------------------------------------------------------------|------------------------------|
-| [Linux 서버 보안 강화](04_security/hardening/linux_hardening.md) | sysctl, auditd, umask        |
-| [방화벽](04_security/hardening/firewall_iptables_nftables.md)    | iptables/nftables            |
-| [SSH 보안](04_security/hardening/ssh_security.md)                | 키 인증, fail2ban            |
-| [TLS/SSL](04_security/hardening/tls_ssl_guide.md)                | 인증서, Let\'s Encrypt, mTLS |
-| [시크릿 관리](04_security/hardening/secret_management.md)        | Vault, AWS Secrets Manager   |
-| [취약점 스캔](04_security/hardening/vulnerability_scanning.md)   | nmap, trivy, lynis           |
+| 문서                                                                | 설명                        |
+|---------------------------------------------------------------------|-----------------------------|
+| [Linux 서버 보안 강화](04_security/hardening/linux_hardening.md)    | sysctl, auditd, umask       |
+| [방화벽](04_security/hardening/firewall_iptables_nftables.md)       | iptables/nftables           |
+| [SSH 보안](04_security/hardening/ssh_security.md)                   | 키 인증, fail2ban           |
+| [TLS/SSL](04_security/hardening/tls_ssl_guide.md)                   | 인증서, Let's Encrypt, mTLS |
+| [시크릿 관리](04_security/hardening/secret_management.md)           | Vault, AWS Secrets Manager  |
+| [취약점 스캔](04_security/hardening/vulnerability_scanning.md)      | nmap, trivy, lynis          |
+| [Gitleaks 가이드](04_security/hardening/gitleaks_guide.md)          | 민감정보 탐지, pre-commit   |
+| [Vault 설치](04_security/hardening/vault_install.md)                | HashiCorp Vault 설치·운영   |
+| [Windows OpenSSH](04_security/hardening/windows_openssh_install.md) | Windows SSH 서버 설치       |
 
 ### Cloud Security
 
@@ -375,10 +407,12 @@ RDBMS, NoSQL, 운영, 포렌식.
 
 ## 기타 문서
 
-| 문서                                       | 설명                                         |
-|--------------------------------------------|----------------------------------------------|
-| [라이선스 가이드](license_guide.md)        | MIT/Apache/GPL/CC 라이선스 비교, 선택 가이드 |
-| [유사 레포 비교](97_misc/similar_repos.md) | 벤치마킹, 차별화 전략                        |
+| 문서                                                                      | 설명                                         |
+|---------------------------------------------------------------------------|----------------------------------------------|
+| [라이선스 가이드](license_guide.md)                                       | MIT/Apache/GPL/CC 라이선스 비교, 선택 가이드 |
+| [유사 레포 비교](97_misc/similar_repos.md)                                | 벤치마킹, 차별화 전략                        |
+| [Windows 인시던트 로그 수집](96_scripts/windows/collect_incident_logs.py) | 장애 시 로그 자동 수집 스크립트              |
+| [Windows Hosts 관리](96_scripts/windows/win_hosts_manager.py)             | hosts 파일 관리 도구                         |
 
 ---
 
@@ -402,6 +436,6 @@ RDBMS, NoSQL, 운영, 포렌식.
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-07-14
+**마지막 업데이트**: 2026-08-12
 
 © 2026 siasia86. Licensed under CC BY 4.0.
