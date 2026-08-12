@@ -187,6 +187,8 @@ aws s3api list-object-versions \
 
 ## 8. 기본 암호화
 
+S3 서버 측 암호화(SSE)는 저장 데이터의 **기밀성**을 보장합니다. 암호화 키를 누가 관리하느냐에 따라 3가지 방식으로 나뉩니다.
+
 ### SSE 방식 비교
 
 | 항목         | SSE-S3        | SSE-KMS (권장)                       | DSSE-KMS                   |
@@ -198,6 +200,109 @@ aws s3api list-object-versions \
 | 추가 비용    | 없음          | 🟡 KMS API 호출 비용 발생            | 🟡 SSE-KMS보다 높음        |
 | 규제 준수    | 일반          | 금융, 의료, 공공 기관 요건 충족 가능 | 상위 규제 요건             |
 | Bucket Key   | 해당 없음     | ✅ 활성화 권장 (비용 절감)           | ✅ 활성화 권장             |
+
+### 8.1 SSE-S3 — AWS 자동 관리
+
+AWS가 키 생성·관리·교체를 모두 자동으로 처리합니다. 사용자가 키를 제어할 수 없습니다.
+
+```
+업로드 흐름:
+  평문 객체
+    → S3가 DEK 자동 생성 (AES-256)
+    → DEK로 객체 암호화
+    → DEK를 KEK로 암호화하여 함께 저장
+    → 평문 DEK 폐기
+
+다운로드 흐름:
+  암호화된 객체
+    → S3가 KEK로 DEK 복호화
+    → DEK로 객체 복호화
+    → 평문 반환
+```
+
+| 계층 | 키 이름                   | 관리 주체   | 설명                           |
+|------|---------------------------|-------------|--------------------------------|
+| 1    | DEK (Data Encryption Key) | AWS S3 자동 | 객체 1개당 1개 생성, AES-256   |
+| 2    | KEK (Key Encryption Key)  | AWS S3 자동 | DEK를 암호화, 주기적 자동 교체 |
+
+> DEK(Data Encryption Key): 실제 데이터를 암호화하는 키입니다.
+> KEK(Key Encryption Key): DEK 자체를 암호화하는 키입니다. 키를 암호화하는 키 계층 구조로 KEK가 노출되어도 DEK가 보호됩니다.
+
+**적합한 경우**: 정적 웹사이트, 공개 데이터, 규제 요건 없는 일반 스토리지
+
+### 8.2 SSE-KMS — 사용자 키 제어
+
+AWS KMS(Key Management Service)의 CMK를 사용합니다. 키 접근 권한을 IAM/KMS Key Policy로 세분화하고 CloudTrail로 모든 키 사용을 감사할 수 있습니다.
+
+```
+업로드 흐름:
+  평문 객체
+    → S3가 KMS에 GenerateDataKey 요청
+    → KMS가 DEK(평문) + DEK(CMK로 암호화) 반환
+    → DEK(평문)으로 객체 암호화
+    → DEK(암호화본)을 객체 메타데이터에 저장
+    → DEK(평문) 폐기
+
+다운로드 흐름:
+  암호화된 객체
+    → S3가 KMS에 Decrypt 요청 (DEK 암호화본 전달)
+    → KMS가 CMK로 DEK 복호화 후 반환
+    → DEK로 객체 복호화
+    → 평문 반환
+```
+
+| 계층 | 키 이름                   | 관리 주체   | 설명                            |
+|------|---------------------------|-------------|---------------------------------|
+| 1    | DEK (Data Encryption Key) | KMS 생성    | 객체 1개당 1개, KMS가 생성·반환 |
+| 2    | CMK (Customer Master Key) | 사용자 제어 | DEK를 암호화, KMS에 저장        |
+
+> CMK(Customer Master Key): KMS에 저장되는 최상위 키입니다. CMK 자체는 KMS 밖으로 나오지 않으며, 모든 암호화/복호화 요청은 KMS API를 통해 처리됩니다.
+
+**STS와의 연동**: STS로 발급된 임시 자격증명이 SSE-KMS 버킷에 접근하려면 S3 권한 외에 KMS Key Policy에서 `kms:GenerateDataKey`(업로드)와 `kms:Decrypt`(다운로드)를 별도로 허용해야 합니다.
+
+| 단계 | 체크포인트          | 필요 권한                  | 없을 때 결과       |
+|------|---------------------|----------------------------|--------------------|
+| 1    | STS AssumeRole      | sts:AssumeRole             | AssumeRole 실패    |
+| 2    | S3 PutObject        | s3:PutObject               | AccessDenied (S3)  |
+| 3    | KMS GenerateDataKey | kms:GenerateDataKey        | AccessDenied (KMS) |
+| 4    | S3 GetObject        | s3:GetObject + kms:Decrypt | AccessDenied (KMS) |
+
+**적합한 경우**: 내부 백업, DB 스냅샷, 감사 로그, 규제 환경
+
+### 8.3 DSSE-KMS — 이중 암호화
+
+SSE-KMS의 암호화를 2단계로 적용합니다. 단일 암호화 레이어 손상 시에도 데이터가 보호됩니다. 미국 DoD(국방부) 등 최상위 규제 요건을 충족하기 위해 설계되었습니다.
+
+```
+업로드 흐름:
+  평문 객체
+    → KMS에서 DEK1 생성 → 객체를 AES-256-GCM으로 1차 암호화
+    → KMS에서 DEK2 생성 → DEK1을 AES-256-GCM으로 2차 암호화
+    → CMK로 DEK2 암호화하여 메타데이터에 저장
+```
+
+| 계층 | 키 이름           | 관리 주체   | 설명                               |
+|------|-------------------|-------------|------------------------------------|
+| 1    | DEK1 (1차 암호화) | KMS 생성    | 객체를 AES-256-GCM으로 1차 암호화  |
+| 2    | DEK2 (2차 암호화) | KMS 생성    | DEK1을 다시 AES-256-GCM으로 암호화 |
+| 3    | CMK               | 사용자 제어 | DEK2를 암호화, KMS에 저장          |
+
+**적합한 경우**: 공공기관, 금융 규제 최상위 등급, DoD 요건
+
+### 8.4 Bucket Key
+
+SSE-KMS 사용 시 객체 업로드마다 KMS API를 호출합니다. 대량 업로드 환경에서는 KMS API 비용이 급증합니다. Bucket Key는 버킷 레벨 데이터 키를 S3에 캐싱하여 KMS 직접 호출 횟수를 줄입니다.
+
+```
+Bucket Key OFF:
+  객체 100개 업로드 → KMS API 100회 호출 → 비용 100배
+
+Bucket Key ON:
+  버킷 키 1개 캐싱 → 객체 100개 암호화 → KMS API 소수 호출
+  → KMS API 호출 비용 최대 99% 절감
+```
+
+🟡 Bucket Key는 SSE-KMS, DSSE-KMS에서만 동작합니다. SSE-S3는 해당 없습니다.
 
 ```bash
 # SSE-KMS + Bucket Key 활성화
@@ -213,9 +318,6 @@ aws s3api put-bucket-encryption \
     }]
   }'
 ```
-
-> Bucket Key: S3가 KMS를 직접 호출하는 대신 버킷 레벨 데이터 키를 캐싱하여
-> KMS API 호출 횟수를 줄이는 기능입니다. SSE-KMS 비용을 최대 99% 절감합니다.
 
 ---
 
