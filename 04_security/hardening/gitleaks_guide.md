@@ -281,6 +281,51 @@ EOF
 chmod +x .git/hooks/pre-push
 ```
 
+### 주의사항 — hook의 git 미추적
+
+`.git/hooks/`는 git이 추적하지 않는 디렉토리입니다. 저장소를 새로 clone하면 hook이 사라지므로 재설치가 필요합니다.
+
+| 상황                       | 영향                                  | 대응                                         |
+|----------------------------|---------------------------------------|----------------------------------------------|
+| 저장소 신규 clone          | hook 없음 → 자동 스캔 미동작          | clone 후 hook 수동 재설치                    |
+| 팀원 공유 필요             | 각자 재설치 필요                      | `scripts/install-hooks.sh` 스크립트로 자동화 |
+| pre-commit 프레임워크 사용 | `.pre-commit-config.yaml`으로 팀 공유 | `pre-commit install` 한 번으로 자동 설치     |
+
+#### hook 자동 설치 스크립트 예시
+
+저장소에 `scripts/install-hooks.sh`를 추가하면 clone 후 한 번만 실행하면 됩니다.
+
+```bash
+#!/bin/bash
+# scripts/install-hooks.sh
+# clone 후 실행: bash scripts/install-hooks.sh
+
+HOOKS_DIR=".git/hooks"
+
+cat > "${HOOKS_DIR}/pre-commit" << 'HOOK'
+#!/bin/bash
+gitleaks protect --staged --redact -v
+if [ $? -ne 0 ]; then
+    echo "gitleaks: sensitive data detected. Commit aborted."
+    exit 1
+fi
+HOOK
+
+cat > "${HOOKS_DIR}/pre-push" << 'HOOK'
+#!/bin/bash
+gitleaks detect --redact -v
+if [ $? -ne 0 ]; then
+    echo "gitleaks: sensitive data detected in history. Push aborted."
+    exit 1
+fi
+HOOK
+
+chmod +x "${HOOKS_DIR}/pre-commit" "${HOOKS_DIR}/pre-push"
+echo "gitleaks hooks installed: pre-commit, pre-push"
+```
+
+🟡 hook은 `--no-verify` 옵션으로 우회할 수 있습니다. 신뢰할 수 없는 환경에서는 CI/CD 스캔(섹션 6)을 병행합니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ## 6. CI/CD 연동
