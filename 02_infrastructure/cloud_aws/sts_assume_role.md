@@ -50,12 +50,12 @@ Account-A EC2                 AWS STS                      Account-B
 
 AssumeRole 호출 성공 시 아래 4개 값이 반환됩니다.
 
-| 항목            | 내용                                    |
-|-----------------|-----------------------------------------|
-| AccessKeyId     | 임시 액세스 키 ID                       |
-| SecretAccessKey | 임시 시크릿 키                          |
-| SessionToken    | 임시 세션 토큰 (필수, 없으면 인증 실패) |
-| Expiration      | 만료 시각 (기본 1시간, 최대 12시간)     |
+| 항목            | 내용                                           |
+|-----------------|------------------------------------------------|
+| AccessKeyId     | 임시 액세스 키 ID                              |
+| SecretAccessKey | 임시 시크릿 키                                 |
+| SessionToken    | 임시 세션 토큰 (필수, 없으면 인증 실패)        |
+| Expiration      | 만료 시각 (AssumeRole 기본 1시간, 최대 12시간) |
 
 🟡 SessionToken은 API 호출 시 반드시 포함해야 합니다. 누락 시 `InvalidClientTokenId` 오류가 발생합니다.
 
@@ -73,8 +73,8 @@ AssumeRole 호출 성공 시 아래 4개 값이 반환됩니다.
 | ExternalId      | ❌   | Confused Deputy 방지용 공유 시크릿    | SecureKey123                            |
 | Policy          | ❌   | 추가 권한 제한 (역할보다 좁게만 가능) | 인라인 JSON Policy                      |
 
-> ExternalId: A계정이 B계정 역할을 위임받을 때, B계정이 A계정에게만 알려준 공유 시크릿입니다.
-> 공격자가 B계정 Role ARN을 알아도 ExternalId 없이는 AssumeRole이 거부됩니다.
+> ExternalId: B계정이 Trust Policy에 설정한 값으로, A계정이 AssumeRole 호출 시
+> 반드시 제시해야 합니다. 공격자가 Role ARN을 알아도 ExternalId 없이는 거부됩니다.
 
 ### CLI 예시
 
@@ -122,12 +122,12 @@ Session Policy를 사용하면 역할 권한보다 좁게 제한할 수 있습�
 
 ## 3. 세션 유형
 
-| 유형               | API                       | 최대 유효 기간      | 주요 용도                 |
-|--------------------|---------------------------|---------------------|---------------------------|
-| 역할 위임          | AssumeRole                | 12시간              | EC2 → 다른 계정 S3 접근   |
-| 웹 자격증명 연동   | AssumeRoleWithWebIdentity | 12시간              | OIDC(GitHub Actions, EKS) |
-| SAML 연동          | AssumeRoleWithSAML        | 12시간              | 기업 AD/SSO 연동          |
-| 임시 보안 자격증명 | GetSessionToken           | 36시간 (IAM 사용자) | MFA 인증 후 단기 접근     |
+| 유형               | API                       | 최대 유효 기간                   | 주요 용도                 |
+|--------------------|---------------------------|----------------------------------|---------------------------|
+| 역할 위임          | AssumeRole                | 12시간                           | EC2 → 다른 계정 S3 접근   |
+| 웹 자격증명 연동   | AssumeRoleWithWebIdentity | 12시간 (Role MaxSessionDuration) | OIDC(GitHub Actions, EKS) |
+| SAML 연동          | AssumeRoleWithSAML        | 12시간                           | 기업 AD/SSO 연동          |
+| 임시 보안 자격증명 | GetSessionToken           | 36시간 (IAM 사용자)              | MFA 인증 후 단기 접근     |
 
 ---
 
@@ -260,7 +260,7 @@ A계정 EC2 인스턴스 역할에 부여합니다.
         "kms:GenerateDataKey",
         "kms:Decrypt"
       ],
-      "Resource": "*"
+      "Resource": "arn:aws:kms:ap-northeast-2:B계정ID:key/KEY-ID"
     }
   ]
 }
