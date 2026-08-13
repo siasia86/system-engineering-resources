@@ -371,19 +371,19 @@ S3 버킷 생성 옵션과 직접적인 관계는 없지만, SSE-KMS(섹션 8.2)
 ### AssumeRole 흐름
 
 ```
-A계정 EC2                     AWS STS                      B계정
+Account-A EC2                 AWS STS                      Account-B
      │                            │                            │
-     ├── AssumeRole 요청 ────────>│                            │
-     │   (B계정 Role ARN)         │── Trust Policy 검증 ──────>│
-     │                            │<── 허용 ───────────────────┤
-     │<── 임시 자격증명 반환 ─────┤                            │
+     ├── AssumeRole request ─────>│                            │
+     │   (Account-B Role ARN)     │── Trust Policy check ─────>│
+     │                            │<── allowed ────────────────┤
+     │<── temp credentials ───────┤                            │
      │   (AccessKeyId             │                            │
      │    SecretAccessKey         │                            │
      │    SessionToken            │                            │
      │    Expiration)             │                            │
      │                            │                            │
      ├── S3 PutObject ────────────┼───────────────────────────>│
-     │   (임시 자격증명 포함)     │                            │ B계정 S3 + KMS
+     │   (using temp credentials) │                            │ Account-B S3 + KMS
 ```
 
 ### 임시 자격증명 구성

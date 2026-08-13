@@ -122,12 +122,12 @@ Session Policy를 사용하면 역할 권한보다 좁게 제한할 수 있습�
 
 ## 3. 세션 유형
 
-| 유형               | API                       | 최대 유효 기간 | 주요 용도                 |
-|--------------------|---------------------------|----------------|---------------------------|
-| 역할 위임          | AssumeRole                | 12시간         | EC2 → 다른 계정 S3 접근   |
-| 웹 자격증명 연동   | AssumeRoleWithWebIdentity | 1시간          | OIDC(GitHub Actions, EKS) |
-| SAML 연동          | AssumeRoleWithSAML        | 12시간         | 기업 AD/SSO 연동          |
-| 임시 보안 자격증명 | GetSessionToken           | 36시간         | MFA 인증 후 단기 접근     |
+| 유형               | API                       | 최대 유효 기간      | 주요 용도                 |
+|--------------------|---------------------------|---------------------|---------------------------|
+| 역할 위임          | AssumeRole                | 12시간              | EC2 → 다른 계정 S3 접근   |
+| 웹 자격증명 연동   | AssumeRoleWithWebIdentity | 12시간              | OIDC(GitHub Actions, EKS) |
+| SAML 연동          | AssumeRoleWithSAML        | 12시간              | 기업 AD/SSO 연동          |
+| 임시 보안 자격증명 | GetSessionToken           | 36시간 (IAM 사용자) | MFA 인증 후 단기 접근     |
 
 ---
 
