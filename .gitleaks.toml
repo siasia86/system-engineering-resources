@@ -44,7 +44,7 @@ description = "Slack Webhook URL"
 regex = '''hooks\.slack\.com/services/T[A-Z0-9]+/B[A-Z0-9]+/[a-zA-Z0-9]+'''
 tags = ["webhook", "slack"]
 
-# 회사 외부 IP 대역
+# 외부 IP 대역
 [[rules]]
 id = "company-external-ip"
 description = "Company external IP range (112.x.x.x)"
