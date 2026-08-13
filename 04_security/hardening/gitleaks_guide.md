@@ -299,7 +299,7 @@ chmod +x .git/hooks/pre-commit
 cat > .git/hooks/pre-push << 'EOF'
 #!/bin/bash
 # ============================================
-# pre-push hook - git 히스토리 민감정보 검사
+# pre-push hook - 신규 커밋 민감정보 검사
 # ============================================
 
 if ! command -v gitleaks &> /dev/null; then
@@ -312,15 +312,31 @@ if ! command -v gitleaks &> /dev/null; then
     exit 1
 fi
 
-gitleaks detect --redact -v
-exit_code=$?
+# stdin에서 push 대상 정보 읽기
+# 형식: <local_ref> <local_sha> <remote_ref> <remote_sha>
+while read local_ref local_sha remote_ref remote_sha; do
+    # 브랜치 삭제 push는 스킵
+    if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+        continue
+    fi
 
-if [ $exit_code -ne 0 ]; then
-    echo ""
-    echo "❌ 민감정보가 탐지되어 push가 차단되었습니다."
-    echo "민감정보를 제거한 후 다시 push하세요."
-    exit 1
-fi
+    # 신규 브랜치 (remote에 없음) → 직전 커밋까지만 스캔
+    if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+        LOG_OPTS="${local_sha}~1..${local_sha}"
+    else
+        LOG_OPTS="${remote_sha}..${local_sha}"
+    fi
+
+    gitleaks detect --redact -v --log-opts "$LOG_OPTS"
+    exit_code=$?
+
+    if [ $exit_code -ne 0 ]; then
+        echo ""
+        echo "❌ 민감정보가 탐지되어 push가 차단되었습니다."
+        echo "위 내용을 확인하고 민감정보를 제거한 후 다시 push하세요."
+        exit 1
+    fi
+done
 
 echo "✅ gitleaks 검사 통과"
 exit 0
@@ -388,12 +404,22 @@ if ! command -v gitleaks &> /dev/null; then
     echo "⚠️  gitleaks가 설치되지 않았습니다."
     exit 1
 fi
-gitleaks detect --redact -v
-exit_code=$?
-if [ $exit_code -ne 0 ]; then
-    echo "❌ 민감정보가 탐지되어 push가 차단되었습니다."
-    exit 1
-fi
+while read local_ref local_sha remote_ref remote_sha; do
+    if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+        continue
+    fi
+    if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+        LOG_OPTS="${local_sha}~1..${local_sha}"
+    else
+        LOG_OPTS="${remote_sha}..${local_sha}"
+    fi
+    gitleaks detect --redact -v --log-opts "$LOG_OPTS"
+    exit_code=$?
+    if [ $exit_code -ne 0 ]; then
+        echo "❌ 민감정보가 탐지되어 push가 차단되었습니다."
+        exit 1
+    fi
+done
 echo "✅ gitleaks 검사 통과"
 exit 0
 HOOK
