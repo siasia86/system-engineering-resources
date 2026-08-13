@@ -21,7 +21,7 @@
 | MDN Web Docs 용어집 | https://developer.mozilla.org/ko/docs/Glossary                     | 한/영  | 웹/HTTP/TLS 등 웹 기술 용어                 | ★★★☆☆ |
 | 생활코딩            | https://opentutorials.org                                          | 한국어 | 개발 입문~실무 개념, 텍스트+영상            | ★★☆☆☆ |
 | 요즘IT              | https://yozm.wishket.com/magazine/                                 | 한국어 | IT 트렌드·개념을 실무자 관점으로 설명       | ★★☆☆☆ |
-| 널널한 개발자       | https://www.youtube.com/@nullnull_not_eq_null                      | 한국어 | 네트워크·보안 개념을 5~15분 영상으로 설명   | ★★☆☆☆ |
+| 널널한 개발자       | https://www.youtube.com/@nullnull_not_eq_null                      | 한국어 | 네트워크·보안 개념 강의형 영상, 입문~중급   | ★★☆☆☆ |
 | 코딩애플            | https://codingapple.com                                            | 한국어 | 개발 개념을 짧고 쉽게 설명, 입문자 친화적   | ★★☆☆☆ |
 
 > Cloudflare Learning: 단순 정의를 넘어 동작 원리와 공격 유형까지 다루며,
@@ -91,7 +91,6 @@
 | 이름            | URL                              | 분야                                                    | 평점  |
 |-----------------|----------------------------------|---------------------------------------------------------|-------|
 | Fireship        | https://fireship.io              | 기술 개념 1개를 100초 영상+글로 설명 (JS/인프라/DevOps) | ★★☆☆☆ |
-| Bytes.dev       | https://bytes.dev                | JS/웹 개발 개념 주간 뉴스레터, 짧고 유머러스            | ★★☆☆☆ |
 | Level Up Coding | https://levelup.gitconnected.com | 개발 개념 1개를 5분 분량으로 설명 (Medium 기반)         | ★★☆☆☆ |
 
 ### 시스템 설계/아키텍처
@@ -99,7 +98,7 @@
 | 이름             | URL                         | 분야                                | 평점  |
 |------------------|-----------------------------|-------------------------------------|-------|
 | ByteByteGo       | https://blog.bytebytego.com | 시스템 설계, 인프라 개념 다이어그램 | ★★☆☆☆ |
-| Martin Fowler    | https://martinfowler.com    | 아키텍처, 패턴, 설계 원칙           | ★★☆☆☆ |
+| Martin Fowler    | https://martinfowler.com    | 아키텍처, 패턴, 설계 원칙           | ★★★★☆ |
 | High Scalability | http://highscalability.com  | 대규모 아키텍처 사례 모음           | ★★☆☆☆ |
 
 🟡 High Scalability는 HTTPS를 지원하지 않습니다. HTTP로만 접근 가능합니다.
@@ -148,12 +147,13 @@
 
 정기 구독으로 트렌드를 파악할 때 사용합니다.
 
-| 이름                | URL                           | 주기 | 특징                             | 평점  |
-|---------------------|-------------------------------|------|----------------------------------|-------|
-| TLDR                | https://tldr.tech             | 매일 | 5분 IT/개발/보안 뉴스 요약       | ★★☆☆☆ |
-| ByteByteGo 뉴스레터 | https://blog.bytebytego.com   | 주간 | 시스템 설계 개념 심층 분석       | ★★☆☆☆ |
-| DevOps Weekly       | https://www.devopsweekly.com  | 주간 | DevOps/인프라/클라우드 링크 모음 | ★★☆☆☆ |
-| Last Week in AWS    | https://www.lastweekinaws.com | 주간 | AWS 신규 서비스/변경사항 요약    | ★★☆☆☆ |
+| 이름                | URL                           | 주기 | 특징                                    | 평점  |
+|---------------------|-------------------------------|------|-----------------------------------------|-------|
+| TLDR                | https://tldr.tech             | 매일 | 5분 IT/개발/보안 뉴스 요약              | ★★☆☆☆ |
+| ByteByteGo 뉴스레터 | https://blog.bytebytego.com   | 주간 | 시스템 설계 개념 심층 분석              | ★★☆☆☆ |
+| Bytes.dev           | https://bytes.dev             | 주간 | JS/웹 개발 개념 뉴스레터, 짧고 유머러스 | ★★☆☆☆ |
+| DevOps Weekly       | https://www.devopsweekly.com  | 주간 | DevOps/인프라/클라우드 링크 모음        | ★★☆☆☆ |
+| Last Week in AWS    | https://www.lastweekinaws.com | 주간 | AWS 신규 서비스/변경사항 요약           | ★★☆☆☆ |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -177,6 +177,7 @@
 
 - Cloudflare Learning: [cloudflare.com/ko-kr/learning](https://www.cloudflare.com/ko-kr/learning/) — ★★★☆☆
 - AWS 공식 블로그: [aws.amazon.com/blogs/aws](https://aws.amazon.com/blogs/aws) — ★★★☆☆
+- Martin Fowler: [martinfowler.com](https://martinfowler.com) — ★★★★☆
 - ByteByteGo: [blog.bytebytego.com](https://blog.bytebytego.com) — ★★☆☆☆
 - Fireship: [fireship.io](https://fireship.io) — ★★☆☆☆
 - 44bits: [44bits.io](https://www.44bits.io) — ★★☆☆☆
