@@ -196,36 +196,43 @@ title = "gitleaks config"
 [allowlist]
 description = "global allowlist"
 regexes = [
-    # 예시 값 제외
+    # 문서 플레이스홀더 값 제외
+    '''Secureuser123''',
     '''SecurePassword123''',
+    '''SecureKey123''',
     '''SecureToken123''',
+    '''SecureDbName123''',
     # RFC 5737 예제 IP
     '''192\.0\.2\.\d+''',
     '''198\.51\.100\.\d+''',
+    '''203\.0\.113\.\d+''',
 ]
 paths = [
     # 특정 파일 제외
-    '''security_check\.conf''',
-    '''test_.*\.py''',
-    '''.*\.map\.json''',
+    '''12_tech_stack/kubernetes_basic\.md''',
+    '''.*_test\.py''',
+    '''.*\.example''',
+    '''.*\.sample''',
 ]
 commits = [
     # 특정 커밋 제외
     # "a1b2c3d4e5f6",
 ]
 
-# 커스텀 규칙 추가
+# 커스텀 규칙: AWS 12자리 계정 ID 탐지
+# 주의: Go regex는 lookahead/lookbehind 미지원
+# 따옴표·공백으로 감싸인 12자리 숫자를 탐지
 [[rules]]
 id = "custom-aws-account-id"
-description = "AWS Account ID"
-regex = '''(?<![0-9])[0-9]{12}(?![0-9])'''
+description = "AWS Account ID (12-digit)"
+regex = '''["'\s][0-9]{12}["'\s]'''
 tags = ["aws", "account"]
 
-  [[rules.allowlist]]
-  regexes = [
-      # 날짜/시간 형태 제외 (YYYYMMDDHHNN)
-      '''20[0-9]{2}[01][0-9][0-3][0-9][0-9]{4}''',
-  ]
+[rules.allowlist]
+regexes = [
+    # 날짜/시간 형태 제외 (YYYYMMDDHHNN)
+    '''20[0-9]{2}[01][0-9][0-3][0-9][0-9]{4}''',
+]
 ```
 
 ### 내장 규칙 확인
@@ -258,11 +265,32 @@ gitleaks protect --staged --redact -v
 ```bash
 cat > .git/hooks/pre-commit << 'EOF'
 #!/bin/bash
-gitleaks protect --staged --redact -v
-if [ $? -ne 0 ]; then
-    echo "gitleaks: sensitive data detected. Commit aborted."
+# ============================================
+# pre-commit hook - 민감정보 검사
+# ============================================
+
+if ! command -v gitleaks &> /dev/null; then
+    echo ""
+    echo "⚠️  gitleaks가 설치되지 않았습니다."
+    echo "설치 방법:"
+    echo "  - 바이너리: https://github.com/gitleaks/gitleaks/releases"
+    echo "  - macOS: brew install gitleaks"
+    echo ""
     exit 1
 fi
+
+gitleaks protect --staged --redact -v
+exit_code=$?
+
+if [ $exit_code -ne 0 ]; then
+    echo ""
+    echo "❌ 민감정보가 탐지되어 커밋이 차단되었습니다."
+    echo "민감정보를 제거한 후 다시 커밋하세요."
+    exit 1
+fi
+
+echo "✅ gitleaks 검사 통과"
+exit 0
 EOF
 chmod +x .git/hooks/pre-commit
 ```
@@ -272,11 +300,32 @@ chmod +x .git/hooks/pre-commit
 ```bash
 cat > .git/hooks/pre-push << 'EOF'
 #!/bin/bash
-gitleaks detect --redact -v
-if [ $? -ne 0 ]; then
-    echo "gitleaks: sensitive data detected in history. Push aborted."
+# ============================================
+# pre-push hook - git 히스토리 민감정보 검사
+# ============================================
+
+if ! command -v gitleaks &> /dev/null; then
+    echo ""
+    echo "⚠️  gitleaks가 설치되지 않았습니다."
+    echo "설치 방법:"
+    echo "  - 바이너리: https://github.com/gitleaks/gitleaks/releases"
+    echo "  - macOS: brew install gitleaks"
+    echo ""
     exit 1
 fi
+
+gitleaks detect --redact -v
+exit_code=$?
+
+if [ $exit_code -ne 0 ]; then
+    echo ""
+    echo "❌ 민감정보가 탐지되어 push가 차단되었습니다."
+    echo "민감정보를 제거한 후 다시 push하세요."
+    exit 1
+fi
+
+echo "✅ gitleaks 검사 통과"
+exit 0
 EOF
 chmod +x .git/hooks/pre-push
 ```
@@ -300,24 +349,55 @@ chmod +x .git/hooks/pre-push
 # scripts/install-hooks.sh
 # clone 후 실행: bash scripts/install-hooks.sh
 
+set -e
+
+# gitleaks 설치 여부 확인
+if ! command -v gitleaks &> /dev/null; then
+    echo "⚠️  gitleaks가 설치되지 않았습니다. 먼저 설치 후 실행하세요."
+    echo "  - 바이너리: https://github.com/gitleaks/gitleaks/releases"
+    exit 1
+fi
+
 HOOKS_DIR=".git/hooks"
+
+# 기존 hook 백업
+for hook in pre-commit pre-push; do
+    if [ -f "${HOOKS_DIR}/${hook}" ]; then
+        cp "${HOOKS_DIR}/${hook}" "${HOOKS_DIR}/${hook}.bak"
+        echo "기존 ${hook} hook 백업: ${hook}.bak"
+    fi
+done
 
 cat > "${HOOKS_DIR}/pre-commit" << 'HOOK'
 #!/bin/bash
-gitleaks protect --staged --redact -v
-if [ $? -ne 0 ]; then
-    echo "gitleaks: sensitive data detected. Commit aborted."
+if ! command -v gitleaks &> /dev/null; then
+    echo "⚠️  gitleaks가 설치되지 않았습니다."
     exit 1
 fi
+gitleaks protect --staged --redact -v
+exit_code=$?
+if [ $exit_code -ne 0 ]; then
+    echo "❌ 민감정보가 탐지되어 커밋이 차단되었습니다."
+    exit 1
+fi
+echo "✅ gitleaks 검사 통과"
+exit 0
 HOOK
 
 cat > "${HOOKS_DIR}/pre-push" << 'HOOK'
 #!/bin/bash
-gitleaks detect --redact -v
-if [ $? -ne 0 ]; then
-    echo "gitleaks: sensitive data detected in history. Push aborted."
+if ! command -v gitleaks &> /dev/null; then
+    echo "⚠️  gitleaks가 설치되지 않았습니다."
     exit 1
 fi
+gitleaks detect --redact -v
+exit_code=$?
+if [ $exit_code -ne 0 ]; then
+    echo "❌ 민감정보가 탐지되어 push가 차단되었습니다."
+    exit 1
+fi
+echo "✅ gitleaks 검사 통과"
+exit 0
 HOOK
 
 chmod +x "${HOOKS_DIR}/pre-commit" "${HOOKS_DIR}/pre-push"
