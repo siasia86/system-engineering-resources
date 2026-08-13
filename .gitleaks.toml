@@ -15,8 +15,6 @@ regexes = [
     '''203\.0\.113\.\d+''',
     # 코드 예시 전화번호
     '''010-1234-5678''',
-    # 히스토리 내 문서 예시 IP (ip_addressing_guide.md)
-    '''112\.185\.198\.1''',
 ]
 paths = [
     '''12_tech_stack/kubernetes_basic\.md''',
@@ -52,10 +50,3 @@ id = "company-external-ip"
 description = "Company external IP range (112.185.x.x)"
 regex = '''112\.185\.[0-9]{1,3}\.[0-9]{1,3}'''
 tags = ["network", "external"]
-[rules.allowlist]
-regexes = [
-    # 히스토리 내 문서 예시로 사용된 IP
-    '''112\.185\.198\.1''',
-    # 히스토리 내 실제 공인 IP (terraform README)
-    '''112\.185\.196\.55''',
-]
