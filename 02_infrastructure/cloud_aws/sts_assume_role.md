@@ -1,4 +1,5 @@
 # STS AssumeRole 설정 가이드
+<!-- reference: _reference/aws_sts_iam_s3_kms_official_notes.md -->
 
 AWS STS(Security Token Service)를 사용하여 임시 자격증명을 발급하고 Cross-account 접근을 구성하는 방법을 정리합니다.
 
@@ -37,27 +38,27 @@ Account-A EC2                 AWS STS                      Account-B
 
 ### IAM 영구 키 vs STS 임시 자격증명
 
-| 항목          | IAM 영구 키                  | STS 임시 자격증명                |
-|---------------|------------------------------|----------------------------------|
-| 유효 기간     | 만료 없음 (수동 삭제 전까지) | 15분~12시간 (설정 가능)          |
-| 키 유출 시    | 즉시 악용 가능               | 만료 후 자동 무효화              |
-| 권한 범위     | IAM Policy 전체              | AssumeRole 시점 Policy만         |
-| Cross-account | 별도 IAM 사용자 생성 필요    | 역할 위임(Trust Policy)으로 처리 |
-| 감사 추적     | CloudTrail: IAM 사용자       | CloudTrail: 역할 + 세션명        |
-| 자격증명 개수 | 키 최대 2개                  | 필요 시마다 발급                 |
+| 항목          | IAM 영구 키                    | STS 임시 자격증명                          |
+|---------------|--------------------------------|--------------------------------------------|
+| 유효 기간     | 만료 없음 (수동 삭제 전까지)   | API별 상이 (AssumeRole은 15분~최대 12시간) |
+| 키 유출 시    | 즉시 악용 가능                 | 만료 후 자동 무효화                        |
+| 권한 범위     | 연결된 정책과 조건에 따라 결정 | 역할 정책과 세션 정책 등의 교집합          |
+| Cross-account | 별도 사용자 생성이 필수 아님   | Trust Policy와 호출자 권한으로 위임        |
+| 감사 추적     | CloudTrail: IAM 사용자         | CloudTrail: 역할 + 세션명                  |
+| 자격증명 개수 | 키 최대 2개                    | 필요 시마다 발급                           |
 
 ### 임시 자격증명 구성
 
-AssumeRole 호출 성공 시 아래 4개 값이 반환됩니다.
+AssumeRole 호출 성공 시 `Credentials` 객체에 아래 4개 값이 반환됩니다.
 
-| 항목            | 내용                                           |
-|-----------------|------------------------------------------------|
-| AccessKeyId     | 임시 액세스 키 ID                              |
-| SecretAccessKey | 임시 시크릿 키                                 |
-| SessionToken    | 임시 세션 토큰 (필수, 없으면 인증 실패)        |
-| Expiration      | 만료 시각 (AssumeRole 기본 1시간, 최대 12시간) |
+| 항목            | 내용                                                  |
+|-----------------|-------------------------------------------------------|
+| AccessKeyId     | 임시 액세스 키 ID                                     |
+| SecretAccessKey | 임시 시크릿 키                                        |
+| SessionToken    | 임시 보안 토큰. 임시 자격증명으로 서명할 때 함께 사용 |
+| Expiration      | 만료 시각 (기본 1시간, 역할 설정에 따라 최대 12시간)  |
 
-🟡 SessionToken은 API 호출 시 반드시 포함해야 합니다. 누락 시 `InvalidClientTokenId` 오류가 발생합니다.
+🟡 임시 자격증명을 사용할 때는 `SessionToken`도 요청에 포함해야 합니다. 누락되거나 잘못된 토큰을 사용하면 인증 오류가 발생합니다.
 
 ---
 
@@ -65,16 +66,21 @@ AssumeRole 호출 성공 시 아래 4개 값이 반환됩니다.
 
 ### 주요 파라미터
 
-| 파라미터        | 필수 | 설명                                  | 예시                                    |
-|-----------------|------|---------------------------------------|-----------------------------------------|
-| RoleArn         | ✅   | 위임받을 역할 ARN                     | arn:aws:iam::B계정ID:role/backup-writer |
-| RoleSessionName | ✅   | 세션 식별자 (CloudTrail 추적용)       | ec2-backup-session                      |
-| DurationSeconds | ❌   | 유효 기간 초 단위 (900~43200)         | 3600                                    |
-| ExternalId      | ❌   | Confused Deputy 방지용 공유 시크릿    | SecureKey123                            |
-| Policy          | ❌   | 추가 권한 제한 (역할보다 좁게만 가능) | 인라인 JSON Policy                      |
+| 파라미터        | 필수 | 설명                                              | 예시                                    |
+|-----------------|------|---------------------------------------------------|-----------------------------------------|
+| RoleArn         | ✅   | 위임받을 역할 ARN                                 | arn:aws:iam::B계정ID:role/backup-writer |
+| RoleSessionName | ✅   | 세션 식별자 (CloudTrail 추적용)                   | ec2-backup-session                      |
+| DurationSeconds | ❌   | 900초~역할 `MaxSessionDuration` (최대 43200초)    | 3600                                    |
+| ExternalId      | ❌   | 제3자 위임의 confused deputy 완화용 식별자        | SecureExternalId123                     |
+| Policy          | ❌   | 역할 정책보다 좁게 제한하는 inline session policy | 인라인 JSON Policy                      |
 
-> ExternalId: B계정이 Trust Policy에 설정한 값으로, A계정이 AssumeRole 호출 시
-> 반드시 제시해야 합니다. 공격자가 Role ARN을 알아도 ExternalId 없이는 거부됩니다.
+> Confused deputy: 권한이 있는 중개자가 요청자의 의도와 다른 대상에게
+> 권한을 행사하도록 속이는 문제입니다. `ExternalId`는 제3자 위임에서
+> 역할을 요청하는 고객 맥락을 확인하는 조건으로 사용합니다.
+
+> `ExternalId`는 API상 선택 사항입니다. Trust Policy가 `sts:ExternalId` 조건을
+> 요구하는 경우에만 AssumeRole 호출에 포함해야 하며, AWS는 이를 시크릿으로
+> 취급하지 않습니다. 제3자 위임에서는 사용을 권장합니다.
 
 ### CLI 예시
 
@@ -100,9 +106,9 @@ CREDS=$(aws sts assume-role \
   --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' \
   --output text)
 
-export AWS_ACCESS_KEY_ID=$(echo $CREDS | awk '{print $1}')
-export AWS_SECRET_ACCESS_KEY=$(echo $CREDS | awk '{print $2}')
-export AWS_SESSION_TOKEN=$(echo $CREDS | awk '{print $3}')
+read -r AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN <<< "$CREDS"
+export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+unset CREDS
 
 # 이후 API 호출은 임시 자격증명 자동 사용
 aws s3 ls s3://my-bucket-123456789012-ap-northeast-2/
@@ -112,28 +118,30 @@ aws s3 ls s3://my-bucket-123456789012-ap-northeast-2/
 
 Session Policy를 사용하면 역할 권한보다 좁게 제한할 수 있습니다. 역할보다 넓게 확장은 불가합니다.
 
-| 시나리오       | Role Policy  | Session Policy | 실제 권한                  |
-|----------------|--------------|----------------|----------------------------|
-| 제한 없음      | s3:*, kms:*  | 없음           | s3:*, kms:*                |
-| 세션 축소      | s3:*, kms:*  | s3:GetObject   | s3:GetObject만             |
-| 세션 확장 시도 | s3:GetObject | s3:*           | s3:GetObject만 (확장 불가) |
+| 시나리오       | Role Policy  | Session Policy | 유효 권한                      |
+|----------------|--------------|----------------|--------------------------------|
+| 제한 없음      | s3:*, kms:*  | 없음           | 역할 정책과 다른 정책의 교집합 |
+| 세션 축소      | s3:*, kms:*  | s3:GetObject   | 허용된 리소스의 s3:GetObject   |
+| 세션 확장 시도 | s3:GetObject | s3:*           | s3:GetObject만 (확장 불가)     |
 
 ---
 
 ## 3. 세션 유형
 
-| 유형               | API                       | 최대 유효 기간                   | 주요 용도                 |
-|--------------------|---------------------------|----------------------------------|---------------------------|
-| 역할 위임          | AssumeRole                | 12시간                           | EC2 → 다른 계정 S3 접근   |
-| 웹 자격증명 연동   | AssumeRoleWithWebIdentity | 12시간 (Role MaxSessionDuration) | OIDC(GitHub Actions, EKS) |
-| SAML 연동          | AssumeRoleWithSAML        | 12시간 (Role MaxSessionDuration) | 기업 AD/SSO 연동          |
-| 임시 보안 자격증명 | GetSessionToken           | 36시간 (IAM 사용자)              | MFA 인증 후 단기 접근     |
+| 유형               | API                       | 최대 유효 기간                       | 주요 용도                 |
+|--------------------|---------------------------|--------------------------------------|---------------------------|
+| 역할 위임          | AssumeRole                | 최대 12시간 (role chaining 시 1시간) | EC2 → 다른 계정 S3 접근   |
+| 웹 자격증명 연동   | AssumeRoleWithWebIdentity | 역할 설정 기준 최대 12시간           | OIDC(GitHub Actions, EKS) |
+| SAML 연동          | AssumeRoleWithSAML        | 역할 설정 기준 최대 12시간           | 기업 AD/SSO 연동          |
+| 임시 보안 자격증명 | GetSessionToken           | IAM 사용자 36시간 / 계정 1시간       | MFA 조건 API의 단기 접근  |
 
 ---
 
 ## 4. Trust Policy 설정
 
 Trust Policy는 **B계정 역할(Role)에 설정**합니다. "누가 이 역할을 위임받을 수 있는가"를 정의합니다.
+
+`arn:aws:iam::A계정ID:root`는 A계정의 account principal을 의미하며, A계정의 root 사용자만을 뜻하지 않습니다. 필요하면 신뢰할 역할 등 더 좁은 principal을 검토합니다.
 
 ### 구성 요소
 
@@ -161,7 +169,7 @@ Trust Policy는 **B계정 역할(Role)에 설정**합니다. "누가 이 역할�
 }
 ```
 
-### ExternalId 조건 포함 (권장)
+### ExternalId 조건 포함 (제3자 위임 시 권장)
 
 ```json
 {
@@ -225,21 +233,35 @@ A계정 EC2 인스턴스 역할에 부여합니다.
 
 ### B계정 — backup-writer Role Policy (S3 + KMS)
 
+Cross-account SSE-KMS에는 customer managed KMS key를 사용해야 합니다. Role Policy에는 S3 권한과 KMS 키 사용 권한을 모두 부여하고, KMS Key Policy에서도 같은 역할을 허용해야 합니다.
+
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Sid": "ListTargetBucket",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::my-bucket-B계정ID-ap-northeast-2"
+    },
+    {
+      "Sid": "ReadWriteObjects",
       "Effect": "Allow",
       "Action": [
         "s3:PutObject",
-        "s3:GetObject",
-        "s3:ListBucket"
+        "s3:GetObject"
       ],
-      "Resource": [
-        "arn:aws:s3:::my-bucket-B계정ID-ap-northeast-2",
-        "arn:aws:s3:::my-bucket-B계정ID-ap-northeast-2/*"
-      ]
+      "Resource": "arn:aws:s3:::my-bucket-B계정ID-ap-northeast-2/*"
+    },
+    {
+      "Sid": "UseSseKmsKey",
+      "Effect": "Allow",
+      "Action": [
+        "kms:GenerateDataKey",
+        "kms:Decrypt"
+      ],
+      "Resource": "arn:aws:kms:ap-northeast-2:B계정ID:key/KEY-ID"
     }
   ]
 }
@@ -266,7 +288,7 @@ A계정 EC2 인스턴스 역할에 부여합니다.
 }
 ```
 
-🟡 S3 Policy와 KMS Key Policy를 모두 설정해야 합니다. 어느 한쪽만 설정하면 `AccessDenied`가 발생합니다.
+🟡 SSE-KMS를 사용할 때는 S3 Role Policy, KMS Role Policy, KMS Key Policy의 허용 조건을 모두 충족해야 합니다. customer managed KMS key를 사용하고, 키와 버킷을 같은 리전에 배치해야 합니다. 어느 한쪽의 권한이나 리소스 ARN이 맞지 않으면 `AccessDenied`가 발생할 수 있습니다.
 
 ---
 
@@ -290,12 +312,12 @@ Account-A                                    Account-B
 
 ### 권한 체크포인트 (누락 시 증상)
 
-| 계층 | 위치          | 설정 내용                        | 누락 시 증상        |
-|------|---------------|----------------------------------|---------------------|
-| 1    | A계정 IAM     | sts:AssumeRole 허용              | AssumeRole API 실패 |
-| 2    | B계정 Role    | Trust Policy에 A계정 허용        | AccessDenied (STS)  |
-| 3    | B계정 Role    | s3:PutObject, s3:GetObject       | AccessDenied (S3)   |
-| 4    | B계정 KMS Key | kms:GenerateDataKey, kms:Decrypt | AccessDenied (KMS)  |
+| 계층 | 위치                 | 설정 내용                      | 누락 시 증상        |
+|------|----------------------|--------------------------------|---------------------|
+| 1    | A계정 IAM            | sts:AssumeRole 허용            | AssumeRole API 실패 |
+| 2    | B계정 Role           | Trust Policy에 A계정 허용      | AccessDenied (STS)  |
+| 3    | B계정 Role           | S3 권한과 올바른 버킷/객체 ARN | AccessDenied (S3)   |
+| 4    | B계정 Role + KMS Key | KMS IAM/Key Policy와 키 ARN    | AccessDenied (KMS)  |
 
 ### CLI로 전체 검증
 
@@ -313,8 +335,11 @@ export AWS_SESSION_TOKEN=...
 # 3. S3 접근 확인
 aws s3 ls s3://my-bucket-B계정ID-ap-northeast-2/
 
-# 4. 업로드 확인 (SSE-KMS 포함)
-aws s3 cp test.txt s3://my-bucket-B계정ID-ap-northeast-2/test.txt
+# 4. 업로드 확인 (SSE-KMS 명시)
+aws s3 cp test.txt \
+  s3://my-bucket-B계정ID-ap-northeast-2/test.txt \
+  --sse aws:kms \
+  --sse-kms-key-id "arn:aws:kms:ap-northeast-2:B계정ID:key/KEY-ID"
 
 # 5. 현재 자격증명 확인
 aws sts get-caller-identity
@@ -324,21 +349,24 @@ aws sts get-caller-identity
 
 ## 7. 트러블슈팅
 
-| 오류                         | 원인                            | 해결                                 |
-|------------------------------|---------------------------------|--------------------------------------|
-| `AccessDenied` on AssumeRole | Trust Policy에 Principal 미등록 | B계정 Role Trust Policy에 A계정 추가 |
-| `InvalidClientTokenId`       | SessionToken 누락               | AWS_SESSION_TOKEN 환경변수 확인      |
-| `AccessDenied` on s3:Put     | Role Policy에 s3:PutObject 없음 | backup-writer Role Policy 확인       |
-| `AccessDenied` on kms:*      | KMS Key Policy에 Role 미등록    | B계정 KMS Key Policy에 Role ARN 추가 |
-| `ExpiredTokenException`      | 임시 자격증명 만료              | AssumeRole 재호출하여 갱신           |
-| `AccessDenied` + ExternalId  | ExternalId 불일치               | Trust Policy Condition 값 확인       |
+| 오류                         | 원인                                | 해결                                 |
+|------------------------------|-------------------------------------|--------------------------------------|
+| `AccessDenied` on AssumeRole | Trust Policy에 Principal 미등록     | B계정 Role Trust Policy에 A계정 추가 |
+| `InvalidClientTokenId`       | SessionToken 누락 또는 잘못된 값    | AWS_SESSION_TOKEN 환경변수 확인      |
+| `AccessDenied` on s3:Put     | S3 PutObject 또는 KMS 권한/ARN 오류 | Role Policy와 KMS 권한 확인          |
+| `AccessDenied` on kms:*      | KMS IAM/Key Policy 또는 키 ARN 오류 | Role과 KMS Key Policy 모두 확인      |
+| `ExpiredTokenException`      | 임시 자격증명 만료                  | AssumeRole 재호출하여 갱신           |
+| `AccessDenied` + ExternalId  | Trust Policy 조건과 값 불일치       | ExternalId 조건과 호출값 확인        |
 
 ---
 
 ## 참고 자료
 
 - AWS Documentation: [STS AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) — ★★★☆☆
+- AWS Documentation: [STS GetSessionToken](https://docs.aws.amazon.com/STS/latest/APIReference/API_GetSessionToken.html) — ★★★☆☆
 - AWS Documentation: [IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) — ★★★☆☆
+- AWS Documentation: [SSE-KMS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html) — ★★★☆☆
+- AWS official verification notes: [_reference/aws_sts_iam_s3_kms_official_notes.md](../../_reference/aws_sts_iam_s3_kms_official_notes.md)
 - [s3_bucket_create_options.md](s3_bucket_create_options.md)
 - [s3_object_lock.md](s3_object_lock.md)
 
@@ -357,6 +385,6 @@ aws sts get-caller-identity
 
 **작성일**: 2026-08-12
 
-**마지막 업데이트**: 2026-08-12
+**마지막 업데이트**: 2026-08-13
 
 © 2026 siasia86. Licensed under CC BY 4.0.

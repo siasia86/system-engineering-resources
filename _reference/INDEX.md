@@ -17,6 +17,7 @@ sources:
 | 기술                           | 파일                                                    | 최신 버전                                        | 확인일     | 참조 |
 |--------------------------------|---------------------------------------------------------|--------------------------------------------------|------------|------|
 | Ansible                        | `_reference/ansible_official_notes.md`                  | 14.1.0 (core 2.21.1)                             | 2026-07-03 | X    |
+| AWS STS/IAM/S3/KMS             | `_reference/aws_sts_iam_s3_kms_official_notes.md`       | AssumeRole, session, cross-account 권한          | 2026-08-13 | O    |
 | ArgoCD                         | `_reference/argocd_official_notes.md`                   | v3.4.4                                           | 2026-07-03 | O    |
 | Chaos/FinOps                   | `_reference/chaos_finops_official_notes.md`             | principlesofchaos.org / finops.org               | 2026-07-07 | X    |
 | Charset/Encoding               | `_reference/charset_encoding_official_notes.md`         | RFC 3629, Unicode 16.0                           | 2026-07-07 | O    |
