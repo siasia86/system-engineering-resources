@@ -219,20 +219,18 @@ commits = [
     # "a1b2c3d4e5f6",
 ]
 
-# 커스텀 규칙: AWS 12자리 계정 ID 탐지
+# 커스텀 규칙 추가 예시 (실제 적용 전 충분한 테스트 필요)
 # 주의: Go regex는 lookahead/lookbehind 미지원
-# 따옴표·공백으로 감싸인 12자리 숫자를 탐지
-[[rules]]
-id = "custom-aws-account-id"
-description = "AWS Account ID (12-digit)"
-regex = '''["'\s][0-9]{12}["'\s]'''
-tags = ["aws", "account"]
-
-[rules.allowlist]
-regexes = [
-    # 날짜/시간 형태 제외 (YYYYMMDDHHNN)
-    '''20[0-9]{2}[01][0-9][0-3][0-9][0-9]{4}''',
-]
+# 아래 예시는 동작하지만 오탐 가능성이 높으므로 allowlist 설정 필수
+# [[rules]]
+# id = "custom-aws-account-id"
+# description = "AWS Account ID (12-digit)"
+# regex = '''["'\s][0-9]{12}["'\s]'''
+# tags = ["aws", "account"]
+# [rules.allowlist]
+# regexes = [
+#     '''20[0-9]{2}[01][0-9][0-3][0-9][0-9]{4}''',
+# ]
 ```
 
 ### 내장 규칙 확인
