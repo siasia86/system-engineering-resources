@@ -21,6 +21,8 @@
 | MDN Web Docs 용어집 | https://developer.mozilla.org/ko/docs/Glossary                     | 한/영  | 웹/HTTP/TLS 등 웹 기술 용어                 | ★★★☆☆ |
 | 생활코딩            | https://opentutorials.org                                          | 한국어 | 개발 입문~실무 개념, 텍스트+영상            | ★★☆☆☆ |
 | 요즘IT              | https://yozm.wishket.com/magazine/                                 | 한국어 | IT 트렌드·개념을 실무자 관점으로 설명       | ★★☆☆☆ |
+| 널널한 개발자       | https://www.youtube.com/@nullnull_not_eq_null                      | 한국어 | 네트워크·보안 개념을 5~15분 영상으로 설명   | ★★☆☆☆ |
+| 코딩애플            | https://codingapple.com                                            | 한국어 | 개발 개념을 짧고 쉽게 설명, 입문자 친화적   | ★★☆☆☆ |
 
 > Cloudflare Learning: 단순 정의를 넘어 동작 원리와 공격 유형까지 다루며,
 > DDoS, CDN, DNS, Zero Trust 등 네트워크·보안 개념을 실무 관점으로 설명합니다.
@@ -83,6 +85,14 @@
 ## 3. 해외 테크 블로그
 
 시스템 설계, 인프라, 보안 분야의 심층 기술 블로그입니다.
+
+### 입문/개념 요약
+
+| 이름            | URL                              | 분야                                                    | 평점  |
+|-----------------|----------------------------------|---------------------------------------------------------|-------|
+| Fireship        | https://fireship.io              | 기술 개념 1개를 100초 영상+글로 설명 (JS/인프라/DevOps) | ★★☆☆☆ |
+| Bytes.dev       | https://bytes.dev                | JS/웹 개발 개념 주간 뉴스레터, 짧고 유머러스            | ★★☆☆☆ |
+| Level Up Coding | https://levelup.gitconnected.com | 개발 개념 1개를 5분 분량으로 설명 (Medium 기반)         | ★★☆☆☆ |
 
 ### 시스템 설계/아키텍처
 
@@ -168,6 +178,7 @@
 - Cloudflare Learning: [cloudflare.com/ko-kr/learning](https://www.cloudflare.com/ko-kr/learning/) — ★★★☆☆
 - AWS 공식 블로그: [aws.amazon.com/blogs/aws](https://aws.amazon.com/blogs/aws) — ★★★☆☆
 - ByteByteGo: [blog.bytebytego.com](https://blog.bytebytego.com) — ★★☆☆☆
+- Fireship: [fireship.io](https://fireship.io) — ★★☆☆☆
 - 44bits: [44bits.io](https://www.44bits.io) — ★★☆☆☆
 - GeekNews: [news.hada.io](https://news.hada.io) — ★★☆☆☆
 - AI 아키텍처 기술 블로그: [aiarchitect.tistory.com](https://aiarchitect.tistory.com) — ★★☆☆☆
