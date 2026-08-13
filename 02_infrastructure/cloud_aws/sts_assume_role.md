@@ -37,14 +37,14 @@ Account-A EC2                 AWS STS                      Account-B
 
 ### IAM 영구 키 vs STS 임시 자격증명
 
-| 항목          | IAM 영구 키                  | STS 임시 자격증명         |
-|---------------|------------------------------|---------------------------|
-| 유효 기간     | 만료 없음 (수동 삭제 전까지) | 15분~12시간 (설정 가능)   |
-| 키 유출 시    | 즉시 악용 가능               | 만료 후 자동 무효화       |
-| 권한 범위     | IAM Policy 전체              | AssumeRole 시점 Policy만  |
-| Cross-account | 별도 IAM 사용자 생성 필요    | 역할 위임으로 간단히 처리 |
-| 감사 추적     | CloudTrail: IAM 사용자       | CloudTrail: 역할 + 세션명 |
-| 자격증명 개수 | 키 최대 2개                  | 필요 시마다 발급          |
+| 항목          | IAM 영구 키                  | STS 임시 자격증명                |
+|---------------|------------------------------|----------------------------------|
+| 유효 기간     | 만료 없음 (수동 삭제 전까지) | 15분~12시간 (설정 가능)          |
+| 키 유출 시    | 즉시 악용 가능               | 만료 후 자동 무효화              |
+| 권한 범위     | IAM Policy 전체              | AssumeRole 시점 Policy만         |
+| Cross-account | 별도 IAM 사용자 생성 필요    | 역할 위임(Trust Policy)으로 처리 |
+| 감사 추적     | CloudTrail: IAM 사용자       | CloudTrail: 역할 + 세션명        |
+| 자격증명 개수 | 키 최대 2개                  | 필요 시마다 발급                 |
 
 ### 임시 자격증명 구성
 
@@ -126,7 +126,7 @@ Session Policy를 사용하면 역할 권한보다 좁게 제한할 수 있습�
 |--------------------|---------------------------|----------------------------------|---------------------------|
 | 역할 위임          | AssumeRole                | 12시간                           | EC2 → 다른 계정 S3 접근   |
 | 웹 자격증명 연동   | AssumeRoleWithWebIdentity | 12시간 (Role MaxSessionDuration) | OIDC(GitHub Actions, EKS) |
-| SAML 연동          | AssumeRoleWithSAML        | 12시간                           | 기업 AD/SSO 연동          |
+| SAML 연동          | AssumeRoleWithSAML        | 12시간 (Role MaxSessionDuration) | 기업 AD/SSO 연동          |
 | 임시 보안 자격증명 | GetSessionToken           | 36시간 (IAM 사용자)              | MFA 인증 후 단기 접근     |
 
 ---
