@@ -47,6 +47,6 @@ tags = ["webhook", "slack"]
 # 회사 외부 IP 대역
 [[rules]]
 id = "company-external-ip"
-description = "Company external IP range (112.185.x.x)"
-regex = '''112\.185\.[0-9]{1,3}\.[0-9]{1,3}'''
+description = "Company external IP range (112.x.x.x)"
+regex = '''112\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'''
 tags = ["network", "external"]
