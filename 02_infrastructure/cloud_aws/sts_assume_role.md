@@ -36,16 +36,32 @@ Account-A EC2                 AWS STS                      Account-B
      │   (using temp credentials) │                            │
 ```
 
-### IAM 영구 키 vs STS 임시 자격증명
+### IAM 영구 키 vs AssumeRole 임시 자격증명
 
-| 항목          | IAM 영구 키                    | STS 임시 자격증명                          |
-|---------------|--------------------------------|--------------------------------------------|
-| 유효 기간     | 만료 없음 (수동 삭제 전까지)   | API별 상이 (AssumeRole은 15분~최대 12시간) |
-| 키 유출 시    | 즉시 악용 가능                 | 만료 후 자동 무효화                        |
-| 권한 범위     | 연결된 정책과 조건에 따라 결정 | 역할 정책과 세션 정책 등의 교집합          |
-| Cross-account | 별도 사용자 생성이 필수 아님   | Trust Policy와 호출자 권한으로 위임        |
-| 감사 추적     | CloudTrail: IAM 사용자         | CloudTrail: 역할 + 세션명                  |
-| 자격증명 개수 | 키 최대 2개                    | 필요 시마다 발급                           |
+| 항목          | IAM 영구 키                    | AssumeRole 임시 자격증명                     |
+|---------------|--------------------------------|----------------------------------------------|
+| 유효 기간     | 만료 없음 (수동 삭제 전까지)   | 15분~역할 `MaxSessionDuration` (최대 12시간) |
+| 키 유출 시    | 즉시 악용 가능                 | 만료 후 자동 무효화                          |
+| 권한 범위     | 연결된 정책과 조건에 따라 결정 | 역할 정책과 세션 정책 등의 교집합            |
+| Cross-account | 별도 사용자 생성이 필수 아님   | Trust Policy와 호출자 권한으로 위임          |
+| 감사 추적     | CloudTrail: IAM 사용자         | CloudTrail: 역할 + 세션명                    |
+| 자격증명 개수 | 키 최대 2개                    | 필요 시마다 발급                             |
+
+### STS API별 임시 자격증명 유효 기간
+
+`STS 임시 자격증명`은 호출 API와 호출 주체에 따라 유효 기간이 다릅니다.
+
+| API                       | 호출 주체       | 최소 | 최대      | 기본   |
+|---------------------------|-----------------|------|-----------|--------|
+| AssumeRole                | IAM 사용자/역할 | 15분 | 역할 설정 | 1시간  |
+| AssumeRoleWithSAML        | SAML 사용자     | 15분 | 역할 설정 | 1시간  |
+| AssumeRoleWithWebIdentity | OIDC 사용자     | 15분 | 역할 설정 | 1시간  |
+| GetFederationToken        | IAM 사용자      | 15분 | 36시간    | 12시간 |
+| GetFederationToken        | root 사용자     | 15분 | 1시간     | 1시간  |
+| GetSessionToken           | IAM 사용자      | 15분 | 36시간    | 12시간 |
+| GetSessionToken           | root 사용자     | 15분 | 1시간     | 1시간  |
+
+`AssumeRole` 계열의 `역할 설정`은 역할의 `MaxSessionDuration`이며, 최대 설정값은 12시간입니다. Role chaining을 사용하면 세션 기간이 최대 1시간으로 제한됩니다. `AssumeRoleWithSAML`은 SAML 응답의 `SessionNotOnOrAfter` 값이 더 짧으면 해당 값이 적용됩니다.
 
 ### 임시 자격증명 구성
 
