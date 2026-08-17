@@ -365,7 +365,7 @@ virsh shutdown vm01
 
 #### 스토리지 관리
 
-**LVM (Logical Volume Manager)**
+**LVM** (Logical Volume Manager)
 ```bash
 # 물리 볼륨 생성
 pvcreate /dev/sdb
@@ -875,7 +875,7 @@ resource "aws_instance" "web" {
 **LPIC-1** (Linux Professional Institute)
 - 난이도: ★★
 - 비용: $200 × 2 (101, 102)
-- 유효기간: 평생
+- 유효기간: 5년(갱신·상위 인증 취득 시 연장 가능)
 - 추천: 실무 기초 검증
 
 **CompTIA Network+**
@@ -907,7 +907,7 @@ resource "aws_instance" "web" {
 **LPIC-2**
 - 난이도: ★★★
 - 비용: $200 × 2 (201, 202)
-- 유효기간: 평생
+- 유효기간: 5년(갱신·상위 인증 취득 시 연장 가능)
 - 추천: Linux 고급
 
 ### Senior → Lead Level
@@ -1051,12 +1051,12 @@ resource "aws_instance" "web" {
 **로컬**
 ```
 VirtualBox + Ubuntu VM (무료)
-VMware Workstation Player (무료)
+VMware Workstation (라이선스 정책 확인 필요)
 ```
 
 **클라우드**
 ```
-AWS Free Tier (12개월 무료)
+AWS Free Tier (계정 플랜·서비스별 조건 확인 필요; Free Plan은 최대 6개월, 신규 고객 최대 $200 크레딧)
 DigitalOcean ($5/month)
 Linode ($5/month)
 ```
@@ -1088,6 +1088,8 @@ Linode ($5/month)
 ## 9. 연봉 가이드
 
 ### 한국 (서울 기준, 2026년)
+
+🟡 검증 불가 — 출처 필요: 아래 연봉 범위는 공식 통계 출처가 없는 예시이므로 실제 시장 기준으로 사용하지 않습니다.
 
 | 레벨         | 경력  | 연봉 범위              |
 |--------------|-------|------------------------|
