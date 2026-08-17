@@ -112,7 +112,7 @@ sources:
 
 ### Aider (aider.chat)
 
-- 오픈소스 (Apache-2.0 라이선스), 무료
+- 100% 오픈소스 (MIT 라이선스), 무료
 - GitHub: github.com/paul-gauthier/aider — **47,719 stars** (2026-07-27 확인)
 - 설치 수: 6.8M+
 - 사용 비용: 연결하는 LLM API 비용만 발생
