@@ -25,13 +25,13 @@ DRM(Digital Rights Management)은 디지털 콘텐츠의 **무단 복제, 배포
 
 ### DRM 적용 분야
 
-| 분야       | 예시                             |
-|------------|----------------------------------|
-| 스트리밍   | Netflix Widevine, Apple FairPlay |
-| 전자책     | Amazon Kindle, Adobe ADEPT       |
-| 게임       | Steam, Denuvo                    |
-| 소프트웨어 | 라이선스 키, 하드웨어 바인딩     |
-| 음악/영상  | iTunes DRM (현재 폐지)           |
+| 분야       | 예시                                 |
+|------------|--------------------------------------|
+| 스트리밍   | Netflix Widevine, Apple FairPlay     |
+| 전자책     | Amazon Kindle, Adobe ADEPT           |
+| 게임       | Steam, Denuvo                        |
+| 소프트웨어 | 라이선스 키, 하드웨어 바인딩         |
+| 음악/영상  | iTunes Store 음악(과거 FairPlay DRM) |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -41,7 +41,7 @@ DRM(Digital Rights Management)은 디지털 콘텐츠의 **무단 복제, 배포
 
 ### 암호화 기반
 
-콘텐츠를 암호화하고 인증된 플레이어만 복호화 키를 받는 방식.
+콘텐츠를 암호화하고 인증된 플레이어만 복호화 키를 받는 방식입니다.
 
 ```
 콘텐츠 암호화 → 라이선스 서버 → 인증 → 복호화 키 발급 → 재생
@@ -54,7 +54,7 @@ DRM(Digital Rights Management)은 디지털 콘텐츠의 **무단 복제, 배포
 ```bash
 # TPM 기반 하드웨어 바인딩 예시
 # 기기 고유 키로 콘텐츠 키를 암호화
-openssl rsautl -encrypt -inkey device_pubkey.pem -in content_key.bin -out encrypted_key.bin
+openssl pkeyutl -encrypt -pubin -inkey device_pubkey.pem -in content_key.bin -out encrypted_key.bin
 ```
 
 ### Trusted Execution Environment (TEE)
@@ -89,23 +89,23 @@ GPL v2 준수 (소스 공개) + 하드웨어 서명 (수정 실행 차단)
 
 ### GPL v3의 대응 — 설치 정보 제공 의무
 
-GPL v3 Section 6은 소스코드뿐 아니라 **설치 정보(Installation Information)** 도 제공하도록 요구합니다.
-수정된 소프트웨어를 실제로 설치·실행할 수 있는 서명 키, 인증 코드 등을 포함해야 한다.
+GPL v3 Section 6은 특정 User Product에 object code를 전달하는 경우 **설치 정보**(Installation Information) 를 제공하도록 요구합니다.
+해당 요건에서는 수정된 소프트웨어를 설치·실행하는 데 필요한 정보가 포함되어야 합니다.
 
 ```
-GPL v3 = 소스코드 공개 + 설치 정보 제공
-→ Tivoization 방지
+해당 조건에서 GPL v3 = 소스코드 공개 + 설치 정보 제공
+→ Tivoization 제한
 ```
 
 > — [GPL v3 Section 6](https://www.gnu.org/licenses/gpl-3.0.html#section6)
 
 ### DRM과 라이선스 선택 기준
 
-| 상황                   | 권장 라이선스    | 이유                          |
-|------------------------|------------------|-------------------------------|
-| DRM 적용 하드웨어 제품 | GPL v2 (only)    | v3의 설치 정보 의무 회피 가능 |
-| 완전한 자유 소프트웨어 | GPL v3           | Tivoization 방지              |
-| DRM 무관 라이브러리    | MIT / Apache 2.0 | 제약 없음                     |
+| 상황                   | 권장 라이선스    | 이유                                            |
+|------------------------|------------------|-------------------------------------------------|
+| DRM 적용 하드웨어 제품 | GPL v2 (only)    | GPL v3 Section 6과 동일한 설치 정보 조항은 없음 |
+| 자유 소프트웨어        | GPL v3           | Tivoization 방지                                |
+| DRM 무관 라이브러리    | MIT / Apache 2.0 | 제약 없음                                       |
 
 🟡 Linux 커널은 "GPL v2 only"를 명시하여 GPL v3 적용을 의도적으로 배제하고 있다.
 
@@ -119,14 +119,13 @@ GPL v3 = 소스코드 공개 + 설치 정보 제공
 
 미국 저작권법의 DRM 관련 조항. 두 가지 핵심 금지 사항:
 
-| 조항                   | 내용                         |
-|------------------------|------------------------------|
-| **Anti-circumvention** | DRM 우회 기술 개발/배포 금지 |
-| **Anti-trafficking**   | DRM 우회 도구 거래 금지      |
+| 조항                   | 내용                              |
+|------------------------|-----------------------------------|
+| **Anti-circumvention** | 일정한 기술적 보호조치 우회 제한  |
+| **Anti-trafficking**   | 우회 도구·서비스의 제조·거래 제한 |
 
 ```
-DRM 우회 → DMCA 위반 → 민사/형사 책임
-(연구 목적 예외 조항 있으나 범위 제한적)
+DRM 우회가 곧바로 DMCA 위반을 의미하지는 않으며, 적용 요건과 예외를 확인해야 합니다.
 ```
 
 ### 한국 저작권법
