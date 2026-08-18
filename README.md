@@ -11,18 +11,20 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [1. Fundamentals](#1-fundamentals) / [2. Infrastructure](#2-infrastructure) |
 | [3. Engineering](#3-engineering) / [4. Security](#4-security)               |
 | [5. Database](#5-database) / [6. Career](#6-career)                         |
-| [추천 학습 순서](#추천-학습-순서) / [문서 트리](#문서-트리)                 |
+| [추천 학습 순서](#추천-학습-순서) / [기타 문서](#기타-문서)                 |
 
 ---
 
 ## 1. Fundamentals
 
-기초 지식 — OS, 네트워크, 자료구조, 프로그래밍.
+기초 지식 — Linux·Windows 운영체제, 네트워크, 컴퓨터 과학, 수학, 프로그래밍.
 
 ### Linux
 
 | 문서                                                                            | 설명                        |
 |---------------------------------------------------------------------------------|-----------------------------|
+| [Linux 문서 목차](01_fundamentals/linux/README.md)                              | 주제별 분류, 학습 순서      |
+| [저장장치 도구](01_fundamentals/linux/storage_tools.md)                         | 장치·공간·I/O·상태 확인     |
 | [Bash 수학 연산](01_fundamentals/linux/bash_math.md)                            | 산술 연산, bc, awk          |
 | [Bash trap 가이드](01_fundamentals/linux/bash_trap_complete_guide.md)           | 시그널 처리, 정리 작업      |
 | [리다이렉션](01_fundamentals/linux/bash_file_redirection.md)                    | stdin/stdout/stderr, 파이프 |
@@ -394,10 +396,10 @@ RDBMS, NoSQL, 운영, 포렌식.
 
 ```
 초급 (Linux 입문)
-  01_fundamentals/linux (basics) → networking (IPv4/TCP) → containers (Docker)
+  01_fundamentals/linux (basics) → linux (storage/I/O) → networking (IPv4/TCP) → containers (Docker)
 
 중급 (시스템 관리)
-  01_fundamentals/linux (debugging) → 05_database → 02_infrastructure
+  linux (debugging) → 05_database → 02_infrastructure
 
 고급 (SRE/아키텍트)
   04_security → 03_engineering → 06_career/roadmap
