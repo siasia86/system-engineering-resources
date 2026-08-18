@@ -47,6 +47,7 @@ sources:
 | Android ADB                    | `_reference/android_adb_official_notes.md`              | platform-tools 37.0.1, logcat                    | 2026-07-16 | O    |
 | Windows Server 2022 Monitoring | `_reference/windows_server_2022_monitoring_notes.md`    | Get-Counter, 카운터, 임계치                      | 2026-07-23 | O    |
 | Linux Filesystem               | `_reference/linux_filesystem_official_notes.md`         | ext4, XFS, Btrfs, VFS                            | 2026-07-17 | O    |
+| Storage Tools                  | `_reference/storage_tools_official_notes.md`            | 15개 도구·공식 매뉴얼 범위                       | 2026-08-18 | O    |
 | AI 코딩 도구                   | `_reference/ai_coding_tools_official_notes.md`          | 가격·모델·벤치마크 (2026-07-27)                  | 2026-07-27 | O    |
 | Rust                           | `_reference/rust_official_notes.md`                     | 1.97.1, Edition 2021, 주요 크레이트              | 2026-07-29 | O    |
 | Windows Server 에디션/라이선스 | `_reference/windows_server_editions_licensing_notes.md` | Standard vs Datacenter, KMS/MAK/AVMA             | 2026-07-29 | O    |
