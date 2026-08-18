@@ -3,6 +3,8 @@
 
 AWS STS(Security Token Service)를 사용하여 임시 자격증명을 발급하고 Cross-account 접근을 구성하는 방법을 정리합니다.
 
+AWS 계정 ID, KMS key ID, 버킷명은 문서용 placeholder입니다. 실행 시 `<ACCOUNT-ID-1>`, `<ACCOUNT-ID-2>`, `<KEY-ID>`, `my-bucket`을 실제 값으로 대체합니다.
+
 ## 목차
 
 | 섹션                                                                                                     |
@@ -82,13 +84,13 @@ AssumeRole 호출 성공 시 `Credentials` 객체에 아래 4개 값이 반환�
 
 ### 주요 파라미터
 
-| 파라미터        | 필수 | 설명                                              | 예시                                    |
-|-----------------|------|---------------------------------------------------|-----------------------------------------|
-| RoleArn         | ✅   | 위임받을 역할 ARN                                 | arn:aws:iam::B계정ID:role/backup-writer |
-| RoleSessionName | ✅   | 세션 식별자 (CloudTrail 추적용)                   | ec2-backup-session                      |
-| DurationSeconds | ❌   | 900초~역할 `MaxSessionDuration` (최대 43200초)    | 3600                                    |
-| ExternalId      | ❌   | 제3자 위임의 confused deputy 완화용 식별자        | SecureExternalId123                     |
-| Policy          | ❌   | 역할 정책보다 좁게 제한하는 inline session policy | 인라인 JSON Policy                      |
+| 파라미터        | 필수 | 설명                                              | 예시                                           |
+|-----------------|------|---------------------------------------------------|------------------------------------------------|
+| RoleArn         | ✅   | 위임받을 역할 ARN                                 | arn:aws:iam::<ACCOUNT-ID-2>:role/backup-writer |
+| RoleSessionName | ✅   | 세션 식별자 (CloudTrail 추적용)                   | ec2-backup-session                             |
+| DurationSeconds | ❌   | 900초~역할 `MaxSessionDuration` (최대 43200초)    | 3600                                           |
+| ExternalId      | ❌   | 제3자 위임의 confused deputy 완화용 식별자        | SecureExternalId123                            |
+| Policy          | ❌   | 역할 정책보다 좁게 제한하는 inline session policy | 인라인 JSON Policy                             |
 
 > Confused deputy: 권한이 있는 중개자가 요청자의 의도와 다른 대상에게
 > 권한을 행사하도록 속이는 문제입니다. `ExternalId`는 제3자 위임에서
@@ -103,13 +105,13 @@ AssumeRole 호출 성공 시 `Credentials` 객체에 아래 4개 값이 반환�
 ```bash
 # 기본 AssumeRole
 aws sts assume-role \
-  --role-arn "arn:aws:iam::123456789012:role/backup-writer" \
+  --role-arn "arn:aws:iam::<ACCOUNT-ID-2>:role/backup-writer" \
   --role-session-name "ec2-backup-session" \
   --duration-seconds 3600
 
 # ExternalId 포함
 aws sts assume-role \
-  --role-arn "arn:aws:iam::123456789012:role/backup-writer" \
+  --role-arn "arn:aws:iam::<ACCOUNT-ID-2>:role/backup-writer" \
   --role-session-name "ec2-backup-session" \
   --external-id "SecureKey123"
 ```
@@ -117,7 +119,7 @@ aws sts assume-role \
 ```bash
 # 반환값을 환경변수로 설정
 CREDS=$(aws sts assume-role \
-  --role-arn "arn:aws:iam::123456789012:role/backup-writer" \
+  --role-arn "arn:aws:iam::<ACCOUNT-ID-2>:role/backup-writer" \
   --role-session-name "ec2-backup-session" \
   --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' \
   --output text)
@@ -127,7 +129,7 @@ export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 unset CREDS
 
 # 이후 API 호출은 임시 자격증명 자동 사용
-aws s3 ls s3://my-bucket-123456789012-ap-northeast-2/
+aws s3 ls s3://my-bucket/
 ```
 
 ### 권한 범위 제한
@@ -157,16 +159,16 @@ Session Policy를 사용하면 역할 권한보다 좁게 제한할 수 있습�
 
 Trust Policy는 **B계정 역할(Role)에 설정**합니다. "누가 이 역할을 위임받을 수 있는가"를 정의합니다.
 
-`arn:aws:iam::A계정ID:root`는 A계정의 account principal을 의미하며, A계정의 root 사용자만을 뜻하지 않습니다. 필요하면 신뢰할 역할 등 더 좁은 principal을 검토합니다.
+`arn:aws:iam::<ACCOUNT-ID-1>:root`는 A계정의 account principal을 의미하며, A계정의 root 사용자만을 뜻하지 않습니다. 필요하면 신뢰할 역할 등 더 좁은 principal을 검토합니다.
 
 ### 구성 요소
 
-| 요소      | 설명                               | 예시 값                      |
-|-----------|------------------------------------|------------------------------|
-| Effect    | 허용/거부                          | Allow                        |
-| Principal | 역할을 위임할 수 있는 주체         | arn:aws:iam::A계정ID:root    |
-| Action    | 허용할 STS 작업                    | sts:AssumeRole               |
-| Condition | 추가 조건 (ExternalId, MFA, IP 등) | StringEquals: sts:ExternalId |
+| 요소      | 설명                               | 예시 값                          |
+|-----------|------------------------------------|----------------------------------|
+| Effect    | 허용/거부                          | Allow                            |
+| Principal | 역할을 위임할 수 있는 주체         | arn:aws:iam::<ACCOUNT-ID-1>:root |
+| Action    | 허용할 STS 작업                    | sts:AssumeRole                   |
+| Condition | 추가 조건 (ExternalId, MFA, IP 등) | StringEquals: sts:ExternalId     |
 
 ### 기본 Trust Policy (A계정 EC2 → B계정 역할)
 
@@ -177,7 +179,7 @@ Trust Policy는 **B계정 역할(Role)에 설정**합니다. "누가 이 역할�
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::A계정ID:root"
+        "AWS": "arn:aws:iam::<ACCOUNT-ID-1>:root"
       },
       "Action": "sts:AssumeRole"
     }
@@ -194,7 +196,7 @@ Trust Policy는 **B계정 역할(Role)에 설정**합니다. "누가 이 역할�
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::A계정ID:root"
+        "AWS": "arn:aws:iam::<ACCOUNT-ID-1>:root"
       },
       "Action": "sts:AssumeRole",
       "Condition": {
@@ -241,7 +243,7 @@ A계정 EC2 인스턴스 역할에 부여합니다.
     {
       "Effect": "Allow",
       "Action": "sts:AssumeRole",
-      "Resource": "arn:aws:iam::B계정ID:role/backup-writer"
+      "Resource": "arn:aws:iam::<ACCOUNT-ID-2>:role/backup-writer"
     }
   ]
 }
@@ -249,7 +251,7 @@ A계정 EC2 인스턴스 역할에 부여합니다.
 
 ### B계정 — backup-writer Role Policy (S3 + KMS)
 
-Cross-account SSE-KMS에는 customer managed KMS key를 사용해야 합니다. Role Policy에는 S3 권한과 KMS 키 사용 권한을 모두 부여하고, KMS Key Policy에서도 같은 역할을 허용해야 합니다.
+실제 다른 계정의 IAM principal이 SSE-KMS 객체를 공유받는 Cross-account 구성에서는 customer managed KMS key를 사용해야 합니다. 이 문서처럼 A계정의 EC2가 B계정 역할을 AssumeRole한 뒤 B계정 리소스에 접근하는 구성에서는 호출 principal이 B계정 역할이므로 AWS managed key 사용 가능 여부가 달라집니다. 여기서는 customer managed KMS key를 명시하는 구성을 기준으로 설명합니다. Role Policy에는 S3 권한과 KMS 키 사용 권한을 부여하고, KMS Key Policy는 해당 역할을 직접 허용하거나 계정의 IAM 정책 위임을 허용해야 합니다.
 
 ```json
 {
@@ -259,7 +261,7 @@ Cross-account SSE-KMS에는 customer managed KMS key를 사용해야 합니다. 
       "Sid": "ListTargetBucket",
       "Effect": "Allow",
       "Action": "s3:ListBucket",
-      "Resource": "arn:aws:s3:::my-bucket-B계정ID-ap-northeast-2"
+      "Resource": "arn:aws:s3:::my-bucket"
     },
     {
       "Sid": "ReadWriteObjects",
@@ -268,7 +270,7 @@ Cross-account SSE-KMS에는 customer managed KMS key를 사용해야 합니다. 
         "s3:PutObject",
         "s3:GetObject"
       ],
-      "Resource": "arn:aws:s3:::my-bucket-B계정ID-ap-northeast-2/*"
+      "Resource": "arn:aws:s3:::my-bucket/*"
     },
     {
       "Sid": "UseSseKmsKey",
@@ -277,7 +279,7 @@ Cross-account SSE-KMS에는 customer managed KMS key를 사용해야 합니다. 
         "kms:GenerateDataKey",
         "kms:Decrypt"
       ],
-      "Resource": "arn:aws:kms:ap-northeast-2:B계정ID:key/KEY-ID"
+      "Resource": "arn:aws:kms:ap-northeast-2:<ACCOUNT-ID-2>:key/<KEY-ID>"
     }
   ]
 }
@@ -292,13 +294,13 @@ Cross-account SSE-KMS에는 customer managed KMS key를 사용해야 합니다. 
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::B계정ID:role/backup-writer"
+        "AWS": "arn:aws:iam::<ACCOUNT-ID-2>:role/backup-writer"
       },
       "Action": [
         "kms:GenerateDataKey",
         "kms:Decrypt"
       ],
-      "Resource": "arn:aws:kms:ap-northeast-2:B계정ID:key/KEY-ID"
+      "Resource": "arn:aws:kms:ap-northeast-2:<ACCOUNT-ID-2>:key/<KEY-ID>"
     }
   ]
 }
@@ -340,7 +342,7 @@ Account-A                                    Account-B
 ```bash
 # 1. AssumeRole 동작 확인
 aws sts assume-role \
-  --role-arn "arn:aws:iam::B계정ID:role/backup-writer" \
+  --role-arn "arn:aws:iam::<ACCOUNT-ID-2>:role/backup-writer" \
   --role-session-name "test-session"
 
 # 2. 임시 자격증명 설정
@@ -349,13 +351,13 @@ export AWS_SECRET_ACCESS_KEY=...
 export AWS_SESSION_TOKEN=...
 
 # 3. S3 접근 확인
-aws s3 ls s3://my-bucket-B계정ID-ap-northeast-2/
+aws s3 ls s3://my-bucket/
 
 # 4. 업로드 확인 (SSE-KMS 명시)
 aws s3 cp test.txt \
-  s3://my-bucket-B계정ID-ap-northeast-2/test.txt \
+  s3://my-bucket/test.txt \
   --sse aws:kms \
-  --sse-kms-key-id "arn:aws:kms:ap-northeast-2:B계정ID:key/KEY-ID"
+  --sse-kms-key-id "arn:aws:kms:ap-northeast-2:<ACCOUNT-ID-2>:key/<KEY-ID>"
 
 # 5. 현재 자격증명 확인
 aws sts get-caller-identity
@@ -401,6 +403,6 @@ aws sts get-caller-identity
 
 **작성일**: 2026-08-12
 
-**마지막 업데이트**: 2026-08-13
+**마지막 업데이트**: 2026-08-14
 
 © 2026 siasia86. Licensed under CC BY 4.0.

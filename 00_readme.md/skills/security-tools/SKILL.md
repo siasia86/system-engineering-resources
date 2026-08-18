@@ -7,120 +7,148 @@ description: Documents security masking tools (ip_mask.py, json_mask.py, aws-sec
 
 ## 1. Script list
 
-| File                                 | Purpose                                | Target           |
-|--------------------------------------|----------------------------------------|------------------|
-| `/root/sj_del/ip_mask.py`            | Public IP → RFC 5737                   | All text files   |
-| `/root/sj_del/json_mask.py`          | AWS resource masking (18 types)        | `.json` files    |
-| `/root/sj_del/aws-security-check.sh` | AWS sensitive data detection (9 types) | Directory scan   |
-| `/root/sj_del/git-security-check.sh` | Pre-commit security check (5 types)    | Git staged files |
-| `/root/sj_del/md-style-check.sh`     | Markdown style check                   | `.md` files      |
-| `/root/sj_del/security-check.conf`   | Shared config for bash scripts         | conf             |
+| File                                                      | Purpose                                                 | Target                     |
+|-----------------------------------------------------------|---------------------------------------------------------|----------------------------|
+| `/root/sj_del/ip_mask.py`                                 | Public IP masking and restoration using RFC 5737 ranges | All text files             |
+| `/root/sj_del/json_mask.py`                               | AWS resource masking with 18 regex rules                | `.json` files              |
+| `/root/sj_del/aws_security_check.sh`                      | AWS sensitive-data detection with 9 checks              | Directory scan             |
+| `/root/sj_del/git_security_check.sh`                      | Pre-commit security check with 5 checks                 | Git working-tree directory |
+| `/root/32_system-engineering-resources/md-style-check.py` | Markdown style validation                               | `.md` files                |
+| `/root/sj_del/security_check.conf`                        | Shared configuration for Bash scripts                   | Configuration file         |
 
-## 2. Common option scheme (ip_mask.py / json_mask.py)
+## 2. Common option scheme (`ip_mask.py` / `json_mask.py`)
 
-| Option             | Description                                  |
-|--------------------|----------------------------------------------|
-| `-f` / `--file`    | Single file target                           |
-| `-D` / `--dir`     | Recursive directory processing               |
-| `-r` / `--restore` | Restore original                             |
-| `-d` / `--dry-run` | No file modification, preview only           |
-| `-v` / `--verbose` | Show changed lines in detail                 |
-| `--all`            | Include skipped files in output (ip_mask.py) |
-| `--force`          | Ignore serial mismatch                       |
-| `-V` / `--version` | Print version                                |
-| `-i` / `--include` | Include extension filter                     |
-| `-e` / `--exclude` | Exclude extension filter                     |
-| `-q` / `--quiet`   | Minimize log output                          |
-| `-m` / `--map`     | Specify map file path directly               |
-| `--debug`          | Pattern debugging (json_mask.py only)        |
+| Option             | Description                                              |
+|--------------------|----------------------------------------------------------|
+| `-f` / `--file`    | Process a single file                                    |
+| `-D` / `--dir`     | Process a directory recursively                          |
+| `-r` / `--restore` | Restore the original content                             |
+| `-d` / `--dry-run` | Preview changes without modifying files                  |
+| `-v` / `--verbose` | Show changed lines in detail                             |
+| `--all`            | Include unchanged files in output (`ip_mask.py`)         |
+| `--force`          | Ignore serial mismatches                                 |
+| `-V` / `--version` | Print the version                                        |
+| `-i` / `--include` | Include only matching extensions                         |
+| `-e` / `--exclude` | Exclude matching extensions                              |
+| `-q` / `--quiet`   | Minimize log output                                      |
+| `-m` / `--map`     | Specify a map file path directly                         |
+| `--debug`          | Show pattern debugging information (`json_mask.py` only) |
 
 ## 3. Design principles
 
-- Map file deletion prohibited (retain even after restore)
-- Serial verification: file hash ↔ map `_meta.serial` match check
-- Atomic write: temp file → rename (original preserved on mid-failure)
-- Permission preservation: maintain original file permissions
-- Idempotency: re-running on already-masked file produces no changes
-- `.bak.N` backup: auto-backup before map overwrite
-- SAFETY line: `ip_mask.py` top `import sys; sys.exit(0)` retained (intentionally disabled)
+- Do not delete map files after restoration; they are required for reversibility.
+- Verify the source file hash against the map `_meta.serial` value.
+- Write atomically by using a temporary file followed by a rename.
+- Preserve the original file permissions.
+- Guarantee idempotency: re-running a mask operation produces no additional changes.
+- Create a `.bak.N` backup before overwriting a map file.
+- Keep the `SAFETY` line in `ip_mask.py` available for emergency execution blocking.
 
 ## 4. Color rules
 
-| Color  | Usage                          |
-|--------|--------------------------------|
-| Red    | mask filename, masked count    |
-| Purple | restore filename, backup path  |
-| Yellow | skip/warning, pre-change IP    |
-| Green  | post-change IP, restored count |
-| Gray   | line numbers (`L1`, `L2`)      |
+| Color  | Usage                                   |
+|--------|-----------------------------------------|
+| Red    | Masked filename and masked count        |
+| Purple | Restored filename and backup path       |
+| Yellow | Skipped item, warning, or pre-change IP |
+| Green  | Post-change IP or restored count        |
+| Gray   | Line numbers such as `L1`               |
 
-## 5. ip_mask.py details
+## 5. `ip_mask.py` details
 
-- Auto-detect public IPs (excludes private/example/special IPs)
-- RFC 5737 sequential allocation: `192.0.2.0/24` → `198.51.100.0/24` → `203.0.113.0/24` (max 762)
-- Version number exclusion: skip if IP has `-` or `_` adjacent
-- Map file: `<source_file>.map.ip.json`
-- Exclusions: `SKIP_EXTS` (binary), `SKIP_FILES` (self, etc.), `SKIP_TARGETS` (specific filenames)
-- Excluded directories: `.git`, `.ssh`, `.kiro`
-- Files containing `.map.ip.json` in name unconditionally excluded
+- Automatically detects public IP addresses and excludes private, example, and special-purpose addresses.
+- Allocates RFC 5737 ranges sequentially: `192.0.2.0/24` → `198.51.100.0/24` → `203.0.113.0/24` (maximum 762 addresses).
+- Skips version-like values when an IP is adjacent to `-` or `_`.
+- Stores the map at `<source_file>.map.ip.json`.
+- Applies `SKIP_EXTS`, `SKIP_FILES`, and `SKIP_TARGETS` exclusions.
+- Excludes `.git`, `.ssh`, and `.kiro` directories.
+- Always excludes files whose names contain `.map.ip.json`.
 
-## 6. json_mask.py details
+## 6. `json_mask.py` details
 
-- 18 pattern types: ACCOUNT-ID, BUCKET, VPCE-ID, VPC-ID, SUBNET-ID, SG-ID, ENI-ID, INSTANCE-ID, ELB-NAME, RDS-EP, CF-DIST-ID, NAT-GW-ID, RTB-ID, IGW-ID, IP, DOMAIN
-- Placeholder format: `<TYPE-N>` (e.g., `<IP-1>`, `<ACCOUNT-ID-1>`)
-- Map file: `<source_file>.map.json`
-- `_meta` block: serial, source, version
+- Provides 18 regex rules covering 17 resource types: `ACCOUNT-ID`, `BUCKET`, `VPCE-ID`, `VPC-ID`, `SUBNET-ID`, `SG-ID`, `ENI-ID`, `INSTANCE-ID`, `ELB-NAME`, `RDS-EP`, `CF-DIST-ID`, `NAT-GW-ID`, `RTB-ID`, `IGW-ID`, `IP`, and `DOMAIN`.
+- Uses placeholders such as `<TYPE-N>`, for example `<IP-1>` and `<ACCOUNT-ID-1>`.
+- Stores the map at `<source_file>.map.json`.
+- Stores serial, source, and version metadata in the `_meta` block.
 
 ## 7. Verification procedure
 
-After code changes, always:
-1. `py_compile` syntax verification
-2. Temporarily disable SAFETY line, run execution test
-3. mask → restore round-trip confirmation
-4. Compatibility check with existing map files
+After modifying masking scripts, run the following checks:
+
+1. Verify Python syntax with `py_compile`.
+2. Run the script against an isolated temporary directory.
+3. Verify a mask → restore round trip.
+4. Check compatibility with existing map files.
+5. Restore the `SAFETY` line to its original state after testing.
+
+The `SAFETY` line is normally commented and therefore allows execution. To block execution temporarily, uncomment the line below; restore the comment before normal use.
+
+```python
+#import sys; sys.exit(0)  # SAFETY: uncomment this line to disable the script
+```
 
 ```bash
 sudo python3 -c "import py_compile; py_compile.compile('/root/sj_del/ip_mask.py', doraise=True); print('OK')"
 sudo python3 -c "import py_compile; py_compile.compile('/root/sj_del/json_mask.py', doraise=True); print('OK')"
 ```
 
-## 8. aws-security-check.sh details
+## 8. `aws_security_check.sh` details
 
-- 9 check types: Access Keys, Secret Keys, Account IDs, ARNs, VPCE, Public IPs, Resource IDs, S3 Buckets, .map.json tracking
-- Dynamic load EXCLUDE_IPS, EXCLUDE_BUCKETS from `security-check.conf`
-- Version number pattern exclusion (skip if IP followed by `-`)
-- `0x` hex address exclusion
-- `ami-` prefix exclusion (Resource IDs)
-- Fallback defaults if conf missing
+- Performs 9 checks: access keys, secret keys, account IDs, ARNs, VPCE IDs, public IPs, AWS resource IDs, S3 buckets, and tracked `.map.json` files.
+- Dynamically loads `EXCLUDE_IPS` and `EXCLUDE_BUCKETS` from `/root/sj_del/security_check.conf`.
+- Excludes version-like values when an IP is followed or preceded by `-`.
+- Excludes `0x` hexadecimal addresses.
+- Excludes `ami-` resource IDs from generic resource-ID detection.
+- Uses fallback defaults when `/root/sj_del/security_check.conf` is unavailable.
 
-## 9. git-security-check.sh details
+## 9. `git_security_check.sh` details
 
-- 5 check types: Sensitive IPs, Passwords/Keys, AWS Account IDs, Large Files, Sensitive Filenames
-- All checks pass → `✓` output
-- Dynamic filtering via `security-check.conf` EXCLUDE_PASSWORDS, EXCLUDE_KEYWORDS
-- `0x` hex, `ULL` C literal, date pattern exclusion (Account ID false positive prevention)
-- EXCLUDE_DIRS/EXCLUDE_FILES based find exclusion
-- printf-style ANSI color (avoids echo -e compatibility issues)
+- Performs 5 checks: sensitive IPs, passwords and keys, AWS account IDs, large files, and sensitive filenames.
+- Scans files under `SCAN_DIR` (default: `.`); run it from the repository root when Git status output is required.
+- Uses Git tracking information only for the tracked `.map.json` check.
+- Dynamically loads `EXCLUDE_PASSWORDS`, `EXCLUDE_KEYWORDS`, and `EXCLUDE_ACCOUNTS` from `/root/sj_del/security_check.conf`.
+- Excludes `0x` hexadecimal values, `ULL` C literals, and date-like values to reduce account-ID false positives.
+- Applies `EXCLUDE_DIRS` and `EXCLUDE_FILES` while searching.
+- Uses `printf`-style ANSI color output for portability.
 
 ## 10. Bash script common rules
 
-- Output format: `[N/M] check_name` + result (`✓` / `✗` / `⚠`)
-- `bash -n` syntax verification mandatory
-- `security-check.conf` shared (source-loaded)
-- `.kiro` directory excluded
+- Use the output format `[N/M] check_name` followed by `✓`, `✗`, or `⚠`.
+- Run `bash -n` after modifying either Bash script.
+- Load shared settings from `/root/sj_del/security_check.conf`.
+- Exclude the `.kiro` directory from scans.
 
-## 11. Related config files
+## 11. Related configuration files
 
-- `/root/sj_del/security-check.conf` — EXCLUDE_IPS, EXCLUDE_PASSWORDS, EXCLUDE_KEYWORDS, EXCLUDE_BUCKETS, EXCLUDE_DIRS, EXCLUDE_FILES
-- `/root/sj_del/ip_mask.toml` — Legacy config (unused, can be deleted)
+- `/root/sj_del/security_check.conf` — `EXCLUDE_IPS`, `EXCLUDE_PASSWORDS`, `EXCLUDE_KEYWORDS`, `EXCLUDE_ACCOUNTS`, `EXCLUDE_BUCKETS`, `EXCLUDE_DIRS`, and `EXCLUDE_FILES`.
+- `/root/sj_del/ip_mask.toml` — Legacy configuration; currently unused.
 
-## 12. Dockerfile / Container security check
+## 12. AWS account ID and resource placeholders
 
-Manual inspection items (no script coverage):
+Do not use real numeric AWS account IDs in documentation or examples. Security scanners treat 12-digit numbers as potential account IDs, so use the following placeholders:
 
-- Pin image tags in `FROM` (`:latest` prohibited)
-- Do not run as `USER root` (specify non-root user)
-- No unnecessary packages (`--no-install-recommends`)
-- Secrets not baked into layers (multi-stage build or `--secret`)
-- Minimize `COPY` scope (use `.dockerignore`)
-- Define health check (`HEALTHCHECK` instruction)
+- Account IDs: `<ACCOUNT-ID-1>`, `<ACCOUNT-ID-2>`
+- IAM ARN: `arn:aws:iam::<ACCOUNT-ID-1>:root`, `arn:aws:iam::<ACCOUNT-ID-2>:role/backup-writer`
+- KMS key ARN: `arn:aws:kms:ap-northeast-2:<ACCOUNT-ID-2>:key/<KEY-ID>`
+- S3 bucket: `my-bucket`
+
+Executable command examples must include the following replacement note:
+
+```text
+Replace <ACCOUNT-ID-1>, <ACCOUNT-ID-2>, <KEY-ID>, and my-bucket with actual values before execution.
+```
+
+- `123456789012` is retained only for compatibility with existing tests and `security_check.conf`; do not add it to new documentation or code.
+- Do not add real account IDs to `EXCLUDE_ACCOUNTS` to hide scanner findings. Use that list only for reproducible test fixtures.
+- Prefer the `<ACCOUNT-ID-N>` placeholders supported by `json_mask.py`; keep original account IDs separately with their map files.
+
+## 13. Dockerfile / container security check
+
+Manual inspection items not covered by the listed scripts:
+
+- Pin image tags in `FROM`; do not use `:latest`.
+- Do not run as `USER root`; specify a non-root user.
+- Avoid unnecessary packages; use `--no-install-recommends` where applicable.
+- Do not bake secrets into image layers; use a multi-stage build or `--secret`.
+- Minimize the `COPY` scope and provide a `.dockerignore` file.
+- Define a `HEALTHCHECK` instruction.
