@@ -1,18 +1,21 @@
 # Fundamentals
 
-시스템 엔지니어링의 기초 지식. OS, 네트워크, 자료구조/알고리즘, 프로그래밍 언어를 다룹니다.
+시스템 엔지니어링의 기초 지식. Linux·Windows 운영체제, 네트워크, 컴퓨터 과학, 프로그래밍 언어, 수학 기초를 다룹니다.
 
 ## 구조
 
-| 디렉토리                       | 설명                                                         | 문서 수 |
-|--------------------------------|--------------------------------------------------------------|---------|
-| [linux/](./linux/)             | Linux 관리 — bash, cgroup, systemd, 파일시스템, 커널, vim 등 | 29      |
-| [networking/](./networking/)   | 네트워크 기초 — TCP/IP, HTTP, DNS, CDN, VPN, IPv4/IPv6       | 13      |
-| [cs/](./cs/)                   | 컴퓨터 과학 — 자료구조, 알고리즘, CPU 아키텍처, 테스트 설계  | 21      |
-| [programming/](./programming/) | 프로그래밍 언어 — Python, Bash, C/C++, Go 비교, LSP          | 26      |
+| 디렉토리                       | 설명                                                                | 문서 수 |
+|--------------------------------|---------------------------------------------------------------------|---------|
+| [linux/](./linux/)             | Linux 관리 — bash, cgroup, systemd, 파일시스템, 저장장치, 커널, vim | 47      |
+| [networking/](./networking/)   | 네트워크 기초 — TCP/IP, HTTP, DNS, CDN, VPN, IPv4/IPv6              | 15      |
+| [cs/](./cs/)                   | 컴퓨터 과학 — 자료구조, CPU 아키텍처, 버전 관리, 테스트 설계        | 23      |
+| [programming/](./programming/) | 프로그래밍 언어 — Python, Bash, C/C++, C#, Go, Rust, LSP            | 47      |
+| [math/](./math/)               | 수학 기초 — 극한과 엡실론-델타 정의                                 | 1       |
+| [windows/](./windows/)         | Windows Server 관리 — 시스템 리소스 분석                            | 1       |
 
 ## 주요 문서
 
+- [storage_tools.md](./linux/storage_tools.md) — 장치·공간·프로세스·디바이스 I/O 도구 선택
 - [bash_trap_complete_guide.md](./linux/bash_trap_complete_guide.md) — 시그널 핸들링과 cleanup 패턴
 - [virtual_memory_concepts.md](./linux/virtual_memory_concepts.md) — 페이지 테이블, TLB, OOM 원리
 - [tcp_state_concepts.md](./networking/tcp_state_concepts.md) — TCP 상태 전이, TIME_WAIT 문제
