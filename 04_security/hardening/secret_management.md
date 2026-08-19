@@ -67,8 +67,7 @@ aws secretsmanager create-secret \
     --secret-string file://secret.json \
     --region ap-northeast-2
 
-# secret.json은 저장소에 커밋하지 않고 사용 후 즉시 삭제
-rm -f secret.json
+# secret.json은 저장소에 커밋하지 않으며 update 작업 후 삭제
 
 # 시크릿 조회: 결과를 터미널에 출력하지 않고 보호된 임시 파일로 전달
 secret_file=$(mktemp)
@@ -80,6 +79,7 @@ aws secretsmanager get-secret-value --secret-id "prod/app/db" \
 aws secretsmanager update-secret \
     --secret-id "prod/app/db" \
     --secret-string file://secret.json
+rm -f secret.json
 
 # 자동 교체 활성화 (Lambda 사용)
 aws secretsmanager rotate-secret \
@@ -138,11 +138,11 @@ vault kv put secret/prod/db \
     username="${DB_USERNAME:?DB_USERNAME is required}" \
     password="${DB_PASSWORD:?DB_PASSWORD is required}"
 
-# 시크릿 조회
+# 시크릿 조회: 개발 검증용이며 운영 로그에 값을 출력하지 않음
 vault kv get secret/prod/db
 vault kv get -field=password secret/prod/db
 
-# 시크릿 삭제
+# KV v2의 최신 버전 삭제(버전 정책에 따라 복구 가능)
 vault kv delete secret/prod/db
 ```
 
@@ -201,7 +201,7 @@ GitLab CI/CD Variable은 Pipeline과 Job 실행 시 필요한 값을 전달하�
 deploy:
   id_tokens:
     GITLAB_OIDC_TOKEN:
-      aud: https://gitlab.example.com
+      aud: sts.amazonaws.com
   variables:
     SECRET_ID: "prod/app/db"
     AWS_REGION: "ap-northeast-2"
