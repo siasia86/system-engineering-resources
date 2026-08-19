@@ -140,59 +140,106 @@ gitleaks git --config .gitleaks.toml
 
 ## 4. 설정 파일
 
-`.gitleaks.toml`을 저장소 루트에 배치하면 자동으로 로드됩니다.
+`.gitleaks.toml`을 저장소 루트에 배치하면 대상 경로 기준으로 자동 로드됩니다. 설정 파일을 명시하면 저장소 루트의 설정 대신 지정한 파일을 사용합니다.
+
+### 설정 로드 우선순위
+
+| 순위 | 설정 방법                    | 설명                                |
+|------|------------------------------|-------------------------------------|
+| 1    | `--config` 또는 `-c`         | 명령행에서 지정한 설정 파일         |
+| 2    | `GITLEAKS_CONFIG`            | 설정 파일 경로를 지정하는 환경 변수 |
+| 3    | `GITLEAKS_CONFIG_TOML`       | TOML 내용을 직접 전달하는 환경 변수 |
+| 4    | 대상 경로의 `.gitleaks.toml` | 저장소 또는 스캔 대상의 설정 파일   |
+| 5    | 바이너리 기본 설정           | 위 설정이 모두 없을 때 사용         |
 
 ### 기본 구조
+
+현재 프로젝트에서 사용하는 설정은 다음 구조입니다.
 
 ```toml
 # .gitleaks.toml
 title = "gitleaks config"
+minVersion = "v8.30.1"
 
-# 기본 규칙을 사용하려면 명시적으로 상속합니다.
 [extend]
 useDefault = true
-# 외부 config 상속 시 `useDefault` 대신 다음을 사용합니다.
-# path = "/path/to/base-gitleaks.toml"
 
-# 오탐 제외 (allowlist)
-[allowlist]
+[[allowlists]]
 description = "global allowlist"
 regexes = [
-    # 문서 플레이스홀더 값 제외
+    # placeholder values
     '''Secureuser123''',
     '''SecurePassword123''',
     '''SecureKey123''',
     '''SecureToken123''',
     '''SecureDbName123''',
-    # RFC 5737 예제 IP
+    '''sk-1234567890abcdef''',
+    # RFC 5737 documentation IP ranges
     '''192\.0\.2\.\d+''',
     '''198\.51\.100\.\d+''',
     '''203\.0\.113\.\d+''',
+    # 코드 예시 전화번호
+    '''010-1234-5678''',
 ]
 paths = [
-    # 특정 파일 제외
     '''12_tech_stack/kubernetes_basic\.md''',
     '''.*_test\.py''',
     '''.*\.example''',
     '''.*\.sample''',
-]
-commits = [
-    # 특정 커밋 제외
-    # "a1b2c3d4e5f6",
+    '''.*_example\..*''',
 ]
 
-# 커스텀 규칙 추가 예시 (실제 적용 전 충분한 테스트 필요)
-# 주의: Go regex는 lookahead/lookbehind 미지원
-# 아래 예시는 동작하지만 오탐 가능성이 높으므로 allowlist 설정 필수
-# [[rules]]
-# id = "custom-aws-account-id"
-# description = "AWS Account ID (12-digit)"
-# regex = '''["'\s][0-9]{12}["'\s]'''
-# tags = ["aws", "account"]
-# [rules.allowlist]
-# regexes = [
-#     '''20[0-9]{2}[01][0-9][0-3][0-9][0-9]{4}''',
-# ]
+# 한국 휴대폰 번호
+[[rules]]
+id = "korean-phone-number"
+description = "Korean mobile phone number"
+regex = '''010[-\s]?[0-9]{3,4}[-\s]?[0-9]{4}'''
+tags = ["pii", "phone"]
+[[rules.allowlists]]
+regexes = [
+    '''01000000000''',
+    '''01012345678''',
+    '''010-1234-5678''',
+]
+
+# Slack Webhook URL
+[[rules]]
+id = "slack-webhook"
+description = "Slack Webhook URL"
+regex = '''hooks\.slack\.com/services/T[A-Z0-9]+/B[A-Z0-9]+/[a-zA-Z0-9]+'''
+tags = ["webhook", "slack"]
+
+# 외부 IP 대역
+[[rules]]
+id = "company-external-ip"
+description = "Company external IP range (112.x.x.x)"
+regex = '''112\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'''
+tags = ["network", "external"]
+```
+
+`[extend] useDefault = true`는 AWS Access Key, GitHub PAT, Slack Token 등 Gitleaks 기본 규칙을 상속합니다. 사용자 정의 `[[rules]]`는 기본 규칙과 함께 적용됩니다.
+
+- `[[allowlists]]`: 모든 탐지 규칙에 적용되는 전역 예외입니다.
+- `[[rules.allowlists]]`: 해당 `[[rules]]`에만 적용되는 규칙별 예외입니다.
+- `minVersion`: 설정 기능을 지원하는 최소 Gitleaks 버전입니다. 정확한 버전 고정은 설치 스크립트와 CI에서 별도로 관리합니다.
+
+🟡 `company-external-ip`는 `112.x.x.x` 전체를 탐지하므로 오탐 가능성이 높습니다. 실제 회사 IP 대역을 확인한 뒤 범위를 좁히거나 별도 네트워크 검사로 분리합니다.
+
+### 설정 검증
+
+```bash
+gitleaks dir \
+  --config .gitleaks.toml \
+  --redact \
+  --no-banner \
+  .
+
+# Git 이력 스캔
+gitleaks git \
+  --config .gitleaks.toml \
+  --redact \
+  --no-banner \
+  .
 ```
 
 ### 내장 규칙 확인
