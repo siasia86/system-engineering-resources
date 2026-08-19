@@ -5,8 +5,9 @@ tags:
   - github
   - git
   - repository
-last_checked: 2026-06-18
+last_checked: 2026-08-19
 sources:
+  - https://github.com/gitleaks/gitleaks
   - https://github.com/addyosmani/agent-skills
   - https://github.com/marcinbojko/hv-packer
   - https://github.com/Baune8D/packer-windows-desktop
@@ -35,5 +36,5 @@ sources:
 
 ## 3. 도구
 
-(추가 예정)
+- gitleaks: [github.com/gitleaks/gitleaks](https://github.com/gitleaks/gitleaks) — ★★★☆☆
 

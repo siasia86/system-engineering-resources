@@ -1,4 +1,5 @@
 # gitleaks 가이드
+<!-- reference: _reference/gitleaks_official_notes.md -->
 
 ## 목차
 
@@ -18,7 +19,7 @@ gitleaks는 git 저장소에서 API 키, 패스워드, 토큰 등 민감 정보�
 |-----------|--------------------------------------|
 | 언어      | Go                                   |
 | 라이선스  | MIT                                  |
-| 최신 버전 | v8.30.1 (2026-05 기준)               |
+| 최신 버전 | v8.30.1 (2026-08-19 확인)            |
 | GitHub    | https://github.com/gitleaks/gitleaks |
 
 ### 주요 기능
@@ -33,34 +34,7 @@ gitleaks는 git 저장소에서 API 키, 패스워드, 토큰 등 민감 정보�
 
 ## 2. 설치
 
-### 사전 준비: Go 설치
-
-`go install` 방법을 사용하려면 Go가 설치되어 있어야 합니다.
-
-```bash
-# Go 최신 버전 확인
-curl -s https://go.dev/VERSION?m=text
-
-# 다운로드 및 설치 (예: go1.24.3)
-VERSION="go1.24.3"
-curl -sSL "https://dl.google.com/go/${VERSION}.linux-amd64.tar.gz" \
-  | sudo tar -xz -C /usr/local
-
-# 환경 변수 설정 (~/.bash_aliases)
-export PATH=$PATH:/usr/local/go/bin
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-
-source ~/.bashrc
-
-## link 방식
-ln -s /usr/local/go/bin/go /usr/local/bin/
-
-# 설치 확인
-go version
-```
-
-### 방법 1: 바이너리 직접 설치 (권장)
+### 바이너리 직접 설치 (권장)
 
 ```bash
 # 최신 버전 확인
@@ -76,26 +50,11 @@ curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/${VERSION}/git
 gitleaks version
 ```
 
-### 방법 2: deb 패키지 (Ubuntu/Debian)
-
-```bash
-# GitHub releases에서 deb 패키지 다운로드
-VERSION="v8.30.1"
-curl -sSLO "https://github.com/gitleaks/gitleaks/releases/download/${VERSION}/gitleaks_${VERSION#v}_linux_amd64.deb"
-sudo dpkg -i gitleaks_${VERSION#v}_linux_amd64.deb
-```
-
-### 방법 3: go install
-
-```bash
-go install github.com/gitleaks/gitleaks/v8@latest
-```
-
 ### 설치 확인
 
 ```bash
 gitleaks version
-# gitleaks version 8.30.1
+# 8.30.1
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -104,27 +63,29 @@ gitleaks version
 
 ### 스캔 모드
 
-| 모드      | 명령어                      | 설명                              |
-|-----------|-----------------------------|-----------------------------------|
-| `detect`  | `gitleaks detect`           | 현재 디렉토리 git 히스토리 스캔   |
-| `protect` | `gitleaks protect`          | unstaged 변경사항 스캔            |
-| `protect` | `gitleaks protect --staged` | staged 변경사항 스캔 (pre-commit) |
-| `dir`     | `gitleaks dir .`            | git 없는 디렉토리 스캔            |
+| 모드  | 명령어                      | 설명                              |
+|-------|-----------------------------|-----------------------------------|
+| `git` | `gitleaks git`              | 현재 디렉토리 git 히스토리 스캔   |
+| `git` | `gitleaks git --pre-commit` | unstaged 변경사항 스캔            |
+| `git` | `gitleaks git --staged`     | staged 변경사항 스캔 (pre-commit) |
+| `dir` | `gitleaks dir .`            | git 없는 디렉토리 스캔            |
+
+🟡 v8.19.0부터 `detect`와 `protect`는 deprecated입니다. 기존 명령과의 호환성을 위해 동작하지만, 신규 구성에서는 `git`, `dir`, `stdin` 모드를 우선 사용합니다.
 
 ### 기본 실행
 
 ```bash
 # git 저장소 히스토리 전체 스캔
-gitleaks detect
+gitleaks git
 
 # 현재 디렉토리 (git 없이)
 gitleaks dir .
 
 # staged 파일만 (commit 직전)
-gitleaks protect --staged
+gitleaks git --staged
 
 # 특정 커밋 범위
-gitleaks detect --log-opts="HEAD~10..HEAD"
+gitleaks git --log-opts="HEAD~10..HEAD"
 ```
 
 ### 출력 예시
@@ -157,22 +118,22 @@ Fingerprint: a1b2c3d4:config/aws.json:aws-access-token:5
 | `-v, --verbose`          | 상세 출력                                                      |
 | `-r, --report-path`      | 결과 파일 저장 경로                                            |
 | `-f, --report-format`    | 출력 형식 (`json`, `csv`, `sarif`, `junit`)                    |
-| `--baseline-path`        | baseline 파일 지정 (오탐 제외)                                 |
+| `--baseline-path`        | baseline 파일 지정 (기존 탐지 결과 제외)                       |
 | `--config`               | 커스텀 설정 파일 지정                                          |
 | `--no-git`               | git 없이 파일 시스템 스캔                                      |
-| `--max-target-megabytes` | 스캔 파일 크기 제한 (기본 0 = 무제한)                          |
+| `--max-target-megabytes` | 스캔 파일 크기 제한                                            |
 | `--redact`               | 출력에서 시크릿 값 마스킹                                      |
 | `-l, --log-level`        | 로그 레벨 (`trace`, `debug`, `info`, `warn`, `error`, `fatal`) |
 
 ```bash
 # JSON 리포트 저장
-gitleaks detect -r /tmp/gitleaks-report.json -f json
+gitleaks git -r /tmp/gitleaks-report.json -f json
 
 # 시크릿 값 마스킹 출력
-gitleaks detect --redact
+gitleaks git --redact
 
 # 특정 설정 파일 사용
-gitleaks detect --config .gitleaks.toml
+gitleaks git --config .gitleaks.toml
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -187,9 +148,10 @@ gitleaks detect --config .gitleaks.toml
 # .gitleaks.toml
 title = "gitleaks config"
 
-# 기본 규칙은 자동 포함됨 (별도 설정 불필요)
-# 외부 config 상속 시:
-# [extend]
+# 기본 규칙을 사용하려면 명시적으로 상속합니다.
+[extend]
+useDefault = true
+# 외부 config 상속 시 `useDefault` 대신 다음을 사용합니다.
 # path = "/path/to/base-gitleaks.toml"
 
 # 오탐 제외 (allowlist)
@@ -235,9 +197,10 @@ commits = [
 
 ### 내장 규칙 확인
 
+v8.30.1에는 `gitleaks rules` 명령이 없습니다. 공식 기본 규칙은 다음 파일에서 확인합니다.
+
 ```bash
-# 적용 중인 규칙 목록 출력
-gitleaks rules
+curl -fsSL https://raw.githubusercontent.com/gitleaks/gitleaks/v8.30.1/config/gitleaks.toml
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -246,17 +209,7 @@ gitleaks rules
 
 ### pre-commit hook 설치
 
-```bash
-# 저장소 루트에서 실행
-gitleaks protect --staged --install-hook
-```
-
-위 명령어는 `.git/hooks/pre-commit`에 아래 내용을 추가합니다:
-
-```bash
-#!/bin/bash
-gitleaks protect --staged --redact -v
-```
+v8.30.1 CLI에는 `--install-hook` 옵션이 없습니다. 저장소 루트에서 아래 수동 설치 방법을 사용합니다.
 
 ### 수동 설치
 
@@ -277,7 +230,7 @@ if ! command -v gitleaks &> /dev/null; then
     exit 1
 fi
 
-gitleaks protect --staged --redact -v
+gitleaks git --staged --redact -v
 exit_code=$?
 
 if [ $exit_code -ne 0 ]; then
@@ -322,12 +275,17 @@ while read local_ref local_sha remote_ref remote_sha; do
 
     # 신규 브랜치 (remote에 없음) → 직전 커밋까지만 스캔
     if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
-        LOG_OPTS="${local_sha}~1..${local_sha}"
+        if git rev-parse "${local_sha}^" >/dev/null 2>&1; then
+            LOG_OPTS="${local_sha}~1..${local_sha}"
+        else
+            # root commit은 부모가 없으므로 해당 커밋 자체를 스캔합니다.
+            LOG_OPTS="${local_sha}"
+        fi
     else
         LOG_OPTS="${remote_sha}..${local_sha}"
     fi
 
-    gitleaks detect --redact -v --log-opts "$LOG_OPTS"
+    gitleaks git --redact -v --log-opts "$LOG_OPTS"
     exit_code=$?
 
     if [ $exit_code -ne 0 ]; then
@@ -388,7 +346,7 @@ if ! command -v gitleaks &> /dev/null; then
     echo "⚠️  gitleaks가 설치되지 않았습니다."
     exit 1
 fi
-gitleaks protect --staged --redact -v
+gitleaks git --staged --redact -v
 exit_code=$?
 if [ $exit_code -ne 0 ]; then
     echo "❌ 민감정보가 탐지되어 커밋이 차단되었습니다."
@@ -409,11 +367,16 @@ while read local_ref local_sha remote_ref remote_sha; do
         continue
     fi
     if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
-        LOG_OPTS="${local_sha}~1..${local_sha}"
+        if git rev-parse "${local_sha}^" >/dev/null 2>&1; then
+            LOG_OPTS="${local_sha}~1..${local_sha}"
+        else
+            # root commit은 부모가 없으므로 해당 커밋 자체를 스캔합니다.
+            LOG_OPTS="${local_sha}"
+        fi
     else
         LOG_OPTS="${remote_sha}..${local_sha}"
     fi
-    gitleaks detect --redact -v --log-opts "$LOG_OPTS"
+    gitleaks git --redact -v --log-opts "$LOG_OPTS"
     exit_code=$?
     if [ $exit_code -ne 0 ]; then
         echo "❌ 민감정보가 탐지되어 push가 차단되었습니다."
@@ -448,13 +411,15 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0  # 전체 히스토리 스캔을 위해 필요
 
-      - uses: gitleaks/gitleaks-action@v2
+      - uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 조직 계정에서만 필요
+          # GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 ```
 
 ### GitLab CI
@@ -465,7 +430,7 @@ gitleaks:
   image: zricethezav/gitleaks:latest
   stage: test
   script:
-    - gitleaks detect --source . -v
+    - gitleaks git -v .
   allow_failure: false
 ```
 
@@ -473,23 +438,23 @@ gitleaks:
 
 ## 7. 운영 팁
 
-### baseline 파일로 오탐 관리
+### baseline 파일로 기존 탐지 결과 관리
 
 기존 저장소에 처음 도입 시 기존 탐지 결과를 baseline으로 저장하여 신규 추가분만 검사합니다.
 
 ```bash
 # baseline 생성 (기존 탐지 결과 저장)
-gitleaks detect -r baseline.json -f json
+gitleaks git -r baseline.json -f json
 
 # baseline 기준으로 신규 탐지만 검사
-gitleaks detect --baseline-path baseline.json
+gitleaks git --baseline-path baseline.json
 ```
 
 ### 탐지 결과 분석
 
 ```bash
 # JSON 리포트 생성
-gitleaks detect -r report.json -f json -v
+gitleaks git -r report.json -f json -v
 
 # 탐지된 규칙 ID 목록
 cat report.json | python3 -c "
@@ -536,6 +501,6 @@ for r in rules: print(r)
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-05-08
+**마지막 업데이트**: 2026-08-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

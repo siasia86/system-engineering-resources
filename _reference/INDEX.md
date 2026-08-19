@@ -25,6 +25,7 @@ sources:
 | Docker                         | `_reference/docker_official_notes.md`                   | Engine 29.6.1, Compose v5.3.0                    | 2026-07-03 | O    |
 | Epsilon-Delta (Math)           | `_reference/epsilon_delta_math_notes.md`                | Rudin Ch.4, Weierstrass                          | 2026-07-14 | O    |
 | GitHub References              | `_reference/github_references.md`                       | -                                                | 2026-06-18 | O    |
+| Gitleaks                       | `_reference/gitleaks_official_notes.md`                 | v8.30.1                                          | 2026-08-19 | O    |
 | Grafana                        | `_reference/grafana_official_notes.md`                  | v13.1.0                                          | 2026-07-03 | O    |
 | Helm                           | `_reference/helm_official_notes.md`                     | v4.2.2                                           | 2026-07-03 | O    |
 | ISMS-P                         | `_reference/isms_p_official_notes.md`                   | KISA 인증기준 안내서 2023                        | 2026-07-08 | X    |
