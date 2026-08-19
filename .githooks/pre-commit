@@ -3,6 +3,8 @@
 # pre-commit hook - 민감정보 검사
 # ============================================
 
+set -euo pipefail
+
 if ! command -v gitleaks &> /dev/null; then
     echo ""
     echo "⚠️  gitleaks가 설치되지 않았습니다."
@@ -15,10 +17,7 @@ if ! command -v gitleaks &> /dev/null; then
     exit 1
 fi
 
-gitleaks git --staged --redact -v
-exit_code=$?
-
-if [ $exit_code -ne 0 ]; then
+if ! gitleaks git --staged --redact -v; then
     echo ""
     echo "❌ 민감정보가 탐지되어 커밋이 차단되었습니다."
     echo "위 내용을 확인하고 민감정보를 제거한 후 다시 커밋하세요."
