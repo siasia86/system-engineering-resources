@@ -10,7 +10,7 @@ if ! command -v gitleaks &> /dev/null; then
     echo "⚠️  gitleaks가 설치되지 않았습니다."
     echo ""
     echo "설치 방법:"
-    echo "  - 바이너리: https://github.com/gitleaks/gitleaks/releases"
+    echo "  - 공식 릴리스: https://github.com/gitleaks/gitleaks/releases"
     echo "  - macOS: brew install gitleaks"
     echo ""
     echo "설치 후 다시 커밋하세요."

@@ -54,7 +54,7 @@ gitleaks version
 
 ```bash
 gitleaks version
-# 8.30.1
+# v8.30.1
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -66,7 +66,7 @@ gitleaks version
 | 모드  | 명령어                      | 설명                              |
 |-------|-----------------------------|-----------------------------------|
 | `git` | `gitleaks git`              | 현재 디렉토리 git 히스토리 스캔   |
-| `git` | `gitleaks git --pre-commit` | unstaged 변경사항 스캔            |
+| `git` | `gitleaks git --pre-commit` | 추적 중인 unstaged 변경사항 스캔  |
 | `git` | `gitleaks git --staged`     | staged 변경사항 스캔 (pre-commit) |
 | `dir` | `gitleaks dir .`            | git 없는 디렉토리 스캔            |
 
@@ -120,14 +120,13 @@ Fingerprint: a1b2c3d4:config/aws.json:aws-access-token:5
 | `-f, --report-format`    | 출력 형식 (`json`, `csv`, `sarif`, `junit`)                    |
 | `--baseline-path`        | baseline 파일 지정 (기존 탐지 결과 제외)                       |
 | `--config`               | 커스텀 설정 파일 지정                                          |
-| `--no-git`               | git 없이 파일 시스템 스캔                                      |
 | `--max-target-megabytes` | 스캔 파일 크기 제한                                            |
 | `--redact`               | 출력에서 시크릿 값 마스킹                                      |
 | `-l, --log-level`        | 로그 레벨 (`trace`, `debug`, `info`, `warn`, `error`, `fatal`) |
 
 ```bash
 # JSON 리포트 저장
-gitleaks git -r /tmp/gitleaks-report.json -f json
+gitleaks git --redact -r /tmp/gitleaks-report.json -f json
 
 # 시크릿 값 마스킹 출력
 gitleaks git --redact
@@ -351,9 +350,10 @@ ls -l "$(git rev-parse --git-path hooks)"/pre-commit \
 .githooks/pre-commit
 
 # pre-push 범위 입력 형식 테스트
+BRANCH=$(git symbolic-ref --short HEAD)
 HEAD_SHA=$(git rev-parse HEAD)
-printf 'refs/heads/main %s refs/remotes/origin/main %s\n' \
-  "${HEAD_SHA}" "${HEAD_SHA}" \
+printf 'refs/heads/%s %s refs/remotes/origin/%s %s\n' \
+  "${BRANCH}" "${HEAD_SHA}" "${BRANCH}" "${HEAD_SHA}" \
   | .githooks/pre-push
 ```
 
@@ -400,13 +400,14 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.1.0
         with:
           fetch-depth: 0  # 전체 히스토리 스캔을 위해 필요
 
-      - uses: gitleaks/gitleaks-action@v3
+      - uses: gitleaks/gitleaks-action@v3.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_VERSION: 8.30.1
           # 조직 계정에서만 필요
           # GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 ```
@@ -416,10 +417,10 @@ jobs:
 ```yaml
 # .gitlab-ci.yml
 gitleaks:
-  image: zricethezav/gitleaks:latest
+  image: zricethezav/gitleaks:v8.30.1
   stage: test
   script:
-    - gitleaks git -v .
+    - gitleaks git --redact --no-banner -v .
   allow_failure: false
 ```
 
@@ -431,9 +432,12 @@ gitleaks:
 
 기존 저장소에 처음 도입 시 기존 탐지 결과를 baseline으로 저장하여 신규 추가분만 검사합니다.
 
+🟡 v8.30.1의 baseline 비교는 finding의 `Match`와 `Secret` 필드에 의존할 수 있습니다. baseline 파일에는 민감정보가 포함될 수 있으므로 저장소에 commit하지 않고, 접근 권한을 제한한 별도 경로에서 관리합니다. baseline은 기존 탐지를 숨길 뿐 실제 자격증명을 폐기·교체하지 않습니다.
+
 ```bash
 # baseline 생성 (기존 탐지 결과 저장)
 gitleaks git -r baseline.json -f json
+chmod 600 baseline.json
 
 # baseline 기준으로 신규 탐지만 검사
 gitleaks git --baseline-path baseline.json
@@ -443,7 +447,7 @@ gitleaks git --baseline-path baseline.json
 
 ```bash
 # JSON 리포트 생성
-gitleaks git -r report.json -f json -v
+gitleaks git --redact -r report.json -f json -v
 
 # 탐지된 규칙 ID 목록
 cat report.json | python3 -c "
@@ -473,7 +477,7 @@ for r in rules: print(r)
 ## 참고 자료
 
 - gitleaks: [github.com/gitleaks/gitleaks](https://github.com/gitleaks/gitleaks) — ★★★★☆
-- gitleaks docs: [gitleaks.io](https://gitleaks.io/docs/) — ★★★☆☆
+- Gitleaks 공식 README: [github.com/gitleaks/gitleaks#readme](https://github.com/gitleaks/gitleaks#readme) — ★★★★☆
 
 ---
 
