@@ -177,7 +177,7 @@ steps {
             passwordVariable: 'DOCKER_PASS'
         )
     ]) {
-        sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
+        sh 'printf "%s" "$DOCKER_PASS" | docker login --username "$DOCKER_USER" --password-stdin'
     }
 
     // AWS 자격증명
