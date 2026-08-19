@@ -207,7 +207,21 @@ curl -fsSL https://raw.githubusercontent.com/gitleaks/gitleaks/v8.30.1/config/gi
 
 ## 5. git hook 연동
 
+Git Hook은 Git 명령 실행 시점에 자동으로 호출되는 로컬 스크립트입니다. Gitleaks를 Hook에 연결하면 커밋과 push 직전에 민감정보를 검사할 수 있습니다.
+
+### Hook 동작 범위
+
+| Hook         | 실행 시점         | 검사 대상               | 실패 시     |
+|--------------|-------------------|-------------------------|-------------|
+| `pre-commit` | `git commit` 직전 | staged 변경사항         | commit 차단 |
+| `pre-push`   | `git push` 직전   | remote에 없는 신규 커밋 | push 차단   |
+
+`pre-commit`은 작업 트리 전체가 아니라 `git add`로 staged 상태가 된 내용만 검사합니다. `pre-push`는 Git이 표준 입력으로 전달하는 로컬 커밋과 원격 커밋의 SHA를 사용하여 전송 대상 범위를 결정합니다.
+
 ### pre-commit hook 설치
+
+`pre-commit`은 커밋 직전에 `git --staged` 모드로 staged 변경사항을 검사합니다. 시크릿이 탐지되거나 Gitleaks 실행에 실패하면 `exit 1`을 반환하여 커밋을 차단합니다.
+
 
 v8.30.1 CLI에는 `--install-hook` 옵션이 없습니다. 저장소 루트에서 아래 수동 설치 방법을 사용합니다.
 
@@ -246,7 +260,16 @@ EOF
 chmod +x .git/hooks/pre-commit
 ```
 
+#### pre-commit 처리 흐름
+
+1. `gitleaks` 설치 여부를 확인합니다.
+2. `gitleaks git --staged --redact -v`로 staged 변경사항을 검사합니다.
+3. 탐지 결과가 있거나 명령이 실패하면 `exit 1`로 커밋을 차단합니다.
+4. 검사를 통과하면 `exit 0`으로 커밋을 계속 진행합니다.
+
 ### pre-push hook
+
+`pre-push`는 커밋이 생성된 뒤 push 직전에 실행됩니다. 현재 브랜치 전체가 아니라 원격에 아직 없는 커밋 범위만 검사하므로, 이미 원격에 존재하는 이전 커밋은 반복 검사하지 않습니다.
 
 ```bash
 cat > .git/hooks/pre-push << 'EOF'
@@ -267,7 +290,7 @@ fi
 
 # stdin에서 push 대상 정보 읽기
 # 형식: <local_ref> <local_sha> <remote_ref> <remote_sha>
-while read local_ref local_sha remote_ref remote_sha; do
+while read -r local_ref local_sha remote_ref remote_sha; do
     # 브랜치 삭제 push는 스킵
     if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
         continue
@@ -302,6 +325,24 @@ EOF
 chmod +x .git/hooks/pre-push
 ```
 
+#### pre-push 입력과 커밋 범위
+
+Git은 `pre-push` Hook의 표준 입력으로 다음 네 필드를 전달합니다.
+
+| 필드         | 의미                                 |
+|--------------|--------------------------------------|
+| `local_ref`  | push할 로컬 브랜치 또는 태그         |
+| `local_sha`  | push할 로컬 커밋 SHA                 |
+| `remote_ref` | 원격 브랜치 또는 태그                |
+| `remote_sha` | 원격에 이미 존재하는 마지막 커밋 SHA |
+
+커밋 범위는 다음과 같이 결정됩니다.
+
+- 일반 push: `${remote_sha}..${local_sha}`를 검사합니다.
+- 신규 브랜치: 부모 커밋이 있으면 `${local_sha}~1..${local_sha}`를 검사합니다.
+- 최초 커밋: 부모가 없으므로 `${local_sha}` 자체를 검사합니다.
+- 브랜치 삭제 push: `local_sha`가 0으로 채워지므로 검사를 건너뜁니다.
+
 ### 주의사항 — hook의 git 미추적
 
 `.git/hooks/`는 git이 추적하지 않는 디렉토리입니다. 저장소를 새로 clone하면 hook이 사라지므로 재설치가 필요합니다.
@@ -321,7 +362,7 @@ chmod +x .git/hooks/pre-push
 # scripts/install-hooks.sh
 # clone 후 실행: bash scripts/install-hooks.sh
 
-set -e
+set -euo pipefail
 
 # gitleaks 설치 여부 확인
 if ! command -v gitleaks &> /dev/null; then
@@ -331,12 +372,14 @@ if ! command -v gitleaks &> /dev/null; then
 fi
 
 HOOKS_DIR=".git/hooks"
+BACKUP_SUFFIX=$(date +%Y%m%d-%H%M%S)
 
 # 기존 hook 백업
 for hook in pre-commit pre-push; do
     if [ -f "${HOOKS_DIR}/${hook}" ]; then
-        cp "${HOOKS_DIR}/${hook}" "${HOOKS_DIR}/${hook}.bak"
-        echo "기존 ${hook} hook 백업: ${hook}.bak"
+        backup_path="${HOOKS_DIR}/${hook}.bak.${BACKUP_SUFFIX}"
+        cp "${HOOKS_DIR}/${hook}" "${backup_path}"
+        echo "기존 ${hook} hook 백업: ${backup_path}"
     fi
 done
 
@@ -362,7 +405,7 @@ if ! command -v gitleaks &> /dev/null; then
     echo "⚠️  gitleaks가 설치되지 않았습니다."
     exit 1
 fi
-while read local_ref local_sha remote_ref remote_sha; do
+while read -r local_ref local_sha remote_ref remote_sha; do
     if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
         continue
     fi
@@ -391,7 +434,24 @@ chmod +x "${HOOKS_DIR}/pre-commit" "${HOOKS_DIR}/pre-push"
 echo "gitleaks hooks installed: pre-commit, pre-push"
 ```
 
-🟡 hook은 `--no-verify` 옵션으로 우회할 수 있습니다. 신뢰할 수 없는 환경에서는 CI/CD 스캔(섹션 6)을 병행합니다.
+#### Hook 검증
+
+```bash
+# Hook Bash 문법 검사
+bash -n .git/hooks/pre-commit
+bash -n .git/hooks/pre-push
+
+# pre-commit 직접 실행
+.git/hooks/pre-commit
+
+# 현재 커밋 범위의 pre-push 검사
+HEAD_SHA=$(git rev-parse HEAD)
+printf 'refs/heads/main %s refs/remotes/origin/main %s\n' \
+  "${HEAD_SHA}" "${HEAD_SHA}" \
+  | .git/hooks/pre-push
+```
+
+🟡 Hook은 `--no-verify` 옵션으로 우회할 수 있습니다. CI/CD에서는 `--ignore-gitleaks-allow`와 전체 이력 또는 push 범위 검사를 병행해야 합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
