@@ -330,9 +330,22 @@ Git은 `pre-push` Hook의 표준 입력으로 다음 네 필드를 전달합니�
 ### Hook 검증
 
 ```bash
+# Hook 관련 Git 설정 빠르게 확인
+git config --list | grep -i hooks
+
+# 설정 출처와 core.hooksPath 확인
+git config --show-origin --get core.hooksPath
+
+# Git이 실제로 사용하는 Hook 디렉터리 확인
+git rev-parse --git-path hooks
+
 # Hook Bash 문법 검사
 bash -n .githooks/pre-commit
 bash -n .githooks/pre-push
+
+# Hook 파일과 실행 권한 확인
+ls -l "$(git rev-parse --git-path hooks)"/pre-commit \
+      "$(git rev-parse --git-path hooks)"/pre-push
 
 # pre-commit 직접 실행
 .githooks/pre-commit
