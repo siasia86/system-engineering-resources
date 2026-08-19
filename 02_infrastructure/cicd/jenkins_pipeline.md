@@ -407,11 +407,11 @@ curl -X POST \
 ```bash
 # Jenkins CLI
 java -jar jenkins-cli.jar -s http://localhost:8080 \
-  -auth user:token list-jobs
+  -auth "<username>:<api-token>" list-jobs
 
 # API로 빌드 상태 조회
 curl -s "http://localhost:8080/job/my-job/lastBuild/api/json" \
-  --user user:token | jq '.result'
+  --user "<username>:<api-token>" | jq '.result'
 ```
 
 ### 주요 모니터링 지표
