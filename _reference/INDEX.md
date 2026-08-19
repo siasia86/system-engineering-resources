@@ -5,7 +5,7 @@ tags:
   - index
   - reference
   - directory
-last_checked: 2026-07-14
+last_checked: 2026-08-19
 sources:
   - self (이 파일이 인덱스 역할)
 ---
@@ -18,6 +18,7 @@ sources:
 |--------------------------------|---------------------------------------------------------|--------------------------------------------------|------------|------|
 | Ansible                        | `_reference/ansible_official_notes.md`                  | 14.1.0 (core 2.21.1)                             | 2026-07-03 | X    |
 | AWS STS/IAM/S3/KMS             | `_reference/aws_sts_iam_s3_kms_official_notes.md`       | AssumeRole, session, cross-account 권한          | 2026-08-13 | O    |
+| AWS Secrets Manager            | `_reference/aws_secrets_manager_official_notes.md`      | Secret lifecycle·Rotation·IAM                    | 2026-08-19 | O    |
 | ArgoCD                         | `_reference/argocd_official_notes.md`                   | v3.4.4                                           | 2026-07-03 | O    |
 | Chaos/FinOps                   | `_reference/chaos_finops_official_notes.md`             | principlesofchaos.org / finops.org               | 2026-07-07 | X    |
 | Charset/Encoding               | `_reference/charset_encoding_official_notes.md`         | RFC 3629, Unicode 16.0                           | 2026-07-07 | O    |
@@ -25,6 +26,8 @@ sources:
 | Docker                         | `_reference/docker_official_notes.md`                   | Engine 29.6.1, Compose v5.3.0                    | 2026-07-03 | O    |
 | Epsilon-Delta (Math)           | `_reference/epsilon_delta_math_notes.md`                | Rudin Ch.4, Weierstrass                          | 2026-07-14 | O    |
 | GitHub References              | `_reference/github_references.md`                       | -                                                | 2026-06-18 | O    |
+| HashiCorp Vault                | `_reference/hashicorp_vault_official_notes.md`          | KV·Database Dynamic Secret·라이선스              | 2026-08-19 | O    |
+| GitLab CI/CD Variables         | `_reference/gitlab_ci_variables_official_notes.md`      | Protected·Masked·File·AWS OIDC                   | 2026-08-19 | O    |
 | Gitleaks                       | `_reference/gitleaks_official_notes.md`                 | v8.30.1                                          | 2026-08-19 | O    |
 | Grafana                        | `_reference/grafana_official_notes.md`                  | v13.1.0                                          | 2026-07-03 | O    |
 | Helm                           | `_reference/helm_official_notes.md`                     | v4.2.2                                           | 2026-07-03 | O    |
