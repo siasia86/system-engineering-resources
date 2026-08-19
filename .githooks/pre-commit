@@ -1,0 +1,29 @@
+#!/bin/bash
+# ============================================
+# pre-commit hook - 민감정보 검사
+# ============================================
+
+if ! command -v gitleaks &> /dev/null; then
+    echo ""
+    echo "⚠️  gitleaks가 설치되지 않았습니다."
+    echo ""
+    echo "설치 방법:"
+    echo "  - 바이너리: https://github.com/gitleaks/gitleaks/releases"
+    echo "  - macOS: brew install gitleaks"
+    echo ""
+    echo "설치 후 다시 커밋하세요."
+    exit 1
+fi
+
+gitleaks git --staged --redact -v
+exit_code=$?
+
+if [ $exit_code -ne 0 ]; then
+    echo ""
+    echo "❌ 민감정보가 탐지되어 커밋이 차단되었습니다."
+    echo "위 내용을 확인하고 민감정보를 제거한 후 다시 커밋하세요."
+    exit 1
+fi
+
+echo "✅ gitleaks 검사 통과"
+exit 0

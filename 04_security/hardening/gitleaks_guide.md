@@ -254,7 +254,7 @@ curl -fsSL https://raw.githubusercontent.com/gitleaks/gitleaks/v8.30.1/config/gi
 
 ## 5. git hook 연동
 
-Git Hook은 Git 명령 실행 시점에 자동으로 호출되는 로컬 스크립트입니다. Gitleaks를 Hook에 연결하면 커밋과 push 직전에 민감정보를 검사할 수 있습니다.
+Git Hook은 Git 명령 실행 시점에 자동으로 호출되는 로컬 실행 스크립트입니다. Git이 `pre-commit`, `pre-push` 같은 정확한 이름의 Hook을 실행하고, 해당 스크립트가 외부 도구인 Gitleaks를 호출하여 민감정보를 검사합니다.
 
 ### Hook 동작 범위
 
@@ -265,114 +265,51 @@ Git Hook은 Git 명령 실행 시점에 자동으로 호출되는 로컬 스크�
 
 `pre-commit`은 작업 트리 전체가 아니라 `git add`로 staged 상태가 된 내용만 검사합니다. `pre-push`는 Git이 표준 입력으로 전달하는 로컬 커밋과 원격 커밋의 SHA를 사용하여 전송 대상 범위를 결정합니다.
 
-### pre-commit hook 설치
+### 현재 프로젝트 구성
 
-`pre-commit`은 커밋 직전에 `git --staged` 모드로 staged 변경사항을 검사합니다. 시크릿이 탐지되거나 Gitleaks 실행에 실패하면 `exit 1`을 반환하여 커밋을 차단합니다.
+현재 프로젝트는 Hook을 저장소에 포함할 수 있도록 추적 가능한 `.githooks/` 디렉터리를 사용합니다.
 
-
-v8.30.1 CLI에는 `--install-hook` 옵션이 없습니다. 저장소 루트에서 아래 수동 설치 방법을 사용합니다.
-
-### 수동 설치
-
-```bash
-cat > .git/hooks/pre-commit << 'EOF'
-#!/bin/bash
-# ============================================
-# pre-commit hook - 민감정보 검사
-# ============================================
-
-if ! command -v gitleaks &> /dev/null; then
-    echo ""
-    echo "⚠️  gitleaks가 설치되지 않았습니다."
-    echo "설치 방법:"
-    echo "  - 바이너리: https://github.com/gitleaks/gitleaks/releases"
-    echo "  - macOS: brew install gitleaks"
-    echo ""
-    exit 1
-fi
-
-gitleaks git --staged --redact -v
-exit_code=$?
-
-if [ $exit_code -ne 0 ]; then
-    echo ""
-    echo "❌ 민감정보가 탐지되어 커밋이 차단되었습니다."
-    echo "민감정보를 제거한 후 다시 커밋하세요."
-    exit 1
-fi
-
-echo "✅ gitleaks 검사 통과"
-exit 0
-EOF
-chmod +x .git/hooks/pre-commit
+```text
+.githooks/
+├── pre-commit
+└── pre-push
 ```
 
-#### pre-commit 처리 흐름
+다음 설정을 실행하면 현재 저장소에서 `.git/hooks/` 대신 `.githooks/`를 Hook 경로로 사용합니다.
+
+```bash
+git config --local core.hooksPath .githooks
+```
+
+설정과 실행 권한을 확인합니다.
+
+```bash
+git config --local --get core.hooksPath
+ls -l .githooks/pre-commit .githooks/pre-push
+```
+
+`core.hooksPath`는 `.git/config`에 저장되는 로컬 설정이므로 push되지 않습니다. `.githooks/`의 Hook 파일은 일반 작업 트리 파일이므로 push되지만, 새로 clone한 사용자는 다음 명령을 한 번 실행해야 합니다.
+
+```bash
+git config --local core.hooksPath .githooks
+```
+
+`v8.30.1` CLI에는 `--install-hook` 옵션이 없습니다. Hook 파일을 저장소에 배치한 뒤 `core.hooksPath`를 설정하는 방식으로 설치합니다.
+
+### pre-commit Hook
+
+`pre-commit`은 커밋 직전에 `gitleaks git --staged --redact -v`로 staged 변경사항을 검사합니다. Gitleaks가 설치되지 않았거나 탐지 결과가 있으면 `exit 1`을 반환하여 커밋을 차단합니다.
+
+#### 처리 흐름
 
 1. `gitleaks` 설치 여부를 확인합니다.
-2. `gitleaks git --staged --redact -v`로 staged 변경사항을 검사합니다.
-3. 탐지 결과가 있거나 명령이 실패하면 `exit 1`로 커밋을 차단합니다.
-4. 검사를 통과하면 `exit 0`으로 커밋을 계속 진행합니다.
+2. staged 변경사항을 검사합니다.
+3. 탐지 결과 또는 실행 오류가 있으면 커밋을 차단합니다.
+4. 검사를 통과하면 커밋을 계속 진행합니다.
 
-### pre-push hook
+### pre-push Hook
 
-`pre-push`는 커밋이 생성된 뒤 push 직전에 실행됩니다. 현재 브랜치 전체가 아니라 원격에 아직 없는 커밋 범위만 검사하므로, 이미 원격에 존재하는 이전 커밋은 반복 검사하지 않습니다.
-
-```bash
-cat > .git/hooks/pre-push << 'EOF'
-#!/bin/bash
-# ============================================
-# pre-push hook - 신규 커밋 민감정보 검사
-# ============================================
-
-if ! command -v gitleaks &> /dev/null; then
-    echo ""
-    echo "⚠️  gitleaks가 설치되지 않았습니다."
-    echo "설치 방법:"
-    echo "  - 바이너리: https://github.com/gitleaks/gitleaks/releases"
-    echo "  - macOS: brew install gitleaks"
-    echo ""
-    exit 1
-fi
-
-# stdin에서 push 대상 정보 읽기
-# 형식: <local_ref> <local_sha> <remote_ref> <remote_sha>
-while read -r local_ref local_sha remote_ref remote_sha; do
-    # 브랜치 삭제 push는 스킵
-    if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
-        continue
-    fi
-
-    # 신규 브랜치 (remote에 없음) → 직전 커밋까지만 스캔
-    if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
-        if git rev-parse "${local_sha}^" >/dev/null 2>&1; then
-            LOG_OPTS="${local_sha}~1..${local_sha}"
-        else
-            # root commit은 부모가 없으므로 해당 커밋 자체를 스캔합니다.
-            LOG_OPTS="${local_sha}"
-        fi
-    else
-        LOG_OPTS="${remote_sha}..${local_sha}"
-    fi
-
-    gitleaks git --redact -v --log-opts "$LOG_OPTS"
-    exit_code=$?
-
-    if [ $exit_code -ne 0 ]; then
-        echo ""
-        echo "❌ 민감정보가 탐지되어 push가 차단되었습니다."
-        echo "위 내용을 확인하고 민감정보를 제거한 후 다시 push하세요."
-        exit 1
-    fi
-done
-
-echo "✅ gitleaks 검사 통과"
-exit 0
-EOF
-chmod +x .git/hooks/pre-push
-```
-
-#### pre-push 입력과 커밋 범위
+`pre-push`는 커밋이 생성된 뒤 push 직전에 실행됩니다. 현재 브랜치 전체가 아니라 원격에 아직 없는 커밋 범위만 검사하므로 이미 원격에 존재하는 이전 커밋은 반복 검사하지 않습니다.
 
 Git은 `pre-push` Hook의 표준 입력으로 다음 네 필드를 전달합니다.
 
@@ -390,115 +327,47 @@ Git은 `pre-push` Hook의 표준 입력으로 다음 네 필드를 전달합니�
 - 최초 커밋: 부모가 없으므로 `${local_sha}` 자체를 검사합니다.
 - 브랜치 삭제 push: `local_sha`가 0으로 채워지므로 검사를 건너뜁니다.
 
-### 주의사항 — hook의 git 미추적
-
-`.git/hooks/`는 git이 추적하지 않는 디렉토리입니다. 저장소를 새로 clone하면 hook이 사라지므로 재설치가 필요합니다.
-
-| 상황                       | 영향                                  | 대응                                         |
-|----------------------------|---------------------------------------|----------------------------------------------|
-| 저장소 신규 clone          | hook 없음 → 자동 스캔 미동작          | clone 후 hook 수동 재설치                    |
-| 팀원 공유 필요             | 각자 재설치 필요                      | `scripts/install-hooks.sh` 스크립트로 자동화 |
-| pre-commit 프레임워크 사용 | `.pre-commit-config.yaml`으로 팀 공유 | `pre-commit install` 한 번으로 자동 설치     |
-
-#### hook 자동 설치 스크립트 예시
-
-저장소에 `scripts/install-hooks.sh`를 추가하면 clone 후 한 번만 실행하면 됩니다.
-
-```bash
-#!/bin/bash
-# scripts/install-hooks.sh
-# clone 후 실행: bash scripts/install-hooks.sh
-
-set -euo pipefail
-
-# gitleaks 설치 여부 확인
-if ! command -v gitleaks &> /dev/null; then
-    echo "⚠️  gitleaks가 설치되지 않았습니다. 먼저 설치 후 실행하세요."
-    echo "  - 바이너리: https://github.com/gitleaks/gitleaks/releases"
-    exit 1
-fi
-
-HOOKS_DIR=".git/hooks"
-BACKUP_SUFFIX=$(date +%Y%m%d-%H%M%S)
-
-# 기존 hook 백업
-for hook in pre-commit pre-push; do
-    if [ -f "${HOOKS_DIR}/${hook}" ]; then
-        backup_path="${HOOKS_DIR}/${hook}.bak.${BACKUP_SUFFIX}"
-        cp "${HOOKS_DIR}/${hook}" "${backup_path}"
-        echo "기존 ${hook} hook 백업: ${backup_path}"
-    fi
-done
-
-cat > "${HOOKS_DIR}/pre-commit" << 'HOOK'
-#!/bin/bash
-if ! command -v gitleaks &> /dev/null; then
-    echo "⚠️  gitleaks가 설치되지 않았습니다."
-    exit 1
-fi
-gitleaks git --staged --redact -v
-exit_code=$?
-if [ $exit_code -ne 0 ]; then
-    echo "❌ 민감정보가 탐지되어 커밋이 차단되었습니다."
-    exit 1
-fi
-echo "✅ gitleaks 검사 통과"
-exit 0
-HOOK
-
-cat > "${HOOKS_DIR}/pre-push" << 'HOOK'
-#!/bin/bash
-if ! command -v gitleaks &> /dev/null; then
-    echo "⚠️  gitleaks가 설치되지 않았습니다."
-    exit 1
-fi
-while read -r local_ref local_sha remote_ref remote_sha; do
-    if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
-        continue
-    fi
-    if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
-        if git rev-parse "${local_sha}^" >/dev/null 2>&1; then
-            LOG_OPTS="${local_sha}~1..${local_sha}"
-        else
-            # root commit은 부모가 없으므로 해당 커밋 자체를 스캔합니다.
-            LOG_OPTS="${local_sha}"
-        fi
-    else
-        LOG_OPTS="${remote_sha}..${local_sha}"
-    fi
-    gitleaks git --redact -v --log-opts "$LOG_OPTS"
-    exit_code=$?
-    if [ $exit_code -ne 0 ]; then
-        echo "❌ 민감정보가 탐지되어 push가 차단되었습니다."
-        exit 1
-    fi
-done
-echo "✅ gitleaks 검사 통과"
-exit 0
-HOOK
-
-chmod +x "${HOOKS_DIR}/pre-commit" "${HOOKS_DIR}/pre-push"
-echo "gitleaks hooks installed: pre-commit, pre-push"
-```
-
-#### Hook 검증
+### Hook 검증
 
 ```bash
 # Hook Bash 문법 검사
-bash -n .git/hooks/pre-commit
-bash -n .git/hooks/pre-push
+bash -n .githooks/pre-commit
+bash -n .githooks/pre-push
 
 # pre-commit 직접 실행
-.git/hooks/pre-commit
+.githooks/pre-commit
 
-# 현재 커밋 범위의 pre-push 검사
+# pre-push 범위 입력 형식 테스트
 HEAD_SHA=$(git rev-parse HEAD)
 printf 'refs/heads/main %s refs/remotes/origin/main %s\n' \
   "${HEAD_SHA}" "${HEAD_SHA}" \
-  | .git/hooks/pre-push
+  | .githooks/pre-push
 ```
 
-🟡 Hook은 `--no-verify` 옵션으로 우회할 수 있습니다. CI/CD에서는 `--ignore-gitleaks-allow`와 전체 이력 또는 push 범위 검사를 병행해야 합니다.
+### 운영 및 복구
+
+`.git/hooks/`는 Git이 추적하지 않는 로컬 디렉터리이므로 팀 공유 Hook으로 사용하지 않습니다. 팀 공용 Hook은 `.githooks/`에 저장하고, clone 후 `core.hooksPath`를 설정합니다.
+
+기존 `.git/hooks/`를 사용하던 환경에서 전환할 때는 활성 Hook을 먼저 백업한 뒤 제거합니다. `.githooks/`의 검증이 끝나기 전에 기존 Hook을 삭제하지 않습니다.
+
+```bash
+BACKUP_SUFFIX=$(date +%Y%m%d-%H%M%S)
+for hook in pre-commit pre-push; do
+    if [ -f ".git/hooks/${hook}" ]; then
+        cp ".git/hooks/${hook}" ".git/hooks/${hook}.before-${BACKUP_SUFFIX}"
+        rm ".git/hooks/${hook}"
+    fi
+done
+git config --local core.hooksPath .githooks
+```
+
+기본 경로인 `.git/hooks/`로 되돌리려면 다음을 실행합니다.
+
+```bash
+git config --local --unset core.hooksPath
+```
+
+🟡 Hook은 `--no-verify` 옵션으로 우회할 수 있습니다. 중요한 보호 기능은 CI/CD 또는 서버 측 검사에서도 전체 이력이나 push 범위를 검사해야 합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
