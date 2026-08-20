@@ -1,6 +1,8 @@
 # 시크릿 관리
 <!-- reference: _reference/aws_sts_iam_s3_kms_official_notes.md, _reference/aws_secrets_manager_official_notes.md, _reference/gitlab_ci_variables_official_notes.md, _reference/hashicorp_vault_official_notes.md -->
 
+HashiCorp Vault의 구성요소와 Secret 수명주기는 [HashiCorp Vault 개념](hashicorp_vault_concepts.md)에서 별도로 설명합니다.
+
 ## 목차
 
 | 섹션                                                                                                                               |
@@ -386,6 +388,6 @@ chmod +x .git/hooks/pre-commit
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-08-19
+**마지막 업데이트**: 2026-08-20
 
 © 2026 siasia86. Licensed under CC BY 4.0.
