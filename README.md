@@ -152,18 +152,19 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### IaC
 
-| 문서                                                                        | 설명                   |
-|-----------------------------------------------------------------------------|------------------------|
-| [Ansible 기초](02_infrastructure/iac/ansible_basic_guide.md)                | 인벤토리, 플레이북, 롤 |
-| [Ansible Vault](02_infrastructure/iac/ansible_vault.md)                     | 시크릿 암호화          |
-| [Ansible Playbook Fields](02_infrastructure/iac/ansible_playbook_fields.md) | 필드 레퍼런스          |
-| [Ansible Linux](02_infrastructure/iac/ansible_playbook_linux.md)            | Linux 플레이북         |
-| [Ansible Windows](02_infrastructure/iac/ansible_playbook_windows.md)        | Windows 플레이북       |
-| [Molecule](02_infrastructure/iac/molecule.md)                               | 역할 테스트            |
-| [Terraform](02_infrastructure/iac/terraform.md)                             | HCL, State, Module     |
-| [Packer](02_infrastructure/iac/packer.md)                                   | 이미지 빌드            |
-| [Vagrant](02_infrastructure/iac/vagrant.md)                                 | 개발 환경 프로비저닝   |
-| [YAML 문법](02_infrastructure/iac/yaml_syntax.md)                           | YAML 1.2 규칙          |
+| 문서                                                                           | 설명                     |
+|--------------------------------------------------------------------------------|--------------------------|
+| [Ansible 기초](02_infrastructure/iac/ansible_basic_guide.md)                   | 인벤토리, 플레이북, 롤   |
+| [Ansible 팀 운영](02_infrastructure/iac/ansible_install_and_team_operation.md) | 설치, 팀 운영, 권한 관리 |
+| [Ansible Vault](02_infrastructure/iac/ansible_vault.md)                        | 시크릿 암호화            |
+| [Ansible Playbook Fields](02_infrastructure/iac/ansible_playbook_fields.md)    | 필드 레퍼런스            |
+| [Ansible Linux](02_infrastructure/iac/ansible_playbook_linux.md)               | Linux 플레이북           |
+| [Ansible Windows](02_infrastructure/iac/ansible_playbook_windows.md)           | Windows 플레이북         |
+| [Molecule](02_infrastructure/iac/molecule.md)                                  | 역할 테스트              |
+| [Terraform](02_infrastructure/iac/terraform.md)                                | HCL, State, Module       |
+| [Packer](02_infrastructure/iac/packer.md)                                      | 이미지 빌드              |
+| [Vagrant](02_infrastructure/iac/vagrant.md)                                    | 개발 환경 프로비저닝     |
+| [YAML 문법](02_infrastructure/iac/yaml_syntax.md)                              | YAML 1.2 규칙            |
 
 ### Monitoring
 
@@ -207,6 +208,12 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [로그 100GB](02_infrastructure/data_pipeline/log_aggregation_100gb.md)       | 중규모 로그 설계     |
 | [로그 100TB](02_infrastructure/data_pipeline/log_aggregation_100tb.md)       | 대규모 로그 설계     |
 
+### Storage
+
+| 문서                                                                   | 설명                    |
+|------------------------------------------------------------------------|-------------------------|
+| [스토리지 아키텍처](02_infrastructure/storage/storage_architecture.md) | 스토리지 계층·구성 설계 |
+
 ### Web Server
 
 | 문서                                                       | 설명                       |
@@ -241,6 +248,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Zero Downtime Migration](03_engineering/delivery/zero_downtime_migration.md)     | Expand-Contract, CDC, 롤백  |
 | [Capacity Planning](03_engineering/delivery/capacity_planning.md)                 | 트래픽 예측, Headroom       |
 | [Multi-Region Architecture](03_engineering/delivery/multi_region_architecture.md) | Active-Active, RPO/RTO      |
+| [ADR 가이드](03_engineering/delivery/adr_guide.md)                                | 아키텍처 의사결정 기록      |
 
 ### Organization
 
@@ -320,16 +328,17 @@ RDBMS, NoSQL, 운영, 포렌식.
 
 ### DB Operations
 
-| 문서                                                                 | 설명                    |
-|----------------------------------------------------------------------|-------------------------|
-| [MySQL 설치](05_database/operations/mysql_install.md)                | Ubuntu/RHEL, 초기 보안  |
-| [PostgreSQL 설치](05_database/operations/postgresql_install.md)      | pg_hba.conf, ICU        |
-| [Replication](05_database/operations/rdbms_replication.md)           | binlog, GTID, Streaming |
-| [Partition](05_database/operations/rdbms_partition.md)               | Range/List/Hash         |
-| [Schema Migration](05_database/operations/rdbms_schema_migration.md) | pt-osc, gh-ost          |
-| [Server Config](05_database/operations/rdbms_server_config.md)       | my.cnf, postgresql.conf |
-| [Slow Query](05_database/operations/rdbms_slow_query.md)             | 슬로우 쿼리 분석        |
-| [Tuning](05_database/operations/rdbms_tuning.md)                     | 버퍼풀, 캐시, I/O       |
+| 문서                                                                     | 설명                    |
+|--------------------------------------------------------------------------|-------------------------|
+| [MySQL 설치](05_database/operations/mysql_install.md)                    | Ubuntu/RHEL, 초기 보안  |
+| [PostgreSQL 설치](05_database/operations/postgresql_install.md)          | pg_hba.conf, ICU        |
+| [Replication](05_database/operations/rdbms_replication.md)               | binlog, GTID, Streaming |
+| [Partition](05_database/operations/rdbms_partition.md)                   | Range/List/Hash         |
+| [Schema Migration](05_database/operations/rdbms_schema_migration.md)     | pt-osc, gh-ost          |
+| [Server Config](05_database/operations/rdbms_server_config.md)           | my.cnf, postgresql.conf |
+| [Slow Query](05_database/operations/rdbms_slow_query.md)                 | 슬로우 쿼리 분석        |
+| [Tuning](05_database/operations/rdbms_tuning.md)                         | 버퍼풀, 캐시, I/O       |
+| [Percona XtraBackup](05_database/operations/percona_xtrabackup_guide.md) | MySQL 물리 백업·복구    |
 
 ### NoSQL
 
@@ -366,6 +375,7 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [SRE 로드맵](06_career/roadmap/sre_roadmap.md)                                  | Site Reliability 경로 |
 | [DBA 로드맵](06_career/roadmap/dba_roadmap.md)                                  | DBA 역할, 자격증      |
 | [언어별 가이드](06_career/roadmap/se_complete_roadmap_programming_languages.md) | 언어 선택 기준        |
+| [인프라 직무 비교](06_career/roadmap/infra_roles_comparison.md)                 | 직무·역할·기술 비교   |
 
 ### Legal
 
@@ -394,16 +404,17 @@ RDBMS, NoSQL, 운영, 포렌식.
 
 ## 추천 학습 순서
 
-```
-초급 (Linux 입문)
-  01_fundamentals/linux (basics) → linux (storage/I/O) → networking (IPv4/TCP) → containers (Docker)
+### 초급 (Linux 입문)
 
-중급 (시스템 관리)
-  linux (debugging) → 05_database → 02_infrastructure
+[Linux 문서 목차](01_fundamentals/linux/README.md) → [저장장치 도구](01_fundamentals/linux/storage_tools.md) → [IPv4 주소 체계](01_fundamentals/networking/ipv4_addressing_guide.md) → [TCP 상태 전이](01_fundamentals/networking/tcp_state_concepts.md) → [Docker 가이드](02_infrastructure/containers/docker.md)
 
-고급 (SRE/아키텍트)
-  04_security → 03_engineering → 06_career/roadmap
-```
+### 중급 (시스템 관리)
+
+[OOM/Hang 진단](01_fundamentals/linux/oom_hang.md) → [Database](05_database/README.md) → [Infrastructure](02_infrastructure/README.md)
+
+### 고급 (SRE/아키텍트)
+
+[Security](04_security/README.md) → [Engineering](03_engineering/README.md) → [SE 로드맵](06_career/roadmap/se_roadmap.md)
 
 ---
 
@@ -416,6 +427,20 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [Windows 인시던트 로그 수집](96_scripts/windows/collect_incident_logs.py) | 장애 시 로그 자동 수집 스크립트              |
 | [Windows Hosts 관리](96_scripts/windows/win_hosts_manager.py)             | hosts 파일 관리 도구                         |
 | [공식 참고 문서 인덱스](_reference/INDEX.md)                              | 기술별 공식 문서와 확인일 관리               |
+
+### 문서 검증
+
+문서 수정 후 다음 검사를 실행합니다.
+
+```bash
+python3 md-link-check.py README.md
+python3 md-style-check.py README.md
+python3 readme_inventory_check.py README.md
+```
+
+- 내부 링크·앵커 검사: `md-link-check.py`.
+- 표·푸터·문체 검사: `md-style-check.py`.
+- README에 표기된 문서 수와 실제 파일 수 검사: `readme_inventory_check.py`.
 
 ---
 
