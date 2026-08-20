@@ -5,11 +5,11 @@
 
 | 단계 | 섹션                                                                                                                   |
 |------|------------------------------------------------------------------------------------------------------------------------|
-| 기본 | [1. 개요](#1-개요) / [2. 도구 간 역할](#2-도구-간-역할) / [3. 핵심 구성요소](#3-핵심-구성요소)                         |
-| 내부 | [4. Barrier와 Shamir Secret Sharing](#4-barrier와-shamir-secret-sharing)                                               |
-| 설계 | [5. Secret 수명주기](#5-secret-수명주기) / [6. 인증과 Policy](#6-인증과-policy) / [7. Secret Engine](#7-secret-engine) |
-| 운영 | [8. 운영 모델](#8-운영-모델) / [9. 도입 판단 기준](#9-도입-판단-기준) / [10. 관련 문서](#10-관련-문서)                 |
-| 참고 | [11. 용어 정리](#11-용어-정리)                                                                                         |
+| 기본 | [1. 개요](#1-개요) / [2. 핵심 구성요소](#2-핵심-구성요소)                                                              |
+| 내부 | [3. Barrier와 Shamir Secret Sharing](#3-barrier와-shamir-secret-sharing)                                               |
+| 설계 | [4. Secret 수명주기](#4-secret-수명주기) / [5. 인증과 Policy](#5-인증과-policy) / [6. Secret Engine](#6-secret-engine) |
+| 운영 | [7. 운영 모델](#7-운영-모델) / [8. 도입 판단 기준](#8-도입-판단-기준) / [9. 관련 문서](#9-관련-문서)                   |
+| 참고 | [10. 용어 정리](#10-용어-정리)                                                                                         |
 
 ---
 
@@ -53,33 +53,7 @@ Barrier ──▶ encrypted Storage Backend
 
 개발용 단일 노드와 운영용 구성은 같은 기준으로 취급하지 않습니다.
 
-## 2. 도구 간 역할
-
-### Ansible Vault
-
-Ansible playbook과 변수 파일에 포함된 민감 정보를 암호화합니다. Git에 암호화 파일을 보관하고, 실행 시 Vault Password로 복호화하는 파일 중심 방식입니다.
-
-- 장점: Ansible과의 결합이 간단하고 추가 서버가 필요하지 않습니다.
-- 한계: 실행 주체 인증, 중앙 감사, 동적 Credential 발급, 자동 Rotation을 별도로 설계해야 합니다.
-
-### HashiCorp Vault
-
-인증 주체는 Policy에 허용된 Secret을 API로 가져갑니다.
-
-KV Engine 외에 Database Credential과 PKI 인증서도 발급할 수 있습니다.
-
-- 장점: 중앙 Policy, Audit, TTL·Lease, Dynamic Secret, 다양한 Auth Method를 구성할 수 있습니다.
-- 한계: Vault Server, Storage, TLS, Seal·Unseal, Backup·Restore, HA와 Upgrade를 운영해야 합니다.
-
-### AWS Secrets Manager
-
-AWS 단일 환경에서는 Secret 저장·접근 제어·Rotation을 관리형으로 제공하는 선택지입니다.
-
-AWS 밖의 시스템이나 멀티클라우드, Vault Plugin·Dynamic Secret·PKI 요구가 없다면 운영 부담과 비용을 비교합니다.
-
-> Dynamic Secret: 요청 시점에 짧은 유효기간의 Credential을 발급하고, Lease 만료 또는 폐기 시 사용을 끝내는 방식입니다. 정적으로 오래 보관하는 Password와 위협 모델이 다릅니다.
-
-## 3. 핵심 구성요소
+## 2. 핵심 구성요소
 
 ```text
 Client / Ansible / CI
@@ -123,7 +97,7 @@ Vault는 시작 후 Seal 상태에서 암호화된 데이터에 접근할 수 �
 
 수동 Unseal 또는 KMS 기반 자동 Unseal을 선택합니다. Unseal 자료와 복구 권한은 분리 보관해야 합니다.
 
-Seal·Unseal의 내부 동작은 [4장](#4-barrier와-shamir-secret-sharing)에서 다룹니다.
+Seal·Unseal의 내부 동작은 [3장](#3-barrier와-shamir-secret-sharing)에서 다룹니다.
 
 > Seal·Unseal: Vault의 암호화 데이터 접근을 잠그거나 해제하는 운영 상태입니다. 서버가 실행 중이어도 Seal 상태에서는 일반적인 Secret 읽기·쓰기를 수행할 수 없습니다.
 
@@ -142,7 +116,7 @@ Audit은 Vault 요청과 응답의 메타데이터를 기록하여 누가 언제
 
 > ACL(Access Control List): 인증된 주체가 어떤 경로에 어떤 동작을 수행할 수 있는지 정의하는 권한 목록입니다. Vault의 Policy는 ACL 형태로 평가되며, Audit Device와 Auth Method의 설정 변경도 이 ACL 시스템의 보호를 받습니다.
 
-## 4. Barrier와 Shamir Secret Sharing
+## 3. Barrier와 Shamir Secret Sharing
 
 이 장은 Vault가 데이터를 어떻게 암호화하고, Seal 상태에서 어떻게 벗어나는지 내부 동작을 설명합니다. 운영 절차가 아니라 원리 이해를 목적으로 합니다.
 
@@ -233,7 +207,7 @@ Shamir 알고리즘은 Recovery Key 생성에 사용되며, 평상시 Unseal 절
 
 🟡 Auto Unseal 구성에서 KMS 키가 영구 삭제되면 Root Key를 복호화할 방법이 없어 데이터를 복구할 수 없습니다. KMS 키 삭제 방지·백업 정책을 Vault 운영 절차와 함께 검토해야 합니다.
 
-## 5. Secret 수명주기
+## 4. Secret 수명주기
 
 Secret 관리는 저장만으로 끝나지 않고 다음 흐름 전체를 포함합니다.
 
@@ -280,7 +254,7 @@ Dynamic Secret은 발급된 Credential의 만료·폐기와 갱신 실패를 처
 
 > Lease: Vault가 발급한 동적 Credential의 유효기간과 갱신·폐기 정보를 추적하는 단위입니다. Lease 만료가 실제 애플리케이션 연결 종료까지 보장하는지는 대상 시스템별로 검증해야 합니다.
 
-## 6. 인증과 Policy
+## 5. 인증과 Policy
 
 ### 인증 계층
 
@@ -345,7 +319,7 @@ secret/data/prd/app
 
 🟡 `deny`는 다른 Policy가 동일 경로에 더 넓은 권한을 허용하더라도 항상 우선합니다. 여러 Policy가 겹치는 경로에서는 `deny`가 있는지 먼저 확인해야 합니다.
 
-## 7. Secret Engine
+## 6. Secret Engine
 
 ### KV Secret Engine
 
@@ -398,7 +372,7 @@ PKI Secret Engine은 인증서 발급과 갱신 workflow를 자동화할 수 있
 - 인증서 갱신 실패와 폐기·신뢰 배포 절차를 운영합니다.
 - TTL을 짧게 유지하면 폐기(Revocation) 필요성과 CRL 크기가 줄어들어 대규모 발급에 유리합니다.
 
-## 8. 운영 모델
+## 7. 운영 모델
 
 ### 개발 환경
 
@@ -431,7 +405,7 @@ Vault를 선택하면 관리형 Secret Store보다 더 많은 운영 책임이 �
 
 AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 IAM 통합·운영 부담·비용을 함께 비교합니다.
 
-## 9. 도입 판단 기준
+## 8. 도입 판단 기준
 
 다음 기준을 만족하지 못하면 Vault 설치보다 요구사항과 운영 책임을 먼저 정리합니다.
 
@@ -444,13 +418,13 @@ AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 
 - [ ] Ansible·CI/CD·애플리케이션 로그에 Secret이 노출되지 않습니다.
 - [ ] RTO·RPO, 비용, 운영 담당자, 라이선스 검토가 완료됩니다.
 
-## 10. 관련 문서
+## 9. 관련 문서
 
 - 설치·초기화·TLS 절차: [HashiCorp Vault 설치 가이드](vault_install.md)
 - Secret Store 비교와 위협 모델: [시크릿 관리](secret_management.md)
 - 공식 문서 검증 노트: [_reference/hashicorp_vault_official_notes.md](../../_reference/hashicorp_vault_official_notes.md)
 
-## 11. 용어 정리
+## 10. 용어 정리
 
 | 용어                       | 정의                                                                                            |
 |----------------------------|-------------------------------------------------------------------------------------------------|
