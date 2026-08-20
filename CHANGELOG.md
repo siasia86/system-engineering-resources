@@ -13,6 +13,7 @@
 - `00_governance/`를 저장소 운영 정책과 AI 도구 미러의 공통 상위 디렉토리로 추가.
 - 향후 Claude 자료를 위한 `00_governance/03_claude/` 예약 영역 추가.
 - 도구별 동기화를 위한 `manifests/kiro_files.txt` 구조 추가.
+- 민감정보와 환경 정보를 제외한 `profiles/chobo_ansible.md` 저장소 profile 추가.
 
 ### Changed
 
