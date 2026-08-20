@@ -22,7 +22,7 @@ regexes = [
     '''010-1234-5678''',
 ]
 paths = [
-    '''12_tech_stack/kubernetes_basic\.md''',
+    '''02_infrastructure/containers/kubernetes_basic\.md''',
     '''.*_test\.py''',
     '''.*\.example''',
     '''.*\.sample''',
