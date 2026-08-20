@@ -648,7 +648,7 @@ def check_file(path, strict=False, skip_checks=None):
     return all_issues
 
 # 검사 제외 디렉토리
-EXCLUDE_DIRS = {'99_archive', '99_etc', '.git', '__pycache__', '_reference', '00_readme.md'}
+EXCLUDE_DIRS = {'99_archive', '99_etc', '.git', '__pycache__', '_reference', '00_kiro'}
 
 # 검사 제외 파일
 EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'CHANGELOG.md'}

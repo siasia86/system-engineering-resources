@@ -6,6 +6,23 @@
 
 ---
 
+## [3.9.0] - 2026-08-20
+
+### Added
+
+- `00_readme.md/`를 Kiro 실행 자료 미러임을 명시하는 `00_kiro/`로 rename.
+- `00_repository_governance/` 추가.
+- 문서 운영 정책, Kiro 동기화 정책, `PLAN.md`·`ISSUE.md` 템플릿 추가.
+- `sync_files.txt`로 Kiro 공개 동기화 허용 목록 추가.
+- 루트 `README.md`에 Kiro 운영 문서와 저장소 운영 정책 링크 추가.
+
+### Changed
+
+- `md-style-check.py`, `.md-style-check.toml`, 유사 레포 비교 문서의 Kiro 디렉토리 경로를 `00_kiro/`로 갱신.
+- `CHANGELOG.md`의 마지막 업데이트 날짜를 `2026-08-20`으로 갱신.
+
+---
+
 ## [3.8.0] - 2026-08-20
 
 ### Added

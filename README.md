@@ -427,6 +427,8 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [Windows 인시던트 로그 수집](96_scripts/windows/collect_incident_logs.py) | 장애 시 로그 자동 수집 스크립트              |
 | [Windows Hosts 관리](96_scripts/windows/win_hosts_manager.py)             | hosts 파일 관리 도구                         |
 | [공식 참고 문서 인덱스](_reference/INDEX.md)                              | 기술별 공식 문서와 확인일 관리               |
+| [Kiro 운영 문서](00_kiro/README.md)                                       | Kiro Skill·Hook·운영 자료                    |
+| [저장소 운영 정책](00_repository_governance/README.md)                    | 문서 생명주기·동기화·작업 템플릿             |
 
 ### 문서 검증
 
