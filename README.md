@@ -101,7 +101,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 | 문서                                                                               | 설명                        |
 |------------------------------------------------------------------------------------|-----------------------------|
-| [Python 가이드](01_fundamentals/programming/python/)                               | 클래스~subprocess (25개)    |
+| [Python 가이드](01_fundamentals/programming/python/)                               | 클래스~subprocess (26개)    |
 | [C# 가이드](01_fundamentals/programming/csharp/)                                   | async, LINQ, OOP, 예외 처리 |
 | [Rust 가이드](01_fundamentals/programming/rust/)                                   | 소유권, 동시성, 에러 처리   |
 | [언어 비교](01_fundamentals/programming/c_cpp_csharp_go_python_bash_comparison.md) | 6개 언어 비교               |
@@ -415,6 +415,7 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [유사 레포 비교](97_misc/similar_repos.md)                                | 벤치마킹, 차별화 전략                        |
 | [Windows 인시던트 로그 수집](96_scripts/windows/collect_incident_logs.py) | 장애 시 로그 자동 수집 스크립트              |
 | [Windows Hosts 관리](96_scripts/windows/win_hosts_manager.py)             | hosts 파일 관리 도구                         |
+| [공식 참고 문서 인덱스](_reference/INDEX.md)                              | 기술별 공식 문서와 확인일 관리               |
 
 ---
 
@@ -438,6 +439,6 @@ RDBMS, NoSQL, 운영, 포렌식.
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-08-12
+**마지막 업데이트**: 2026-08-20
 
 © 2026 siasia86. Licensed under CC BY 4.0.
