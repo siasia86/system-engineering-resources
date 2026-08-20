@@ -6,11 +6,13 @@ tags:
   - secrets
   - dynamic-secrets
   - hybrid
-last_checked: 2026-08-19
+last_checked: 2026-08-20
 sources:
   - https://developer.hashicorp.com/vault/docs/what-is-vault
   - https://developer.hashicorp.com/vault/docs/secrets/kv
   - https://developer.hashicorp.com/vault/docs/secrets/databases
+  - https://developer.hashicorp.com/vault/docs/secrets/pki
+  - https://developer.hashicorp.com/vault/docs/concepts/production-hardening
   - https://raw.githubusercontent.com/hashicorp/vault/main/LICENSE
 ---
 
@@ -35,6 +37,7 @@ sources:
 
 ## 4. 라이선스 확인
 
-- 현재 저장소의 `LICENSE`는 Vault Version 1.15.0 이상에 대해 Business Source License 1.1 계열 조건과 Additional Use Grant를 표시합니다.
+- HashiCorp Vault upstream repository의 `LICENSE`는 Vault Version 1.15.0 이상에 대해
+  Business Source License 1.1과 Additional Use Grant를 규정합니다.
 - 조직 내부 사용이 경쟁형 유료 호스팅 제공에 해당하지 않는지 현재 라이선스 원문과 법무 기준으로 확인합니다.
 - HCP Vault와 Vault Enterprise의 제공 범위·요금은 별도 확인이 필요합니다.
