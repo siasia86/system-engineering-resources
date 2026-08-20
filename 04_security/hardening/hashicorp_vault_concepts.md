@@ -9,6 +9,7 @@
 | 내부 | [4. Barrier와 Shamir Secret Sharing](#4-barrier와-shamir-secret-sharing)                                               |
 | 설계 | [5. Secret 수명주기](#5-secret-수명주기) / [6. 인증과 Policy](#6-인증과-policy) / [7. Secret Engine](#7-secret-engine) |
 | 운영 | [8. 운영 모델](#8-운영-모델) / [9. 도입 판단 기준](#9-도입-판단-기준) / [10. 관련 문서](#10-관련-문서)                 |
+| 참고 | [11. 용어 정리](#11-용어-정리)                                                                                         |
 
 ---
 
@@ -448,6 +449,32 @@ AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 
 - 설치·초기화·TLS 절차: [HashiCorp Vault 설치 가이드](vault_install.md)
 - Secret Store 비교와 위협 모델: [시크릿 관리](secret_management.md)
 - 공식 문서 검증 노트: [_reference/hashicorp_vault_official_notes.md](../../_reference/hashicorp_vault_official_notes.md)
+
+## 11. 용어 정리
+
+| 용어                       | 정의                                                                                            |
+|----------------------------|-------------------------------------------------------------------------------------------------|
+| Barrier                    | Vault Core와 Storage Backend 사이의 암호화 계층입니다.                                          |
+| Seal / Unseal              | Vault의 암호화 데이터 접근을 잠그거나 해제하는 상태와 절차입니다.                               |
+| Shamir Secret Sharing      | Unseal Key를 여러 share로 나누고 threshold 이상을 모아야 복원하는 방식입니다.                   |
+| Key Share / Threshold      | 분할된 Unseal Key 조각과 복원에 필요한 최소 조각 수입니다.                                      |
+| Root Key                   | 실제 데이터 암호화에 사용하는 Encryption Key를 보호하는 상위 키입니다.                          |
+| Encryption Key             | Vault 데이터를 암호화·복호화하는 키입니다.                                                      |
+| Recovery Key               | Auto Unseal 환경에서 특정 관리자 작업을 승인하는 키입니다. Root Key를 직접 복호화하지 않습니다. |
+| Auth Method                | Client의 신원을 확인하고 Token 또는 Identity를 발급하는 인증 방식입니다.                        |
+| AppRole                    | 애플리케이션이 Role ID와 Secret ID로 인증하는 Auth Method입니다.                                |
+| Policy Capability          | 특정 Vault 경로에서 허용하는 `read`, `create`, `delete`, `list` 등의 동작입니다.                |
+| Secret Engine / Mount Path | Secret을 저장·발급하는 기능과 그 기능이 연결된 Vault 경로입니다.                                |
+| Lease / TTL                | 동적 Credential의 유효기간과 갱신·폐기를 추적하는 단위와 기간입니다.                            |
+| Dynamic Secret             | 요청 시 생성되고 Lease 만료 또는 폐기 시 사용이 끝나는 임시 Credential입니다.                   |
+| KV v2 Soft Delete          | 버전 데이터를 즉시 제거하지 않고 삭제 상태로 표시해 복구할 수 있게 하는 동작입니다.             |
+| PKI Role / SAN             | 인증서 발급 조건과 인증서에 허용되는 주체 이름 범위입니다.                                      |
+| CRL                        | 폐기된 인증서 목록(Certificate Revocation List)입니다.                                          |
+| Audit Device               | Vault 요청·응답의 감사 메타데이터를 기록하는 출력 장치입니다.                                   |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 참고 자료
 
