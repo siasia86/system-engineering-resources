@@ -51,3 +51,6 @@ __pycache__/
 
 
 .kiro-lock
+
+# Local-only notes and environment data
+.local/
