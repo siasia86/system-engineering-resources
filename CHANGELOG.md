@@ -6,6 +6,20 @@
 
 ---
 
+## [3.7.0] - 2026-08-20
+
+### Fixed
+
+#### `_reference/web_server_official_notes.md` fact-check
+
+- Nginx `ssl_protocols` TLSv1.3 기본 활성화 시점을 `1.19.0`에서 `1.23.4`로 정정.
+- Nginx stream 모듈 도입 시점을 `1.9.5`에서 `1.9.0`으로 정정.
+- Nginx `ssl_certificate` 설명을 `ssl` 디렉티브 deprecated 및 `listen ... ssl` 사용 기준으로 정정.
+- Apache 2.4.58 `mod_http2` 기능을 TLS 1.3 early data가 아닌 HTTP 103 Early Hints로 정정.
+- 공식 출처: [Nginx CHANGES](https://nginx.org/en/CHANGES), [Nginx SSL module](https://nginx.org/en/docs/http/ngx_http_ssl_module.html), [Apache mod_http2](https://httpd.apache.org/docs/2.4/mod/mod_http2.html), [Apache 2.4.58 CHANGES](https://archive.apache.org/dist/httpd/CHANGES_2.4.58).
+
+---
+
 ## [3.6.0] - 2026-08-05
 
 ### Added

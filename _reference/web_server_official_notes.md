@@ -7,7 +7,7 @@ tags:
   - httpd
   - web-server
   - reverse-proxy
-last_checked: 2026-07-08
+last_checked: 2026-08-20
 sources:
   - https://nginx.org/en/docs/
   - https://httpd.apache.org/docs/2.4/
@@ -78,27 +78,22 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 
 ### 버전별 주요 변경사항 (Nginx)
 
-| 버전    | 변경 사항                                | 영향                            |
-|---------|------------------------------------------|---------------------------------|
-| 1.25.1+ | `listen` 줄 `http2` 파라미터 deprecated  | `http2 on;` 별도 디렉티브 사용  |
-| 1.25.1+ | `listen ... quic` QUIC/HTTP3 실험적 지원 | `http3 on;` 별도 디렉티브       |
-| 1.19.0+ | `ssl_protocols` 기본값에 TLSv1.3 포함    | 별도 명시 없어도 TLS 1.3 활성화 |
-<!-- unverified: Nginx 1.19.0 ssl_protocols TLSv1.3 기본 포함 — CHANGES 직접 확인 필요 -->
-| 1.15.0+ | `listen` 줄에 `ssl` 없이 `ssl_certificate` 사용 가능 | 설정 간소화                     |
-<!-- unverified: Nginx 1.15.0 ssl 없이 ssl_certificate — CHANGES 직접 확인 필요 -->
-| 1.9.5+  | stream 모듈 (TCP/UDP 프록시) 추가                    | `stream {}` 블록 사용 가능      |
-<!-- unverified: Nginx 1.9.5 stream 모듈 — CHANGES 직접 확인 필요 -->
+| 버전    | 변경 사항                                        | 영향                                  |
+|---------|--------------------------------------------------|---------------------------------------|
+| 1.25.1+ | `listen` 줄 `http2` 파라미터 deprecated          | `http2 on;` 별도 디렉티브 사용        |
+| 1.25.1+ | `listen ... quic` QUIC/HTTP3 실험적 지원         | `http3 on;` 별도 디렉티브             |
+| 1.23.4+ | TLSv1.3 프로토콜 기본 활성화                     | `ssl_protocols` 별도 설정 필요성 감소 |
+| 1.15.0+ | `ssl` 디렉티브 deprecated, `listen ... ssl` 사용 | HTTPS 활성화 방식 명확화              |
+| 1.9.0+  | stream 모듈 (TCP/UDP 프록시) 추가                | `stream {}` 블록 사용 가능            |
 
 ### 버전별 주요 변경사항 (Apache)
 
-| 버전    | 변경 사항                               | 영향         |
-|---------|-----------------------------------------|--------------|
-| 2.4.58+ | mod_http2 개선, TLS 1.3 early data 지원 | H2 성능 향상 |
-<!-- unverified: Apache 2.4.58 mod_http2 early data — CHANGES 직접 확인 필요 -->
-| 2.4.49  | CVE-2021-41773 (path traversal) | 즉시 패치 필수                |
-|---------|---------------------------------|-------------------------------|
-| 2.4.52+ | mod_proxy_http2 백엔드 H2 지원  | 리버스 프록시 H2 pass-through |
-| 2.4+    | event MPM 기본                  | prefork에서 전환 권장         |
+| 버전    | 변경 사항                       | 영향                                |
+|---------|---------------------------------|-------------------------------------|
+| 2.4.58  | mod_http2 `H2EarlyHint` 추가    | HTTP 103 Early Hints 응답 헤더 지원 |
+| 2.4.49  | CVE-2021-41773 (path traversal) | 즉시 패치 필수                      |
+| 2.4.52+ | mod_proxy_http2 백엔드 H2 지원  | 리버스 프록시 H2 pass-through       |
+| 2.4+    | event MPM 기본                  | prefork에서 전환 권장               |
 
 ## 2. Apache HTTP Server
 
