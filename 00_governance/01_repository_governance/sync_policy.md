@@ -29,7 +29,9 @@ AI 도구 실행 환경 자료와 저장소 공개 미러 사이의 동기화 �
 | Markdown 규칙   | 저장소에서 재사용 가능한 규칙만 포함하는 경우         |
 | 템플릿          | 자격증명과 개인 환경 정보가 없는 경우                 |
 
-허용 파일은 도구별 manifest에 등록합니다. 현재 Kiro manifest는 [`manifests/kiro_files.txt`](manifests/kiro_files.txt)입니다.
+허용 파일은 홈 실행 환경의 manifest에 등록합니다. 현재 Kiro 실행 source of truth는
+`/home/siasia/.kiro/manifests/kiro_files.txt`이며, 중앙 mirror 사본은
+[`../02_kiro/manifests/kiro_files.txt`](../02_kiro/manifests/kiro_files.txt)입니다.
 
 ## 3. 제외 범위
 
@@ -56,15 +58,18 @@ AI 도구 실행 환경 자료와 저장소 공개 미러 사이의 동기화 �
 ## 5. 검증
 
 ```bash
-rsync -avnc \
-  --files-from=00_governance/01_repository_governance/manifests/kiro_files.txt \
-  "$HOME/.kiro/" 00_governance/02_kiro/
+"$HOME/.kiro/02_home-sjyun-kiro.sh" \
+  --target central \
+  --dry-run
 sudo gitleaks detect --source . --no-banner
 sudo python3 md-link-check.py 00_governance/02_kiro/
 sudo python3 md-style-check.py .
 ```
 
-동기화 manifest가 없는 파일은 동기화 대상에 포함하지 않습니다. 미러 원본의 형식 보존이 필요한 경우에도 공개 가능 여부를 먼저 검토합니다.
+동기화 manifest가 없는 파일은 동기화 대상에 포함하지 않습니다. `memory.md`,
+`memory_private.md`, `.local/`, `settings/`, `sessions/`는 manifest와 rsync에서
+이중으로 제외합니다. 미러 원본의 형식 보존이 필요한 경우에도 공개 가능 여부를
+먼저 검토합니다.
 
 ---
 

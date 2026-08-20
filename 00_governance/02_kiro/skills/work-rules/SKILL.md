@@ -589,14 +589,16 @@ When referencing a GitHub repository during work, automatically append the URL t
 
 ## 25. Memory file management
 
-`~/.kiro/memory.md` stores persistent knowledge across sessions.
+`~/.kiro/.local/memory.md` stores persistent knowledge across sessions.
 
 ### Rules
 
 - **Max 100 lines** — keep only active/relevant items
 - Update when: architecture decisions finalized, environment changed, important issue resolved
 - Delete when: item is no longer relevant or superseded
-- Move old items to `~/.kiro/memory_archive.md` if historical value exists
+- Move old items to `~/.kiro/.local/memory_archive.md` if historical value exists
+- Keep `~/.kiro/.local/memory.md` and `memory_private.md` out of Git and rsync mirrors
+- Do not store passwords, tokens, private keys, or other credentials in either memory file
 
 ### Structure (fixed sections)
 
@@ -607,18 +609,18 @@ When referencing a GitHub repository during work, automatically append the URL t
 ## 최근 결정 사항 ← last 10 decisions (FIFO, oldest removed first)
 ```
 
-### After modifying memory.md
+### After modifying `.local/memory.md`
 
 Always print confirmation after any update:
 
 ```
-[memory.md 업데이트] 추가/수정/삭제: <변경 내용 요약>
+[.local/memory.md 업데이트] 추가/수정/삭제: <변경 내용 요약>
 ```
 
 ### Line count check
 
 ```bash
-wc -l ~/.kiro/memory.md  # must be <= 100
+wc -l ~/.kiro/.local/memory.md  # must be <= 100
 ```
 
 If over 100 lines: remove oldest entries from "최근 결정 사항" or archive them.
