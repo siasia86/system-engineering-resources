@@ -1,6 +1,6 @@
 # Markdown 검사에서 제외할 디렉토리와 파일입니다.
 exclude_dirs = [
-  "00_kiro",
+  "00_governance/02_kiro",
   "99_archive",
   "99_etc",
   "__pycache__",

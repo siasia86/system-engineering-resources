@@ -6,6 +6,22 @@
 
 ---
 
+## [3.10.0] - 2026-08-20
+
+### Added
+
+- `00_governance/`를 저장소 운영 정책과 AI 도구 미러의 공통 상위 디렉토리로 추가.
+- 향후 Claude 자료를 위한 `00_governance/03_claude/` 예약 영역 추가.
+- 도구별 동기화를 위한 `manifests/kiro_files.txt` 구조 추가.
+
+### Changed
+
+- `00_repository_governance/`를 `00_governance/01_repository_governance/`로 이동.
+- `00_kiro/`를 `00_governance/02_kiro/`로 이동.
+- README, 검사 설정, 유사 레포 비교 문서의 활성 경로를 새 구조로 갱신.
+
+---
+
 ## [3.9.0] - 2026-08-20
 
 ### Added

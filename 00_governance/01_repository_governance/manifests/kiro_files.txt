@@ -1,4 +1,4 @@
-# Relative paths under ~/.kiro that may be mirrored to 00_kiro/.
+# Relative paths under ~/.kiro that may be mirrored to 00_governance/02_kiro/.
 # Do not add memory, settings, sessions, credentials, or private agent files.
 README.md
 agents/README.md

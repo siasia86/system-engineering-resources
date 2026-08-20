@@ -1,6 +1,6 @@
-# Kiro Sync Policy
+# Tool Mirror Sync Policy
 
-`~/.kiro`의 실행 환경 자료와 저장소의 `00_kiro/` 문서 미러 사이의 동기화 기준을 정의합니다.
+AI 도구 실행 환경 자료와 저장소 공개 미러 사이의 동기화 기준을 정의합니다. 현재 등록된 미러는 `~/.kiro/`와 `00_governance/02_kiro/`입니다.
 
 ## 목차
 
@@ -13,10 +13,11 @@
 
 ## 1. 원본과 미러
 
-- 실제 실행 원본은 `~/.kiro/`입니다.
-- 저장소 공개 미러는 `00_kiro/`입니다.
-- 동기화 방향은 `~/.kiro/`에서 `00_kiro/`로만 제한합니다.
-- 저장소 내용을 `~/.kiro/`로 자동 역동기화하지 않습니다.
+- Kiro 실행 원본은 `~/.kiro/`입니다.
+- Kiro 저장소 공개 미러는 `00_governance/02_kiro/`입니다.
+- Kiro 동기화 방향은 `~/.kiro/`에서 `00_governance/02_kiro/`로만 제한합니다.
+- Claude 등 새 도구를 추가할 때는 원본 경로와 미러 경로를 별도로 정의합니다.
+- 저장소 내용을 실행 환경으로 자동 역동기화하지 않습니다.
 - 동기화 결과는 자동 commit하지 않고 diff를 검토한 뒤 반영합니다.
 
 ## 2. 허용 범위
@@ -28,9 +29,11 @@
 | Markdown 규칙   | 저장소에서 재사용 가능한 규칙만 포함하는 경우         |
 | 템플릿          | 자격증명과 개인 환경 정보가 없는 경우                 |
 
+허용 파일은 도구별 manifest에 등록합니다. 현재 Kiro manifest는 [`manifests/kiro_files.txt`](manifests/kiro_files.txt)입니다.
+
 ## 3. 제외 범위
 
-다음 내용은 `00_kiro/`로 동기화하지 않습니다.
+다음 내용은 공개 미러로 동기화하지 않습니다.
 
 - `memory.md`의 개인 기억과 내부 환경 정보.
 - 내부 IP, 호스트명, 사용자명, 개인 경로.
@@ -41,10 +44,10 @@
 
 ## 4. 동기화 절차
 
-1. [동기화 허용 목록](sync_files.txt)에 등록된 대상만 선택합니다.
+1. 도구별 동기화 허용 목록에 등록된 대상만 선택합니다.
 2. dry-run으로 추가·수정·삭제 예정 항목을 확인합니다.
 3. 개인 정보와 비밀정보를 검색합니다.
-4. `00_kiro/`의 diff를 검토합니다.
+4. 해당 도구 미러의 diff를 검토합니다.
 5. Markdown 및 링크 검사를 실행합니다.
 6. 검증을 통과한 변경만 commit합니다.
 
@@ -53,14 +56,15 @@
 ## 5. 검증
 
 ```bash
-rsync -avnc --files-from=00_repository_governance/sync_files.txt \
-  "$HOME/.kiro/" 00_kiro/
+rsync -avnc \
+  --files-from=00_governance/01_repository_governance/manifests/kiro_files.txt \
+  "$HOME/.kiro/" 00_governance/02_kiro/
 sudo gitleaks detect --source . --no-banner
-sudo python3 md-link-check.py 00_kiro/
+sudo python3 md-link-check.py 00_governance/02_kiro/
 sudo python3 md-style-check.py .
 ```
 
-동기화 manifest가 없는 파일은 동기화 대상에 포함하지 않습니다.
+동기화 manifest가 없는 파일은 동기화 대상에 포함하지 않습니다. 미러 원본의 형식 보존이 필요한 경우에도 공개 가능 여부를 먼저 검토합니다.
 
 ---
 

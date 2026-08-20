@@ -648,7 +648,7 @@ def check_file(path, strict=False, skip_checks=None):
     return all_issues
 
 # 검사 제외 디렉토리
-EXCLUDE_DIRS = {'99_archive', '99_etc', '.git', '__pycache__', '_reference', '00_kiro'}
+EXCLUDE_DIRS = {'99_archive', '99_etc', '.git', '__pycache__', '_reference', '00_governance/02_kiro'}
 
 # 검사 제외 파일
 EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'CHANGELOG.md'}
@@ -675,6 +675,22 @@ def load_config(config_path=None):
     return result
 
 
+def _is_excluded_dir(path, dirname, target_abs, skip_dirs):
+    """디렉토리명 또는 저장소 기준 상대 경로의 제외 여부 반환."""
+    if dirname in skip_dirs:
+        return True
+    candidates = set()
+    for base in (target_abs, os.path.dirname(os.path.abspath(__file__))):
+        candidates.add(os.path.normpath(os.path.relpath(path, base)))
+    for excluded in skip_dirs:
+        normalized = os.path.normpath(excluded)
+        if '/' not in normalized and os.sep not in normalized:
+            continue
+        if normalized in candidates:
+            return True
+    return False
+
+
 def collect_files(target, extra_exclude_dirs=None, exclude_files=None,
                   base_exclude_dirs=None, base_exclude_files=None):
     """파일 또는 디렉토리에서 .md 파일 목록 반환."""
@@ -686,8 +702,13 @@ def collect_files(target, extra_exclude_dirs=None, exclude_files=None,
     skip_files = set(base_exclude_files or EXCLUDE_FILES) | set(exclude_files or [])
     result = []
     target_abs = os.path.abspath(target)
+    if _is_excluded_dir(target_abs, os.path.basename(target_abs), target_abs, skip_dirs):
+        return []
     for root, dirs, files in os.walk(target):
-        dirs[:] = [d for d in dirs if d not in skip_dirs]
+        dirs[:] = [
+            d for d in dirs
+            if not _is_excluded_dir(os.path.join(root, d), d, target_abs, skip_dirs)
+        ]
         dirs.sort()
         for f in sorted(files):
             if not f.endswith('.md') or f in skip_files:
