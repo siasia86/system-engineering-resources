@@ -1,0 +1,7 @@
+# Local-only Kiro notes; rsync must also exclude this directory.
+/.local/
+
+# Local-only root memory compatibility guard.
+/memory.md
+/memory_private.md
+/.kiro-lock

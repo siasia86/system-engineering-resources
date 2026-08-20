@@ -1,10 +1,24 @@
-# Relative paths under ~/.kiro that may be mirrored to 00_governance/02_kiro/.
-# Do not add memory, settings, sessions, credentials, or private agent files.
+# Public Kiro mirror allowlist
+
 README.md
+.gitignore
+01_home-sjyun-kiro.sh
+02_home-sjyun-kiro.sh
 agents/README.md
+agents/agent_config.json.example
+agents/code-reviewer.json
+agents/doc-reviewer.json
+agents/git-manager.json
+agents/markdown-writer.json
+agents/security-auditor.json
+agents/se-lite.json
+agents/system-engineer.json
 hooks/md-style-check.sh
 markdown/INDEX.md
 markdown/STYLE.md
+.docs-kr/work-rules-guide.md
+manifests/README.md
+manifests/kiro_files.txt
 prompts/README.md
 prompts/ansible-convert.md
 prompts/ansible-create.md

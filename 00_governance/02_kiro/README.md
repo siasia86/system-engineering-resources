@@ -5,7 +5,9 @@
 ```
 .kiro/
 ├── README.md              ← 이 파일 (시스템 진입점)
-├── memory.md              ← 세션 간 영구 기억 (100줄 제한)
+├── .local/                ← Git/rsync 제외 개인 runtime 데이터
+│   ├── memory.md          ← 세션 간 영구 기억 (100줄 제한)
+│   └── memory_private.md  ← 고민감 환경 정보 (필요한 agent만 참조)
 ├── agents/                ← 에이전트 정의 (*.json)
 ├── skills/                ← 재사용 가능 규칙/가이드 (SKILL.md)
 ├── prompts/               ← 작업별 프롬프트 템플릿 (*.md)
@@ -51,7 +53,7 @@ Observe → Plan → Act → Verify 사이클이 skill/tool/rule로 동작합니
 
 | 단계     | 대응                                               | 상태 |
 |----------|----------------------------------------------------|------|
-| Observe  | memory.md, STYLE.md, _reference/INDEX.md           | ✅   |
+| Observe  | .local/memory.md, STYLE.md, _reference/INDEX.md    | ✅   |
 | Plan     | planning-and-breakdown, spec-driven-infra, §13     | ✅   |
 | Act      | allowedTools, incremental-change, script templates | ✅   |
 | Verify   | md-style-check.py, §12, testing-guide, hooks       | ✅   |
@@ -61,7 +63,7 @@ Observe → Plan → Act → Verify 사이클이 skill/tool/rule로 동작합니
 
 | 항목                 | 내용                                                 | 트리거                     |
 |----------------------|------------------------------------------------------|----------------------------|
-| Observe 자동화       | 세션 종료 시 memory.md 자동 summary 업데이트         | 세션 관리 기능 확장 시     |
+| Observe 자동화       | 세션 종료 시 .local/memory.md 자동 summary 업데이트  | 세션 관리 기능 확장 시     |
 | Verify 자동화        | hook에서 md-style-check/terraform validate 자동 실행 | CI 파이프라인 구축 시      |
 | Feedback 자동 트리거 | 검증 실패 시 자동으로 수정 루프 재진입               | 에이전트 자율 실행 지원 시 |
 ## 금지 패턴
@@ -106,6 +108,14 @@ system-engineer
 
 | 파일                                                               | 용도                 |
 |--------------------------------------------------------------------|----------------------|
-| `file://~/.kiro/memory.md`                                         | 세션 간 영구 기억    |
+| `file://~/.kiro/.local/memory.md`                                  | 세션 간 영구 기억    |
 | `file://~/.kiro/markdown/STYLE.md`                                 | Markdown 작성 규칙   |
 | `file:///root/32_system-engineering-resources/_reference/INDEX.md` | 기술 레퍼런스 인덱스 |
+
+---
+
+**작성일**: 2026-08-20
+
+**마지막 업데이트**: 2026-08-20
+
+© 2026 siasia86. Licensed under CC BY 4.0.
