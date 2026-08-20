@@ -17,6 +17,8 @@
 
 HashiCorp Vault는 인증된 Client와 Workload에 Secret을 런타임으로 제공하는 중앙 서비스입니다.
 
+Ansible Vault가 파일·변수에 포함된 값을 암호화하는 도구라면, HashiCorp Vault는 실행 시점에 Secret을 발급하고 접근을 통제하는 서비스입니다.
+
 Auth Method와 Policy로 접근 범위를 통제합니다.
 
 KV 저장뿐 아니라 Database Dynamic Credential과 PKI 인증서 발급도 Secret Engine으로 구성할 수 있습니다.
