@@ -19,13 +19,15 @@ STYLE.md 규칙 기반: 표 정렬, 다이어그램 폭/한글/박스 문자, H1
   -V, --version             버전 출력
 """
 
-VERSION = "26.07.07"
+VERSION = "26.08.20"
 
+import argparse
 import os
 import re
 import sys
+import tomllib
 import unicodedata
-import argparse
+from functools import lru_cache
 
 # ── 컬러 ──────────────────────────────────────────────────────────────────────
 
@@ -38,11 +40,29 @@ NC     = '\033[0m'
 
 # ── 유틸 ──────────────────────────────────────────────────────────────────────
 
+_FENCE_RE = re.compile(r'^\s*(`{3,})([^`]*)$')
+_BLOCKQUOTE_PREFIX_RE = re.compile(r'^\s*(?:>\s?)+')
+
+
+def _strip_blockquote_prefix(line):
+    """인용구 코드블록의 선행 `>` 접두사를 제거합니다."""
+    return _BLOCKQUOTE_PREFIX_RE.sub('', line, count=1)
+
+
+def _fence_info(line):
+    """코드 fence의 길이와 언어를 반환합니다."""
+    normalized = _strip_blockquote_prefix(line.rstrip())
+    match = _FENCE_RE.match(normalized)
+    if not match:
+        return None
+    return len(match.group(1)), match.group(2).strip()
+
+
 def dw(s):
     """display width: 한글/전각=2, 나머지=1. 인라인 코드 백틱 포함."""
     w = 0
     for c in s:
-        if '\uAC00' <= c <= '\uD7A3' or unicodedata.east_asian_width(c) in ('W', 'F'):
+        if unicodedata.east_asian_width(c) in ('W', 'F'):
             w += 2
         else:
             w += 1
@@ -66,39 +86,44 @@ def split_table_row(line):
     cells.append(current)
     return cells
 
+@lru_cache(maxsize=1)
 def strip_code_blocks(content):
-    """코드블록(``` ```) 제거 후 반환. frontmatter(---) 보존."""
+    """코드블록 제거 후 반환하며 현재 파일의 반복 호출 결과를 캐시합니다."""
     lines = content.split('\n')
     result = []
-    in_block = False
+    fence_length = None
     for line in lines:
-        s = line.rstrip()
-        if not in_block and s.startswith('```'):
-            in_block = True
-        elif in_block and re.match(r'^`{3,}\s*$', s):
-            in_block = False
-        elif not in_block:
+        info = _fence_info(line)
+        if fence_length is None and info:
+            fence_length = info[0]
+        elif (fence_length is not None and info
+              and info[0] >= fence_length and not info[1]):
+            fence_length = None
+        elif fence_length is None:
             result.append(line)
     return '\n'.join(result)
 
+
+@lru_cache(maxsize=1)
 def get_code_blocks(content):
-    """(lang, body) 튜플 리스트 반환."""
+    """(lang, body) 튜플 리스트를 반환하며 fence 길이를 기준으로 닫습니다."""
     blocks = []
     lines = content.split('\n')
-    in_block = False
+    fence_length = None
     lang = ''
     body_lines = []
     for line in lines:
-        s = line.rstrip()
-        if not in_block and s.startswith('```'):
-            in_block = True
-            lang = s[3:].strip()
+        info = _fence_info(line)
+        if fence_length is None and info:
+            fence_length = info[0]
+            lang = info[1]
             body_lines = []
-        elif in_block and re.match(r'^``` *$', s):
+        elif (fence_length is not None and info
+              and info[0] >= fence_length and not info[1]):
             blocks.append((lang, '\n'.join(body_lines)))
-            in_block = False
-        elif in_block:
-            body_lines.append(line)
+            fence_length = None
+        elif fence_length is not None:
+            body_lines.append(_strip_blockquote_prefix(line))
     return blocks
 
 def strip_frontmatter(content):
@@ -117,22 +142,23 @@ def check_h1(content, strict=False):
     return []
 
 # 출력 결과/UI 경로 패턴 (태그 없이 허용)
-_OUTPUT_PATTERNS = re.compile(
-    r'^(\d|\.\.\.|\[|SUCCESS|FAILED|ok:|changed:|fatal:|PLAY|TASK|\$|>|#|\*\*|Status|URL:|http)'
-    r'|→|\| SUCCESS|\| FAILED|\| CHANGED'
-    r'|^[A-Z][a-z]+ →'           # UI 경로 (Grafana →, Jenkins →)
-    r'|Securing |Enter password|New password'  # 인터랙티브 출력
-    r'|^VPN Client>'  # SoftEther vpncmd 세션
-    r'|^Match |^Password|^Permit|^Allow|^Deny'  # sshd_config 등 설정
-    r'|^(frontend|backend|global|listen|defaults)\b'  # haproxy 설정
-    r'|^prefork:|^worker:|^event:'  # Apache MPM
-    r'|^[가-힣].+:'  # 한글 항목 헤더 (사용 조건:, 장점:, 단점: 등)
-    r'|^- '  # 불릿 리스트
-    r'|^[A-Z][A-Z_a-z ]+:'  # 대문자 시작 영문 키 (CAP_NET_ADMIN:, PID Namespace: 등)
-    r'|^[a-z_]+:'  # 소문자 키 (cpu:, memory: 등)
-    r'|^[가-힣/]'  # 한글 또는 슬래시(/) 시작 텍스트 블록
-    r'|^[✓✗]'  # 체크마크 기호
+_OUTPUT_PATTERN_SOURCES = (
+    r'^(?:\d|\.\.\.|\[|SUCCESS|FAILED|ok:|changed:|fatal:|PLAY|TASK|\$|>|#|\*\*|Status|URL:|http)',
+    r'|→|\| SUCCESS|\| FAILED|\| CHANGED',
+    r'|^[A-Z][a-z]+ →',           # UI 경로 (Grafana →, Jenkins →)
+    r'|Securing |Enter password|New password',  # 인터랙티브 출력
+    r'|^VPN Client>',  # SoftEther vpncmd 세션
+    r'|^Match |^Password|^Permit|^Allow|^Deny',  # sshd_config 등 설정
+    r'|^(frontend|backend|global|listen|defaults)\b',  # haproxy 설정
+    r'|^prefork:|^worker:|^event:',  # Apache MPM
+    r'|^[가-힣].+:',  # 한글 항목 헤더 (사용 조건:, 장점:, 단점: 등)
+    r'|^- ',  # 불릿 리스트
+    r'|^[A-Z][A-Z_a-z ]+:',  # 대문자 시작 영문 키 (CAP_NET_ADMIN:, PID Namespace: 등)
+    r'|^[a-z_]+:',  # 소문자 키 (cpu:, memory: 등)
+    r'|^[가-힣/]',  # 한글 또는 슬래시(/) 시작 텍스트 블록
+    r'|^[✓✗]',  # 체크마크 기호
 )
+_OUTPUT_PATTERNS = re.compile(''.join(_OUTPUT_PATTERN_SOURCES))
 
 def check_code_lang(content, strict=False):
     """언어 태그 없는 코드블록 검사.
@@ -216,37 +242,41 @@ def check_tables(content, strict=False):
     return issues
 
 def check_diagram(content, strict=False):
-    """닫힌 박스 다이어그램(┌...┐ ~ └...┘) 내부 행 display width 일치 여부.
-    박스 밖 행(설명, 화살표 등)은 검사 제외."""
+    """중첩 박스를 포함한 닫힌 다이어그램의 행 display width를 검사합니다."""
     issues = []
     for _lang, body in get_code_blocks(content):
         lines = body.splitlines()
-        if not any(l.strip().startswith('┌') for l in lines):
+        if not any('┌' in line for line in lines):
             continue
-        in_box = False
+        box_depth = 0
         box_lines = []
-        for l in lines:
-            if l.strip().startswith('┌'):
-                in_box = True
-                box_lines.append(l)
-            elif in_box:
-                box_lines.append(l)
-                if l.strip().startswith('└') and l.strip().endswith('┘'):
-                    if box_lines:
-                        check_lines = [bl for bl in box_lines
-                                       if bl.strip().startswith(('┌', '│', '└'))
-                                       and '┼' not in bl
-                                       and bl.strip().endswith(('┐', '│', '┘', '┤', '─'))]
-                        if check_lines:
-                            widths = [dw(bl) for bl in check_lines]
-                            max_w = max(widths)
-                            for bl, w in zip(check_lines, widths):
-                                if w != max_w:
-                                    issues.append(
-                                        f"다이어그램 행 폭 불일치: dw={w} (최대={max_w}) | '{bl[:50]}'"
-                                    )
-                    box_lines = []
-                    in_box = False
+        for line in lines:
+            starts_box = line.lstrip().startswith('┌')
+            opening_count = line.count('┌') if box_depth or starts_box else 0
+            closing_count = line.count('└') if box_depth else 0
+            if box_depth == 0 and opening_count == 0:
+                continue
+            if opening_count:
+                box_depth += opening_count
+            if box_depth:
+                box_lines.append(line)
+            if closing_count:
+                box_depth -= closing_count
+            if box_depth == 0 and box_lines:
+                check_lines = [bl for bl in box_lines
+                               if bl.strip().startswith(('┌', '│', '└'))
+                               and '┼' not in bl
+                               and bl.strip().endswith(('┐', '│', '┘', '┤', '─'))]
+                if check_lines:
+                    widths = [dw(bl) for bl in check_lines]
+                    max_w = max(widths)
+                    for bl, current_width in zip(check_lines, widths):
+                        if current_width != max_w:
+                            issues.append(
+                                f"다이어그램 행 폭 불일치: dw={current_width} "
+                                f"(최대={max_w}) | '{bl[:50]}'"
+                            )
+                box_lines = []
     return issues
 
 
@@ -304,29 +334,35 @@ def check_diagram_box_chars(content, strict=False):
     return issues
 
 def check_diagram_korean(content, strict=False):
-    """박스 다이어그램(┌┐로 시작) 내부 한글 사용 여부 (STYLE.md § 5: 영문 권장)."""
+    """박스 다이어그램 내부 한글 사용 여부를 검사합니다."""
     issues = []
     all_lines = content.split('\n')
     in_block = False
+    fence_length = None
     block_start = 0
     block_body = []
     for i, line in enumerate(all_lines, 1):
-        s = line.rstrip()
-        if not in_block and s.startswith('```'):
+        info = _fence_info(line)
+        if not in_block and info:
             in_block = True
+            fence_length = info[0]
             block_start = i + 1
             block_body = []
-        elif in_block and re.match(r'^``` *$', s):
+        elif (in_block and info and info[0] >= fence_length and not info[1]):
             block_text = '\n'.join(block_body)
             if '┌' in block_text and '┘' in block_text:
-                for j, bl in enumerate(block_body):
-                    korean = re.findall(r'[가-힣]+', bl)
+                for j, block_line in enumerate(block_body):
+                    korean = re.findall(r'[가-힣]+', block_line)
                     if korean:
                         lineno = block_start + j
-                        issues.append(f"L{lineno}: 다이어그램 내부 한글 사용: {korean[:3]} (영문 권장)")
+                        issues.append(
+                            f"L{lineno}: 다이어그램 내부 한글 사용: "
+                            f"{korean[:3]} (영문 권장)"
+                        )
             in_block = False
+            fence_length = None
         elif in_block:
-            block_body.append(line)
+            block_body.append(_strip_blockquote_prefix(line))
     return issues
 
 # 허용 이모지 목록
@@ -338,7 +374,8 @@ _EMOJI_PATTERN = re.compile(
 )
 # 비허용 이모지 탐지: Unicode Emoji 범위 중 허용 목록 외
 # 장식용 이모지만 검사 (Emoticons, Transport/Map Symbols, Supplemental)
-# 기호 문자(✓✗⚠☰⬆ 등)는 제외
+# 기호 문자(✓✗⚠☰⬆ 등)는 제외합니다.
+# Unicode 15.1 기준 장식용 이모지 범위이며, Unicode 확장 시 범위를 재검토합니다.
 _ALL_EMOJI_PATTERN = re.compile(
     '[\U0001F300-\U0001F5FF'   # Misc Symbols and Pictographs
     '\U0001F600-\U0001F64F'    # Emoticons
@@ -448,13 +485,16 @@ def check_period_missing(content, strict=False):
     issues = []
     all_lines = content.split('\n')
     in_block = False
+    fence_length = None
     for i, line in enumerate(all_lines, 1):
-        s = line.rstrip()
-        if not in_block and s.startswith('```'):
+        info = _fence_info(line)
+        if not in_block and info:
             in_block = True
+            fence_length = info[0]
             continue
-        elif in_block and re.match(r'^`{3,}\s*$', s):
+        elif (in_block and info and info[0] >= fence_length and not info[1]):
             in_block = False
+            fence_length = None
             continue
         if in_block:
             continue
@@ -550,6 +590,23 @@ def _should_skip_for_file(filepath, check_name):
             return True
     return False
 
+# CLI skip 옵션과 내부 검사 키의 매핑
+_SKIP_FLAG_ATTRIBUTES = {
+    'h1': 'no_h1',
+    'table': 'no_table',
+    'diagram-width': 'no_diagram_width',
+    'diagram-kr': 'no_diagram_kr',
+    'box-chars': 'no_box_chars',
+    'emoji': 'no_emoji',
+    'emoji-disallow': 'no_emoji_disallow',
+    'bold-paren': 'no_bold_paren',
+    'banmal': 'no_banmal',
+    'exaggeration': 'no_exaggeration',
+    'footer': 'no_footer',
+    'period': 'no_period',
+    'reference': 'no_reference',
+}
+
 # ── 파일 처리 ─────────────────────────────────────────────────────────────────
 
 def check_file(path, strict=False, skip_checks=None):
@@ -596,14 +653,37 @@ EXCLUDE_DIRS = {'99_archive', '99_etc', '.git', '__pycache__', '_reference', '00
 # 검사 제외 파일
 EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'CHANGELOG.md'}
 
-def collect_files(target, extra_exclude_dirs=None, exclude_files=None):
+
+def load_config(config_path=None):
+    """TOML 설정에서 검사 제외 목록을 읽습니다."""
+    default_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                '.md-style-check.toml')
+    selected_path = config_path or default_path
+    if not os.path.exists(selected_path):
+        if config_path:
+            raise FileNotFoundError(f"config not found: {selected_path}")
+        return {'exclude_dirs': sorted(EXCLUDE_DIRS),
+                'exclude_files': sorted(EXCLUDE_FILES)}
+    with open(selected_path, 'rb') as config_file:
+        config = tomllib.load(config_file)
+    result = {}
+    for key in ('exclude_dirs', 'exclude_files'):
+        values = config.get(key, [])
+        if not isinstance(values, list) or not all(isinstance(value, str) for value in values):
+            raise ValueError(f"config key '{key}' must be a string list")
+        result[key] = values
+    return result
+
+
+def collect_files(target, extra_exclude_dirs=None, exclude_files=None,
+                  base_exclude_dirs=None, base_exclude_files=None):
     """파일 또는 디렉토리에서 .md 파일 목록 반환."""
     if os.path.isfile(target):
         if exclude_files and os.path.basename(target) in exclude_files:
             return []
         return [target]
-    skip_dirs = EXCLUDE_DIRS | set(extra_exclude_dirs or [])
-    skip_files = EXCLUDE_FILES | set(exclude_files or [])
+    skip_dirs = set(base_exclude_dirs or EXCLUDE_DIRS) | set(extra_exclude_dirs or [])
+    skip_files = set(base_exclude_files or EXCLUDE_FILES) | set(exclude_files or [])
     result = []
     target_abs = os.path.abspath(target)
     for root, dirs, files in os.walk(target):
@@ -650,6 +730,8 @@ def parse_args():
     parser.add_argument('-E', '--exclude-dir', action='append', default=[],
                         dest='exclude_dirs', metavar='DIR',
                         help='제외할 디렉토리명 (여러 번 사용 가능)')
+    parser.add_argument('--config', metavar='FILE',
+                        help='제외 목록 TOML 설정 파일 (기본: .md-style-check.toml)')
     parser.add_argument('-X', '--exclude-file', action='append', default=[],
                         dest='exclude_files', metavar='FILE',
                         help='제외할 파일명 (여러 번 사용 가능)')
@@ -677,22 +759,33 @@ def parse_args():
 
 def main():
     args = parse_args()
+    try:
+        config = load_config(args.config)
+    except (OSError, tomllib.TOMLDecodeError, ValueError) as error:
+        print(f"설정 로드 실패: {error}", file=sys.stderr)
+        sys.exit(1)
 
+    configured_exclude_dirs = set(config['exclude_dirs'])
+    configured_exclude_files = set(config['exclude_files'])
     files = []
     for p in args.targets:
-        files.extend(collect_files(p, args.exclude_dirs, args.exclude_files))
+        files.extend(collect_files(
+            p,
+            args.exclude_dirs,
+            args.exclude_files,
+            configured_exclude_dirs,
+            configured_exclude_files,
+        ))
 
     if not files:
         print("검사할 .md 파일이 없습니다.")
         sys.exit(1)
 
     # 제외 현황 출력
-    all_exclude_dirs = sorted(EXCLUDE_DIRS | set(args.exclude_dirs))
-    all_exclude_files = sorted(EXCLUDE_FILES | set(args.exclude_files)) + ['README.md (루트)']
-    skip_flags = [f"--no-{k}" for k in [
-        'h1', 'table', 'diagram-width', 'diagram-kr', 'box-chars',
-        'emoji', 'bold-paren', 'banmal', 'exaggeration', 'footer', 'reference'
-    ] if getattr(args, f"no_{k.replace('-', '_')}", False)]
+    all_exclude_dirs = sorted(configured_exclude_dirs | set(args.exclude_dirs))
+    all_exclude_files = sorted(configured_exclude_files | set(args.exclude_files)) + ['README.md (루트)']
+    skip_flags = [f"--no-{key}" for key, attribute in _SKIP_FLAG_ATTRIBUTES.items()
+                  if getattr(args, attribute)]
 
     if all_exclude_dirs or all_exclude_files or skip_flags:
         print(f"{YELLOW}[제외] 디렉토리: {', '.join(all_exclude_dirs)}{NC}")
@@ -702,21 +795,9 @@ def main():
         print()
 
     total_issues = 0
+    skip_checks = [key for key, attribute in _SKIP_FLAG_ATTRIBUTES.items()
+                   if getattr(args, attribute)]
     for fpath in files:
-        skip_checks = []
-        if args.no_h1: skip_checks.append('h1')
-        if args.no_table: skip_checks.append('table')
-        if args.no_diagram_width: skip_checks.append('diagram-width')
-        if args.no_diagram_kr: skip_checks.append('diagram-kr')
-        if args.no_box_chars: skip_checks.append('box-chars')
-        if args.no_emoji: skip_checks.append('emoji')
-        if args.no_emoji_disallow: skip_checks.append('emoji-disallow')
-        if args.no_bold_paren: skip_checks.append('bold-paren')
-        if args.no_banmal: skip_checks.append('banmal')
-        if args.no_exaggeration: skip_checks.append('exaggeration')
-        if args.no_footer: skip_checks.append('footer')
-        if args.no_period: skip_checks.append('period')
-        if args.no_reference: skip_checks.append('reference')
         issues = check_file(fpath, strict=args.strict, skip_checks=skip_checks)
         rel = fpath.replace('/root/32_system-engineering-resources/', '')
         if issues:
@@ -740,6 +821,3 @@ if __name__ == '__main__':
         main()
     except KeyboardInterrupt:
         sys.exit(130)
-
-
-

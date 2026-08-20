@@ -6,6 +6,23 @@
 
 ---
 
+## [3.8.0] - 2026-08-20
+
+### Added
+
+- `.md-style-check.toml`로 Markdown 검사 제외 디렉토리·파일 설정을 분리.
+- GitHub Actions에 `main`·`yunli` push와 Pull Request 대상 Markdown 검증 추가.
+- CI에서 `md-link-check.py`, `md-style-check.py`, `readme_inventory_check.py` 실행.
+
+### Fixed
+
+- `md-style-check.py`의 4-backtick·인용구 코드 fence 처리를 fence 길이 기준으로 정정.
+- 코드블록 반복 제거 결과를 캐시하고, 중첩 박스 다이어그램을 depth 기준으로 검사.
+- 출력 패턴·skip 옵션 매핑을 목록과 사전으로 분리.
+- 날짜 자동화 workflow의 staged 상태 검사 순서를 수정하여 실제 commit·push가 실행되도록 보강.
+
+---
+
 ## [3.7.0] - 2026-08-20
 
 ### Fixed

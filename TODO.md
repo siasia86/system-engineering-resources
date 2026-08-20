@@ -6,9 +6,9 @@
 
 ## 목차
 
-| 섹션                                                                                                                                                        |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [1. 잔여 이슈](#1-잔여-이슈) / [2. md-style-check.py 개선](#2-md-style-checkpy-개선) / [3. GitHub Actions 문서 검증 보강](#3-github-actions-문서-검증-보강) |
+| 섹션                         |
+|------------------------------|
+| [1. 잔여 이슈](#1-잔여-이슈) |
 
 ---
 
@@ -27,49 +27,6 @@
 | `01_fundamentals/linux/vim_airline.md`                     | 외부 프로젝트(vim-airline) README 원본 |
 | `06_career/ai_tools/kiro_cli_command_reference.md`         | Kiro CLI 문서 (다이어그램 한글 의도적) |
 | `02_infrastructure/cicd/infra_monorepo_and_boilerplate.md` | 4-backtick 내부 표 (파서 한계)         |
-
----
-
-## 2. md-style-check.py 개선
-
-code-review (2026-07-07) 결과 기반 개선 항목입니다.
-
-### 🟡 개선 권장 (4건)
-
-| # | 위치     | 문제                                                       | 제안                                                   |
-|---|----------|------------------------------------------------------------|--------------------------------------------------------|
-| 1 | L73-86   | `strip_code_blocks()` 반복 호출 (5개 검사에서 각각 재계산) | `check_file()`에서 1회 호출 후 캐시하여 각 검사에 전달 |
-| 2 | L97      | `get_code_blocks` 닫힘 조건이 3-backtick만 매칭            | 4-backtick 블록 지원: fence 길이 기반 매칭             |
-| 3 | L218-240 | `check_diagram` 중첩 박스 조기 종료                        | depth 카운터 또는 indent 기반 분리                     |
-| 4 | L99      | 인용구(`>`) 내부 코드블록 잘못 인식 가능                   | 인용구 prefix strip 후 코드블록 판정                   |
-
-### 선택 개선 (6건)
-
-| #  | 위치     | 문제                          | 제안                                                        |
-|----|----------|-------------------------------|-------------------------------------------------------------|
-| 5  | L44-52   | `dw()` 한글 범위 이중 체크    | 성능 의도적이면 주석 추가, 아니면 `east_asian_width`만 사용 |
-| 6  | L141     | `_OUTPUT_PATTERNS` 30+ 패턴   | 별도 리스트/파일로 분리                                     |
-| 7  | L503-510 | `EXCLUDE_DIRS/FILES` 하드코딩 | `.md-style-check.toml` 설정 파일 분리                       |
-| 8  | L577-588 | `skip_checks` 반복 if 문      | dict comprehension으로 간소화                               |
-| 9  | L350-365 | 이모지 유니코드 범위          | 새 Unicode 버전 대비 주석 추가                              |
-| 10 | L703     | trailing newline 3개          | 1개로 축소                                                  |
-
-### 현재 우회책
-
-| 이슈            | 우회                                                 |
-|-----------------|------------------------------------------------------|
-| 4-backtick (#2) | `infra_monorepo_and_boilerplate.md` → FILE_SKIP 예외 |
-| 중첩 박스 (#3)  | 실제 문서에서 발생한 적 없음 (모니터링 중)           |
-
----
-
-## 3. GitHub Actions 문서 검증 보강
-
-README 최신화 작업에서 확인된 Workflow 개선 항목입니다.
-
-- `update-date.yml`은 현재 `main` push만 감시하므로 `yunli` 작업 브랜치와 Pull Request 검증을 포함하지 않습니다.
-- 날짜 자동 커밋 후 staged 상태를 다시 검사하므로, 실제 `git push` 단계가 실행되지 않을 가능성이 있습니다.
-- `md-link-check.py`, `md-style-check.py`, `readme_inventory_check.py`를 CI 검증 단계로 통합해야 합니다.
 
 ---
 
