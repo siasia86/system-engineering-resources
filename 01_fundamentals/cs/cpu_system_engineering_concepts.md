@@ -61,6 +61,23 @@ Logical processors = sockets × cores per socket × threads per core
 
 AES-NI, SSE4.2, AVX, AVX2, AVX-512와 같은 ISA 확장은 특정 암호화·벡터 연산·과학 계산 코드의 실행 경로에 영향을 줍니다. 애플리케이션이 특정 확장을 요구하는지와 운영 환경의 CPU가 해당 기능을 노출하는지 확인해야 합니다.
 
+### 확인 예제
+
+CPU 토폴로지와 명령어 feature를 확인합니다.
+
+```bash
+# CPU·Socket·Core·Thread·NUMA 정보
+lscpu
+lscpu -e=CPU,NODE,SOCKET,CORE
+
+# x86 CPU feature 확인
+lscpu | grep -i '^Flags:'
+# 또는
+lscpu | grep -i '^Features:'
+```
+
+애플리케이션이 요구하는 feature가 Flags/Features 목록에 있는지 확인합니다. VM에서는 호스트 CPU가 아니라 게스트에 노출된 feature가 표시될 수 있습니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -89,6 +106,21 @@ VM CPU 30% + steal/ready 증가      → Hypervisor CPU 경합 가능
 
 Context switch가 평소 기준보다 급증하면서 latency도 증가하면 작업 전환 비용, lock contention, 과도한 스레드 수를 의심합니다. 반대로 CPU 사용률이 낮다고 해서 항상 정상인 것은 아니며, run queue와 애플리케이션 latency를 함께 확인합니다.
 
+### 관측 예제
+
+```bash
+# 코어별 CPU 사용률을 5회 수집
+mpstat -P ALL 1 5
+
+# 실행 큐·메모리·I/O 대기 관찰
+vmstat 1 5
+
+# 프로세스 성능 카운터를 10초 동안 수집
+perf stat -p <PID> -e cycles,instructions,cache-misses sleep 10
+```
+
+코어별 사용률, run queue, I/O wait, cycles와 cache-misses를 같은 시간대에 비교합니다. `perf` 이벤트는 CPU 모델과 권한에 따라 다를 수 있으므로 `perf list`로 지원 여부를 먼저 확인합니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -114,6 +146,23 @@ CPU 0이 Memory 0에 접근하면 local access이고, CPU 0이 Memory 1에 접�
 - 데이터베이스·캐시·HPC처럼 메모리 대역폭과 지연시간이 중요한 워크로드는 `numactl`, CPU·메모리 affinity, VM virtual NUMA 설정을 검토합니다.
 
 NUMA 문제를 CPU 문제로 오인하지 않으려면 CPU 사용률 외에 메모리 대역폭, remote access, latency를 함께 측정해야 합니다.
+
+### NUMA 배치 확인 예제
+
+```bash
+# node별 CPU·메모리 용량·거리
+numactl -H
+
+# node별 메모리 사용량과 allocation 통계
+numastat -m
+numastat
+
+# 특정 프로세스의 node별 메모리 사용량
+numastat -p <PID>
+cat /proc/<PID>/numa_maps
+```
+
+`numastat -p <PID>`에서 프로세스 메모리가 한 node에 집중되는지 확인합니다. `numa_miss`, `other_node`, remote access, 애플리케이션 latency가 함께 증가할 때 NUMA locality 문제를 우선 검토합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -146,6 +195,25 @@ Physical CPU
 | Compatibility mode | VM에 공통 CPU 기능만 노출                                  | 호스트 이동은 쉬워지지만 최신 CPU feature는 숨겨질 수 있습니다. |
 
 Hyper-V Processor Compatibility와 VMware EVC는 VM의 호스트 이동성과 CPU feature 호환성을 위한 기능입니다. 실제 CPU의 성능·발열·BIOS·메모리 토폴로지를 검증하거나 에뮬레이션하지는 않습니다.
+
+### 가상화 CPU 확인 예제
+
+Linux에서 프로세스의 CPU affinity를 조회합니다.
+
+```bash
+taskset -cp <PID>
+ps -o pid,psr,pcpu,comm -p <PID>
+```
+
+Hyper-V에서는 VM의 virtual NUMA 상태와 vCPU 구성을 확인합니다.
+
+```powershell
+Get-VMNumaNodeStatus -VMName "<VMName>"
+Get-VMProcessor -VMName "<VMName>" |
+    Select-Object VMName, Count, HwThreadCountPerCore
+```
+
+VM 내부의 CPU 사용률만 보지 말고 Hypervisor의 CPU ready·steal·경합 지표를 같은 시간대에 확인해야 합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -186,6 +254,18 @@ AVX2 또는 특수 명령어가 필요한 경우 해당 CPU 1대
 운영과 동일한 서버 플랫폼 1대
 ```
 
+### CPU feature 확인 예제
+
+```bash
+# 지원되는 feature만 추출
+lscpu | grep -i -E 'Flags|Features'
+
+# Linux가 노출한 feature 중 AVX 계열 확인
+grep -m1 -oE 'avx[^ ]*' /proc/cpuinfo | sort -u
+```
+
+테스트 결과는 CPU 모델명만 기록하지 말고 OS가 실제로 노출한 feature 목록과 함께 기록합니다. VM CPU compatibility 설정이 feature를 숨길 수 있습니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -218,6 +298,23 @@ AVX2 또는 특수 명령어가 필요한 경우 해당 CPU 1대
 
 CPU 사용률만 높고 run queue와 latency가 평소 SLA 범위라면 즉시 증설하지 않습니다. 반대로 CPU 사용률이 낮아도 단일 스레드 또는 메모리 지연으로 SLA가 깨지면 CPU 구조와 애플리케이션 경로를 함께 분석합니다.
 
+### 장애 진단 예제
+
+```bash
+# 1. 코어별 포화와 run queue 확인
+mpstat -P ALL 1 5
+vmstat 1 5
+
+# 2. 프로세스별 CPU·메모리·context switch 확인
+pidstat -u -r -w -p <PID> 1 5
+
+# 3. NUMA 배치와 성능 카운터 비교
+numastat -p <PID>
+perf stat -p <PID> -e cycles,instructions,cache-misses sleep 10
+```
+
+단일 코어 포화, run queue 증가, cache-misses 증가, latency 상승이 같은 시간대에 발생하는지 확인합니다. 한 지표만으로 CPU 증설을 결정하지 않습니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -244,6 +341,20 @@ CPU를 선정할 때 GHz만 비교하지 않습니다. 워크로드의 특성에
 - 전력·발열·냉각 용량과 장애 시 여유 용량을 포함합니다.
 - 코어 수 증가로 상용 소프트웨어 라이선스가 증가하는지 검토합니다.
 
+### 용량 측정 예제
+
+동일한 workload를 실행하면서 CPU·run queue·I/O 대기 지표를 수집합니다.
+
+```bash
+# 1분 동안 5초 간격으로 CPU를 기록
+mpstat -P ALL 5 12 > cpu_capacity.txt
+
+# 같은 구간의 run queue와 I/O 대기를 기록
+vmstat 5 12 > vmstat_capacity.txt
+```
+
+측정 전후의 p95/p99 latency, 처리량, CPU peak를 비교합니다. CPU 수치를 낮추는 것보다 SLA와 처리량이 개선되는지로 증설 효과를 판단합니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -260,6 +371,17 @@ CPU와 플랫폼 유지보수는 성능뿐 아니라 보안과도 연결됩니�
 - 신규 CPU 도입 시 Hypervisor, 백업 솔루션, 모니터링 에이전트의 지원 여부를 확인합니다.
 
 🟡 보안 패치로 성능이 변할 수 있으므로 패치 전후에 동일한 workload와 지표로 비교해야 합니다. 측정 없이 mitigation을 해제하는 것은 권장하지 않습니다.
+
+### 유지보수 확인 예제
+
+Linux에서 microcode와 CPU 취약점 mitigation 상태를 확인합니다.
+
+```bash
+lscpu | grep -i 'Microcode'
+grep -H . /sys/devices/system/cpu/vulnerabilities/*
+```
+
+패치 전후 동일 workload의 latency와 처리량을 비교하고, mitigation 해제 여부는 보안 담당자의 위험 수용 절차 없이 결정하지 않습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
