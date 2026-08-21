@@ -422,6 +422,6 @@ aws sts get-caller-identity
 
 **작성일**: 2026-08-12
 
-**마지막 업데이트**: 2026-08-14
+**마지막 업데이트**: 2026-08-21
 
 © 2026 siasia86. Licensed under CC BY 4.0.
