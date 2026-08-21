@@ -331,6 +331,63 @@ seal "awskms" {
 
 Vault가 사용하는 IAM 주체에는 최소한 `kms:Encrypt`, `kms:Decrypt`, `kms:DescribeKey` 권한이 필요합니다. KMS 키 정책과 IAM 정책을 함께 검토합니다.
 
+#### KMS 키 정책·감사·복구 운영
+
+Auto Unseal은 Vault 설정만으로 끝나지 않습니다. KMS Key Policy와 IAM Role을 분리 검토하고, Vault Role에는 지정한 KMS 키의 사용 권한만 허용합니다. Key Admin 권한과 Key User 권한을 같은 Role에 묶지 않으며, 장기 Access Key 대신 EC2 Instance Profile·ECS Task Role·EKS IRSA 또는 Pod Identity를 사용합니다.
+
+CloudTrail에서는 정상적인 Vault Role의 `kms:Decrypt`, `kms:Encrypt`, `kms:DescribeKey` 호출과 다음과 같은 고위험 변경을 구분해 감사합니다.
+
+- `DisableKey`, `ScheduleKeyDeletion`, `CancelKeyDeletion`
+- `PutKeyPolicy`, `CreateGrant`, `RetireGrant`
+- 예상하지 않은 Principal·리전·시간대의 KMS API 호출
+
+```bash
+KEY_ID="alias/vault-unseal-key"
+REGION="ap-northeast-2"
+
+# 키 상태와 현재 Key Policy 확인
+aws kms describe-key --key-id "$KEY_ID" --region "$REGION"
+aws kms get-key-policy \
+    --key-id "$KEY_ID" \
+    --policy-name default \
+    --region "$REGION"
+
+# 최근 KMS Decrypt와 키 삭제 관련 이벤트 확인
+aws cloudtrail lookup-events \
+    --lookup-attributes AttributeKey=EventName,AttributeValue=Decrypt \
+    --region "$REGION" \
+    --max-results 50
+aws cloudtrail lookup-events \
+    --lookup-attributes AttributeKey=EventName,AttributeValue=ScheduleKeyDeletion \
+    --region "$REGION" \
+    --max-results 50
+```
+
+CloudTrail Event History는 보존 기간이 제한되므로 장기 감사가 필요하면 조직 단위 Trail과 중앙 로그 저장소를 구성합니다. Vault가 실행되는 Role의 `Decrypt` 호출이 예상한 리전과 Principal에서 발생하는지 확인하고, KMS Key Policy 변경에는 별도 승인과 알림을 적용합니다.
+
+AWS KMS 키의 영구 삭제는 일반적인 백업 복원으로 되돌릴 수 없습니다. 삭제가 예약된 상태라면 삭제 대기 기간 안에 다음 명령으로 취소할 수 있지만, 영구 삭제 후 새 KMS 키를 같은 별칭으로 만들어도 기존 Vault 암호문을 복호화할 수 없습니다.
+
+```bash
+# 삭제 예약 상태에서만 취소 가능 — 승인된 복구 절차에서 실행
+aws kms cancel-key-deletion \
+    --key-id "$KEY_ID" \
+    --region "$REGION"
+
+# 비활성화된 키를 활성화 — 원인과 승인 상태를 먼저 확인
+aws kms enable-key \
+    --key-id "$KEY_ID" \
+    --region "$REGION"
+```
+
+복구 절차는 다음 순서로 별도 검증합니다.
+
+1. KMS 키가 삭제 예약·비활성화되지 않았는지 확인합니다.
+2. Vault 실행 Role의 IAM Policy와 KMS Key Policy 양쪽의 `kms:Decrypt` 권한을 확인합니다.
+3. KMS 키가 살아 있는 상태에서 Vault 스토리지 백업을 격리 환경에 복원하고 자동 Unseal을 테스트합니다.
+4. KMS 키가 영구 삭제된 경우에는 기존 Vault 데이터를 복구할 수 없으므로, 키 삭제 방지·백업 보존·재해 복구 환경을 사전에 검증합니다.
+
+KMS 키 정책, 별칭, 삭제 방지 설정은 IaC로 관리하되 기존 키를 삭제하고 재생성하지 않도록 `prevent_destroy`와 변경 승인 절차를 적용합니다. Recovery Key는 운영자 복구 작업에 필요하지만, 영구 삭제된 KMS 키를 대체하지 않습니다.
+
 ### Tip 2: 환경 변수로 시크릿 주입 (애플리케이션)
 
 ```bash
@@ -391,6 +448,9 @@ Unseal Key를 명령행 인자로 전달하지 말고 `vault operator unseal`을
 - Vault Database Secrets Engine: [developer.hashicorp.com/vault/docs/secrets/databases](https://developer.hashicorp.com/vault/docs/secrets/databases) — ★★★☆☆
 - Vault Audit Devices: [developer.hashicorp.com/vault/docs/audit](https://developer.hashicorp.com/vault/docs/audit) — ★★★☆☆
 - Vault AWS KMS Seal: [developer.hashicorp.com/vault/docs/configuration/seal/awskms](https://developer.hashicorp.com/vault/docs/configuration/seal/awskms) — ★★★☆☆
+- AWS KMS Key Policies: [docs.aws.amazon.com/kms/latest/developerguide/key-policies.html](https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html) — ★★★☆☆
+- AWS KMS Key Deletion: [docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html](https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html) — ★★★☆☆
+- AWS KMS CloudTrail Logging: [docs.aws.amazon.com/kms/latest/developerguide/logging-using-cloudtrail.html](https://docs.aws.amazon.com/kms/latest/developerguide/logging-using-cloudtrail.html) — ★★★☆☆
 - Vault Releases: [github.com/hashicorp/vault/releases](https://github.com/hashicorp/vault/releases) — ★★★☆☆
 - Vault Docker Images: [hub.docker.com/r/hashicorp/vault/tags](https://hub.docker.com/r/hashicorp/vault/tags) — ★★★☆☆
 
@@ -409,6 +469,6 @@ Unseal Key를 명령행 인자로 전달하지 말고 `vault operator unseal`을
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-08-20
+**마지막 업데이트**: 2026-08-21
 
 © 2026 siasia86. Licensed under CC BY 4.0.
