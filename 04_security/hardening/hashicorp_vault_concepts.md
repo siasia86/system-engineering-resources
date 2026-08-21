@@ -439,6 +439,7 @@ AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 
 | Encryption Key             | Vault 데이터를 암호화·복호화하는 키입니다.                                                          |
 | Recovery Key               | Auto Unseal 환경에서 특정 관리자 작업을 승인하는 키입니다. Root Key를 직접 복호화하지 않습니다.     |
 | Auth Method                | Client의 신원을 확인하고 Token 또는 Identity를 발급하는 인증 방식입니다.                            |
+| Root Token                 | 모든 경로에 접근 가능한 Token입니다. 초기 설정·비상 절차 외의 일반 자동화에는 사용하지 않습니다.    |
 | AppRole                    | 애플리케이션이 Role ID와 Secret ID로 인증하는 Auth Method입니다.                                    |
 | Policy Capability          | 특정 Vault 경로에서 허용하는 `read`, `create`, `update`, `patch`, `delete`, `list` 등의 동작입니다. |
 | Secret Engine / Mount Path | Secret을 저장·발급하는 기능과 그 기능이 연결된 Vault 경로입니다.                                    |
@@ -446,8 +447,11 @@ AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 
 | Dynamic Secret             | 요청 시 생성되고 Lease 만료 또는 폐기 시 사용이 끝나는 임시 Credential입니다.                       |
 | KV v2 Soft Delete          | 버전 데이터를 즉시 제거하지 않고 삭제 상태로 표시해 복구할 수 있게 하는 동작입니다.                 |
 | PKI Role / SAN             | 인증서 발급 조건과 인증서에 허용되는 주체 이름 범위입니다.                                          |
+| Root CA / Intermediate CA  | PKI Secret Engine에서 인증서 신뢰 체계의 최상위·중간 발급자입니다.                                  |
 | CRL                        | 폐기된 인증서 목록(Certificate Revocation List)입니다.                                              |
 | Audit Device               | Vault 요청·응답의 감사 메타데이터를 기록하는 출력 장치입니다.                                       |
+| HA (High Availability)     | 여러 노드로 장애를 견디도록 구성하는 고가용성 방식입니다.                                           |
+| HSM                        | Root Key 복호화를 대행할 수 있는 하드웨어 기반 보안 장치입니다.                                     |
 
 [⬆ 목차로 돌아가기](#목차)
 
