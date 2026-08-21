@@ -17,6 +17,7 @@ sources:
 | 기술                           | 파일                                                    | 최신 버전                                        | 확인일     | 참조 |
 |--------------------------------|---------------------------------------------------------|--------------------------------------------------|------------|------|
 | Ansible                        | `_reference/ansible_official_notes.md`                  | 14.1.0 (core 2.21.1)                             | 2026-07-03 | X    |
+| API Styles                    | `_reference/api_styles_official_notes.md`              | REST·GraphQL·gRPC·SOAP·WebSocket·Webhook·JSON-RPC·SSE | 2026-08-21 | O    |
 | AWS STS/IAM/S3/KMS             | `_reference/aws_sts_iam_s3_kms_official_notes.md`       | AssumeRole, session, cross-account 권한          | 2026-08-13 | O    |
 | AWS Secrets Manager            | `_reference/aws_secrets_manager_official_notes.md`      | Secret lifecycle·Rotation·IAM                    | 2026-08-19 | O    |
 | ArgoCD                         | `_reference/argocd_official_notes.md`                   | v3.4.4                                           | 2026-07-03 | O    |
