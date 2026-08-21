@@ -13,6 +13,8 @@ sources:
   - https://man7.org/linux/man-pages/man1/lscpu.1.html
   - https://man7.org/linux/man-pages/man1/perf-stat.1.html
   - https://man7.org/linux/man-pages/man5/proc_stat.5.html
+  - https://man7.org/linux/man-pages/man8/numactl.8.html
+  - https://man7.org/linux/man-pages/man8/numastat.8.html
   - https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/processor-compatibility-mode
 ---
 

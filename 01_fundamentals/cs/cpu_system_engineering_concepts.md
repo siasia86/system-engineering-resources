@@ -17,15 +17,15 @@ CPU의 내부 회로 설계보다 시스템 엔지니어(SE)가 운영·성능·
 
 ## 1. SE에게 필요한 CPU 이해 범위
 
-SE는 CPU 내부의 트랜지스터나 마이크로아키텍처 전체를 구현할 필요는 없습니다. 대신 장애 원인을 CPU·메모리·I/O·가상화 경합 중 어디로 분류할 수 있고, CPU 증설이 실제 해결책인지 판단할 수 있어야 합니다.
+SE는 CPU 내부의 트랜지스터나 마이크로아키텍처 전체를 구현할 필요는 없습니다. 대신 장애 원인을 CPU·메모리·I/O·가상화 경합 중 하나로 분류하고, CPU 증설이 실제 해결책인지 판단할 수 있어야 합니다.
 
-| 수준   | 이해할 내용                                  | 실무 판단                          |
-|--------|----------------------------------------------|------------------------------------|
-| 필수   | Socket, core, thread, 주파수, 캐시           | 서버 토폴로지와 기본 성능 파악     |
-| 운영   | 스케줄링, run queue, context switch, NUMA    | CPU 병목과 메모리 병목 구분        |
-| 가상화 | vCPU, overcommit, CPU ready·steal, affinity  | VM 지연과 호스트 경합 분석         |
-| 호환성 | ISA feature, microcode, BIOS, Hypervisor     | 실행 가능 여부와 마이그레이션 판단 |
-| 고급   | cache miss, branch prediction, false sharing | 애플리케이션 성능 분석 지원        |
+| 수준   | 이해할 내용                                  | 실무 판단                        |
+|--------|----------------------------------------------|----------------------------------|
+| 필수   | Socket, core, thread, 주파수, 캐시           | 토폴로지와 논리 프로세서 수 확인 |
+| 운영   | 스케줄링, run queue, context switch, NUMA    | CPU 병목과 메모리 병목 구분      |
+| 가상화 | vCPU, overcommit, CPU ready·steal, affinity  | VM 지연과 호스트 경합 분석       |
+| 호환성 | ISA feature, microcode, BIOS, Hypervisor     | feature·플랫폼·VM 이동성 판단    |
+| 고급   | cache miss, branch prediction, false sharing | 애플리케이션 성능 분석 지원      |
 
 🟡 CPU 사용률 하나만으로 병목을 판단하지 않습니다. 전체 사용률이 낮아도 단일 스레드, 메모리 지연, VM 스케줄링 대기로 서비스가 느릴 수 있습니다.
 
@@ -44,7 +44,7 @@ SE는 CPU 내부의 트랜지스터나 마이크로아키텍처 전체를 구현
 | Logical processor | OS가 인식하는 실행 단위       | SMT 논리 프로세서는 물리 코어와 동일한 성능이 아닙니다. |
 | Thread            | 실행 가능한 작업 단위         | 하나의 프로세스에 여러 스레드가 있을 수 있습니다.       |
 
-일반적으로 다음 관계가 성립하지만, 서버와 플랫폼에 따라 예외가 있으므로 실제 값을 확인합니다.
+대칭형 CPU 구성에서 온라인 논리 프로세서 수는 다음 관계로 계산할 수 있습니다. CPU hotplug, offline CPU, hybrid CPU 구조에서는 실제 토폴로지를 확인합니다.
 
 ```text
 Logical processors = sockets × cores per socket × threads per core
@@ -54,8 +54,8 @@ Logical processors = sockets × cores per socket × threads per core
 
 - **주파수(Clock)**: 초당 사이클 수입니다. 주파수가 높아도 작업의 명령어 수와 메모리 대기시간에 따라 처리량이 달라집니다.
 - **IPC(Instructions Per Cycle)**: 한 사이클에 완료할 수 있는 명령어 수를 나타내는 성능 개념입니다. 서로 다른 CPU의 GHz만 직접 비교하면 안 됩니다.
-- **Turbo**: 부하·전력·온도 조건이 허용하는 동안 일시적으로 높아지는 주파수입니다. 지속적인 전체 코어 성능은 All-core 동작과 냉각 조건을 함께 확인합니다.
-- **Cache**: CPU와 메모리 사이의 빠른 저장 공간입니다. L1·L2·L3 캐시 적중률이 낮으면 메모리 지연의 영향이 커질 수 있습니다.
+- **Turbo**: 부하·전력·온도 조건이 허용되는 동안 기본 주파수보다 높게 동작하는 주파수입니다. 지속적인 전체 코어 성능은 All-core 동작 주파수와 냉각 조건을 함께 확인합니다.
+- **Cache**: CPU가 자주 사용하는 명령어와 데이터를 보관하는 고속 메모리입니다. 캐시 적중률이 낮으면 메모리 접근 지연의 영향이 커질 수 있습니다.
 
 ### CPU 기능 확인
 
@@ -67,18 +67,18 @@ AES-NI, SSE4.2, AVX, AVX2, AVX-512와 같은 ISA 확장은 특정 암호화·벡
 
 ## 3. 운영체제 스케줄링과 관측
 
-운영체제 스케줄러는 실행 가능한 스레드를 CPU에 배치하고, 우선순위·affinity·대기 상태를 조정합니다. CPU 장애 분석에서는 사용률을 다음처럼 분해해 확인합니다.
+운영체제 스케줄러는 실행 가능한 스레드를 CPU에 배치하고, 우선순위와 affinity를 반영해 실행·대기 상태를 관리합니다. CPU 장애 분석에서는 사용률을 다음처럼 분해해 확인합니다.
 
-| 지표      | 의미                                  | 해석 예시                              |
-|-----------|---------------------------------------|----------------------------------------|
-| User      | 사용자 애플리케이션이 사용한 CPU 시간 | 계산 작업 또는 busy loop               |
-| System    | 커널이 사용한 CPU 시간                | 시스템 콜, 네트워크, 파일 시스템 처리  |
-| I/O wait  | I/O 완료를 기다리는 시간              | CPU보다 디스크·스토리지 병목 가능      |
-| Idle      | 유휴 시간                             | CPU 여유가 있다는 의미입니다.          |
-| Steal     | 가상화 호스트가 다른 VM에 할당한 시간 | VM이 물리 CPU를 받지 못한 상태         |
-| Run queue | 실행 대기 중인 작업 수                | CPU 공급보다 runnable 작업이 많은 상태 |
+| 지표      | 의미                                         | 해석 예시                                               |
+|-----------|----------------------------------------------|---------------------------------------------------------|
+| User      | 사용자 애플리케이션이 사용한 CPU 시간        | 계산 작업 또는 busy loop                                |
+| System    | 커널이 사용한 CPU 시간                       | 시스템 콜, 네트워크, 파일 시스템 처리                   |
+| I/O wait  | Linux에서 I/O 완료를 기다린 시간             | I/O 병목 가능성입니다. 이 지표만으로 확정하지 않습니다. |
+| Idle      | 유휴 시간                                    | CPU 여유가 있다는 의미입니다.                           |
+| Steal     | 게스트가 다른 가상화 작업 때문에 대기한 시간 | VM이 물리 CPU를 받지 못한 상태                          |
+| Run queue | 실행 가능한 스레드 중 CPU 대기 수            | CPU 공급보다 runnable 스레드가 많은 상태                |
 
-다음 상황을 구분해야 합니다.
+다음 상황을 구분해야 합니다. 아래 수치는 설명을 위한 예시이며 공통 임계값이 아닙니다.
 
 ```text
 전체 CPU 30% + 단일 스레드 100%   → 단일 실행 경로 포화
@@ -87,7 +87,7 @@ AES-NI, SSE4.2, AVX, AVX2, AVX-512와 같은 ISA 확장은 특정 암호화·벡
 VM CPU 30% + steal/ready 증가      → Hypervisor CPU 경합 가능
 ```
 
-Context switch가 지나치게 많으면 짧은 작업 전환 비용, lock contention, 과도한 스레드 수를 의심합니다. 반대로 CPU 사용률이 낮다고 해서 항상 정상인 것은 아니며, run queue와 애플리케이션 latency를 함께 확인합니다.
+Context switch가 평소 기준보다 급증하면서 latency도 증가하면 작업 전환 비용, lock contention, 과도한 스레드 수를 의심합니다. 반대로 CPU 사용률이 낮다고 해서 항상 정상인 것은 아니며, run queue와 애플리케이션 latency를 함께 확인합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -99,19 +99,19 @@ NUMA(Non-Uniform Memory Access)는 모든 CPU가 같은 비용으로 메모리�
 
 ```text
 NUMA node 0                         NUMA node 1
-┌──────────────┐                     ┌───────────────┐
-│ CPU + Memory │ <── interconnect ─> │ CPU + Memory  │
-└──────────────┘                     └───────────────┘
+CPU 0 + Memory 0  <── interconnect ──>  CPU 1 + Memory 1
 ```
 
-원격 메모리 접근이 항상 장애를 의미하는 것은 아니지만, 대규모 데이터 처리나 지연시간에 민감한 서비스에서는 local memory 비율과 CPU·메모리 배치를 확인해야 합니다.
+CPU 0이 Memory 0에 접근하면 local access이고, CPU 0이 Memory 1에 접근하면 interconnect를 거치는 remote access입니다. CPU 1도 같은 규칙으로 Memory 1은 local, Memory 0은 remote입니다.
+
+원격 메모리 접근 자체는 정상적인 동작이며 고정된 허용 임계값도 없습니다. 다만 대규모 데이터 처리나 지연시간에 민감한 서비스에서는 프로세스 메모리 중 local node에 배치된 비율, CPU·메모리 배치, remote access와 latency를 함께 확인해야 합니다.
 
 ### 운영 시 확인할 항목
 
-- 소켓별 코어 수와 메모리 용량이 균형을 이루는지 확인합니다.
-- VM의 vCPU와 메모리가 특정 NUMA node에 과도하게 집중되지 않는지 확인합니다.
-- CPU affinity를 임의로 고정하면 오히려 다른 NUMA node의 메모리를 사용하게 될 수 있습니다.
-- 데이터베이스·캐시·HPC처럼 메모리 대역폭과 지연시간이 중요한 워크로드는 NUMA-aware 설정을 검토합니다.
+- 소켓별 코어 수·메모리 채널 수·메모리 용량이 대칭적으로 구성되는지 확인합니다.
+- VM의 vCPU와 메모리가 특정 virtual NUMA node에 집중되어 다른 node의 자원을 남기지 않는지 확인합니다.
+- CPU affinity를 임의로 고정하면 스케줄러 선택폭이 줄고 CPU와 메모리의 NUMA node가 달라질 수 있습니다.
+- 데이터베이스·캐시·HPC처럼 메모리 대역폭과 지연시간이 중요한 워크로드는 `numactl`, CPU·메모리 affinity, VM virtual NUMA 설정을 검토합니다.
 
 NUMA 문제를 CPU 문제로 오인하지 않으려면 CPU 사용률 외에 메모리 대역폭, remote access, latency를 함께 측정해야 합니다.
 
@@ -136,16 +136,16 @@ Physical CPU
 
 ### 핵심 개념
 
-| 개념               | 설명                                      | 운영상 주의사항                                             |
-|--------------------|-------------------------------------------|-------------------------------------------------------------|
-| vCPU               | VM에 노출되는 가상 실행 단위              | 많이 할당한다고 항상 빨라지지 않습니다.                     |
-| Overcommit         | 물리 CPU보다 많은 vCPU를 할당하는 상태    | 경합과 스케줄링 지연이 증가할 수 있습니다.                  |
-| CPU ready          | VM이 CPU를 요청했지만 실행을 기다린 시간  | VMware에서 호스트 경합을 판단하는 지표입니다.               |
-| Steal time         | 다른 VM 때문에 게스트가 CPU를 빼앗긴 시간 | Linux 게스트에서 확인할 수 있습니다.                        |
-| Affinity/pinning   | 특정 논리 CPU에 실행을 고정               | NUMA와 함께 설계하지 않으면 역효과가 날 수 있습니다.        |
-| Compatibility mode | VM에 공통 CPU 기능만 노출                 | 라이브 마이그레이션에 유리하지만 기능이 제한될 수 있습니다. |
+| 개념               | 설명                                                       | 운영상 주의사항                                                 |
+|--------------------|------------------------------------------------------------|-----------------------------------------------------------------|
+| vCPU               | VM에 노출되는 가상 실행 단위                               | 워크로드보다 과도하게 할당하면 지연이 증가할 수 있습니다.       |
+| Overcommit         | 호스트 논리 프로세서 수보다 많은 vCPU를 VM에 할당하는 상태 | 경합과 스케줄링 지연이 증가할 수 있습니다.                      |
+| CPU ready          | VM이 CPU를 요청했지만 실행을 기다린 시간                   | VMware에서 호스트 경합을 판단하는 지표입니다.                   |
+| Steal time         | 다른 가상화 작업 때문에 게스트가 실행되지 못한 시간        | Linux 게스트의 지표입니다.                                      |
+| Affinity/pinning   | vCPU·프로세스를 특정 논리 CPU에 고정                       | 스케줄러 선택폭과 NUMA locality를 함께 확인합니다.              |
+| Compatibility mode | VM에 공통 CPU 기능만 노출                                  | 호스트 이동은 쉬워지지만 최신 CPU feature는 숨겨질 수 있습니다. |
 
-Hyper-V의 Processor Compatibility와 VMware EVC는 주로 VM 이동성을 높이기 위한 기능입니다. 실제 CPU의 성능·발열·BIOS·메모리 토폴로지까지 검증하지는 않습니다.
+Hyper-V Processor Compatibility와 VMware EVC는 VM의 호스트 이동성과 CPU feature 호환성을 위한 기능입니다. 실제 CPU의 성능·발열·BIOS·메모리 토폴로지를 검증하거나 에뮬레이션하지는 않습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -161,11 +161,11 @@ Hyper-V의 Processor Compatibility와 VMware EVC는 주로 VM 이동성을 높�
 | 플랫폼 지원   | BIOS, 소켓, 칩셋, microcode    | 실제 서버와 제조사 지원 목록 |
 | 운영 성능     | 성능, 전력, 발열, NUMA         | 실제 CPU·메모리·냉각 환경    |
 
-VM과 QEMU는 명령어 feature와 애플리케이션 fallback 경로를 테스트하는 데 유용합니다. 하지만 BIOS 인식, POST, 실제 발열, 전력, sustained all-core 성능은 실제 플랫폼에서 확인해야 합니다.
+VM과 QEMU는 특정 CPU feature가 없는 환경에서 바이너리 실행 여부와 애플리케이션 fallback 경로를 테스트하는 데 사용할 수 있습니다. 하지만 BIOS 인식, POST, 실제 발열, 전력, sustained all-core 성능은 실제 플랫폼에서 확인해야 합니다.
 
 ### 빌드와 런타임 분기
 
-특정 최신 CPU에만 존재하는 명령어로 바이너리를 빌드하면 구형 CPU에서 `Illegal instruction` 오류가 발생할 수 있습니다. 운영 환경에서는 공통 baseline을 정하고, 실행 시 CPU 기능을 확인하여 최적화 경로를 선택합니다.
+운영 환경의 baseline에 없는 명령어를 사용해 바이너리를 빌드하면 해당 환경에서 `Illegal instruction` 오류가 발생할 수 있습니다. 운영 환경에서는 공통 baseline을 정하고, 실행 시 CPU 기능을 확인하여 최적화 경로를 선택합니다.
 
 ```text
 기본 경로: 공통 x86-64 또는 x86-64-v2
@@ -176,7 +176,7 @@ VM과 QEMU는 명령어 feature와 애플리케이션 fallback 경로를 테스�
 
 ### 테스트 장비 선정
 
-모든 CPU 세대를 구매하기보다 다음 feature group과 플랫폼 경계를 대표하는 장비를 선정합니다.
+모든 CPU 세대를 구매하기보다 다음 CPU feature 집합과 BIOS·Hypervisor 플랫폼 경계를 대표하는 장비를 선정합니다.
 
 ```text
 최저 지원 CPU 1대
@@ -194,14 +194,14 @@ AVX2 또는 특수 명령어가 필요한 경우 해당 CPU 1대
 
 ### 증상별 1차 판단
 
-| 증상                        | 우선 확인할 항목                             | 흔한 오해                                 |
-|-----------------------------|----------------------------------------------|-------------------------------------------|
-| CPU 사용률 100%             | 단일 코어, process, thread, run queue        | 전체 평균만 보고 증설                     |
-| CPU 사용률 낮음 + 지연 증가 | I/O wait, memory latency, lock, network      | CPU가 여유라서 애플리케이션 정상으로 판단 |
-| VM만 느림                   | CPU ready, steal, overcommit, noisy neighbor | 게스트의 CPU 사용률만 확인                |
-| 부하 후 성능 하락           | 온도, Turbo 지속성, power limit, throttling  | 정격 주파수만 비교                        |
-| 특정 서버에서만 실행 실패   | ISA feature, microcode, BIOS, VM CPU masking | 애플리케이션 버그로만 판단                |
-| 코어 수 증가 후 성능 저하   | NUMA, lock contention, 스케줄링 비용         | vCPU를 늘리면 항상 빨라진다고 판단        |
+| 증상                        | 우선 확인할 항목                                 | 흔한 오해                                 |
+|-----------------------------|--------------------------------------------------|-------------------------------------------|
+| CPU 사용률 100%             | 단일 코어, process, thread, run queue            | 전체 평균만 보고 증설                     |
+| CPU 사용률 낮음 + 지연 증가 | I/O wait, memory latency, lock, network          | CPU가 여유라서 애플리케이션 정상으로 판단 |
+| VM만 느림                   | CPU ready, steal, overcommit, noisy neighbor     | 게스트의 CPU 사용률만 확인                |
+| 부하 후 성능 하락           | 온도, 부하 중 유지 클럭, power limit, throttling | 정격 주파수만 비교                        |
+| 특정 서버에서만 실행 실패   | ISA feature, microcode, BIOS, VM CPU masking     | 애플리케이션 버그로만 판단                |
+| 코어 수 증가 후 성능 저하   | NUMA, lock contention, 스케줄링 비용             | vCPU를 늘리면 항상 빨라진다고 판단        |
 
 ### 진단 순서
 
@@ -216,7 +216,7 @@ AVX2 또는 특수 명령어가 필요한 경우 해당 CPU 1대
 8. 증설 전 부하 테스트와 병목 재현
 ```
 
-CPU 사용률만 높고 run queue와 latency가 정상이라면 즉시 증설하지 않습니다. 반대로 CPU 사용률이 낮아도 단일 스레드 또는 메모리 지연으로 SLA가 깨지면 CPU 구조와 애플리케이션 경로를 함께 분석합니다.
+CPU 사용률만 높고 run queue와 latency가 평소 SLA 범위라면 즉시 증설하지 않습니다. 반대로 CPU 사용률이 낮아도 단일 스레드 또는 메모리 지연으로 SLA가 깨지면 CPU 구조와 애플리케이션 경로를 함께 분석합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -237,7 +237,7 @@ CPU를 선정할 때 GHz만 비교하지 않습니다. 워크로드의 특성에
 
 ### 용량 계획 원칙
 
-- 평균 CPU 사용률뿐 아니라 peak, p95/p99 latency, run queue를 사용합니다.
+- 평균 CPU 사용률뿐 아니라 peak, p95/p99 latency, run queue를 용량 계획의 기준으로 사용합니다.
 - 확장 후에도 NUMA node와 메모리 채널 균형이 유지되는지 확인합니다.
 - CPU 증설 전에 메모리 대역폭, 디스크, 네트워크가 병목인지 확인합니다.
 - 운영 중인 OS·Hypervisor·애플리케이션의 CPU 지원 목록을 확인합니다.
@@ -255,7 +255,7 @@ CPU와 플랫폼 유지보수는 성능뿐 아니라 보안과도 연결됩니�
 - Spectre·Meltdown 계열 취약점과 같은 CPU 취약점의 mitigation 상태를 확인합니다.
 - BIOS, UEFI, microcode, OS 업데이트의 적용 순서와 재부팅 영향을 관리합니다.
 - 보안 mitigation 적용 후 성능 변화와 SLA 영향을 측정합니다.
-- 운영 서버의 CPU feature를 임의로 변경하지 않고 변경 이력을 남깁니다.
+- BIOS 설정, VM CPU compatibility mask 등 CPU feature에 영향을 주는 설정을 임의로 변경하지 않고 변경 이력을 남깁니다.
 - 라이브 마이그레이션 환경에서는 클러스터 노드 간 공통 CPU feature를 유지합니다.
 - 신규 CPU 도입 시 Hypervisor, 백업 솔루션, 모니터링 에이전트의 지원 여부를 확인합니다.
 
@@ -276,6 +276,8 @@ lscpu --extended
 
 # NUMA 구성
 numactl -H
+numastat -m
+numastat -p <PID>
 
 # CPU별 사용률과 run queue 관찰
 mpstat -P ALL 1
@@ -298,7 +300,7 @@ Get-CimInstance Win32_Processor |
 # 전체 CPU 사용률
 Get-Counter '\Processor(_Total)\% Processor Time'
 
-# 실행 큐 길이
+# 시스템 실행 큐 길이
 Get-Counter '\System\Processor Queue Length'
 ```
 
@@ -327,6 +329,8 @@ Get-Counter '\System\Processor Queue Length'
 - Linux Kernel Documentation: [Scheduler](https://docs.kernel.org/scheduler/) — ★★★☆☆
 - Linux man-pages: [lscpu(1)](https://man7.org/linux/man-pages/man1/lscpu.1.html) — ★★★☆☆
 - Linux man-pages: [perf-stat(1)](https://man7.org/linux/man-pages/man1/perf-stat.1.html) — ★★★☆☆
+- Linux man-pages: [numactl(8)](https://man7.org/linux/man-pages/man8/numactl.8.html) — ★★★☆☆
+- Linux man-pages: [numastat(8)](https://man7.org/linux/man-pages/man8/numastat.8.html) — ★★★☆☆
 
 ---
 
