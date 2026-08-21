@@ -331,6 +331,10 @@ seal "awskms" {
 
 Vault가 사용하는 IAM 주체에는 최소한 `kms:Encrypt`, `kms:Decrypt`, `kms:DescribeKey` 권한이 필요합니다. KMS 키 정책과 IAM 정책을 함께 검토합니다.
 
+#### 운영 주의사항
+
+KMS Key Policy와 IAM Role은 분리 검토하고 Vault Role에는 지정한 KMS 키의 최소 사용 권한만 허용합니다. KMS 키 상태·CloudTrail 감사·삭제 방지·복구 기준은 [HashiCorp Vault 개념 문서](hashicorp_vault_concepts.md)의 Auto Unseal 운영 기준을 따릅니다.
+
 ### Tip 2: 환경 변수로 시크릿 주입 (애플리케이션)
 
 ```bash
@@ -409,6 +413,6 @@ Unseal Key를 명령행 인자로 전달하지 말고 `vault operator unseal`을
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-08-20
+**마지막 업데이트**: 2026-08-21
 
 © 2026 siasia86. Licensed under CC BY 4.0.
