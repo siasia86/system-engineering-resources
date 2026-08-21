@@ -5,7 +5,7 @@ tags:
   - index
   - reference
   - directory
-last_checked: 2026-08-19
+last_checked: 2026-08-21
 sources:
   - self (이 파일이 인덱스 역할)
 ---
@@ -56,6 +56,7 @@ sources:
 | Rust                           | `_reference/rust_official_notes.md`                     | 1.97.1, Edition 2021, 주요 크레이트              | 2026-07-29 | O    |
 | Windows Server 에디션/라이선스 | `_reference/windows_server_editions_licensing_notes.md` | Standard vs Datacenter, KMS/MAK/AVMA             | 2026-07-29 | O    |
 | Windows Server Concepts        | `_reference/windows_server_concepts_notes.md`           | Hyper-V, S2D, Failover Cluster, Shielded VM, SDN | 2026-07-29 | O    |
+| SCVMM                          | `_reference/scvmm_official_notes.md`                    | System Center 2025, 호스트 관리·베어메탈·Arc     | 2026-08-21 | O    |
 | SVN (Subversion)               | `_reference/svn_official_notes.md`                      | 1.14.5 (LTS)                                     | 2026-07-29 | O    |
 | Git                            | `_reference/git_official_notes.md`                      | 2.55.0                                           | 2026-07-29 | O    |
 | eBPF / bpftrace                | `_reference/ebpf_bpftrace_official_notes.md`            | libbpf v1.7.0, bpftrace v0.26.1                  | 2026-08-01 | O    |
