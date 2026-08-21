@@ -21,6 +21,7 @@ sources:
 | AWS Secrets Manager            | `_reference/aws_secrets_manager_official_notes.md`      | Secret lifecycle·Rotation·IAM                    | 2026-08-19 | O    |
 | ArgoCD                         | `_reference/argocd_official_notes.md`                   | v3.4.4                                           | 2026-07-03 | O    |
 | Chaos/FinOps                   | `_reference/chaos_finops_official_notes.md`             | principlesofchaos.org / finops.org               | 2026-07-07 | X    |
+| CPU 시스템 운영                | `_reference/cpu_system_engineering_official_notes.md`   | NUMA·스케줄링·가상화·CPU 호환성                  | 2026-08-21 | O    |
 | Charset/Encoding               | `_reference/charset_encoding_official_notes.md`         | RFC 3629, Unicode 16.0                           | 2026-07-07 | O    |
 | CVE/Security                   | `_reference/cve_security_official_notes.md`             | NVD API 2.0, CISA KEV                            | 2026-06-29 | O    |
 | Docker                         | `_reference/docker_official_notes.md`                   | Engine 29.6.1, Compose v5.3.0                    | 2026-07-03 | O    |

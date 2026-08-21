@@ -1,4 +1,5 @@
 # CPU 시스템 운영 개념
+<!-- reference: _reference/cpu_system_engineering_official_notes.md -->
 
 CPU의 내부 회로 설계보다 시스템 엔지니어(SE)가 운영·성능·가상화·호환성 판단에 필요한 개념을 정리합니다. CISC/RISC와 ISA 설계 철학은 [CPU 아키텍처: CISC vs RISC](cpu_cisc_risc_concepts.md)에서 별도로 다룹니다.
 
