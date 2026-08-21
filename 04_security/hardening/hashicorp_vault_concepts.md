@@ -40,14 +40,14 @@ Secret Engine ──▶ KV / Database / PKI
 Barrier ──▶ encrypted Storage Backend
 ```
 
-| 구성요소      | 핵심 역할                                                  |
-|---------------|------------------------------------------------------------|
-| Auth Method   | Client의 신원을 확인하고 Token 또는 Identity를 발급합니다. |
-| Policy        | 경로별 capability로 허용·거부 동작을 결정합니다.           |
-| Secret Engine | KV 저장, Database Credential, PKI 인증서를 처리합니다.     |
-| Lease         | 동적 Credential의 TTL·갱신·폐기를 추적합니다.              |
-| Barrier       | Storage에 기록되는 Vault 데이터를 암호화·복호화합니다.     |
-| Seal          | Unseal 전까지 암호화 데이터 접근을 차단합니다.             |
+| 구성요소      | 핵심 역할                                         |
+|---------------|---------------------------------------------------|
+| Auth Method   | Client의 신원을 확인하고 Token 또는 Identity 발급 |
+| Policy        | 경로별 capability로 허용·거부 동작 결정           |
+| Secret Engine | KV 저장, Database Credential, PKI 인증서 처리     |
+| Lease         | 동적 Credential의 TTL·갱신·폐기 추적              |
+| Barrier       | Storage에 기록되는 Vault 데이터를 암호화·복호화   |
+| Seal          | Unseal 전까지 암호화 데이터 접근 차단             |
 
 > Secret Engine: Vault의 특정 경로에서 Secret을 저장하거나 동적으로 생성하는 플러그인 단위입니다. Engine 종류에 따라 KV 데이터, DB Credential, X.509 인증서처럼 처리 방식이 달라집니다.
 
@@ -367,15 +367,15 @@ secret/data/prd/app
 
 환경별 접근 주체와 Policy를 분리하고, 개발 주체가 운영 경로를 조회하지 못하도록 명시적으로 거부·검증합니다. capability는 HTTP 메서드에 대략 대응하지만, 실제 권한 요구사항은 Endpoint와 Secret Engine별 공식 문서를 확인해야 합니다. 예를 들어 Database Secret Engine의 Credential 발급은 GET 요청이므로 `read` capability가 필요합니다. 또한 많은 Endpoint에서는 초기 생성에도 `create`와 `update`가 함께 필요할 수 있습니다.
 
-| Capability | 대응 동작       | 설명                                                                         |
-|------------|-----------------|------------------------------------------------------------------------------|
-| `create`   | POST/PUT (생성) | 해당 경로에 새 데이터를 생성합니다. 많은 API에서 `update`와 함께 필요합니다. |
-| `read`     | GET             | 해당 경로의 데이터를 조회할 수 있습니다.                                     |
-| `update`   | POST/PUT (갱신) | 기존 데이터를 변경하며, 일부 API에서는 초기 생성도 포함합니다.               |
-| `patch`    | PATCH           | 기존 데이터의 일부 필드를 변경할 수 있습니다.                                |
-| `delete`   | DELETE          | 데이터를 삭제할 수 있습니다.                                                 |
-| `list`     | LIST            | 경로 하위 키 목록을 조회할 수 있습니다.                                      |
-| `deny`     | 없음            | 다른 capability와 무관하게 접근을 차단합니다.                                |
+| Capability | 대응 동작       | 설명                                                          |
+|------------|-----------------|---------------------------------------------------------------|
+| `create`   | POST/PUT (생성) | 해당 경로에 새 데이터 생성. 많은 API에서 `update`와 함께 필요 |
+| `read`     | GET             | 해당 경로의 데이터 조회 가능                                  |
+| `update`   | POST/PUT (갱신) | 기존 데이터 변경, 일부 API에서는 초기 생성도 포함             |
+| `patch`    | PATCH           | 기존 데이터의 일부 필드 변경 가능                             |
+| `delete`   | DELETE          | 데이터 삭제 가능                                              |
+| `list`     | LIST            | 경로 하위 키 목록 조회 가능                                   |
+| `deny`     | 없음            | 다른 capability와 무관하게 접근 차단                          |
 
 🟡 `deny`는 다른 Policy가 동일 경로에 더 넓은 권한을 허용하더라도 항상 우선합니다. 여러 Policy가 겹치는 경로에서는 `deny`가 있는지 먼저 확인해야 합니다.
 
@@ -486,29 +486,29 @@ AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 
 
 ## 10. 용어 정리
 
-| 용어                       | 정의                                                                                                |
-|----------------------------|-----------------------------------------------------------------------------------------------------|
-| Barrier                    | Vault Core와 Storage Backend 사이의 암호화 계층입니다.                                              |
-| Seal / Unseal              | Vault의 암호화 데이터 접근을 잠그거나 해제하는 상태와 절차입니다.                                   |
-| Shamir Secret Sharing      | Unseal Key를 여러 share로 나누고 threshold 이상을 모아야 복원하는 방식입니다.                       |
-| Key Share / Threshold      | 분할된 Unseal Key 조각과 복원에 필요한 최소 조각 수입니다.                                          |
-| Root Key                   | 실제 데이터 암호화에 사용하는 Encryption Key를 보호하는 상위 키입니다.                              |
-| Encryption Key             | Vault 데이터를 암호화·복호화하는 키입니다.                                                          |
-| Recovery Key               | Auto Unseal 환경에서 특정 관리자 작업을 승인하는 키입니다. Root Key를 직접 복호화하지 않습니다.     |
-| Auth Method                | Client의 신원을 확인하고 Token 또는 Identity를 발급하는 인증 방식입니다.                            |
-| Root Token                 | 모든 경로에 접근 가능한 Token입니다. 초기 설정·비상 절차 외의 일반 자동화에는 사용하지 않습니다.    |
-| AppRole                    | 애플리케이션이 Role ID와 Secret ID로 인증하는 Auth Method입니다.                                    |
-| Policy Capability          | 특정 Vault 경로에서 허용하는 `read`, `create`, `update`, `patch`, `delete`, `list` 등의 동작입니다. |
-| Secret Engine / Mount Path | Secret을 저장·발급하는 기능과 그 기능이 연결된 Vault 경로입니다.                                    |
-| Lease / TTL                | 동적 Credential의 유효기간과 갱신·폐기를 추적하는 단위와 기간입니다.                                |
-| Dynamic Secret             | 요청 시 생성되고 Lease 만료 또는 폐기 시 사용이 끝나는 임시 Credential입니다.                       |
-| KV v2 Soft Delete          | 버전 데이터를 즉시 제거하지 않고 삭제 상태로 표시해 복구할 수 있게 하는 동작입니다.                 |
-| PKI Role / SAN             | 인증서 발급 조건과 인증서에 허용되는 주체 이름 범위입니다.                                          |
-| Root CA / Intermediate CA  | PKI Secret Engine에서 인증서 신뢰 체계의 최상위·중간 발급자입니다.                                  |
-| CRL                        | 폐기된 인증서 목록(Certificate Revocation List)입니다.                                              |
-| Audit Device               | Vault 요청·응답의 감사 메타데이터를 기록하는 출력 장치입니다.                                       |
-| HA (High Availability)     | 여러 노드로 장애를 견디도록 구성하는 고가용성 방식입니다.                                           |
-| HSM                        | Root Key 복호화를 대행할 수 있는 하드웨어 기반 보안 장치입니다.                                     |
+| 용어                       | 정의                                                                                         |
+|----------------------------|----------------------------------------------------------------------------------------------|
+| Barrier                    | Vault Core와 Storage Backend 사이의 암호화 계층                                              |
+| Seal / Unseal              | Vault의 암호화 데이터 접근을 잠그거나 해제하는 상태와 절차                                   |
+| Shamir Secret Sharing      | Unseal Key를 여러 share로 나누고 threshold 이상을 모아야 복원 방식                           |
+| Key Share / Threshold      | 분할된 Unseal Key 조각과 복원에 필요한 최소 조각 수                                          |
+| Root Key                   | 실제 데이터 암호화에 사용하는 Encryption Key를 보호하는 상위 키                              |
+| Encryption Key             | Vault 데이터를 암호화·복호화 키                                                              |
+| Recovery Key               | Auto Unseal 환경에서 특정 관리자 작업을 승인하는 키. Root Key 직접 복호화 불가               |
+| Auth Method                | Client의 신원을 확인하고 Token 또는 Identity를 발급하는 인증 방식                            |
+| Root Token                 | 모든 경로에 접근 가능한 Token. 초기 설정·비상 절차 외의 일반 자동화에는 사용하지 않음        |
+| AppRole                    | 애플리케이션이 Role ID와 Secret ID로 인증하는 Auth Method                                    |
+| Policy Capability          | 특정 Vault 경로에서 허용하는 `read`, `create`, `update`, `patch`, `delete`, `list` 등의 동작 |
+| Secret Engine / Mount Path | Secret을 저장·발급하는 기능과 그 기능이 연결된 Vault 경로                                    |
+| Lease / TTL                | 동적 Credential의 유효기간과 갱신·폐기를 추적하는 단위와 기간                                |
+| Dynamic Secret             | 요청 시 생성되고 Lease 만료 또는 폐기 시 사용이 끝나는 임시 Credential                       |
+| KV v2 Soft Delete          | 버전 데이터를 즉시 제거하지 않고 삭제 상태로 표시해 복구할 수 있게 하는 동작                 |
+| PKI Role / SAN             | 인증서 발급 조건과 인증서에 허용되는 주체 이름 범위                                          |
+| Root CA / Intermediate CA  | PKI Secret Engine에서 인증서 신뢰 체계의 최상위·중간 발급자                                  |
+| CRL                        | 폐기된 인증서 목록(Certificate Revocation List)                                              |
+| Audit Device               | Vault 요청·응답의 감사 메타데이터를 기록하는 출력 장치                                       |
+| HA (High Availability)     | 여러 노드로 장애를 견디도록 구성하는 고가용성 방식                                           |
+| HSM                        | Root Key 복호화를 대행할 수 있는 하드웨어 기반 보안 장치                                     |
 
 [⬆ 목차로 돌아가기](#목차)
 
