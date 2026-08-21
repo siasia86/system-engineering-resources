@@ -38,6 +38,24 @@ Account-A EC2                 AWS STS                      Account-B
      │   (using temp credentials) │                            │
 ```
 
+### GetCallerIdentity란
+
+`GetCallerIdentity`는 현재 AWS 요청에 사용된 자격증명의 주체를 확인하는 STS API입니다. 임시 자격증명을 발급하거나 권한을 추가하지 않고, 다음 식별 정보를 반환합니다.
+
+| 반환 항목 | 설명                                                                                                               |
+|-----------|--------------------------------------------------------------------------------------------------------------------|
+| Account   | 현재 자격증명을 소유한 AWS 계정 ID                                                                                 |
+| Arn       | 호출 주체의 ARN. IAM Role 세션이면 `arn:aws:sts::<ACCOUNT-ID>:assumed-role/<ROLE-NAME>/<SESSION-NAME>` 형식입니다. |
+| UserId    | 호출 주체의 고유 식별자                                                                                            |
+
+IAM 권한을 별도로 부여하지 않아도 호출할 수 있으므로, 현재 자격증명이 예상한 계정·역할인지 확인하는 진단 명령으로 사용합니다. 단, 호출 성공은 해당 주체가 S3나 KMS 같은 다른 AWS API를 호출할 권한이 있다는 의미가 아닙니다.
+
+```bash
+aws sts get-caller-identity
+```
+
+Vault의 AWS auth method에서 IAM 인증을 사용하는 경우에도 이 API가 사용됩니다. 클라이언트가 자신의 AWS 자격증명으로 서명한 `GetCallerIdentity` 요청을 제출하면 Vault가 AWS에 요청을 검증하여 로그인 주체를 확인합니다. 따라서 이 인증 방식을 사용할 때는 Vault 서버의 STS endpoint 접근 경로와 클라이언트가 요청에 서명할 AWS 자격증명을 확인해야 합니다. `GetCallerIdentity`는 `AssumeRole`처럼 임시 자격증명을 발급하는 API가 아닙니다.
+
 ### IAM 영구 키 vs AssumeRole 임시 자격증명
 
 | 항목          | IAM 영구 키                    | AssumeRole 임시 자격증명                     |
@@ -382,6 +400,7 @@ aws sts get-caller-identity
 
 - AWS Documentation: [STS AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) — ★★★☆☆
 - AWS Documentation: [STS GetSessionToken](https://docs.aws.amazon.com/STS/latest/APIReference/API_GetSessionToken.html) — ★★★☆☆
+- AWS Documentation: [STS GetCallerIdentity](https://docs.aws.amazon.com/STS/latest/APIReference/API_GetCallerIdentity.html) — ★★★☆☆
 - AWS Documentation: [IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) — ★★★☆☆
 - AWS Documentation: [SSE-KMS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html) — ★★★☆☆
 - AWS official verification notes: [_reference/aws_sts_iam_s3_kms_official_notes.md](../../_reference/aws_sts_iam_s3_kms_official_notes.md)
