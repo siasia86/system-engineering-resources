@@ -99,9 +99,9 @@ NUMA(Non-Uniform Memory Access)는 모든 CPU가 같은 비용으로 메모리�
 
 ```text
 NUMA node 0                         NUMA node 1
-┌───────────────┐                    ┌───────────────┐
-│ CPU + Memory │ <── interconnect ─>  │ CPU + Memory │
-└───────────────┘                    └───────────────┘
+┌──────────────┐                     ┌───────────────┐
+│ CPU + Memory │ <── interconnect ─> │ CPU + Memory  │
+└──────────────┘                     └───────────────┘
 ```
 
 원격 메모리 접근이 항상 장애를 의미하는 것은 아니지만, 대규모 데이터 처리나 지연시간에 민감한 서비스에서는 local memory 비율과 CPU·메모리 배치를 확인해야 합니다.
@@ -121,7 +121,7 @@ NUMA 문제를 CPU 문제로 오인하지 않으려면 CPU 사용률 외에 메�
 
 ## 5. 가상화 환경의 CPU
 
-가상화에서는 VM에 할당한 vCPU가 곧 물리 코어가 아닙니다. Hypervisor가 여러 VM의 vCPU를 물리 CPU에 스케줄링합니다.
+가상화 환경에서 VM에 할당된 vCPU는 호스트의 특정 물리 코어를 영구적으로 의미하지 않습니다. Hypervisor가 VM의 vCPU를 호스트의 논리 프로세서에 배치·스케줄링합니다.
 
 ```text
 Physical CPU
