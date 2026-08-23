@@ -24,7 +24,7 @@
 
 - 하드웨어 성능 카운터 사용
 - 커널과 유저 공간 모두 분석
-- 낮은 오버헤드 (1-5%)
+- 오버헤드는 이벤트와 수집 방식에 따라 달라짐
 - 샘플링 기반 프로파일링
 - 콜 그래프 지원
 
@@ -313,7 +313,7 @@ perf stat -e cycles,instructions ./myapp
 perf stat -e cache-misses,cache-references ./myapp
 
 # Miss Rate = cache-misses / cache-references
-# 낮을수록 좋음 (일반적으로 < 5%)
+# 낮을수록 좋은 지표지만 공통 임계값은 아님
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -488,6 +488,6 @@ diff before.txt after.txt
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-08-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.
