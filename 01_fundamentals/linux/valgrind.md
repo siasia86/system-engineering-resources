@@ -379,11 +379,11 @@ time ./myapp
 
 # Memcheck
 time valgrind ./myapp
-# real    0m20.000s (20배 느림)
+# 실행 시간 증가폭은 프로그램·도구·옵션에 따라 달라짐
 
 # Cachegrind
 time valgrind --tool=cachegrind ./myapp
-# real    0m50.000s (50배 느림)
+# 실행 시간 증가폭은 프로그램·도구·옵션에 따라 달라짐
 ```
 
 **권장:**
@@ -524,6 +524,6 @@ grep "ERROR SUMMARY" valgrind.log
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-08-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

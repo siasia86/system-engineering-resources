@@ -109,7 +109,7 @@ cat /proc/sys/net/netfilter/nf_conntrack_count  # 현재 사용량
 
 ## 3. nftables
 
-iptables의 현대적 대안입니다. Ubuntu 20.04+, Rocky 9+ 기본.
+iptables의 현대적 대안입니다. 배포판과 릴리스에 따라 기본 방화벽 백엔드가 다르므로 현재 규칙과 설치 상태를 확인합니다.
 
 ```bash
 # 현재 규칙 확인
@@ -265,6 +265,6 @@ echo 60 > /proc/sys/net/netfilter/nf_conntrack_tcp_timeout_established
 
 **작성일** : 2026-05-21
 
-**마지막 업데이트** : 2026-05-21
+**마지막 업데이트**: 2026-08-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.
