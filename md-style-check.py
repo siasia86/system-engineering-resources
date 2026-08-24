@@ -9,7 +9,11 @@ STYLE.md 규칙 기반: 표 정렬, 다이어그램 폭/한글/박스 문자, H1
   python3 md-style-check.py <path> [path ...]
   python3 md-style-check.py <path> -E <dir> -X <file> --no-diagram-kr
   python3 md-style-check.py <path> --strict
+  python3 md-style-check.py <path> --config <file>
   python3 md-style-check.py -V
+
+대상 경로의 상위 디렉터리에서 .md-style-check.toml을 자동 탐색합니다.
+설정 파일의 skip_checks에 검사 키를 추가하면 해당 저장소에만 적용됩니다.
 
 옵션:
   -E, --exclude-dir DIR     제외할 디렉토리명 (여러 번 사용 가능)
@@ -19,7 +23,7 @@ STYLE.md 규칙 기반: 표 정렬, 다이어그램 폭/한글/박스 문자, H1
   -V, --version             버전 출력
 """
 
-VERSION = "26.08.20"
+VERSION = "26.08.24"
 
 import argparse
 import os
@@ -654,25 +658,99 @@ EXCLUDE_DIRS = {'99_archive', '99_etc', '.git', '__pycache__', '_reference', '00
 EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'CHANGELOG.md'}
 
 
-def load_config(config_path=None):
-    """TOML 설정에서 검사 제외 목록을 읽습니다."""
-    default_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                '.md-style-check.toml')
-    selected_path = config_path or default_path
-    if not os.path.exists(selected_path):
-        if config_path:
-            raise FileNotFoundError(f"config not found: {selected_path}")
-        return {'exclude_dirs': sorted(EXCLUDE_DIRS),
-                'exclude_files': sorted(EXCLUDE_FILES)}
-    with open(selected_path, 'rb') as config_file:
+CONFIG_LIST_KEYS = ('exclude_dirs', 'exclude_files', 'skip_checks')
+
+
+def _read_config(config_path):
+    """TOML 설정 파일을 읽고 목록 값과 검사명을 검증합니다."""
+    with open(config_path, 'rb') as config_file:
         config = tomllib.load(config_file)
+
+    version = config.get('version', 1)
+    if isinstance(version, bool) or not isinstance(version, int):
+        raise ValueError("config key 'version' must be an integer")
+    allowed_keys = {'version', *CONFIG_LIST_KEYS}
+    unknown_keys = set(config) - allowed_keys
+    if unknown_keys:
+        invalid = ', '.join(sorted(unknown_keys))
+        available = ', '.join(sorted(allowed_keys))
+        raise ValueError(
+            f"unknown config keys: {invalid}; available keys: {available}"
+        )
+
     result = {}
-    for key in ('exclude_dirs', 'exclude_files'):
-        values = config.get(key, [])
+    for key in CONFIG_LIST_KEYS:
+        if key not in config:
+            continue
+        values = config[key]
         if not isinstance(values, list) or not all(isinstance(value, str) for value in values):
             raise ValueError(f"config key '{key}' must be a string list")
         result[key] = values
+
+    unknown_checks = set(result.get('skip_checks', [])) - set(_SKIP_FLAG_ATTRIBUTES)
+    if unknown_checks:
+        available = ', '.join(sorted(_SKIP_FLAG_ATTRIBUTES))
+        invalid = ', '.join(sorted(unknown_checks))
+        raise ValueError(
+            f"config key 'skip_checks' contains unknown checks: {invalid}; "
+            f"available checks: {available}"
+        )
     return result
+
+
+def _merge_config(base, override):
+    """기본 설정과 저장소 설정을 중복 없이 병합합니다."""
+    merged = {key: list(base.get(key, [])) for key in CONFIG_LIST_KEYS}
+    for key in CONFIG_LIST_KEYS:
+        for value in override.get(key, []):
+            if value not in merged[key]:
+                merged[key].append(value)
+    return merged
+
+
+def _global_config_path():
+    """검사기 저장소의 공통 설정 경로를 반환합니다."""
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        '.md-style-check.toml')
+
+
+def find_config_path(target):
+    """대상 파일 또는 디렉터리에서 상위로 저장소 설정을 탐색합니다."""
+    current = os.path.abspath(target)
+    if not os.path.isdir(current):
+        current = os.path.dirname(current)
+
+    while True:
+        candidate = os.path.join(current, '.md-style-check.toml')
+        if os.path.isfile(candidate):
+            return candidate
+        parent = os.path.dirname(current)
+        if parent == current:
+            return None
+        current = parent
+
+
+def load_config(config_path=None, target=None):
+    """공통 설정과 대상 저장소의 TOML 설정을 병합합니다."""
+    config = {
+        'exclude_dirs': sorted(EXCLUDE_DIRS),
+        'exclude_files': sorted(EXCLUDE_FILES),
+        'skip_checks': [],
+    }
+    global_path = _global_config_path()
+    if os.path.isfile(global_path):
+        config = _merge_config(config, _read_config(global_path))
+
+    selected_path = config_path or (find_config_path(target) if target else None)
+    if selected_path:
+        selected_path = os.path.abspath(selected_path)
+        if not os.path.isfile(selected_path):
+            raise FileNotFoundError(f"config not found: {selected_path}")
+        if os.path.normpath(selected_path) != os.path.normpath(global_path):
+            config = _merge_config(config, _read_config(selected_path))
+    elif config_path:
+        raise FileNotFoundError(f"config not found: {config_path}")
+    return config
 
 
 def _is_excluded_dir(path, dirname, target_abs, skip_dirs):
@@ -752,7 +830,7 @@ def parse_args():
                         dest='exclude_dirs', metavar='DIR',
                         help='제외할 디렉토리명 (여러 번 사용 가능)')
     parser.add_argument('--config', metavar='FILE',
-                        help='제외 목록 TOML 설정 파일 (기본: .md-style-check.toml)')
+                        help='TOML 설정 파일 (미지정 시 대상 경로에서 .md-style-check.toml 자동 탐색)')
     parser.add_argument('-X', '--exclude-file', action='append', default=[],
                         dest='exclude_files', metavar='FILE',
                         help='제외할 파일명 (여러 번 사용 가능)')
@@ -781,22 +859,34 @@ def parse_args():
 def main():
     args = parse_args()
     try:
-        config = load_config(args.config)
+        target_configs = []
+        for target in args.targets:
+            config = load_config(args.config, target=target)
+            target_configs.append((target, config, find_config_path(target) if not args.config else args.config))
     except (OSError, tomllib.TOMLDecodeError, ValueError) as error:
         print(f"설정 로드 실패: {error}", file=sys.stderr)
         sys.exit(1)
 
-    configured_exclude_dirs = set(config['exclude_dirs'])
-    configured_exclude_files = set(config['exclude_files'])
+    configured_exclude_dirs = set()
+    configured_exclude_files = set()
+    config_sources = set()
     files = []
-    for p in args.targets:
-        files.extend(collect_files(
-            p,
+    file_config_skips = {}
+    for target, config, config_source in target_configs:
+        configured_exclude_dirs.update(config['exclude_dirs'])
+        configured_exclude_files.update(config['exclude_files'])
+        if config_source:
+            config_sources.add(os.path.abspath(config_source))
+        target_files = collect_files(
+            target,
             args.exclude_dirs,
             args.exclude_files,
-            configured_exclude_dirs,
-            configured_exclude_files,
-        ))
+            config['exclude_dirs'],
+            config['exclude_files'],
+        )
+        for fpath in target_files:
+            files.append(fpath)
+            file_config_skips.setdefault(fpath, set()).update(config['skip_checks'])
 
     if not files:
         print("검사할 .md 파일이 없습니다.")
@@ -805,20 +895,25 @@ def main():
     # 제외 현황 출력
     all_exclude_dirs = sorted(configured_exclude_dirs | set(args.exclude_dirs))
     all_exclude_files = sorted(configured_exclude_files | set(args.exclude_files)) + ['README.md (루트)']
-    skip_flags = [f"--no-{key}" for key, attribute in _SKIP_FLAG_ATTRIBUTES.items()
-                  if getattr(args, attribute)]
+    cli_skip_checks = [key for key, attribute in _SKIP_FLAG_ATTRIBUTES.items()
+                       if getattr(args, attribute)]
+    configured_skip_checks = sorted({
+        check for checks in file_config_skips.values() for check in checks
+    })
+    all_skip_checks = sorted(set(cli_skip_checks) | set(configured_skip_checks))
 
-    if all_exclude_dirs or all_exclude_files or skip_flags:
+    if config_sources:
+        print(f"{YELLOW}[설정] {', '.join(sorted(config_sources))}{NC}")
+    if all_exclude_dirs or all_exclude_files or all_skip_checks:
         print(f"{YELLOW}[제외] 디렉토리: {', '.join(all_exclude_dirs)}{NC}")
         print(f"{YELLOW}[제외] 파일: {', '.join(all_exclude_files)}{NC}")
-        if skip_flags:
-            print(f"{YELLOW}[제외] 검사: {', '.join(skip_flags)}{NC}")
+        if all_skip_checks:
+            print(f"{YELLOW}[제외] 검사: {', '.join(all_skip_checks)}{NC}")
         print()
 
     total_issues = 0
-    skip_checks = [key for key, attribute in _SKIP_FLAG_ATTRIBUTES.items()
-                   if getattr(args, attribute)]
     for fpath in files:
+        skip_checks = sorted(set(cli_skip_checks) | file_config_skips.get(fpath, set()))
         issues = check_file(fpath, strict=args.strict, skip_checks=skip_checks)
         rel = fpath.replace('/root/32_system-engineering-resources/', '')
         if issues:
