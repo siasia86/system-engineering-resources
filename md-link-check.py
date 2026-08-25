@@ -123,11 +123,17 @@ def strip_code_blocks_preserve_lines(content, filepath=None):
 
 
 def extract_link_path(raw_link):
-    """링크에서 경로만 추출 (앵커, title 속성 제거)."""
+    """링크에서 경로만 추출 (앵커, title 속성 제거, URL 디코딩 적용)."""
     # path#anchor → path
     path = raw_link.split('#')[0]
     # path "title" or path 'title' → path
     path = path.split('"')[0].split("'")[0].rstrip()
+    # URL 인코딩된 경로 디코딩 (%EA%B0%9C... → 한글)
+    try:
+        from urllib.parse import unquote
+        path = unquote(path)
+    except Exception:
+        pass
     return path
 
 
