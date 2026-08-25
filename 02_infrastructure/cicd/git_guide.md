@@ -394,6 +394,50 @@ git rebase --abort
 git rebase -i HEAD~3
 ```
 
+### fast-forward merge
+
+분기 없이 한 줄로 이어지는 경우 merge commit 없이 포인터만 이동합니다.
+
+```
+# fast-forward 가능 (직선 관계)
+main:   A---B
+             \
+yunli:        C---D
+
+git merge yunli  →  main이 D로 이동 (merge commit 없음, vi 안 뜸)
+main:   A---B---C---D
+
+# fast-forward 불가 (분기 발생)
+main:   A---B---E
+             \
+yunli:        C---D
+
+git merge yunli  →  merge commit M 생성 (vi 뜸)
+main:   A---B---E---M
+             \   /
+              C---D
+```
+
+| 설정                   | 동작                                         |
+|------------------------|----------------------------------------------|
+| `merge.ff true` (기본) | ff 가능하면 ff, 불가능하면 merge commit 생성 |
+| `merge.ff only`        | ff 가능한 경우만 허용, 불가능하면 에러       |
+| `merge.ff false`       | 항상 merge commit 생성 (ff 강제 비활성)      |
+
+```bash
+# ff-only 설정 — merge commit 생성 자체를 방지 (vi 뜨는 상황 차단)
+git config --global merge.ff only
+
+# pull 시 merge 대신 rebase 사용 — 선형 히스토리 유지
+git config --global pull.rebase true
+
+# 적용 확인
+git config --global --list | grep -E "merge|pull"
+```
+
+> `pull.rebase true` 설정 시 `git pull` 은 내부적으로 `git fetch` + `git rebase` 로 동작합니다.
+> 로컬 커밋이 원격 커밋 위에 재배치되므로 히스토리가 선형으로 유지됩니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -461,6 +505,36 @@ git config --global alias.lg "log --oneline --graph --all"
 git config --global alias.df "diff --staged"
 git config --global alias.undo "reset --soft HEAD~1"
 ```
+
+### Tip 6: global 설정 권장값
+
+새 환경 세팅 시 한 번만 적용하면 됩니다.
+
+```bash
+# merge commit 방지 (ff-only)
+git config --global merge.ff only
+
+# pull 시 rebase 사용 (선형 히스토리)
+git config --global pull.rebase true
+
+# 한글 파일명 깨짐 방지 (git status에서 8진수 대신 한글 출력)
+git config --global core.quotePath false
+
+# 기본 브랜치명 설정
+git config --global init.defaultBranch main
+
+# 현재 전역 설정 전체 확인
+git config --global --list
+```
+
+| 설정                 | 기본값   | 권장값  | 효과                                 |
+|----------------------|----------|---------|--------------------------------------|
+| `merge.ff`           | `true`   | `only`  | merge commit 생성 방지, vi 등장 차단 |
+| `pull.rebase`        | `false`  | `true`  | pull 시 선형 히스토리 유지           |
+| `core.quotePath`     | `true`   | `false` | 한글 파일명을 8진수 대신 그대로 출력 |
+| `init.defaultBranch` | `master` | `main`  | 신규 저장소 기본 브랜치명            |
+
+🟡 `merge.ff only` 설정 후 분기된 브랜치를 merge 하면 에러가 발생합니다. 이 경우 `git pull --no-rebase` 또는 `git merge --no-ff` 로 명시적으로 merge commit을 생성해야 합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
