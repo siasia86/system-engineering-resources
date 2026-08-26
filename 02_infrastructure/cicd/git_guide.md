@@ -607,6 +607,6 @@ sudo chown -R $(whoami):$(whoami) /path/to/repo
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-08-25
+**마지막 업데이트**: 2026-08-26
 
 © 2026 siasia86. Licensed under CC BY 4.0.
