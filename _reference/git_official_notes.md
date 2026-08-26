@@ -7,7 +7,7 @@ tags:
   - vcs
   - cicd
   - distributed
-last_checked: 2026-07-29
+last_checked: 2026-08-26
 sources:
   - https://git-scm.com/doc
   - https://git-scm.com/book/en/v2
@@ -21,11 +21,11 @@ sources:
 
 | 항목      | 버전   | 비고                             |
 |-----------|--------|----------------------------------|
-| Stable    | 2.55.0 | 출시: 2025, 현행 권장 버전       |
+| Stable    | 2.55.0 | 출시: 2026-06-29, 현행 권장 버전 |
 | 이전 안정 | 2.54.0 | -                                |
 | 최소 권장 | 2.28+  | `init.defaultBranch` 지원 (2.28) |
 
-> 출처: github.com/git/git/tags (2026-07-29 확인)
+> 출처: github.com/git/git/tags (2026-08-26 확인)
 
 ## 2. Git 객체 모델 (4가지)
 
@@ -82,7 +82,7 @@ commit
 
 | 방식              | 조건                           | 결과                              |
 |-------------------|--------------------------------|-----------------------------------|
-| Fast-forward      | 대상 브랜치가 현재의 직계 조상 | 포인터 이동만 (merge commit 없음) |
+| Fast-forward      | 대상 브랜치가 현재의 직계 자손 | 포인터 이동만 (merge commit 없음) |
 | ort (기본, 2.34+) | 공통 조상 1개                  | merge commit 생성 (3-way merge)   |
 | Octopus           | 다중 브랜치 병합               | 다중 부모 merge commit            |
 
@@ -126,7 +126,7 @@ commit
 ## 7. Reflog
 
 - `.git/logs/` 에 저장. 브랜치/HEAD의 모든 이동 이력 기록.
-- 기본 보존 기간: 90일 (unreachable 객체는 30일).
+- 기본 보존 기간: 90일 (현재 tip에서 도달 불가한 reflog 항목은 30일).
 - `git reset --hard` 후에도 reflog로 복구 가능.
 
 ```bash
@@ -145,16 +145,16 @@ git reflog show main # main 브랜치 이동 이력
 
 ## 9. 주요 설정
 
-| 설정 키              | 기본값     | 설명                                     |
-|----------------------|------------|------------------------------------------|
-| `core.autocrlf`      | false      | 줄바꿈 자동 변환 (Windows: true 권장)    |
-| `init.defaultBranch` | master     | 2.28+: main 권장                         |
-| `pull.rebase`        | false      | true 시 pull = fetch + rebase            |
-| `fetch.prune`        | false      | true 시 삭제된 원격 브랜치 자동 정리     |
-| `merge.ff`           | true       | false 시 항상 merge commit 생성          |
-| `rebase.autoStash`   | false      | true 시 rebase 전 자동 stash/unstash     |
-| `core.hooksPath`     | .git/hooks | 훅 디렉토리 경로 변경 가능               |
-| `safe.directory`     | -          | 소유자 다른 디렉토리 접근 허용 (2.35.2+) |
+| 설정 키              | 기본값         | 설명                                     |
+|----------------------|----------------|------------------------------------------|
+| `core.autocrlf`      | false          | 줄바꿈 자동 변환 (Windows: true 권장)    |
+| `init.defaultBranch` | master         | 2.28+: main 권장                         |
+| `pull.rebase`        | false          | true 시 pull = fetch + rebase            |
+| `fetch.prune`        | false          | true 시 삭제된 원격 브랜치 자동 정리     |
+| `merge.ff`           | true           | false 시 항상 merge commit 생성          |
+| `rebase.autoStash`   | false          | true 시 rebase 전 자동 stash/unstash     |
+| `core.hooksPath`     | $GIT_DIR/hooks | 훅 디렉토리 경로 변경 가능               |
+| `safe.directory`     | -              | 소유자 다른 디렉토리 접근 허용 (2.35.2+) |
 
 > 출처: git-scm.com/docs/git-config
 

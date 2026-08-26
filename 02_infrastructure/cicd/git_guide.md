@@ -136,12 +136,12 @@ git diff --stat main origin/main
 
 ### diff 비교 대상 요약
 
-| 명령어                 | 비교 대상                    | 설명                               |
-|------------------------|------------------------------|------------------------------------|
-| `git diff`             | Working Dir vs Staging       | `git add` 전 변경사항              |
-| `git diff --staged`    | Staging vs 마지막 Commit     | `git add` 후 커밋 전 변경사항      |
-| `git diff HEAD`        | Working Dir vs 마지막 Commit | 스테이징 여부 무관 전체 변경사항   |
-| `git diff origin/main` | 로컬 브랜치 vs 원격 브랜치   | 로컬이 원격보다 얼마나 앞서 있는지 |
+| 명령어                 | 비교 대상                    | 설명                             |
+|------------------------|------------------------------|----------------------------------|
+| `git diff`             | Working Dir vs Staging       | `git add` 전 변경사항            |
+| `git diff --staged`    | Staging vs 마지막 Commit     | `git add` 후 커밋 전 변경사항    |
+| `git diff HEAD`        | Working Dir vs 마지막 Commit | 스테이징 여부 무관 전체 변경사항 |
+| `git diff origin/main` | Working Dir vs 원격 브랜치   | 원격 브랜치 tip과의 내용 차이    |
 
 ```bash
 # -C 옵션: 해당 경로에서 git 명령 실행 (cd 없이)
@@ -364,7 +364,7 @@ main:    A---B---C---M
 feature:     D---E
 
 -- rebase --
-main:    A---B---C---D'---E'
+main:    A---B---C
 feature:             D'---E'
 ```
 
@@ -480,7 +480,7 @@ git revert <commit-hash>
 # 특정 커밋 시점의 파일로 복구
 git checkout <commit-hash> -- src/app.py
 
-# 마지막 커밋 상태로 복구
+# Index(스테이징) 상태로 복구
 git restore src/app.py
 ```
 
@@ -534,7 +534,7 @@ git config --global --list
 | `core.quotePath`     | `true`   | `false` | 한글 파일명을 8진수 대신 그대로 출력 |
 | `init.defaultBranch` | `master` | `main`  | 신규 저장소 기본 브랜치명            |
 
-🟡 `merge.ff only` 설정 후 분기된 브랜치를 merge 하면 에러가 발생합니다. 이 경우 `git pull --no-rebase` 또는 `git merge --no-ff` 로 명시적으로 merge commit을 생성해야 합니다.
+🟡 `merge.ff only` 설정 후 분기된 브랜치를 merge 하면 에러가 발생합니다. 이 경우 `git pull --no-ff` 또는 `git merge --no-ff` 로 명시적으로 merge commit을 생성해야 합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -548,7 +548,7 @@ Git 2.35.2부터 추가된 **소유권 보안 검사** 설정입니다.
 ```
 fatal: detected dubious ownership in repository at '/path/to/repo'
 To add an exception for this directory, call:
-    git config --global safe.directory /path/to/repo
+    git config --global --add safe.directory /path/to/repo
 ```
 
 ### 발생 상황
@@ -563,10 +563,10 @@ To add an exception for this directory, call:
 
 ```bash
 # 특정 경로만 허용 (권장)
-git config --global safe.directory /root/32_system-engineering-resources
+git config --global --add safe.directory /root/32_system-engineering-resources
 
 # 모든 경로 허용 (보안 주의, CI 환경에서만 사용)
-git config --global safe.directory '*'
+git config --global --add safe.directory '*'
 
 # 설정 확인
 git config --global --get-all safe.directory
