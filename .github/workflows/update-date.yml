@@ -43,7 +43,10 @@ jobs:
 
   update-date:
     name: Update README dates
-    if: github.event_name == 'push'
+    # yunli 에서만 날짜 커밋을 생성합니다. main 에도 적용하면 branch 별로
+    # 별개의 봇 커밋이 생겨 main 과 yunli 가 매번 분기합니다.
+    # main 은 yunli 병합으로 날짜 변경을 전달받습니다.
+    if: github.event_name == 'push' && github.ref_name == 'yunli'
     runs-on: ubuntu-latest
     permissions:
       contents: write
