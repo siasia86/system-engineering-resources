@@ -343,19 +343,22 @@ curl -sS -o /dev/null -w '%{http_code}\n' "${API}/git/blobs/<blob-sha>"
 
 요청에 포함할 항목입니다.
 
-- 저장소 식별자
-- 요청 내용: force push 이후 남은 unreachable objects의 GC 및 캐시 무효화
-- 사유: 개인정보 또는 저작권 제한 자료 포함
-- 대상 커밋 SHA와 blob SHA
-- 조치 완료 회신 요청
+- 소유자와 저장소 이름 (`OWNER/REPOSITORY`)
+- 영향받는 pull request 개수
+- `filter-repo` 출력의 `NOTE: First Changed Commit(s)` 값
+- `NOTE: There were LFS Objects Orphaned by this rewrite` 가 있었다면 해당 사실과 파일
 
-🟡 blob SHA를 공개 문서나 이슈에 적으면 오히려 노출을 확대합니다. 비공개 지원 채널로만 전달합니다.
+조건을 충족하면 GitHub 은 영향받은 PR 역참조·삭제, 서버 측 garbage collection, 캐시 뷰 제거를 수행합니다.
+
+🟡 GitHub 은 non-sensitive data 는 제거하지 않으며, 자격증명 교체로 위험을 완화할 수 있는 경우에도 지원하지 않습니다. 저작권 사유만으로는 거절될 수 있습니다.
+
+🟡 blob SHA 를 공개 문서나 이슈에 적으면 오히려 노출을 확대합니다. 비공개 지원 채널로만 전달합니다.
 
 ### 회수 불가 영역
 
 - 공개 기간 중 클론·크롤링된 사본
 - 검색 엔진·아카이브 서비스 캐시
-- 포크된 저장소 (포크는 별도 GC 대상)
+- 포크된 저장소 — 포크가 참조를 보유하면 Support 가 GC 를 수행하지 않으며, 포크 소유자에게 직접 요청해야 합니다 (GitHub 은 소유자 연락처를 제공하지 않음)
 
 개인정보라면 이 한계를 전제로 후속 대응을 판단해야 합니다.
 
@@ -415,7 +418,7 @@ path/to/_reference/local/
 ### 커밋 전 자동 점검
 
 ```bash
-gitleaks protect --staged --redact --no-banner || exit 1
+gitleaks git --staged --redact -v || exit 1
 ```
 
 바이너리 첨부는 `gitleaks`로 잡히지 않습니다. 확장자 차단과 병행합니다.
