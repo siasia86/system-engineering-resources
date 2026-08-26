@@ -582,6 +582,7 @@ FILE_SKIP = {
     "01_fundamentals/networking/network_headers.md": {"box-chars"},
     "06_career/ai_tools/kiro_cli_command_reference.md": {"diagram-kr"},
     "02_infrastructure/cicd/infra_monorepo_and_boilerplate.md": {"table"},
+    "06_career/legal/privacy_law_guide.md": {"table"},  # URL 인코딩 링크 포함 표 — 렌더링 정상, 도구 오탐
     "skills/security-tools/SKILL.md": {"emoji-disallow"},
     "02_reference/README_web.md": {"footer", "h1"},
     "00_default/linux_setting.md": {"footer", "h1"},
