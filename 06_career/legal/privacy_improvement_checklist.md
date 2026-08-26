@@ -104,7 +104,7 @@
 
 ## 7. 참고 자료
 
-- 개인정보보호위원회. 「2026 개인정보보호 유공 정부포상 추천대상자」 — `_reference/2026 개인정보보호 유공 정부포상 추천대상자.pdf`
+- 개인정보보호위원회. 「2026 개인정보보호 유공 정부포상 추천대상자」: [pipc.go.kr](https://pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS061&mCode=C010010000&nttId=12379) — ★★★☆☆
 - 개인정보보호위원회: [privacy.go.kr](https://www.privacy.go.kr) — ★★★☆☆
 - Privacy-i 다운로드: [privacy-i.kr](https://www.privacy-i.kr) — ★★★☆☆
 

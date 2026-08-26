@@ -55,6 +55,9 @@ __pycache__/
 # Local-only notes and environment data
 .local/
 
-# 저작권 무단전재 금지 파일 (로컬 유지, git 제외)
-06_career/legal/_reference/개인정보 유출등 대응 매뉴얼(초안).pdf
-06_career/legal/_reference/(첨부) 과징금 투자감경제도 안내서(초안).pdf
+# 원문 자료 기본 제외 — 저작권 무단전재 금지·개인정보 포함 가능 (로컬 유지, git 제외)
+# 공공기관 행정문서만 화이트리스트로 예외 허용
+06_career/legal/_reference/*.pdf
+06_career/legal/_reference/*.hwp
+06_career/legal/_reference/*.hwpx
+!06_career/legal/_reference/개인정보 보호위원회 직제 시행규칙 일부개정령안.pdf
