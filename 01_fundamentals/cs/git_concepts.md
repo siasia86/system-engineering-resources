@@ -71,7 +71,7 @@ commit C3
 commit C2
   └── tree T2
         ├── blob B1 (README.md)   <- B1: 변경 없음 = 동일 SHA 재사용
-        └── blob B3 (main.py)     <- 이전 버전
+        └── blob B5 (main.py)     <- 이전 버전
 ```
 
 **스냅샷 기반의 효율성:** 변경되지 않은 파일은 동일한 blob SHA를 참조하므로 중복 저장 없음.
@@ -168,7 +168,7 @@ Untracked ──git add──> Staged ──git commit──> Committed
 |-----------|-----------------------------------|
 | Untracked | Git이 추적하지 않는 새 파일       |
 | Staged    | `git add` 후 Index에 등록된 상태  |
-| Committed | 저장소에 기록된 상태 (BASE)       |
+| Committed | 저장소에 기록된 상태              |
 | Modified  | Committed 이후 변경된 상태        |
 | Ignored   | `.gitignore`에 의해 무시되는 파일 |
 
@@ -243,7 +243,7 @@ After git rebase main (from feature):
   feature: A <- B <- C <- D' <- E'     (D',E': 새 SHA, C 위에 재적용)
 ```
 
-🟡 Git 2.34+에서 기본 merge 전략은 `ort`(Ostensibly Recursive's Twin)입니다. `recursive`를 대체했으며 API 동작은 동일합니다.
+🟡 Git 2.34+에서 기본 merge 전략은 `ort`(Ostensibly Recursive's Twin)입니다. `recursive`의 drop-in 대체를 목표로 설계되었습니다.
 
 ### 선택 기준
 
