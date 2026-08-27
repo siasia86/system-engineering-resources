@@ -93,15 +93,11 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
 
 ### 높음
 
-- [ ] 절대경로 기록과 `documentation_policy.md` §3 충돌 해소
-      - 발견 경위: 이관 대상 정리 중 확인
-      - `documentation_policy.md` §3은 "개인 경로, 내부 IP, 자격증명은 저장소에
-        기록하지 않습니다"로 규정
-      - 그런데 `02_kiro/skills/zircon-readme-policy/SKILL.md`와
-        `02_kiro/skills/repo-governance/SKILL.md` 미러에 로컬 절대경로가 기록되어 있음
-      - 판단 필요: 저장소 자체 경로와 다른 저장소의 로컬 경로를 같은 기준으로 볼지,
-        skill 미러를 예외로 둘지, 경로를 저장소 식별자로 대체할지
-      - 이 TODO 문서는 충돌을 피하기 위해 절대경로 대신 저장소 식별자를 사용함
+- [x] 절대경로 기록과 `documentation_policy.md` §3 충돌 해소 (2026-08-27 완료)
+      - `documentation_policy.md` §3.1에 환경 종속성 기준을 추가
+      - 사용자 홈 경로·계정@호스트·내부 IP·자격증명은 금지하고, 동작에 필요한 도구·저장소 경로는 허용
+      - Kiro 미러의 실제 위반 3건을 원본에서 수정하거나 allowlist에서 제외한 뒤 재동기화
+      - 미러 위반 0건과 원본·미러 동기화 차이 0건 확인
 - [x] `exclude_files` 제외 해제 (2026-08-27 완료)
       - 측정 결과 `CHANGELOG.md`, `LICENSE.md`, `TODO.md` 는 푸터를 갖추고 있어
         제외 없이도 0건 통과. 제외할 근거가 없었음
@@ -117,6 +113,9 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
       - `FILE_SKIP` 구조를 `(검사 집합, 사유, 재검토 시점)` 로 변경
       - `--list-skips` 옵션 추가. 사유 미확인 항목이 있으면 종료 코드 1 반환
       - 재검토 시점은 날짜 또는 `상시`(문서 성격상 항구적 예외)로 기재
+- [x] `--list-skips` CI 등록 (2026-08-27 완료)
+      - `md-style-check.py --list-skips`를 Markdown 검증 job에 추가
+      - 사유 미확인 예외가 추가되면 종료 코드 1로 CI가 실패함을 확인
 - [x] 기존 검사 제외 항목 전수 점검 (2026-08-27 완료)
       - 방법: `FILE_SKIP` 을 비운 상태로 각 파일을 검사해 해당 항목이 실제로
         발생하는지 측정

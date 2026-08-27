@@ -40,6 +40,7 @@
 - 도구 중립 규칙은 `01_repository_governance/`, 도구 종속 자료는 각 도구 영역에 배치하는 분리 기준을 정의.
 - 이관 저장소의 템플릿 사용 실태를 측정하고, 현재 사용 형식과 미사용 문서의 재검토 조건을 기록.
 - Zircon Windows 후속 작업을 `/root/22_github_private/12_zircon_win/TODO.md`로 이관하고 `TODO2.md`에서 관련 블록을 정리.
+- `md-style-check.py --list-skips`를 CI에 등록하여 사유 없는 검사 예외를 차단.
 
 ### Fixed
 

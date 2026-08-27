@@ -109,7 +109,7 @@
 | `md-style-check.py` | 다이어그램 폭 판정 — 인접 박스를 한 블록으로 묶음 | `ddos_defense_architecture.md` 오탐 4건 |
 | `md-style-check.py` | 박스 문자 판정 — RFC 헤더의 `├...┘` 조합 허용     | `network_headers.md` 오탐 2건           |
 | `md-style-check.py` | 표 셀 내 백틱 펜스를 코드블록으로 오인            | skill 작성 중 오탐 6건 확인             |
-| `--list-skips`      | CI 등록 여부 결정                                 | 사유 없는 제외 추가를 차단 가능         |
+| `--list-skips`      | CI 등록 완료 (2026-08-27)                         | 사유 없는 제외 추가를 차단              |
 
 작업 중 발견해 처리한 항목입니다.
 
