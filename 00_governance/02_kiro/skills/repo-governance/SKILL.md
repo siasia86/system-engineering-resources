@@ -119,11 +119,15 @@ repo-local .governance/
 
 ## 신규 작성 시
 
-`.governance/GOVERNANCE.md` 를 새로 만들 때는 템플릿을 사용합니다.
+`.governance/` 문서를 새로 만들 때는 템플릿을 사용합니다. 템플릿은 저장소 정책
+디렉토리의 `templates/` 아래에 있습니다.
 
-```
-/root/32_system-engineering-resources/00_governance/01_repository_governance/templates/governance_template.md
-```
+| 대상 파일                      | 템플릿                        |
+|--------------------------------|-------------------------------|
+| `.governance/GOVERNANCE.md`    | `governance_template.md`      |
+| `.governance/verification.md`  | `verification_template.md`    |
+
+`verification.md` 는 변경 유형이 여러 가지이고 각각 다른 검증이 필요할 때만 분리합니다.
 
 전역 규칙만으로 충분한 저장소에는 `.governance/` 를 만들지 않습니다. 예외가 실제로
 필요한 경우에만 생성합니다.

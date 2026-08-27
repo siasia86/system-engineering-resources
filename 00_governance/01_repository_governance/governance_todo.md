@@ -159,6 +159,12 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
         저장소 규칙을 따라야 함
       - 조치: 템플릿 5개 전체에 복사 시 푸터·날짜 처리 안내 문구 추가
 
+- [x] `templates/readme_template.md` 작성 (2026-08-27 완료)
+- [x] `templates/runbook_template.md` 작성 (2026-08-27 완료)
+      - `chobo_ansible` profile이 README를 운영 Runbook으로 정의하나 형식이 없던 공백 해소
+- [x] `templates/verification_template.md` 작성 (2026-08-27 완료)
+      - `.governance/verification.md` 선택 파일의 형식 확보. Ansible 저장소 이관 시 활용
+
 ### 낮음
 
 - [ ] 템플릿 사용 실태 점검

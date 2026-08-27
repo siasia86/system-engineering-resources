@@ -45,13 +45,18 @@ profile과 `.governance/` 문서에는 내부 IP, 사용자명, 개인 경로, �
 
 ## 5. 템플릿
 
-- [PLAN 템플릿](templates/plan_template.md): 복합 작업 계획을 시작할 때 사용합니다.
-- [ISSUE 템플릿](templates/issue_template.md): 분석이 필요한 문제를 기록할 때 사용합니다.
-- [TODO 템플릿](templates/todo_template.md): 앞으로 수행할 작업을 기록할 때 사용합니다.
-- [CHANGELOG 템플릿](templates/changelog_template.md): 완료된 변경을 기록할 때 사용합니다.
-- [GOVERNANCE 템플릿](templates/governance_template.md): 저장소별 규칙을 `.governance/`에 정의할 때 사용합니다.
+| 템플릿                                             | 대상 문서                     | 용도                    |
+|----------------------------------------------------|-------------------------------|-------------------------|
+| [PLAN](templates/plan_template.md)                 | `PLAN.md`                     | 복합 작업 계획          |
+| [ISSUE](templates/issue_template.md)               | `ISSUE.md`                    | 원인 분석이 필요한 문제 |
+| [TODO](templates/todo_template.md)                 | `TODO.md`                     | 앞으로 수행할 작업      |
+| [CHANGELOG](templates/changelog_template.md)       | `CHANGELOG.md`                | 완료된 변경             |
+| [README](templates/readme_template.md)             | `README.md`                   | 저장소·디렉토리 인덱스  |
+| [RUNBOOK](templates/runbook_template.md)           | 운영 문서                     | 점검·장애 대응 절차     |
+| [GOVERNANCE](templates/governance_template.md)     | `.governance/GOVERNANCE.md`   | 저장소별 규칙과 예외    |
+| [VERIFICATION](templates/verification_template.md) | `.governance/verification.md` | 저장소별 검증 절차      |
 
-`documentation_policy.md`가 정의하는 문서 4종(`ISSUE.md`, `TODO.md`, `PLAN.md`, `CHANGELOG.md`)에 모두 템플릿이 대응합니다.
+`documentation_policy.md`가 정의하는 문서 4종(`ISSUE.md`, `TODO.md`, `PLAN.md`, `CHANGELOG.md`)에 모두 템플릿이 대응합니다. `.governance/` 체계용 템플릿 2종은 [저장소 규칙 우선순위 정책](governance_precedence.md)과 함께 사용합니다.
 
 ## 6. 개선 항목
 

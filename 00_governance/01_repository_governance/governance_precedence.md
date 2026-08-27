@@ -115,6 +115,11 @@ repo-local .governance/
 규칙이 적은 저장소는 `GOVERNANCE.md` 하나만 둡니다. 규칙이 늘어 한 파일에서 관리가
 어려워지면 `exceptions.md`와 `verification.md`로 분리합니다.
 
+각 파일은 템플릿을 사용해 작성합니다.
+
+- `GOVERNANCE.md`: [GOVERNANCE 템플릿](templates/governance_template.md)
+- `verification.md`: [VERIFICATION 템플릿](templates/verification_template.md)
+
 ### 디렉토리명을 `.governance/`로 정한 이유
 
 - 특정 AI 도구 이름을 포함하지 않아 도구가 바뀌어도 유지됩니다.

@@ -114,6 +114,8 @@ cp templates/governance_template.md "${REPO}/.governance/GOVERNANCE.md"
 
 검사 도구가 이 저장소에 없으면 그 사실을 명시하고 대체 검증 방법을 작성합니다.
 
+변경 유형이 여러 가지이고 각각 다른 검증이 필요하면 `.governance/verification.md`로 분리합니다. 작성 시 [VERIFICATION 템플릿](verification_template.md)을 사용합니다.
+
 ## 6. 기록 금지 항목
 
 `.governance/`는 저장소와 함께 배포되므로 공개 범위를 저장소 공개 범위와 동일하게 취급합니다.
