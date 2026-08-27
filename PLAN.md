@@ -65,6 +65,7 @@
 
 ```text
 Repository: 30_sia-scripts
+Remote: `git@github.com:siasia86/30_sia-scripts.git`
 Description: 공용 시스템 엔지니어링·문서 품질 검증 스크립트와 Ansible 배포 자동화
 Local path: /root/30_sia-scripts_private/
 ```
