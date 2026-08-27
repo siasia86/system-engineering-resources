@@ -190,7 +190,7 @@ sudo gitleaks detect --source /root/32_system-engineering-resources --no-git --n
 - [x] 정상·오류 fixture 테스트가 통과합니다.
 - [x] 기존 검사 결과와 신규 검사 결과가 일치합니다.
 - [x] 저장소별 예외가 설정 파일에만 존재합니다.
-- [ ] 실행 파일 권한과 일반 사용자 쓰기 차단을 확인합니다.
+- [x] 실행 파일 권한과 일반 사용자 쓰기 차단을 확인합니다.
 - [x] Ansible playbook syntax check를 통과합니다.
 - [x] `ansible-lint==26.8.0`을 고정하고 lint를 통과합니다.
 - [ ] Ansible 제어 서버에서 artifact 저장소로 HTTPS 연결이 확인됩니다.
