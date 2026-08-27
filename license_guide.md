@@ -270,7 +270,7 @@ See the [LICENSE](LICENSE) file for details.
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-08-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.
 ```
@@ -531,7 +531,7 @@ GitHub CLA Assistant 등 도구로 자동화 가능.
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-08-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.
 
