@@ -12,6 +12,8 @@
 - 오류 fixture 4종과 legacy/common 검사기 반환 코드 대조를 완료.
 - 일반 계정 Controller의 사용자 소유 `.venv`에서 Ansible syntax check를 완료.
 - 최종 검증이 끝난 `/root/30_sia-scripts` 검증 clone을 사용자 승인으로 삭제. 원격 `main`과 사용자 clone을 기준 상태로 사용.
+- `ansible-lint==26.8.0`과 `ansible-core==2.20.5` 조합의 lint 통과를 확인.
+- 임시 target에서 release install·update·rollback과 root 소유자·권한·entrypoint 동작을 확인.
 
 ## [3.11.0] - 2026-08-27
 

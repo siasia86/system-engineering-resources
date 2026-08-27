@@ -146,10 +146,10 @@ GitHub-hosted Actions가 Ansible 서버로 직접 SSH 접속하지 않습니다.
 
 - [x] `/opt/sia_scripts/releases/<version>/` 구조를 구현합니다.
 - [x] `/opt/sia_scripts/current` symlink 전환 방식을 적용합니다.
-- [ ] `/usr/local/bin/sia-*` 실행 명령을 설치합니다.
+- [x] `/usr/local/bin/sia-*` 실행 명령을 설치합니다.
 - [x] Ansible role 또는 playbook으로 artifact 다운로드, checksum 검증, release 설치를 구현합니다.
-- [ ] 설치 파일의 소유자·권한을 `root:root`, 디렉토리 `0755`, 일반 파일 `0644`, 실행 파일 `0755` 기준으로 확인합니다.
-- [ ] 검증: 버전 출력, 도움말 출력, 비권한 사용자의 읽기·실행, 쓰기 차단을 확인합니다.
+- [x] 설치 파일의 소유자·권한을 `root:root`, 디렉토리 `0755`, 일반 파일 `0644`, 실행 파일 `0755` 기준으로 확인합니다.
+- [x] 검증: 버전 출력, 도움말 출력, 비권한 사용자의 읽기·실행, 쓰기 차단을 확인합니다.
 
 ### 단계 5. CI artifact와 Ansible 배포 workflow의 단계적 적용
 
@@ -192,13 +192,15 @@ sudo gitleaks detect --source /root/32_system-engineering-resources --no-git --n
 - [x] 저장소별 예외가 설정 파일에만 존재합니다.
 - [ ] 실행 파일 권한과 일반 사용자 쓰기 차단을 확인합니다.
 - [x] Ansible playbook syntax check를 통과합니다.
-- [ ] `ansible-lint` 호환 버전을 고정하고 lint를 통과합니다.
+- [x] `ansible-lint==26.8.0`을 고정하고 lint를 통과합니다.
 - [ ] Ansible 제어 서버에서 artifact 저장소로 HTTPS 연결이 확인됩니다.
 - [ ] Ansible 제어 서버에서 대상 호스트로 Ansible 연결이 확인됩니다.
 - [x] artifact checksum 검증 후 설치됩니다.
-- [ ] 설치·업데이트·롤백 smoke test를 통과합니다.
+- [x] 임시 target에서 설치·업데이트·롤백 smoke test를 통과합니다.
 - [x] Markdown·링크·헤딩·비밀정보 검사를 통과합니다.
 - [x] `CHANGELOG.md`에 최종 결과를 기록합니다.
+
+임시 target smoke test는 `0.1.0 install → 0.2.0 update → 0.1.0 rollback` 순서로 수행했습니다. 대상 호스트 연결과 artifact 저장소 outbound HTTPS는 아직 실제 환경에서 확인하지 않았습니다.
 
 검증 실패를 공용 검사 예외로 숨기지 않습니다. 예외가 필요하면 대상, 사유, 재검토 시점을 별도로 기록합니다.
 
