@@ -16,12 +16,12 @@ description: Markdown 링크·앵커·목차·헤딩 구조 검증 규칙. .md �
 | H2 번호 연속성                       | `md-heading-check.py` | `number` 검사               |
 | 헤딩 레벨 건너뜀                     | `md-heading-check.py` | `level` 검사                |
 | 참조되는 앵커 중복                   | `md-heading-check.py` | `duplicate` 검사            |
-| 목차 완결성 (H2 누락 여부)           | 수동 확인             | 자동 검사 없음              |
+| 목차 완결성 (H2 누락 여부)           | `md-heading-check.py` | `toc` 검사                  |
 
 ```bash
 BASE=/root/32_system-engineering-resources
 sudo python3 $BASE/md-link-check.py <path>      # 파일 링크
-sudo python3 $BASE/md-heading-check.py <path>   # 앵커·번호·레벨·중복
+sudo python3 $BASE/md-heading-check.py <path>   # 앵커·번호·레벨·중복·목차
 sudo python3 $BASE/md-style-check.py <path>     # 표 정렬·문체·푸터
 ```
 

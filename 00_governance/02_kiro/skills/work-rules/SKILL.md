@@ -122,7 +122,7 @@ After creating or modifying any .md file under /root/32_system-engineering-resou
 ```bash
 BASE=/root/32_system-engineering-resources
 sudo python3 $BASE/md-style-check.py <path>     # table alignment, tone, footer
-sudo python3 $BASE/md-heading-check.py <path>   # anchor, H2 numbering, level, duplicate
+sudo python3 $BASE/md-heading-check.py <path>   # anchor, H2 numbering, level, duplicate, toc
 sudo python3 $BASE/md-link-check.py <path>      # internal file links
 ```
 
