@@ -70,6 +70,11 @@ jobs:
 
           while IFS= read -r file; do
             [ -n "$file" ] || continue
+            # 도구 미러는 원본(~/.kiro/)의 사본입니다. 여기서 날짜를 고치면
+            # 다음 동기화가 되돌리므로 봇 커밋과 동기화가 서로를 덮어씁니다.
+            case "$file" in
+              00_governance/02_kiro/*) continue ;;
+            esac
             if [ -f "$file" ] && grep -q '^\*\*마지막 업데이트\*\*' "$file"; then
               sed -i "s/\*\*마지막 업데이트\*\*: [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}/**마지막 업데이트**: $today/" "$file"
               git add "$file"
