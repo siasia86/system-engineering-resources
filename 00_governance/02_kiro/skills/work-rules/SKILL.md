@@ -133,13 +133,13 @@ sudo python3 $BASE/md-link-check.py <path>      # internal file links
 
 ### md quality tools
 
-| Tool                     | Path                                   | Usage                                    |
-|--------------------------|----------------------------------------|------------------------------------------|
-| md-style-check.py        | /root/32_system-engineering-resources/ | Style check (mandatory)                  |
-| md-heading-check.py      | /root/32_system-engineering-resources/ | Anchor / numbering / level (mandatory)   |
-| md-link-check.py         | /root/32_system-engineering-resources/ | Internal file links (mandatory)          |
-| fix_table_align.py       | /root/sj_del/                          | Auto-fix table alignment                 |
-| trim_diagram_trailing.py | /root/sj_del/                          | Remove trailing spaces in diagrams       |
+| Tool                     | Path                                   | Usage                                  |
+|--------------------------|----------------------------------------|----------------------------------------|
+| md-style-check.py        | /root/32_system-engineering-resources/ | Style check (mandatory)                |
+| md-heading-check.py      | /root/32_system-engineering-resources/ | Anchor / numbering / level (mandatory) |
+| md-link-check.py         | /root/32_system-engineering-resources/ | Internal file links (mandatory)        |
+| fix_table_align.py       | /root/sj_del/                          | Auto-fix table alignment               |
+| trim_diagram_trailing.py | /root/sj_del/                          | Remove trailing spaces in diagrams     |
 
 - `fix_table_align.py`: run when md-style-check reports table alignment issues
 - `trim_diagram_trailing.py`: run after diagram padding to remove unnecessary trailing spaces

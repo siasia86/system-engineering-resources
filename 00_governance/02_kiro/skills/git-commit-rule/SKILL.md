@@ -42,9 +42,9 @@ style: 전체 README 푸터 배지 통일
 
 ## Branch 규칙
 
-| 리포지토리                              | 사용 branch | 금지 branch        |
-|-----------------------------------------|-------------|--------------------|
-| `/root/32_system-engineering-resources` | `yunli`     | `main`, `kiro`     |
+| 리포지토리                              | 사용 branch | 금지 branch       |
+|-----------------------------------------|-------------|-------------------|
+| `/root/32_system-engineering-resources` | `yunli`     | `main`, `kiro`    |
 | `/root/sj_del`                          | `yunli`     | `main`, `kiro` 외 |
 
 - commit/push 전 반드시 현재 branch 확인
