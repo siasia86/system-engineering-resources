@@ -574,28 +574,65 @@ INDEX_SKIP = {"reference"}
 # 99_archive 파일은 푸터 불필요
 ARCHIVE_SKIP = {"footer"}
 
-# 파일별 특정 검사 항목 제외 (경로 패턴: 검사명 집합)
+# 파일별 특정 검사 항목 제외입니다.
+#
+# 각 항목은 (검사명 집합, 사유, 재검토 시점) 3요소를 갖습니다. 사유 없는 제외는
+# 시간이 지나면 근거를 확인할 수 없게 되고, 근거가 사라진 뒤에도 남아 검사 공백이
+# 됩니다. 실제로 2026-06-23 에 도입된 파일 단위 제외 목록은 사유 기록이 없어
+# 근거를 추적할 수 없었고, 그 안에 실제 결함 26건이 2개월간 가려져 있었습니다.
+#
+# 재검토 시점은 날짜 또는 조건으로 적습니다. `상시` 는 문서 성격상 항구적인 예외를
+# 뜻합니다 (예: 외부 프로젝트 원문 보존).
 FILE_SKIP = {
-    "04_security/cloud/ddos_defense_architecture.md": {"diagram-width"},
-    "01_fundamentals/linux/vim_airline.md": {"diagram-width", "h1", "emoji-disallow"},
-    "02_infrastructure/monitoring/game_infra_kpi_presentation.md": {"diagram-kr"},
-    "01_fundamentals/networking/network_headers.md": {"box-chars"},
-    "06_career/ai_tools/kiro_cli_command_reference.md": {"diagram-kr"},
-    "02_infrastructure/cicd/infra_monorepo_and_boilerplate.md": {"table"},
-    "06_career/legal/privacy_law_guide.md": {"table"},  # URL 인코딩 링크 포함 표 — 렌더링 정상, 도구 오탐
-    "skills/security-tools/SKILL.md": {"emoji-disallow"},
-    # 스타일 규칙 원본 문서 — 금지 예시(`🟡버전`, `완전`, `완벽`)를 본문에 인용함
-    "markdown/STYLE.md": {"emoji", "exaggeration"},
-    "02_reference/README_web.md": {"footer", "h1"},
-    "00_default/linux_setting.md": {"footer", "h1"},
+    # ── 32_system-engineering-resources ──────────────────────────────────────
+    "01_fundamentals/linux/vim_airline.md": (
+        {"emoji-disallow"},
+        "외부 프로젝트(vim-airline) README 원문 보존 — 목차 아이콘 '☰' 포함", "상시"),
+    "01_fundamentals/networking/network_headers.md": (
+        {"box-chars"},
+        "RFC 헤더 다이어그램 — 필드 경계에 '├...┘' 조합 사용, 렌더링 정상", "2026-11-30"),
+    "02_infrastructure/monitoring/game_infra_kpi_presentation.md": (
+        {"diagram-kr"},
+        "발표 자료 — 다이어그램 내부 한글이 전달 목적상 필요", "상시"),
+    "04_security/cloud/ddos_defense_architecture.md": (
+        {"diagram-width"},
+        "인접 박스와 연결선을 한 다이어그램으로 묶어 최대폭과 비교하는 도구 오탐", "2026-11-30"),
+    "06_career/ai_tools/kiro_cli_command_reference.md": (
+        {"diagram-kr"}, "Kiro CLI 문서 — 다이어그램 한글 의도적", "상시"),
+    "markdown/STYLE.md": (
+        {"emoji", "exaggeration"},
+        "스타일 규칙 원본 — 금지 예시(`🟡버전`, `완전`, `완벽`)를 본문에 인용", "상시"),
+    "skills/security-tools/SKILL.md": (
+        {"emoji-disallow"},
+        "보안 스크립트의 실제 출력 기호(`✓`, `✗`, `⚠`)를 본문에서 명세", "상시"),
+
+    # ── sj_del (별도 저장소) ─────────────────────────────────────────────────
+    "00_default/linux_setting.md": (
+        {"footer", "h1"}, "sj_del 작업 스크립트 문서 — 푸터 규칙 비적용 저장소", "상시"),
+    "02_reference/README_web.md": (
+        {"footer", "h1"}, "sj_del 참고 자료 — 외부 문서 원문 보존", "상시"),
 }
+
 
 def _should_skip_for_file(filepath, check_name):
     """파일 경로 기반 특정 검사 항목 제외 여부."""
-    for pattern, skip_checks in FILE_SKIP.items():
+    for pattern, entry in FILE_SKIP.items():
+        skip_checks = entry[0] if isinstance(entry, tuple) else entry
         if pattern in filepath and check_name in skip_checks:
             return True
     return False
+
+
+def list_file_skip():
+    """FILE_SKIP 항목을 (경로, 검사, 사유, 재검토) 목록으로 반환."""
+    rows = []
+    for pattern, entry in sorted(FILE_SKIP.items()):
+        if isinstance(entry, tuple):
+            checks, reason, review = entry
+        else:
+            checks, reason, review = entry, "미확인 — 점검 필요", "미정"
+        rows.append((pattern, ", ".join(sorted(checks)), reason, review))
+    return rows
 
 # CLI skip 옵션과 내부 검사 키의 매핑
 _SKIP_FLAG_ATTRIBUTES = {
@@ -833,7 +870,7 @@ def parse_args():
             "  _reference 규칙  sources/last_checked frontmatter 필수\n"
         )
     )
-    parser.add_argument('targets', nargs='+', metavar='path',
+    parser.add_argument('targets', nargs='*', metavar='path',
                         help='검사할 파일 또는 디렉토리 (여러 개 가능)')
     parser.add_argument('-E', '--exclude-dir', action='append', default=[],
                         dest='exclude_dirs', metavar='DIR',
@@ -861,12 +898,42 @@ def parse_args():
 
     parser.add_argument('-s', '--strict', action='store_true',
                         help='과장 표현 whitelist 없이 전체 검사')
+    parser.add_argument('--list-skips', action='store_true',
+                        help='파일별 검사 제외 항목과 사유 출력 후 종료')
     parser.add_argument('-V', '--version', action='version', version=f'%(prog)s {VERSION}')
     return parser.parse_args()
 
 
+def _print_file_skips():
+    """FILE_SKIP 목록을 표로 출력. 사유 미확인 항목이 있으면 종료 코드 1."""
+    rows = [("경로", "제외 검사", "사유", "재검토")] + list_file_skip()
+
+    def dw(s):
+        return sum(2 if unicodedata.east_asian_width(c) in 'WF' else 1 for c in s)
+
+    widths = [max(dw(r[i]) for r in rows) for i in range(4)]
+    for idx, row in enumerate(rows):
+        line = "| " + " | ".join(
+            cell + " " * (widths[i] - dw(cell)) for i, cell in enumerate(row)
+        ) + " |"
+        print(line)
+        if idx == 0:
+            print("|" + "|".join("-" * (w + 2) for w in widths) + "|")
+
+    pending = [r for r in rows[1:] if r[2].startswith("미확인")]
+    print(f"\n총 {len(rows) - 1}건 | 사유 미확인 {len(pending)}건")
+    if pending:
+        print("사유가 기록되지 않은 제외 항목이 있습니다. 근거를 확인하거나 제외를 해제하세요.")
+    return 1 if pending else 0
+
+
 def main():
     args = parse_args()
+    if args.list_skips:
+        sys.exit(_print_file_skips())
+    if not args.targets:
+        print("검사 대상 경로를 지정하세요. 사용법은 -h 를 참고합니다.", file=sys.stderr)
+        sys.exit(2)
     try:
         target_configs = []
         for target in args.targets:

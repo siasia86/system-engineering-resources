@@ -16,6 +16,8 @@
 - CI에서 헤딩 구조 검사를 필수 검사로 승격.
 - `02_kiro/` 미러를 스타일 검사 대상에 포함 (검사 대상 323개 → 362개).
 - `CHANGELOG.md`, `LICENSE.md`, `TODO.md`, `license_guide.md` 를 스타일 검사 대상에 포함 (366개).
+- `md-style-check.py` 의 파일별 제외 항목에 사유·재검토 시점 기록을 도입하고 `--list-skips` 옵션 추가.
+- 기존 제외 항목 전수 점검. 근거가 사라진 2건 제거, 과도한 범위 1건 축소, 사유 미확인 6건 해소.
 - CI에 헤딩 구조 검사를 경고 모드로 등록.
 - 압축 알고리즘 문서 `01_fundamentals/cs/compression_algorithms.md` 추가.
 
