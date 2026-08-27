@@ -43,10 +43,7 @@ jobs:
       - name: Check README inventory
         run: python3 readme_inventory_check.py README.md
 
-      # 기존 문서에 잔여 이슈가 있어 아직 필수 검사가 아닙니다.
-      # 잔여 이슈 정리 후 continue-on-error 를 제거하여 필수로 승격합니다.
-      - name: Check heading structure (warning)
-        continue-on-error: true
+      - name: Check heading structure
         run: python3 md-heading-check.py .
 
   update-date:
