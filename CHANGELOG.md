@@ -17,6 +17,7 @@
 - 검사 도구 작업의 후속 항목을 정리한 임시 문서 `TODO2.md` 추가.
 - 압축 알고리즘 문서 `01_fundamentals/cs/compression_algorithms.md` 추가.
 - Zircon Windows 빌드 저장소에 `.governance/GOVERNANCE.md` 적용. `.governance/` 체계의 첫 적용 사례입니다.
+- Zircon Windows 빌드 저장소에 구성 README와 DevExpress 의존성 문서 작성.
 
 ### Changed
 
