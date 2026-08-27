@@ -111,10 +111,14 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
       - 현재 `skip_checks = []`이며 주석에 "저장소별 설정에서 추가할 수 있습니다"로 기재
       - `.governance/` 체계와 연결하여 저장소별 검사 예외를 어떻게 표현할지 정의 필요
 - [ ] `md-link-check.py`의 목차 앵커 검사 누락 보완
-      - 발견 경위: `01_fundamentals/cs/git_concepts.md`의 목차가 존재하지 않는 §2를
+      - 증거 1: `01_fundamentals/cs/git_concepts.md`의 목차가 존재하지 않는 §2를
         링크하고 있었으나 검사를 통과함
-      - 원인 추정: 목차 표 내부 앵커 링크를 검사 대상에 포함하지 않음
+      - 증거 2: `CHANGELOG.md`에 존재하지 않는 `#목차`로 가는 링크가 3곳 있으나
+        단독 검사 시 "링크 0개"로 보고됨
+      - 원인 추정: 표 내부 링크와 `[⬆ ...]` 형태 앵커를 검사 대상에 포함하지 않음
       - 영향: 목차와 본문 헤딩 불일치를 자동 검출하지 못함
+      - 부수 작업: `CHANGELOG.md`의 깨진 `#목차` 링크 3건 제거 또는 목차 신설 결정
+        (`changelog_template.md`는 목차를 두지 않는 방식을 권장)
 
 ### 낮음
 
@@ -146,19 +150,20 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
 ### 보통
 
 - [x] `templates/governance_template.md` 작성 (2026-08-27 완료, 1장 항목과 동일)
+- [x] `templates/todo_template.md` 작성 (2026-08-27 완료)
+- [x] `templates/changelog_template.md` 작성 (2026-08-27 완료)
+      - `documentation_policy.md`가 정의하는 문서 4종에 모두 템플릿이 대응하게 됨
+- [x] 템플릿 푸터 처리 방침 정리 (2026-08-27 완료)
+      - 발견 경위: `governance_template.md` 작성 시 확인
+      - 템플릿 파일 자체는 이 저장소 규칙상 푸터가 필요하나, 복사된 문서는 대상
+        저장소 규칙을 따라야 함
+      - 조치: 템플릿 5개 전체에 복사 시 푸터·날짜 처리 안내 문구 추가
 
 ### 낮음
 
-- [ ] 템플릿 푸터 처리 방침 정리
-      - 발견 경위: `governance_template.md` 작성 시 확인
-      - 템플릿 파일 자체는 이 저장소 규칙에 따라 푸터가 필요하나, 복사된
-        `GOVERNANCE.md`는 대상 저장소 규칙을 따라야 함
-      - 현재는 템플릿 본문에 주의 문구로 안내. 다른 템플릿에도 동일 상황이 있는지 확인 필요
-- [ ] `templates/todo_template.md` 작성 검토
-      - 현재 `plan_template.md`, `issue_template.md`만 존재
-      - TODO는 구조가 단순해 템플릿 필요성이 낮을 수 있음
-- [ ] `templates/changelog_template.md` 작성 검토
-      - `documentation_policy.md`가 `CHANGELOG.md`를 정의하나 템플릿은 없음
+- [ ] 템플릿 사용 실태 점검
+      - 템플릿이 실제로 복사되어 쓰이는지, 형식이 현실과 어긋나지 않는지 확인
+      - 어긋나면 템플릿을 현실에 맞추고, 현실이 잘못이면 문서를 교정
 
 ## 5. 결정 기록
 

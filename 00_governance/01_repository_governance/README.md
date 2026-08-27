@@ -47,7 +47,11 @@ profile과 `.governance/` 문서에는 내부 IP, 사용자명, 개인 경로, �
 
 - [PLAN 템플릿](templates/plan_template.md): 복합 작업 계획을 시작할 때 사용합니다.
 - [ISSUE 템플릿](templates/issue_template.md): 분석이 필요한 문제를 기록할 때 사용합니다.
+- [TODO 템플릿](templates/todo_template.md): 앞으로 수행할 작업을 기록할 때 사용합니다.
+- [CHANGELOG 템플릿](templates/changelog_template.md): 완료된 변경을 기록할 때 사용합니다.
 - [GOVERNANCE 템플릿](templates/governance_template.md): 저장소별 규칙을 `.governance/`에 정의할 때 사용합니다.
+
+`documentation_policy.md`가 정의하는 문서 4종(`ISSUE.md`, `TODO.md`, `PLAN.md`, `CHANGELOG.md`)에 모두 템플릿이 대응합니다.
 
 ## 6. 개선 항목
 
