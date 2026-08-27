@@ -62,6 +62,7 @@ Ansible 학습·자동화 저장소에는 `.governance/GOVERNANCE.md`와 `verifi
 ## 6. 개선 항목
 
 - [governance TODO](governance_todo.md): 이 디렉토리 자체의 개선 항목을 관리합니다.
+- [분리 계획](repository_governance_split_plan.md): 독립 repository 분리 여부와 실행·검증·롤백 조건을 관리합니다.
 
 신규 저장소의 저장소 전역 작업은 `.governance/TODO.md`에서 관리합니다. 기존 저장소의 루트 `TODO.md`는 migration 전까지 legacy로 허용합니다.
 
