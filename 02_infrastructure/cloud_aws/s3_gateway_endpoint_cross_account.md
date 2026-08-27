@@ -191,7 +191,7 @@ aws s3 cp test.txt s3://b-account-bucket/test.txt --region us-east-1
 
 ## AWS 콘솔(웹)에서 설정하는 방법
 
-### 1단계: A계정 - S3 Gateway Endpoint 생성
+### 1단계: A계정 - S3 Gateway Endpoint 생성 (콘솔)
 
 1. AWS 콘솔 → VPC → 좌측 메뉴 `엔드포인트` → `엔드포인트 생성`
 2. 설정:

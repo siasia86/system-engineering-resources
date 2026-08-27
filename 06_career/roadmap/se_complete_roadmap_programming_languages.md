@@ -890,7 +890,7 @@ SE + Cloud Architect + Security
 SE + DevOps + 기본 DBA 지식
 ```
 
-### 결론
+### 자주 묻는 질문
 
 **Q: SE만으로 충분한가?**
 A: 충분하지만, **SE + DevOps/Cloud** 조합이 시장 가치를 크게 높입니다.

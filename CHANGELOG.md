@@ -25,6 +25,10 @@
 ### Fixed
 
 - `CHANGELOG.md`와 `LICENSE.md`에서 존재하지 않는 `#목차`를 참조하던 복귀 링크 11건 제거.
+- `STYLE.md`의 중첩 코드블록 오류 수정. §5~§7, §10, §11 이 코드블록으로 렌더링되던 문제 해결.
+- `STYLE.md`의 중복된 `## 14.` 섹션 번호를 14/15/16 으로 재정렬.
+- 헤딩 레벨 건너뜀 1건, 중복 앵커 2건 수정.
+- `md-heading-check.py` 펜스 판정을 CommonMark 규칙으로 교체하고 범위·하위 절 번호 표기 지원.
 - `git_official_notes.md`, `git_guide.md`, `git_concepts.md`의 사실 오류 12건 수정.
 - `privacy_law_guide.md` 개요 표의 소관 기관을 풀네임 병기로 정정.
 - 추적되던 구버전 백업 파일 제거 및 `.gitignore` 패턴 보강.

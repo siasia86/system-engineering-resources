@@ -120,15 +120,15 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
 
 ### 헤딩 구조 잔여 이슈 정리 (우선순위: 보통)
 
-`md-heading-check.py` 도입으로 기존 문서에서 51건이 검출되었고, 목차 없는 문서의
-복귀 링크 11건을 제거하여 40건이 남았습니다. 정리 전에는 CI에서 경고 모드로 유지합니다.
+`md-heading-check.py` 도입으로 51건이 검출되었고, 정리와 도구 오탐 수정을 거쳐
+24건이 남았습니다. 정리 전에는 CI에서 경고 모드로 유지합니다.
 
-| 유형        | 건수 | 내용                                             |
-|-------------|------|--------------------------------------------------|
-| `anchor`    | 27   | 존재하지 않는 헤딩을 가리키는 앵커 링크          |
-| `number`    | 6    | H2 번호 불연속 또는 1로 시작하지 않음            |
-| `level`     | 5    | 헤딩 레벨 건너뜀 (H2 → H4)                       |
-| `duplicate` | 2    | 참조되는 앵커가 중복되어 링크가 첫 번째로만 이동 |
+| 유형        | 건수 | 내용                                                        |
+|-------------|------|-------------------------------------------------------------|
+| `anchor`    | 19   | 존재하지 않는 헤딩을 가리키는 앵커 링크                     |
+| `level`     | 4    | `vim_airline.md` 만 남음 (외부 README 원본, 검사 예외 대상) |
+| `number`    | 1    | `git_concepts.md` 목차의 §2 누락 (1장 항목과 동일 원인)     |
+| `duplicate` | 0    | 정리 완료                                                   |
 
 - [x] 목차 없는 문서의 복귀 링크 제거 (2026-08-27 완료)
       - `CHANGELOG.md` 7건, `LICENSE.md` 4건. 두 파일 모두 `## 목차`가 없는데
@@ -141,14 +141,27 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
       - 목차 항목과 실제 헤딩이 어긋난 경우로 추정되어 개별 확인 필요
       - `python_logging.md` 5건, `n8n_docker_cheatsheet.md` 3건, `STYLE.md` 3건 순
       - `STYLE.md`는 `02_kiro/` 미러이므로 원본 수정 후 재동기화 필요
-- [ ] `number` 6건 정리
-      - `git_concepts.md`: 목차의 §2 누락과 동일 원인. 1장 이관 항목과 함께 처리
-      - `STYLE.md`, `work-rules-guide.md`: `02_kiro/` 미러이므로 원본 수정 후 재동기화 필요
-- [ ] `level` 5건 정리
-      - `vim_airline.md`는 외부 프로젝트 README 원본이므로 검사 예외 대상 검토
-- [ ] `duplicate` 2건 정리
-      - `s3_gateway_endpoint_cross_account.md`, `se_complete_roadmap_programming_languages.md`
-      - 동일 제목 헤딩에 링크가 걸려 의도한 위치로 이동하지 않음
+- [x] `number` / `level` / `duplicate` 정리 (2026-08-27 완료)
+      - `STYLE.md`: 중첩 펜스 오류로 §5~§7, §10, §11 이 코드블록에 삼켜지던 문제 수정
+        (외부 펜스를 4-backtick 으로 승격). `## 14.` 중복을 14/15/16 으로 재번호
+      - `ansible_install_and_team_operation.md`: `## 6.` 직하 H4 를 H3 로 조정
+      - `s3_gateway_endpoint_cross_account.md`: 동일 제목 H2/H3 중 H3 에 `(콘솔)` 명시
+      - `se_complete_roadmap_programming_languages.md`: Q&A 절의 `### 결론` 을
+        `### 자주 묻는 질문` 으로 변경 (내용과 더 일치)
+      - `02_kiro/` 미러 2개는 원본(`~/.kiro/`) 수정 후 재동기화
+      - 도구 오탐 3종 수정 (아래 항목 참고)
+- [x] `md-heading-check.py` 오탐 수정 (2026-08-27 완료, v26.08.27.4)
+      - 펜스 판정을 CommonMark 규칙으로 교체. 정보 문자열이 있는 펜스는 닫는
+        펜스가 아니며, 들여쓰기 4칸 이상은 펜스가 아님
+      - `## 5-10. 제목` 범위 표기 지원 (외부 규칙 번호에 대응하는 문서)
+      - `## 1-1. 제목` 하위 절 표기 지원 (번호를 진행시키지 않음)
+      - 이 수정으로 `work-rules-guide.md`, `percona_xtrabackup_guide.md`,
+        `infra_monorepo_and_boilerplate.md`, `work-rules/SKILL.md` 오탐 해소
+- [ ] `vim_airline.md` 검사 예외 등록 방식 결정
+      - 외부 프로젝트(vim-airline) README 원본이므로 상류와의 차이를 만들지 않는 편이 적절
+      - `TODO.md` 검사 예외 표에는 이미 등록되어 있으나 `md-heading-check.py` 는
+        해당 설정을 읽지 않음
+      - 선택지: 검사기에 제외 설정 지원 추가 / `.md-style-check.toml` 공용화 / 현행 유지
 - [ ] 정리 완료 후 CI에서 `continue-on-error` 제거하여 필수 검사로 승격
 
 ### 낮음

@@ -29,7 +29,7 @@ md-link-check.py 는 상대경로 링크만 검증하고 #anchor 링크를 의�
     1 = 이슈 발견
 """
 
-VERSION = "26.08.27"
+VERSION = "26.08.27.4"
 
 import argparse
 import os
@@ -40,8 +40,8 @@ import sys
 
 HEADING_PATTERN = re.compile(r'^(#{1,6})\s+(.+?)\s*$')
 ANCHOR_LINK_PATTERN = re.compile(r'\[[^\]]*\]\(#([^)]+)\)')
-FENCE_PATTERN = re.compile(r'^\s*(`{3,}|~{3,})')
-NUMBERED_H2_PATTERN = re.compile(r'^(\d+)\.\s+')
+FENCE_PATTERN = re.compile(r'^(\s*)(`{3,}|~{3,})\s*(.*)$')
+NUMBERED_H2_PATTERN = re.compile(r'^(\d+)(?:-(\d+))?\.\s+')
 
 # 번호를 요구하지 않는 관례적 H2
 UNNUMBERED_ALLOWED = {'목차', '참고 자료', '통계', '개요', 'changelog'}
@@ -60,15 +60,37 @@ def make_anchor(heading):
 
 
 def strip_code_blocks(content):
-    """코드블록 내부를 빈 줄로 치환하여 줄 번호를 보존."""
+    """코드블록 내부를 빈 줄로 치환하여 줄 번호를 보존.
+
+    CommonMark 규칙을 따릅니다.
+
+    - 닫는 펜스는 여는 펜스와 같은 문자이고 개수가 같거나 많아야 합니다.
+    - 닫는 펜스에는 정보 문자열(```python 등)이 없어야 합니다.
+    - 펜스의 들여쓰기는 최대 3칸입니다. 4칸 이상은 내용으로 취급합니다.
+
+    이 규칙이 없으면 중첩 예시가 있는 문서에서 코드 영역을 잘못 판정합니다.
+    """
     result = []
-    in_fence = False
+    fence_char = None
+    fence_len = 0
     for line in content.split('\n'):
-        if FENCE_PATTERN.match(line):
-            in_fence = not in_fence
+        m = FENCE_PATTERN.match(line)
+        # 들여쓰기 4칸 이상은 펜스가 아닙니다 (CommonMark: 최대 3칸)
+        if m and len(m.group(1).expandtabs(4)) <= 3:
+            marker = m.group(2)
+            char, length, info = marker[0], len(marker), m.group(3).strip()
+            if fence_char is None:
+                fence_char, fence_len = char, length
+                result.append('')
+                continue
+            if char == fence_char and length >= fence_len and not info:
+                fence_char, fence_len = None, 0
+                result.append('')
+                continue
+            # 정보 문자열이 있거나 문자가 다르면 닫는 펜스가 아님 (내용으로 취급)
             result.append('')
             continue
-        result.append('' if in_fence else line)
+        result.append('' if fence_char else line)
     return '\n'.join(result)
 
 
@@ -111,26 +133,46 @@ def check_anchors(headings, content):
 
 
 def check_numbering(headings):
-    """H2 번호가 1부터 연속인지 검증."""
+    """H2 번호가 1부터 연속인지 검증.
+
+    두 가지 확장 표기를 지원합니다.
+
+    - 범위 (`## 5-10. 제목`): 한 섹션이 여러 번호를 포괄합니다. 외부 규칙 번호에
+      대응하는 문서에서 사용합니다.
+    - 하위 절 (`## 1-1. 제목`): 직전 섹션의 하위 항목이므로 번호를 진행시키지
+      않습니다.
+
+    뒤 숫자가 앞 숫자보다 크면 범위, 작거나 같으면 하위 절로 판정합니다.
+    """
     issues = []
     numbered = []
     for level, text, lineno in headings:
         if level != 2:
             continue
         m = NUMBERED_H2_PATTERN.match(text)
-        if m:
-            numbered.append((int(m.group(1)), text, lineno))
+        if not m:
+            continue
+        start = int(m.group(1))
+        second = int(m.group(2)) if m.group(2) else None
+        if second is not None and second > start:
+            numbered.append((start, second, False, text, lineno))   # 범위: 5-10.
+        elif second is not None:
+            numbered.append((start, start, True, text, lineno))     # 하위 절: 1-1.
+        else:
+            numbered.append((start, start, False, text, lineno))
     if not numbered:
         return issues
-    if numbered[0][0] != 1:
-        n, text, lineno = numbered[0]
-        issues.append((lineno, 'number', f'H2 번호가 1로 시작하지 않음: {n}. {text}'))
+
+    start, _, _, text, lineno = numbered[0]
+    if start != 1:
+        issues.append((lineno, 'number', f'H2 번호가 1로 시작하지 않음: {text}'))
     for i in range(1, len(numbered)):
-        prev, cur = numbered[i - 1][0], numbered[i][0]
-        if cur != prev + 1:
-            _, text, lineno = numbered[i]
+        prev_end = numbered[i - 1][1]
+        cur_start, _, is_sub, text, lineno = numbered[i]
+        expected = prev_end if is_sub else prev_end + 1
+        if cur_start != expected:
             issues.append((lineno, 'number',
-                           f'H2 번호 불연속: {prev} -> {cur} ({text})'))
+                           f'H2 번호 불연속: {prev_end} -> {cur_start} ({text})'))
     return issues
 
 
