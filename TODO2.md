@@ -41,49 +41,11 @@
 
 ### 3.1 저장소별 규칙 이관 (우선순위: 높음)
 
-| 저장소              | 규칙 위치                                   | 상태              |
-|---------------------|---------------------------------------------|-------------------|
-| Zircon Windows 빌드 | 저장소 `.governance/GOVERNANCE.md`          | 완료 (2026-08-27) |
-| Ansible 학습·자동화 | 저장소 `.governance/` 2종                   | 완료 (2026-08-27) |
-| Zircon 본체         | 저장소 내 `.kiro/skills/` 사본 + 전역 skill | 미착수            |
+| 저장소              | 규칙 위치                 | 상태              |
+|---------------------|---------------------------|-------------------|
+| Ansible 학습·자동화 | 저장소 `.governance/` 2종 | 완료 (2026-08-27) |
 
 절차는 `governance_precedence.md` §6을 따르고 문서는 `templates/governance_template.md` 로 작성합니다. 병행 기간을 두어 기존 위치를 먼저 제거하지 않습니다.
-
-### Zircon Windows 빌드 (완료)
-
-`.governance/GOVERNANCE.md` 를 생성하고 README에서 링크했습니다. 예외는 `readme-template` 의 푸터·배지·통계 1건이며, 유지하는 전역 규칙 8개를 명시했습니다.
-
-전역 skill `zircon-readme-policy` 의 적용 범위는 Zircon 본체 저장소만 가리키고 있어 이 저장소는 원래 정책 적용 대상이 아니었습니다. 따라서 이관이 아니라 신규 적용에 해당하며, 전역 skill 을 제거할 단계가 아닙니다.
-
-### Zircon Windows 빌드 후속 (2026-08-27 추가 작업)
-
-`11_zircon` 을 원본·백업으로 두고 `12_zircon_win` 을 작업 저장소로 정리했습니다. 두 저장소는 구성 세대가 달라 문서를 그대로 옮기지 않고 실측 기반으로 다시 작성했습니다.
-
-- 원본: `net10.0`, SharpDX, 프로젝트 13개
-- 작업: `.NET Framework 4.5.2`, SlimDX, 프로젝트 9개
-
-발견한 결함과 조치입니다.
-
-- `.gitignore` 의 `*.csproj` 규칙으로 프로젝트 파일 9개와 `Components/SlimDX.dll` 이 추적되지 않아 clone 후 빌드가 불가능했습니다. 규칙을 제거하고 등록했습니다.
-- 확장자가 다른 `.csproj.bak` 은 규칙에 걸리지 않아 DevExpress v18.1 시점 구버전만 추적되고 있었습니다.
-- `*.bak` 패턴을 추가해 새 백업 파일이 추적되지 않도록 했습니다.
-
-남은 항목입니다.
-
-- [ ] 추적 중인 `.bak` 9개 제거 여부 결정 (현행 파일이 추적되어 역할 종료)
-- [ ] `MirDB` 를 솔루션에 등록할지 결정 (`.csproj` 존재, sln 미등록)
-- [ ] 직접 참조가 없는 DevExpress DLL 4개의 런타임 필요성 확인
-- [ ] DevExpress v18.2 라이선스 보유 상태와 저장소 포함 허용 여부 확인
-
-### Zircon 본체 (미착수)
-
-저장소 안에 `.kiro/skills/zircon-readme-policy/SKILL.md` 사본이 이미 있고 전역 skill 과 내용이 중복됩니다. `.governance/` 로 통합할 때 두 사본을 함께 정리해야 합니다.
-
-- [ ] `.governance/GOVERNANCE.md` 생성
-- [ ] 저장소 내 `.kiro/skills/` 사본 제거
-- [ ] 전역 skill `zircon-readme-policy` 제거 (두 저장소 모두 이관 완료 후)
-- [ ] 에이전트 JSON `resources` 참조 제거
-- [ ] `02_kiro/skills/zircon-readme-policy/` 미러 제거
 
 ### Ansible 학습·자동화 (완료)
 
