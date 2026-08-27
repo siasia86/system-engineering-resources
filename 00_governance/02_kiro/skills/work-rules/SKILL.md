@@ -116,24 +116,30 @@ regexes = [
 ]
 ```
 
-## 11. Markdown style check (after writing/editing .md)
-After creating or modifying any .md file under /root/32_system-engineering-resources or /opt/00_chobo_ansible, run:
+## 11. Markdown checks (after writing/editing .md)
+After creating or modifying any .md file under /root/32_system-engineering-resources or /opt/00_chobo_ansible, run all three:
 
 ```bash
-sudo python3 /root/32_system-engineering-resources/md-style-check.py <path>
+BASE=/root/32_system-engineering-resources
+sudo python3 $BASE/md-style-check.py <path>     # table alignment, tone, footer
+sudo python3 $BASE/md-heading-check.py <path>   # anchor, H2 numbering, level, duplicate
+sudo python3 $BASE/md-link-check.py <path>      # internal file links
 ```
 
 - Run on the specific file or directory modified (not the entire repo unless requested)
 - Fix all reported issues before presenting the result
-- Use `--strict` / `-s` flag to check without whitelist (for full review)
+- Use `--strict` / `-s` flag on md-style-check to check without whitelist (for full review)
+- md-link-check.py excludes `#anchor` links by design; md-heading-check.py covers them
 
 ### md quality tools
 
-| Tool                     | Path                                   | Usage                              |
-|--------------------------|----------------------------------------|------------------------------------|
-| md-style-check.py        | /root/32_system-engineering-resources/ | Style check (mandatory)            |
-| fix_table_align.py       | /root/sj_del/                          | Auto-fix table alignment           |
-| trim_diagram_trailing.py | /root/sj_del/                          | Remove trailing spaces in diagrams |
+| Tool                     | Path                                   | Usage                                    |
+|--------------------------|----------------------------------------|------------------------------------------|
+| md-style-check.py        | /root/32_system-engineering-resources/ | Style check (mandatory)                  |
+| md-heading-check.py      | /root/32_system-engineering-resources/ | Anchor / numbering / level (mandatory)   |
+| md-link-check.py         | /root/32_system-engineering-resources/ | Internal file links (mandatory)          |
+| fix_table_align.py       | /root/sj_del/                          | Auto-fix table alignment                 |
+| trim_diagram_trailing.py | /root/sj_del/                          | Remove trailing spaces in diagrams       |
 
 - `fix_table_align.py`: run when md-style-check reports table alignment issues
 - `trim_diagram_trailing.py`: run after diagram padding to remove unnecessary trailing spaces
@@ -649,7 +655,7 @@ Step 1. _reference preparation
 
 Step 2. Write documents (N)
 Step 3. Table alignment (align script)
-Step 4. md-style-check (0 issues required)
+Step 4. md-style-check + md-heading-check + md-link-check (0 issues required)
 Step 5. fact-check (rounds per fact-check table below)
   ├── Round 1: _reference cross-check (skip if N/A)
   ├── Round 2: official source direct verification (lynx -dump)

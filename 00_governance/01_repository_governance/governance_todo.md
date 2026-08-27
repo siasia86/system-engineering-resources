@@ -173,6 +173,17 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
       - 내부 장 참조와 외부 앵커 참조가 없어 부수 영향 없음
 - [x] CI 필수 검사로 승격 (2026-08-27 완료)
       - `continue-on-error` 제거. 이제 헤딩 구조 이슈가 있으면 workflow 가 실패합니다
+- [x] skill 반영 (2026-08-27 완료)
+      - `md-link-check` skill: 앵커 규칙에 밑줄·이모지 유지가 누락되어 있었음.
+        이 누락이 검사기 초기 오탐 15건의 원인과 동일. github-slugger 기준으로 정정
+      - `md-link-check` skill: 잘못된 `github_anchor()` 예시 스크립트 제거.
+        이모지를 제거하고 상첨자를 남기는 등 원본과 달랐음
+      - `md-link-check` skill: 중첩 코드블록 4-backtick 규칙, 확장 번호 표기
+        (`5-10.` 범위 / `1-1.` 하위 절), 헤딩 레벨·중복 앵커 규칙 추가
+      - `STYLE.md` §4: 중첩 코드블록 4-backtick 규칙 추가 (이 문서가 결함 당사자였음)
+      - `work-rules` §11, `git-commit-rule` 절차, `using-skills` 분기,
+        `skills/README.md`: 검사 도구 3종 병행 실행으로 갱신
+      - `02_kiro/` 미러 6개 파일 재동기화
 
 ### 낮음
 

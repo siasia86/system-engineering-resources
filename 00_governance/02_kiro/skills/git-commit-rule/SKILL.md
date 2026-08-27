@@ -64,8 +64,11 @@ style: 전체 README 푸터 배지 통일
    git -C <repo> status --short
    → 의도치 않은 파일 포함 여부 검토
 
-3. md-style-check 0건 확인 (변경 .md 파일에 한해)
-   sudo python3 /root/32_system-engineering-resources/md-style-check.py <path>
+3. Markdown 검사 0건 확인 (변경 .md 파일에 한해)
+   BASE=/root/32_system-engineering-resources
+   sudo python3 $BASE/md-style-check.py <path>
+   sudo python3 $BASE/md-heading-check.py <path>
+   sudo python3 $BASE/md-link-check.py <path>
 
 4. stage (명시적 파일 지정)
    git -C <repo> add <file1> <file2> ...

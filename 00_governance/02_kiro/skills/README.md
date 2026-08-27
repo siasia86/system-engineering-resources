@@ -13,7 +13,7 @@
 | `bash-script-template`   | Bash 표준 구조/로깅       | .sh 작성        |
 | `python-script-template` | Python 표준 구조/argparse | .py 작성        |
 | `security-tools`         | 보안 검토/IP·JSON 마스킹  | 보안 작업       |
-| `md-link-check`          | 마크다운 링크/목차 검증   | .md 검증        |
+| `md-link-check`          | 링크·앵커·헤딩 구조 검증  | .md 검증        |
 | `debugging-and-recovery` | 장애 복구 워크플로        | 오류 발생       |
 | `incremental-change`     | IaC 점진적 변경           | 코드 수정       |
 | `planning-and-breakdown` | 복합 작업 분해            | 3단계 이상 작업 |

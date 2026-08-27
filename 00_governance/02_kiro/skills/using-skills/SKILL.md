@@ -29,7 +29,7 @@ Task arrives
     ├── 테스트 작성?                 → testing-guide
     ├── Git 커밋/PR?                 → git-commit-rule
     ├── 마크다운 문서 작성?          → work-rules + STYLE.md
-    ├── 마크다운 링크/목차 검증?     → md-link-check
+    ├── 마크다운 링크·앵커 검증?     → md-link-check (링크·앵커·헤딩 구조 규칙)
     ├── README 푸터/배지 적용?       → readme-template
     └── 위 해당 없음?               → work-rules 기본 규칙 적용
 ```
