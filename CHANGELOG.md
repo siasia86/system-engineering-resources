@@ -19,6 +19,7 @@
 - Zircon Windows 빌드 저장소에 `.governance/GOVERNANCE.md` 적용. `.governance/` 체계의 첫 적용 사례입니다.
 - Zircon Windows 빌드 저장소에 구성 README와 DevExpress 의존성 문서 작성.
 - Ansible 학습·자동화 저장소에 `.governance/GOVERNANCE.md` 와 `.governance/verification.md` 적용.
+- `documentation_policy.md` §3.1 경로·식별자 기록 기준 신설. 환경 종속성을 판단 기준으로 정의.
 
 ### Changed
 
@@ -30,6 +31,8 @@
 - 템플릿 8종의 목차·번호 체계와 민감정보 기록 금지 항목을 통일.
 - `README.md` 저장소 profile 설명을 `.governance/` 체계 기준으로 갱신.
 - 날짜 갱신 workflow의 커밋 생성 job을 단일 branch로 제한.
+- 날짜 갱신 workflow에서 `02_kiro/` 미러를 제외. 봇 커밋과 동기화가 서로 덮어쓰던 문제 해결.
+- Kiro 미러 allowlist에서 원문 보존본과 미러 전용 파일을 제외.
 
 ### Fixed
 
@@ -45,6 +48,9 @@
 - `git_official_notes.md`, `git_guide.md`, `git_concepts.md`의 사실 오류 12건 수정.
 - `privacy_law_guide.md` 개요 표의 소관 기관을 풀네임 병기로 정정.
 - 추적되던 구버전 백업 파일 제거 및 `.gitignore` 패턴 보강.
+- Kiro 동기화 스크립트가 존재하지 않는 파일을 allowlist에서 요구해 검증 단계에서 중단되던 문제 수정.
+- Kiro 미러의 계정·내부 IP·사용자 홈 경로 기록 3건 제거.
+- 원본 에이전트 JSON 8개의 파일 끝 개행 누락 수정.
 
 ---
 
