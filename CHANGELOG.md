@@ -8,6 +8,9 @@
 
 ### Changed
 
+- `30_sia-scripts`에 GitHub Actions 검증 workflow와 `v*.*.*` tag 전용 versioned artifact 생성을 추가.
+- `30_sia-scripts` release manifest에 source commit provenance와 파일별 SHA-256 검증을 추가.
+- 30 저장소 CI slice commit `e69bcfb`를 `origin/main`에 push하고 로컬 검증을 완료.
 - `30_sia-scripts` 공용 검사기·release artifact·Ansible 배포 구조의 migration 상태를 갱신.
 - 오류 fixture 4종과 legacy/common 검사기 반환 코드 대조를 완료.
 - 일반 계정 Controller의 사용자 소유 `.venv`에서 Ansible syntax check를 완료.

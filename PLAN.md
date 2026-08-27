@@ -153,6 +153,9 @@ GitHub-hosted Actions가 Ansible 서버로 직접 SSH 접속하지 않습니다.
 
 ### 단계 5. CI artifact와 Ansible 배포 workflow의 단계적 적용
 
+- [x] `30_sia-scripts`에 `production` profile, Python `3.12`, `ansible-core==2.20.5`, `ansible-lint==26.8.0`, `v*.*.*` release tag 기준을 명시합니다.
+- [x] `30_sia-scripts`에 GitHub Actions 검증 workflow와 tag-only versioned artifact 생성을 구현합니다.
+- [x] `30_sia-scripts` release manifest에서 tag commit·version·embedded file hash 관계를 검증합니다.
 - [ ] 각 저장소가 사용할 profile과 버전을 명시하도록 합니다.
 - [ ] GitHub Actions가 테스트·보안 검증 후 버전 고정 artifact를 생성하도록 합니다.
 - [ ] Ansible 제어 서버가 지정된 artifact와 checksum을 outbound HTTPS로 받아 배포하도록 합니다.
