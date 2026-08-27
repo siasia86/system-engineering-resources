@@ -1,8 +1,14 @@
 # Markdown 검사에서 제외할 디렉토리와 파일입니다.
 #
-# 00_governance/02_kiro 는 제외하지 않습니다. 도구 미러이지만 표 정렬·문체 검사는
-# 적용해야 하므로, md-style-check.py 의 KIRO_SKIP 이 경로를 인식해 푸터·H1·
-# 다이어그램 한글 검사만 항목 단위로 제외합니다.
+# 제외는 최소한으로 유지합니다. 디렉토리나 파일을 통째로 빼면 표 정렬·문체 검사가
+# 함께 빠져 검사 공백이 생깁니다. 특정 항목만 빼야 하는 경우에는
+# md-style-check.py 의 KIRO_SKIP / REFERENCE_SKIP / ARCHIVE_SKIP / FILE_SKIP 을
+# 사용하여 항목 단위로 처리합니다.
+#
+# 00_governance/02_kiro : 제외하지 않습니다. KIRO_SKIP 이 경로를 인식해
+#                         푸터·H1·다이어그램 한글 검사만 제외합니다.
+# CHANGELOG/LICENSE/TODO/license_guide : 제외하지 않습니다. 모두 푸터를 갖추고 있어
+#                         일반 검사를 통과합니다.
 exclude_dirs = [
   "99_archive",
   "99_etc",
@@ -10,12 +16,7 @@ exclude_dirs = [
   ".git",
   "_reference",
 ]
-exclude_files = [
-  "CHANGELOG.md",
-  "LICENSE.md",
-  "TODO.md",
-  "license_guide.md",
-]
+exclude_files = []
 
 # 검사 항목 제외 목록입니다. 저장소별 설정에서 추가할 수 있습니다.
 skip_checks = []

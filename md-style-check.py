@@ -662,7 +662,9 @@ def check_file(path, strict=False, skip_checks=None):
 EXCLUDE_DIRS = {'99_archive', '99_etc', '.git', '__pycache__', '_reference'}
 
 # 검사 제외 파일
-EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'CHANGELOG.md'}
+# 기본값은 비어 있습니다. 파일 전체를 빼면 표 정렬·문체 검사가 함께 빠지므로,
+# 특정 항목만 제외해야 하는 경우 FILE_SKIP 을 사용합니다.
+EXCLUDE_FILES = set()
 
 
 CONFIG_LIST_KEYS = ('exclude_dirs', 'exclude_files', 'skip_checks')

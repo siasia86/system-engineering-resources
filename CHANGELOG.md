@@ -15,6 +15,7 @@
 - `md-heading-check.py` 예외 설정 `.md-heading-check.toml` 추가 (파일별 검사 항목 제외 지원).
 - CI에서 헤딩 구조 검사를 필수 검사로 승격.
 - `02_kiro/` 미러를 스타일 검사 대상에 포함 (검사 대상 323개 → 362개).
+- `CHANGELOG.md`, `LICENSE.md`, `TODO.md`, `license_guide.md` 를 스타일 검사 대상에 포함 (366개).
 - CI에 헤딩 구조 검사를 경고 모드로 등록.
 - 압축 알고리즘 문서 `01_fundamentals/cs/compression_algorithms.md` 추가.
 
@@ -33,6 +34,7 @@
 - 헤딩 레벨 건너뜀 1건, 중복 앵커 2건 수정.
 - `git_concepts.md` 의 목차가 존재하지 않는 섹션을 링크하던 문제 수정 (섹션 번호 재부여).
 - 목차 앵커 불일치 7건 수정. em dash·슬래시·`+` 가 앵커에서 제거되며 발생한 불일치.
+- `license_guide.md` 표 정렬 26건 수정.
 - `md-heading-check.py` 앵커 생성 규칙을 github-slugger 문자 집합으로 교체.
 - `md-heading-check.py` 펜스 판정을 CommonMark 규칙으로 교체하고 범위·하위 절 번호 표기 지원.
 - `git_official_notes.md`, `git_guide.md`, `git_concepts.md`의 사실 오류 12건 수정.
