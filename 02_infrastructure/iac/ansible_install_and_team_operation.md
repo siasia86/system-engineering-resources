@@ -750,6 +750,6 @@ git push -u origin main
 
 **작성일**: 2026-03-24
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-08-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.
