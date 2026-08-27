@@ -11,6 +11,7 @@ Windows Server 2022 이상의 에디션 종류, Standard vs Datacenter 차이, �
 | [1. 에디션 종류](#1-에디션-종류) / [2. Standard vs Datacenter](#2-standard-vs-datacenter) / [3. 라이선스 비용](#3-라이선스-비용) |
 | [4. 활성화 방식](#4-활성화-방식) / [5. 키 유무에 따른 동작](#5-키-유무에-따른-동작) / [6. 에디션 전환](#6-에디션-전환)           |
 | [7. 설치 옵션](#7-설치-옵션) / [8. 수명주기](#8-수명주기) / [9. 확인 명령어](#9-확인-명령어)                                     |
+| [10. 수명주기 종료 후 — ESU (Extended Security Updates)](#10-수명주기-종료-후--esu-extended-security-updates)                    |
 
 ---
 
