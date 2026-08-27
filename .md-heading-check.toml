@@ -1,5 +1,5 @@
 # md-heading-check.py 설정입니다.
-# 검사 항목: anchor / number / level / duplicate
+# 검사 항목: anchor / number / level / duplicate / toc
 
 # 검사에서 제외할 디렉토리명 또는 저장소 기준 상대 경로입니다.
 exclude_dirs = [
@@ -13,6 +13,8 @@ exclude_dirs = [
 exclude_files = []
 
 # 저장소 전역으로 제외할 검사 항목입니다.
+# 예외의 대상·사유·재검토 시점은 저장소의 .governance/GOVERNANCE.md 또는
+# exceptions.md에 함께 기록합니다. 기본값은 비워 둡니다.
 skip_checks = []
 
 # 파일별 검사 항목 제외입니다. 사유를 반드시 기록합니다.
