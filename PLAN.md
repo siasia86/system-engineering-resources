@@ -156,6 +156,8 @@ GitHub-hosted Actions가 Ansible 서버로 직접 SSH 접속하지 않습니다.
 - [x] `30_sia-scripts`에 `production` profile, Python `3.12`, `ansible-core==2.20.5`, `ansible-lint==26.8.0`, `v*.*.*` release tag 기준을 명시합니다.
 - [x] `30_sia-scripts`에 GitHub Actions 검증 workflow와 tag-only versioned artifact 생성을 구현합니다.
 - [x] `30_sia-scripts` release manifest에서 tag commit·version·embedded file hash 관계를 검증합니다.
+- [x] 로컬 localhost 임시 HTTPS artifact endpoint에서 30 저장소 release를 검증합니다.
+- [x] 로컬 `localhost` 대상에 install·update·rollback을 적용하고 `current`를 baseline version으로 복구합니다.
 - [ ] 각 저장소가 사용할 profile과 버전을 명시하도록 합니다.
 - [ ] GitHub Actions가 테스트·보안 검증 후 버전 고정 artifact를 생성하도록 합니다.
 - [ ] Ansible 제어 서버가 지정된 artifact와 checksum을 outbound HTTPS로 받아 배포하도록 합니다.
@@ -200,6 +202,7 @@ sudo gitleaks detect --source /root/32_system-engineering-resources --no-git --n
 - [ ] Ansible 제어 서버에서 대상 호스트로 Ansible 연결이 확인됩니다.
 - [x] artifact checksum 검증 후 설치됩니다.
 - [x] 임시 target에서 설치·업데이트·롤백 smoke test를 통과합니다.
+- [x] localhost 임시 HTTPS endpoint와 local target의 install·update·rollback 검증을 통과합니다.
 - [x] Markdown·링크·헤딩·비밀정보 검사를 통과합니다.
 - [x] `CHANGELOG.md`에 최종 결과를 기록합니다.
 
