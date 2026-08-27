@@ -7,6 +7,7 @@ on:
       - '**/*.md'
       - '*.py'
       - '.md-style-check.toml'
+      - '.md-heading-check.toml'
       - '.github/workflows/update-date.yml'
   pull_request:
     branches: [main, yunli]
@@ -14,6 +15,7 @@ on:
       - '**/*.md'
       - '*.py'
       - '.md-style-check.toml'
+      - '.md-heading-check.toml'
       - '.github/workflows/update-date.yml'
 
 permissions:

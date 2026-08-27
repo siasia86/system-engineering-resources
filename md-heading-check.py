@@ -24,17 +24,30 @@ md-heading-check.py — Markdown 헤딩 구조 및 목차 앵커 검증
 md-link-check.py 는 상대경로 링크만 검증하고 #anchor 링크를 의도적으로
 제외합니다. 이 스크립트가 그 범위를 담당합니다.
 
+설정:
+    대상 경로의 상위 디렉터리에서 .md-heading-check.toml 을 자동 탐색합니다.
+
+    exclude_dirs  = ["99_archive"]          제외할 디렉토리명 또는 상대 경로
+    exclude_files = ["vim_airline.md"]      제외할 파일명
+    skip_checks   = ["level"]               전역으로 제외할 검사 항목
+
+    [[file_skip]]                           파일별 검사 항목 제외
+    path   = "01_fundamentals/linux/vim_airline.md"
+    checks = ["level"]
+    reason = "외부 프로젝트 README 원본"
+
 종료 코드:
     0 = 이슈 없음
     1 = 이슈 발견
 """
 
-VERSION = "26.08.27.4"
+VERSION = "26.08.27.5"
 
 import argparse
 import os
 import re
 import sys
+import tomllib
 
 # ── patterns ──────────────────────────────────────────────────────────────────
 
@@ -45,6 +58,84 @@ NUMBERED_H2_PATTERN = re.compile(r'^(\d+)(?:-(\d+))?\.\s+')
 
 # 번호를 요구하지 않는 관례적 H2
 UNNUMBERED_ALLOWED = {'목차', '참고 자료', '통계', '개요', 'changelog'}
+
+ALL_CHECKS = ('anchor', 'number', 'level', 'duplicate')
+CONFIG_NAME = '.md-heading-check.toml'
+DEFAULT_EXCLUDE_DIRS = {'.git', '__pycache__', 'node_modules'}
+
+
+# ── config ────────────────────────────────────────────────────────────────────
+
+def find_config_path(target):
+    """대상 경로에서 상위로 올라가며 설정 파일을 탐색."""
+    current = os.path.abspath(target)
+    if not os.path.isdir(current):
+        current = os.path.dirname(current)
+    while True:
+        candidate = os.path.join(current, CONFIG_NAME)
+        if os.path.isfile(candidate):
+            return candidate
+        parent = os.path.dirname(current)
+        if parent == current:
+            return None
+        current = parent
+
+
+def load_config(config_path=None, target=None):
+    """TOML 설정을 읽어 정규화된 dict 반환."""
+    config = {
+        'exclude_dirs': sorted(DEFAULT_EXCLUDE_DIRS),
+        'exclude_files': [],
+        'skip_checks': [],
+        'file_skip': [],
+        'path': None,
+    }
+    selected = config_path or (find_config_path(target) if target else None)
+    if not selected:
+        if config_path:
+            raise FileNotFoundError(f"config not found: {config_path}")
+        return config
+    selected = os.path.abspath(selected)
+    if not os.path.isfile(selected):
+        raise FileNotFoundError(f"config not found: {selected}")
+    with open(selected, 'rb') as f:
+        data = tomllib.load(f)
+
+    allowed = {'exclude_dirs', 'exclude_files', 'skip_checks', 'file_skip'}
+    unknown = set(data) - allowed
+    if unknown:
+        raise ValueError(f"unknown config key: {', '.join(sorted(unknown))}")
+
+    for key in ('exclude_dirs', 'exclude_files', 'skip_checks'):
+        for value in data.get(key, []):
+            if value not in config[key]:
+                config[key].append(value)
+    for entry in data.get('file_skip', []):
+        if 'path' not in entry:
+            raise ValueError("file_skip entry requires 'path'")
+        config['file_skip'].append({
+            'path': os.path.normpath(entry['path']),
+            'checks': list(entry.get('checks', ALL_CHECKS)),
+            'reason': entry.get('reason', ''),
+        })
+    config['path'] = selected
+    config['root'] = os.path.dirname(selected)
+    return config
+
+
+def enabled_for(filepath, config, base_enabled):
+    """파일별 file_skip 설정을 적용한 검사 항목 집합 반환."""
+    root = config.get('root')
+    if not root:
+        return base_enabled, ''
+    try:
+        rel = os.path.normpath(os.path.relpath(os.path.abspath(filepath), root))
+    except ValueError:
+        return base_enabled, ''
+    for entry in config['file_skip']:
+        if entry['path'] == rel:
+            return base_enabled - set(entry['checks']), entry['reason']
+    return base_enabled, ''
 
 
 # ── utilities ─────────────────────────────────────────────────────────────────
@@ -94,18 +185,25 @@ def strip_code_blocks(content):
     return '\n'.join(result)
 
 
-def collect_md_files(paths):
-    """대상 경로에서 .md 파일 목록 수집."""
+def collect_md_files(paths, exclude_dirs=None, exclude_files=None):
+    """대상 경로에서 .md 파일 목록 수집. 제외 설정을 적용합니다."""
+    skip_dirs = set(exclude_dirs or DEFAULT_EXCLUDE_DIRS) | DEFAULT_EXCLUDE_DIRS
+    skip_files = set(exclude_files or [])
     files = []
     for path in paths:
         if os.path.isfile(path) and path.endswith('.md'):
-            files.append(path)
+            if os.path.basename(path) not in skip_files:
+                files.append(path)
         elif os.path.isdir(path):
+            base = os.path.abspath(path)
             for root, dirs, names in os.walk(path):
                 dirs[:] = [d for d in dirs
-                           if d not in {'.git', '__pycache__', 'node_modules'}]
-                files.extend(os.path.join(root, n)
-                             for n in sorted(names) if n.endswith('.md'))
+                           if d not in skip_dirs
+                           and os.path.normpath(
+                               os.path.relpath(os.path.join(root, d), base)
+                           ) not in skip_dirs]
+                files.extend(os.path.join(root, n) for n in sorted(names)
+                             if n.endswith('.md') and n not in skip_files)
     return sorted(set(files))
 
 
@@ -263,6 +361,14 @@ def parse_args():
     parser.add_argument('--no-number', action='store_true', help='번호 검사 제외')
     parser.add_argument('--no-level', action='store_true', help='레벨 검사 제외')
     parser.add_argument('--no-duplicate', action='store_true', help='중복 검사 제외')
+    parser.add_argument('-c', '--config', metavar='FILE',
+                        help=f'TOML 설정 파일 (미지정 시 {CONFIG_NAME} 자동 탐색)')
+    parser.add_argument('-E', '--exclude-dir', action='append', default=[],
+                        dest='exclude_dirs', metavar='DIR',
+                        help='제외할 디렉토리명 (여러 번 사용 가능)')
+    parser.add_argument('-X', '--exclude-file', action='append', default=[],
+                        dest='exclude_files', metavar='FILE',
+                        help='제외할 파일명 (여러 번 사용 가능)')
     parser.add_argument('-V', '--version', action='version',
                         version=f'%(prog)s {VERSION}')
     return parser.parse_args()
@@ -272,25 +378,43 @@ def main():
     """메인 실행."""
     args = parse_args()
 
-    enabled = {'anchor', 'number', 'level', 'duplicate'}
-    for name in list(enabled):
+    try:
+        config = load_config(args.config, args.paths[0])
+    except (FileNotFoundError, ValueError, tomllib.TOMLDecodeError) as exc:
+        print(f"설정 오류: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+    enabled = set(ALL_CHECKS) - set(config['skip_checks'])
+    for name in list(ALL_CHECKS):
         if getattr(args, f'no_{name}'):
             enabled.discard(name)
     if not enabled:
         print("모든 검사가 제외되었습니다")
         sys.exit(0)
 
-    files = collect_md_files(args.paths)
+    exclude_dirs = list(config['exclude_dirs']) + list(args.exclude_dirs)
+    exclude_files = list(config['exclude_files']) + list(args.exclude_files)
+    files = collect_md_files(args.paths, exclude_dirs, exclude_files)
     if not files:
         print("대상 .md 파일 없음")
         sys.exit(0)
 
+    if config['path'] and not args.quiet:
+        print(f"[설정] {config['path']}")
+
     total_issues = 0
     total_headings = 0
     failed = []
+    skipped = []
 
     for filepath in files:
-        issues, count = check_file(filepath, enabled)
+        file_enabled, reason = enabled_for(filepath, config, enabled)
+        if not file_enabled:
+            skipped.append((filepath, reason))
+            continue
+        if file_enabled != enabled:
+            skipped.append((filepath, reason))
+        issues, count = check_file(filepath, file_enabled)
         total_headings += count
         if issues:
             total_issues += len(issues)
@@ -306,6 +430,13 @@ def main():
                 print(f"   [{kind}] {loc}: {message}")
     elif not args.quiet:
         print("✅ 헤딩 구조 정상")
+
+    if skipped and not args.quiet:
+        print(f"\n[예외] {len(skipped)}개 파일에 검사 항목 제외 적용")
+        if args.verbose:
+            for filepath, reason in skipped:
+                note = f" — {reason}" if reason else ""
+                print(f"   {os.path.relpath(filepath)}{note}")
 
     if not args.quiet:
         print(f"\n{'─' * 60}")

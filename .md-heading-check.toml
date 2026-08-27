@@ -1,0 +1,22 @@
+# md-heading-check.py 설정입니다.
+# 검사 항목: anchor / number / level / duplicate
+
+# 검사에서 제외할 디렉토리명 또는 저장소 기준 상대 경로입니다.
+exclude_dirs = [
+  ".git",
+  "99_archive",
+  "99_etc",
+  "__pycache__",
+]
+
+# 검사에서 제외할 파일명입니다.
+exclude_files = []
+
+# 저장소 전역으로 제외할 검사 항목입니다.
+skip_checks = []
+
+# 파일별 검사 항목 제외입니다. 사유를 반드시 기록합니다.
+[[file_skip]]
+path = "01_fundamentals/linux/vim_airline.md"
+checks = ["level"]
+reason = "외부 프로젝트(vim-airline) README 원본 — 상류와의 차이를 만들지 않음"

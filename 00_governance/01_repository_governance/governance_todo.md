@@ -120,15 +120,15 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
 
 ### 헤딩 구조 잔여 이슈 정리 (우선순위: 보통)
 
-`md-heading-check.py` 도입으로 51건이 검출되었고, 정리와 도구 오탐 수정을 거쳐
-24건이 남았습니다. 정리 전에는 CI에서 경고 모드로 유지합니다.
+`md-heading-check.py` 도입으로 51건이 검출되었고, 정리·도구 오탐 수정·예외 등록을
+거쳐 `anchor` 18건만 남았습니다. 정리 전에는 CI에서 경고 모드로 유지합니다.
 
-| 유형        | 건수 | 내용                                                        |
-|-------------|------|-------------------------------------------------------------|
-| `anchor`    | 19   | 존재하지 않는 헤딩을 가리키는 앵커 링크                     |
-| `level`     | 4    | `vim_airline.md` 만 남음 (외부 README 원본, 검사 예외 대상) |
-| `number`    | 1    | `git_concepts.md` 목차의 §2 누락 (1장 항목과 동일 원인)     |
-| `duplicate` | 0    | 정리 완료                                                   |
+| 유형        | 건수 | 내용                                               |
+|-------------|------|----------------------------------------------------|
+| `anchor`    | 18   | 존재하지 않는 헤딩을 가리키는 앵커 링크            |
+| `number`    | 0    | 정리 완료                                          |
+| `level`     | 0    | 정리 완료 (`vim_airline.md` 는 설정으로 예외 처리) |
+| `duplicate` | 0    | 정리 완료                                          |
 
 - [x] 목차 없는 문서의 복귀 링크 제거 (2026-08-27 완료)
       - `CHANGELOG.md` 7건, `LICENSE.md` 4건. 두 파일 모두 `## 목차`가 없는데
@@ -157,11 +157,16 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
       - `## 1-1. 제목` 하위 절 표기 지원 (번호를 진행시키지 않음)
       - 이 수정으로 `work-rules-guide.md`, `percona_xtrabackup_guide.md`,
         `infra_monorepo_and_boilerplate.md`, `work-rules/SKILL.md` 오탐 해소
-- [ ] `vim_airline.md` 검사 예외 등록 방식 결정
-      - 외부 프로젝트(vim-airline) README 원본이므로 상류와의 차이를 만들지 않는 편이 적절
-      - `TODO.md` 검사 예외 표에는 이미 등록되어 있으나 `md-heading-check.py` 는
-        해당 설정을 읽지 않음
-      - 선택지: 검사기에 제외 설정 지원 추가 / `.md-style-check.toml` 공용화 / 현행 유지
+- [x] `md-heading-check.py` 예외 설정 지원 추가 (2026-08-27 완료, v26.08.27.5)
+      - `.md-heading-check.toml` 자동 탐색. `exclude_dirs`, `exclude_files`,
+        `skip_checks`, 파일별 `[[file_skip]]` 지원
+      - `[[file_skip]]` 은 `path`, `checks`, `reason` 을 받아 사유를 함께 기록
+      - CLI `-c/--config`, `-E/--exclude-dir`, `-X/--exclude-file` 추가
+      - `vim_airline.md` 의 `level` 검사를 예외 등록 (외부 README 원본)
+      - CI 트리거 경로에 `.md-heading-check.toml` 추가
+- [x] `git_concepts.md` 번호 재부여 (2026-08-27 완료)
+      - 목차가 존재하지 않는 §2 를 링크하던 문제. §3~§10 을 §2~§9 로 내리고 목차 재작성
+      - 내부 장 참조와 외부 앵커 참조가 없어 부수 영향 없음
 - [ ] 정리 완료 후 CI에서 `continue-on-error` 제거하여 필수 검사로 승격
 
 ### 낮음
