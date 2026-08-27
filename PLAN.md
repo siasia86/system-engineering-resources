@@ -59,21 +59,22 @@
 
 ### 저장소 이름
 
-공용 검증·운영 스크립트의 원본과 배포 workflow를 관리하는 Private repository 이름은 `sia-scripts`를 권장합니다. `system-engineering-resources`는 문서 저장소 성격이 강하고, `_private`는 접근 범위를 설명하는 로컬 경로 규칙이므로 repository 이름에 포함하지 않습니다.
+공용 검증·운영 스크립트의 원본과 배포 workflow를 관리하는 Private repository 이름은 `30_sia-scripts`를 권장합니다. `system-engineering-resources`는 문서 저장소 성격이 강하고, `_private`는 접근 범위를 설명하는 로컬 경로 규칙이므로 repository 이름에 포함하지 않습니다.
 
 로컬 checkout 경로에 기존 숫자 규칙을 적용할 경우 다음과 같이 사용합니다.
 
 ```text
-Repository: sia-scripts
-Local path: /root/34_sia-scripts_private/
+Repository: 30_sia-scripts
+Description: 공용 시스템 엔지니어링·문서 품질 검증 스크립트와 Ansible 배포 자동화
+Local path: /root/30_sia-scripts_private/
 ```
 
-`34_system-engineering-resources_private`라는 이름은 문서 저장소와 역할이 혼동될 수 있으므로 사용하지 않습니다.
+`34_system-engineering-resources_private`와 같은 문서 저장소 기반 이름은 역할이 혼동될 수 있으므로 사용하지 않습니다.
 
 ### 배포 구성
 
 ```text
-Private repository: sia-scripts
+Private repository: 30_sia-scripts
         │
         v
 GitHub Actions
