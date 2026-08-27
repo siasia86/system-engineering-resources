@@ -39,8 +39,8 @@
 - 공용 CLI 이름과 설정 형식 정의
 - `/usr/local/lib/sia_scripts/` 버전별 설치 구조 설계
 - `/usr/local/bin/sia-*` 실행 명령 노출
-- Ansible 또는 동등한 선언적 설치 절차 작성
-- 저장소별 CI·로컬 실행 workflow 정의
+- Private repository의 CI artifact를 Ansible 제어 서버가 배포하는 절차 작성
+- 저장소별 CI와 Ansible 배포 workflow 정의
 - 설치 전후 검증과 롤백 절차 작성
 
 ### 제외
@@ -86,14 +86,16 @@
 - [ ] `/usr/local/lib/sia_scripts/releases/<version>/` 구조를 구현합니다.
 - [ ] `/usr/local/lib/sia_scripts/current` symlink 전환 방식을 적용합니다.
 - [ ] `/usr/local/bin/sia-*` 실행 명령을 설치합니다.
+- [ ] Ansible role 또는 playbook으로 artifact 다운로드, checksum 검증, release 설치를 구현합니다.
 - [ ] 설치 파일의 소유자·권한을 `root:root`, 디렉토리 `0755`, 일반 파일 `0644`, 실행 파일 `0755` 기준으로 확인합니다.
 - [ ] 검증: 버전 출력, 도움말 출력, 비권한 사용자의 읽기·실행, 쓰기 차단을 확인합니다.
 
-### 단계 5. 저장소 workflow와 단계적 적용
+### 단계 5. CI artifact와 Ansible 배포 workflow의 단계적 적용
 
 - [ ] 각 저장소가 사용할 profile과 버전을 명시하도록 합니다.
-- [ ] 로컬 검증과 CI에서 동일한 버전을 사용하도록 합니다.
-- [ ] 첫 적용 대상 1개 저장소에서 검증합니다.
+- [ ] GitHub Actions가 테스트·보안 검증 후 버전 고정 artifact를 생성하도록 합니다.
+- [ ] Ansible 제어 서버가 지정된 artifact와 checksum을 받아 배포하도록 합니다.
+- [ ] 첫 적용 대상 1개 호스트와 1개 저장소에서 검증합니다.
 - [ ] 결과 확인 후 적용 대상을 단계적으로 확대합니다.
 - [ ] 검증: 기존 workflow 대비 누락된 검사와 신규 오탐이 없습니다.
 
@@ -112,6 +114,7 @@ sudo python3 md-style-check.py /root/32_system-engineering-resources
 sudo python3 md-heading-check.py /root/32_system-engineering-resources
 sudo python3 md-link-check.py /root/32_system-engineering-resources
 sudo python3 readme_inventory_check.py README.md
+ansible-playbook --syntax-check install/sia_scripts.yml
 git diff --check
 gitleaks detect --source /root/32_system-engineering-resources --no-git --no-banner
 ```
@@ -122,6 +125,8 @@ gitleaks detect --source /root/32_system-engineering-resources --no-git --no-ban
 - [ ] 기존 검사 결과와 신규 검사 결과가 일치합니다.
 - [ ] 저장소별 예외가 설정 파일에만 존재합니다.
 - [ ] 실행 파일 권한과 일반 사용자 쓰기 차단을 확인합니다.
+- [ ] Ansible playbook syntax check와 lint를 통과합니다.
+- [ ] artifact checksum 검증 후 설치됩니다.
 - [ ] 설치·업데이트·롤백 smoke test를 통과합니다.
 - [ ] Markdown·링크·헤딩·비밀정보 검사를 통과합니다.
 - [ ] `CHANGELOG.md`에 최종 결과를 기록합니다.
@@ -130,16 +135,16 @@ gitleaks detect --source /root/32_system-engineering-resources --no-git --no-ban
 
 ## 6. 롤백
 
-| 단계   | 롤백 방법                                                           | 되돌리기 어려운 지점 |
-|--------|---------------------------------------------------------------------|----------------------|
-| 단계 1 | 분류·설정 문서 변경을 이전 commit으로 복원합니다.                   | 없음                 |
-| 단계 2 | 공용 후보 변경을 이전 commit 또는 기존 스크립트로 복원합니다.       | 없음                 |
-| 단계 3 | 신규 fixture와 테스트 코드를 제거하거나 이전 commit으로 복원합니다. | 없음                 |
-| 단계 4 | `current` symlink를 이전 release로 되돌리고 wrapper를 복원합니다.   | 없음                 |
-| 단계 5 | 각 저장소의 고정 버전을 이전 버전으로 되돌립니다.                   | 없음                 |
-| 단계 6 | 완료 기록을 이전 commit으로 복원합니다.                             | 없음                 |
+| 단계   | 롤백 방법                                                             | 되돌리기 어려운 지점 |
+|--------|-----------------------------------------------------------------------|----------------------|
+| 단계 1 | 분류·설정 문서 변경을 이전 commit으로 복원합니다.                     | 없음                 |
+| 단계 2 | 공용 후보 변경을 이전 commit 또는 기존 스크립트로 복원합니다.         | 없음                 |
+| 단계 3 | 신규 fixture와 테스트 코드를 제거하거나 이전 commit으로 복원합니다.   | 없음                 |
+| 단계 4 | Ansible 변수의 release 버전을 이전 버전으로 지정해 재실행합니다.      | 없음                 |
+| 단계 5 | 각 저장소의 고정 버전과 Ansible 배포 대상을 이전 버전으로 되돌립니다. | 없음                 |
+| 단계 6 | 완료 기록을 이전 commit으로 복원합니다.                               | 없음                 |
 
-설치 실패 시 기존 release를 삭제하지 않습니다. 신규 release를 별도 경로에 설치한 뒤 검증을 통과한 경우에만 `current` symlink를 전환합니다.
+Ansible은 기존 release를 삭제하지 않고 신규 release를 별도 경로에 설치합니다. artifact checksum과 smoke test를 통과한 경우에만 `current` symlink를 전환합니다. 실패하면 Ansible 변수의 release 버전을 이전 버전으로 지정해 재실행합니다.
 
 ## 7. 비가역 작업
 
