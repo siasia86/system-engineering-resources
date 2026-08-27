@@ -507,11 +507,11 @@ touch ~/.kiro/hooks/kiro-lock.disabled
 
 ## 23. Immediate PLAN.md issue logging
 
-When working in a project that has a PLAN.md (e.g., `/opt/00_chobo_ansible/05_vagrant/PLAN.md`), log any unexpected errors, escape issues, script bugs, or significant fixes **immediately after resolving them** — before moving on to the next task.
+When working in a project, log unexpected errors, escape issues, script bugs, or significant fixes in `.governance/PLAN.md` **immediately after resolving them**. Existing projects with a root `PLAN.md` may use that legacy path during migration.
 
 ### When to log
 
-Log to PLAN.md when any of the following occur during non-PLAN.md work:
+Log to `.governance/PLAN.md` when any of the following occur during work outside the plan document:
 
 - Script execution fails (non-trivial error)
 - Escape/quoting issue discovered (`$`, `\n`, `\\`, shell vs Python string)
@@ -520,14 +520,14 @@ Log to PLAN.md when any of the following occur during non-PLAN.md work:
 - Workaround applied **that is non-obvious or environment-specific**
 
 🟡 **Exception**: Editing PLAN.md itself does not trigger this rule (no loop).
-🟡 **Exception**: If no PLAN.md exists in the project, skip this rule — do not create one automatically.
+🟡 **Exception**: In a legacy project, if neither `.governance/PLAN.md` nor root `PLAN.md` exists, skip this rule. New repositories must create the default `.governance/PLAN.md` during initialization.
 🟡 **Dedup**: Before adding a new issue, check if the same symptom already exists in PLAN.md. If so, append to the existing entry rather than creating a duplicate.
 🟡 **Scope**: Only log issues that required non-trivial investigation or had non-obvious root causes. Skip simple retries, typos, or one-liner fixes with no learning value.
 🟡 **Collaboration**: When working collaboratively, re-enable kiro-lock (§ 22) before logging to PLAN.md to prevent concurrent modification conflicts.
 
 ### What to log
 
-Use the issue template in PLAN.md `## 이슈 기록`. Use the next sequential number after the last existing issue (check existing `#### 이슈 N:` entries to determine N):
+Use the issue template in `.governance/PLAN.md` `## 이슈 기록`; use root `PLAN.md` only for legacy projects. Use the next sequential number after the last existing issue (check existing `#### 이슈 N:` entries to determine N):
 
 ```markdown
 #### 이슈 N: 제목
@@ -551,12 +551,11 @@ Use the issue template in PLAN.md `## 이슈 기록`. Use the next sequential nu
 
 ### How to find PLAN.md
 
-Look for `PLAN.md` starting from the current working directory, searching up to 4 levels deep:
+Look for `.governance/PLAN.md` first. Use root `PLAN.md` only as a legacy fallback:
 
 ```bash
-find "$(pwd)" -maxdepth 4 -name "PLAN.md" 2>/dev/null
-# or from project root (git root)
-git rev-parse --show-toplevel 2>/dev/null | xargs -I{} find {} -maxdepth 3 -name "PLAN.md"
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+find "${ROOT}/.governance/PLAN.md" "${ROOT}/PLAN.md" -maxdepth 0 -type f 2>/dev/null
 ```
 
 ## 24. GitHub reference auto-append
@@ -641,7 +640,7 @@ When executing TODO items in batches, the following outputs are **mandatory**.
 
 - Default: **3 items** (write + verify cycle fits within context window)
 - Final batch even if only 1~2 items: Pre/Post output still mandatory (no skip)
-- Batch numbering: sequential from 1, persists across sessions (check TODO.md for last completed batch)
+- Batch numbering: sequential from 1, persists across sessions (check `.governance/TODO.md` for last completed batch; use root `TODO.md` for legacy projects)
 
 ### Pre-execution Brief
 
@@ -662,7 +661,7 @@ Step 5. fact-check (rounds per fact-check table below)
   ├── Round 1: _reference cross-check (skip if N/A)
   ├── Round 2: official source direct verification (lynx -dump)
   └── Round 3: star rating + unverified numbers + exaggeration
-Step 6. Update TODO.md
+Step 6. Update `.governance/TODO.md`
 ```
 
 - Format: fixed tree style above (inside code block)
@@ -694,10 +693,10 @@ README/CHANGELOG: [deferred to final batch / updated]
 
 On context compaction or session switch:
 
-1. Read `TODO.md` — check each item status (✅ /⬜)
+1. Read `.governance/TODO.md` — check each item status (✅ /⬜); use root `TODO.md` for legacy projects
 2. Resume from next ⬜ item with Pre-execution Brief
 3. If batch partially complete: skip already ✅ items, continue remaining only
-4. Completion criteria: md-style-check 0 issues + all fact-check rounds passed + TODO.md marked ✅
+4. Completion criteria: md-style-check 0 issues + all fact-check rounds passed + `.governance/TODO.md` marked ✅
 
 ### fact-check failure handling
 

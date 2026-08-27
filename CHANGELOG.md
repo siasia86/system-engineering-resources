@@ -44,6 +44,7 @@
 - `TODO2.md`의 Ansible profile 정리 항목을 완료하고 임시 TODO 문서를 삭제.
 - `TODO.md`에서 완료된 작업과 해소된 검사 예외를 제거하고, 실제 미완료 fact-check와 유효한 검사 예외만 유지.
 - `kiro_cli_command_reference.md`의 frontmatter TODO를 종료. 일반 문서에는 `_reference/` 전용 frontmatter 규칙을 적용하지 않음.
+- 신규 저장소의 기본 작업 문서 위치를 `.governance/ISSUE.md`, `.governance/TODO.md`, `.governance/PLAN.md`로 정의하고, 기존 루트 문서는 legacy로 허용. 관련 템플릿과 작업 skill 탐색 경로를 갱신.
 - `md-style-check.py --list-skips`를 CI에 등록하여 사유 없는 검사 예외를 차단.
 - `TODO2.md`에 분산되어 있던 완료 기록을 CHANGELOG의 Added·Changed·Fixed 항목으로 통합하고, TODO2에는 미완료 작업만 남김.
 - Ansible 저장소 후속 검증에서 `terraform fmt` 2건, 헤딩 레벨 건너뜀 4건, 목차 앵커 불일치 1건과 목차 누락 1건을 수정.

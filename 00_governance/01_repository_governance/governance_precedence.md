@@ -104,21 +104,28 @@ repo-local .governance/
 ```
 <repository-root>/
 ├── .governance/
-│   ├── GOVERNANCE.md      필수 — 저장소 성격과 예외 요약
+│   ├── GOVERNANCE.md      신규 저장소 필수 — 저장소 성격과 예외 요약
+│   ├── ISSUE.md           신규 저장소 필수 — 이슈 기록
+│   ├── TODO.md            신규 저장소 필수 — 미완료 작업
+│   ├── PLAN.md            신규 저장소 필수 — 진행 중인 복합 작업
 │   ├── exceptions.md      선택 — 예외 상세
 │   └── verification.md    선택 — 저장소 전용 검증 명령
 ├── README.md
 └── ...
 ```
 
-| 파일              | 역할                              | 필수 |
-|-------------------|-----------------------------------|------|
-| `GOVERNANCE.md`   | 저장소 성격, 적용 규칙, 예외 요약 | ✅   |
-| `exceptions.md`   | 전역 규칙 대비 예외 상세          | 선택 |
-| `verification.md` | 저장소 전용 검증 명령             | 선택 |
+| 파일              | 역할                              | 신규 저장소 | 기존 저장소 |
+|-------------------|-----------------------------------|-------------|-------------|
+| `GOVERNANCE.md`   | 저장소 성격, 적용 규칙, 예외 요약 | 필수        | 조건부      |
+| `ISSUE.md`        | 이슈 기록                         | 필수        | 권장        |
+| `TODO.md`         | 미완료 작업                       | 필수        | 권장        |
+| `PLAN.md`         | 진행 중인 복합 작업               | 필수        | 권장        |
+| `exceptions.md`   | 전역 규칙 대비 예외 상세          | 선택        | 선택        |
+| `verification.md` | 저장소 전용 검증 명령             | 선택        | 선택        |
 
-규칙이 적은 저장소는 `GOVERNANCE.md` 하나만 둡니다. 규칙이 늘어 한 파일에서 관리가
-어려워지면 `exceptions.md`와 `verification.md`로 분리합니다.
+신규 저장소는 `GOVERNANCE.md`, `ISSUE.md`, `TODO.md`, `PLAN.md`를 기본으로 둡니다. 활성 항목이 없더라도 문서를 삭제하지 않고 상태를 명시합니다. 규칙과 검증 절차가 늘어나면 `exceptions.md`와 `verification.md`를 선택적으로 추가합니다.
+
+기존 저장소는 루트 문서를 즉시 이동하지 않습니다. 해당 저장소의 다음 구조 변경이나 규칙 이관 시 `.governance/`로 이동하고, 기존 루트 문서는 legacy 호환 기간 후 제거합니다.
 
 ### 도구 중립 규칙과 도구 종속 자료
 
@@ -138,6 +145,9 @@ repo-local .governance/
 각 파일은 템플릿을 사용해 작성합니다.
 
 - `GOVERNANCE.md`: [GOVERNANCE 템플릿](templates/governance_template.md)
+- `ISSUE.md`: [ISSUE 템플릿](templates/issue_template.md)
+- `TODO.md`: [TODO 템플릿](templates/todo_template.md)
+- `PLAN.md`: [PLAN 템플릿](templates/plan_template.md)
 - `verification.md`: [VERIFICATION 템플릿](templates/verification_template.md)
 
 ### 디렉토리명을 `.governance/`로 정한 이유
@@ -212,11 +222,16 @@ repo-local .governance/
 
 ### 새 저장소에 적용
 
-1. 전역 규칙만으로 충분한지 검토합니다. 충분하면 `.governance/`를 만들지 않습니다.
-2. 예외가 필요하면 `.governance/GOVERNANCE.md`를 생성합니다.
-3. 적용 범위, 유지하는 전역 규칙, 저장소 전용 예외를 기술합니다.
-4. 저장소 `README.md`에서 `.governance/`를 링크합니다.
-5. 검증 명령을 실행하고 결과를 확인합니다.
+1. 저장소 최상위에 `.governance/`를 생성합니다.
+2. `GOVERNANCE.md`, `ISSUE.md`, `TODO.md`, `PLAN.md`를 템플릿으로 생성합니다.
+3. 저장소 성격, 적용 범위와 저장소 전용 예외를 `GOVERNANCE.md`에 기술합니다.
+4. 이슈·작업·계획이 없으면 각 문서에 해당 상태를 명시합니다.
+5. 저장소 `README.md`에서 `.governance/`를 링크합니다.
+6. 검증 명령을 실행하고 결과를 확인합니다.
+
+### 기존 저장소 호환
+
+기존 저장소의 루트 `ISSUE.md`, `TODO.md`, `PLAN.md`는 즉시 이동하지 않고 legacy 위치로 인식합니다. 새로 생성하는 문서는 `.governance/` 아래에 둡니다. 이관 시에는 링크·자동화·CI 탐색 경로를 함께 수정하고, 검증 후 기존 루트 문서를 제거합니다.
 
 ### 기존 저장소별 규칙 이관
 

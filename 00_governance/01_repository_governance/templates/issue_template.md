@@ -19,7 +19,8 @@
 ## 1. 사용 방법
 
 ```bash
-cp templates/issue_template.md <target>/ISSUE.md
+mkdir -p <target>/.governance
+cp templates/issue_template.md <target>/.governance/ISSUE.md
 ```
 
 복사 후 이 `사용 방법` 섹션을 제거합니다. 이슈가 여러 건이면 2장 이하를 이슈별로 반복하고, 각 이슈에 `ISSUE-N` 식별자를 부여합니다.

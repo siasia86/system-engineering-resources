@@ -2,7 +2,7 @@
 
 복합 작업을 시작할 때 이 템플릿을 복사하여 `PLAN.md`로 사용합니다. 문서별 역할은 [문서 운영 정책](../documentation_policy.md)에서 정의합니다.
 
-저장소 전역 작업은 루트 `PLAN.md`를 사용합니다. 하위 프로젝트별 `PLAN.md`를 허용하는 저장소는 해당 저장소의 `.governance/GOVERNANCE.md`에 그 예외를 기록합니다.
+저장소 전역 작업은 `.governance/PLAN.md`를 사용합니다. 기존 저장소의 루트 `PLAN.md`는 migration 전까지 legacy 위치로 허용합니다.
 
 ## 목차
 
@@ -19,7 +19,8 @@
 ## 1. 사용 방법
 
 ```bash
-cp templates/plan_template.md <target>/PLAN.md
+mkdir -p <target>/.governance
+cp templates/plan_template.md <target>/.governance/PLAN.md
 ```
 
 복사 후 이 `사용 방법` 섹션을 제거하고, 각 섹션의 안내 문구를 실제 내용으로 교체합니다.

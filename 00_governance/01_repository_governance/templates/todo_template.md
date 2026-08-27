@@ -16,7 +16,8 @@
 ## 1. 사용 방법
 
 ```bash
-cp templates/todo_template.md <target>/TODO.md
+mkdir -p <target>/.governance
+cp templates/todo_template.md <target>/.governance/TODO.md
 ```
 
 복사 후 이 `사용 방법` 섹션과 4장 작성 규칙을 제거하고, 목차를 실제 섹션에 맞춰 갱신합니다.
