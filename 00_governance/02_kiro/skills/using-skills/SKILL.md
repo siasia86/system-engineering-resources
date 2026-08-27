@@ -14,6 +14,7 @@ description: Maps incoming work to the right skill workflow. Use when starting a
 ```
 Task arrives
     │
+    ├── 저장소 파일 수정/작업 시작?  → repo-governance (.governance/ 우선 확인)
     ├── 새 인프라 구축/대규모 변경?  → spec-driven-infra
     ├── 작업 분해 필요?              → planning-and-breakdown
     ├── IaC 코드 작성/수정?          → incremental-change
@@ -44,8 +45,20 @@ Task arrives
 | 장애 대응          | debugging-and-recovery → incremental-change                     |
 | 코드 리뷰 후 수정  | code-review → incremental-change → testing-guide                |
 
+## Precedence
+
+스킬 적용 전에 규칙 우선순위를 확인합니다.
+
+```
+사용자의 명시적 지시  >  repo-local .governance/  >  전역 skill  >  기본 동작
+```
+
+안전 관련 항목(비가역 작업 승인, 자격증명 취급)은 우선순위와 무관하게 항상 확인
+절차를 거칩니다. 상세는 `skill://repo-governance` 를 참고합니다.
+
 ## Rules
 
+- 저장소 작업 시작 시 `.governance/` 존재를 먼저 확인합니다
 - 스킬이 적용 가능하면 반드시 사용합니다
 - "작아서 스킬 불필요"는 잘못된 판단입니다
 - 여러 스킬이 해당되면 체인으로 연결합니다
