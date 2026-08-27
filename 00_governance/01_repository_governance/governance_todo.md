@@ -165,6 +165,14 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
 - [x] `templates/verification_template.md` 작성 (2026-08-27 완료)
       - `.governance/verification.md` 선택 파일의 형식 확보. Ansible 저장소 이관 시 활용
 
+- [x] 템플릿 전체 일관성 점검 (2026-08-27 완료)
+      - 목차 앵커 정합성, H2 번호 연속성, 헤딩 레벨 점프를 스크립트로 검증
+      - 8개 전부 앵커 불일치 0건, 번호 연속, 레벨 점프 0건 확인
+      - 수정: `issue`·`plan`·`runbook`에 `1. 사용 방법` 신설, `governance`의 무번호
+        섹션 2개에 번호 부여, `readme`·`runbook`에 정책 참조 추가,
+        `issue`·`plan`·`runbook`·`verification`에 민감정보 기록 금지 추가,
+        푸터 안내 문구 8개 통일
+
 ### 낮음
 
 - [ ] 템플릿 사용 실태 점검

@@ -1,6 +1,6 @@
 # README Template
 
-저장소 또는 디렉토리의 `README.md`를 작성할 때 사용합니다. 푸터·배지 규칙은 `readme-template` skill에서 정의하며, 이 템플릿은 본문 구조를 다룹니다.
+저장소 또는 디렉토리의 `README.md`를 작성할 때 사용합니다. 푸터·배지 규칙은 `readme-template` skill에서 정의하며, 이 템플릿은 본문 구조를 다룹니다. 문서별 역할은 [문서 운영 정책](../documentation_policy.md)에서 정의합니다.
 
 ## 목차
 
