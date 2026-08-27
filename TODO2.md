@@ -41,16 +41,33 @@
 
 ### 3.1 저장소별 규칙 이관 (우선순위: 높음)
 
-| 대상                       | 현재 규칙 위치                    | 단계 |
-|----------------------------|-----------------------------------|------|
-| Zircon 저장소              | 전역 skill `zircon-readme-policy` | 9    |
-| Ansible 학습·자동화 저장소 | `profiles/chobo_ansible.md`       | 9    |
+| 저장소              | 규칙 위치                                   | 상태              |
+|---------------------|---------------------------------------------|-------------------|
+| Zircon Windows 빌드 | 저장소 `.governance/GOVERNANCE.md`          | 완료 (2026-08-27) |
+| Zircon 본체         | 저장소 내 `.kiro/skills/` 사본 + 전역 skill | 미착수            |
+| Ansible 학습·자동화 | `profiles/chobo_ansible.md`                 | 미착수            |
 
-두 저장소 모두 규칙이 적용 대상 저장소 밖에 있습니다. 절차는 `governance_precedence.md` §6을 따르고 문서는 `templates/governance_template.md` 로 작성합니다. 병행 기간을 두어 기존 위치를 먼저 제거하지 않습니다.
+절차는 `governance_precedence.md` §6을 따르고 문서는 `templates/governance_template.md` 로 작성합니다. 병행 기간을 두어 기존 위치를 먼저 제거하지 않습니다.
 
-Zircon 쪽이 예외 범위가 푸터·통계로 한정되어 있고 `governance_template.md` §9에 작성 예시가 있어 먼저 진행하기 쉽습니다.
+### Zircon Windows 빌드 (완료)
 
-Ansible 저장소는 검증 기준이 6가지 변경 유형에 걸쳐 있어 `.governance/verification.md` 분리가 필요할 수 있습니다. `templates/verification_template.md` 를 사용합니다.
+`.governance/GOVERNANCE.md` 를 생성하고 README에서 링크했습니다. 예외는 `readme-template` 의 푸터·배지·통계 1건이며, 유지하는 전역 규칙 8개를 명시했습니다.
+
+전역 skill `zircon-readme-policy` 의 적용 범위는 Zircon 본체 저장소만 가리키고 있어 이 저장소는 원래 정책 적용 대상이 아니었습니다. 따라서 이관이 아니라 신규 적용에 해당하며, 전역 skill 을 제거할 단계가 아닙니다.
+
+### Zircon 본체 (미착수)
+
+저장소 안에 `.kiro/skills/zircon-readme-policy/SKILL.md` 사본이 이미 있고 전역 skill 과 내용이 중복됩니다. `.governance/` 로 통합할 때 두 사본을 함께 정리해야 합니다.
+
+- [ ] `.governance/GOVERNANCE.md` 생성
+- [ ] 저장소 내 `.kiro/skills/` 사본 제거
+- [ ] 전역 skill `zircon-readme-policy` 제거 (두 저장소 모두 이관 완료 후)
+- [ ] 에이전트 JSON `resources` 참조 제거
+- [ ] `02_kiro/skills/zircon-readme-policy/` 미러 제거
+
+### Ansible 학습·자동화 (미착수)
+
+검증 기준이 6가지 변경 유형에 걸쳐 있어 `.governance/verification.md` 분리가 필요할 수 있습니다. `templates/verification_template.md` 를 사용합니다.
 
 이관 완료 후 `profiles/` 디렉토리 존치 여부를 결정합니다.
 

@@ -16,6 +16,7 @@
 - `md-style-check.py --list-skips` 옵션 추가. 파일별 제외 항목과 사유를 출력하고, 사유가 없는 항목이 있으면 종료 코드 1을 반환합니다.
 - 검사 도구 작업의 후속 항목을 정리한 임시 문서 `TODO2.md` 추가.
 - 압축 알고리즘 문서 `01_fundamentals/cs/compression_algorithms.md` 추가.
+- Zircon Windows 빌드 저장소에 `.governance/GOVERNANCE.md` 적용. `.governance/` 체계의 첫 적용 사례입니다.
 
 ### Changed
 

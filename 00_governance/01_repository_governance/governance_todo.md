@@ -48,7 +48,11 @@
 
 #### 이관 1: Zircon 저장소
 
-- [ ] 대상 저장소에 `.governance/GOVERNANCE.md` 생성 (템플릿 사용)
+- [x] 대상 저장소에 `.governance/GOVERNANCE.md` 생성 (템플릿 사용)
+      - Zircon Windows 빌드 저장소 완료 (2026-08-27). 예외 1건, 유지 규칙 8개 명시
+      - 전역 skill 의 적용 범위가 Zircon 본체만 가리켜 이 저장소는 원래 적용 대상이
+        아니었습니다. 이관이 아니라 신규 적용이므로 전역 skill 은 유지합니다.
+      - Zircon 본체는 저장소 내 `.kiro/skills/` 사본과 전역 skill 이 중복된 상태로 미착수
 - [ ] 기존 skill 내용을 옮기고 유지하는 전역 규칙을 명시적으로 나열
 - [ ] 옮긴 내용이 `governance_precedence.md` §5 기술 범위를 벗어나지 않는지 확인
 - [ ] 대상 저장소 `README.md`에서 `.governance/` 링크 추가
