@@ -31,13 +31,48 @@
 - [ ] 전역 skill에 `.governance/` 탐색 지시 등록
       - 목적: 저장소가 늘어도 전역 skill을 추가하지 않고 모든 세션이 동일하게 인식
       - 확인: 새 세션에서 `.governance/`가 있는 저장소 작업 시 해당 파일을 읽는지
-- [ ] `profiles/chobo_ansible.md`를 대상 저장소 `.governance/`로 이관
-      - 현재: 규칙이 적용될 저장소 밖(이 저장소)에 위치
-      - 절차: `governance_precedence.md` §6 이관 절차 준수 (병행 기간 필수)
-      - 이관 후 `README.md` §4 "저장소 profile" 항목 갱신 필요
-- [ ] 전역 skill `zircon-readme-policy`를 대상 저장소 `.governance/`로 이관
-      - 현재: 전역 skill이라 무관한 세션에서도 로드됨
-      - 이관 후 전역 skill 제거
+
+### 이관 대상 저장소 2곳 (우선순위: 높음)
+
+| 대상 저장소                | 현재 규칙 위치                    | 형태      | 이관 후                     |
+|----------------------------|-----------------------------------|-----------|-----------------------------|
+| Zircon 저장소              | 전역 skill `zircon-readme-policy` | skill     | `.governance/GOVERNANCE.md` |
+| Ansible 학습·자동화 저장소 | `profiles/chobo_ansible.md`       | 중앙 문서 | `.governance/GOVERNANCE.md` |
+
+두 저장소 모두 규칙이 적용 대상 저장소 밖에 있습니다. 같은 성격의 요구가 한쪽은
+전역 skill, 다른 한쪽은 중앙 문서로 이원화되어 조회 위치가 일정하지 않습니다.
+
+공통 절차는 `governance_precedence.md` §6을 따르고, 문서는
+`templates/governance_template.md`로 작성합니다. 병행 기간을 두어 기존 위치를 먼저
+제거하지 않습니다.
+
+#### 이관 1: Zircon 저장소
+
+- [ ] 대상 저장소에 `.governance/GOVERNANCE.md` 생성 (템플릿 사용)
+- [ ] 기존 skill 내용을 옮기고 유지하는 전역 규칙을 명시적으로 나열
+- [ ] 옮긴 내용이 `governance_precedence.md` §5 기술 범위를 벗어나지 않는지 확인
+- [ ] 대상 저장소 `README.md`에서 `.governance/` 링크 추가
+- [ ] 병행 기간 동안 새 위치가 정상 인식되는지 확인
+- [ ] 전역 skill `zircon-readme-policy` 제거
+- [ ] 에이전트 JSON의 `resources`에서 해당 skill 참조 제거 여부 확인
+- [ ] `02_kiro/skills/zircon-readme-policy/` 미러 제거
+- [ ] 이 저장소 `CHANGELOG.md` 기록
+
+Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_template.md`의 작성
+예시가 그대로 적용됩니다. 두 대상 중 먼저 진행하기 쉽습니다.
+
+#### 이관 2: Ansible 학습·자동화 저장소
+
+- [ ] 대상 저장소에 `.governance/GOVERNANCE.md` 생성 (템플릿 사용)
+- [ ] `profiles/chobo_ansible.md` 내용을 옮기고 유지하는 전역 규칙을 명시적으로 나열
+- [ ] 옮긴 내용이 `governance_precedence.md` §5 기술 범위를 벗어나지 않는지 확인
+      - 현재 profile은 문서 역할·생명주기 예외와 검증 기준을 함께 담고 있어
+        `verification.md` 분리가 필요할 수 있음
+- [ ] 대상 저장소 `README.md`에서 `.governance/` 링크 추가
+- [ ] 병행 기간 동안 새 위치가 정상 인식되는지 확인
+- [ ] `profiles/chobo_ansible.md` 제거
+- [ ] 이 저장소 `README.md` §4 저장소별 규칙 설명에서 profile 참조 제거
+- [ ] 이 저장소 `CHANGELOG.md` 기록
 
 ### 보통
 
@@ -54,6 +89,15 @@
 
 ### 높음
 
+- [ ] 절대경로 기록과 `documentation_policy.md` §3 충돌 해소
+      - 발견 경위: 이관 대상 정리 중 확인
+      - `documentation_policy.md` §3은 "개인 경로, 내부 IP, 자격증명은 저장소에
+        기록하지 않습니다"로 규정
+      - 그런데 `02_kiro/skills/zircon-readme-policy/SKILL.md`와
+        `02_kiro/skills/repo-governance/SKILL.md` 미러에 로컬 절대경로가 기록되어 있음
+      - 판단 필요: 저장소 자체 경로와 다른 저장소의 로컬 경로를 같은 기준으로 볼지,
+        skill 미러를 예외로 둘지, 경로를 저장소 식별자로 대체할지
+      - 이 TODO 문서는 충돌을 피하기 위해 절대경로 대신 저장소 식별자를 사용함
 - [ ] `exclude_files`의 `TODO.md` 제외 범위 축소 검토
       - 현재: 파일명 기준 전역 제외. 저장소 내 모든 경로의 `TODO.md`가 검사 대상에서 빠짐
       - 확인 결과 현재 저장소에는 루트 `TODO.md` 1개만 존재하여 실제 영향은 없음
