@@ -10,19 +10,19 @@
 
 - 저장소별 규칙 체계 `.governance/`와 [저장소 규칙 우선순위 정책](00_governance/01_repository_governance/governance_precedence.md) 추가.
 - governance 개선 항목 관리 문서 `governance_todo.md` 추가.
-- 작업 템플릿 6종 추가: TODO, CHANGELOG, README, RUNBOOK, GOVERNANCE, VERIFICATION.
+- 작업 템플릿 6종 추가: TODO, CHANGELOG, README, RUNBOOK, GOVERNANCE, VERIFICATION. 기존 PLAN·ISSUE 템플릿을 포함해 8종이 됩니다.
 - 헤딩 구조·목차 앵커 검사기 `md-heading-check.py` 추가 (anchor / number / level / duplicate).
 - `md-heading-check.py` 예외 설정 `.md-heading-check.toml` 추가 (파일별 검사 항목 제외 지원).
-- CI에서 헤딩 구조 검사를 필수 검사로 승격.
-- `02_kiro/` 미러를 스타일 검사 대상에 포함 (검사 대상 323개 → 362개).
-- `CHANGELOG.md`, `LICENSE.md`, `TODO.md`, `license_guide.md` 를 스타일 검사 대상에 포함 (366개).
-- `md-style-check.py` 의 파일별 제외 항목에 사유·재검토 시점 기록을 도입하고 `--list-skips` 옵션 추가.
-- 기존 제외 항목 전수 점검. 근거가 사라진 2건 제거, 과도한 범위 1건 축소, 사유 미확인 6건 해소.
-- CI에 헤딩 구조 검사를 경고 모드로 등록.
+- `md-style-check.py --list-skips` 옵션 추가. 파일별 제외 항목과 사유를 출력하고, 사유가 없는 항목이 있으면 종료 코드 1을 반환합니다.
+- 검사 도구 작업의 후속 항목을 정리한 임시 문서 `TODO2.md` 추가.
 - 압축 알고리즘 문서 `01_fundamentals/cs/compression_algorithms.md` 추가.
 
 ### Changed
 
+- 헤딩 구조 검사를 CI 필수 검사로 등록.
+- 스타일 검사 대상에 `02_kiro/` 미러와 저장소 메타 문서(`CHANGELOG.md`, `LICENSE.md`, `TODO.md`, `license_guide.md`)를 포함 (323개 → 367개).
+- `md-style-check.py` 의 파일별 제외 항목을 `(검사 집합, 사유, 재검토 시점)` 구조로 변경. 사유 없는 제외를 남기지 않도록 했습니다.
+- 검사 제외 항목 전수 점검. 근거가 사라진 2건 제거, 범위가 과도한 1건 축소, 사유 미확인 6건 해소 (11건 → 9건).
 - PLAN·ISSUE 템플릿에 비가역 작업, 임시 조치, 재발 방지 섹션 추가.
 - 템플릿 8종의 목차·번호 체계와 민감정보 기록 금지 항목을 통일.
 - `README.md` 저장소 profile 설명을 `.governance/` 체계 기준으로 갱신.
@@ -297,6 +297,7 @@
 - md-style-check `_reference/` 37개 파일 0건 통과
 
 ### Removed
+
 - `01_fundamentals/programming/rust/temp_factcheck_20260729.md` — 임시 팩트체크 메모 파일 삭제
 
 ---
@@ -585,6 +586,7 @@
 - MySQL RDS vs Aurora 비교표 추가
 
 ### Changed
+
 - `01_install/README.md` 신규 생성 — 14개 문서 목차
 - `09_database/README.md` 목차에 설치 문서 링크 추가 (mysql_install, postgresql_install)
 - `README.md` `01_install` 섹션 표에 신규 13개 파일 추가, 문서 트리 업데이트, 마지막 업데이트 갱신
@@ -592,6 +594,7 @@
 - `/home/sjyun/.kiro/markdown/STYLE.md` 규칙 10 보강 — 반말체 종결어미 금지 패턴 명시 (`~이다.` `~한다.` 등)
 
 ### Fixed
+
 - `mysql_install.md` `mysqldump` 명령에 `sudo` 누락 수정 (Ubuntu auth_socket 환경)
 - `postgresql_install.md` DB 생성 구문 수정 (`LC_COLLATE 'en_US.UTF-8'` → `LOCALE 'C.UTF-8'`, PostgreSQL 17 + Ubuntu 24.04 ICU 환경)
 - `postgresql_install.md` 계정명 대소문자 수정 (`Secureuser123` → `secureuser123`, PostgreSQL 소문자 저장 규칙)
@@ -603,6 +606,7 @@
 ## [2.1.0] - 2026-05-01
 
 ### Added
+
 - `12_tech_stack/README.md` 신규 생성 — 6개 문서 링크 표, 참고 자료, 푸터
 - `10_nosql/README.md` 문서 목록 섹션 추가 (Redis, MongoDB, Elasticsearch 링크 표)
 - `11_python/README.md` 목차 섹션 추가
@@ -611,6 +615,7 @@
 - `09_database/rdbms_partition.md` PostgreSQL Hash 파티셔닝 예제 추가
 
 ### Changed
+
 - `07_opensource/` 파일명 앞 숫자 접두사 제거 (`01_docker_...` → `docker_...` 등 4개)
 - `08_debugging_linux/` 내부 공유 자료 헤더 제거 (strace, ltrace), 문서 변경 이력/관리자 섹션 제거
 - `04_system_engineer/01_roadmap/sre_roadmap.md` 내부 공유 자료 헤더, 실명, 작성자 노트 제거
@@ -627,6 +632,7 @@
 - `README.md` `07_opensource` 링크 파일명 수정 (접두사 제거 반영), 마지막 업데이트 갱신
 
 ### Fixed
+
 - `09_database/rdbms_lock.md` `information_schema.innodb_lock_waits` MySQL 8.0 제거 반영 (8.0+ 쿼리 우선)
 - `09_database/rdbms_join.md` INNER JOIN 다이어그램 값 오류 수정 (`│2│3│` → `│1│3│`)
 - `09_database/rdbms_replication.md` RDS MySQL Read Replica 최대 수 수정 (5개 → 15개)
@@ -642,6 +648,7 @@
 ## [2.0.0] - 2026-04-30
 
 ### Added
+
 - `09_database/` 신규 디렉토리 — RDBMS 11개 문서
   (normalization, join, index, explain, transaction, lock, view, procedure, replication, partition, schema_migration)
 - `10_nosql/` 신규 디렉토리 — MongoDB, Redis, Elasticsearch
@@ -655,6 +662,7 @@
 - 루트 README.md 문서 트리 섹션 추가
 
 ### Changed
+
 - 전체 .md 푸터 통일 — stars/forks/watchers 배지, 작성일/마지막업데이트 빈줄 규칙
 - 전체 참고 자료 별점 추가 (★★☆☆☆ 기본값 기준)
 - 전체 목차 표 형식 통일 — H2만 포함, H3 혼입 제거
@@ -663,6 +671,7 @@
 - `se_complete_roadmap_programming_languages.md` 제목 수정 ("완전" 제거)
 
 ### Fixed
+
 - `packet_analysis.md` 중복 H2 섹션 제거
 - `license_guide.md` `## License` H2 20개+ 중복 제거 (코드블록으로 이동)
 - 전체 과장 표현 수정 ("최고 성능" → "높은 성능" 등)
@@ -672,11 +681,13 @@
 ## [1.1.0] - 2026-03-25
 
 ### Added
+
 - `01_install/` 디렉토리 README.md 목차에 추가 (Ansible 기초, 설치 및 팀 운영 가이드)
 - GitHub Actions workflow 추가 (`.github/workflows/update-date.yml`)
   - `main` 브랜치 push 시 변경된 README.md의 마지막 업데이트 날짜 자동 갱신
 
 ### Changed
+
 - `07_system_engineer/` → `04_system_engineer/`로 번호 변경 (자주 사용하는 디렉토리 우선 배치)
 - `04_opensource/` → `07_opensource/`로 번호 변경 (swap)
 - `08_debuggin_linux/` → `08_debugging_linux/`로 오타 수정
@@ -684,6 +695,7 @@
 - 모든 하위 디렉토리 README.md 푸터 통일 (통계 배지, 마지막 업데이트, 저작권)
 
 ### Fixed
+
 - 문서 내 `debuggin_linux` → `debugging_linux` 오타 수정 (6개 파일)
 - 문서 내 `07_system_enginner` → `04_system_engineer` 오타 및 경로 수정 (6개 파일)
 - 문서 내 `01_debuggin_linux` → `08_debugging_linux` 잘못된 번호 참조 수정
@@ -693,6 +705,7 @@
 ## [1.0.0] - 2026-03-11
 
 ### Added
+
 - 초기 릴리스
 - Linux 디버깅 도구 가이드 (strace, ltrace, gdb, perf, valgrind, lsof, iotop, tcpdump)
 - 기본 Linux 명령어 및 스크립팅 가이드
@@ -708,8 +721,6 @@
 - 라이선스 가이드
 - 각 디렉토리별 README.md
 - LICENSE.md
-
-### Documentation
 - CC BY 4.0 라이선스 적용 (문서)
 - MIT License 적용 (코드 예제)
 
@@ -718,12 +729,31 @@
 ## 변경 사항 기록 방법
 
 ### 카테고리
+
 - `Added` - 새로운 기능 추가
 - `Changed` - 기존 기능 변경
 - `Deprecated` - 곧 제거될 기능
 - `Removed` - 제거된 기능
 - `Fixed` - 버그 수정
 - `Security` - 보안 관련 변경
+
+위 6종 외의 카테고리는 사용하지 않습니다.
+
+### 버전 번호
+
+| 자리  | 올리는 기준                                 | 예                  |
+|-------|---------------------------------------------|---------------------|
+| major | 저장소 구조 개편, 최상위 디렉토리 체계 변경 | `2.0.0`, `3.0.0`    |
+| minor | 문서 추가, 검사 도구 기능 추가, 정책 도입   | `3.10.0` → `3.11.0` |
+| patch | 오류 수정과 서식 정정만 포함                | `3.0.2`, `3.0.3`    |
+
+문서 저장소이므로 Semantic Versioning 의 하위 호환 개념은 그대로 적용되지 않습니다. 위 기준으로 해석합니다.
+
+- 릴리스는 날짜 단위가 아니라 작업 단위입니다. 같은 날 여러 버전이 올라갈 수 있습니다.
+- 항목은 최신 버전이 위로 오도록 내림차순으로 배치합니다.
+- 한 릴리스 안에서 중간 상태는 기록하지 않습니다. 최종 결과만 남깁니다.
+
+🟡 `3.0.1` 은 존재하지 않습니다. 번호를 건너뛴 것으로, 누락된 변경 내역은 없습니다.
 
 ## 참고 자료
 
