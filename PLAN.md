@@ -197,7 +197,7 @@ sudo gitleaks detect --source /root/32_system-engineering-resources --no-git --n
 - [x] artifact checksum 검증 후 설치됩니다.
 - [ ] 설치·업데이트·롤백 smoke test를 통과합니다.
 - [x] Markdown·링크·헤딩·비밀정보 검사를 통과합니다.
-- [ ] `CHANGELOG.md`에 최종 결과를 기록합니다.
+- [x] `CHANGELOG.md`에 최종 결과를 기록합니다.
 
 검증 실패를 공용 검사 예외로 숨기지 않습니다. 예외가 필요하면 대상, 사유, 재검토 시점을 별도로 기록합니다.
 
