@@ -67,7 +67,7 @@
 Repository: 30_sia-scripts
 Remote: `git@github.com:siasia86/30_sia-scripts.git`
 Description: 공용 시스템 엔지니어링·문서 품질 검증 스크립트와 Ansible 배포 자동화
-Local path: /root/30_sia-scripts_private/
+Local path: $HOME/30_sia-scripts/
 ```
 
 `34_system-engineering-resources_private`와 같은 문서 저장소 기반 이름은 역할이 혼동될 수 있으므로 사용하지 않습니다.
@@ -112,33 +112,42 @@ GitHub-hosted Actions가 Ansible 서버로 직접 SSH 접속하지 않습니다.
 
 ### 단계 1. 스크립트 분류와 인터페이스 정의
 
-- [ ] 저장소 스크립트를 공용·정책 종속·환경 종속으로 분류합니다.
-- [ ] 공용 후보의 입력 경로, 반환 코드, 출력 형식을 정의합니다.
-- [ ] `sia-md-style-check`, `sia-md-heading-check`, `sia-md-link-check` 명령 이름을 확정합니다.
-- [ ] 저장소별 설정 파일의 위치와 형식을 정의합니다.
-- [ ] 검증: 각 스크립트의 공용화 여부와 제외 사유가 표로 남아 있습니다.
+초기 분류와 CLI 계약은 다음과 같이 확정합니다.
+
+| 후보                        | 분류                  | 현재 판단                                  |
+|-----------------------------|-----------------------|--------------------------------------------|
+| `md-style-check.py`         | 공용 후보 + 설정 의존 | 32 전용 `FILE_SKIP` 제거 후 `src/`로 이관  |
+| `md-heading-check.py`       | 공용 후보 + 설정 의존 | 대상 경로·TOML 설정을 사용                 |
+| `md-link-check.py`          | 공용 후보             | 상대경로 링크와 종료 코드만 사용           |
+| `readme_inventory_check.py` | 조건부 공용 후보      | `(N개)` inventory 형식의 저장소에서만 사용 |
+
+- [x] 저장소 스크립트를 공용·정책 종속·환경 종속으로 분류합니다.
+- [x] 공용 후보의 입력 경로, 반환 코드, 출력 형식을 정의합니다.
+- [x] `sia-md-style-check`, `sia-md-heading-check`, `sia-md-link-check` 명령 이름을 확정합니다.
+- [x] 저장소별 설정 파일의 위치와 형식을 정의합니다.
+- [x] 검증: 각 스크립트의 공용화 여부와 제외 사유가 표로 남아 있습니다.
 
 ### 단계 2. 공용 후보의 저장소 의존성 제거
 
-- [ ] `/root/32_system-engineering-resources/` 하드코딩을 제거합니다.
-- [ ] 대상 경로를 명령행 인자로 받도록 통일합니다.
-- [ ] 저장소별 예외를 코드가 아닌 `--config` 또는 profile로 처리합니다.
-- [ ] `--help`, `--version`, `--dry-run` 동작을 확인합니다.
-- [ ] 검증: 기존 저장소와 임시 테스트 저장소에서 동일한 CLI가 실행됩니다.
+- [x] `/root/32_system-engineering-resources/` 하드코딩을 제거합니다.
+- [x] 대상 경로를 명령행 인자로 받도록 통일합니다.
+- [x] 저장소별 예외를 코드가 아닌 `--config` 또는 profile로 처리합니다.
+- [x] `--help`, `--version` 동작과 검사기의 read-only 특성을 확인합니다.
+- [x] 검증: 기존 저장소와 임시 테스트 저장소에서 동일한 CLI가 실행됩니다.
 
 ### 단계 3. 테스트와 기존 결과 대조
 
-- [ ] 정상 문서, 잘못된 헤딩, 깨진 링크, 표 정렬 오류를 포함한 테스트 fixture를 작성합니다.
-- [ ] 기존 스크립트와 공용 명령의 결과·반환 코드를 비교합니다.
-- [ ] 저장소별 예외가 의도한 파일에만 적용되는지 확인합니다.
-- [ ] 검증: 테스트 결과와 현재 저장소 전체 검사 결과가 일치합니다.
+- [x] 정상 문서, 잘못된 헤딩, 깨진 링크, 표 정렬 오류를 포함한 테스트 fixture를 작성합니다.
+- [x] 기존 스크립트와 공용 명령의 결과·반환 코드를 비교합니다.
+- [x] 저장소별 예외가 의도한 파일에만 적용되는지 확인합니다.
+- [x] 검증: 테스트 결과와 현재 저장소 전체 검사 결과가 일치합니다.
 
 ### 단계 4. 패키징과 설치 구조 구현
 
-- [ ] `/usr/local/lib/sia_scripts/releases/<version>/` 구조를 구현합니다.
-- [ ] `/usr/local/lib/sia_scripts/current` symlink 전환 방식을 적용합니다.
+- [x] `/opt/sia_scripts/releases/<version>/` 구조를 구현합니다.
+- [x] `/opt/sia_scripts/current` symlink 전환 방식을 적용합니다.
 - [ ] `/usr/local/bin/sia-*` 실행 명령을 설치합니다.
-- [ ] Ansible role 또는 playbook으로 artifact 다운로드, checksum 검증, release 설치를 구현합니다.
+- [x] Ansible role 또는 playbook으로 artifact 다운로드, checksum 검증, release 설치를 구현합니다.
 - [ ] 설치 파일의 소유자·권한을 `root:root`, 디렉토리 `0755`, 일반 파일 `0644`, 실행 파일 `0755` 기준으로 확인합니다.
 - [ ] 검증: 버전 출력, 도움말 출력, 비권한 사용자의 읽기·실행, 쓰기 차단을 확인합니다.
 
@@ -163,27 +172,30 @@ GitHub-hosted Actions가 Ansible 서버로 직접 SSH 접속하지 않습니다.
 ## 6. 검증 기준
 
 ```bash
-sudo python3 md-style-check.py /root/32_system-engineering-resources
-sudo python3 md-heading-check.py /root/32_system-engineering-resources
-sudo python3 md-link-check.py /root/32_system-engineering-resources
-sudo python3 readme_inventory_check.py README.md
-ansible-playbook --syntax-check install/sia_scripts.yml
-git diff --check
-gitleaks detect --source /root/32_system-engineering-resources --no-git --no-banner
+R30="$HOME/30_sia-scripts"
+"$R30/src/bin/sia-md-style-check" "$R30"
+"$R30/src/bin/sia-md-heading-check" "$R30"
+"$R30/src/bin/sia-md-link-check" "$R30"
+ANSIBLE_CONFIG="$R30/ansible/ansible.cfg" "$R30/.venv/bin/ansible-playbook" --syntax-check "$R30/ansible/playbooks/install_sia_scripts.yml"
+git -C "$R30" diff --check
+gitleaks detect --source "$R30" --no-git --no-banner
+sudo gitleaks detect --source /root/32_system-engineering-resources --no-git --no-banner
 ```
 
-- [ ] 공용 명령의 `--help`와 `--version`이 정상 동작합니다.
-- [ ] 공용 명령이 특정 저장소의 절대경로 없이 동작합니다.
-- [ ] 정상·오류 fixture 테스트가 통과합니다.
-- [ ] 기존 검사 결과와 신규 검사 결과가 일치합니다.
-- [ ] 저장소별 예외가 설정 파일에만 존재합니다.
+`readme_inventory_check.py`는 `(N개)` inventory 표기를 사용하는 저장소에서만 해당 README를 대상으로 실행합니다.
+
+- [x] 공용 명령의 `--help`와 `--version`이 정상 동작합니다.
+- [x] 공용 명령이 특정 저장소의 절대경로 없이 동작합니다.
+- [x] 정상·오류 fixture 테스트가 통과합니다.
+- [x] 기존 검사 결과와 신규 검사 결과가 일치합니다.
+- [x] 저장소별 예외가 설정 파일에만 존재합니다.
 - [ ] 실행 파일 권한과 일반 사용자 쓰기 차단을 확인합니다.
 - [ ] Ansible playbook syntax check와 lint를 통과합니다.
 - [ ] Ansible 제어 서버에서 artifact 저장소로 HTTPS 연결이 확인됩니다.
 - [ ] Ansible 제어 서버에서 대상 호스트로 Ansible 연결이 확인됩니다.
-- [ ] artifact checksum 검증 후 설치됩니다.
+- [x] artifact checksum 검증 후 설치됩니다.
 - [ ] 설치·업데이트·롤백 smoke test를 통과합니다.
-- [ ] Markdown·링크·헤딩·비밀정보 검사를 통과합니다.
+- [x] Markdown·링크·헤딩·비밀정보 검사를 통과합니다.
 - [ ] `CHANGELOG.md`에 최종 결과를 기록합니다.
 
 검증 실패를 공용 검사 예외로 숨기지 않습니다. 예외가 필요하면 대상, 사유, 재검토 시점을 별도로 기록합니다.
