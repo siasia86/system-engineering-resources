@@ -18,6 +18,7 @@
 - 압축 알고리즘 문서 `01_fundamentals/cs/compression_algorithms.md` 추가.
 - Zircon Windows 빌드 저장소에 `.governance/GOVERNANCE.md` 적용. `.governance/` 체계의 첫 적용 사례입니다.
 - Zircon Windows 빌드 저장소에 구성 README와 DevExpress 의존성 문서 작성.
+- Ansible 학습·자동화 저장소에 `.governance/GOVERNANCE.md` 와 `.governance/verification.md` 적용.
 
 ### Changed
 

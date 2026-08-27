@@ -44,8 +44,8 @@
 | 저장소              | 규칙 위치                                   | 상태              |
 |---------------------|---------------------------------------------|-------------------|
 | Zircon Windows 빌드 | 저장소 `.governance/GOVERNANCE.md`          | 완료 (2026-08-27) |
+| Ansible 학습·자동화 | 저장소 `.governance/` 2종                   | 완료 (2026-08-27) |
 | Zircon 본체         | 저장소 내 `.kiro/skills/` 사본 + 전역 skill | 미착수            |
-| Ansible 학습·자동화 | `profiles/chobo_ansible.md`                 | 미착수            |
 
 절차는 `governance_precedence.md` §6을 따르고 문서는 `templates/governance_template.md` 로 작성합니다. 병행 기간을 두어 기존 위치를 먼저 제거하지 않습니다.
 
@@ -85,11 +85,25 @@
 - [ ] 에이전트 JSON `resources` 참조 제거
 - [ ] `02_kiro/skills/zircon-readme-policy/` 미러 제거
 
-### Ansible 학습·자동화 (미착수)
+### Ansible 학습·자동화 (완료)
 
-검증 기준이 6가지 변경 유형에 걸쳐 있어 `.governance/verification.md` 분리가 필요할 수 있습니다. `templates/verification_template.md` 를 사용합니다.
+`.governance/GOVERNANCE.md` 와 `.governance/verification.md` 로 분리했습니다. 예상대로 변경 유형이 6가지여서 검증 절차를 별도 문서로 두었습니다.
 
-이관 완료 후 `profiles/` 디렉토리 존치 여부를 결정합니다.
+예외는 `documentation_policy` 의 문서 종류·생명주기 1건이며, 유지하는 전역 규칙 8개를 명시했습니다. 표 정렬·문체·푸터·링크 규칙은 전역 규칙을 그대로 적용합니다.
+
+문서에 적기 전에 모든 검증 명령의 실행 가능성을 확인했습니다. `vagrant` 와 `kubectl` 은 미설치여서 검증 불가 항목으로 기록하고 대체 방법을 적었습니다.
+
+작업 중 발견해 함께 수정한 결함입니다.
+
+- `terraform fmt` 미적용 파일 2개 (`11_hyperv_tf`)
+- 헤딩 레벨 건너뜀 4건 (`PLAN.md` 3종, `scripts/README.md`)
+- 목차 앵커 불일치 1건 (제목의 `+` 로 하이픈이 2개가 되는 경우)
+- 목차에서 빠진 섹션 1건 (`05_vagrant/PLAN.md` 9번)
+
+`md-heading-check.py` 는 오늘 만든 도구라 이 저장소는 처음 검사됐습니다. 5건 모두 기존 결함이었습니다.
+
+- [ ] 병행 기간 후 `profiles/chobo_ansible.md` 제거
+- [ ] 제거 후 `profiles/` 디렉토리 존치 여부 결정
 
 ### 3.2 정책 문서 보완 (우선순위: 보통)
 
