@@ -13,6 +13,7 @@
 - 작업 템플릿 6종 추가: TODO, CHANGELOG, README, RUNBOOK, GOVERNANCE, VERIFICATION. 기존 PLAN·ISSUE 템플릿을 포함해 8종이 됩니다.
 - 헤딩 구조·목차 앵커 검사기 `md-heading-check.py` 추가 (anchor / number / level / duplicate).
 - `md-heading-check.py` 예외 설정 `.md-heading-check.toml` 추가 (파일별 검사 항목 제외 지원).
+- `md-heading-check.py` 에 목차 완결성 검사(`toc`) 추가. 본문 H2가 목차에 없으면 검출합니다.
 - `md-style-check.py --list-skips` 옵션 추가. 파일별 제외 항목과 사유를 출력하고, 사유가 없는 항목이 있으면 종료 코드 1을 반환합니다.
 - 검사 도구 작업의 후속 항목을 정리한 임시 문서 `TODO2.md` 추가.
 - 압축 알고리즘 문서 `01_fundamentals/cs/compression_algorithms.md` 추가.
@@ -45,6 +46,9 @@
 - `license_guide.md` 표 정렬 26건 수정.
 - `md-heading-check.py` 앵커 생성 규칙을 github-slugger 문자 집합으로 교체.
 - `md-heading-check.py` 펜스 판정을 CommonMark 규칙으로 교체하고 범위·하위 절 번호 표기 지원.
+- `md-heading-check.py` 의 H2 번호 패턴이 이중 이스케이프로 작성되어 `number` 검사가 동작하지 않던 문제 수정.
+- `md-heading-check.py` 의 앵커 링크 패턴이 링크 텍스트의 중첩 대괄호를 처리하지 못하던 문제 수정.
+- 목차에서 빠져 있던 섹션 5건 추가.
 - `git_official_notes.md`, `git_guide.md`, `git_concepts.md`의 사실 오류 12건 수정.
 - `privacy_law_guide.md` 개요 표의 소관 기관을 풀네임 병기로 정정.
 - 추적되던 구버전 백업 파일 제거 및 `.gitignore` 패턴 보강.
