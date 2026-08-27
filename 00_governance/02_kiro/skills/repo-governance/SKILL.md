@@ -117,6 +117,17 @@ repo-local .governance/
 
 이 표는 참고용입니다. 실제 존재 여부는 항상 탐색 절차로 확인합니다.
 
+## 신규 작성 시
+
+`.governance/GOVERNANCE.md` 를 새로 만들 때는 템플릿을 사용합니다.
+
+```
+/root/32_system-engineering-resources/00_governance/01_repository_governance/templates/governance_template.md
+```
+
+전역 규칙만으로 충분한 저장소에는 `.governance/` 를 만들지 않습니다. 예외가 실제로
+필요한 경우에만 생성합니다.
+
 ## 참조 정책
 
 전체 정책은 다음 문서에 있습니다.

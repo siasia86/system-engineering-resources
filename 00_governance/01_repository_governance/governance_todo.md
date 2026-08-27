@@ -41,9 +41,9 @@
 
 ### 보통
 
-- [ ] `.governance/GOVERNANCE.md` 템플릿 작성
+- [x] `.governance/GOVERNANCE.md` 템플릿 작성 (2026-08-27 완료)
       - 위치: `templates/governance_template.md`
-      - 포함: 적용 범위, 유지하는 전역 규칙, 저장소 전용 예외
+      - 포함: 적용 범위, 저장소 성격, 유지하는 전역 규칙, 저장소 전용 예외, 검증, 기록 금지 항목
 - [ ] 이관 완료 후 `profiles/` 디렉토리 존치 여부 결정
       - 모든 profile이 각 저장소로 이관되면 디렉토리가 비게 됨
       - 이 저장소 자체의 profile을 둘 것인지 검토
@@ -101,10 +101,15 @@
 
 ### 보통
 
-- [ ] `templates/governance_template.md` 작성 (1장 항목과 중복 — 먼저 완료되는 쪽으로 처리)
+- [x] `templates/governance_template.md` 작성 (2026-08-27 완료, 1장 항목과 동일)
 
 ### 낮음
 
+- [ ] 템플릿 푸터 처리 방침 정리
+      - 발견 경위: `governance_template.md` 작성 시 확인
+      - 템플릿 파일 자체는 이 저장소 규칙에 따라 푸터가 필요하나, 복사된
+        `GOVERNANCE.md`는 대상 저장소 규칙을 따라야 함
+      - 현재는 템플릿 본문에 주의 문구로 안내. 다른 템플릿에도 동일 상황이 있는지 확인 필요
 - [ ] `templates/todo_template.md` 작성 검토
       - 현재 `plan_template.md`, `issue_template.md`만 존재
       - TODO는 구조가 단순해 템플릿 필요성이 낮을 수 있음
