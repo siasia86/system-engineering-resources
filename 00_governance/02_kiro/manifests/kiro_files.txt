@@ -1,8 +1,13 @@
 # Public Kiro mirror allowlist
+#
+# 01_home-sjyun-kiro.sh 는 제외합니다. 실행하지 않는 원문 보존본이며
+# 사용자 홈 경로가 포함되어 있습니다. 보존 목적상 내용을 고칠 수 없으므로
+# 공개 미러 대상에서 제외합니다.
+#
+# .gitignore 도 제외합니다. 원본(~/.kiro/)은 git 저장소가 아니므로 해당 파일이
+# 없습니다. 미러 쪽 .gitignore 는 저장소에서 직접 관리하는 보호 장치입니다.
 
 README.md
-.gitignore
-01_home-sjyun-kiro.sh
 02_home-sjyun-kiro.sh
 agents/README.md
 agents/agent_config.json.example

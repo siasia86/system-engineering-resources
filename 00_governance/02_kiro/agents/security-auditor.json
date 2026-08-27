@@ -19,6 +19,7 @@
     "use_aws"
   ],
   "resources": [
+    "skill://repo-governance",
     "skill://security-tools",
     "skill://work-rules",
     "skill://code-review"

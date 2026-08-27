@@ -16,6 +16,7 @@
     "grep"
   ],
   "resources": [
+    "skill://repo-governance",
     "skill://md-link-check",
     "file://~/.kiro/markdown/STYLE.md",
     "skill://work-rules"

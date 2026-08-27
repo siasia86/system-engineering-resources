@@ -1,6 +1,6 @@
 # Kiro mirror manifest
 
-`kiro_files.txt`는 `/home/siasia/.kiro/`를 기준으로 중앙 mirror에 복사할 public 파일만 기록합니다.
+`kiro_files.txt`는 Kiro 실행 원본 디렉터리(`~/.kiro/`)를 기준으로 중앙 mirror에 복사할 public 파일만 기록합니다.
 
 ## 1. 규칙
 
@@ -18,6 +18,6 @@
 
 **작성일**: 2026-08-20
 
-**마지막 업데이트**: 2026-08-20
+**마지막 업데이트**: 2026-08-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

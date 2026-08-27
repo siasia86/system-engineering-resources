@@ -479,10 +479,12 @@ ps -ef | grep -E "ssh.*<target>|timeout.*ssh" | grep -v grep
 sudo kill -9 $(ps -ef | grep -E "ssh.*<target>|timeout.*ssh" | grep -v grep | awk '{print $2}') 2>/dev/null
 ```
 
-For the `ansibleuser@10.200.101.101` (Windows Hyper-V host) environment:
+For the Windows Hyper-V host environment, substitute the account name from the
+session context. Do not hardcode the account or host address in this rule.
 
 ```bash
-sudo kill -9 $(ps -ef | grep -E "ssh.*ansibleuser|timeout.*ssh" | grep -v grep | awk '{print $2}') 2>/dev/null
+HV_USER=<hyperv-account>
+sudo kill -9 $(ps -ef | grep -E "ssh.*${HV_USER}|timeout.*ssh" | grep -v grep | awk '{print $2}') 2>/dev/null
 ```
 
 ## 22. Kiro Lock (concurrent work prevention)

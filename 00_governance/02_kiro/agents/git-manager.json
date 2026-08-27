@@ -16,6 +16,7 @@
     "grep"
   ],
   "resources": [
+    "skill://repo-governance",
     "skill://git-commit-rule",
     "skill://work-rules"
   ],

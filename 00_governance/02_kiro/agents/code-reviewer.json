@@ -17,6 +17,7 @@
     "grep"
   ],
   "resources": [
+    "skill://repo-governance",
     "skill://code-review",
     "skill://security-tools",
     "skill://testing-guide",

@@ -16,6 +16,7 @@
     "web_fetch"
   ],
   "resources": [
+    "skill://repo-governance",
     "skill://work-rules",
     "file://~/.kiro/markdown/STYLE.md"
   ],

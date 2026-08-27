@@ -24,6 +24,7 @@
     "web_fetch"
   ],
   "resources": [
+    "skill://repo-governance",
     "file://~/.kiro/.local/memory.md",
     "skill://work-rules",
     "skill://readme-template",
