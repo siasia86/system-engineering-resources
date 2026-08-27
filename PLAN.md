@@ -166,6 +166,8 @@ GitHub-hosted Actions가 Ansible 서버로 직접 SSH 접속하지 않습니다.
 - [ ] 결과 확인 후 적용 대상을 단계적으로 확대합니다.
 - [ ] 검증: 기존 workflow 대비 누락된 검사와 신규 오탐이 없습니다.
 
+2026-08-27 local 적용은 root harness로 완료했습니다. 일반 사용자 `siasia`의 task-level `become: true` probe는 sudoers의 password-required 정책(`(ALL : ALL) ALL`, `NOPASSWD` 없음)으로 실패했습니다. 비밀번호 우회·평문 저장·sudoers 변경은 수행하지 않았으며, 일반 계정 Controller 경계의 운영 검증은 미완료로 유지합니다.
+
 ### 단계 6. 운영 문서화와 완료 정리
 
 - [x] 설치·업데이트·롤백 명령을 운영 문서에 기록합니다.

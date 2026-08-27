@@ -19,6 +19,8 @@
 - 최종 검증이 끝난 `/root/30_sia-scripts` 검증 clone을 사용자 승인으로 삭제. 원격 `main`과 사용자 clone을 기준 상태로 사용.
 - `ansible-lint==26.8.0`과 `ansible-core==2.20.5` 조합의 lint 통과를 확인.
 - 임시 target에서 release install·update·rollback과 root 소유자·권한·entrypoint 동작을 확인.
+- 32 저장소 자체 Markdown style·heading·link 검사, gitleaks, `git diff --check`를 재검증해 통과.
+- 일반 계정 Controller의 local `become` probe가 password-required sudoers 정책으로 실패함을 확인하고, root harness 적용과 운영 검증 미완료 상태를 기록.
 
 ## [3.11.0] - 2026-08-27
 
