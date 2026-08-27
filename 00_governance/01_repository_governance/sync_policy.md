@@ -88,6 +88,6 @@ sudo python3 md-style-check.py .
 
 **작성일**: 2026-08-20
 
-**마지막 업데이트**: 2026-08-20
+**마지막 업데이트**: 2026-08-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.
