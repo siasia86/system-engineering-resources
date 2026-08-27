@@ -42,6 +42,7 @@
 - Zircon Windows 후속 작업을 `/root/22_github_private/12_zircon_win/TODO.md`로 이관하고 `TODO2.md`에서 관련 블록을 정리.
 - Ansible 저장소의 `.governance/` 병행 검증을 완료하고 중앙 `chobo_ansible` profile과 관련 활성 참조를 제거.
 - `TODO2.md`의 Ansible profile 정리 항목을 완료하고 임시 TODO 문서를 삭제.
+- `TODO.md`에서 완료된 작업과 해소된 검사 예외를 제거하고, 실제 미완료 fact-check와 유효한 검사 예외만 유지.
 - `md-style-check.py --list-skips`를 CI에 등록하여 사유 없는 검사 예외를 차단.
 - `TODO2.md`에 분산되어 있던 완료 기록을 CHANGELOG의 Added·Changed·Fixed 항목으로 통합하고, TODO2에는 미완료 작업만 남김.
 - Ansible 저장소 후속 검증에서 `terraform fmt` 2건, 헤딩 레벨 건너뜀 4건, 목차 앵커 불일치 1건과 목차 누락 1건을 수정.
