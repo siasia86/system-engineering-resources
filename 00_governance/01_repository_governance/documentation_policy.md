@@ -54,6 +54,7 @@ CHANGELOG.md 완료 기록
 
 ```bash
 sudo python3 md-link-check.py .
+sudo python3 md-heading-check.py .
 sudo python3 md-style-check.py .
 sudo python3 readme_inventory_check.py README.md
 git diff --check

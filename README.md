@@ -439,11 +439,13 @@ RDBMS, NoSQL, 운영, 포렌식.
 
 ```bash
 python3 md-link-check.py README.md
+python3 md-heading-check.py README.md
 python3 md-style-check.py README.md
 python3 readme_inventory_check.py README.md
 ```
 
-- 내부 링크·앵커 검사: `md-link-check.py`.
+- 내부 링크 검사: `md-link-check.py`.
+- 헤딩 구조·목차 앵커 검사: `md-heading-check.py`.
 - 표·푸터·문체 검사: `md-style-check.py`.
 - README에 표기된 문서 수와 실제 파일 수 검사: `readme_inventory_check.py`.
 

@@ -110,15 +110,39 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
 - [ ] `skip_checks` 활용 방안 정리
       - 현재 `skip_checks = []`이며 주석에 "저장소별 설정에서 추가할 수 있습니다"로 기재
       - `.governance/` 체계와 연결하여 저장소별 검사 예외를 어떻게 표현할지 정의 필요
-- [ ] `md-link-check.py`의 목차 앵커 검사 누락 보완
-      - 증거 1: `01_fundamentals/cs/git_concepts.md`의 목차가 존재하지 않는 §2를
-        링크하고 있었으나 검사를 통과함
-      - 증거 2: `CHANGELOG.md`에 존재하지 않는 `#목차`로 가는 링크가 3곳 있으나
-        단독 검사 시 "링크 0개"로 보고됨
-      - 원인 추정: 표 내부 링크와 `[⬆ ...]` 형태 앵커를 검사 대상에 포함하지 않음
-      - 영향: 목차와 본문 헤딩 불일치를 자동 검출하지 못함
-      - 부수 작업: `CHANGELOG.md`의 깨진 `#목차` 링크 3건 제거 또는 목차 신설 결정
-        (`changelog_template.md`는 목차를 두지 않는 방식을 권장)
+- [x] 헤딩 구조·앵커 검사 도구 추가 (2026-08-27 완료)
+      - `md-link-check.py`는 docstring에 `#anchor` 링크를 검증 제외로 명시하고
+        있어 결함이 아니라 의도된 범위 제외였음
+      - 별도 검사기 `md-heading-check.py` 추가 (anchor / number / level / duplicate)
+      - 검증: `git_concepts.md`의 앵커 1건·번호 불연속 1건, `CHANGELOG.md`의
+        앵커 7건을 검출. templates 8개는 0건 통과
+      - CI에 `continue-on-error: true` 경고 모드로 등록
+
+### 헤딩 구조 잔여 이슈 정리 (우선순위: 보통)
+
+`md-heading-check.py` 도입으로 기존 문서에서 51건이 검출되었습니다. 정리 전에는
+CI에서 경고 모드로 유지합니다.
+
+| 유형        | 건수 | 내용                                             |
+|-------------|------|--------------------------------------------------|
+| `anchor`    | 38   | 존재하지 않는 헤딩을 가리키는 앵커 링크          |
+| `number`    | 6    | H2 번호 불연속 또는 1로 시작하지 않음            |
+| `level`     | 5    | 헤딩 레벨 건너뜀 (H2 → H4)                       |
+| `duplicate` | 2    | 참조되는 앵커가 중복되어 링크가 첫 번째로만 이동 |
+
+- [ ] `anchor` 38건 정리
+      - `CHANGELOG.md` 7건: 존재하지 않는 `#목차` 참조.
+        `changelog_template.md`가 목차를 두지 않는 방식을 권장하므로 링크 제거가 적절
+      - `LICENSE.md` 4건, `python_logging.md` 5건 등 나머지 파일별 확인
+- [ ] `number` 6건 정리
+      - `git_concepts.md`: 목차의 §2 누락과 동일 원인. 1장 이관 항목과 함께 처리
+      - `STYLE.md`, `work-rules-guide.md`: `02_kiro/` 미러이므로 원본 수정 후 재동기화 필요
+- [ ] `level` 5건 정리
+      - `vim_airline.md`는 외부 프로젝트 README 원본이므로 검사 예외 대상 검토
+- [ ] `duplicate` 2건 정리
+      - `s3_gateway_endpoint_cross_account.md`, `se_complete_roadmap_programming_languages.md`
+      - 동일 제목 헤딩에 링크가 걸려 의도한 위치로 이동하지 않음
+- [ ] 정리 완료 후 CI에서 `continue-on-error` 제거하여 필수 검사로 승격
 
 ### 낮음
 

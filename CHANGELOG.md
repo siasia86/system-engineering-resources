@@ -6,6 +6,32 @@
 
 ---
 
+## [3.11.0] - 2026-08-27
+
+### Added
+
+- 저장소별 규칙 체계 `.governance/`와 [저장소 규칙 우선순위 정책](00_governance/01_repository_governance/governance_precedence.md) 추가.
+- governance 개선 항목 관리 문서 `governance_todo.md` 추가.
+- 작업 템플릿 6종 추가: TODO, CHANGELOG, README, RUNBOOK, GOVERNANCE, VERIFICATION.
+- 헤딩 구조·목차 앵커 검사기 `md-heading-check.py` 추가 (anchor / number / level / duplicate).
+- CI에 헤딩 구조 검사를 경고 모드로 등록.
+- 압축 알고리즘 문서 `01_fundamentals/cs/compression_algorithms.md` 추가.
+
+### Changed
+
+- PLAN·ISSUE 템플릿에 비가역 작업, 임시 조치, 재발 방지 섹션 추가.
+- 템플릿 8종의 목차·번호 체계와 민감정보 기록 금지 항목을 통일.
+- `README.md` 저장소 profile 설명을 `.governance/` 체계 기준으로 갱신.
+- 날짜 갱신 workflow의 커밋 생성 job을 단일 branch로 제한.
+
+### Fixed
+
+- `git_official_notes.md`, `git_guide.md`, `git_concepts.md`의 사실 오류 12건 수정.
+- `privacy_law_guide.md` 개요 표의 소관 기관을 풀네임 병기로 정정.
+- 추적되던 구버전 백업 파일 제거 및 `.gitignore` 패턴 보강.
+
+---
+
 ## [3.10.0] - 2026-08-20
 
 ### Added

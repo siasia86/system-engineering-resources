@@ -235,6 +235,7 @@ repo-local .governance/
 
 ```bash
 sudo python3 md-link-check.py .
+sudo python3 md-heading-check.py .
 sudo python3 md-style-check.py .
 sudo gitleaks detect --source . --no-banner
 git diff --check
