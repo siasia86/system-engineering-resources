@@ -4,6 +4,15 @@
 
 ---
 
+## [Unreleased] - 2026-08-27
+
+### Changed
+
+- `30_sia-scripts` 공용 검사기·release artifact·Ansible 배포 구조의 migration 상태를 갱신.
+- 오류 fixture 4종과 legacy/common 검사기 반환 코드 대조를 완료.
+- 일반 계정 Controller의 사용자 소유 `.venv`에서 Ansible syntax check를 완료.
+- 최종 검증이 끝난 `/root/30_sia-scripts` 검증 clone을 사용자 승인으로 삭제. 원격 `main`과 사용자 clone을 기준 상태로 사용.
+
 ## [3.11.0] - 2026-08-27
 
 ### Added
