@@ -37,10 +37,10 @@
 | 대상 저장소                | 현재 규칙 위치                    | 형태      | 이관 후                     |
 |----------------------------|-----------------------------------|-----------|-----------------------------|
 | Zircon 저장소              | 전역 skill `zircon-readme-policy` | skill     | `.governance/GOVERNANCE.md` |
-| Ansible 학습·자동화 저장소 | `profiles/chobo_ansible.md`       | 중앙 문서 | `.governance/GOVERNANCE.md` |
+| Ansible 학습·자동화 저장소 | 중앙 profile (이관 완료)          | 중앙 문서 | `.governance/GOVERNANCE.md` |
 
-두 저장소 모두 규칙이 적용 대상 저장소 밖에 있습니다. 같은 성격의 요구가 한쪽은
-전역 skill, 다른 한쪽은 중앙 문서로 이원화되어 조회 위치가 일정하지 않습니다.
+이관 전에는 두 저장소의 규칙이 적용 대상 저장소 밖에 있었습니다. 현재 Ansible 규칙은
+대상 저장소의 `.governance/`로 이관했고, Zircon은 아직 전역 skill에서 이관하지 않았습니다.
 
 공통 절차는 `governance_precedence.md` §6을 따르고, 문서는
 `templates/governance_template.md`로 작성합니다. 병행 기간을 두어 기존 위치를 먼저
@@ -67,25 +67,23 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
 
 #### 이관 2: Ansible 학습·자동화 저장소
 
-- [ ] 대상 저장소에 `.governance/GOVERNANCE.md` 생성 (템플릿 사용)
-- [ ] `profiles/chobo_ansible.md` 내용을 옮기고 유지하는 전역 규칙을 명시적으로 나열
-- [ ] 옮긴 내용이 `governance_precedence.md` §5 기술 범위를 벗어나지 않는지 확인
-      - 현재 profile은 문서 역할·생명주기 예외와 검증 기준을 함께 담고 있어
-        `verification.md` 분리가 필요할 수 있음
-- [ ] 대상 저장소 `README.md`에서 `.governance/` 링크 추가
-- [ ] 병행 기간 동안 새 위치가 정상 인식되는지 확인
-- [ ] `profiles/chobo_ansible.md` 제거
-- [ ] 이 저장소 `README.md` §4 저장소별 규칙 설명에서 profile 참조 제거
-- [ ] 이 저장소 `CHANGELOG.md` 기록
+- [x] 대상 저장소에 `.governance/GOVERNANCE.md` 생성 (템플릿 사용, 2026-08-27 완료)
+- [x] `profiles/chobo_ansible.md` 내용을 옮기고 유지하는 전역 규칙을 명시적으로 나열 (2026-08-27 완료)
+- [x] 옮긴 내용이 `governance_precedence.md` §5 기술 범위를 벗어나지 않는지 확인 (2026-08-27 완료)
+      - 문서 역할·생명주기 예외는 `GOVERNANCE.md`에, 변경 유형별 검증 기준은 `verification.md`에 분리
+- [x] 대상 저장소 `README.md`에서 `.governance/` 링크 추가 (2026-08-27 완료)
+- [x] 병행 기간 동안 새 위치가 정상 인식되는지 확인 (2026-08-27 완료)
+- [x] 중앙 `profiles/chobo_ansible.md` 제거 (2026-08-27 완료)
+- [x] 이 저장소 `README.md` §4 저장소별 규칙 설명에서 profile 참조 제거 (2026-08-27 완료)
+- [x] 이 저장소 `CHANGELOG.md` 기록 (2026-08-27 완료)
 
 ### 보통
 
 - [x] `.governance/GOVERNANCE.md` 템플릿 작성 (2026-08-27 완료)
       - 위치: `templates/governance_template.md`
       - 포함: 적용 범위, 저장소 성격, 유지하는 전역 규칙, 저장소 전용 예외, 검증, 기록 금지 항목
-- [ ] 이관 완료 후 `profiles/` 디렉토리 존치 여부 결정
-      - 모든 profile이 각 저장소로 이관되면 디렉토리가 비게 됨
-      - 이 저장소 자체의 profile을 둘 것인지 검토
+- [x] 이관 완료 후 `profiles/` 디렉토리 존치 여부 결정 (2026-08-27 완료)
+      - 중앙 profile이 없고 다른 profile도 없어 디렉토리를 제거
 
 ## 2. 검사 설정 개선
 

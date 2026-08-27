@@ -37,11 +37,9 @@
 
 저장소별 규칙은 해당 저장소 최상위의 `.governance/` 에 두는 것을 기준으로 합니다. 적용 순서와 기술 범위는 [저장소 규칙 우선순위 정책](governance_precedence.md)에서 정의합니다.
 
-아래 profile은 `.governance/` 체계 도입 이전에 작성된 중앙 관리 문서이며, 해당 저장소로 이관 예정입니다.
+Ansible 학습·자동화 저장소에는 `.governance/GOVERNANCE.md`와 `verification.md`를 적용했으며, 중앙 profile에서의 이관을 완료했습니다. 저장소별 규칙은 중앙 문서가 아니라 대상 저장소 안에서 관리합니다.
 
-- [chobo_ansible profile](profiles/chobo_ansible.md): Ansible 저장소의 문서 역할과 생명주기 예외를 정의합니다.
-
-profile과 `.governance/` 문서에는 내부 IP, 사용자명, 개인 경로, 자격증명, 실제 인프라 구성값을 기록하지 않습니다.
+`.governance/` 문서에는 내부 IP, 사용자명, 개인 경로, 자격증명, 실제 인프라 구성값을 기록하지 않습니다.
 
 ## 5. 템플릿
 

@@ -220,12 +220,12 @@ repo-local .governance/
 
 ### 기존 저장소별 규칙 이관
 
-| 현재 위치                         | 대상 저장소                | 이관 후 위치                            |
+| 이전 규칙 출처                    | 대상 저장소                | 현재 규칙 위치                          |
 |-----------------------------------|----------------------------|-----------------------------------------|
-| `profiles/chobo_ansible.md`       | Ansible 학습·자동화 저장소 | 해당 저장소 `.governance/GOVERNANCE.md` |
+| 중앙 profile (이관 완료)          | Ansible 학습·자동화 저장소 | 해당 저장소 `.governance/GOVERNANCE.md` |
 | 전역 skill `zircon-readme-policy` | Zircon 저장소              | 해당 저장소 `.governance/GOVERNANCE.md` |
 
-이관 절차입니다.
+Ansible 학습·자동화 저장소는 2026-08-27에 이관과 병행 검증을 완료하고 중앙 profile을 제거했습니다. 이관 절차입니다.
 
 1. 대상 저장소에 `.governance/GOVERNANCE.md`를 생성하고 기존 내용을 옮깁니다.
 2. 옮긴 내용이 5장의 기술 범위를 벗어나지 않는지 확인합니다.
