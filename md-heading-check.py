@@ -41,7 +41,7 @@ md-link-check.py 는 상대경로 링크만 검증하고 #anchor 링크를 의�
     1 = 이슈 발견
 """
 
-VERSION = "26.08.27.6"
+VERSION = "26.08.27.7"
 
 import argparse
 import os
@@ -52,9 +52,11 @@ import tomllib
 # ── patterns ──────────────────────────────────────────────────────────────────
 
 HEADING_PATTERN = re.compile(r'^(#{1,6})\s+(.+?)\s*$')
-ANCHOR_LINK_PATTERN = re.compile(r'\[[^\]]*\]\(#([^)]+)\)')
+# 링크 텍스트에 대괄호가 한 겹 중첩될 수 있습니다 (예: `[4. /proc/[pid]/ns/](#...)`).
+# 중첩을 처리하지 않으면 해당 링크를 인식하지 못해 앵커 검사에서 누락됩니다.
+ANCHOR_LINK_PATTERN = re.compile(r'\[(?:[^\[\]]|\[[^\[\]]*\])*\]\(#([^)]+)\)')
 FENCE_PATTERN = re.compile(r'^(\s*)(`{3,}|~{3,})\s*(.*)$')
-NUMBERED_H2_PATTERN = re.compile(r'^(\\d+)(?:-(\\d+))?\\.\\s+')
+NUMBERED_H2_PATTERN = re.compile(r'^(\d+)(?:-(\d+))?\.\s+')
 
 # github-slugger 가 제거하는 문자 집합입니다.
 # 출처: github.com/Flet/github-slugger (master/regex.js) 의 문자 클래스를 이식했습니다.
@@ -67,7 +69,7 @@ SLUG_REMOVE_PATTERN = re.compile('[' + (
 # 번호를 요구하지 않는 관례적 H2
 UNNUMBERED_ALLOWED = {'목차', '참고 자료', '통계', '개요', 'changelog'}
 
-ALL_CHECKS = ('anchor', 'number', 'level', 'duplicate')
+ALL_CHECKS = ('anchor', 'number', 'level', 'duplicate', 'toc')
 CONFIG_NAME = '.md-heading-check.toml'
 DEFAULT_EXCLUDE_DIRS = {'.git', '__pycache__', 'node_modules'}
 
@@ -324,6 +326,37 @@ def check_duplicates(headings, content):
     return issues
 
 
+def check_toc(headings, content):
+    """목차가 본문의 번호 있는 H2를 모두 담고 있는지 검증.
+
+    `anchor` 검사는 목차가 없는 섹션을 가리키는 경우(목차 -> 본문)를 잡습니다.
+    이 검사는 반대 방향(본문 -> 목차)을 봅니다. 본문에 H2를 추가하고 목차에
+    넣지 않으면 어느 검사도 잡지 못했습니다.
+
+    번호 있는 H2만 대상으로 합니다. `목차`, `참고 자료`, `통계` 같은 관례적
+    섹션은 목차에 넣지 않는 문서가 많아 제외합니다.
+    """
+    toc_idx = next((i for i, (lv, text, _) in enumerate(headings)
+                    if lv == 2 and text.strip() == '목차'), None)
+    if toc_idx is None:
+        return []
+
+    # 목차 섹션 범위: '## 목차' 다음 H2 까지
+    start = headings[toc_idx][2]
+    end = next((ln for lv, _, ln in headings[toc_idx + 1:] if lv == 2), None)
+    lines = content.split('\n')
+    toc_body = '\n'.join(lines[start:(end - 1) if end else len(lines)])
+    listed = set(ANCHOR_LINK_PATTERN.findall(toc_body))
+
+    issues = []
+    for lv, text, lineno in headings:
+        if lv != 2 or not NUMBERED_H2_PATTERN.match(text):
+            continue
+        if make_anchor(text) not in listed:
+            issues.append((lineno, 'toc', f'목차에 없는 섹션: {text}'))
+    return issues
+
+
 def check_file(filepath, enabled):
     """단일 파일 검증. 이슈 목록과 헤딩 수 반환."""
     try:
@@ -344,6 +377,8 @@ def check_file(filepath, enabled):
         issues += check_levels(headings)
     if 'duplicate' in enabled:
         issues += check_duplicates(headings, content)
+    if 'toc' in enabled:
+        issues += check_toc(headings, content)
     return sorted(issues), len(headings)
 
 
@@ -372,6 +407,7 @@ def parse_args():
     parser.add_argument('--no-number', action='store_true', help='번호 검사 제외')
     parser.add_argument('--no-level', action='store_true', help='레벨 검사 제외')
     parser.add_argument('--no-duplicate', action='store_true', help='중복 검사 제외')
+    parser.add_argument('--no-toc', action='store_true', help='목차 완결성 검사 제외')
     parser.add_argument('-c', '--config', metavar='FILE',
                         help=f'TOML 설정 파일 (미지정 시 {CONFIG_NAME} 자동 탐색)')
     parser.add_argument('-E', '--exclude-dir', action='append', default=[],
