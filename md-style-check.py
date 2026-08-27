@@ -584,6 +584,8 @@ FILE_SKIP = {
     "02_infrastructure/cicd/infra_monorepo_and_boilerplate.md": {"table"},
     "06_career/legal/privacy_law_guide.md": {"table"},  # URL 인코딩 링크 포함 표 — 렌더링 정상, 도구 오탐
     "skills/security-tools/SKILL.md": {"emoji-disallow"},
+    # 스타일 규칙 원본 문서 — 금지 예시(`🟡버전`, `완전`, `완벽`)를 본문에 인용함
+    "markdown/STYLE.md": {"emoji", "exaggeration"},
     "02_reference/README_web.md": {"footer", "h1"},
     "00_default/linux_setting.md": {"footer", "h1"},
 }
@@ -623,7 +625,11 @@ def check_file(path, strict=False, skip_checks=None):
         return [("파일 읽기", f"실패: {e}")]
 
     is_reference = '/_reference/' in path or path.startswith('_reference/') or path.startswith('./_reference/')
-    is_kiro = '.kiro' in path
+    # 원본(~/.kiro/)과 저장소 미러(00_governance/02_kiro/) 양쪽을 인식합니다.
+    # 미러를 exclude_dirs 로 통째 제외하면 표 정렬·문체 검사가 함께 빠져
+    # 검사 공백이 생기므로, 경로를 인식해 항목 단위로만 제외합니다.
+    _kiro_path = os.path.abspath(path).replace(os.sep, '/')
+    is_kiro = '/.kiro/' in _kiro_path or '/02_kiro/' in _kiro_path
     is_index = os.path.basename(path) == 'INDEX.md'
     is_archive = "/99_archive/" in path or path.startswith("99_archive/") or path.startswith("./99_archive/")
     all_issues = []
@@ -653,7 +659,7 @@ def check_file(path, strict=False, skip_checks=None):
     return all_issues
 
 # 검사 제외 디렉토리
-EXCLUDE_DIRS = {'99_archive', '99_etc', '.git', '__pycache__', '_reference', '00_governance/02_kiro'}
+EXCLUDE_DIRS = {'99_archive', '99_etc', '.git', '__pycache__', '_reference'}
 
 # 검사 제외 파일
 EXCLUDE_FILES = {'license_guide.md', 'TODO.md', 'LICENSE.md', 'CHANGELOG.md'}

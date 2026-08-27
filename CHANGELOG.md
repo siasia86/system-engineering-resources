@@ -14,6 +14,7 @@
 - 헤딩 구조·목차 앵커 검사기 `md-heading-check.py` 추가 (anchor / number / level / duplicate).
 - `md-heading-check.py` 예외 설정 `.md-heading-check.toml` 추가 (파일별 검사 항목 제외 지원).
 - CI에서 헤딩 구조 검사를 필수 검사로 승격.
+- `02_kiro/` 미러를 스타일 검사 대상에 포함 (검사 대상 323개 → 362개).
 - CI에 헤딩 구조 검사를 경고 모드로 등록.
 - 압축 알고리즘 문서 `01_fundamentals/cs/compression_algorithms.md` 추가.
 

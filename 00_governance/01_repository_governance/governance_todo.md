@@ -184,15 +184,14 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
       - `work-rules` §11, `git-commit-rule` 절차, `using-skills` 분기,
         `skills/README.md`: 검사 도구 3종 병행 실행으로 갱신
       - `02_kiro/` 미러 6개 파일 재동기화
-- [ ] `02_kiro/` 미러의 스타일 검사 공백 해소 검토
+- [x] `02_kiro/` 미러의 스타일 검사 공백 해소 (2026-08-27 완료)
       - 발견 경위: skill 수정 후 `md-style-check.py --no-footer` 를 직접 실행하여 확인
-      - `.md-style-check.toml` 의 `exclude_dirs` 에 `00_governance/02_kiro` 가 있어
-        미러 문서는 저장소 검사에서 제외됨. 그 결과 skill 수정 시 표 정렬 오류와
-        Python 문자열 연결 잔재가 저장소 검사를 통과했음
-      - 원본(`~/.kiro/`)은 저장소 밖이라 CI 대상이 아니고, 미러는 검사 제외라
-        양쪽 모두 자동 검사가 닿지 않는 구간이 생김
-      - 선택지: 미러를 푸터 검사만 제외하고 나머지는 검사 / 원본 검사용 스크립트 추가 /
-        skill 수정 시 수동 검사를 절차로 명시
+      - 원인: `exclude_dirs` 에 미러가 있어 표 정렬·문체 검사가 함께 빠졌음.
+        `KIRO_SKIP = {footer, h1, diagram-kr}` 이 이미 있었으나 판정 조건이
+        `'.kiro' in path` 여서 미러 경로(`00_governance/02_kiro`)를 인식하지 못했음
+      - 조치: 판정 조건을 `/.kiro/` 또는 `/02_kiro/` 로 확장하고 `exclude_dirs` 에서
+        미러 제거. `FILE_SKIP` 에 `markdown/STYLE.md` 의 금지 예시 인용 2항목 등록
+      - 결과: 검사 대상 323개 → 362개 (39개 증가), 이슈 0건
 
 ### 낮음
 

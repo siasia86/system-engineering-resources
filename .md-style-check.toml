@@ -1,6 +1,9 @@
 # Markdown 검사에서 제외할 디렉토리와 파일입니다.
+#
+# 00_governance/02_kiro 는 제외하지 않습니다. 도구 미러이지만 표 정렬·문체 검사는
+# 적용해야 하므로, md-style-check.py 의 KIRO_SKIP 이 경로를 인식해 푸터·H1·
+# 다이어그램 한글 검사만 항목 단위로 제외합니다.
 exclude_dirs = [
-  "00_governance/02_kiro",
   "99_archive",
   "99_etc",
   "__pycache__",
