@@ -20,12 +20,12 @@
 
 ## 2. 문서 운영 구조
 
-| 문서           | 역할                     | 처리 기준                                |
-|----------------|--------------------------|------------------------------------------|
-| `ISSUE.md`     | 원인 분석이 필요한 문제  | 재현·영향·원인을 기록합니다.             |
-| `TODO.md`      | 아직 시작하지 않은 작업  | 완료 시 항목을 제거합니다.               |
-| `PLAN.md`      | 현재 진행 중인 복합 작업 | 완료 시 정리하고 CHANGELOG에 기록합니다. |
-| `CHANGELOG.md` | 완료된 변경 기록         | 릴리스 단위로 변경 내용을 보존합니다.    |
+| 문서                   | 역할                     | 처리 기준                                |
+|------------------------|--------------------------|------------------------------------------|
+| `.governance/ISSUE.md` | 원인 분석이 필요한 문제  | 재현·영향·원인을 기록합니다.             |
+| `.governance/TODO.md`  | 아직 시작하지 않은 작업  | 완료 시 항목을 제거합니다.               |
+| `.governance/PLAN.md`  | 현재 진행 중인 복합 작업 | 완료 시 정리하고 CHANGELOG에 기록합니다. |
+| `CHANGELOG.md`         | 완료된 변경 기록         | 릴리스 단위로 변경 내용을 보존합니다.    |
 
 ## 3. 정책 문서
 
@@ -52,15 +52,18 @@ Ansible 학습·자동화 저장소에는 `.governance/GOVERNANCE.md`와 `verifi
 | [README](templates/readme_template.md)             | `README.md`                   | 저장소·디렉토리 인덱스  |
 | [RUNBOOK](templates/runbook_template.md)           | 운영 문서                     | 점검·장애 대응 절차     |
 | [GOVERNANCE](templates/governance_template.md)     | `.governance/GOVERNANCE.md`   | 저장소별 규칙과 예외    |
+| [ISSUE](templates/issue_template.md)               | `.governance/ISSUE.md`        | 원인 분석이 필요한 문제 |
+| [TODO](templates/todo_template.md)                 | `.governance/TODO.md`         | 앞으로 수행할 작업      |
+| [PLAN](templates/plan_template.md)                 | `.governance/PLAN.md`         | 복합 작업 계획          |
 | [VERIFICATION](templates/verification_template.md) | `.governance/verification.md` | 저장소별 검증 절차      |
 
-`documentation_policy.md`가 정의하는 문서 4종(`ISSUE.md`, `TODO.md`, `PLAN.md`, `CHANGELOG.md`)에 모두 템플릿이 대응합니다. `.governance/` 체계용 템플릿 2종은 [저장소 규칙 우선순위 정책](governance_precedence.md)과 함께 사용합니다.
+신규 저장소의 `.governance/` 기본 문서(`GOVERNANCE.md`, `ISSUE.md`, `TODO.md`, `PLAN.md`)와 `CHANGELOG.md`에 템플릿이 대응합니다. 기존 저장소의 루트 작업 문서는 migration 전까지 legacy로 허용합니다.
 
 ## 6. 개선 항목
 
 - [governance TODO](governance_todo.md): 이 디렉토리 자체의 개선 항목을 관리합니다.
 
-저장소 전역 작업은 루트 `TODO.md`에서 관리합니다.
+신규 저장소의 저장소 전역 작업은 `.governance/TODO.md`에서 관리합니다. 기존 저장소의 루트 `TODO.md`는 migration 전까지 legacy로 허용합니다.
 
 ## 7. 검증
 

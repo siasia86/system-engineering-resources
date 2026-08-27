@@ -1,7 +1,8 @@
 # Repository Governance TODO
 
-`00_governance/01_repository_governance/` 자체의 개선 항목을 관리합니다. 저장소 전역
-작업은 루트 `TODO.md`에서 관리하며, 이 문서는 governance 체계에 한정합니다.
+`00_governance/01_repository_governance/` 자체의 개선 항목을 관리합니다. 신규 저장소의
+저장소 전역 작업은 `.governance/TODO.md`에서 관리하며, 기존 저장소의 루트 `TODO.md`는
+legacy로 허용합니다. 이 문서는 governance 체계에 한정합니다.
 
 ## 목차
 
@@ -85,6 +86,12 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
 - [x] 이관 완료 후 `profiles/` 디렉토리 존치 여부 결정 (2026-08-27 완료)
       - 중앙 profile이 없고 다른 profile도 없어 디렉토리를 제거
 
+- [ ] `.governance/ISSUE.md`, `TODO.md`, `PLAN.md` 기본 문서의 실행 골격 보강
+      - 중앙 템플릿의 상태·우선순위·단계·롤백·비가역 작업 구조를 신규 기본 문서에도 반영
+      - 활성 항목이 없는 상태와 실제 작업 작성 상태를 모두 검증
+- [ ] `repo-governance` skill의 신규 문서 생성 표에 `ISSUE.md`, `TODO.md`, `PLAN.md` 템플릿 추가
+      - 중앙 `governance_precedence.md`와 skill의 생성 절차를 일치시킴
+
 ## 2. 검사 설정 개선
 
 `.md-style-check.toml` 관련 항목입니다.
@@ -128,6 +135,10 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
 
       - 결과: 11건 → 9건. 사유 미확인 6건 → 0건
       - `security-tools/SKILL.md` 는 제외 축소 후 이슈가 드러나 복원했습니다.
+
+- [ ] `verification_template.md`와 신규 저장소 검증 정책의 실행 명령 구체화
+      - `<script>`, `<playbook>` placeholder를 실제 저장소 구조 또는 명시적 탐색 명령으로 대체
+      - 도구 미설치·검증 불가 상태를 통과로 처리하지 않는 기준 확인
         본문에서 스크립트의 실제 출력 기호를 명세하는 줄이며, 같은 기호를 쓰는
         다른 skill 2개는 코드블록 안이라 원래 검사 대상이 아닙니다.
 - [x] `skip_checks` 활용 방안 정리 (2026-08-27 완료)
@@ -251,6 +262,9 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
 ### 보통
 
 - [x] `templates/governance_template.md` 작성 (2026-08-27 완료, 1장 항목과 동일)
+- [ ] `work-rules`의 비자명한 오류 기록 위치를 `.governance/ISSUE.md` 기준으로 정리
+      - `.governance/PLAN.md`는 해결 단계와 검증을 추적하고, 원인 분석은 ISSUE에 기록
+      - skill 문구·중앙 mirror·신규 기본 문서의 역할을 일치시킴
 - [x] `templates/todo_template.md` 작성 (2026-08-27 완료)
 - [x] `templates/changelog_template.md` 작성 (2026-08-27 완료)
       - `documentation_policy.md`가 정의하는 문서 4종에 모두 템플릿이 대응하게 됨
