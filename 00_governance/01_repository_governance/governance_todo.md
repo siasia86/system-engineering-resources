@@ -133,13 +133,15 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
       - `security-tools/SKILL.md` 는 제외 축소 후 이슈가 드러나 복원했습니다.
         본문에서 스크립트의 실제 출력 기호를 명세하는 줄이며, 같은 기호를 쓰는
         다른 skill 2개는 코드블록 안이라 원래 검사 대상이 아닙니다.
-- [ ] `skip_checks` 활용 방안 정리
-      - 현재 `skip_checks = []`이며 주석에 "저장소별 설정에서 추가할 수 있습니다"로 기재
-      - `.governance/` 체계와 연결하여 저장소별 검사 예외를 어떻게 표현할지 정의 필요
+- [x] `skip_checks` 활용 방안 정리 (2026-08-27 완료)
+      - `skip_checks`는 저장소 전체 검사 항목을 끄는 실행 설정으로 정의하고 기본값은 빈 배열로 유지
+      - `.governance/GOVERNANCE.md` 또는 `exceptions.md`에 대상·사유·영향 범위·재검토 시점을 기록
+      - 실행 설정은 `.md-style-check.toml` 또는 `.md-heading-check.toml`에 두며 두 위치를 함께 갱신
+      - 단일 파일 예외는 `file_skip` 등 파일별 구조를 우선 사용하고 무분별한 전역 제외를 금지
 - [x] 헤딩 구조·앵커 검사 도구 추가 (2026-08-27 완료)
       - `md-link-check.py`는 docstring에 `#anchor` 링크를 검증 제외로 명시하고
         있어 결함이 아니라 의도된 범위 제외였음
-      - 별도 검사기 `md-heading-check.py` 추가 (anchor / number / level / duplicate)
+      - 별도 검사기 `md-heading-check.py` 추가 (anchor / number / level / duplicate / toc)
       - 검증: `git_concepts.md`의 앵커 1건·번호 불연속 1건, `CHANGELOG.md`의
         앵커 7건을 검출. templates 8개는 0건 통과
       - CI에 `continue-on-error: true` 경고 모드로 등록
@@ -237,12 +239,15 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
 
 ### 낮음
 
-- [ ] `03_claude/` 활성화 시점의 정책 정의
-      - 현재 `README.md`만 있고 원본·허용 목록이 미정
-      - `sync_policy.md`에 Claude 항목 추가 필요
-- [ ] 도구 중립 규칙과 도구 종속 규칙의 분리 기준 정리
-      - 현재 `01_repository_governance/`가 도구 중립, `02_kiro/`가 도구 종속
-      - `.governance/` 체계에서 도구별 예외가 필요해질 경우의 처리 방침
+- [x] `03_claude/` 활성화 시점의 정책 정의 (2026-08-27 완료)
+      - 원본 경로·allowlist·제외 범위·단방향 절차·검증·관리 책임을 모두 확인해야 활성화
+      - 조건을 충족하기 전에는 예약 영역으로 유지하고 manifest·동기화 스크립트를 추가하지 않음
+      - `sync_policy.md`에 새 도구 미러 활성화 조건을 추가하고 `03_claude/README.md`에 연결
+- [x] 도구 중립 규칙과 도구 종속 규칙의 분리 기준 정리 (2026-08-27 완료)
+      - 저장소 운영·문서 생명주기·검증은 `01_repository_governance/`에 유지
+      - 특정 에이전트의 Skill·Agent·Hook·설정·manifest는 해당 도구 영역에 배치
+      - 혼합 내용은 공통 원칙과 도구별 구현을 분리하고, 저장소 예외는 해당 저장소의
+        `.governance/`에 기록
 
 ## 4. 템플릿 확충
 
@@ -274,9 +279,11 @@ Zircon 예외는 푸터·통계 항목으로 한정되어 있어 `governance_tem
 
 ### 낮음
 
-- [ ] 템플릿 사용 실태 점검
-      - 템플릿이 실제로 복사되어 쓰이는지, 형식이 현실과 어긋나지 않는지 확인
-      - 어긋나면 템플릿을 현실에 맞추고, 현실이 잘못이면 문서를 교정
+- [x] 템플릿 사용 실태 점검 (2026-08-27 완료)
+      - 대상 저장소 2곳에서 `.governance/GOVERNANCE.md` 2개와 `verification.md` 1개가 실제 사용 중
+      - 같은 범위에서 `PLAN.md` 4개, `TODO.md` 1개, `CHANGELOG.md` 2개가 존재하며 템플릿의 대상 형식과 일치
+      - `ISSUE.md`와 `RUNBOOK.md`는 현재 0개이므로 사용 여부와 현실 적합성을 아직 판단할 자료가 없음
+      - 새 ISSUE·RUNBOOK 생성 시 템플릿 적용 여부와 형식을 다시 확인
 
 ## 5. 결정 기록
 

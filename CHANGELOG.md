@@ -34,6 +34,11 @@
 - 날짜 갱신 workflow의 커밋 생성 job을 단일 branch로 제한.
 - 날짜 갱신 workflow에서 `02_kiro/` 미러를 제외. 봇 커밋과 동기화가 서로 덮어쓰던 문제 해결.
 - Kiro 미러 allowlist에서 원문 보존본과 미러 전용 파일을 제외.
+- `documentation_policy.md`와 `governance_precedence.md`의 역할을 상호 참조로 명확히 함.
+- `skip_checks`를 저장소 전체 검사 예외의 실행 설정으로 정의하고, `.governance/`에 사유·범위·재검토 시점을 기록하도록 정리.
+- `03_claude/`는 원본·allowlist·검증 절차를 확정하기 전까지 예약 영역으로 유지하도록 활성화 조건을 정의.
+- 도구 중립 규칙은 `01_repository_governance/`, 도구 종속 자료는 각 도구 영역에 배치하는 분리 기준을 정의.
+- 이관 저장소의 템플릿 사용 실태를 측정하고, 현재 사용 형식과 미사용 문서의 재검토 조건을 기록.
 
 ### Fixed
 

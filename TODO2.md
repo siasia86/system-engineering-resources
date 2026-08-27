@@ -118,18 +118,27 @@
         - `manifests/README.md` 의 사용자 홈 경로를 `~` 표기로 치환
         - `01_home-sjyun-kiro.sh` 를 allowlist 에서 제외 (원문 보존본이라 수정 불가)
       - 미러 위반 0건 확인. `.local/` 은 원래 미러 대상이 아닙니다
-- [ ] `documentation_policy.md` 와 `governance_precedence.md` 관계 명시
-      - 전자는 문서 역할·생명주기, 후자는 규칙 적용 순서를 다룸
-      - 상호 참조를 추가하여 충돌 여부를 명확히 함
-- [ ] `skip_checks` 활용 방안 정리
-      - `.md-style-check.toml` 의 `skip_checks` 는 현재 빈 배열
-      - `.governance/` 체계에서 저장소별 검사 예외를 어떻게 표현할지 정의 필요
+- [x] `documentation_policy.md` 와 `governance_precedence.md` 관계 명시 (2026-08-27 완료)
+      - `documentation_policy.md`는 문서 역할·생명주기, `governance_precedence.md`는 규칙 적용 순서를 담당
+      - 두 문서에 상호 참조를 추가하여 역할과 충돌 시 판단 기준을 명확히 함
+- [x] `skip_checks` 활용 방안 정리 (2026-08-27 완료)
+      - `skip_checks`는 저장소 전체 검사 예외의 실행 설정이며 기본값은 빈 배열로 유지
+      - `.governance/`에 대상·사유·영향 범위·재검토 시점을 기록하고 TOML 설정과 함께 갱신
+      - 단일 파일 예외는 파일별 제외 구조를 우선 사용하며, 검사 통과를 위한 무분별한 전역 제외는 금지
 
 ### 3.3 낮은 우선순위
 
-- [ ] `03_claude/` 활성화 시점의 정책 정의 (원본 경로·허용 목록 미정)
-- [ ] 도구 중립 규칙과 도구 종속 규칙의 분리 기준 정리
-- [ ] 템플릿 사용 실태 점검 (실제 복사되어 쓰이는지, 형식이 현실과 맞는지)
+- [x] `03_claude/` 활성화 시점의 정책 정의 (2026-08-27 완료)
+      - 원본 경로·allowlist·제외 범위·단방향 절차·검증·관리 책임을 모두 확인해야 활성화
+      - 조건을 충족하기 전에는 예약 영역으로 유지하며 manifest와 동기화 스크립트를 추가하지 않음
+      - 실제 상태는 `README.md`만 존재하고 원본·allowlist는 미정이므로 현재는 예약 상태
+- [x] 도구 중립 규칙과 도구 종속 규칙의 분리 기준 정리 (2026-08-27 완료)
+      - 저장소 운영·문서 생명주기·검증은 `01_repository_governance/`, Skill·Agent·Hook·설정·manifest는 해당 도구 영역에 배치
+      - 혼합 내용은 공통 원칙과 도구별 구현을 분리하고, 저장소 예외는 해당 저장소의 `.governance/`에 기록
+- [x] 템플릿 사용 실태 점검 (2026-08-27 완료)
+      - 두 이관 저장소에서 `.governance/GOVERNANCE.md` 2개·`verification.md` 1개를 실제 확인
+      - `PLAN.md` 4개·`TODO.md` 1개·`CHANGELOG.md` 2개가 존재하며 현재 형식과 충돌하지 않음
+      - `ISSUE.md`·`RUNBOOK.md`는 0개이므로 새 문서 생성 시 템플릿 적용 여부를 재검토
 
 ## 4. 도구 개선 후보
 
@@ -150,7 +159,7 @@
 - 미러가 최신이 아니었습니다. `skill://repo-governance` 등록이 에이전트 7개에 반영되지
   않은 상태였고 이번 동기화로 반영됐습니다.
 
-앞의 세 항목은 모두 `FILE_SKIP` 으로 우회 중인 오탐입니다. 도구를 고치면 제외를 해제할 수 있습니다.
+표의 `md-style-check.py` 오탐 3건은 현재 `FILE_SKIP` 으로 우회 중입니다. 도구를 고치면 제외를 해제할 수 있습니다.
 
 ### 목차 완결성 검사 구현 (2026-08-27 완료)
 
