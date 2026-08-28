@@ -266,19 +266,19 @@ iperf3 문서는 ICMP가 차단된 원격 환경에서 실제 TCP·UDP port를 �
 - 상세 workflow는 30 `.governance/script_migration_spec.md`를 기준으로 관리합니다.
 - 30 generic checker의 `file_skip`·`path_skip` config contract와 `.md-style-check.sia_scripts.toml` 32 profile로 기존 checker 결과 parity를 확인합니다.
 - 32 workflow를 30 `0.3.3` release asset과 고정 SHA-256 검증 후 `sia-*` wrapper를 실행하는 consumer로 전환했습니다. private repository 접근은 `SIA_SCRIPTS_RELEASE_TOKEN` secret을 사용합니다.
-- local consumer smoke test와 30 `v0.3.3` release asset 검증을 완료했습니다. 32 consumer workflow run `33154491505`와 `33154800657`이 전체 성공했습니다.
+- local consumer smoke test와 30 `v0.3.3` release asset 검증을 완료했습니다. 초기 consumer workflow run `33154491505`, cleanup 후 run `33154800657`, 최신 문서 hash 정정 push run `33155516932`가 전체 성공했습니다.
 
 ### 2026-08-28 root checker cleanup 완료
 
 - [x] active README·governance·workflow·hook·skill의 root checker 실행 참조를 `sia-*` wrapper로 전환했습니다.
 - [x] 32 root checker 4개를 cleanup commit `fe4a9d6d48aba374645542cec812eda583487057`에서 삭제했습니다.
 - [x] `strip-footer-md.py`와 32 repository policy config 3개를 유지했습니다.
-- [x] 삭제 후 32 Markdown consumer workflow `33154800657`의 download·checksum·manifest·style·heading·link·inventory 검증을 통과했습니다.
+- [x] 삭제 후 32 Markdown consumer workflow `33155516932`의 download·checksum·manifest·style·heading·link·inventory 검증을 통과했습니다.
 - [x] 실패 시 cleanup commit을 `git revert`하는 rollback 절차를 확인했습니다.
 
 ### 외부 의존성으로 대기 중인 작업
 
-- 30 `Contents: Read` 범위의 `SIA_SCRIPTS_RELEASE_TOKEN` secret 등록과 `v0.3.3` consumer CI 성공을 완료했습니다.
+- 30 `Contents: Read` 범위의 `SIA_SCRIPTS_RELEASE_TOKEN` secret 등록과 `v0.3.3` consumer CI 성공을 완료했습니다. 최신 30 CI run `33155511128`과 32 consumer CI run `33155516932`도 성공했습니다.
 다음 항목은 local에서 `sudo`를 실행하는 것만으로 완료할 수 없습니다.
 
 1. 실제 운영 artifact repository endpoint, CA trust, checksum 제공.
