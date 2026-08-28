@@ -8,6 +8,7 @@
 
 ### Changed
 
+- 30 consumer pin을 `v0.3.2`와 SHA-256 `9f9b74a0b21926a55a72fc11fbb59cd049da176413e5617249af3ecf68dabcc4`로 갱신.
 - `iperf3` 공식 reference와 네트워크 통신 품질 측정 가이드 추가.
 - `PLAN.md`에 2026-08-28 local baseline, 외부 의존성, 원격 적용 순서를 정리.
 - 첫 test target에 root SSH와 임시 HTTPS artifact를 사용해 `0.3.0 install → 0.3.1 update → 0.3.0 rollback`을 검증. 운영 artifact repository와 일반 사용자 Controller `become`은 미완료로 유지.
