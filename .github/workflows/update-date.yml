@@ -1,6 +1,7 @@
 name: Markdown validation and README dates
 
 on:
+  workflow_dispatch:
   push:
     branches: [main, yunli]
     paths:
