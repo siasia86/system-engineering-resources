@@ -13,6 +13,9 @@
 - 첫 test target에 root SSH와 임시 HTTPS artifact를 사용해 `0.3.0 install → 0.3.1 update → 0.3.0 rollback`을 검증. 운영 artifact repository와 일반 사용자 Controller `become`은 미완료로 유지.
 - `30_sia-scripts`에 GitHub Actions 검증 workflow와 `v*.*.*` tag 전용 versioned artifact 생성을 추가.
 - `30_sia-scripts` release manifest에 source commit provenance와 파일별 SHA-256 검증을 추가.
+- `01_fundamentals/linux/neovim_guide.md` 추가 및 Neovim 고유 운영 기능·window 분할·LSP·Tree-sitter·headless 사용법 기록.
+- `01_fundamentals/linux/tmux_guide.md` 추가 및 session·window·pane 운영과 Neovim window 분할 차이 기록.
+- `01_fundamentals/linux/zoxide_guide.md` 추가 및 설치·shell 초기화·query·database 관리·rollback 절차 기록.
 - 30 저장소 CI slice commit `e69bcfb`를 `origin/main`에 push하고 로컬 검증을 완료.
 - localhost 임시 HTTPS artifact endpoint에서 `0.3.0 install → 0.3.1 update → 0.3.0 rollback`을 실제 로컬 경로에 적용.
 - 로컬 `current -> 0.3.0` baseline, root ownership·permission, 비권한 사용자 쓰기 차단을 확인.
