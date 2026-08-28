@@ -8,6 +8,7 @@
 
 ### Changed
 
+- 30 consumer pin을 `v0.3.3`과 SHA-256 `0b293d76e8efb55e93ad6bb21c0b00bf4362e60aa7a3a4ea5e6d752a012bb4ad`로 갱신.
 - 30 consumer pin을 `v0.3.2`와 SHA-256 `9f9b74a0b21926a55a72fc11fbb59cd049da176413e5617249af3ecf68dabcc4`로 갱신.
 - `iperf3` 공식 reference와 네트워크 통신 품질 측정 가이드 추가.
 - `PLAN.md`에 2026-08-28 local baseline, 외부 의존성, 원격 적용 순서를 정리.
