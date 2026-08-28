@@ -39,7 +39,7 @@
 
 ### Verified
 
-- cleanup 문서 hash 정정 push 후 30 CI run `33155511128`와 32 consumer CI run `33155516932`가 성공했으며, 30·32 working tree와 원격 branch 동기화를 확인.
+- cleanup 문서 hash 정정 push 후 30 CI run `33156553757`와 32 consumer CI run `33156558662`가 성공했으며, 30·32 working tree와 원격 branch 동기화를 확인.
 - cleanup 후 32 consumer workflow run `33154800657`에서 private release download·checksum·manifest·embedded file hash·style·heading·link·inventory 검증 전체 성공.
 - cleanup rollback은 `git revert fe4a9d6d48aba374645542cec812eda583487057`로 수행할 수 있도록 분리.
 
