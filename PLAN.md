@@ -14,9 +14,9 @@
 
 ## 1. 배경
 
-`/root/32_system-engineering-resources`에 Markdown 검사기와 환경별 운영 스크립트가 함께 증가하고 있습니다. 여러 성격의 저장소에 동일한 품질·보안 검증을 적용하려면 공용 도구와 저장소 전용 도구를 분리해야 합니다.
+`/root/32_system-engineering-resources`에 Markdown 검사기와 환경별 운영 스크립트가 함께 증가했습니다. 여러 성격의 저장소에 동일한 품질·보안 검증을 적용하기 위해 공용 source와 저장소 전용 policy를 분리했습니다.
 
-현재 공용화 후보인 `md-style-check.py`, `md-heading-check.py`, `md-link-check.py`에는 저장소 경로 또는 현재 저장소 정책에 대한 의존성이 있습니다. 이를 그대로 `/usr/local/bin`에 복사하면 다른 저장소에서 오작동하거나 저장소별 예외가 공용 코드에 누적될 수 있습니다.
+기존 root checker 4개는 30 `sia_scripts`의 versioned release wrapper로 이관했으며, 32에는 repository policy와 CI consumer만 유지합니다.
 
 `TODO2.md`는 존재하지 않으며, 이 작업은 세 단계 이상의 복합 작업이므로 루트 `PLAN.md`에 기록합니다.
 
@@ -36,8 +36,8 @@
 
 ### 포함
 
-- `md-style-check.py`, `md-heading-check.py`, `md-link-check.py` 공용화 검토
-- `readme_inventory_check.py`의 저장소 정책 의존성 검토
+- 30 `sia_scripts` release의 `sia-md-style-check`, `sia-md-heading-check`, `sia-md-link-check` wrapper 전환 완료
+- 30 `sia_scripts` release의 `sia-readme-inventory-check` wrapper 전환 완료
 - 공용 CLI 이름과 설정 형식 정의
 - `/usr/local/lib/sia_scripts/` 버전별 설치 구조 설계
 - `/usr/local/bin/sia-*` 실행 명령 노출
@@ -176,7 +176,7 @@ GitHub-hosted Actions가 Ansible 서버로 직접 SSH 접속하지 않습니다.
 - [x] 완료된 단계와 최종 결과를 `CHANGELOG.md`에 기록합니다.
 - [x] 최종 검증 후 `/root/30_sia-scripts` 검증 clone을 삭제합니다. (2026-08-27 사용자 수행)
 - [ ] 완료 후 이 `PLAN.md`를 완료 상태로 정리하거나 제거합니다.
-- [ ] 검증: 전체 Markdown·링크·비밀정보 검사를 통과합니다.
+- [x] 검증: 전체 Markdown·링크·비밀정보 검사를 통과합니다.
 
 ## 6. 검증 기준
 
@@ -245,7 +245,7 @@ Ansible은 기존 release를 삭제하지 않고 신규 release를 별도 경로
 | 항목                          | 현재 상태                                   | 근거                                    |
 |-------------------------------|---------------------------------------------|-----------------------------------------|
 | 30 저장소                     | `main`, `origin/main`, working tree clean   | `/home/siasia/30_sia-scripts`           |
-| 32 저장소                     | `yunli`, `origin/yunli`, working tree clean | `6a9e7db docs: iperf3 측정 가이드 추가` |
+| 32 저장소                     | `yunli`, `origin/yunli`, working tree clean | active wrapper cleanup 기준             |
 | local current                 | `0.3.0` release를 가리킴                    | `/opt/sia_scripts/current`              |
 | 보존 release                  | `0.3.0`, `0.3.1`                            | `/opt/sia_scripts/releases/`            |
 | 설치 entrypoint               | root 소유 symlink와 실행 권한 확인          | `/usr/local/bin/sia-*`                  |
@@ -261,12 +261,20 @@ iperf3 문서는 ICMP가 차단된 원격 환경에서 실제 TCP·UDP port를 �
 
 - 원격 `become`·운영 artifact 작업을 홀딩하고 30 source of truth 전환을 먼저 진행합니다.
 - 30·32 checker parity와 config 차이를 분류한 뒤 32 CI consumer를 30 versioned artifact로 전환합니다.
-- 32 root checker는 parity·CI·결과 대조가 끝날 때까지 삭제하지 않습니다.
+- 32 root checker는 parity·CI·결과 대조 완료 후 cleanup commit으로 삭제했습니다.
 - `strip-footer-md.py`는 30 대응 source가 없는 32 전용 utility 후보로 별도 보류합니다.
 - 상세 workflow는 30 `.governance/script_migration_spec.md`를 기준으로 관리합니다.
 - 30 generic checker의 `file_skip`·`path_skip` config contract와 `.md-style-check.sia_scripts.toml` 32 profile로 기존 checker 결과 parity를 확인합니다.
 - 32 workflow를 30 `0.3.3` release asset과 고정 SHA-256 검증 후 `sia-*` wrapper를 실행하는 consumer로 전환했습니다. private repository 접근은 `SIA_SCRIPTS_RELEASE_TOKEN` secret을 사용합니다.
-- local consumer smoke test와 30 `v0.3.3` release asset 검증을 완료했습니다. 32 consumer workflow run `33154491505`도 전체 성공했습니다.
+- local consumer smoke test와 30 `v0.3.3` release asset 검증을 완료했습니다. 32 consumer workflow run `33154491505`와 `33154800657`이 전체 성공했습니다.
+
+### 2026-08-28 root checker cleanup 완료
+
+- [x] active README·governance·workflow·hook·skill의 root checker 실행 참조를 `sia-*` wrapper로 전환했습니다.
+- [x] 32 root checker 4개를 cleanup commit `115a5a66f4c2af17fad84291bd5acd5fd3088bf4`에서 삭제했습니다.
+- [x] `strip-footer-md.py`와 32 repository policy config 3개를 유지했습니다.
+- [x] 삭제 후 32 Markdown consumer workflow `33154800657`의 download·checksum·manifest·style·heading·link·inventory 검증을 통과했습니다.
+- [x] 실패 시 cleanup commit을 `git revert`하는 rollback 절차를 확인했습니다.
 
 ### 외부 의존성으로 대기 중인 작업
 
@@ -298,7 +306,7 @@ iperf3 문서는 ICMP가 차단된 원격 환경에서 실제 TCP·UDP port를 �
 - [x] 30·32 저장소 branch와 working tree 재확인.
 - [x] 32 저장소 Markdown·gitleaks·`git diff --check` 재검증.
 - [x] 제공된 첫 test target에 임시 inventory로 원격 install·update·rollback 검증.
-- [ ] 32 root checker cleanup 후 실제 운영 endpoint와 운영 inventory 검증으로 전환.
+- [ ] 실제 운영 endpoint와 운영 inventory 검증으로 전환.
 
 [⬆ 목차로 돌아가기](#목차)
 
