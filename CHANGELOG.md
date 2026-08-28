@@ -8,6 +8,7 @@
 
 ### Changed
 
+- 30 checker source·test·release 전환과 32 consumer 검증을 완료하고, 상세 migration 기록을 30 `docs/migration/`으로 통합했습니다. 32 `PLAN.md`는 system engineering 문서 repository 운영 항목만 유지합니다.
 - 32 active 문서·hook·skill과 전역 Kiro hook의 checker 실행 참조를 설치된 `sia-*` wrapper 기준으로 갱신.
 - 32 consumer workflow run `33154491505`에서 `v0.3.3` release download·checksum·manifest·style·heading·link·inventory 검증 전체 성공.
 - 30 consumer pin을 `v0.3.3`과 SHA-256 `0b293d76e8efb55e93ad6bb21c0b00bf4362e60aa7a3a4ea5e6d752a012bb4ad`로 갱신.
