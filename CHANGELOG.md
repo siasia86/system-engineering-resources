@@ -34,13 +34,13 @@
 
 ### Removed
 
-- root legacy checker 4개(`md-style-check.py`, `md-heading-check.py`, `md-link-check.py`, `readme_inventory_check.py`)를 cleanup commit `115a5a66f4c2af17fad84291bd5acd5fd3088bf4`에서 삭제.
+- root legacy checker 4개(`md-style-check.py`, `md-heading-check.py`, `md-link-check.py`, `readme_inventory_check.py`)를 cleanup commit `fe4a9d6d48aba374645542cec812eda583487057`에서 삭제.
 - 삭제 후에도 `strip-footer-md.py`, `.md-style-check.toml`, `.md-heading-check.toml`, `.md-style-check.sia_scripts.toml`은 유지.
 
 ### Verified
 
 - cleanup 후 32 consumer workflow run `33154800657`에서 private release download·checksum·manifest·embedded file hash·style·heading·link·inventory 검증 전체 성공.
-- cleanup rollback은 `git revert 115a5a66f4c2af17fad84291bd5acd5fd3088bf4`로 수행할 수 있도록 분리.
+- cleanup rollback은 `git revert fe4a9d6d48aba374645542cec812eda583487057`로 수행할 수 있도록 분리.
 
 ## [3.11.0] - 2026-08-27
 

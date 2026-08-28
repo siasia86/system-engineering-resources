@@ -271,7 +271,7 @@ iperf3 문서는 ICMP가 차단된 원격 환경에서 실제 TCP·UDP port를 �
 ### 2026-08-28 root checker cleanup 완료
 
 - [x] active README·governance·workflow·hook·skill의 root checker 실행 참조를 `sia-*` wrapper로 전환했습니다.
-- [x] 32 root checker 4개를 cleanup commit `115a5a66f4c2af17fad84291bd5acd5fd3088bf4`에서 삭제했습니다.
+- [x] 32 root checker 4개를 cleanup commit `fe4a9d6d48aba374645542cec812eda583487057`에서 삭제했습니다.
 - [x] `strip-footer-md.py`와 32 repository policy config 3개를 유지했습니다.
 - [x] 삭제 후 32 Markdown consumer workflow `33154800657`의 download·checksum·manifest·style·heading·link·inventory 검증을 통과했습니다.
 - [x] 실패 시 cleanup commit을 `git revert`하는 rollback 절차를 확인했습니다.
