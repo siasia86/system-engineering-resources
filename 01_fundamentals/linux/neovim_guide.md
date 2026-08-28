@@ -4,12 +4,13 @@ Neovim은 Vim의 모달 편집 방식을 유지하면서 Lua 설정, 비동기 A
 
 ## 목차
 
-| 섹션                                                                                    |
-|-----------------------------------------------------------------------------------------|
-| [1. Neovim 전용 기능](#1-neovim-전용-기능) / [2. 실행과 진단](#2-실행과-진단)           |
-| [3. Lua 설정](#3-lua-설정) / [4. Neovim API](#4-neovim-api)                             |
-| [5. LSP와 진단](#5-lsp와-진단) / [6. Tree-sitter](#6-tree-sitter)                       |
-| [7. Headless 자동화](#7-headless-자동화) / [8. Vim과의 운영 경계](#8-vim과의-운영-경계) |
+| 섹션                                                                          |
+|-------------------------------------------------------------------------------|
+| [1. Neovim 전용 기능](#1-neovim-전용-기능) / [2. 실행과 진단](#2-실행과-진단) |
+| [3. Lua 설정](#3-lua-설정) / [4. Neovim API](#4-neovim-api)                   |
+| [5. LSP와 진단](#5-lsp와-진단) / [6. Tree-sitter](#6-tree-sitter)             |
+| [7. Headless 자동화](#7-headless-자동화) / [8. 화면 분할](#8-화면-분할)       |
+| [9. Vim과의 운영 경계](#9-vim과의-운영-경계)                                  |
 
 ---
 
@@ -286,7 +287,73 @@ nvim --clean --headless \
 
 ---
 
-## 8. Vim과의 운영 경계
+## 8. 화면 분할
+
+Neovim의 화면 분할과 tmux의 pane 분할은 서로 다른 계층에서 동작합니다.
+
+### Neovim window 분할
+
+Neovim 내부에서 다음 명령을 사용합니다.
+
+```vim
+:vsplit file.txt       " 좌우 분할
+:split file.txt        " 상하 분할
+Ctrl-w v               " 현재 buffer를 좌우 분할
+Ctrl-w s               " 현재 buffer를 상하 분할
+Ctrl-w h               " 왼쪽 window로 이동
+Ctrl-w j               " 아래 window로 이동
+Ctrl-w k               " 위 window로 이동
+Ctrl-w l               " 오른쪽 window로 이동
+Ctrl-w =               " window 크기 균등화
+Ctrl-w q               " 현재 window 닫기
+```
+
+`Ctrl-w`는 Neovim window 명령의 prefix입니다. `Ctrl-w`를 누른 뒤 키를 순서대로 누릅니다.
+
+### tmux pane 분할
+
+Neovim을 tmux 안에서 실행할 때 `Ctrl-b`는 기본 tmux prefix입니다.
+
+```text
+Ctrl-b %               tmux 좌우 pane 분할
+Ctrl-b "               tmux 상하 pane 분할
+Ctrl-b 방향키           tmux pane 이동
+Ctrl-b z               현재 tmux pane 확대·복원
+```
+
+따라서 `Ctrl-b %`는 Neovim이 처리하지 않고 tmux가 처리합니다. Neovim 내부 window를 나누려면 `Ctrl-w v` 또는 `Ctrl-w s`를 사용합니다.
+
+### Lua 키 매핑
+
+자주 사용하는 Neovim window 분할을 leader 키에 연결할 수 있습니다.
+
+```lua
+vim.keymap.set("n", "<leader>sv", "<cmd>vsplit<cr>", {
+  desc = "Split window vertically",
+})
+
+vim.keymap.set("n", "<leader>sh", "<cmd>split<cr>", {
+  desc = "Split window horizontally",
+})
+
+vim.keymap.set("n", "<leader>so", "<cmd>only<cr>", {
+  desc = "Keep only current window",
+})
+```
+
+이 설정에서는 다음과 같이 동작합니다.
+
+```text
+Space s v             Neovim 좌우 분할
+Space s h             Neovim 상하 분할
+Space s o             현재 window만 유지
+```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 9. Vim과의 운영 경계
 
 개발 PC에서는 Neovim을 주력으로 사용하고, 운영 서버와 장애 복구 환경에서는 Vim 명령을 기본 도구로 유지하는 방식이 실용적입니다.
 
