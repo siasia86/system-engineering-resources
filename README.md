@@ -438,16 +438,16 @@ RDBMS, NoSQL, 운영, 포렌식.
 문서 수정 후 다음 검사를 실행합니다.
 
 ```bash
-python3 md-link-check.py README.md
-python3 md-heading-check.py README.md
-python3 md-style-check.py README.md
-python3 readme_inventory_check.py README.md
+sia-md-link-check README.md
+sia-md-heading-check README.md
+sia-md-style-check README.md
+sia-readme-inventory-check README.md
 ```
 
-- 내부 링크 검사: `md-link-check.py`.
-- 헤딩 구조·목차 앵커 검사: `md-heading-check.py`.
-- 표·푸터·문체 검사: `md-style-check.py`.
-- README에 표기된 문서 수와 실제 파일 수 검사: `readme_inventory_check.py`.
+- 내부 링크 검사: `sia-md-link-check`.
+- 헤딩 구조·목차 앵커 검사: `sia-md-heading-check`.
+- 표·푸터·문체 검사: `sia-md-style-check`.
+- README에 표기된 문서 수와 실제 파일 수 검사: `sia-readme-inventory-check`.
 
 ---
 

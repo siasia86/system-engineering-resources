@@ -7,14 +7,14 @@ description: Documents security masking tools (ip_mask.py, json_mask.py, aws-sec
 
 ## 1. Script list
 
-| File                                                      | Purpose                                                 | Target                     |
-|-----------------------------------------------------------|---------------------------------------------------------|----------------------------|
-| `/root/sj_del/ip_mask.py`                                 | Public IP masking and restoration using RFC 5737 ranges | All text files             |
-| `/root/sj_del/json_mask.py`                               | AWS resource masking with 18 regex rules                | `.json` files              |
-| `/root/sj_del/aws_security_check.sh`                      | AWS sensitive-data detection with 9 checks              | Directory scan             |
-| `/root/sj_del/git_security_check.sh`                      | Pre-commit security check with 5 checks                 | Git working-tree directory |
-| `/root/32_system-engineering-resources/md-style-check.py` | Markdown style validation                               | `.md` files                |
-| `/root/sj_del/security_check.conf`                        | Shared configuration for Bash scripts                   | Configuration file         |
+| File                                 | Purpose                                                 | Target                     |
+|--------------------------------------|---------------------------------------------------------|----------------------------|
+| `/root/sj_del/ip_mask.py`            | Public IP masking and restoration using RFC 5737 ranges | All text files             |
+| `/root/sj_del/json_mask.py`          | AWS resource masking with 18 regex rules                | `.json` files              |
+| `/root/sj_del/aws_security_check.sh` | AWS sensitive-data detection with 9 checks              | Directory scan             |
+| `/root/sj_del/git_security_check.sh` | Pre-commit security check with 5 checks                 | Git working-tree directory |
+| `/usr/local/bin/sia-md-style-check`  | Markdown style validation                               | `.md` files                |
+| `/root/sj_del/security_check.conf`   | Shared configuration for Bash scripts                   | Configuration file         |
 
 ## 2. Common option scheme (`ip_mask.py` / `json_mask.py`)
 

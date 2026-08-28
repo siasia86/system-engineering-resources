@@ -8,6 +8,7 @@
 
 ### Changed
 
+- 32 active 문서·hook·skill의 checker 실행 참조를 설치된 `sia-*` wrapper 기준으로 갱신하고 root script cleanup 단계를 준비.
 - 32 consumer workflow run `33154491505`에서 `v0.3.3` release download·checksum·manifest·style·heading·link·inventory 검증 전체 성공.
 - 30 consumer pin을 `v0.3.3`과 SHA-256 `0b293d76e8efb55e93ad6bb21c0b00bf4362e60aa7a3a4ea5e6d752a012bb4ad`로 갱신.
 - 30 consumer pin을 `v0.3.2`와 SHA-256 `9f9b74a0b21926a55a72fc11fbb59cd049da176413e5617249af3ecf68dabcc4`로 갱신.

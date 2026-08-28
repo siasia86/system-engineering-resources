@@ -71,10 +71,10 @@ Ansible 학습·자동화 저장소에는 `.governance/GOVERNANCE.md`와 `verifi
 문서 변경 후 다음 검증을 실행합니다.
 
 ```bash
-sudo python3 md-link-check.py .
-sudo python3 md-heading-check.py .
-sudo python3 md-style-check.py .
-sudo python3 readme_inventory_check.py README.md
+sia-md-link-check .
+sia-md-heading-check .
+sia-md-style-check .
+sia-readme-inventory-check README.md
 git diff --check
 ```
 

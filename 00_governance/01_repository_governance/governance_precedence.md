@@ -269,9 +269,9 @@ Ansible 학습·자동화 저장소는 2026-08-27에 이관과 병행 검증을 
 `.governance/` 추가 또는 수정 후 다음을 실행합니다.
 
 ```bash
-sudo python3 md-link-check.py .
-sudo python3 md-heading-check.py .
-sudo python3 md-style-check.py .
+sia-md-link-check .
+sia-md-heading-check .
+sia-md-style-check .
 sudo gitleaks detect --source . --no-banner
 git diff --check
 ```

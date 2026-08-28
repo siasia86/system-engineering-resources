@@ -88,8 +88,8 @@ Claude는 현재 원본 경로와 allowlist를 확정하지 않았으므로 위 
   --target central \
   --dry-run
 sudo gitleaks detect --source . --no-banner
-sudo python3 md-link-check.py 00_governance/02_kiro/
-sudo python3 md-style-check.py .
+sia-md-link-check 00_governance/02_kiro/
+sia-md-style-check .
 ```
 
 동기화 manifest가 없는 파일은 동기화 대상에 포함하지 않습니다. `memory.md`,

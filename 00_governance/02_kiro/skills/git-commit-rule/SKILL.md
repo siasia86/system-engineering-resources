@@ -66,9 +66,9 @@ style: 전체 README 푸터 배지 통일
 
 3. Markdown 검사 0건 확인 (변경 .md 파일에 한해)
    BASE=/root/32_system-engineering-resources
-   sudo python3 $BASE/md-style-check.py <path>
-   sudo python3 $BASE/md-heading-check.py <path>
-   sudo python3 $BASE/md-link-check.py <path>
+   sia-md-style-check <path>
+   sia-md-heading-check <path>
+   sia-md-link-check <path>
 
 4. stage (명시적 파일 지정)
    git -C <repo> add <file1> <file2> ...

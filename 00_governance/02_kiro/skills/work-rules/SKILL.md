@@ -121,23 +121,23 @@ After creating or modifying any .md file under /root/32_system-engineering-resou
 
 ```bash
 BASE=/root/32_system-engineering-resources
-sudo python3 $BASE/md-style-check.py <path>     # table alignment, tone, footer
-sudo python3 $BASE/md-heading-check.py <path>   # anchor, H2 numbering, level, duplicate, toc
-sudo python3 $BASE/md-link-check.py <path>      # internal file links
+sia-md-style-check <path>     # table alignment, tone, footer
+sia-md-heading-check <path>   # anchor, H2 numbering, level, duplicate, toc
+sia-md-link-check <path>      # internal file links
 ```
 
 - Run on the specific file or directory modified (not the entire repo unless requested)
 - Fix all reported issues before presenting the result
 - Use `--strict` / `-s` flag on md-style-check to check without whitelist (for full review)
-- md-link-check.py excludes `#anchor` links by design; md-heading-check.py covers them
+- sia-md-link-check excludes `#anchor` links by design; sia-md-heading-check covers them
 
 ### md quality tools
 
 | Tool                     | Path                                   | Usage                                  |
 |--------------------------|----------------------------------------|----------------------------------------|
-| md-style-check.py        | /root/32_system-engineering-resources/ | Style check (mandatory)                |
-| md-heading-check.py      | /root/32_system-engineering-resources/ | Anchor / numbering / level (mandatory) |
-| md-link-check.py         | /root/32_system-engineering-resources/ | Internal file links (mandatory)        |
+| sia-md-style-check       | /root/32_system-engineering-resources/ | Style check (mandatory)                |
+| sia-md-heading-check     | /root/32_system-engineering-resources/ | Anchor / numbering / level (mandatory) |
+| sia-md-link-check        | /root/32_system-engineering-resources/ | Internal file links (mandatory)        |
 | fix_table_align.py       | /root/sj_del/                          | Auto-fix table alignment               |
 | trim_diagram_trailing.py | /root/sj_del/                          | Remove trailing spaces in diagrams     |
 

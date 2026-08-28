@@ -56,7 +56,7 @@ Observe → Plan → Act → Verify 사이클이 skill/tool/rule로 동작합니
 | Observe  | .local/memory.md, STYLE.md, _reference/INDEX.md    | ✅   |
 | Plan     | planning-and-breakdown, spec-driven-infra, §13     | ✅   |
 | Act      | allowedTools, incremental-change, script templates | ✅   |
-| Verify   | md-style-check.py, §12, testing-guide, hooks       | ✅   |
+| Verify   | sia-md-style-check, §12, testing-guide, hooks      | ✅   |
 | Feedback | debugging-and-recovery, §1-1 (2회 실패→전환)       | ✅   |
 
 ### 향후 개선 (미구현)

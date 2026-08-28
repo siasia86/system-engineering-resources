@@ -86,10 +86,10 @@ CHANGELOG.md 완료 기록
 ## 4. 검증 기준
 
 ```bash
-sudo python3 md-link-check.py .
-sudo python3 md-heading-check.py .
-sudo python3 md-style-check.py .
-sudo python3 readme_inventory_check.py README.md
+sia-md-link-check .
+sia-md-heading-check .
+sia-md-style-check .
+sia-readme-inventory-check README.md
 git diff --check
 ```
 

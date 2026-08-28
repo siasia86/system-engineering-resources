@@ -1,6 +1,6 @@
 ---
 name: md-link-check
-description: Markdown 링크·앵커·목차·헤딩 구조 검증 규칙. .md 파일 작성/수정 후 사용합니다. 파일 링크는 md-link-check.py, 앵커와 헤딩 구조는 md-heading-check.py 가 담당합니다.
+description: Markdown 링크·앵커·목차·헤딩 구조 검증 규칙. .md 파일 작성/수정 후 사용합니다. 파일 링크는 sia-md-link-check, 앵커와 헤딩 구조는 sia-md-heading-check 가 담당합니다.
 ---
 
 # Markdown Link & TOC Check Rules
@@ -9,24 +9,24 @@ description: Markdown 링크·앵커·목차·헤딩 구조 검증 규칙. .md �
 
 `.md` 파일 작성/수정 후 링크와 헤딩 구조를 검증합니다. 검사 항목별로 담당 도구가 다릅니다.
 
-| 검사 항목                            | 담당 도구             | 비고                        |
-|--------------------------------------|-----------------------|-----------------------------|
-| 내부 파일 링크 (`[텍스트](경로.md)`) | `md-link-check.py`    | `#anchor` 는 검증 대상 제외 |
-| 앵커 링크 (`#섹션명`)                | `md-heading-check.py` | `anchor` 검사               |
-| H2 번호 연속성                       | `md-heading-check.py` | `number` 검사               |
-| 헤딩 레벨 건너뜀                     | `md-heading-check.py` | `level` 검사                |
-| 참조되는 앵커 중복                   | `md-heading-check.py` | `duplicate` 검사            |
-| 목차 완결성 (H2 누락 여부)           | `md-heading-check.py` | `toc` 검사                  |
+| 검사 항목                            | 담당 도구              | 비고                        |
+|--------------------------------------|------------------------|-----------------------------|
+| 내부 파일 링크 (`[텍스트](경로.md)`) | `sia-md-link-check`    | `#anchor` 는 검증 대상 제외 |
+| 앵커 링크 (`#섹션명`)                | `sia-md-heading-check` | `anchor` 검사               |
+| H2 번호 연속성                       | `sia-md-heading-check` | `number` 검사               |
+| 헤딩 레벨 건너뜀                     | `sia-md-heading-check` | `level` 검사                |
+| 참조되는 앵커 중복                   | `sia-md-heading-check` | `duplicate` 검사            |
+| 목차 완결성 (H2 누락 여부)           | `sia-md-heading-check` | `toc` 검사                  |
 
 ```bash
 BASE=/root/32_system-engineering-resources
-sudo python3 $BASE/md-link-check.py <path>      # 파일 링크
-sudo python3 $BASE/md-heading-check.py <path>   # 앵커·번호·레벨·중복·목차
-sudo python3 $BASE/md-style-check.py <path>     # 표 정렬·문체·푸터
+sia-md-link-check <path>      # 파일 링크
+sia-md-heading-check <path>   # 앵커·번호·레벨·중복·목차
+sia-md-style-check <path>     # 표 정렬·문체·푸터
 ```
 
-🟡 `md-link-check.py` 는 docstring 에 `#anchor` 링크를 검증 제외로 명시합니다. 앵커 검증은
-`md-heading-check.py` 가 담당하므로 두 도구를 함께 실행합니다.
+🟡 `sia-md-link-check` 는 docstring 에 `#anchor` 링크를 검증 제외로 명시합니다. 앵커 검증은
+`sia-md-heading-check` 가 담당하므로 두 도구를 함께 실행합니다.
 
 ---
 
@@ -70,10 +70,10 @@ GitHub 은 `github-slugger` 로 앵커를 만듭니다. 순서는 다음과 같�
 간이 정규식으로 재현하면 어긋납니다.
 
 ```bash
-sudo python3 /root/32_system-engineering-resources/md-heading-check.py <path>
+sia-md-heading-check <path>
 ```
 
-`md-heading-check.py` 는 `github-slugger` 의 문자 집합을 그대로 이식하여 사용합니다.
+`sia-md-heading-check` 는 `github-slugger` 의 문자 집합을 그대로 이식하여 사용합니다.
 간이 규칙(`[^\w\s-]` 등)은 이모지를 제거하고 상첨자를 남기는 등 원본과 달라집니다.
 
 ### 코드블록 내부 헤딩 주의
@@ -116,7 +116,7 @@ CommonMark 는 정보 문자열이 없는 펜스를 닫는 펜스로 처리하�
 | 여는 펜스보다 backtick 개수가 적음 | 아님 (내용)    |
 
 🟡 이 규칙 누락으로 `STYLE.md` 자체에서 5개 섹션이 코드블록으로 렌더링되던 결함이
-있었습니다(2026-08-27 수정). 중첩 예시를 쓸 때는 반드시 `md-heading-check.py` 로
+있었습니다(2026-08-27 수정). 중첩 예시를 쓸 때는 반드시 `sia-md-heading-check` 로
 확인합니다.
 
 ---
@@ -274,14 +274,14 @@ H2 번호는 `1.`부터 시작하여 빠짐없이 연속되어야 합니다.
 
 ```bash
 BASE=/root/32_system-engineering-resources
-sudo python3 $BASE/md-link-check.py <path>
-sudo python3 $BASE/md-heading-check.py <path>
-sudo python3 $BASE/md-style-check.py <path>
+sia-md-link-check <path>
+sia-md-heading-check <path>
+sia-md-style-check <path>
 ```
 
-- [ ] `md-link-check.py` 0건 — 내부 파일 링크
-- [ ] `md-heading-check.py` 0건 — 앵커·번호·레벨·중복
-- [ ] `md-style-check.py` 0건 — 표 정렬·문체·푸터
+- [ ] `sia-md-link-check` 0건 — 내부 파일 링크
+- [ ] `sia-md-heading-check` 0건 — 앵커·번호·레벨·중복
+- [ ] `sia-md-style-check` 0건 — 표 정렬·문체·푸터
 - [ ] 새로 추가한 H2 섹션을 목차에 추가했는가 (자동 검사 없음)
 - [ ] 코드블록 안의 `## 헤딩`을 목차에 포함하지 않았는가
 - [ ] 중첩 코드블록 예시의 외부 펜스를 4-backtick 으로 썼는가
