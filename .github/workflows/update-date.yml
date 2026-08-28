@@ -51,15 +51,10 @@ jobs:
           mkdir -p "$download_dir" "$extract_dir"
 
           : "${SIA_SCRIPTS_RELEASE_TOKEN:?SIA_SCRIPTS_RELEASE_TOKEN secret is required for private 30_sia-scripts access}"
-          curl_args=(
-            --fail
-            --silent
-            --show-error
-            --location
-            --header "Authorization: Bearer ${SIA_SCRIPTS_RELEASE_TOKEN}"
-          )
-          asset_url="https://github.com/${SIA_SCRIPTS_REPOSITORY}/releases/download/v${version}/${archive}"
-          curl "${curl_args[@]}" "$asset_url" --output "$download_dir/$archive"
+          GH_TOKEN="${SIA_SCRIPTS_RELEASE_TOKEN}" gh release download "v${version}" \
+            --repo "$SIA_SCRIPTS_REPOSITORY" \
+            --pattern "$archive" \
+            --dir "$download_dir"
 
           printf '%s  %s\n' "$SIA_SCRIPTS_RELEASE_SHA256" "$archive" > "$download_dir/$archive.sha256"
           (
