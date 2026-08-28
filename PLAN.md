@@ -255,6 +255,8 @@ Ansible은 기존 release를 삭제하지 않고 신규 release를 별도 경로
 
 iperf3 문서는 ICMP가 차단된 원격 환경에서 실제 TCP·UDP port를 이용한 통신 품질 측정 절차를 제공합니다. 네트워크 측정 문서 추가는 migration 완료 조건이 아니며, 원격 배포 전 진단 절차를 보강한 것입니다.
 
+2026-08-28 첫 test target에 root SSH로 임시 HTTPS artifact 배포를 수행했습니다. `0.3.0 install → 0.3.1 update → 0.3.0 rollback`과 checksum·version·help·root ownership·permission·일반 사용자 쓰기 차단 검증을 통과했습니다. 이 검증은 운영 artifact repository와 일반 사용자 Controller의 password-free `become` 검증을 대체하지 않습니다.
+
 ### 외부 의존성으로 대기 중인 작업
 
 다음 항목은 local에서 `sudo`를 실행하는 것만으로 완료할 수 없습니다.
@@ -284,7 +286,8 @@ iperf3 문서는 ICMP가 차단된 원격 환경에서 실제 TCP·UDP port를 �
 - [x] `/opt/sia_scripts/current → 0.3.0` baseline 재확인.
 - [x] 30·32 저장소 branch와 working tree 재확인.
 - [x] 32 저장소 Markdown·gitleaks·`git diff --check` 재검증.
-- [ ] 실제 운영 endpoint와 inventory가 제공되면 원격 검증으로 전환.
+- [x] 제공된 첫 test target에 임시 inventory로 원격 install·update·rollback 검증.
+- [ ] 실제 운영 endpoint와 운영 inventory가 제공되면 원격 검증으로 전환.
 
 [⬆ 목차로 돌아가기](#목차)
 

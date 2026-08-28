@@ -10,6 +10,7 @@
 
 - `iperf3` 공식 reference와 네트워크 통신 품질 측정 가이드 추가.
 - `PLAN.md`에 2026-08-28 local baseline, 외부 의존성, 원격 적용 순서를 정리.
+- 첫 test target에 root SSH와 임시 HTTPS artifact를 사용해 `0.3.0 install → 0.3.1 update → 0.3.0 rollback`을 검증. 운영 artifact repository와 일반 사용자 Controller `become`은 미완료로 유지.
 - `30_sia-scripts`에 GitHub Actions 검증 workflow와 `v*.*.*` tag 전용 versioned artifact 생성을 추가.
 - `30_sia-scripts` release manifest에 source commit provenance와 파일별 SHA-256 검증을 추가.
 - 30 저장소 CI slice commit `e69bcfb`를 `origin/main`에 push하고 로컬 검증을 완료.
