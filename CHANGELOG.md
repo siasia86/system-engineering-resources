@@ -8,6 +8,8 @@
 
 ### Changed
 
+- `iperf3` 공식 reference와 네트워크 통신 품질 측정 가이드 추가.
+- `PLAN.md`에 2026-08-28 local baseline, 외부 의존성, 원격 적용 순서를 정리.
 - `30_sia-scripts`에 GitHub Actions 검증 workflow와 `v*.*.*` tag 전용 versioned artifact 생성을 추가.
 - `30_sia-scripts` release manifest에 source commit provenance와 파일별 SHA-256 검증을 추가.
 - 30 저장소 CI slice commit `e69bcfb`를 `origin/main`에 push하고 로컬 검증을 완료.
@@ -820,6 +822,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-08-27
+**마지막 업데이트**: 2026-08-28
 
 © 2026 siasia86. Licensed under CC BY 4.0.

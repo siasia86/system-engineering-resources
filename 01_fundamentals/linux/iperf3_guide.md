@@ -1,4 +1,5 @@
 # iperf3 네트워크 성능·loss 측정 가이드
+<!-- reference: _reference/iperf3_official_notes.md -->
 
 `iperf3`는 두 호스트 사이의 TCP·UDP throughput, latency 변동, UDP packet loss, jitter를 측정하는 네트워크 테스트 도구입니다. ICMP `ping`이 차단된 환경에서도 실제 TCP·UDP 포트를 사용해 통신 품질을 확인할 수 있습니다.
 

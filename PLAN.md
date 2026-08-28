@@ -8,6 +8,7 @@
 | [4. 권장 구성](#4-권장-구성) / [5. 단계](#5-단계)            |
 | [6. 검증 기준](#6-검증-기준) / [7. 롤백](#7-롤백)            |
 | [8. 비가역 작업](#8-비가역-작업)                             |
+| [9. 현재 상태와 다음 작업](#9-현재-상태와-다음-작업)         |
 
 ---
 
@@ -208,7 +209,7 @@ sudo gitleaks detect --source /root/32_system-engineering-resources --no-git --n
 - [x] Markdown·링크·헤딩·비밀정보 검사를 통과합니다.
 - [x] `CHANGELOG.md`에 최종 결과를 기록합니다.
 
-임시 target smoke test는 `0.1.0 install → 0.2.0 update → 0.1.0 rollback` 순서로 수행했습니다. 대상 호스트 연결과 artifact 저장소 outbound HTTPS는 아직 실제 환경에서 확인하지 않았습니다.
+임시 target smoke test는 `0.3.0 install → 0.3.1 update → 0.3.0 rollback` 순서로 수행했습니다. local baseline은 `/opt/sia_scripts/current → /opt/sia_scripts/releases/0.3.0`이며, 대상 호스트 연결과 artifact 저장소 outbound HTTPS는 아직 실제 운영 환경에서 확인하지 않았습니다.
 
 검증 실패를 공용 검사 예외로 숨기지 않습니다. 예외가 필요하면 대상, 사유, 재검토 시점을 별도로 기록합니다.
 
@@ -237,8 +238,58 @@ Ansible은 기존 release를 삭제하지 않고 신규 release를 별도 경로
 
 ---
 
+## 9. 현재 상태와 다음 작업
+
+### 2026-08-28 점검 결과
+
+| 항목                          | 현재 상태                                   | 근거                                    |
+|-------------------------------|---------------------------------------------|-----------------------------------------|
+| 30 저장소                     | `main`, `origin/main`, working tree clean   | `/home/siasia/30_sia-scripts`           |
+| 32 저장소                     | `yunli`, `origin/yunli`, working tree clean | `6a9e7db docs: iperf3 측정 가이드 추가` |
+| local current                 | `0.3.0` release를 가리킴                    | `/opt/sia_scripts/current`              |
+| 보존 release                  | `0.3.0`, `0.3.1`                            | `/opt/sia_scripts/releases/`            |
+| 설치 entrypoint               | root 소유 symlink와 실행 권한 확인          | `/usr/local/bin/sia-*`                  |
+| local install/update/rollback | 완료                                        | `0.3.0 → 0.3.1 → 0.3.0`                 |
+| 일반 사용자 `become`          | 미완료: password-required sudo 정책         | `NOPASSWD` 정책 없음                    |
+| iperf3 운영 문서              | 완료                                        | `01_fundamentals/linux/iperf3_guide.md` |
+
+iperf3 문서는 ICMP가 차단된 원격 환경에서 실제 TCP·UDP port를 이용한 통신 품질 측정 절차를 제공합니다. 네트워크 측정 문서 추가는 migration 완료 조건이 아니며, 원격 배포 전 진단 절차를 보강한 것입니다.
+
+### 외부 의존성으로 대기 중인 작업
+
+다음 항목은 local에서 `sudo`를 실행하는 것만으로 완료할 수 없습니다.
+
+1. 실제 운영 artifact repository endpoint, CA trust, checksum 제공.
+2. 실제 원격 inventory, 대상 호스트, 관리망 경로와 유지보수 시간 제공.
+3. 일반 사용자 Controller의 task-level `become` 정책 결정.
+   - 대화형 sudo password 입력 방식.
+   - 또는 제한된 대상·명령에 대한 명시적 `NOPASSWD` 운영 정책.
+   - password 평문 저장과 임의 sudoers 변경은 금지.
+4. 각 대상 저장소의 profile·버전·artifact provenance 제공.
+5. GitHub Actions 실제 run 조회에 필요한 인증 제공.
+
+### 다음 적용 순서
+
+- [ ] 대상 저장소별 profile·버전 manifest 확정.
+- [ ] 실제 artifact endpoint에 HTTPS·CA·checksum 검증 수행.
+- [ ] 첫 원격 대상 1개에 Ansible `--check` 수행.
+- [ ] `become` 정책이 해결된 뒤 첫 원격 대상에 install 수행.
+- [ ] install 후 entrypoint·version·ownership·permission 검증.
+- [ ] 동일 대상에 update와 rollback 수행.
+- [ ] 결과 확인 후 대상 호스트를 단계적으로 확대.
+- [ ] 모든 원격 적용 완료 후 이 계획을 완료 상태로 정리.
+
+### local에서 추가로 가능한 검증
+
+- [x] `/opt/sia_scripts/current → 0.3.0` baseline 재확인.
+- [x] 30·32 저장소 branch와 working tree 재확인.
+- [x] 32 저장소 Markdown·gitleaks·`git diff --check` 재검증.
+- [ ] 실제 운영 endpoint와 inventory가 제공되면 원격 검증으로 전환.
+
+[⬆ 목차로 돌아가기](#목차)
+
 **작성일**: 2026-08-27
 
-**마지막 업데이트**: 2026-08-27
+**마지막 업데이트**: 2026-08-28
 
 © 2026 siasia86. Licensed under CC BY 4.0.
