@@ -264,6 +264,7 @@ iperf3 문서는 ICMP가 차단된 원격 환경에서 실제 TCP·UDP port를 �
 - 32 root checker는 parity·CI·결과 대조가 끝날 때까지 삭제하지 않습니다.
 - `strip-footer-md.py`는 30 대응 source가 없는 32 전용 utility 후보로 별도 보류합니다.
 - 상세 workflow는 30 `.governance/script_migration_spec.md`를 기준으로 관리합니다.
+- 30 generic checker의 `file_skip`·`path_skip` config contract와 `.md-style-check.sia_scripts.toml` 32 profile로 기존 checker 결과 parity를 확인합니다.
 
 ### 외부 의존성으로 대기 중인 작업
 
