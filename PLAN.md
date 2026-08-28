@@ -266,11 +266,11 @@ iperf3 문서는 ICMP가 차단된 원격 환경에서 실제 TCP·UDP port를 �
 - 상세 workflow는 30 `.governance/script_migration_spec.md`를 기준으로 관리합니다.
 - 30 generic checker의 `file_skip`·`path_skip` config contract와 `.md-style-check.sia_scripts.toml` 32 profile로 기존 checker 결과 parity를 확인합니다.
 - 32 workflow를 30 `0.3.3` release asset과 고정 SHA-256 검증 후 `sia-*` wrapper를 실행하는 consumer로 전환했습니다. private repository 접근은 `SIA_SCRIPTS_RELEASE_TOKEN` secret을 사용합니다.
-- local consumer smoke test와 30 `v0.3.2` release asset 검증은 완료했으며, 실제 32 Actions 실행은 secret 등록 후 진행합니다.
+- local consumer smoke test와 30 `v0.3.3` release asset 검증을 완료했습니다. 32 consumer workflow run `33154491505`도 전체 성공했습니다.
 
 ### 외부 의존성으로 대기 중인 작업
 
-- 32 repository에 30 `Contents: Read` 범위의 `SIA_SCRIPTS_RELEASE_TOKEN` secret 등록이 필요합니다.
+- 30 `Contents: Read` 범위의 `SIA_SCRIPTS_RELEASE_TOKEN` secret 등록과 `v0.3.3` consumer CI 성공을 완료했습니다.
 다음 항목은 local에서 `sudo`를 실행하는 것만으로 완료할 수 없습니다.
 
 1. 실제 운영 artifact repository endpoint, CA trust, checksum 제공.
@@ -280,7 +280,6 @@ iperf3 문서는 ICMP가 차단된 원격 환경에서 실제 TCP·UDP port를 �
    - 또는 제한된 대상·명령에 대한 명시적 `NOPASSWD` 운영 정책.
    - password 평문 저장과 임의 sudoers 변경은 금지.
 4. 각 대상 저장소의 profile·버전·artifact provenance 제공.
-5. GitHub Actions 실제 run 조회에 필요한 인증 제공.
 
 ### 다음 적용 순서
 
@@ -299,7 +298,7 @@ iperf3 문서는 ICMP가 차단된 원격 환경에서 실제 TCP·UDP port를 �
 - [x] 30·32 저장소 branch와 working tree 재확인.
 - [x] 32 저장소 Markdown·gitleaks·`git diff --check` 재검증.
 - [x] 제공된 첫 test target에 임시 inventory로 원격 install·update·rollback 검증.
-- [ ] 실제 운영 endpoint와 운영 inventory가 제공되면 원격 검증으로 전환.
+- [ ] 32 root checker cleanup 후 실제 운영 endpoint와 운영 inventory 검증으로 전환.
 
 [⬆ 목차로 돌아가기](#목차)
 
