@@ -471,6 +471,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-08-27
+**마지막 업데이트**: 2026-08-28
 
 © 2026 siasia86. Licensed under CC BY 4.0.

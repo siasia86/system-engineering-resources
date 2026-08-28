@@ -130,6 +130,6 @@ rm -f dirty_frag_detect.py
 
 **작성일**: 2026-06-29
 
-**마지막 업데이트**: 2026-06-29
+**마지막 업데이트**: 2026-08-28
 
 © 2026 siasia86. Licensed under CC BY 4.0.
