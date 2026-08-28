@@ -257,6 +257,14 @@ iperf3 문서는 ICMP가 차단된 원격 환경에서 실제 TCP·UDP port를 �
 
 2026-08-28 첫 test target에 root SSH로 임시 HTTPS artifact 배포를 수행했습니다. `0.3.0 install → 0.3.1 update → 0.3.0 rollback`과 checksum·version·help·root ownership·permission·일반 사용자 쓰기 차단 검증을 통과했습니다. 이 검증은 운영 artifact repository와 일반 사용자 Controller의 password-free `become` 검증을 대체하지 않습니다.
 
+### 검증 script 이관 작업 (2026-08-28)
+
+- 원격 `become`·운영 artifact 작업을 홀딩하고 30 source of truth 전환을 먼저 진행합니다.
+- 30·32 checker parity와 config 차이를 분류한 뒤 32 CI consumer를 30 versioned artifact로 전환합니다.
+- 32 root checker는 parity·CI·결과 대조가 끝날 때까지 삭제하지 않습니다.
+- `strip-footer-md.py`는 30 대응 source가 없는 32 전용 utility 후보로 별도 보류합니다.
+- 상세 workflow는 30 `.governance/script_migration_spec.md`를 기준으로 관리합니다.
+
 ### 외부 의존성으로 대기 중인 작업
 
 다음 항목은 local에서 `sudo`를 실행하는 것만으로 완료할 수 없습니다.

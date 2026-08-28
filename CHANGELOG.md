@@ -32,6 +32,7 @@
 
 ### Added
 
+- 30·32 검증 script 이관 workflow를 시작하고, parity·config·CI consumer 검증 전까지 32 root script 삭제를 보류.
 - 저장소별 규칙 체계 `.governance/`와 [저장소 규칙 우선순위 정책](00_governance/01_repository_governance/governance_precedence.md) 추가.
 - governance 개선 항목 관리 문서 `governance_todo.md` 추가.
 - 작업 템플릿 6종 추가: TODO, CHANGELOG, README, RUNBOOK, GOVERNANCE, VERIFICATION. 기존 PLAN·ISSUE 템플릿을 포함해 8종이 됩니다.
