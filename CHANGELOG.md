@@ -10,6 +10,11 @@
 
 - 계정·repository·운영 도구에 종속되지 않는 공용 `skill-review` prompt를 추가하고 agent skill 탐색 대상에서 제외.
 
+### Changed
+
+- 32 root `README.md`와 `PLAN.md`에 31 `governances` 공통 정책 원본 및 35 `agent-skill` 공개 mirror 역할을 명시.
+- `97_misc/similar_repos.md`의 checker 참조를 30 `sia-*` release wrapper 기준으로 갱신.
+
 ### Removed
 
 - `00_governance/01_repository_governance/` 제거 (14개 파일). 공통 governance policy·template·TODO·분리 계획은 [31 `governances`](https://github.com/siasia86/31_governances) `v0.1.0`으로 이관하고 rollback 대상으로 32 commit `71fe059`를 보존합니다.

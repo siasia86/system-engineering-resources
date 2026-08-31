@@ -87,12 +87,13 @@
 
 ### 품질 관리 비교
 
-| 항목               | 확인된 구현                         | 위치                                                                                                     |
-|--------------------|-------------------------------------|----------------------------------------------------------------------------------------------------------|
-| 스타일 검사 (lint) | Markdown 스타일 및 표 정렬 검사     | `md-style-check.py`                                                                                      |
-| 사실 검증          | 공식 출처 대조 프롬프트와 팩트 노트 | [35 agent-skill](https://github.com/siasia86/35_agent-skill) `kiro/prompts/fact-check.md`, `_reference/` |
-| 보안 검사 설정     | 비밀정보 탐지 예외 설정             | `.gitleaks.toml`                                                                                         |
-| 링크 유효성        | 내부 링크·앵커·목차 검사            | `md-link-check.py`                                                                                       |
+| 항목               | 확인된 구현                               | 위치                                                                                                        |
+|--------------------|-------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| 스타일 검사 (lint) | Markdown 스타일 및 표 정렬 검사           | 30 release wrapper: `sia-md-style-check`                                                                    |
+| 사실 검증          | 공식 출처 대조 프롬프트와 팩트 노트       | [35 agent-skill](https://github.com/siasia86/35_agent-skill) `kiro/prompts/fact-check.md`, 32 `_reference/` |
+| 보안 검사 설정     | 비밀정보 탐지 예외 설정                   | `.gitleaks.toml`                                                                                            |
+| 링크 유효성        | 내부 링크·앵커·목차 검사                  | 30 release wrapper: `sia-md-link-check`                                                                     |
+| 공통 정책          | repository·infrastructure·security policy | [31 governances](https://github.com/siasia86/31_governances)                                                |
 
 [⬆ 목차로 돌아가기](#목차)
 

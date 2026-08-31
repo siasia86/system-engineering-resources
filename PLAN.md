@@ -1,6 +1,6 @@
 # 32 `system-engineering-resources` 문서 repository 계획
 
-32 repository는 Linux·네트워크·보안·데이터베이스·인프라·SRE 등 시스템 엔지니어링 학습 자료를 구조화하고 검증하는 문서 repository입니다. 30 `sia_scripts`는 공용 Markdown checker와 release artifact를 제공하며, 32는 repository-local policy와 문서 내용을 관리합니다.
+32 repository는 Linux·네트워크·보안·데이터베이스·인프라·SRE 등 시스템 엔지니어링 학습 자료를 구조화하고 검증하는 문서 repository입니다. 30 `sia_scripts`는 공용 Markdown checker와 release artifact를 제공하고, 31 `governances`는 공통 repository·infrastructure·security policy를 관리하며, 32는 문서 내용과 checker consumer profile을 관리합니다. Kiro·Claude 공개 mirror는 35 `agent-skill`에서 관리합니다.
 
 ## 목차
 
@@ -47,7 +47,7 @@
           |
           v
 32 system-engineering-resources
-  학습 문서·repository policy·30 release consumer
+  학습 문서·checker profile·30 release consumer
 ```
 
 ### 30에서 관리
@@ -61,12 +61,12 @@
 ### 32에서 관리
 
 - 학습 문서 source와 문서 taxonomy.
-- `.md-style-check.sia_scripts.toml` repository-local policy profile.
+- `.md-style-check.sia_scripts.toml` repository-local checker profile.
 - 30 release version·checksum을 사용하는 consumer workflow.
 - 문서별 예외와 repository-local 검증 결과.
 - README inventory와 문서 간 연결성.
 
-32 policy exception을 30 source에 하드코딩하지 않습니다. 30은 contract를 제공하고 32는 실제 profile을 유지합니다.
+32 checker exception을 30 source에 하드코딩하지 않습니다. 30은 contract를 제공하고 32는 실제 profile을 유지합니다. 공통 governance policy는 31에서 참조하고, Kiro·Claude mirror는 35에서 참조합니다.
 
 ## 3. 관리 범위
 
@@ -76,7 +76,7 @@
 - 기술 내용의 source·version·환경 전제 확인.
 - 문서 간 내부 링크와 README inventory 유지.
 - 30 release consumer version·checksum 갱신.
-- 32 policy profile과 workflow 유지.
+- 32 checker profile과 workflow 유지.
 - 문서 변경의 rollback과 변경 이력 기록.
 
 ### 제외
@@ -114,7 +114,12 @@ artifact:   sia_scripts_0.3.3.tar.gz
 sha256:     0b293d76e8efb55e93ad6bb21c0b00bf4362e60aa7a3a4ea5e6d752a012bb4ad
 ```
 
+### Governance·agent skill 분리 상태
 
+- [x] 공통 repository·infrastructure·security policy를 [31 `governances`](https://github.com/siasia86/31_governances)로 이관했습니다.
+- [x] Kiro·Claude 공개 mirror를 [35 `agent-skill`](https://github.com/siasia86/35_agent-skill)로 이관했습니다.
+- [x] 32에는 현재 문서 역할과 이관 이력을 설명하는 참조만 유지합니다.
+- [x] 32의 checker profile과 문서 운영은 30 release consumer 기준으로 유지합니다.
 
 ## 5. 문서 운영 계획
 
@@ -149,7 +154,7 @@ SHA-256 checksum verification
 manifest + embedded file hash verification
           |
           v
-32 policy profile + sia-* wrapper
+32 checker profile + sia-* wrapper
 ```
 
 artifact 검증에 실패하면 문서 검사를 실행하지 않습니다. token·private key·password는 workflow YAML·commit·log에 기록하지 않습니다.
@@ -178,7 +183,7 @@ local 환경에 wrapper가 없으면 승인된 30 artifact를 먼저 설치합�
 ### Rollback
 
 - 문서 내용 오류: 변경 commit을 revert합니다.
-- policy profile 오류: 이전 승인 profile을 복구합니다.
+- checker profile 오류: 이전 승인 profile을 복구합니다.
 - 30 release consumer 오류: 이전 승인 version·checksum으로 pin을 되돌립니다.
 - root checker cleanup 오류: cleanup commit `fe4a9d6d48aba374645542cec812eda583487057`를 revert합니다.
 - 실제 host 배포 오류: 30 installation guide의 이전 release rollback 절차를 따릅니다.
