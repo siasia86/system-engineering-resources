@@ -8,7 +8,6 @@
 |------------------------------------------------------------------------------------------------------------------|
 | [1. Repository 목적](#1-repository-목적) / [2. 30 통합 역할](#2-30-통합-역할) / [3. 관리 범위](#3-관리-범위)     |
 | [4. 현재 상태](#4-현재-상태) / [5. 문서 운영 계획](#5-문서-운영-계획) / [6. 검증과 rollback](#6-검증과-rollback) |
-| [7. 다음 작업](#7-다음-작업)                                                                                     |
 
 ---
 
@@ -187,18 +186,7 @@ local 환경에 wrapper가 없으면 승인된 30 artifact를 먼저 설치합�
 
 기존 release tag와 artifact를 force update하거나 삭제하지 않습니다.
 
-## 7. 다음 작업
-
-다음 작업은 system engineering 문서 repository 운영을 기준으로 관리합니다.
-
-- [ ] 문서 영역별 README와 inventory의 최신 상태를 확인합니다.
-- [ ] 신규·수정 문서의 source·version·내부 링크를 review합니다.
-- [ ] 30 release version·checksum 변경 시 32 consumer workflow를 갱신합니다.
-- [ ] 32 policy profile 예외의 필요성·범위·review 날짜를 확인합니다.
-- [ ] 문서 변경 후 style·heading·link·gitleaks 검증을 수행합니다.
-- [ ] 실제 remote host 배포가 필요한 경우 문서 maintenance와 분리된 별도 rollout 계획을 작성합니다.
-
-실제 artifact endpoint·CA·대상 host·`become` 검증은 구체적인 운영 대상이 확정될 때 별도 rollout 작업으로 생성합니다.
+32 문서 repository 운영의 다음 작업 목록은 30 `.governance/PLAN.md`의 "32 system-engineering-resources 후속 작업" 섹션에서 관리합니다. 이 문서와 중복 기록하지 않습니다.
 
 ---
 
