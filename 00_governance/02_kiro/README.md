@@ -89,6 +89,7 @@ system-engineer
 |--------------------------|---------------------------|----------------|
 | `work-rules`             | 전체 작업 규칙 (§1~25)    | 항상 로드      |
 | `using-skills`           | 작업 → skill 매핑         | 세션 시작 시   |
+| `repo-governance`        | 저장소 규칙·우선순위      | 저장소 작업 시 |
 | `readme-template`        | README 푸터/배지          | .md 작성 시    |
 | `bash-script-template`   | Bash 표준 구조/로깅       | .sh 작성 시    |
 | `python-script-template` | Python 표준 구조/argparse | .py 작성 시    |
