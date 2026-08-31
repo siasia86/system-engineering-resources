@@ -15,14 +15,22 @@ echo "$TOOL_INPUT_path" | grep -q '\.md$' || exit 0
 CHECKER=$(command -v sia-md-style-check || true)
 [ -z "$CHECKER" ] && exit 0
 OPTIONS=()
-if [ -f "$PWD/.md-style-check.sia_scripts.toml" ]; then
-  OPTIONS+=(--config "$PWD/.md-style-check.sia_scripts.toml")
+CONFIG_ROOT="$PWD"
+if REPO_ROOT=$(git -C "$(dirname -- "$TOOL_INPUT_path")" rev-parse --show-toplevel 2>/dev/null); then
+  CONFIG_ROOT="$REPO_ROOT"
 fi
-RESULT=$("$CHECKER" "${OPTIONS[@]}" "$TOOL_INPUT_path" 2>&1 | sed 's/\x1b\[[0-9;]*m//g' | tail -1)
-COUNT=$(echo "$RESULT" | grep -oP '이슈: \K[0-9]+')
+if [ -f "$CONFIG_ROOT/.md-style-check.sia_scripts.toml" ]; then
+  OPTIONS+=(--config "$CONFIG_ROOT/.md-style-check.sia_scripts.toml")
+fi
+OUTPUT=$("$CHECKER" "${OPTIONS[@]}" -- "$TOOL_INPUT_path" 2>&1)
+STATUS=$?
+RESULT=$(printf '%s\n' "$OUTPUT" | sed 's/\x1b\[[0-9;]*m//g' | tail -1)
+COUNT=$(printf '%s\n' "$RESULT" | grep -oP '이슈: \K[0-9]+')
 
 if [ -n "$COUNT" ] && [ "$COUNT" -gt 0 ]; then
   echo "⚠️ sia-md-style-check: $TOOL_INPUT_path — ${COUNT}건 이슈" >&2
+elif [ "$STATUS" -ne 0 ]; then
+  echo "⚠️ sia-md-style-check 실행 실패: $TOOL_INPUT_path — $RESULT" >&2
 fi
 
 exit 0
