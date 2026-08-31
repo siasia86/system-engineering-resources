@@ -17,13 +17,12 @@
 
 ## 2. 구성
 
-| 디렉토리                    | 역할                    | 원본·범위            |
-|-----------------------------|-------------------------|----------------------|
-| `01_repository_governance/` | 저장소 운영 정책·템플릿 | 문서·변경·검증 절차  |
-| `02_kiro/`                  | Kiro 공개 미러          | `~/.kiro/` 허용 목록 |
-| `03_claude/`                | Claude 공개 미러 예정   | 원본·허용 목록 미정  |
+| 디렉토리     | 역할                  | 원본·범위            |
+|--------------|-----------------------|----------------------|
+| `02_kiro/`   | Kiro 공개 미러        | `~/.kiro/` 허용 목록 |
+| `03_claude/` | Claude 공개 미러 예정 | 원본·허용 목록 미정  |
 
-- [저장소 운영 정책](01_repository_governance/README.md): 문서 생명주기와 동기화 공통 기준을 관리합니다.
+- [31 governances Repository Governance](https://github.com/siasia86/31_governances): 저장소 운영 정책·template·동기화 공통 기준의 source of truth입니다 (2026-08-31 이관 완료).
 - [Kiro 미러](02_kiro/README.md): `~/.kiro/`에서 허용된 자료만 보존합니다.
 - [Claude 미러](03_claude/README.md): Claude 자료 추가를 위한 예약 영역입니다.
 

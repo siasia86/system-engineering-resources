@@ -139,5 +139,5 @@ repo-local .governance/
 전체 정책은 다음 문서에 있습니다.
 
 ```
-/root/32_system-engineering-resources/00_governance/01_repository_governance/governance_precedence.md
+https://github.com/siasia86/31_governances (.governance/repository/governance_precedence.md)
 ```

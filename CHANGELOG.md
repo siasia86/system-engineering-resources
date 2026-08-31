@@ -10,6 +10,11 @@
 
 - 계정·repository·운영 도구에 종속되지 않는 공용 `skill-review` prompt를 추가하고 agent skill 탐색 대상에서 제외.
 
+### Removed
+
+- `00_governance/01_repository_governance/` 제거 (14개 파일). 공통 governance policy·template·TODO·분리 계획은 [31 `governances`](https://github.com/siasia86/31_governances) `v0.1.0`으로 이관하고 rollback 대상으로 32 commit `71fe059`를 보존합니다.
+- `00_governance/02_kiro/skills/repo-governance/SKILL.md`, `00_governance/03_claude/README.md`, `00_governance/README.md`, 루트 `README.md`의 `01_repository_governance` 참조를 31 `governances` 링크로 갱신.
+
 ## [4.0.0] - 2026-08-31
 
 ### Changed
@@ -57,7 +62,7 @@
 - 32 Markdown CI를 30 `0.3.1` release asset·SHA-256·manifest 검증 후 `sia-*` wrapper를 실행하도록 전환.
 - 30 generic checker의 `file_skip`·`path_skip` contract와 32 policy profile을 추가하고 style·heading·link·inventory parity를 확인.
 - 30·32 검증 script 이관 workflow를 시작하고, parity·config·CI consumer 검증 전까지 32 root script 삭제를 보류.
-- 저장소별 규칙 체계 `.governance/`와 [저장소 규칙 우선순위 정책](00_governance/01_repository_governance/governance_precedence.md) 추가.
+- 저장소별 규칙 체계 `.governance/`와 저장소 규칙 우선순위 정책(`00_governance/01_repository_governance/governance_precedence.md`, 2026-08-31 [31 governances](https://github.com/siasia86/31_governances)로 이관) 추가.
 - governance 개선 항목 관리 문서 `governance_todo.md` 추가.
 - 작업 템플릿 6종 추가: TODO, CHANGELOG, README, RUNBOOK, GOVERNANCE, VERIFICATION. 기존 PLAN·ISSUE 템플릿을 포함해 8종이 됩니다.
 - 헤딩 구조·목차 앵커 검사기 `md-heading-check.py` 추가 (anchor / number / level / duplicate).
