@@ -23,7 +23,6 @@ Task arrives
     ├── Bash 스크립트 작성?            → bash-script-template
     ├── 협업 디렉토리 파일 수정?      → kiro-lock (현재 disabled — 협업 시 enable 필요)
     ├── 코드/스크립트 리뷰?          → code-review
-    ├── Skill·hook·prompt 자체 review? → skill-review
     ├── 보안 검토/마스킹?            → security-tools
     ├── 프로덕션/비가역 변경?        → doubt-driven-infra
     ├── 배포/런칭?                   → shipping-checklist
@@ -45,7 +44,6 @@ Task arrives
 | 프로덕션 변경      | doubt-driven-infra → incremental-change → shipping-checklist    |
 | 장애 대응          | debugging-and-recovery → incremental-change                     |
 | 코드 리뷰 후 수정  | code-review → incremental-change → testing-guide                |
-| Skill 구조 review  | skill-review → code-review (필요 시)                            |
 
 ## Precedence
 

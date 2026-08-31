@@ -8,7 +8,7 @@
 
 ### Added
 
-- 계정·repository·운영 도구에 종속되지 않는 공용 `skill-review` skill과 탐색 규칙을 추가.
+- 계정·repository·운영 도구에 종속되지 않는 공용 `skill-review` prompt를 추가하고 agent skill 탐색 대상에서 제외.
 
 ## [4.0.0] - 2026-08-31
 
