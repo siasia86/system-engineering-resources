@@ -4,7 +4,9 @@
 
 ---
 
-## [Unreleased] - 2026-08-27
+## [Unreleased]
+
+## [4.0.0] - 2026-08-31
 
 ### Changed
 
