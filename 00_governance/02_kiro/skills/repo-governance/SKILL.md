@@ -87,7 +87,10 @@ repo-local .governance/
 ```
 <repository-root>/
 ├── .governance/
-│   ├── GOVERNANCE.md      필수 — 저장소 성격과 예외 요약
+│   ├── GOVERNANCE.md      신규 저장소 필수 — 저장소 성격과 예외 요약
+│   ├── ISSUE.md           신규 저장소 필수 — 이슈 기록
+│   ├── TODO.md            신규 저장소 필수 — 미완료 작업
+│   ├── PLAN.md            신규 저장소 필수 — 진행 중인 복합 작업
 │   ├── exceptions.md      선택 — 예외 상세
 │   └── verification.md    선택 — 저장소 전용 검증 명령
 └── ...
@@ -127,10 +130,9 @@ repo-local .governance/
 | `.governance/GOVERNANCE.md`   | `governance_template.md`   |
 | `.governance/verification.md` | `verification_template.md` |
 
-`verification.md` 는 변경 유형이 여러 가지이고 각각 다른 검증이 필요할 때만 분리합니다.
+신규 저장소는 `.governance/GOVERNANCE.md`, `ISSUE.md`, `TODO.md`, `PLAN.md`를 기본으로 생성합니다. 활성 항목이 없어도 문서를 삭제하지 않고 상태를 기록합니다.
 
-전역 규칙만으로 충분한 저장소에는 `.governance/` 를 만들지 않습니다. 예외가 실제로
-필요한 경우에만 생성합니다.
+`verification.md` 는 변경 유형이 여러 가지이고 각각 다른 검증이 필요할 때만 분리합니다. 기존 저장소는 migration 전까지 루트 `ISSUE.md`, `TODO.md`, `PLAN.md`를 legacy 위치로 허용합니다.
 
 ## 참조 정책
 
