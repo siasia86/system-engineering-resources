@@ -24,7 +24,6 @@
 주요 영역은 다음과 같습니다.
 
 ```text
-00_governance
 01_fundamentals
 02_infrastructure
 03_engineering

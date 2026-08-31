@@ -4,12 +4,6 @@ exclude_dirs = ["99_archive", "99_etc", "__pycache__", ".git", "_reference"]
 exclude_files = []
 skip_checks = []
 
-[[path_skip]]
-path = "00_governance/02_kiro"
-checks = ["footer", "h1", "diagram-kr"]
-reason = "Kiro mirror 문서는 원본 동기화 대상이므로 푸터·H1·다이어그램 한글 검사를 제외"
-review = "상시"
-
 [[file_skip]]
 path = "01_fundamentals/linux/vim_airline.md"
 checks = ["emoji-disallow"]
@@ -38,16 +32,4 @@ review = "2026-11-30"
 path = "06_career/ai_tools/kiro_cli_command_reference.md"
 checks = ["diagram-kr"]
 reason = "Kiro CLI 문서 다이어그램 내부 한글을 보존"
-review = "상시"
-
-[[file_skip]]
-path = "00_governance/02_kiro/markdown/STYLE.md"
-checks = ["emoji", "exaggeration"]
-reason = "스타일 규칙 원본의 금지 예시를 보존"
-review = "상시"
-
-[[file_skip]]
-path = "00_governance/02_kiro/skills/security-tools/SKILL.md"
-checks = ["emoji-disallow"]
-reason = "보안 script의 실제 출력 기호 명세를 보존"
 review = "상시"

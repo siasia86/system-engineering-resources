@@ -14,6 +14,7 @@
 
 - `00_governance/01_repository_governance/` 제거 (14개 파일). 공통 governance policy·template·TODO·분리 계획은 [31 `governances`](https://github.com/siasia86/31_governances) `v0.1.0`으로 이관하고 rollback 대상으로 32 commit `71fe059`를 보존합니다.
 - `00_governance/02_kiro/skills/repo-governance/SKILL.md`, `00_governance/03_claude/README.md`, `00_governance/README.md`, 루트 `README.md`의 `01_repository_governance` 참조를 31 `governances` 링크로 갱신.
+- `00_governance/` 전체 제거 (57개 파일). Kiro·Claude agent skill 공개 mirror는 [35 `agent-skill`](https://github.com/siasia86/35_agent-skill)로 이관하고 rollback 대상으로 32 commit `22b4608`을 보존합니다. `.md-style-check.sia_scripts.toml`과 workflow의 `00_governance/02_kiro` 관련 예외·조건도 함께 정리했습니다.
 
 ## [4.0.0] - 2026-08-31
 

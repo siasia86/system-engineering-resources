@@ -5,8 +5,6 @@
 # md-style-check.py 의 KIRO_SKIP / REFERENCE_SKIP / ARCHIVE_SKIP / FILE_SKIP 을
 # 사용하여 항목 단위로 처리합니다.
 #
-# 00_governance/02_kiro : 제외하지 않습니다. KIRO_SKIP 이 경로를 인식해
-#                         푸터·H1·다이어그램 한글 검사만 제외합니다.
 # CHANGELOG/LICENSE/TODO/license_guide : 제외하지 않습니다. 모두 푸터를 갖추고 있어
 #                         일반 검사를 통과합니다.
 exclude_dirs = [
