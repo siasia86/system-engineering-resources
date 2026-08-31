@@ -16,4 +16,5 @@
 | `vagrant-review`                 | Vagrantfile 리뷰                      | `/prompts vagrant-review`                 |
 | `py-review`                      | Python 스크립트 리뷰 (template)       | `/prompts py-review`                      |
 | `sh-review`                      | Bash 스크립트 리뷰 (template)         | `/prompts sh-review`                      |
+| `skill-review`                   | Skill·hook·prompt 구조·보안 검토      | `/prompts skill-review`                   |
 | `md-review`                      | Markdown 문서 품질 검사               | `/prompts md-review`                      |

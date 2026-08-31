@@ -36,6 +36,7 @@ prompts/fact-check.md
 prompts/md-review.md
 prompts/py-review.md
 prompts/sh-review.md
+prompts/skill-review.md
 prompts/vagrant-review.md
 skills/README.md
 skills/bash-script-template/SKILL.md
