@@ -13,7 +13,10 @@ echo "$TOOL_INPUT_path" | grep -q '\.md$' || exit 0
 [ ! -f "$TOOL_INPUT_path" ] && exit 0
 
 CHECKER=$(command -v sia-md-style-check || true)
-[ -z "$CHECKER" ] && exit 0
+if [ -z "$CHECKER" ]; then
+  echo "⚠️ sia-md-style-check 실행 불가: wrapper를 찾을 수 없습니다" >&2
+  exit 0
+fi
 OPTIONS=()
 CONFIG_ROOT="$PWD"
 if REPO_ROOT=$(git -C "$(dirname -- "$TOOL_INPUT_path")" rev-parse --show-toplevel 2>/dev/null); then
