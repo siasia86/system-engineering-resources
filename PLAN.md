@@ -91,19 +91,11 @@
 
 ### 문서 repository
 
-- [x] system engineering 학습 자료 영역이 유지됩니다.
-- [x] README가 학습 자료 repository 목적을 설명합니다.
-- [x] 주요 문서 영역별 하위 README와 문서 inventory를 관리합니다.
-- [x] 문서 품질 검증 기준을 적용합니다.
+32는 system engineering 학습 자료 영역·하위 README·문서 inventory·Markdown 품질 검증 기준을 유지합니다. 완료 이력은 `CHANGELOG.md`에서 관리합니다.
 
 ### 30 consumer
 
-- [x] 30을 checker source·test·artifact·release의 source of truth로 확정했습니다.
-- [x] 32 policy exception을 profile로 분리했습니다.
-- [x] 32 consumer workflow를 30 `v0.3.3` release와 SHA-256 pin으로 전환했습니다.
-- [x] private release download·checksum·manifest·embedded file hash 검증을 수행했습니다.
-- [x] 32 root checker 4개와 active 실행 참조를 cleanup했습니다.
-- [x] cleanup 후 32 consumer workflow `33156558662` 검증을 통과했습니다.
+완료된 30 consumer 전환·검증 이력은 `CHANGELOG.md`의 `[4.0.0]`에 기록합니다.
 
 현재 승인된 consumer baseline은 다음과 같습니다.
 
@@ -113,13 +105,6 @@ release:    v0.3.3
 artifact:   sia_scripts_0.3.3.tar.gz
 sha256:     0b293d76e8efb55e93ad6bb21c0b00bf4362e60aa7a3a4ea5e6d752a012bb4ad
 ```
-
-### Governance·agent skill 분리 상태
-
-- [x] 공통 repository·infrastructure·security policy를 [31 `governances`](https://github.com/siasia86/31_governances)로 이관했습니다.
-- [x] Kiro·Claude 공개 mirror를 [35 `agent-skill`](https://github.com/siasia86/35_agent-skill)로 이관했습니다.
-- [x] 32에는 현재 문서 역할과 이관 이력을 설명하는 참조만 유지합니다.
-- [x] 32의 checker profile과 문서 운영은 30 release consumer 기준으로 유지합니다.
 
 ## 5. 문서 운영 계획
 
