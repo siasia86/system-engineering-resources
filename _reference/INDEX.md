@@ -98,3 +98,4 @@ sources:
   - https://...
 ---
 ```
+|  | codex_cli | `_reference/codex_cli_official_notes.md` | 0.153.0 | 2026-09-03 |
