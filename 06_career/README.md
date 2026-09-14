@@ -4,17 +4,18 @@
 
 ## 구조
 
-| 디렉토리                 | 설명                                                         | 문서 수 |
-|--------------------------|--------------------------------------------------------------|---------|
-| [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                            | 4       |
-| [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권                                | 2       |
-| [ai_tools/](./ai_tools/) | AI 도구 — Kiro CLI, AI 개발 요청 템플릿, 프롬프트 엔지니어링 | 9       |
+| 디렉토리                 | 설명                                                                    | 문서 수 |
+|--------------------------|-------------------------------------------------------------------------|---------|
+| [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                       | 4       |
+| [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권                                           | 2       |
+| [ai_tools/](./ai_tools/) | AI 도구 — Kiro CLI, Codex CLI, AI 개발 요청 템플릿, 프롬프트 엔지니어링 | 10      |
 
 ## 주요 문서
 
 - [se_roadmap.md](./roadmap/se_roadmap.md) — 시스템 엔지니어 성장 경로
 - [sre_roadmap.md](./roadmap/sre_roadmap.md) — SRE 역할 정의, 필요 역량
 - [kiro_cli_command_reference.md](./ai_tools/kiro_cli_command_reference.md) — Kiro CLI 전체 명령어
+- [codex_cli_linux_guide.md](./ai_tools/codex_cli_linux_guide.md) — Codex CLI Linux 설치·인증·샌드박스·자동화
 - [harness_engineering.md](./ai_tools/harness_engineering.md) — AI 프롬프트 설계 원칙
 - [ip_ownership_guide.md](./legal/ip_ownership_guide.md) — 코드 저작권, 직무 발명
 
@@ -37,6 +38,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-09-14
 
 © 2026 siasia86. Licensed under CC BY 4.0.
