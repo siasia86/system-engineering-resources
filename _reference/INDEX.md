@@ -5,7 +5,7 @@ tags:
   - index
   - reference
   - directory
-last_checked: 2026-09-11
+last_checked: 2026-09-14
 sources:
   - self (이 파일이 인덱스 역할)
 ---
@@ -39,6 +39,7 @@ sources:
 | ISMS-P                         | `_reference/isms_p_official_notes.md`                   | KISA 인증기준 안내서 2023                             | 2026-07-08 | X    |
 | Kubernetes                     | `_reference/kubernetes_official_notes.md`               | v1.36.2                                               | 2026-07-03 | O    |
 | Linux Kernel                   | `_reference/linux_kernel_official_notes.md`             | namespace, cgroup, scheduler                          | 2026-07-03 | O    |
+| Merkle Tree / Git Objects      | `_reference/merkle_tree_official_notes.md`              | RFC 9162·Git 2.55.0, inclusion proof·Merkle DAG       | 2026-09-14 | O    |
 | Lean                           | `_reference/lean_official_notes.md`                     | v4.33.1, theorem proving, Lake, Elan                  | 2026-09-11 | O    |
 | MySQL                          | `_reference/mysql_official_notes.md`                    | 8.4.10 LTS, 9.7.1 Innovation                          | 2026-07-10 | O    |
 | GRAID SupremeRAID              | `_reference/graid_supremeraid_official_notes.md`        | 1.5.0, 2.0.0 (Linux)                                  | 2026-07-10 | O    |
