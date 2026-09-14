@@ -5,12 +5,12 @@ OpenAI Codex CLI를 Linux 터미널에서 설치하고, 안전한 권한으로 �
 
 ## 목차
 
-| 섹션                                                                                 |
-|--------------------------------------------------------------------------------------|
-| [1. 개요와 사전 점검](#1-개요와-사전-점검) / [2. 설치](#2-설치) / [3. 인증](#3-인증) |
-| [4. 대화형 사용](#4-대화형-사용) / [5. 권한과 샌드박스](#5-권한과-샌드박스)          |
-| [6. 비대화형 실행](#6-비대화형-실행) / [7. 설정과 AGENTS.md](#7-설정과-agentsmd)     |
-| [8. 운영 체크리스트와 문제 해결](#8-운영-체크리스트와-문제-해결)                     |
+| 섹션                                                                                                  |
+|-------------------------------------------------------------------------------------------------------|
+| [1. 개요와 사전 점검](#1-개요와-사전-점검) / [2. 설치](#2-설치) / [3. 인증](#3-인증)                  |
+| [4. 대화형 사용](#4-대화형-사용) / [5. 권한과 샌드박스](#5-권한과-샌드박스)                           |
+| [6. 비대화형 실행](#6-비대화형-실행) / [7. 설정과 AGENTS.md](#7-설정과-agentsmd)                      |
+| [8. 핵심 사용 팁](#8-핵심-사용-팁) / [9. 운영 체크리스트와 문제 해결](#9-운영-체크리스트와-문제-해결) |
 
 ---
 
@@ -363,7 +363,64 @@ codex mcp login <server-name>
 
 ---
 
-## 8. 운영 체크리스트와 문제 해결
+## 8. 핵심 사용 팁
+
+### 요청은 목표·범위·검증을 함께 지정
+
+Codex에게 작업을 맡길 때 목표만 전달하지 말고 변경 범위, 제약 조건, 검증 방법을 함께 지정합니다.
+
+```text
+목표:
+- Ansible 역할의 SSH 설정을 개선해.
+
+범위:
+- ansible/roles/ssh_hardening/ 내부만 수정해.
+
+제약:
+- 비밀번호 인증은 비활성화하되 기존 SSH 포트는 변경하지 마.
+- 비밀정보를 파일이나 출력에 기록하지 마.
+
+검증:
+- YAML 문법 검사와 ansible-lint를 실행해.
+- 변경 파일, 테스트 결과, rollback 방법을 보고해.
+
+먼저 현재 구조와 위험 요소를 분석하고, 승인 없이 수정하지 마.
+```
+
+### 분석·수정·검증을 분리
+
+처음에는 읽기 전용으로 분석한 뒤, 계획을 검토하고 수정 권한을 부여합니다.
+
+```bash
+codex exec --sandbox read-only "저장소 구조와 변경 위험을 분석하고 수정 계획만 제시해"
+codex --sandbox workspace-write --ask-for-approval on-request
+```
+
+수정 후에는 `/status`, `/diff`, `/review`와 프로젝트의 테스트·lint 명령을 차례로 실행합니다. `Codex가 완료했다고 보고한 것`과 실제 검증 통과 여부를 구분합니다.
+
+### `AGENTS.md`와 Skills로 반복 규칙 고정
+
+- 저장소 공통 규칙은 루트 `AGENTS.md`에 둡니다.
+- 반복 작업은 `/skills`로 목록을 확인하고 `$skill-name`으로 명시적으로 호출합니다.
+- npm 또는 standalone 설치만으로 Skills가 자동 설치되지는 않습니다.
+- Codex는 프로젝트 `.agents/skills/`와 사용자 `~/.agents/skills/` 등을 검색하며, 다른 에이전트용 경로인 `~/.kiro/skills/`는 자동으로 읽지 않습니다.
+
+### 최소 권한과 자격증명 보호
+
+- 일반 작업은 `workspace-write`와 `on-request`로 시작합니다.
+- `danger-full-access`와 `--ask-for-approval never`는 격리된 runner·container에서만 사용합니다.
+- API key, `~/.codex/auth.json`, access token을 프롬프트·`AGENTS.md`·로그·commit에 기록하지 않습니다.
+- 외부 Skill과 MCP는 지침 및 실행 스크립트를 검토한 후 최소 권한으로 활성화합니다.
+
+### 긴 작업은 요약·재개 단위로 관리
+
+대화가 길어지면 `/compact` 전에 목표, 변경 파일, 완료된 검증, 남은 작업을 요약하도록 요청합니다. 작업을 이어갈 때는 다음 명령을 사용합니다.
+
+```bash
+codex resume --last
+```
+
+## 9. 운영 체크리스트와 문제 해결
 
 ### 설치·실행 확인
 
@@ -407,6 +464,8 @@ codex --help
 - OpenAI Sandbox: [developers.openai.com/codex/sandboxing.md](https://developers.openai.com/codex/sandboxing.md) — ★★★☆☆
 - OpenAI Non-interactive mode: [developers.openai.com/codex/non-interactive-mode.md](https://developers.openai.com/codex/non-interactive-mode.md) — ★★★☆☆
 - OpenAI Configuration reference: [developers.openai.com/codex/config-file/config-reference.md](https://developers.openai.com/codex/config-file/config-reference.md) — ★★★☆☆
+- OpenAI Skills & Plugins: [developers.openai.com/codex/skills-and-plugins.md](https://developers.openai.com/codex/skills-and-plugins.md) — ★★★☆☆
+- OpenAI Build skills: [developers.openai.com/codex/build-skills.md](https://developers.openai.com/codex/build-skills.md) — ★★★☆☆
 - OpenAI Codex releases: [github.com/openai/codex/releases](https://github.com/openai/codex/releases) — ★★★☆☆
 
 ---
