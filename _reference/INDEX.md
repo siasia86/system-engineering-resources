@@ -18,6 +18,7 @@ sources:
 |--------------------------------|---------------------------------------------------------|-------------------------------------------------------|------------|------|
 | Ansible                        | `_reference/ansible_official_notes.md`                  | 14.1.0 (core 2.21.1)                                  | 2026-07-03 | X    |
 | API Styles                     | `_reference/api_styles_official_notes.md`               | REST·GraphQL·gRPC·SOAP·WebSocket·Webhook·JSON-RPC·SSE | 2026-08-21 | O    |
+| GraphQL                        | `_reference/graphql_official_notes.md`                  | September2025, GraphQL over HTTP draft                | 2026-09-14 | O    |
 | gRPC                           | `_reference/grpc_official_notes.md`                     | v1.84.0, HTTP/2 RPC·streaming·deadline·status·TLS     | 2026-09-11 | O    |
 | Protobuf                       | `_reference/protobuf_official_notes.md`                 | v36.1, Editions·schema·wire format·호환성             | 2026-09-11 | O    |
 | REST API                       | `_reference/rest_api_official_notes.md`                 | RFC 9110·9457·5789, OpenAPI 3.2.0                     | 2026-09-11 | O    |

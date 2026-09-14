@@ -10,6 +10,7 @@ regexes = [
     # placeholder values
     '''Secureuser123''',
     '''SecurePassword123''',
+    '''^U2VjdXJlUGFzc3dvcmQxMjM=$''',
     '''SecureKey123''',
     '''SecureToken123''',
     '''SecureDbName123''',
