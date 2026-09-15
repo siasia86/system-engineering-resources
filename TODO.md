@@ -83,28 +83,28 @@
 
 #### 공통 reference note 매핑
 
-- [ ] 범용 테스트 개념 문서 → `_reference/software_testing_official_notes.md`
+- [x] 범용 테스트 개념 문서 → `_reference/software_testing_official_notes.md`
   - 대상: `test_case_design`, `test_oracle`, `scenario_based`, `risk_based`, `test_traceability`, `test_data_management`, `concurrency`, `exploratory`
-- [ ] 게임 도메인 테스트 개념 문서 → `_reference/game_testing_official_notes.md`
+- [x] 게임 도메인 테스트 개념 문서 → `_reference/game_testing_official_notes.md`
   - 대상: `game_test_case_design`, `game_state`, `gameplay_scenario`, `save_load`, `matchmaking`, `game_economy`
-- [ ] 범용 고급 테스트 문서 → `_reference/software_testing_official_notes.md` + 주제별 공식 출처
+- [x] 범용 고급 테스트 문서 → `_reference/software_testing_official_notes.md` + 주제별 공식 출처
   - 대상: `fault_injection`, `property_based`, `mutation_testing`
-- [ ] 게임 서비스 부하 계획 → `_reference/load_testing_official_notes.md`
+- [x] 게임 서비스 부하 계획 → `_reference/load_testing_official_notes.md`
   - 추가 참조: `_reference/api_styles_official_notes.md`, `_reference/mobile_device_testing_official_notes.md`
-- [ ] 게임 도메인 성능 문서 → `_reference/game_testing_official_notes.md` + `_reference/load_testing_official_notes.md`
-- [ ] `01_fundamentals/cs/game_testing/README.md` → `N/A (문서 목록용 README)`
+- [x] 게임 도메인 성능 문서 → `_reference/game_testing_official_notes.md` + `_reference/load_testing_official_notes.md`
+- [x] `01_fundamentals/cs/game_testing/README.md` → `N/A (문서 목록용 README)`
 
 #### 공통 참조 절차
 
-- [ ] 공통 reference note마다 `last_checked`, 공식 `sources`, 권장사항·변경사항 기록
-- [ ] 공통 reference note마다 `_reference/INDEX.md`에 한 번만 등록
+- [x] 새로 생성한 공통 reference note마다 `last_checked`, 공식 `sources`, 권장사항·변경사항 기록
+- [x] 새로 생성한 공통 reference note마다 `_reference/INDEX.md`에 한 번만 등록
 - [ ] 각 본문 문서의 H1 제목 바로 아래에 실제 사용하는 공통 reference 파일의 `reference` HTML 주석 추가
-- [ ] `N/A (문서 목록용 README)`는 reference 생성·본문 fact-check를 생략하고 링크·헤딩·Markdown 검사만 수행
-- [ ] 공통 `_reference` 파일별 `@fact-check` 1회차 실행 — 공식 URL 접근 및 원문 내용 대조
-- [ ] 1회차 결과 반영 후 공통 `_reference` 파일별 `@fact-check` 2회차 실행 — 수정사항 재검증 및 잔여 오류 확인
-- [ ] 각 `@fact-check` 회차의 검증 결과·출처·수정 사항 기록
+- [x] `N/A (문서 목록용 README)`는 reference 생성·본문 fact-check를 생략하고 링크·헤딩·Markdown 검사만 수행
+- [x] 새로 생성한 공통 `_reference` 파일별 `@fact-check` 1회차 실행 — 공식 URL 접근 및 원문 내용 대조
+- [x] 1회차 결과 반영 후 새로 생성한 공통 `_reference` 파일별 `@fact-check` 2회차 실행 — 수정사항 재검증 및 잔여 오류 확인
+- [x] 새로 생성한 공통 reference note의 각 `@fact-check` 회차 결과·출처·수정 사항 기록
 - [ ] 공통 reference를 연결한 본문 `.md`는 문서 대상 fact-check 회차 규칙(3회)을 별도로 적용
-- [ ] 공통 reference 작성·INDEX 등록·`@fact-check` 2회 완료 후 본문 작성
+- [x] 새로 생성한 공통 reference 작성·INDEX 등록·`@fact-check` 2회 완료
 - [ ] 본문 작성 후 Markdown style·heading·link 검사를 실행
 
 ### 2-5. 컨텍스트 분할 작업 및 재개 규칙
