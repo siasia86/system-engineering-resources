@@ -98,7 +98,7 @@
 
 - [x] 새로 생성한 공통 reference note마다 `last_checked`, 공식 `sources`, 권장사항·변경사항 기록
 - [x] 새로 생성한 공통 reference note마다 `_reference/INDEX.md`에 한 번만 등록
-- [ ] 각 본문 문서의 H1 제목 바로 아래에 실제 사용하는 공통 reference 파일의 `reference` HTML 주석 추가
+- [x] 각 본문 문서의 H1 제목 바로 아래에 실제 사용하는 공통 reference 파일의 `reference` HTML 주석 추가
 - [x] `N/A (문서 목록용 README)`는 reference 생성·본문 fact-check를 생략하고 링크·헤딩·Markdown 검사만 수행
 - [x] 새로 생성한 공통 `_reference` 파일별 `@fact-check` 1회차 실행 — 공식 URL 접근 및 원문 내용 대조
 - [x] 1회차 결과 반영 후 새로 생성한 공통 `_reference` 파일별 `@fact-check` 2회차 실행 — 수정사항 재검증 및 잔여 오류 확인
@@ -184,6 +184,18 @@
 - commit 메시지는 `git-commit-rule` 형식(`<type>: <한글 설명>`, 50자 이내, 마침표 없음)을 따릅니다.
 - push 실패 시 원인을 기록하고, 성공할 때까지 TODO 완료 상태로 표시하지 않습니다.
 - 최종 배치에서는 관련 README inventory와 `CHANGELOG.md`를 갱신한 뒤 최종 검증·commit·push를 진행합니다.
+
+### 2-7. 현재 진행 상태
+
+- [x] 범용 테스트 개념 문서 11개와 `01_fundamentals/cs/testing/README.md` inventory 완료
+- [x] 게임 도메인 테스트 개념 문서 8개와 `01_fundamentals/cs/game_testing/README.md` inventory 완료
+- [x] 공통 `_reference` note와 `_reference/INDEX.md` 등록·검증 완료
+- [x] 게임 서비스 실행 계획 디렉토리 생성·부하 계획서 이관·링크 갱신 완료
+- [x] 사용자 여정·실시간 연결·데이터 정합성·런타임 지표 검토 완료
+- [ ] 실제 CCU·RPS·P95/P99·오류율·RTO·오토스케일 승인값 입력
+- [ ] Batch 8-3 완료 후 전체 문서·README·`CHANGELOG.md` 최종 검토
+
+현재 실행 가능한 다음 작업은 서비스 오너가 제공하는 Batch 8-3 승인값을 실행 계획서의 `[TBD]` 항목에 반영하는 것입니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
