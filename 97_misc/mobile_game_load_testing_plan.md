@@ -1,5 +1,5 @@
 # 모바일 게임 사전 오픈 부하 테스트 계획서
-<!-- reference: _reference/csharp_official_notes.md, _reference/api_styles_official_notes.md -->
+<!-- reference: _reference/csharp_official_notes.md, _reference/api_styles_official_notes.md, _reference/mobile_device_testing_official_notes.md -->
 
 게임 클라이언트가 Unity 기반이고 Node.js·C# 서버와 웹/API 계층으로 구성된 서비스를 대상으로, 정식 서비스 오픈 전에 부하·성능·복구 능력을 검증하기 위한 계획서입니다. 실제 수치와 운영 정책은 서비스별 SLO와 인프라 사양을 입력하여 확정합니다.
 
