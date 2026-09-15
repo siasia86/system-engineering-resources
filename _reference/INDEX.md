@@ -55,6 +55,7 @@ sources:
 | Merkle Tree / Git Objects      | `_reference/merkle_tree_official_notes.md`              | RFC 9162·Git 2.55.0, inclusion proof·Merkle DAG       | 2026-09-14 | O    |
 | Mobile Device Testing          | `_reference/mobile_device_testing_official_notes.md`    | DeviceFarmer·Appium·Maestro·AWS Device Farm·Test Lab  | 2026-09-15 | O    |
 | Software Testing               | `_reference/software_testing_official_notes.md`         | ISTQB CTFL v4.0·테스트 용어·설계·테스트 레벨          | 2026-09-15 | O    |
+| Advanced Testing               | `_reference/advanced_testing_official_notes.md`         | Hypothesis·PIT·Property-based·Mutation Testing        | 2026-09-15 | O    |
 | Game Testing                   | `_reference/game_testing_official_notes.md`             | Unity Test Framework·Firebase Game Loop               | 2026-09-15 | O    |
 | Load Testing                   | `_reference/load_testing_official_notes.md`             | k6 테스트 유형·Google SRE Managing Load               | 2026-09-15 | O    |
 | Lean                           | `_reference/lean_official_notes.md`                     | v4.33.1, theorem proving, Lake, Elan                  | 2026-09-11 | O    |

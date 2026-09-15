@@ -30,7 +30,9 @@
 │   ├── test_data_management.md
 │   ├── concurrency_testing.md
 │   ├── fault_injection_testing.md
-│   └── exploratory_testing.md
+│   ├── exploratory_testing.md
+│   ├── property_based_testing.md
+│   └── mutation_testing.md
 └── README.md
 ```
 
@@ -70,18 +72,20 @@
 
 "무엇을 테스트할지" 사고하는 방법과 전략을 다룹니다.
 
-| 문서                                                             | 설명                                  |
-|------------------------------------------------------------------|---------------------------------------|
-| [Edge Case Testing](04_test_design/edge_case_testing.md)         | edge/corner/degenerate/race case 도출 |
-| [테스트 케이스 설계](04_test_design/test_case_design.md)         | 케이스 구성·작성 절차·품질 검토       |
-| [테스트 오라클](04_test_design/test_oracle.md)                   | 기대 결과·판정 기준·오라클 유형       |
-| [시나리오 기반 테스트](04_test_design/scenario_based_testing.md) | 흐름·분기·복구 시나리오 설계          |
-| [위험 기반 테스트](04_test_design/risk_based_testing.md)         | 위험 식별·평가·우선순위·재평가        |
-| [테스트 추적성](04_test_design/test_traceability.md)             | 요구사항·케이스·결함·결과 연결        |
-| [테스트 데이터 관리](04_test_design/test_data_management.md)     | 데이터 생성·격리·정리·보안            |
-| [동시성 테스트](04_test_design/concurrency_testing.md)           | 경쟁 조건·중복·Lock·리소스 경합       |
-| [장애 주입 테스트](04_test_design/fault_injection_testing.md)    | 장애·복구·안전 조건·결과 판정         |
-| [탐색적 테스트](04_test_design/exploratory_testing.md)           | 차터·탐색·기록·후속 케이스            |
+| 문서                                                               | 설명                                  |
+|--------------------------------------------------------------------|---------------------------------------|
+| [Edge Case Testing](04_test_design/edge_case_testing.md)           | edge/corner/degenerate/race case 도출 |
+| [테스트 케이스 설계](04_test_design/test_case_design.md)           | 케이스 구성·작성 절차·품질 검토       |
+| [테스트 오라클](04_test_design/test_oracle.md)                     | 기대 결과·판정 기준·오라클 유형       |
+| [시나리오 기반 테스트](04_test_design/scenario_based_testing.md)   | 흐름·분기·복구 시나리오 설계          |
+| [위험 기반 테스트](04_test_design/risk_based_testing.md)           | 위험 식별·평가·우선순위·재평가        |
+| [테스트 추적성](04_test_design/test_traceability.md)               | 요구사항·케이스·결함·결과 연결        |
+| [테스트 데이터 관리](04_test_design/test_data_management.md)       | 데이터 생성·격리·정리·보안            |
+| [동시성 테스트](04_test_design/concurrency_testing.md)             | 경쟁 조건·중복·Lock·리소스 경합       |
+| [장애 주입 테스트](04_test_design/fault_injection_testing.md)      | 장애·복구·안전 조건·결과 판정         |
+| [탐색적 테스트](04_test_design/exploratory_testing.md)             | 차터·탐색·기록·후속 케이스            |
+| [Property-based Testing](04_test_design/property_based_testing.md) | 속성·입력 생성·실패 재현              |
+| [Mutation Testing](04_test_design/mutation_testing.md)             | mutant·테스트 감지·결과 해석          |
 
 ## 테스트 피라미드
 
