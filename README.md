@@ -426,6 +426,8 @@ RDBMS, NoSQL, 운영, 포렌식.
 |------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
 | [라이선스 가이드](license_guide.md)                                                | MIT/Apache/GPL/CC 라이선스 비교, 선택 가이드                                      |
 | [유사 레포 비교](97_misc/similar_repos.md)                                         | 벤치마킹, 차별화 전략                                                             |
+| [모바일 게임 사전 오픈 부하 테스트](97_misc/mobile_game_load_testing_plan.md)      | Node.js·C#·Unity 기반 게임 서비스 부하 테스트 계획                                |
+| [모바일 게임 기기 테스트 솔루션](97_misc/mobile_game_device_testing_solutions.md)  | DeviceFarmer·Appium·Maestro·AWS Device Farm·Firebase Test Lab 비교                |
 | [Windows 인시던트 로그 수집](96_scripts/windows/collect_incident_logs.py)          | 장애 시 로그 자동 수집 스크립트                                                   |
 | [Windows Hosts 관리](96_scripts/windows/win_hosts_manager.py)                      | hosts 파일 관리 도구                                                              |
 | [공식 참고 문서 인덱스](_reference/INDEX.md)                                       | 기술별 공식 문서와 확인일 관리                                                    |
