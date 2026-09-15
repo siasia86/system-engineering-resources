@@ -5,7 +5,7 @@ tags:
   - index
   - reference
   - directory
-last_checked: 2026-09-14
+last_checked: 2026-09-15
 sources:
   - self (이 파일이 인덱스 역할)
 ---
@@ -13,6 +13,16 @@ sources:
 # _reference INDEX
 
 문서 작성/검토 시 해당 기술의 참조 파일을 읽어 공식 권장사항을 확인합니다.
+
+## 공통 reference note 정책
+
+하나의 `_reference` 노트는 같은 기술·도메인을 다루는 여러 `.md` 문서에서 공통으로 참조합니다. 문서마다 동일한 공식 내용을 중복하여 별도 reference 파일로 만들지 않습니다.
+
+- `_reference/INDEX.md`에는 공통 reference 노트를 한 번만 등록합니다.
+- 각 본문 문서는 H1 바로 아래 `reference` HTML 주석으로 사용하는 공통 노트를 표시합니다.
+- 한 문서가 여러 기술 영역을 다루면 여러 reference 파일을 함께 표시합니다.
+- 공통 reference 노트의 사실 검증은 2회, 해당 노트를 참조하는 본문 문서 검증은 문서 규칙에 따라 별도로 수행합니다.
+- 인덱스용 `README.md`는 기술 주장이 없으면 `N/A (문서 목록용 README)`로 기록하고 reference 생성을 생략합니다.
 
 | 기술                           | 파일                                                    | 최신 버전                                             | 확인일     | 참조 |
 |--------------------------------|---------------------------------------------------------|-------------------------------------------------------|------------|------|
@@ -43,7 +53,10 @@ sources:
 | Linux Kernel                   | `_reference/linux_kernel_official_notes.md`             | namespace, cgroup, scheduler                          | 2026-07-03 | O    |
 | Time Complexity / Algorithms   | `_reference/time_complexity_official_notes.md`          | MIT OCW 6.006·Python 3.14.7, asymptotic·cost model    | 2026-09-14 | O    |
 | Merkle Tree / Git Objects      | `_reference/merkle_tree_official_notes.md`              | RFC 9162·Git 2.55.0, inclusion proof·Merkle DAG       | 2026-09-14 | O    |
-| Mobile Device Testing          | `_reference/mobile_device_testing_official_notes.md`   | DeviceFarmer·Appium·Maestro·AWS Device Farm·Test Lab | 2026-09-15 | O    |
+| Mobile Device Testing          | `_reference/mobile_device_testing_official_notes.md`    | DeviceFarmer·Appium·Maestro·AWS Device Farm·Test Lab  | 2026-09-15 | O    |
+| Software Testing               | `_reference/software_testing_official_notes.md`         | ISTQB CTFL v4.0·테스트 용어·설계·테스트 레벨          | 2026-09-15 | O    |
+| Game Testing                   | `_reference/game_testing_official_notes.md`             | Unity Test Framework·Firebase Game Loop               | 2026-09-15 | O    |
+| Load Testing                   | `_reference/load_testing_official_notes.md`             | k6 테스트 유형·Google SRE Managing Load               | 2026-09-15 | O    |
 | Lean                           | `_reference/lean_official_notes.md`                     | v4.33.1, theorem proving, Lake, Elan                  | 2026-09-11 | O    |
 | MySQL                          | `_reference/mysql_official_notes.md`                    | 8.4.10 LTS, 9.7.1 Innovation                          | 2026-07-10 | O    |
 | GRAID SupremeRAID              | `_reference/graid_supremeraid_official_notes.md`        | 1.5.0, 2.0.0 (Linux)                                  | 2026-07-10 | O    |

@@ -77,51 +77,34 @@
 - [ ] Node.js·C#·Unity 런타임별 관측 지표 — Event Loop·GC·ThreadPool·Frame/Tick
 - [ ] 실제 서비스 기준 부하 모델·SLO·모니터링·실행 절차 정리
 
-### 2-4. 문서별 `_reference` 선행 작업
+### 2-4. 문서군별 공통 `_reference` 선행 작업
 
-각 문서는 본문을 작성하기 전에 대응하는 공식 참조 노트를 먼저 확인하거나 생성합니다. 참조 노트가 없으면 공식 홈페이지·표준·공식 문서로 `_reference/` 파일을 먼저 작성한 뒤 본문을 작성합니다.
+문서마다 별도 reference 파일을 복제하지 않고, 같은 기술·도메인을 다루는 여러 문서가 공통 reference note를 참조합니다. 공통 reference note가 없으면 공식 홈페이지·표준·공식 문서로 먼저 작성한 뒤 `_reference/INDEX.md`에 한 번 등록합니다.
 
-#### 범용 테스트 개념 문서 매핑
+#### 공통 reference note 매핑
 
-- [ ] `04_test_design/test_case_design.md` → `_reference/test_case_design_official_notes.md`
-- [ ] `04_test_design/test_oracle.md` → `_reference/test_oracle_official_notes.md`
-- [ ] `04_test_design/scenario_based_testing.md` → `_reference/scenario_based_testing_official_notes.md`
-- [ ] `04_test_design/risk_based_testing.md` → `_reference/risk_based_testing_official_notes.md`
-- [ ] `04_test_design/test_traceability.md` → `_reference/test_traceability_official_notes.md`
-- [ ] `04_test_design/test_data_management.md` → `_reference/test_data_management_official_notes.md`
-- [ ] `04_test_design/concurrency_testing.md` → `_reference/concurrency_testing_official_notes.md`
-- [ ] `04_test_design/fault_injection_testing.md` → `_reference/fault_injection_testing_official_notes.md`
-- [ ] `04_test_design/exploratory_testing.md` → `_reference/exploratory_testing_official_notes.md`
-- [ ] `04_test_design/property_based_testing.md` → `_reference/property_based_testing_official_notes.md`
-- [ ] `02_white_box/mutation_testing.md` → `_reference/mutation_testing_official_notes.md`
-
-#### 게임 도메인 테스트 개념 문서 매핑
-
+- [ ] 범용 테스트 개념 문서 → `_reference/software_testing_official_notes.md`
+  - 대상: `test_case_design`, `test_oracle`, `scenario_based`, `risk_based`, `test_traceability`, `test_data_management`, `concurrency`, `exploratory`
+- [ ] 게임 도메인 테스트 개념 문서 → `_reference/game_testing_official_notes.md`
+  - 대상: `game_test_case_design`, `game_state`, `gameplay_scenario`, `save_load`, `matchmaking`, `game_economy`
+- [ ] 범용 고급 테스트 문서 → `_reference/software_testing_official_notes.md` + 주제별 공식 출처
+  - 대상: `fault_injection`, `property_based`, `mutation_testing`
+- [ ] 게임 서비스 부하 계획 → `_reference/load_testing_official_notes.md`
+  - 추가 참조: `_reference/api_styles_official_notes.md`, `_reference/mobile_device_testing_official_notes.md`
+- [ ] 게임 도메인 성능 문서 → `_reference/game_testing_official_notes.md` + `_reference/load_testing_official_notes.md`
 - [ ] `01_fundamentals/cs/game_testing/README.md` → `N/A (문서 목록용 README)`
-- [ ] `01_fundamentals/cs/game_testing/game_test_case_design.md` → `_reference/game_test_case_design_official_notes.md`
-- [ ] `01_fundamentals/cs/game_testing/game_state_testing.md` → `_reference/game_state_testing_official_notes.md`
-- [ ] `01_fundamentals/cs/game_testing/gameplay_scenario_testing.md` → `_reference/gameplay_scenario_testing_official_notes.md`
-- [ ] `01_fundamentals/cs/game_testing/save_load_testing.md` → `_reference/save_load_testing_official_notes.md`
-- [ ] `01_fundamentals/cs/game_testing/matchmaking_testing.md` → `_reference/matchmaking_testing_official_notes.md`
-- [ ] `01_fundamentals/cs/game_testing/game_economy_testing.md` → `_reference/game_economy_testing_official_notes.md`
-- [ ] `01_fundamentals/cs/game_testing/game_performance_testing.md` → `_reference/game_performance_testing_official_notes.md`
-
-#### 게임 서비스 실행 계획 문서 매핑
-
-- [ ] `mobile_game_load_testing_plan.md` → `_reference/load_testing_official_notes.md`
-- [ ] `mobile_game_device_testing_solutions.md` → `_reference/mobile_device_testing_official_notes.md` 확인·생성
-- [ ] 실행 계획의 사용자 여정·실시간 연결·데이터 정합성·런타임 지표는 각 본문 참조 노트와 대조
 
 #### 공통 참조 절차
 
-- [ ] 새 `_reference` 파일마다 `last_checked`, 공식 `sources`, 권장사항·변경사항 기록
-- [ ] 새 `_reference` 파일마다 `_reference/INDEX.md`에 기술명·파일명·버전·확인일 등록
-- [ ] 각 본문 문서의 H1 제목 바로 아래에 `<!-- reference: _reference/{topic}_official_notes.md -->` 추가
-- [ ] `_reference` 파일별 `@fact-check` 1회차 실행 — 공식 URL 접근 및 원문 내용 대조
-- [ ] 1회차 결과 반영 후 `_reference` 파일별 `@fact-check` 2회차 실행 — 수정사항 재검증 및 잔여 오류 확인
+- [ ] 공통 reference note마다 `last_checked`, 공식 `sources`, 권장사항·변경사항 기록
+- [ ] 공통 reference note마다 `_reference/INDEX.md`에 한 번만 등록
+- [ ] 각 본문 문서의 H1 제목 바로 아래에 실제 사용하는 공통 reference 파일의 `reference` HTML 주석 추가
+- [ ] `N/A (문서 목록용 README)`는 reference 생성·본문 fact-check를 생략하고 링크·헤딩·Markdown 검사만 수행
+- [ ] 공통 `_reference` 파일별 `@fact-check` 1회차 실행 — 공식 URL 접근 및 원문 내용 대조
+- [ ] 1회차 결과 반영 후 공통 `_reference` 파일별 `@fact-check` 2회차 실행 — 수정사항 재검증 및 잔여 오류 확인
 - [ ] 각 `@fact-check` 회차의 검증 결과·출처·수정 사항 기록
-- [ ] 참조 노트가 연결된 본문 `.md`는 문서 대상 fact-check 회차 규칙(3회)을 별도로 적용
-- [ ] 참조 노트 작성·INDEX 등록·`@fact-check` 2회 완료 후 본문 작성
+- [ ] 공통 reference를 연결한 본문 `.md`는 문서 대상 fact-check 회차 규칙(3회)을 별도로 적용
+- [ ] 공통 reference 작성·INDEX 등록·`@fact-check` 2회 완료 후 본문 작성
 - [ ] 본문 작성 후 Markdown style·heading·link 검사를 실행
 
 ### 2-5. 컨텍스트 분할 작업 및 재개 규칙
@@ -131,12 +114,12 @@
 #### 배치별 공통 절차
 
 1. 미완료 문서 3개 이하를 배치 대상으로 확정합니다.
-2. 대상 문서별 `_reference` 확인·생성 및 `_reference/INDEX.md` 등록을 먼저 완료합니다.
-3. 대상 `_reference`별 `@fact-check` 2회 실행과 결과 기록을 완료합니다.
+2. 대상 문서군의 공통 `_reference` 확인·생성 및 `_reference/INDEX.md` 등록을 먼저 완료합니다.
+3. 대상 공통 `_reference`별 `@fact-check` 2회 실행과 결과 기록을 완료합니다.
 4. 참조 작업이 완료된 문서만 본문을 작성합니다.
 5. `sia-md-style-check`, `sia-md-heading-check`, `sia-md-link-check`, `git diff --check`를 실행합니다.
 6. 문서별 commit·push 성공을 확인합니다.
-7. 배치 결과와 남은 작업을 TODO에 기록하고 다음 배치로 이동합니다.
+7. 저장소 루트 `TODO.md`에 배치 결과와 남은 작업을 기록하고 다음 배치로 이동합니다.
 
 #### 배치 시작·종료 출력
 
@@ -169,12 +152,12 @@
 
 ### 2-6. TODO 완료 후 문서별 commit·push 규칙
 
-각 TODO 항목은 해당 문서와 대응 `_reference` 작업, 검증, 문서별 commit·push가 모두 완료된 뒤 `[x]`로 변경합니다.
+각 TODO 항목은 해당 문서와 공통 reference note, 검증, 문서별 commit·push가 모두 완료된 뒤 `[x]`로 변경합니다.
 
 #### 문서별 완료 절차
 
-1. 대상 문서의 본문 작성과 대응 `_reference` 작업을 완료합니다.
-2. `_reference` `@fact-check` 2회와 본문 문서 fact-check를 완료합니다.
+1. 대상 문서의 본문 작성과 필요한 공통 reference note 연결을 완료합니다.
+2. 공통 `_reference`의 `@fact-check` 2회와 본문 문서 fact-check를 완료합니다.
 3. `sia-md-style-check`, `sia-md-heading-check`, `sia-md-link-check`, `git diff --check`를 통과합니다.
 4. 대상 문서와 관련 참조 파일을 명시적으로 stage하고 `git diff --cached` 및 `git diff --cached --check`를 확인합니다.
 5. 문서 단위 commit을 생성합니다.
@@ -185,9 +168,10 @@
 
 #### 파일 단위 예외
 
-- 본문 문서와 `_reference` 파일은 각각 독립적으로 검증 가능한 경우 파일 단위로 별도 commit·push합니다.
+- 본문 문서와 공통 `_reference` 파일은 각각 독립적으로 검증 가능한 경우 파일 단위로 별도 commit·push합니다.
+- 하나의 공통 `_reference` 파일은 여러 본문 문서가 공유하므로 문서마다 중복 commit·push하지 않습니다.
 - `_reference` 파일과 `_reference/INDEX.md`는 인덱스 정합성을 위해 하나의 논리적 commit으로 묶습니다.
-- 본문 문서가 아직 원격에 없는 `_reference`를 참조하지 않도록 참조 노트 commit·push를 먼저 완료합니다.
+- 본문 문서가 아직 원격에 없는 공통 `_reference`를 참조하지 않도록 참조 노트 commit·push를 먼저 완료합니다.
 - 디렉토리 이관은 `refactor` commit으로 분리하고, 이관 대상 파일·링크·README만 포함합니다.
 - 한 commit에 unrelated 문서나 다른 배치의 파일을 포함하지 않습니다.
 
