@@ -147,11 +147,13 @@ printenv OPENAI_API_KEY | codex login --with-api-key
 
 API key를 파일·shell history·CI 전체 환경에 남기지 않습니다. 자동화에서는 작업에 필요한 한 번의 실행 범위로만 주입하고, 가능하면 short-lived workload identity를 사용합니다.
 
+Enterprise access token을 사용하는 자동화에서는 다음 공식 경로를 사용합니다.
+
 ```bash
-CODEX_API_KEY="${CODEX_API_KEY}" codex exec --json "검토 작업"
+printenv CODEX_ACCESS_TOKEN | codex login --with-access-token
 ```
 
-위 예시도 실제 키를 문서에 기록하지 않는 형식입니다. `CODEX_API_KEY`와 `OPENAI_API_KEY`의 사용 위치는 사용 중인 인증 경로와 공식 문서를 구분해 확인합니다.
+`CODEX_API_KEY`는 Codex CLI의 표준 API key 인증 변수로 사용하지 않습니다. API key와 access token은 파일·shell history·로그에 남기지 않습니다.
 
 ### 인증 파일 보호
 
@@ -237,7 +239,7 @@ codex exec --sandbox workspace-write --ask-for-approval on-request "테스트 �
 
 ```toml
 # ~/.codex/config.toml
-model = "gpt-5.6"
+# Choose a model shown by `/model` for this account.
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 ```
@@ -312,13 +314,13 @@ git rev-parse --show-toplevel
 
 ```toml
 # ~/.codex/config.toml
-model = "gpt-5.6"
+# Choose a model shown by `/model` for this account.
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 model_auto_compact_token_limit = 120000
 ```
 
-`model_auto_compact_token_limit`은 자동 대화 요약을 시작할 token threshold입니다. 모델 context window보다 크게 설정하지 않으며, 설정 변경 후 `/status`로 실제 적용 상태를 확인합니다.
+`model_auto_compact_token_limit`은 자동 대화 요약을 시작할 token threshold입니다. 설정 변경 후 `/status`로 실제 적용 상태를 확인합니다. `project_doc_max_bytes`는 각 `AGENTS.md` 파일에서 읽을 최대 바이트 수를 설정하며, 기본값과 실제 적용 범위는 설치 버전의 공식 설정 레퍼런스를 확인합니다.
 
 ### AGENTS.md 지침
 
@@ -344,8 +346,6 @@ cat > AGENTS.md <<'EOF'
 - Run the documented lint and test commands before committing.
 EOF
 ```
-
-공식 기본 결합 상한은 `project_doc_max_bytes` 32 KiB입니다. 지침 파일을 과도하게 크게 만들지 않고, 공통 규칙과 하위 디렉토리별 규칙을 분리합니다.
 
 ### MCP 연결
 
@@ -403,7 +403,8 @@ codex --sandbox workspace-write --ask-for-approval on-request
 - 저장소 공통 규칙은 루트 `AGENTS.md`에 둡니다.
 - 반복 작업은 `/skills`로 목록을 확인하고 `$skill-name`으로 명시적으로 호출합니다.
 - npm 또는 standalone 설치만으로 Skills가 자동 설치되지는 않습니다.
-- Codex는 프로젝트 `.agents/skills/`와 사용자 `~/.agents/skills/` 등을 검색하며, 다른 에이전트용 경로인 `~/.kiro/skills/`는 자동으로 읽지 않습니다.
+- Codex 공식 Skills 문서에 따라 repository·user·admin·system 위치에서 skills를 찾습니다. 실제 검색 경로와 활성화 상태는 설치 버전·client·관리 정책에 따라 `/skills`와 `config.toml`에서 확인합니다.
+- 일반적인 local 경로는 repository의 `.agents/skills/`, 사용자 `$HOME/.agents/skills/`, admin `/etc/codex/skills/`입니다. `~/.kiro/skills/`는 Codex의 자동 검색 경로로 가정하지 않고, 필요한 경우 skill을 명시적으로 등록·호출합니다.
 
 ### 최소 권한과 자격증명 보호
 
