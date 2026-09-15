@@ -24,7 +24,10 @@
 │   ├── edge_case_testing.md
 │   ├── test_case_design.md
 │   ├── test_oracle.md
-│   └── scenario_based_testing.md
+│   ├── scenario_based_testing.md
+│   ├── risk_based_testing.md
+│   ├── test_traceability.md
+│   └── test_data_management.md
 └── README.md
 ```
 
@@ -70,6 +73,9 @@
 | [테스트 케이스 설계](04_test_design/test_case_design.md)         | 케이스 구성·작성 절차·품질 검토       |
 | [테스트 오라클](04_test_design/test_oracle.md)                   | 기대 결과·판정 기준·오라클 유형       |
 | [시나리오 기반 테스트](04_test_design/scenario_based_testing.md) | 흐름·분기·복구 시나리오 설계          |
+| [위험 기반 테스트](04_test_design/risk_based_testing.md)         | 위험 식별·평가·우선순위·재평가        |
+| [테스트 추적성](04_test_design/test_traceability.md)             | 요구사항·케이스·결함·결과 연결        |
+| [테스트 데이터 관리](04_test_design/test_data_management.md)     | 데이터 생성·격리·정리·보안            |
 
 ## 테스트 피라미드
 
