@@ -42,6 +42,8 @@
 | [게임 플레이 시나리오](gameplay_scenario_testing.md) | 플레이 목표·흐름·분기·복구 시나리오      |
 | [저장·불러오기 테스트](save_load_testing.md)         | 저장·복구·호환성·정합성 검증             |
 | [매칭 테스트](matchmaking_testing.md)                | 조건·대기열·방·세션·재시도 검증          |
+| [게임 경제 테스트](game_economy_testing.md)          | 재화·보상·거래·정합성 검증               |
+| [게임 성능 테스트](game_performance_testing.md)      | 게임 루프·네트워크·서버·데이터 성능      |
 
 ## 참고 자료
 

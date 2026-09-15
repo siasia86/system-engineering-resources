@@ -58,8 +58,8 @@
 - [x] `gameplay_scenario_testing.md` — 게임 플레이 흐름과 사용자 시나리오 검증
 - [x] `save_load_testing.md` — 저장·불러오기·중단 후 복구 검증
 - [x] `matchmaking_testing.md` — 매칭·방·세션 규칙 검증
-- [ ] `game_economy_testing.md` — 재화·보상·인벤토리 정합성 검증
-- [ ] `game_performance_testing.md` — 게임 도메인의 성능 지표와 테스트 관점
+- [x] `game_economy_testing.md` — 재화·보상·인벤토리 정합성 검증
+- [x] `game_performance_testing.md` — 게임 도메인의 성능 지표와 테스트 관점
 
 ### 2-3. 게임 서비스 실행 계획 문서
 
@@ -137,7 +137,7 @@
 | 4    | [x]  | 범용 `property_based`, `mutation_testing`                   | 고급 테스트 기법 정리        |
 | 5    | [x]  | 게임 도메인 `README`, `game_test_case_design`, `game_state` | 게임 테스트 개념의 범위 확정 |
 | 6    | [x]  | 게임 도메인 `gameplay_scenario`, `save_load`, `matchmaking` | 게임 상태·플레이 흐름 정리   |
-| 7    | [ ]  | 게임 도메인 `game_economy`, `game_performance`              | 게임 정합성·성능 개념 정리   |
+| 7    | [x]  | 게임 도메인 `game_economy`, `game_performance`              | 게임 정합성·성능 개념 정리   |
 | 8-1  | [ ]  | 부하 테스트 계획·디바이스 테스트 솔루션                     | 실행 문서 이관·분류          |
 | 8-2  | [ ]  | 사용자 여정·실시간 연결·재연결 시나리오                     | 서비스 부하 시나리오 정리    |
 | 8-3  | [ ]  | 데이터 정합성·런타임 지표·SLO·모니터링                      | 실행 기준과 관측 항목 정리   |
