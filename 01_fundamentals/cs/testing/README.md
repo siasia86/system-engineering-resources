@@ -21,7 +21,10 @@
 │   ├── performance_testing.md
 │   └── e2e_testing.md
 ├── 04_test_design/                # Test design (사고법/전략)
-│   └── edge_case_testing.md
+│   ├── edge_case_testing.md
+│   ├── test_case_design.md
+│   ├── test_oracle.md
+│   └── scenario_based_testing.md
 └── README.md
 ```
 
@@ -61,9 +64,12 @@
 
 "무엇을 테스트할지" 사고하는 방법과 전략을 다룹니다.
 
-| 문서                                                     | 설명                                  |
-|----------------------------------------------------------|---------------------------------------|
-| [Edge Case Testing](04_test_design/edge_case_testing.md) | edge/corner/degenerate/race case 도출 |
+| 문서                                                             | 설명                                  |
+|------------------------------------------------------------------|---------------------------------------|
+| [Edge Case Testing](04_test_design/edge_case_testing.md)         | edge/corner/degenerate/race case 도출 |
+| [테스트 케이스 설계](04_test_design/test_case_design.md)         | 케이스 구성·작성 절차·품질 검토       |
+| [테스트 오라클](04_test_design/test_oracle.md)                   | 기대 결과·판정 기준·오라클 유형       |
+| [시나리오 기반 테스트](04_test_design/scenario_based_testing.md) | 흐름·분기·복구 시나리오 설계          |
 
 ## 테스트 피라미드
 
@@ -96,6 +102,6 @@
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-06-19
+**마지막 업데이트**: 2026-09-15
 
 © 2026 siasia86. Licensed under CC BY 4.0.
