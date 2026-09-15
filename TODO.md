@@ -65,12 +65,12 @@
 
 대상 경로: `03_engineering/delivery/game_service_testing/`
 
-- [ ] `03_engineering/delivery/game_service_testing/` 디렉토리 생성
-- [ ] `97_misc/mobile_game_load_testing_plan.md`를 목표 경로로 `git mv` 후 보완 — 모바일 게임 사전 오픈 부하 테스트 계획
-- [ ] `97_misc/mobile_game_device_testing_solutions.md`의 문서 성격을 확인하고 목표 경로 이관 또는 `97_misc/` 유지 결정
-- [ ] 이관 시 기존 내부 링크·README inventory 갱신
-- [ ] 이관 후 `97_misc/`에 불필요한 원본이 남지 않았는지 확인
-- [ ] 이관 실패 시 이전 경로로 복구할 수 있는 rollback 절차 기록
+- [x] `03_engineering/delivery/game_service_testing/` 디렉토리 생성
+- [x] `97_misc/mobile_game_load_testing_plan.md`를 목표 경로로 `git mv` 후 보완 — 모바일 게임 사전 오픈 부하 테스트 계획
+- [x] `97_misc/mobile_game_device_testing_solutions.md`는 솔루션 비교 문서로 판단하여 `97_misc/` 유지
+- [x] 이관 시 기존 내부 링크·README inventory 갱신
+- [x] 이관 후 `97_misc/`에 불필요한 부하 계획 원본이 남지 않았는지 확인
+- [x] 이관 실패 시 이전 경로로 복구할 수 있는 rollback 절차 기록
 - [ ] 게임 사용자 여정별 부하 시나리오 — 로그인·로비·매칭·게임·보상 흐름
 - [ ] 실시간 연결 및 재연결 시나리오 — 장기 연결·재접속 폭주·세션 복구
 - [ ] 게임 데이터 정합성 시나리오 — 재화·보상·랭킹·결제 중복 처리
@@ -138,7 +138,7 @@
 | 5    | [x]  | 게임 도메인 `README`, `game_test_case_design`, `game_state` | 게임 테스트 개념의 범위 확정 |
 | 6    | [x]  | 게임 도메인 `gameplay_scenario`, `save_load`, `matchmaking` | 게임 상태·플레이 흐름 정리   |
 | 7    | [x]  | 게임 도메인 `game_economy`, `game_performance`              | 게임 정합성·성능 개념 정리   |
-| 8-1  | [ ]  | 부하 테스트 계획·디바이스 테스트 솔루션                     | 실행 문서 이관·분류          |
+| 8-1  | [x]  | 부하 테스트 계획·디바이스 테스트 솔루션                     | 실행 문서 이관·분류          |
 | 8-2  | [ ]  | 사용자 여정·실시간 연결·재연결 시나리오                     | 서비스 부하 시나리오 정리    |
 | 8-3  | [ ]  | 데이터 정합성·런타임 지표·SLO·모니터링                      | 실행 기준과 관측 항목 정리   |
 

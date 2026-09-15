@@ -484,7 +484,7 @@ vagrant halt client-01
 
 ### 참고 문서 연결
 
-- [모바일 게임 사전 오픈 부하 테스트 계획서](mobile_game_load_testing_plan.md)
+- [모바일 게임 사전 오픈 부하 테스트 계획서](../03_engineering/delivery/game_service_testing/mobile_game_load_testing_plan.md)
 - [Android ADB 트러블슈팅](android_adb_troubleshooting.md)
 - [Vagrant](../02_infrastructure/iac/vagrant.md)
 

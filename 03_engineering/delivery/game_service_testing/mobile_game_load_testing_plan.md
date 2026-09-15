@@ -1,5 +1,5 @@
 # 모바일 게임 사전 오픈 부하 테스트 계획서
-<!-- reference: _reference/csharp_official_notes.md, _reference/api_styles_official_notes.md, _reference/mobile_device_testing_official_notes.md -->
+<!-- reference: _reference/load_testing_official_notes.md, _reference/api_styles_official_notes.md, _reference/csharp_official_notes.md, _reference/mobile_device_testing_official_notes.md -->
 
 게임 클라이언트가 Unity 기반이고 Node.js·C# 서버와 웹/API 계층으로 구성된 서비스를 대상으로, 정식 서비스 오픈 전에 부하·성능·복구 능력을 검증하기 위한 계획서입니다. 실제 수치와 운영 정책은 서비스별 SLO와 인프라 사양을 입력하여 확정합니다.
 
@@ -390,11 +390,11 @@ Result           : [PASS / FAIL / BLOCKED]
 
 ## 참고 자료
 
-- [성능/부하 테스트](../01_fundamentals/cs/testing/03_test_levels/performance_testing.md) — 기존 테스트 유형·지표·도구 정리
-- [게임 서버 아키텍처](game_server_architecture.md) — 서버 처리 구조와 유형
-- [게임 서비스 인프라 운영 핵심 지표](../02_infrastructure/monitoring/game_infra_kpi_presentation.md) — 가용성·지연·CCU·리소스 지표
-- [C# / .NET 공식 참조 노트](../_reference/csharp_official_notes.md) — C#·.NET 버전과 비동기 처리 참고
-- [API Styles 공식 참조 노트](../_reference/api_styles_official_notes.md) — REST·WebSocket 등 API 스타일 참고
+- [성능/부하 테스트](../../../01_fundamentals/cs/testing/03_test_levels/performance_testing.md) — 기존 테스트 유형·지표·도구 정리
+- [게임 서버 아키텍처](../../../97_misc/game_server_architecture.md) — 서버 처리 구조와 유형
+- [게임 서비스 인프라 운영 핵심 지표](../../../02_infrastructure/monitoring/game_infra_kpi_presentation.md) — 가용성·지연·CCU·리소스 지표
+- [C# / .NET 공식 참조 노트](../../../_reference/csharp_official_notes.md) — C#·.NET 버전과 비동기 처리 참고
+- [API Styles 공식 참조 노트](../../../_reference/api_styles_official_notes.md) — REST·WebSocket 등 API 스타일 참고
 
 ---
 
