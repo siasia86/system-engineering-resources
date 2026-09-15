@@ -27,7 +27,10 @@
 │   ├── scenario_based_testing.md
 │   ├── risk_based_testing.md
 │   ├── test_traceability.md
-│   └── test_data_management.md
+│   ├── test_data_management.md
+│   ├── concurrency_testing.md
+│   ├── fault_injection_testing.md
+│   └── exploratory_testing.md
 └── README.md
 ```
 
@@ -76,6 +79,9 @@
 | [위험 기반 테스트](04_test_design/risk_based_testing.md)         | 위험 식별·평가·우선순위·재평가        |
 | [테스트 추적성](04_test_design/test_traceability.md)             | 요구사항·케이스·결함·결과 연결        |
 | [테스트 데이터 관리](04_test_design/test_data_management.md)     | 데이터 생성·격리·정리·보안            |
+| [동시성 테스트](04_test_design/concurrency_testing.md)           | 경쟁 조건·중복·Lock·리소스 경합       |
+| [장애 주입 테스트](04_test_design/fault_injection_testing.md)    | 장애·복구·안전 조건·결과 판정         |
+| [탐색적 테스트](04_test_design/exploratory_testing.md)           | 차터·탐색·기록·후속 케이스            |
 
 ## 테스트 피라미드
 

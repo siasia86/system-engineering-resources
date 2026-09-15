@@ -42,9 +42,9 @@
 - [x] `04_test_design/risk_based_testing.md` — 위험도 기반 테스트 범위와 우선순위
 - [x] `04_test_design/test_traceability.md` — 요구사항·위험·케이스·결과 간 추적성
 - [x] `04_test_design/test_data_management.md` — 테스트 데이터 생성·격리·초기화·정리
-- [ ] `04_test_design/concurrency_testing.md` — 동시 실행·경쟁 조건·교착 상태 검증
-- [ ] `04_test_design/fault_injection_testing.md` — 장애 주입 기반 테스트 설계
-- [ ] `04_test_design/exploratory_testing.md` — 탐색적 테스트의 목적과 실행 전략
+- [x] `04_test_design/concurrency_testing.md` — 동시 실행·경쟁 조건·교착 상태 검증
+- [x] `04_test_design/fault_injection_testing.md` — 장애 주입 기반 테스트 설계
+- [x] `04_test_design/exploratory_testing.md` — 탐색적 테스트의 목적과 실행 전략
 - [ ] `04_test_design/property_based_testing.md` — 속성·불변 조건 기반 테스트
 - [ ] `02_white_box/mutation_testing.md` — 코드 변형 기반 테스트 품질 평가
 
@@ -133,7 +133,7 @@
 |------|------|-------------------------------------------------------------|------------------------------|
 | 1    | [x]  | 범용 `test_case_design`, `test_oracle`, `scenario_based`    | 테스트 케이스 기본 구조 확립 |
 | 2    | [x]  | 범용 `risk_based`, `test_traceability`, `test_data`         | 위험·추적성·데이터 관리 정리 |
-| 3    | [ ]  | 범용 `concurrency`, `fault_injection`, `exploratory`        | 예외·장애·동시성 설계 정리   |
+| 3    | [x]  | 범용 `concurrency`, `fault_injection`, `exploratory`        | 예외·장애·동시성 설계 정리   |
 | 4    | [ ]  | 범용 `property_based`, `mutation_testing`                   | 고급 테스트 기법 정리        |
 | 5    | [ ]  | 게임 도메인 `README`, `game_test_case_design`, `game_state` | 게임 테스트 개념의 범위 확정 |
 | 6    | [ ]  | 게임 도메인 `gameplay_scenario`, `save_load`, `matchmaking` | 게임 상태·플레이 흐름 정리   |
