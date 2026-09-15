@@ -4,6 +4,33 @@
 
 ---
 
+## [5.0.2] - 2026-09-15
+
+### Added
+
+- 범용 테스트 개념 문서 11개 추가: 테스트 케이스 설계, 테스트 오라클, 시나리오 기반 테스트, 위험 기반 테스트, 테스트 추적성, 테스트 데이터 관리, 동시성 테스트, 장애 주입 테스트, 탐색적 테스트, Property-based Testing, Mutation Testing.
+- 게임 도메인 테스트 문서 8개 추가: 게임 테스트 케이스 설계, 상태, 플레이 시나리오, 저장·불러오기, 매칭, 게임 경제, 게임 성능 및 디렉토리 README.
+- `software_testing_official_notes.md`, `game_testing_official_notes.md`, `load_testing_official_notes.md`, `advanced_testing_official_notes.md` 공통 reference note 추가.
+- 게임 서비스 실행 계획 디렉토리 README 추가.
+
+### Changed
+
+- 테스트 문서 README inventory에 범용 테스트 개념 문서를 등록.
+- 게임 테스트 README inventory에 게임 도메인 문서를 등록.
+- `_reference/INDEX.md`를 문서별 1:1 reference가 아닌 문서군별 공통 reference note 재사용 구조로 갱신.
+- `mobile_game_load_testing_plan.md`를 `03_engineering/delivery/game_service_testing/`로 이관.
+- 모바일 게임 디바이스 솔루션 비교 문서는 `97_misc/`에 유지하고 이관된 부하 계획 링크를 갱신.
+- root README의 모바일 게임 부하 테스트 inventory 경로를 갱신.
+
+### Verified
+
+- Batch 1~7 및 보조 Batch 8-1·8-2의 문서 작성·README inventory·공통 reference 연결을 완료.
+- 공통 reference note별 공식 출처 대조와 `@fact-check` 2회, 본문 문서 fact-check를 완료.
+- 변경 문서의 `sia-md-style-check`, `sia-md-heading-check`, `sia-md-link-check`, `git diff --check`, `gitleaks` 검증을 완료.
+- 완료 항목을 `TODO.md`에서 제거하고, 활성 잔여 이슈만 유지하도록 정리.
+
+---
+
 ## [5.0.1] - 2026-09-14
 
 ### Changed
