@@ -52,9 +52,9 @@
 
 대상 경로: `01_fundamentals/cs/game_testing/`
 
-- [ ] `README.md` — 게임 테스트 개념 문서의 범위와 문서 목록
-- [ ] `game_test_case_design.md` — 게임 테스트 케이스의 공통 구성과 설계 기준
-- [ ] `game_state_testing.md` — 게임 상태·상태 전이·복구 검증
+- [x] `README.md` — 게임 테스트 개념 문서의 범위와 문서 목록
+- [x] `game_test_case_design.md` — 게임 테스트 케이스의 공통 구성과 설계 기준
+- [x] `game_state_testing.md` — 게임 상태·상태 전이·복구 검증
 - [ ] `gameplay_scenario_testing.md` — 게임 플레이 흐름과 사용자 시나리오 검증
 - [ ] `save_load_testing.md` — 저장·불러오기·중단 후 복구 검증
 - [ ] `matchmaking_testing.md` — 매칭·방·세션 규칙 검증
@@ -135,7 +135,7 @@
 | 2    | [x]  | 범용 `risk_based`, `test_traceability`, `test_data`         | 위험·추적성·데이터 관리 정리 |
 | 3    | [x]  | 범용 `concurrency`, `fault_injection`, `exploratory`        | 예외·장애·동시성 설계 정리   |
 | 4    | [x]  | 범용 `property_based`, `mutation_testing`                   | 고급 테스트 기법 정리        |
-| 5    | [ ]  | 게임 도메인 `README`, `game_test_case_design`, `game_state` | 게임 테스트 개념의 범위 확정 |
+| 5    | [x]  | 게임 도메인 `README`, `game_test_case_design`, `game_state` | 게임 테스트 개념의 범위 확정 |
 | 6    | [ ]  | 게임 도메인 `gameplay_scenario`, `save_load`, `matchmaking` | 게임 상태·플레이 흐름 정리   |
 | 7    | [ ]  | 게임 도메인 `game_economy`, `game_performance`              | 게임 정합성·성능 개념 정리   |
 | 8-1  | [ ]  | 부하 테스트 계획·디바이스 테스트 솔루션                     | 실행 문서 이관·분류          |
