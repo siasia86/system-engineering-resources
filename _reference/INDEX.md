@@ -26,6 +26,7 @@ sources:
 
 | 기술                           | 파일                                                    | 최신 버전                                             | 확인일     | 참조 |
 |--------------------------------|---------------------------------------------------------|-------------------------------------------------------|------------|------|
+| POSIX ACL / setfacl            | `_reference/acl_setfacl_official_notes.md`              | acl 2.4.0·setfacl·getfacl·Default ACL·mask            | 2026-09-16 | O    |
 | Ansible                        | `_reference/ansible_official_notes.md`                  | 14.1.0 (core 2.21.1)                                  | 2026-07-03 | X    |
 | API Styles                     | `_reference/api_styles_official_notes.md`               | REST·GraphQL·gRPC·SOAP·WebSocket·Webhook·JSON-RPC·SSE | 2026-08-21 | O    |
 | GraphQL                        | `_reference/graphql_official_notes.md`                  | September2025, GraphQL over HTTP draft                | 2026-09-14 | O    |
