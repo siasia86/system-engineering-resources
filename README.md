@@ -37,6 +37,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Scheduler](01_fundamentals/linux/scheduler_concepts.md)                        | CFS, RT, Deadline           |
 | [Virtual Memory](01_fundamentals/linux/virtual_memory_concepts.md)              | 페이지 테이블, TLB, OOM     |
 | [VFS](01_fundamentals/linux/linux_virtual_fs.md)                                | inode, dentry, superblock   |
+| [POSIX ACL·setfacl](01_fundamentals/linux/acl_setfacl_guide.md)                 | ACL·Default ACL·mask·상속   |
 | [IPC](01_fundamentals/linux/ipc_concepts.md)                                    | Pipe, Socket, SHM, MQ       |
 | [Netfilter/TC](01_fundamentals/linux/netfilter_tc.md)                           | iptables/nftables, TC       |
 | [eBPF](01_fundamentals/linux/ebpf.md)                                           | eBPF 프로그래밍, 맵         |
