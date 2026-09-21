@@ -189,7 +189,7 @@ codex
 |-----------------------|------------------------------------------------|
 | `/model`              | 현재 모델과 reasoning effort 선택              |
 | `/status`             | 모델·승인 정책·writable roots·token usage 확인 |
-| `/permissions`        | 세션 권한 프로필 변경                          |
+| `/permissions`        | 세션의 활성 권한 프로필 선택·변경              |
 | `/diff`               | 현재 Git 변경 확인                             |
 | `/review`             | working tree·commit·base branch 코드 리뷰      |
 | `/compact`            | 대화 이력 요약으로 context token 절약          |
@@ -200,6 +200,99 @@ codex
 | `codex fork --last`   | 최근 대화를 새 세션으로 분기                   |
 
 장시간 작업에서는 `/status`로 현재 권한과 context 사용량을 확인하고, 중간 결과·결정·다음 작업을 파일에 기록한 후 `/compact`를 실행합니다.
+
+### `/permissions`로 세션 권한 변경
+
+대화형 TUI에서 다음을 입력하면 권한 선택기를 엽니다.
+
+```text
+/permissions
+```
+
+이 명령은 단순히 파일 쓰기 권한만 바꾸는 것이 아니라, 현재 세션에서 Codex가 실행할 수 있는 로컬 명령의 파일시스템·네트워크 경계와 승인 요청 방식을 선택하는 진입점입니다. 선택 가능한 항목과 이름은 Codex 버전, 설정 파일, 조직의 관리 정책에 따라 달라질 수 있습니다.
+
+일반적으로 다음과 같은 프로필 또는 이에 대응하는 설정을 볼 수 있습니다.
+
+| 선택 기준 | 샌드박스·승인 동작 | 적합한 작업 |
+|-----------|-------------------|-------------|
+| 읽기 전용 / `read-only` | 파일을 탐색하고 분석하지만 수정·경계 밖 실행은 제한하며, 필요한 경우 승인을 요청 | 코드 리뷰, 구조 분석, 장애 원인 조사 |
+| 승인 요청 / `workspace-write` + `on-request` | 현재 작업공간 안에서 파일 수정과 일반 명령을 허용하고, 인터넷·작업공간 밖 접근 등은 승인 요청 | 일반 개발, 문서 작성, 테스트 실행 |
+| 전체 접근 / `danger-full-access` + `never` | 샌드박스와 승인 프롬프트를 사실상 해제 | 격리된 runner·container 등 통제된 환경 |
+
+실제 적용 상태는 선택 직후 `/status`로 확인합니다.
+
+```text
+/status
+```
+
+특히 다음 항목을 함께 확인합니다.
+
+- `sandbox_mode`: 파일시스템·네트워크 경계
+- `approval_policy`: 경계를 넘는 작업을 승인받을지 여부
+- writable roots: Codex가 쓸 수 있는 작업공간 경로
+- 현재 프로필·모델·세션의 기타 실행 정책
+
+`/permissions`와 명령행 옵션의 관계는 다음과 같습니다.
+
+```bash
+# TUI를 시작할 때 기본 권한을 지정
+codex --sandbox workspace-write --ask-for-approval on-request
+
+# 읽기 전용 분석 세션
+codex --sandbox read-only --ask-for-approval on-request
+```
+
+이미 실행 중인 TUI에서는 `/permissions`로 세션의 선택을 바꾸고, 새 세션을 시작할 때는 `--sandbox`와 `--ask-for-approval`로 같은 의도를 명시할 수 있습니다. 설정 파일의 `sandbox_mode`와 `approval_policy`는 기본값을 정하며, CLI 옵션은 해당 실행에만 적용되는 우선 설정입니다.
+
+권한을 높이기 전에 다음 순서를 권장합니다.
+
+1. `/status`로 현재 모드와 writable roots를 확인합니다.
+2. 작업 대상이 현재 저장소와 필요한 하위 경로로 한정되는지 확인합니다.
+3. 먼저 `read-only`에서 분석·계획을 수행합니다.
+4. 수정이 필요할 때만 `workspace-write`로 전환합니다.
+5. 승인 요청이 표시되면 실행할 명령, 접근 경로, 네트워크 사용 여부를 검토한 뒤 승인합니다.
+6. 작업 후 `/diff`와 테스트 결과를 확인하고 필요하면 다시 읽기 전용 모드로 낮춥니다.
+
+🟡 `/permissions`에서 더 넓은 권한을 선택해도 Codex가 변경한 내용의 정확성이나 명령의 안전성이 보장되는 것은 아닙니다. 특히 `danger-full-access`와 승인 없는 실행은 임의의 저장소 코드·설치 스크립트·삭제 명령이 실행될 수 있는 환경에서 사용하지 않습니다. `.env`, SSH 키, cloud credential 같은 민감한 파일이 작업공간 또는 writable roots 안에 있으면 별도로 접근을 차단하거나 작업 디렉토리에서 제외합니다.
+
+> 최신 Codex에는 `:read-only`, `:workspace`, `:danger-full-access` 같은 권한 프로필과 사용자 정의 프로필이 제공될 수 있습니다. 권한 프로필은 베타 기능일 수 있으며, 기존 `sandbox_mode`/`sandbox_workspace_write` 설정과 함께 사용할 때 우선순위와 호환성이 버전에 따라 달라질 수 있으므로 한 방식만 명시하고 `/status`로 실제 적용 상태를 검증합니다.
+
+### `/model`의 reasoning effort 선택
+
+`/model`은 모델을 바꾸는 명령이면서, 선택한 모델이 지원하는 reasoning effort(추론 노력 수준)를 조정하는 메뉴이기도 합니다.
+
+```text
+/model
+```
+
+일반적인 선택 기준은 다음과 같습니다. 실제 표시 항목과 기본값은 모델·Codex 버전·계정·관리 정책에 따라 다를 수 있습니다.
+
+| 수준 | 의미 | 권장 용도 |
+|------|------|-----------|
+| `low` | 빠르고 가벼운 추론 | 명확한 질의, 단순 수정, 형식 변환, 짧은 요약 |
+| `medium` | 속도와 분석 깊기의 균형 | 일반적인 개발·디버깅·문서 작업; 대체로 기본값 |
+| `high` | 더 깊은 추론과 검토 | 복잡한 버그, 다단계 변경, 여러 파일·조건을 함께 고려하는 작업 |
+| `xhigh` / `extra high` | 매우 깊은 추론 | 어려운 장시간 작업이나 높은 정확도가 중요한 분석 |
+| `max` | 단일 작업에 사용할 수 있는 최대 수준 | 가장 어려운 문제; 실행 시간과 token 사용량 증가를 감수할 때 |
+
+`medium`에서 시작해 결과가 부족할 때만 `high` 이상으로 올리는 방식이 일반적입니다. reasoning effort를 높이면 복잡한 작업의 계획·검토 품질이 좋아질 수 있지만, 응답 시간이 길어지고 token 사용량도 증가합니다. 반대로 단순 작업에서 무조건 높은 수준을 사용해도 품질 향상이 작을 수 있습니다.
+
+`Ultra`가 표시되는 버전에서는 단순히 한 모델의 추론 시간을 늘리는 `max`와 다르게, 하위 작업을 subagent로 나누어 병렬 처리할 수 있습니다. 따라서 파일 하나의 복잡한 문제에는 `high` 또는 `max`, 여러 독립 영역을 동시에 조사할 수 있는 큰 작업에는 `Ultra`를 검토합니다. 이 항목은 모든 모델·계정·클라이언트에서 제공되지 않습니다.
+
+대화형 메뉴를 사용하지 않는 실행에서는 `-c`/`--config`로 reasoning effort를 한 번만 지정할 수 있습니다.
+
+```bash
+# 대화형 실행: 이번 실행만 high로 지정
+codex -c model_reasoning_effort=high
+
+# 비대화형 실행: 빠른 분석은 low, 복잡한 분석은 high
+codex exec -c model_reasoning_effort=low "변경 없이 저장소 구조를 요약해"
+codex exec -c model_reasoning_effort=high "동시성 문제와 최소 수정안을 분석해"
+```
+
+선택한 모델이 해당 수준을 지원하지 않으면 실행 버전의 지원 범위에 맞춰 낮은 수준을 선택하거나 `/model` 메뉴에서 사용 가능한 값을 확인합니다. reasoning effort는 권한·샌드박스 설정이 아니므로 `high`로 올려도 파일 수정 권한이나 네트워크 접근 권한이 확대되지는 않습니다.
+
+선택한 수준이 실제로 적용되었는지는 `/status`에서 모델과 reasoning 설정을 확인합니다. 모델마다 지원 범위가 다르므로 지원하지 않는 값을 설정하지 말고, 메뉴에 표시되는 값을 우선 사용합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -240,7 +333,10 @@ codex exec --sandbox workspace-write --ask-for-approval on-request "테스트 �
 
 ```toml
 # ~/.codex/config.toml
-# Choose a model shown by `/model` for this account.
+# Use a model available to this account.
+model = "gpt-5.6-sol"
+# Supported values depend on the selected model.
+model_reasoning_effort = "medium"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 ```
