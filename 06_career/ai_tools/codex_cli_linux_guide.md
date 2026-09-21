@@ -153,7 +153,7 @@ Enterprise access token을 사용하는 자동화에서는 다음 공식 경로�
 printenv CODEX_ACCESS_TOKEN | codex login --with-access-token
 ```
 
-`CODEX_API_KEY`는 Codex CLI의 표준 API key 인증 변수로 사용하지 않습니다. API key와 access token은 파일·shell history·로그에 남기지 않습니다.
+`OPENAI_API_KEY`는 `codex login --with-api-key`에 표준 입력으로 전달할 때 사용합니다. 비대화형 `codex exec` 실행에서는 `CODEX_API_KEY`를 실행 단위로 주입할 수 있습니다. API key와 access token은 파일·shell history·로그에 남기지 않습니다.
 
 ### 인증 파일 보호
 
@@ -195,6 +195,7 @@ codex
 | `/compact`            | 대화 이력 요약으로 context token 절약          |
 | `/resume`             | 저장된 세션 선택                               |
 | `/exit`, `/quit`      | CLI 종료                                       |
+| `?`                   | TUI 단축키 도움말 표시                         |
 | `codex resume --last` | 현재 디렉토리의 최근 대화 재개                 |
 | `codex fork --last`   | 최근 대화를 새 세션으로 분기                   |
 
