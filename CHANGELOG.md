@@ -4,6 +4,15 @@
 
 ---
 
+## [Unreleased]
+
+### Changed
+
+- root의 중복 `codex_cli.md`를 제거하고 `06_career/ai_tools/codex_cli_linux_guide.md`를 Codex CLI 사용자 가이드 canonical 문서로 유지.
+- `_reference/codex_cli_official_notes.md`를 공식 사실·버전·인증·권한 검증 source로 유지.
+
+---
+
 ## [5.0.2] - 2026-09-15
 
 ### Added
