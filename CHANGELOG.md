@@ -19,6 +19,7 @@
 ### Fixed
 
 - `codex_cli_linux_guide.md`의 인증·TUI 표 정렬을 CI의 한글 표시 폭 규칙에 맞게 수정.
+- Codex 공통 개념·GUI·IDE·API 문서의 목차, 목차 복귀 링크, 참고 자료, 통계 영역을 저장소 공통 양식에 맞게 보정.
 
 ### Verified
 

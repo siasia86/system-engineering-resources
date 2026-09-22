@@ -4,11 +4,10 @@ VS Code 계열, JetBrains IDE, Xcode 등 IDE 안에서 열린 파일과 선택 �
 
 ## 목차
 
-- [1. IDE 사용 범위](#1-ide-사용-범위)
-- [2. 설치와 로그인](#2-설치와-로그인)
-- [3. 편집기 context로 요청하기](#3-편집기-context로-요청하기)
-- [4. 변경 검토](#4-변경-검토)
-- [5. 작업 위임](#5-작업-위임)
+| 섹션                                                                                                                       |
+|----------------------------------------------------------------------------------------------------------------------------|
+| [1. IDE 사용 범위](#1-ide-사용-범위) / [2. 설치와 로그인](#2-설치와-로그인)                                                |
+| [3. 편집기 context로 요청하기](#3-편집기-context로-요청하기) / [4. 변경 검토](#4-변경-검토) / [5. 작업 위임](#5-작업-위임) |
 
 ---
 
@@ -80,10 +79,25 @@ IDE 채팅의 diff 검토는 코드 리뷰를 돕지만, branch protection, PR r
 
 IDE와 CLI를 병행할 때는 둘 다 같은 working tree에서 수정 중인지 먼저 확인합니다. 병렬 쓰기가 필요하면 Git worktree로 작업공간을 분리하고, 하나의 branch에 통합하기 전에 diff와 test를 다시 실행합니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 참고 자료
 
-- OpenAI Codex IDE extension: [learn.chatgpt.com/docs/codex/ide](https://learn.chatgpt.com/docs/codex/ide)
-- OpenAI Codex 권한: [learn.chatgpt.com/docs/permissions](https://learn.chatgpt.com/docs/permissions)
+- OpenAI Codex IDE extension: [learn.chatgpt.com/docs/codex/ide](https://learn.chatgpt.com/docs/codex/ide) — ★★★☆☆
+- OpenAI Codex 권한: [learn.chatgpt.com/docs/permissions](https://learn.chatgpt.com/docs/permissions) — ★★★☆☆
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
 
 ---
 

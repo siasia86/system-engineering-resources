@@ -4,11 +4,10 @@ ChatGPT 웹과 데스크톱 앱에서 Codex 작업을 계획하고, 장시간 �
 
 ## 목차
 
-- [1. GUI가 적합한 경우](#1-gui가-적합한-경우)
-- [2. 웹에서 작업 시작](#2-웹에서-작업-시작)
-- [3. 데스크톱 앱 사용](#3-데스크톱-앱-사용)
-- [4. 결과 검토와 인수](#4-결과-검토와-인수)
-- [5. 보안 점검](#5-보안-점검)
+| 섹션                                                                                                                   |
+|------------------------------------------------------------------------------------------------------------------------|
+| [1. GUI가 적합한 경우](#1-gui가-적합한-경우) / [2. 웹에서 작업 시작](#2-웹에서-작업-시작)                              |
+| [3. 데스크톱 앱 사용](#3-데스크톱-앱-사용) / [4. 결과 검토와 인수](#4-결과-검토와-인수) / [5. 보안 점검](#5-보안-점검) |
 
 ---
 
@@ -76,10 +75,25 @@ GUI에서 완료 보고를 받으면 다음 정보를 남겨 다른 인터페이
 - 결과가 외부 서비스 호출, 배포, 삭제를 제안하면 대상과 영향 범위를 별도로 확인합니다.
 - 계정 사용량과 API 사용량은 별개일 수 있으므로 사용량 화면과 Platform billing을 각각 확인합니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 참고 자료
 
-- OpenAI ChatGPT와 Codex 시작하기: [developers.openai.com/docs/quickstart](https://developers.openai.com/docs/quickstart)
-- OpenAI Codex CLI: [learn.chatgpt.com/docs/codex/cli](https://learn.chatgpt.com/docs/codex/cli)
+- OpenAI ChatGPT와 Codex 시작하기: [developers.openai.com/docs/quickstart](https://developers.openai.com/docs/quickstart) — ★★★☆☆
+- OpenAI Codex CLI: [learn.chatgpt.com/docs/codex/cli](https://learn.chatgpt.com/docs/codex/cli) — ★★★☆☆
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
 
 ---
 

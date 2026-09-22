@@ -4,12 +4,10 @@ Codex를 CI, 반복 작업, 내부 도구에 연결할 때 `codex exec`, Codex S
 
 ## 목차
 
-- [1. 통합 방식 선택](#1-통합-방식-선택)
-- [2. 비대화형 CLI 자동화](#2-비대화형-cli-자동화)
-- [3. Codex SDK](#3-codex-sdk)
-- [4. app-server](#4-app-server)
-- [5. 인증·비용·보안](#5-인증비용보안)
-- [6. 운영 검증](#6-운영-검증)
+| 섹션                                                                                                                                |
+|-------------------------------------------------------------------------------------------------------------------------------------|
+| [1. 통합 방식 선택](#1-통합-방식-선택) / [2. 비대화형 CLI 자동화](#2-비대화형-cli-자동화)                                           |
+| [3. Codex SDK](#3-codex-sdk) / [4. app-server](#4-app-server) / [5. 인증·비용·보안](#5-인증비용보안) / [6. 운영 검증](#6-운영-검증) |
 
 ---
 
@@ -108,12 +106,27 @@ API key와 access token은 secret manager 또는 workload identity로 job 실행
 5. timeout, rate limit, credential 만료, tool failure를 강제로 재현해 실패 처리를 확인합니다.
 6. audit log, 비용, 성공률, rollback 경로를 운영 runbook에 기록합니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 참고 자료
 
-- OpenAI Codex SDK: [learn.chatgpt.com/docs/codex-sdk](https://learn.chatgpt.com/docs/codex-sdk)
-- OpenAI Codex app-server: [learn.chatgpt.com/docs/app-server](https://learn.chatgpt.com/docs/app-server)
-- OpenAI Codex CLI: [learn.chatgpt.com/docs/codex/cli](https://learn.chatgpt.com/docs/codex/cli)
-- OpenAI API Quickstart: [developers.openai.com/api/docs/quickstart](https://developers.openai.com/api/docs/quickstart)
+- OpenAI Codex SDK: [learn.chatgpt.com/docs/codex-sdk](https://learn.chatgpt.com/docs/codex-sdk) — ★★★☆☆
+- OpenAI Codex app-server: [learn.chatgpt.com/docs/app-server](https://learn.chatgpt.com/docs/app-server) — ★★★☆☆
+- OpenAI Codex CLI: [learn.chatgpt.com/docs/codex/cli](https://learn.chatgpt.com/docs/codex/cli) — ★★★☆☆
+- OpenAI API Quickstart: [developers.openai.com/api/docs/quickstart](https://developers.openai.com/api/docs/quickstart) — ★★★☆☆
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
 
 ---
 

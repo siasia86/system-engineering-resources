@@ -4,11 +4,10 @@ Codex를 CLI(TUI), ChatGPT GUI, IDE, API 중 어떤 경로로 사용할지 판�
 
 ## 목차
 
-- [1. 문서와 진입점 선택](#1-문서와-진입점-선택)
-- [2. 작업 단위와 컨텍스트](#2-작업-단위와-컨텍스트)
-- [3. 권한·인증·비용 경계](#3-권한인증비용-경계)
-- [4. 안전한 작업 흐름](#4-안전한-작업-흐름)
-- [5. 확장 기능](#5-확장-기능)
+| 섹션                                                                                                                       |
+|----------------------------------------------------------------------------------------------------------------------------|
+| [1. 문서와 진입점 선택](#1-문서와-진입점-선택) / [2. 작업 단위와 컨텍스트](#2-작업-단위와-컨텍스트)                        |
+| [3. 권한·인증·비용 경계](#3-권한인증비용-경계) / [4. 안전한 작업 흐름](#4-안전한-작업-흐름) / [5. 확장 기능](#5-확장-기능) |
 
 ---
 
@@ -85,12 +84,27 @@ subagent 병렬 작업은 독립적인 조사·리뷰·테스트 분석에 적�
 
 기능의 표시 여부와 세부 동작은 Codex 버전, 계정, 조직 관리 정책에 따라 달라질 수 있습니다. 실제 세션에서는 `/status`, `/permissions`, `/model`, `/agent`와 해당 UI의 설정 화면으로 적용 상태를 확인합니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 참고 자료
 
-- OpenAI Codex CLI: [learn.chatgpt.com/docs/codex/cli](https://learn.chatgpt.com/docs/codex/cli)
-- OpenAI Codex 설정: [learn.chatgpt.com/docs/configuration](https://learn.chatgpt.com/docs/configuration)
-- OpenAI Codex 권한: [learn.chatgpt.com/docs/permissions](https://learn.chatgpt.com/docs/permissions)
-- OpenAI Codex subagents: [learn.chatgpt.com/docs/agent-configuration/subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents)
+- OpenAI Codex CLI: [learn.chatgpt.com/docs/codex/cli](https://learn.chatgpt.com/docs/codex/cli) — ★★★☆☆
+- OpenAI Codex 설정: [learn.chatgpt.com/docs/configuration](https://learn.chatgpt.com/docs/configuration) — ★★★☆☆
+- OpenAI Codex 권한: [learn.chatgpt.com/docs/permissions](https://learn.chatgpt.com/docs/permissions) — ★★★☆☆
+- OpenAI Codex subagents: [learn.chatgpt.com/docs/agent-configuration/subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents) — ★★★☆☆
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
 
 ---
 
