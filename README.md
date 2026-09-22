@@ -395,6 +395,11 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [Kiro 모델 가이드](06_career/ai_tools/kiro_model_guide.md)                   | 모델 선택 기준                             |
 | [Kiro 설정 가이드](06_career/ai_tools/kiro_setup_guide.md)                   | CLI 초기 설정                              |
 | [Kiro Agent Lock](06_career/ai_tools/kiro_agent_lock.md)                     | 동시 실행 방지                             |
+| [Codex 공통 개념](06_career/ai_tools/codex_concepts.md)                      | 진입점 선택, 권한·비용·작업 원칙           |
+| [Codex CLI Linux 가이드](06_career/ai_tools/codex_cli_linux_guide.md)        | TUI, 로컬 작업, 비대화형 실행              |
+| [Codex GUI 가이드](06_career/ai_tools/codex_gui_guide.md)                    | ChatGPT 웹·데스크톱 작업 관리              |
+| [Codex IDE 가이드](06_career/ai_tools/codex_ide_guide.md)                    | 편집기 context 기반 수정·리뷰              |
+| [Codex API·자동화 가이드](06_career/ai_tools/codex_api_guide.md)             | SDK, app-server, CI 자동화                 |
 | [AI 개발 요청 템플릿](06_career/ai_tools/ai_development_request_template.md) | AI 활용 요청 양식                          |
 | [AI Markdown 패턴](06_career/ai_tools/ai_markdown_design_patterns.md)        | 에이전트용 문서 패턴                       |
 | [AI 코딩 도구 비교](06_career/ai_tools/ai_coding_tools_comparison.md)        | Kiro·Claude Code·Codex·Cursor·Copilot 비교 |
@@ -473,6 +478,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-09-15
+**마지막 업데이트**: 2026-09-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.

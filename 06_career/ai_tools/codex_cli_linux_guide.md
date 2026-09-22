@@ -1,7 +1,7 @@
 # Codex CLI Linux 설치 및 사용 가이드
 <!-- reference: _reference/codex_cli_official_notes.md -->
 
-OpenAI Codex CLI를 Linux 터미널에서 설치하고, 안전한 권한으로 대화형 작업과 자동화를 수행하는 가이드입니다.
+OpenAI Codex CLI를 Linux 터미널에서 설치하고, 안전한 권한으로 TUI·로컬 작업·비대화형 실행을 수행하는 가이드입니다. 인터페이스 공통 원칙은 [Codex 공통 개념](codex_concepts.md), 웹·데스크톱 UI는 [GUI 가이드](codex_gui_guide.md), 편집기 통합은 [IDE 가이드](codex_ide_guide.md), 제품·CI 통합은 [API·자동화 가이드](codex_api_guide.md)를 참고합니다.
 
 ## 목차
 
@@ -155,10 +155,7 @@ printenv CODEX_ACCESS_TOKEN | codex login --with-access-token
 
 `OPENAI_API_KEY`는 `codex login --with-api-key`에 표준 입력으로 전달할 때 사용합니다. 비대화형 `codex exec` 실행에서는 `CODEX_API_KEY`를 실행 단위로 주입할 수 있습니다. API key와 access token은 파일·shell history·로그에 남기지 않습니다.
 
-| 인증 방식 | 사용량·과금 기준 | 적합한 용도 |
-|-----------|------------------|------------|
-| ChatGPT 계정 로그인 | ChatGPT 플랜의 Codex 사용량·크레딧 | 대화형 로컬 작업 |
-| OpenAI API key 로그인 | OpenAI Platform의 표준 API 요금 | CI, 자동화, 사용량 분리 |
+ChatGPT 계정 로그인은 ChatGPT 플랜의 Codex 사용량·크레딧을 사용하며 대화형 로컬 작업에 적합합니다. OpenAI API key 로그인은 OpenAI Platform의 표준 API 요금을 사용하며 CI, 자동화, 사용량 분리에 적합합니다.
 
 API key 인증은 ChatGPT 플랜에 포함된 Codex 사용량을 사용하지 않습니다. 로그인 방식은 `codex login status`로 확인합니다.
 
@@ -195,7 +192,7 @@ codex
 | 명령어                | 용도                                           |
 |-----------------------|------------------------------------------------|
 | `/model`              | 현재 모델과 reasoning effort 선택              |
-| `/status`             | 모델·승인 정책·writable roots·context/표시된 사용량 확인 |
+| `/status`             | 모델·승인 정책·writable roots·token usage 확인 |
 | `/permissions`        | 세션의 활성 권한 프로필 선택·변경              |
 | `/diff`               | 현재 Git 변경 확인                             |
 | `/review`             | working tree·commit·base branch 코드 리뷰      |

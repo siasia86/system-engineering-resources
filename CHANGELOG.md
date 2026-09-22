@@ -6,10 +6,23 @@
 
 ## [Unreleased]
 
+### Added
+
+- `codex_concepts.md`, `codex_gui_guide.md`, `codex_ide_guide.md`, `codex_api_guide.md`를 추가해 Codex 공통 개념과 GUI·IDE·API 사용 경로를 분리.
+
 ### Changed
 
 - root의 중복 `codex_cli.md`를 제거하고 `06_career/ai_tools/codex_cli_linux_guide.md`를 Codex CLI 사용자 가이드 canonical 문서로 유지.
 - `_reference/codex_cli_official_notes.md`를 공식 사실·버전·인증·권한 검증 source로 유지.
+- 기존 CLI 문서를 TUI·로컬 작업·비대화형 실행 중심으로 연결하고, root·Career README inventory에 Codex 문서군을 등록.
+
+### Fixed
+
+- `codex_cli_linux_guide.md`의 인증·TUI 표 정렬을 CI의 한글 표시 폭 규칙에 맞게 수정.
+
+### Verified
+
+- 고정된 `sia_scripts` v0.3.3으로 변경 Codex 문서의 Markdown style·heading·link 검사와 root README inventory 검사를 통과.
 
 ---
 

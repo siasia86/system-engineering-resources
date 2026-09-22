@@ -4,11 +4,11 @@
 
 ## 구조
 
-| 디렉토리                 | 설명                                                                    | 문서 수 |
-|--------------------------|-------------------------------------------------------------------------|---------|
-| [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                       | 4       |
-| [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권                                           | 2       |
-| [ai_tools/](./ai_tools/) | AI 도구 — Kiro CLI, Codex CLI, AI 개발 요청 템플릿, 프롬프트 엔지니어링 | 10      |
+| 디렉토리                 | 설명                                                                | 문서 수 |
+|--------------------------|---------------------------------------------------------------------|---------|
+| [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                   | 4       |
+| [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권                                       | 2       |
+| [ai_tools/](./ai_tools/) | AI 도구 — Kiro CLI, Codex, AI 개발 요청 템플릿, 프롬프트 엔지니어링 | 14      |
 
 ## 주요 문서
 
@@ -16,6 +16,10 @@
 - [sre_roadmap.md](./roadmap/sre_roadmap.md) — SRE 역할 정의, 필요 역량
 - [kiro_cli_command_reference.md](./ai_tools/kiro_cli_command_reference.md) — Kiro CLI 전체 명령어
 - [codex_cli_linux_guide.md](./ai_tools/codex_cli_linux_guide.md) — Codex CLI Linux 설치·인증·샌드박스·자동화
+- [codex_concepts.md](./ai_tools/codex_concepts.md) — Codex 공통 개념, 작업 설계, 권한·비용 경계
+- [codex_gui_guide.md](./ai_tools/codex_gui_guide.md) — ChatGPT 웹·데스크톱에서 Codex 작업 관리
+- [codex_ide_guide.md](./ai_tools/codex_ide_guide.md) — IDE context 기반 수정·리뷰·위임
+- [codex_api_guide.md](./ai_tools/codex_api_guide.md) — Codex SDK, app-server, CI 자동화
 - [harness_engineering.md](./ai_tools/harness_engineering.md) — AI 프롬프트 설계 원칙
 - [ip_ownership_guide.md](./legal/ip_ownership_guide.md) — 코드 저작권, 직무 발명
 
@@ -38,6 +42,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-09-14
+**마지막 업데이트**: 2026-09-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.
