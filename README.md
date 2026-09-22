@@ -279,6 +279,8 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Hardening
 
+- [AI Agent 샌드박스 개념](04_security/hardening/ai_agent_sandbox_concepts.md) — OS 권한·승인·실행기와 다층 안전장치 설계.
+
 | 문서                                                                | 설명                        |
 |---------------------------------------------------------------------|-----------------------------|
 | [Linux 서버 보안 강화](04_security/hardening/linux_hardening.md)    | sysctl, auditd, umask       |

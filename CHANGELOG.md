@@ -8,6 +8,7 @@
 
 ### Added
 
+- `04_security/hardening/ai_agent_sandbox_concepts.md`에 샌드박스·OS 권한·실행 승인·원격 실행기의 역할과 한계, 저장소별 책임, 환경별 권한 및 검증 기준을 개념 문서로 추가하고 root·Security README에서 연결. 운영 설정 변경은 포함하지 않음.
 - `codex_concepts.md`, `codex_gui_guide.md`, `codex_ide_guide.md`, `codex_api_guide.md`를 추가해 Codex 공통 개념과 GUI·IDE·API 사용 경로를 분리.
 
 ### Changed

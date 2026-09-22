@@ -6,13 +6,14 @@
 
 | 디렉토리                   | 설명                                                      | 문서 수 |
 |----------------------------|-----------------------------------------------------------|---------|
-| [hardening/](./hardening/) | 서버 강화 — iptables/nftables, SSH, 시크릿 관리, gitleaks | 9       |
+| [hardening/](./hardening/) | 서버 강화 — iptables/nftables, SSH, 시크릿 관리, gitleaks | 12      |
 | [cloud/](./cloud/)         | 클라우드 보안 — AWS Security, DDoS 방어, Network Firewall | 4       |
 | [cve/](./cve/)             | CVE 분석 — 2026년 Linux 커널 취약점 (Dirty Frag, LPE 등)  | 7       |
 | [web_cwe/](./web_cwe/)     | 웹 취약점 — CWE-022, CWE-078, CWE-200, CWE-434            | 4       |
 
 ## 주요 문서
 
+- [ai_agent_sandbox_concepts.md](./hardening/ai_agent_sandbox_concepts.md) — 샌드박스·ACL·실행 승인과 원격 운영 안전장치
 - [linux_hardening.md](./hardening/linux_hardening.md) — CIS 벤치마크 기반 강화
 - [ssh_security.md](./hardening/ssh_security.md) — SSH 키 관리, 2FA, 포트 변경
 - [ddos_defense_architecture.md](./cloud/ddos_defense_architecture.md) — 다층 DDoS 방어 아키텍처
@@ -39,6 +40,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-09-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.
