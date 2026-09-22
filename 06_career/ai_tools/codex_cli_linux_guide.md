@@ -155,6 +155,13 @@ printenv CODEX_ACCESS_TOKEN | codex login --with-access-token
 
 `OPENAI_API_KEY`는 `codex login --with-api-key`에 표준 입력으로 전달할 때 사용합니다. 비대화형 `codex exec` 실행에서는 `CODEX_API_KEY`를 실행 단위로 주입할 수 있습니다. API key와 access token은 파일·shell history·로그에 남기지 않습니다.
 
+| 인증 방식 | 사용량·과금 기준 | 적합한 용도 |
+|-----------|------------------|------------|
+| ChatGPT 계정 로그인 | ChatGPT 플랜의 Codex 사용량·크레딧 | 대화형 로컬 작업 |
+| OpenAI API key 로그인 | OpenAI Platform의 표준 API 요금 | CI, 자동화, 사용량 분리 |
+
+API key 인증은 ChatGPT 플랜에 포함된 Codex 사용량을 사용하지 않습니다. 로그인 방식은 `codex login status`로 확인합니다.
+
 ### 인증 파일 보호
 
 ```bash
@@ -188,7 +195,7 @@ codex
 | 명령어                | 용도                                           |
 |-----------------------|------------------------------------------------|
 | `/model`              | 현재 모델과 reasoning effort 선택              |
-| `/status`             | 모델·승인 정책·writable roots·token usage 확인 |
+| `/status`             | 모델·승인 정책·writable roots·context/표시된 사용량 확인 |
 | `/permissions`        | 세션의 활성 권한 프로필 선택·변경              |
 | `/diff`               | 현재 Git 변경 확인                             |
 | `/review`             | working tree·commit·base branch 코드 리뷰      |
@@ -199,7 +206,7 @@ codex
 | `codex resume --last` | 현재 디렉토리의 최근 대화 재개                 |
 | `codex fork --last`   | 최근 대화를 새 세션으로 분기                   |
 
-장시간 작업에서는 `/status`로 현재 권한과 context 사용량을 확인하고, 중간 결과·결정·다음 작업을 파일에 기록한 후 `/compact`를 실행합니다.
+장시간 작업에서는 `/status`로 현재 권한과 context 사용량을 확인하고, 중간 결과·결정·다음 작업을 파일에 기록한 후 `/compact`를 실행합니다. `/status`에 표시되는 사용량 창은 계정·클라이언트에 따라 일부일 수 있으므로, 5시간 단위 한도·크레딧·정확한 리셋 시각은 [Codex Usage Dashboard](https://chatgpt.com/codex/settings/usage)에서 확인합니다.
 
 ### `/permissions`로 세션 권한 변경
 
@@ -277,7 +284,7 @@ codex --sandbox read-only --ask-for-approval on-request
 
 `medium`에서 시작해 결과가 부족할 때만 `high` 이상으로 올리는 방식이 일반적입니다. reasoning effort를 높이면 복잡한 작업의 계획·검토 품질이 좋아질 수 있지만, 응답 시간이 길어지고 token 사용량도 증가합니다. 반대로 단순 작업에서 무조건 높은 수준을 사용해도 품질 향상이 작을 수 있습니다.
 
-`Ultra`가 표시되는 버전에서는 단순히 한 모델의 추론 시간을 늘리는 `max`와 다르게, 하위 작업을 subagent로 나누어 병렬 처리할 수 있습니다. 따라서 파일 하나의 복잡한 문제에는 `high` 또는 `max`, 여러 독립 영역을 동시에 조사할 수 있는 큰 작업에는 `Ultra`를 검토합니다. 이 항목은 모든 모델·계정·클라이언트에서 제공되지 않습니다.
+reasoning effort와 subagent 병렬 작업은 별개의 기능입니다. 독립적인 조사·리뷰·테스트 분석이 필요할 때는 Codex에 subagent 위임을 직접 요청하고, 실행 중인 thread는 `/agent`에서 확인합니다. 각 subagent는 별도의 모델·도구 호출을 사용하므로, 같은 파일을 동시에 수정시키기보다 읽기 중심의 독립 작업에 우선 사용합니다.
 
 대화형 메뉴를 사용하지 않는 실행에서는 `-c`/`--config`로 reasoning effort를 한 번만 지정할 수 있습니다.
 
@@ -407,7 +414,7 @@ git rev-parse --show-toplevel
 - 사용자 설정: `~/.codex/config.toml`.
 - 프로젝트 설정: 신뢰된 저장소의 `.codex/config.toml`.
 - 한 번만 적용할 설정: `-c key=value` 또는 `--config key=value`.
-- 우선순위: CLI 옵션·일회성 override → 프로젝트 설정 → profile → 사용자 설정 → system 설정 → 기본값.
+- 우선순위(높음 → 낮음): CLI 옵션·일회성 override > 프로젝트 설정 > profile > 사용자 설정 > system 설정 > 기본값.
 
 ```toml
 # ~/.codex/config.toml
@@ -421,27 +428,24 @@ model_auto_compact_token_limit = 120000
 
 ### AGENTS.md 지침
 
-Codex는 전역 `~/.codex/AGENTS.md`와 Git root부터 현재 작업 디렉토리까지의 `AGENTS.md`를 계층적으로 읽습니다. 하위 디렉토리의 지침이 뒤에 결합되므로 저장소별 규칙을 범위에 맞게 배치합니다.
+Codex는 전역 `~/.codex/AGENTS.md`와 Git root부터 현재 작업 디렉토리까지의 `AGENTS.md`를 계층적으로 읽습니다. 하위 디렉토리의 지침이 뒤에 결합되므로 저장소별 규칙을 범위에 맞게 배치합니다. 기존 파일이 있다면 덮어쓰지 말고 내용을 검토해 필요한 규칙만 병합합니다.
 
-```bash
-mkdir -p ~/.codex
-cat > ~/.codex/AGENTS.md <<'EOF'
+전역 `~/.codex/AGENTS.md`의 내용 예시는 다음과 같습니다.
+
+```md
 # Global instructions
 
 - Run the relevant tests after modifying files.
 - Do not expose secrets in command output or documentation.
-EOF
 ```
 
-프로젝트 지침은 저장소 루트에 둡니다.
+프로젝트 지침은 저장소 루트 `AGENTS.md`에 둡니다.
 
-```bash
-cat > AGENTS.md <<'EOF'
+```md
 # Repository instructions
 
 - Read the repository contribution guide before editing.
 - Run the documented lint and test commands before committing.
-EOF
 ```
 
 ### MCP 연결
