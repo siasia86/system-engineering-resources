@@ -31,9 +31,11 @@ CI에서 repository를 분석·수정·검증하는 반복 작업은 보통 `cod
 `codex exec`는 interactive TUI 없이 한 작업을 실행하는 CLI 경로입니다. 자동화 요청은 목표·입력·출력·권한·성공 조건을 고정합니다.
 
 ```bash
-codex exec --sandbox read-only --ask-for-approval on-request \
+codex exec --sandbox read-only -c approval_policy=never \
   "변경하지 말고 현재 branch의 Markdown 링크 오류를 찾아 파일별로 보고해"
 ```
+
+위 예제는 사용자 입력을 받을 수 없는 CI를 위한 설정입니다. `never`는 승인 프롬프트를 생략하고 샌드박스 제한을 유지합니다. 추가 권한이 필요한 명령은 거부될 수 있으므로 필요한 sandbox 범위를 실행 전에 정합니다. [공식 승인 정책 설명](https://learn.chatgpt.com/docs/agent-approvals-security#run-without-approval-prompts)
 
 CI에는 다음 통제를 함께 둡니다.
 
@@ -132,6 +134,6 @@ API key와 access token은 secret manager 또는 workload identity로 job 실행
 
 **작성일**: 2026-09-22
 
-**마지막 업데이트**: 2026-09-22
+**마지막 업데이트**: 2026-10-01
 
 © 2026 siasia86. Licensed under CC BY 4.0.

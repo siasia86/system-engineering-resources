@@ -16,7 +16,7 @@
 - [sre_roadmap.md](./roadmap/sre_roadmap.md) — SRE 역할 정의, 필요 역량
 - [kiro_cli_command_reference.md](./ai_tools/kiro_cli_command_reference.md) — Kiro CLI 전체 명령어
 - [codex_cli_linux_guide.md](./ai_tools/codex_cli_linux_guide.md) — Codex CLI Linux 설치·인증·샌드박스·자동화
-- [codex_concepts.md](./ai_tools/codex_concepts.md) — Codex 공통 개념, 작업 설계, 권한·비용 경계
+- [codex_concepts.md](./ai_tools/codex_concepts.md) — Codex 동작 원리, 수정 예시, 설정과 권한, 학습 순서
 - [codex_gui_guide.md](./ai_tools/codex_gui_guide.md) — ChatGPT 웹·데스크톱에서 Codex 작업 관리
 - [codex_ide_guide.md](./ai_tools/codex_ide_guide.md) — IDE context 기반 수정·리뷰·위임
 - [codex_api_guide.md](./ai_tools/codex_api_guide.md) — Codex SDK, app-server, CI 자동화

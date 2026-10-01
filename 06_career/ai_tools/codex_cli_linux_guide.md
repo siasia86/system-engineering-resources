@@ -232,7 +232,8 @@ codex
 특히 다음 항목을 함께 확인합니다.
 
 - `sandbox_mode`: 파일시스템·네트워크 경계
-- `approval_policy`: 경계를 넘는 작업을 승인받을지 여부
+- `approval_policy`: 승인이 필요한 작업의 요청·거부 방식
+- `approvals_reviewer`: 승인 요청을 사용자 또는 자동 검토 agent에 전달하는 설정
 - writable roots: Codex가 쓸 수 있는 작업공간 경로
 - 현재 프로필·모델·세션의 기타 실행 정책
 
@@ -257,9 +258,9 @@ codex --sandbox read-only --ask-for-approval on-request
 5. 승인 요청이 표시되면 실행할 명령, 접근 경로, 네트워크 사용 여부를 검토한 뒤 승인합니다.
 6. 작업 후 `/diff`와 테스트 결과를 확인하고 필요하면 다시 읽기 전용 모드로 낮춥니다.
 
-🟡 `/permissions`에서 더 넓은 권한을 선택해도 Codex가 변경한 내용의 정확성이나 명령의 안전성이 보장되는 것은 아닙니다. 특히 `danger-full-access`와 승인 없는 실행은 임의의 저장소 코드·설치 스크립트·삭제 명령이 실행될 수 있는 환경에서 사용하지 않습니다. `.env`, SSH 키, cloud credential 같은 민감한 파일이 작업공간 또는 writable roots 안에 있으면 별도로 접근을 차단하거나 작업 디렉토리에서 제외합니다.
+🟡 `/permissions`에서 더 넓은 권한을 선택해도 Codex가 변경한 내용의 정확성이나 명령의 안전성이 보장되는 것은 아닙니다. `danger-full-access`는 임의의 저장소 코드·설치 스크립트·삭제 명령이 실행될 수 있는 환경에서 사용하지 않습니다. `.env`, SSH 키, cloud credential 같은 민감한 파일이 작업공간 또는 writable roots 안에 있으면 별도로 접근을 차단하거나 작업 디렉토리에서 제외합니다.
 
-> 최신 Codex에는 `:read-only`, `:workspace`, `:danger-full-access` 같은 권한 프로필과 사용자 정의 프로필이 제공될 수 있습니다. 권한 프로필은 베타 기능일 수 있으며, 기존 `sandbox_mode`/`sandbox_workspace_write` 설정과 함께 사용할 때 우선순위와 호환성이 버전에 따라 달라질 수 있으므로 한 방식만 명시하고 `/status`로 실제 적용 상태를 검증합니다.
+> 현재 공식 설정 문서는 `:read-only`, `:workspace`, `:danger-full-access` 권한 프로필을 안내합니다. 사용자 정의 프로필은 `[permissions.<name>]`에 선언하고 `default_permissions`로 선택합니다. 기존 `sandbox_mode` 방식에서 전환할 때는 설치 버전의 지원 범위와 관리 정책을 확인하고, 새 세션의 `/status`에서 표시되는 권한을 확인합니다. [공식 설정 안내](https://learn.chatgpt.com/docs/config-file/config-basic)
 
 ### `/model`의 reasoning effort 선택
 
@@ -271,13 +272,13 @@ codex --sandbox read-only --ask-for-approval on-request
 
 일반적인 선택 기준은 다음과 같습니다. 실제 표시 항목과 기본값은 모델·Codex 버전·계정·관리 정책에 따라 다를 수 있습니다.
 
-| 수준                   | 의미                                 | 권장 용도                                                     |
-|------------------------|--------------------------------------|---------------------------------------------------------------|
-| `low`                  | 빠르고 가벼운 추론                   | 명확한 질의, 단순 수정, 형식 변환, 짧은 요약                  |
-| `medium`               | 속도와 분석 깊기의 균형              | 일반적인 개발·디버깅·문서 작업; 대체로 기본값                 |
-| `high`                 | 더 깊은 추론과 검토                  | 복잡한 버그, 다단계 변경, 여러 파일·조건을 함께 고려하는 작업 |
-| `xhigh` / `extra high` | 매우 깊은 추론                       | 어려운 장시간 작업이나 높은 정확도가 중요한 분석              |
-| `max`                  | 단일 작업에 사용할 수 있는 최대 수준 | 가장 어려운 문제; 실행 시간과 token 사용량 증가를 감수할 때   |
+| 수준                   | 의미                           | 권장 용도                                                     |
+|------------------------|--------------------------------|---------------------------------------------------------------|
+| `low`                  | 빠르고 가벼운 추론             | 명확한 질의, 단순 수정, 형식 변환, 짧은 요약                  |
+| `medium`               | 속도와 분석 깊기의 균형        | 일반적인 개발·디버깅·문서 작업의 시작 수준으로 권장           |
+| `high`                 | 더 깊은 추론과 검토            | 복잡한 버그, 다단계 변경, 여러 파일·조건을 함께 고려하는 작업 |
+| `xhigh` / `extra high` | 매우 깊은 추론                 | 어려운 장시간 작업이나 높은 정확도가 중요한 분석              |
+| `max` / `ultra`        | 모델이 제공하는 높은 추론 수준 | 지원 모델에서 어려운 문제를 분석할 때; 시간·사용량 확인       |
 
 `medium`에서 시작해 결과가 부족할 때만 `high` 이상으로 올리는 방식이 일반적입니다. reasoning effort를 높이면 복잡한 작업의 계획·검토 품질이 좋아질 수 있지만, 응답 시간이 길어지고 token 사용량도 증가합니다. 반대로 단순 작업에서 무조건 높은 수준을 사용해도 품질 향상이 작을 수 있습니다.
 
@@ -304,7 +305,7 @@ codex exec -c model_reasoning_effort=high "동시성 문제와 최소 수정안�
 
 ## 5. 권한과 샌드박스
 
-샌드박스는 명령이 접근할 수 있는 파일과 네트워크 범위를 제한하고, 승인 정책은 경계를 넘을 때 사용자의 확인을 요구할지 결정합니다. 두 통제는 서로 대체하지 않습니다.
+샌드박스는 실행 명령이 접근할 수 있는 파일과 네트워크 범위를 제한하고, 승인 정책은 승인이 필요한 작업을 요청하거나 거부하는 방식을 정합니다. 승인 요청의 검토 주체는 `approvals_reviewer`로 구분합니다. `user`는 사용자, `auto_review`는 자동 검토 agent에 요청을 전달하며, 자동 검토도 샌드박스 안의 일반 작업마다 실행되는 것은 아닙니다. [공식 승인 안내](https://learn.chatgpt.com/docs/agent-approvals-security)
 
 | 모드                 | 기본 의미                           | 사용 기준                     |
 |----------------------|-------------------------------------|-------------------------------|
@@ -324,14 +325,16 @@ codex --sandbox workspace-write --ask-for-approval on-request
 codex --sandbox read-only --ask-for-approval on-request
 ```
 
-비대화형 실행도 동일한 원칙을 적용합니다.
+사용자 입력을 받을 수 없는 CI에서는 승인 요청 없이 지정한 샌드박스 안에서만 실행하도록 설정합니다.
 
 ```bash
-codex exec --sandbox read-only --ask-for-approval on-request "변경 없이 저장소의 위험 요소를 점검해"
-codex exec --sandbox workspace-write --ask-for-approval on-request "테스트 실패의 최소 수정안을 적용해"
+codex exec --sandbox read-only -c approval_policy=never "변경 없이 저장소의 위험 요소를 점검해"
+codex exec --sandbox workspace-write -c approval_policy=never "테스트 실패의 최소 수정안을 적용해"
 ```
 
-🟡 `--ask-for-approval never`와 `--sandbox danger-full-access`는 임의의 저장소 코드가 실행될 수 있는 환경에서 사용하지 않습니다. 자동화가 필요하면 격리된 runner, 최소 권한 토큰, 변경 검토 단계를 함께 둡니다.
+`approval_policy=never`는 승인 프롬프트를 생략하며 샌드박스를 해제하지 않습니다. 샌드박스 밖의 권한이 필요한 작업은 거부될 수 있습니다. `codex exec`의 승인 정책은 `-c approval_policy=...`로 명시합니다. [공식 승인 정책 설명](https://learn.chatgpt.com/docs/agent-approvals-security#run-without-approval-prompts)
+
+🟡 `--sandbox danger-full-access`는 명령의 파일시스템·네트워크 샌드박스 제한을 제거합니다. 이 모드를 사용해야 한다면 격리된 runner, 최소 권한 토큰, 변경 검토 단계를 함께 둡니다.
 
 설정 파일 예시:
 
@@ -408,10 +411,15 @@ git rev-parse --show-toplevel
 
 ### 설정 파일
 
-- 사용자 설정: `~/.codex/config.toml`.
-- 프로젝트 설정: 신뢰된 저장소의 `.codex/config.toml`.
+- 사용자 설정: `$CODEX_HOME/config.toml`. `CODEX_HOME`의 기본값은 `~/.codex`이므로 기본 경로는 `~/.codex/config.toml`입니다.
+- 프로젝트 설정: 신뢰된 저장소의 `.codex/config.toml`. 프로젝트 루트부터 현재 작업 디렉토리까지 발견한 설정을 읽고, 같은 키는 현재 디렉토리에 가까운 설정이 우선합니다.
 - 한 번만 적용할 설정: `-c key=value` 또는 `--config key=value`.
-- 우선순위(높음 → 낮음): CLI 옵션·일회성 override > 프로젝트 설정 > profile > 사용자 설정 > system 설정 > 기본값.
+- 설정 profile: `$CODEX_HOME/<name>.config.toml`을 `--profile <name>`으로 선택합니다. `/permissions`의 권한 선택과 구분합니다.
+- 기본 설정 우선순위(높음 → 낮음): CLI 옵션·일회성 override > 프로젝트 설정 > 선택한 profile > 사용자 설정 > 전달된 클라우드 관리 기본값 > system 설정 > 내장 기본값.
+
+여기서 사용자는 명령을 실행하는 OS 계정입니다. `~`는 그 계정의 홈이며, 예를 들어 `root`의 기본 설정 경로는 `/root/.codex/config.toml`입니다. 사용자 설정은 그 실행 환경의 여러 프로젝트에서 사용합니다. 다른 서버·컨테이너·OS 계정에서는 해당 실행 환경의 `CODEX_HOME`과 설정 파일 위치를 확인합니다. [공식 경로 설명](https://learn.chatgpt.com/docs/config-file/config-advanced)
+
+위 우선순위는 기본값을 합치는 순서입니다. 조직의 강제 요구사항은 별도로 적용됩니다. 프로젝트 설정으로 모든 키를 덮어쓸 수 있는 것도 아닙니다. `model_provider`, `model_providers`, `notify`, `profile`, `otel` 등은 프로젝트 설정에서 무시되므로 사용자 설정에 둡니다. [공식 우선순위](https://learn.chatgpt.com/docs/config-file/config-basic), [키별 적용 범위](https://learn.chatgpt.com/docs/config-file/config-reference)
 
 ```toml
 # ~/.codex/config.toml
@@ -421,11 +429,20 @@ sandbox_mode = "workspace-write"
 model_auto_compact_token_limit = 120000
 ```
 
-`model_auto_compact_token_limit`은 자동 대화 요약을 시작할 token threshold입니다. 설정 변경 후 `/status`로 실제 적용 상태를 확인합니다. `project_doc_max_bytes`는 각 `AGENTS.md` 파일에서 읽을 최대 바이트 수를 설정하며, 기본값과 실제 적용 범위는 설치 버전의 공식 설정 레퍼런스를 확인합니다.
+`model_auto_compact_token_limit`은 자동 대화 요약을 시작할 token threshold이며, 지정하지 않으면 모델 기본값을 사용합니다. 위 `120000`은 예시값입니다. 설정 파일을 변경하면 새 CLI 실행에서 읽히며, `/status`는 화면에 표시되는 모델·권한 등의 상태를 확인하는 데 사용합니다. 모든 설정 키가 `/status`에 표시된다고 가정하지 않습니다. [공식 키 설명](https://learn.chatgpt.com/docs/config-file/config-reference)
 
 ### AGENTS.md 지침
 
-Codex는 전역 `~/.codex/AGENTS.md`와 Git root부터 현재 작업 디렉토리까지의 `AGENTS.md`를 계층적으로 읽습니다. 하위 디렉토리의 지침이 뒤에 결합되므로 저장소별 규칙을 범위에 맞게 배치합니다. 기존 파일이 있다면 덮어쓰지 말고 내용을 검토해 필요한 규칙만 병합합니다.
+Codex는 실행 시작 시 사용자 지침과 프로젝트 지침을 다음 순서로 읽습니다.
+
+1. 사용자 지침은 `$CODEX_HOME`에서 `AGENTS.override.md`를 우선 탐색하고, 없으면 `AGENTS.md`를 탐색합니다. 기본 경로는 `~/.codex`입니다.
+2. 프로젝트 지침은 프로젝트 루트(보통 Git root)부터 현재 작업 디렉토리까지 탐색합니다. 루트를 찾지 못하면 현재 디렉토리만 확인합니다.
+3. 각 디렉토리에서 `AGENTS.override.md` → `AGENTS.md` → `project_doc_fallback_filenames`에 등록한 이름 순으로 탐색하고, 디렉토리당 최대 한 파일을 선택합니다. 빈 파일은 제외합니다.
+4. 상위 지침 뒤에 하위 지침을 결합하며, 하위 지침은 같은 범위의 앞선 지침보다 우선합니다.
+
+기존 파일이 있다면 내용을 검토해 필요한 규칙만 병합합니다. 지침 파일을 수정하면 다음 CLI 실행에서 탐색 결과를 다시 확인합니다. [공식 지침 탐색 규칙](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+
+`project_doc_max_bytes`는 지침을 읽는 바이트 제한입니다. 2026-10-01 확인 기준으로 [공식 AGENTS.md 안내](https://learn.chatgpt.com/docs/agent-configuration/agents-md)는 결합 크기 제한과 기본값 32 KiB를 설명하지만, [고급 설정 안내](https://learn.chatgpt.com/docs/config-file/config-advanced#project-instructions-discovery)는 파일별 제한으로 표현합니다. 이 문서는 AGENTS.md 안내를 기준으로 프로젝트 지침의 합계를 32 KiB 이내로 유지하도록 권장합니다. 파일마다 32 KiB를 읽는다고 단정하지 않으며, 더 큰 지침이 필요하면 사용하는 버전의 실제 탐색·절단 동작을 검증합니다.
 
 전역 `~/.codex/AGENTS.md`의 내용 예시는 다음과 같습니다.
 
@@ -447,11 +464,32 @@ Codex는 전역 `~/.codex/AGENTS.md`와 Git root부터 현재 작업 디렉토�
 
 ### MCP 연결
 
-MCP(Model Context Protocol) 서버는 외부 도구를 Codex에 연결하는 프로토콜입니다.
+MCP(Model Context Protocol)는 AI 클라이언트를 외부 도구·데이터에 연결하는 규격이며, MCP 서버가 사용할 도구를 제공합니다. 명령으로 시작하는 로컬 프로세스는 STDIO(표준 입출력), URL로 연결하는 서버는 Streamable HTTP 방식을 사용합니다.
+
+로컬 서버 등록 문법은 다음과 같습니다. `<...>`는 실제 서버 이름·명령·인수로 바꿉니다.
 
 ```bash
 codex mcp add <server-name> -- <server-command> <arg>
+```
+
+OpenAI 공식 문서를 검색·읽는 HTTP 서버는 다음 명령으로 등록합니다. 문서 조회용 서버이며 OpenAI API를 대신 호출하지 않습니다. [공식 Docs MCP 안내](https://developers.openai.com/learn/docs-mcp)
+
+```bash
+codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp
 codex mcp list
+```
+
+`codex mcp add`는 사용자 설정에 등록하므로 저장소마다 반복할 필요가 없습니다. 특정 프로젝트에만 적용하려면 신뢰된 프로젝트의 `.codex/config.toml`에 다음 설정을 둡니다. 같은 Codex 호스트의 CLI·IDE 확장·데스크톱 앱은 이 설정을 공유하며, ChatGPT 웹은 로컬 설정 파일을 읽지 않습니다. [공식 MCP 설정 범위](https://learn.chatgpt.com/docs/extend/mcp)
+
+```toml
+# <project>/.codex/config.toml
+[mcp_servers.openaiDeveloperDocs]
+url = "https://developers.openai.com/mcp"
+```
+
+새 세션의 `/mcp`에서 연결 상태를 확인하고, 공식 문서 조회가 필요할 때 이 MCP를 사용하도록 요청합니다. OAuth 인증을 지원하고 로그인이 필요한 서버에만 다음 명령을 사용합니다. OpenAI Docs MCP에는 OAuth 로그인이 필요하지 않습니다.
+
+```bash
 codex mcp login <server-name>
 ```
 
@@ -500,14 +538,15 @@ codex --sandbox workspace-write --ask-for-approval on-request
 
 - 저장소 공통 규칙은 루트 `AGENTS.md`에 둡니다.
 - 반복 작업은 `/skills`로 목록을 확인하고 `$skill-name`으로 명시적으로 호출합니다.
-- npm 또는 standalone 설치만으로 Skills가 자동 설치되지는 않습니다.
+- Codex에는 `skill-creator`, `skill-installer` 같은 시스템 Skills가 기본 제공됩니다. 추가 Skills는 별도로 설치하거나 저장소에 배치합니다.
+- 시작 시에는 Skills의 이름·설명 등 메타데이터를 읽고, 명시적으로 호출하거나 작업과 설명이 맞아 선택한 Skill의 `SKILL.md` 본문을 읽습니다. 모든 Skill의 본문을 매번 읽는 것은 아닙니다. [공식 Skills 안내](https://learn.chatgpt.com/docs/build-skills)
 - Codex 공식 Skills 문서에 따라 repository·user·admin·system 위치에서 skills를 찾습니다. 실제 검색 경로와 활성화 상태는 설치 버전·client·관리 정책에 따라 `/skills`와 `config.toml`에서 확인합니다.
 - 일반적인 local 경로는 repository의 `.agents/skills/`, 사용자 `$HOME/.agents/skills/`, admin `/etc/codex/skills/`입니다. `~/.kiro/skills/`는 Codex의 자동 검색 경로로 가정하지 않고, 필요한 경우 skill을 명시적으로 등록·호출합니다.
 
 ### 최소 권한과 자격증명 보호
 
 - 일반 작업은 `workspace-write`와 `on-request`로 시작합니다.
-- `danger-full-access`와 `--ask-for-approval never`는 격리된 runner·container에서만 사용합니다.
+- `danger-full-access`는 격리된 runner·container에서만 사용합니다. 승인 요청을 생략하는 `never`는 샌드박스 제한을 유지하며, CI에서는 필요한 sandbox 범위를 함께 명시합니다.
 - API key, `~/.codex/auth.json`, access token을 프롬프트·`AGENTS.md`·로그·commit에 기록하지 않습니다.
 - 외부 Skill과 MCP는 지침 및 실행 스크립트를 검토한 후 최소 권한으로 활성화합니다.
 
@@ -582,6 +621,6 @@ codex --help
 
 **작성일**: 2026-09-14
 
-**마지막 업데이트**: 2026-09-22
+**마지막 업데이트**: 2026-10-01
 
 © 2026 siasia86. Licensed under CC BY 4.0.

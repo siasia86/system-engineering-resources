@@ -14,17 +14,22 @@
 
 ### Changed
 
+- `codex_concepts.md`를 사람의 학습을 위한 입문 문서로 개편. 모델·에이전트·도구의 역할, 사용 화면과 실행 위치, 파일 경로 오류 수정 예시, 설정·권한 비교표와 추천 학습 순서를 추가하고 root·Career README 설명을 갱신.
 - root의 중복 `codex_cli.md`를 제거하고 `06_career/ai_tools/codex_cli_linux_guide.md`를 Codex CLI 사용자 가이드 canonical 문서로 유지.
 - `_reference/codex_cli_official_notes.md`를 공식 사실·버전·인증·권한 검증 source로 유지.
 - 기존 CLI 문서를 TUI·로컬 작업·비대화형 실행 중심으로 연결하고, root·Career README inventory에 Codex 문서군을 등록.
 
 ### Fixed
 
+- Codex 설정 문서의 `exec` 승인 옵션 오류, 사용자·프로젝트·profile 설정 범위와 우선순위 누락을 수정. `CODEX_HOME`, `AGENTS.override.md`, HTTP MCP·OAuth 적용 조건과 Skills 기본 제공·선택 로드를 명시.
+- Codex 문서의 승인 생략·샌드박스 해제 혼동, `/status` 확인 범위, 추론 수준·비용 고정 배수·목표 반복·메모리 자동 로드와 GUI 승인 범위의 모호한 표현을 정리. `project_doc_max_bytes`는 공식 문서 간 표현 차이와 보수적인 운영 권장을 함께 기록.
 - `codex_cli_linux_guide.md`의 인증·TUI 표 정렬을 CI의 한글 표시 폭 규칙에 맞게 수정.
 - Codex 공통 개념·GUI·IDE·API 문서의 목차, 목차 복귀 링크, 참고 자료, 통계 영역을 저장소 공통 양식에 맞게 보정.
 
 ### Verified
 
+- 2026-10-01 Codex 입문 문서 개편 후 기존 수정분을 포함한 변경 문서 10개의 Markdown style·heading·link, root README inventory, gitleaks와 `git diff --check`를 검증. 파일 경로 예시의 공백 포함·미포함·없는 파일 동작을 임시 디렉토리에서 확인. 실제 Codex 모델 호출은 실행하지 않음.
+- 2026-10-01 Codex 설정 관련 변경 문서 8개의 Markdown style·heading·link, root README inventory, gitleaks와 `git diff --check`를 검증. CI 체크섬·manifest를 대조한 `sia_scripts` v0.3.3을 사용하고, 로컬 Codex CLI 0.159.3의 `--help`로 `exec` 예제 12개의 인수 문법과 TOML 예제 3개의 구문을 확인. 실제 모델 호출·OAuth 로그인·설정 적용은 실행하지 않음.
 - Jev 추가 문서와 관련 인덱스의 Markdown style·heading·link 및 root README inventory를 CI 체크섬과 동일한 `sia_scripts` v0.3.3으로 검증. Python·Bash·JSON 구문과 큐 분기 경계값을 로컬에서 확인하고 gitleaks 검사를 통과. 인증된 API 호출과 SDK 실행은 수행하지 않음.
 - 고정된 `sia_scripts` v0.3.3으로 변경 Codex 문서의 Markdown style·heading·link 검사와 root README inventory 검사를 통과.
 
