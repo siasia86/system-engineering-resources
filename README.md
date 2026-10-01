@@ -407,6 +407,8 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [AI 코딩 도구 비교](06_career/ai_tools/ai_coding_tools_comparison.md)        | Kiro·Claude Code·Codex·Cursor·Copilot 비교 |
 | [Harness Engineering](06_career/ai_tools/harness_engineering.md)             | AI 에이전트 환경 설계                      |
 | [Loop Engineering](06_career/ai_tools/loop_engineering.md)                   | AI 루프 설계                               |
+| [Jev 개념](06_career/ai_tools/jev_concepts.md)                               | 구조화된 판단, 질문 유형, 확률·신뢰도      |
+| [Jev 사용 가이드](06_career/ai_tools/jev_guide.md)                           | Playground, HTTP API, Python SDK           |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -480,6 +482,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-09-22
+**마지막 업데이트**: 2026-10-01
 
 © 2026 siasia86. Licensed under CC BY 4.0.

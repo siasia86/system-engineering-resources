@@ -8,6 +8,7 @@
 
 ### Added
 
+- Jev 공식 참조 노트와 개념·사용 가이드 3개를 추가. TypeSafe AI 공식 문서에 따라 질문 유형, 확률·신뢰도, 모델 제한, HTTP API·Python SDK와 결과 분기를 정리하고 root·Career README 및 reference INDEX에 연결.
 - `04_security/hardening/ai_agent_sandbox_concepts.md`에 샌드박스·OS 권한·실행 승인·원격 실행기의 역할과 한계, 저장소별 책임, 환경별 권한 및 검증 기준을 개념 문서로 추가하고 root·Security README에서 연결. 운영 설정 변경은 포함하지 않음.
 - `codex_concepts.md`, `codex_gui_guide.md`, `codex_ide_guide.md`, `codex_api_guide.md`를 추가해 Codex 공통 개념과 GUI·IDE·API 사용 경로를 분리.
 
@@ -24,6 +25,7 @@
 
 ### Verified
 
+- Jev 추가 문서와 관련 인덱스의 Markdown style·heading·link 및 root README inventory를 CI 체크섬과 동일한 `sia_scripts` v0.3.3으로 검증. Python·Bash·JSON 구문과 큐 분기 경계값을 로컬에서 확인하고 gitleaks 검사를 통과. 인증된 API 호출과 SDK 실행은 수행하지 않음.
 - 고정된 `sia_scripts` v0.3.3으로 변경 Codex 문서의 Markdown style·heading·link 검사와 root README inventory 검사를 통과.
 
 ---
@@ -933,6 +935,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-09-22
+**마지막 업데이트**: 2026-10-01
 
 © 2026 siasia86. Licensed under CC BY 4.0.

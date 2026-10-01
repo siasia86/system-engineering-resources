@@ -4,11 +4,11 @@
 
 ## 구조
 
-| 디렉토리                 | 설명                                                                | 문서 수 |
-|--------------------------|---------------------------------------------------------------------|---------|
-| [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                   | 4       |
-| [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권                                       | 2       |
-| [ai_tools/](./ai_tools/) | AI 도구 — Kiro CLI, Codex, AI 개발 요청 템플릿, 프롬프트 엔지니어링 | 14      |
+| 디렉토리                 | 설명                                                                     | 문서 수 |
+|--------------------------|--------------------------------------------------------------------------|---------|
+| [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                        | 4       |
+| [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권                                            | 2       |
+| [ai_tools/](./ai_tools/) | AI 도구 — Kiro CLI, Codex, Jev, AI 개발 요청 템플릿, 프롬프트 엔지니어링 | 16      |
 
 ## 주요 문서
 
@@ -21,6 +21,8 @@
 - [codex_ide_guide.md](./ai_tools/codex_ide_guide.md) — IDE context 기반 수정·리뷰·위임
 - [codex_api_guide.md](./ai_tools/codex_api_guide.md) — Codex SDK, app-server, CI 자동화
 - [harness_engineering.md](./ai_tools/harness_engineering.md) — AI 프롬프트 설계 원칙
+- [jev_concepts.md](./ai_tools/jev_concepts.md) — System One 모델, 질문 유형, 확률·신뢰도
+- [jev_guide.md](./ai_tools/jev_guide.md) — Playground, HTTP API, Python SDK와 결과 분기
 - [ip_ownership_guide.md](./legal/ip_ownership_guide.md) — 코드 저작권, 직무 발명
 
 ## 추천 학습 순서
@@ -42,6 +44,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-09-22
+**마지막 업데이트**: 2026-10-01
 
 © 2026 siasia86. Licensed under CC BY 4.0.

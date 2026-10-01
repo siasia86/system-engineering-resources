@@ -5,7 +5,7 @@ tags:
   - index
   - reference
   - directory
-last_checked: 2026-09-15
+last_checked: 2026-10-01
 sources:
   - self (이 파일이 인덱스 역할)
 ---
@@ -40,6 +40,7 @@ sources:
 | CPU 시스템 운영                | `_reference/cpu_system_engineering_official_notes.md`   | NUMA·스케줄링·가상화·CPU 호환성                         | 2026-08-21 | O    |
 | Charset/Encoding               | `_reference/charset_encoding_official_notes.md`         | RFC 3629, Unicode 16.0                                  | 2026-07-07 | O    |
 | Codex CLI                      | `_reference/codex_cli_official_notes.md`                | v0.154.0, Linux·install·auth·sandbox·exec               | 2026-09-14 | O    |
+| Jev                            | `_reference/jev_official_notes.md`                      | jev-1.13.0·Choice·Score·Noul·HTTP·Python SDK            | 2026-10-01 | O    |
 | CVE/Security                   | `_reference/cve_security_official_notes.md`             | NVD API 2.0, CISA KEV                                   | 2026-06-29 | O    |
 | Docker                         | `_reference/docker_official_notes.md`                   | Engine 29.6.1, Compose v5.3.0                           | 2026-07-03 | O    |
 | Epsilon-Delta (Math)           | `_reference/epsilon_delta_math_notes.md`                | Rudin Ch.4, Weierstrass                                 | 2026-07-14 | O    |
