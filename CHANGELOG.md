@@ -8,6 +8,8 @@
 
 ### main 병합 검토 — 2026-10-04
 
+- 기존 날짜 CI의 UTC 기준으로 한국 날짜의 작성일보다 갱신일이 하루 앞서지는 문제를 확인해 날짜 계산만 Asia/Seoul로 지정했습니다. 날짜 갱신은 기존처럼 yunli에서만 수행합니다.
+
 - M12-MAIN-20261004-01에서 yunli의 Codex·harness·loop 자료와 현장 .governance 적용 문서를 검토했습니다. main 고유 commit은 없으며 변경 Markdown 15개와 파일 링크·교차 fragment·diff·Gitleaks를 확인했습니다.
 - 외부 자료의 최신 사실 재조사나 도구 설치는 이번 Git 통합 검사에 포함하지 않습니다. [여섯 저장소 게시 확인](https://github.com/siasia86/12_github-main/blob/main/.governance/outputs/M12-MAIN-20261004-01/20261004_markdown/REVIEW.md)에서 최종 원격 상태를 확인합니다.
 
@@ -945,6 +947,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-10-03
+**마지막 업데이트**: 2026-10-04
 
 © 2026 siasia86. Licensed under CC BY 4.0.
