@@ -189,18 +189,16 @@ skill 본문 변경은 기존 파일을 보관하거나 Git으로 관리하고, 
 
 ## 8. 설정 참고 URL
 
-| 자료                                                                                | 참고할 내용                               |
-|-------------------------------------------------------------------------------------|-------------------------------------------|
-| [openai/plugins](https://github.com/openai/plugins)                                 | 공식 skill·MCP·plugin 패키지 예제         |
-| [vercel-labs/skills](https://github.com/vercel-labs/skills)                         | 설치 범위, Codex 선택, 목록·업데이트·제거 |
-| [affaan-m/ECC](https://github.com/affaan-m/ECC)                                     | Codex 설정·skill·MCP·agent 역할 예제      |
-| [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)               | SE 작업 절차와 Codex 전용 설정 안내       |
-| [obra/superpowers](https://github.com/obra/superpowers)                             | 설계·TDD·디버깅·리뷰 workflow             |
-| [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) | 분야별 skill 탐색                         |
-| [anthropics/skills](https://github.com/anthropics/skills)                           | skill 작성 템플릿과 Claude용 예제         |
-| [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)             | React·UI·문서 검토 skill 예제             |
+주요 참고 저장소 20개의 용도, GitHub star 조회값, Codex 지원 근거는 [GitHub 참고 목록](../../_reference/github_references.md#1-aiagent)에서 관리합니다. 이 가이드에서는 다음 연결로 필요한 자료를 찾습니다.
 
-GitHub star 수와 자료별 용도는 [GitHub 참고 목록](../../_reference/github_references.md#1-aiagent)에 정리합니다. Anthropic 예제의 Claude 전용 도구·호출 지침은 Codex 환경에 맞게 검토합니다.
+| 자료                                                                                                         | 참고할 내용                                                   |
+|--------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| [개발 행동과 엔지니어링 절차](../../_reference/github_references.md#11-개발-행동과-엔지니어링-절차)          | Karpathy skills·gstack·Matt Pocock·Superpowers 등의 개발 절차 |
+| [분야별 skill과 작성 예제](../../_reference/github_references.md#12-분야별-skill과-작성-예제)                | UI/UX, 프런트엔드, 과학·연구, 문서 작업의 예제                |
+| [공식 명세, 설치 도구와 탐색 목록](../../_reference/github_references.md#13-공식-명세-설치-도구와-탐색-목록) | Agent Skills 명세, OpenAI plugin 예제, 설치 CLI와 카탈로그    |
+| [Windows에서 확인할 범위](../../_reference/github_references.md#14-windows에서-확인할-범위)                  | Git Bash·WSL·PowerShell, 설치 경로와 부가 도구 조건           |
+
+Karpathy skills의 `CLAUDE.md` 기반 지침, gstack의 Codex host 설치, 다른 도구용 skill 예제는 각 원문이 안내하는 적용 방식으로 검토합니다. 이번 참고 자료 조사는 README와 GitHub API 확인이며, clone·설치·hook 동작·Windows 실행은 진행하지 않았습니다.
 
 2026-10-03 확인 당시 [openai/skills README](https://github.com/openai/skills)는 deprecated를 표시하고 후속 자료로 `openai/plugins`를 안내합니다. 공식 Build skills 문서에 남아 있는 과거 카탈로그 링크와 구분하여, 새 배포 예제는 `openai/plugins`에서 확인합니다.
 
