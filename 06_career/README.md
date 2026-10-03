@@ -8,7 +8,7 @@
 |--------------------------|--------------------------------------------------------------------------|---------|
 | [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                        | 4       |
 | [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권                                            | 2       |
-| [ai_tools/](./ai_tools/) | AI 도구 — Kiro CLI, Codex, Jev, AI 개발 요청 템플릿, 프롬프트 엔지니어링 | 16      |
+| [ai_tools/](./ai_tools/) | AI 도구 — Kiro CLI, Codex, Jev, AI 개발 요청 템플릿, 프롬프트 엔지니어링 | 17      |
 
 ## 주요 문서
 
@@ -16,6 +16,7 @@
 - [sre_roadmap.md](./roadmap/sre_roadmap.md) — SRE 역할 정의, 필요 역량
 - [kiro_cli_command_reference.md](./ai_tools/kiro_cli_command_reference.md) — Kiro CLI 전체 명령어
 - [codex_cli_linux_guide.md](./ai_tools/codex_cli_linux_guide.md) — Codex CLI Linux 설치·인증·샌드박스·자동화
+- [codex_skills_setup_guide.md](./ai_tools/codex_skills_setup_guide.md) — Codex skill 작성·설치·호출·비활성화와 참고 URL
 - [codex_concepts.md](./ai_tools/codex_concepts.md) — Codex 동작 원리, 수정 예시, 설정과 권한, 학습 순서
 - [codex_gui_guide.md](./ai_tools/codex_gui_guide.md) — ChatGPT 웹·데스크톱에서 Codex 작업 관리
 - [codex_ide_guide.md](./ai_tools/codex_ide_guide.md) — IDE context 기반 수정·리뷰·위임
@@ -44,6 +45,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-10-01
+**마지막 업데이트**: 2026-10-03
 
 © 2026 siasia86. Licensed under CC BY 4.0.

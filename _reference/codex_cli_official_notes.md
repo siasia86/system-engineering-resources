@@ -1,12 +1,12 @@
 ---
 name: codex-cli-official-notes
-description: OpenAI Codex CLI의 Linux 설치·인증·권한·자동화 공식 참조 노트
+description: OpenAI Codex CLI의 Linux 설치·인증·권한·자동화·Skills 설정 공식 참조 노트
 tags:
   - codex
   - cli
   - linux
   - openai
-last_checked: 2026-10-01
+last_checked: 2026-10-03
 sources:
   - https://developers.openai.com/codex/cli.md
   - https://developers.openai.com/codex/auth.md
@@ -25,6 +25,11 @@ sources:
   - https://learn.chatgpt.com/docs/build-skills
   - https://learn.chatgpt.com/docs/extend/mcp
   - https://developers.openai.com/learn/docs-mcp
+  - https://developers.openai.com/plugins/build/skills
+  - https://developers.openai.com/plugins/build/plugins
+  - https://github.com/openai/skills
+  - https://github.com/openai/plugins
+  - https://github.com/vercel-labs/skills
 ---
 
 # Codex CLI 공식 참조 노트
@@ -33,9 +38,10 @@ sources:
 
 - 2026-09-14 당시 확인한 OpenAI Codex GitHub 릴리스 태그: `rust-v0.154.0`.
 - 2026-10-01 설정·지침·MCP·Skills 문서와 CLI 인수 문법을 재검증했습니다. 로컬 검증 버전은 `codex-cli 0.159.3`이며, 이 버전이 현재 GitHub 최신 릴리스라는 뜻은 아닙니다.
+- 2026-10-03 Skills 설정·plugin 배포 안내를 재확인하고 8절에 정리했습니다. 로컬 `codex-cli 0.160.0`에서 `plugin`·`plugin add`·`plugin marketplace add`의 도움말만 확인했습니다. 실제 skill·plugin 설치와 암묵적 호출은 검증하지 않았으며, 그 밖의 CLI 항목은 기존 확인일을 유지합니다.
 - 공식 설치 경로: macOS/Linux standalone installer, npm, Homebrew.
 - Linux 샌드박스 의존성: `bubblewrap` 패키지의 `bwrap` 실행 파일.
-- 설치·인증·릴리스 항목은 2026-09-14 검증 기록을 유지합니다. 이번 재검증은 설정 관련 항목과 CLI 문법에 한정하며, 실제 모델 호출·OAuth 로그인·배포는 실행하지 않았습니다.
+- 설치·인증·릴리스 항목은 2026-09-14 검증 기록을 유지합니다. 2026-10-01 재검증은 설정 관련 항목과 CLI 문법에 한정하며, 실제 모델 호출·OAuth 로그인·배포는 실행하지 않았습니다.
 
 ## 2. Linux 설치 및 업데이트
 
@@ -123,7 +129,21 @@ API key와 `~/.codex/auth.json`은 자격증명으로 취급하며 commit·채�
 
 설정·지침 탐색은 [설정 기본](https://learn.chatgpt.com/docs/config-file/config-basic), [고급 설정](https://learn.chatgpt.com/docs/config-file/config-advanced), [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)를 기준으로 확인했습니다. 승인·Skills·MCP의 적용 범위는 [승인 정책](https://learn.chatgpt.com/docs/agent-approvals-security), [Skills](https://learn.chatgpt.com/docs/build-skills), [MCP](https://learn.chatgpt.com/docs/extend/mcp), [Docs MCP](https://developers.openai.com/learn/docs-mcp)를 기준으로 확인했습니다.
 
-## 8. 공식 자료
+## 8. Skills 설정과 배포
+
+- 작성 형식: skill 폴더의 `SKILL.md`에 필수 `name`·`description`과 작업 절차를 작성합니다. 상세 배경은 `references/`, 템플릿은 `assets/`, 필요한 실행 코드는 `scripts/`에 둡니다.
+- 호출: Codex CLI·IDE에서는 `/skills`로 확인하거나 `$skill-name`으로 명시적으로 선택합니다. 암묵적 선택은 `description`에 의존하므로 적용할 요청과 제외할 요청을 구체적으로 작성합니다.
+- 로컬 위치: repository `.agents/skills/`, 사용자 `$HOME/.agents/skills/`, admin `/etc/codex/skills/`, Codex 기본 제공 system skill. repository는 현재 디렉토리부터 Git root까지 탐색합니다. 동일한 `name`은 자동 병합하지 않습니다.
+- 경로 차이: 공식 Build skills 문서의 사용자 위치는 `~/.agents/skills/`이지만 Vercel skills CLI README의 Codex global 목적지는 `~/.codex/skills/`입니다. 도구의 설치 목적지와 Codex의 실제 발견 결과를 각각 확인합니다.
+- 선택 메타데이터: `agents/openai.yaml`에서 표시 이름·기본 요청·도구 의존성을 설정합니다. `policy.allow_implicit_invocation: false`는 암묵적 선택을 막으며 명시적 호출은 유지합니다.
+- 로컬 비활성화: 공식 Build skills 예제는 `~/.codex/config.toml`의 `[[skills.config]]`에 skill의 `SKILL.md` 절대 경로와 `enabled = false`를 지정합니다. 설정 파일 변경 후 Codex를 재시작합니다.
+- 검증: 명시적 요청, 간접 요청, 입력 부족, 범위 밖 요청, 도구 실패를 각각 확인합니다. 목록 표시만 확인한 결과를 작업 수행 검증으로 보고하지 않습니다.
+- 배포: 로컬 작성·저장소 작업에는 skill 폴더를 사용하고, 다른 사람에게 skill과 MCP 연결을 함께 제공할 때는 plugin으로 패키징합니다. 현재 공식 패키징 문서는 root `plugin.json`을 안내하고 `.codex-plugin/plugin.json`은 compatibility fallback으로 지원합니다.
+- 카탈로그 상태: 2026-10-03 `openai/skills` README는 deprecated를 표시하고 `openai/plugins`를 후속 예제로 연결합니다. Build skills 문서에는 과거 `openai/skills` 링크가 남아 있으므로 두 자료의 안내 시점을 구분합니다.
+
+1차로 [Build skills](https://learn.chatgpt.com/docs/build-skills)와 GitHub README를 대조했습니다. 2차로 [skill 작성·검증 안내](https://developers.openai.com/plugins/build/skills), [plugin 패키징 안내](https://developers.openai.com/plugins/build/plugins), 로컬 CLI 도움말을 대조했습니다. 사용자·repository skill 검색과 암묵적 호출의 실제 실행 결과는 미검증입니다.
+
+## 9. 공식 자료
 
 - Codex CLI: https://developers.openai.com/codex/cli.md
 - Authentication: https://developers.openai.com/codex/auth.md
@@ -133,3 +153,7 @@ API key와 `~/.codex/auth.json`은 자격증명으로 취급하며 commit·채�
 - Configuration reference: https://developers.openai.com/codex/config-file/config-reference.md
 - Developer commands: https://developers.openai.com/codex/developer-commands.md
 - OpenAI Codex releases: https://github.com/openai/codex/releases/latest
+- Build skills: https://learn.chatgpt.com/docs/build-skills
+- Skill authoring: https://developers.openai.com/plugins/build/skills
+- Plugin packaging: https://developers.openai.com/plugins/build/plugins
+- Current plugin examples: https://github.com/openai/plugins

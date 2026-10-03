@@ -536,6 +536,8 @@ codex --sandbox workspace-write --ask-for-approval on-request
 
 ### `AGENTS.md`와 Skills로 반복 규칙 고정
 
+skill 저장 위치·작성 예제·설치 도구·호출 검증·비활성화는 [Codex Skills 설정 가이드](codex_skills_setup_guide.md)에서 확인합니다.
+
 - 저장소 공통 규칙은 루트 `AGENTS.md`에 둡니다.
 - 반복 작업은 `/skills`로 목록을 확인하고 `$skill-name`으로 명시적으로 호출합니다.
 - Codex에는 `skill-creator`, `skill-installer` 같은 시스템 Skills가 기본 제공됩니다. 추가 Skills는 별도로 설치하거나 저장소에 배치합니다.
@@ -621,6 +623,6 @@ codex --help
 
 **작성일**: 2026-09-14
 
-**마지막 업데이트**: 2026-10-01
+**마지막 업데이트**: 2026-10-03
 
 © 2026 siasia86. Licensed under CC BY 4.0.
