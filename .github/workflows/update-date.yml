@@ -126,7 +126,7 @@ jobs:
         run: |
           set -euo pipefail
           # Repository document dates follow Korea time, including UTC rollover.
-          today=$(TZ=Asia/Seoul date +%Y-%m-%d)
+          today=$(TZ=KST-9 date +%Y-%m-%d)
           changed=$(git diff --name-only HEAD^ HEAD -- '*.md' || true)
 
           while IFS= read -r file; do
