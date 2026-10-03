@@ -406,8 +406,8 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [AI 개발 요청 템플릿](06_career/ai_tools/ai_development_request_template.md) | AI 활용 요청 양식                          |
 | [AI Markdown 패턴](06_career/ai_tools/ai_markdown_design_patterns.md)        | 에이전트용 문서 패턴                       |
 | [AI 코딩 도구 비교](06_career/ai_tools/ai_coding_tools_comparison.md)        | Kiro·Claude Code·Codex·Cursor·Copilot 비교 |
-| [Harness Engineering](06_career/ai_tools/harness_engineering.md)             | AI 에이전트 환경 설계                      |
-| [Loop Engineering](06_career/ai_tools/loop_engineering.md)                   | AI 루프 설계                               |
+| [Harness Engineering](06_career/ai_tools/harness_engineering.md)             | 에이전트 환경·검증·상태 전달·참고 구현     |
+| [Loop Engineering](06_career/ai_tools/loop_engineering.md)                   | 목표·피드백·정지 조건·참고 실행기          |
 | [Jev 개념](06_career/ai_tools/jev_concepts.md)                               | 구조화된 판단, 질문 유형, 확률·신뢰도      |
 | [Jev 사용 가이드](06_career/ai_tools/jev_guide.md)                           | Playground, HTTP API, Python SDK           |
 

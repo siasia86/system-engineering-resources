@@ -44,7 +44,7 @@ sources:
 | CVE/Security                   | `_reference/cve_security_official_notes.md`             | NVD API 2.0, CISA KEV                                   | 2026-06-29 | O    |
 | Docker                         | `_reference/docker_official_notes.md`                   | Engine 29.6.1, Compose v5.3.0                           | 2026-07-03 | O    |
 | Epsilon-Delta (Math)           | `_reference/epsilon_delta_math_notes.md`                | Rudin Ch.4, Weierstrass                                 | 2026-07-14 | O    |
-| GitHub References              | `_reference/github_references.md`                       | Codex Skills·개발 절차·분야별 예제·명세·탐색 목록       | 2026-10-03 | O    |
+| GitHub References              | `_reference/github_references.md`                       | Codex Skills·Harness/Loop·개발 절차·명세·탐색 목록      | 2026-10-03 | O    |
 | HashiCorp Vault                | `_reference/hashicorp_vault_official_notes.md`          | KV·Database Dynamic Secret·라이선스                     | 2026-08-19 | O    |
 | GitLab CI/CD Variables         | `_reference/gitlab_ci_variables_official_notes.md`      | Protected·Masked·File·AWS OIDC                          | 2026-08-19 | O    |
 | Gitleaks                       | `_reference/gitleaks_official_notes.md`                 | v8.30.1                                                 | 2026-08-19 | O    |

@@ -116,7 +116,7 @@ repo/
 └── src/
 ```
 
-핵심 원칙: AGENTS.md는 백과사전이 아닌 **목차**(table of contents)입니다. 짧게 유지하고(~100줄) 깊은 정보는 별도 문서로 분리합니다.
+핵심 원칙: AGENTS.md는 백과사전이 아닌 **목차**(table of contents)입니다. OpenAI 사례의 약 100줄은 해당 팀의 운영 예시이며 공통 제한이 아닙니다. 진입점은 짧게 유지하고 작업별 상세 기준은 한 곳에서 관리합니다. [OpenAI 원문](https://openai.com/index/harness-engineering/)
 
 ## 4. 주요 원칙
 
@@ -181,7 +181,7 @@ repo/
 
 ```
 project/
-├── AGENTS.md          # Agent entry point (max 100 lines)
+├── AGENTS.md          # Short entry point linking detailed guidance
 ├── ARCHITECTURE.md    # Domain/layer map
 ├── .cursorrules       # Cursor (or .claude/settings.json)
 ├── docs/
@@ -235,11 +235,35 @@ fi
 
 ### 향후 도입 검토
 
-| 항목            | 내용                                           | 시점                       |
-|-----------------|------------------------------------------------|----------------------------|
-| AGENTS.md       | 프로젝트별 에이전트 진입점 (목차 방식, ~100줄) | 멀티 에이전트/협업 필요 시 |
-| Eval 파이프라인 | 에이전트 출력물 자동 평가 (시나리오 기반)      | 에이전트 작업 비중 증가 시 |
-| 물리 Sandbox    | Docker/git worktree 기반 격리 실행             | 프로덕션 코드 직접 수정 시 |
+| 항목            | 내용                                              | 시점                        |
+|-----------------|---------------------------------------------------|-----------------------------|
+| AGENTS.md       | 프로젝트별 에이전트 진입점 (목차 방식, ~100줄)    | 멀티 에이전트/협업 필요 시  |
+| Eval 파이프라인 | 에이전트 출력물 자동 평가 (시나리오 기반)         | 에이전트 작업 비중 증가 시  |
+| 실행 격리       | Docker 등 실행 sandbox와 git worktree의 작업 분리 | 실제 권한·작업 분리 필요 시 |
+
+### 문서·참고 저장소 조사에 적용할 최소 구성
+
+아래는 앞의 제품 개발 사례를 문서 조사에 맞춘 예시입니다. 실제 개선 작업의 행동 기준은 [31 중앙 workflow](https://github.com/siasia86/31_governances/blob/yunli/.governance/repository/agent_skill_improvement_workflow.md)에서 관리하며, 이 문서는 기술적 구성과 출처를 설명합니다.
+
+| 파일                      | 역할                                          | 확인할 증거                                    |
+|---------------------------|-----------------------------------------------|------------------------------------------------|
+| AGENTS.md                 | 상세 절차와 현재 상태로 연결하는 진입점       | 기존 지침을 보존하고 링크가 실제 파일을 가리킴 |
+| README.md의 중앙 안내     | 31에서 관리하는 workflow·행동 지침으로 연결   | 해당 작업의 대상·완료 조건·검사 범위를 확인    |
+| .codex/REFERENCE_STATE.md | 확인한 출처, 실행·검증·미실행, 남은 작업 기록 | 다음 세션에서 Git 상태와 대조한 뒤 재개        |
+
+`REFERENCE_STATE.md`를 만드는 것만으로 자동 로드가 되지는 않습니다. 진입 지침에서 읽도록 연결하고, 새 실행에서 해당 안내를 실제로 읽었는지 확인합니다. [Codex AGENTS.md 안내](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+
+작업 완료는 출처 기록, 변경 내용 검토, 관련 검사 통과, 요청된 브랜치의 commit/push 확인으로 판단합니다. 설치 안내를 읽은 상태와 설치·실행을 검증한 상태는 따로 기록합니다. 구체적인 반복·정지 조건은 [Loop Engineering의 자료 조사 예시](./loop_engineering.md#자료-조사에-사용하는-제한된-루프)를 참고합니다.
+
+### 실행기·오케스트레이터를 검토할 때
+
+[Harness/Loop 참고 저장소 목록](../../_reference/github_references.md#4-harnessloop)에서 구현체와 자료 모음을 구분합니다. 짧은 지침과 검사만 필요한 작업에 외부 실행기 전체를 바로 도입할 필요는 없습니다.
+
+Anthropic의 장기 실행 사례는 초기 환경 준비와 후속 작업을 나누고, 기능 목록·진행 기록·실제 동작 검사를 통해 세션을 연결합니다. 문서 조사에서는 이를 조사 목록·출처 기록·링크 검사로 바꿔 사용할 수 있습니다. [장기 실행 하네스 사례](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
+
+평가자 모델을 추가할 때는 검증 가능한 기준과 사례를 먼저 정합니다. 단순한 파일 존재·링크·빌드 검사는 결정론적 도구를 사용하고, 의미나 사용성 판단이 필요한 곳에 별도 평가를 선택합니다. [Anthropic의 하네스 설계 사례](https://www.anthropic.com/engineering/harness-design-long-running-apps)
+
+git worktree는 작업 파일을 분리하는 수단입니다. OS 권한·네트워크·비밀 접근을 제한하는 보안 sandbox와는 역할이 다릅니다. 위 Bash 린터도 구조를 설명하는 예시이며, 실제 프로젝트에서는 언어별 import 규칙과 Windows 실행 환경에 맞춰 검증해야 합니다.
 
 ## 7. Prompt Engineering과의 차이
 
@@ -256,16 +280,16 @@ fi
 └────────────────────────────────────────────────────────────┘
 ```
 
-🟡 아래 분류는 커뮤니티에서 통용되는 구분이며, 특정 권위 출처의 공식 정의는 아닙니다.
+🟡 아래는 관심사를 비교한 정리이며 공식 계층이나 성숙도 순서가 아닙니다.
 
-| 레벨 | 분야                | 지속성 | 관심사                     |
-|------|---------------------|--------|----------------------------|
-| L1   | Prompt Engineering  | 일회성 | 프롬프트 문구 최적화       |
-| L2   | Context Engineering | 세션   | RAG, 컨텍스트 윈도우 관리  |
-| L3   | Harness Engineering | 영구   | 환경, 도구, 검증, 아키텍처 |
-| L2+  | Loop Engineering    | 세션+  | 자율 반복 실행 + 검증 루프 |
+| 분야                | 질문                               | 산출물 예시                                 |
+|---------------------|------------------------------------|---------------------------------------------|
+| Prompt Engineering  | 어떤 지시를 전달할 것인가          | 작업 요청과 제약                            |
+| Context Engineering | 어떤 정보를 언제 읽게 할 것인가    | 필요한 문서·상태의 전달 경로                |
+| Harness Engineering | 어떤 환경과 피드백을 제공할 것인가 | 도구, 지침, 검사, 상태 저장, 격리           |
+| Loop Engineering    | 무엇을 반복하고 언제 멈출 것인가   | 다음 행동 선택, 결과 평가, 재시도·정지 조건 |
 
-🟡 Loop Engineering은 에이전트를 자동으로 반복 실행하는 "루프 설계"에 초점을 맞추며, Harness Engineering은 그 루프가 동작하는 전체 환경(레포 구조, CI, observability, sandbox)을 포함하는 상위 개념입니다. 두 용어는 2026년 6월 전후로 동시에 부상했으며, 정확한 계층 관계는 커뮤니티마다 다르게 해석합니다. (근거: Addy Osmani 블로그, OpenAI 원문의 Ralph Wiggum Loop 언급, Anthropic Boris Cherny 인터뷰)
+하네스 안의 관찰·행동 루프와 여러 실행을 다시 호출하는 외부 루프는 서로 다른 범위입니다. Addy Osmani는 후자를 중심으로 설명합니다. 하네스와 루프를 항상 한쪽이 다른 쪽을 포함하는 단일 계층으로 고정하지 않고, [Loop Engineering의 관계 설명](./loop_engineering.md#7-harness-engineering과의-관계)처럼 실행 범위를 명시합니다. [Loop Engineering 원문](https://addyosmani.com/blog/loop-engineering/)
 
 ## 8. 트러블슈팅
 
@@ -281,6 +305,9 @@ fi
 
 - OpenAI: [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/) — ★★★☆☆
 - Anthropic: [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps) — ★★★☆☆
+- Anthropic: [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) — ★★★☆☆
+- OpenAI: [Custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) — ★★★☆☆
+- [Harness/Loop 참고 저장소](../../_reference/github_references.md#4-harnessloop)
 - martinfowler.com: [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html) — ★★★☆☆
 - GitHub: [ai-boost/awesome-harness-engineering](https://github.com/ai-boost/awesome-harness-engineering) — ★★★☆☆
 - GitHub: [walkinglabs/awesome-harness-engineering](https://github.com/walkinglabs/awesome-harness-engineering) — ★★★☆☆
@@ -290,6 +317,6 @@ fi
 
 **작성일**: 2026-06-19
 
-**마지막 업데이트**: 2026-06-25
+**마지막 업데이트**: 2026-10-03
 
 © 2026 siasia86. Licensed under CC BY 4.0.

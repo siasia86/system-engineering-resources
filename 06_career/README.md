@@ -21,7 +21,8 @@
 - [codex_gui_guide.md](./ai_tools/codex_gui_guide.md) — ChatGPT 웹·데스크톱에서 Codex 작업 관리
 - [codex_ide_guide.md](./ai_tools/codex_ide_guide.md) — IDE context 기반 수정·리뷰·위임
 - [codex_api_guide.md](./ai_tools/codex_api_guide.md) — Codex SDK, app-server, CI 자동화
-- [harness_engineering.md](./ai_tools/harness_engineering.md) — AI 프롬프트 설계 원칙
+- [harness_engineering.md](./ai_tools/harness_engineering.md) — 에이전트 환경·검증·상태 전달과 참고 구현
+- [loop_engineering.md](./ai_tools/loop_engineering.md) — 목표·피드백·정지 조건과 제한된 반복 설계
 - [jev_concepts.md](./ai_tools/jev_concepts.md) — System One 모델, 질문 유형, 확률·신뢰도
 - [jev_guide.md](./ai_tools/jev_guide.md) — Playground, HTTP API, Python SDK와 결과 분기
 - [ip_ownership_guide.md](./legal/ip_ownership_guide.md) — 코드 저작권, 직무 발명
