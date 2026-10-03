@@ -479,6 +479,11 @@ sia-readme-inventory-check README.md
 ![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
 ![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
 
+
+<!-- P31-GOVERNANCE-ENTRY BEGIN -->
+저장소 관리 문서와 실제 상태 위치는 [.governance 진입](.governance/README.md)에서 확인합니다. 기존 업무 자료·기록은 원래 위치를 유지합니다.
+<!-- P31-GOVERNANCE-ENTRY END -->
+
 ---
 
 **작성일**: 2026-03-11

@@ -62,3 +62,6 @@ __pycache__/
 06_career/legal/_reference/*.hwp
 06_career/legal/_reference/*.hwpx
 !06_career/legal/_reference/개인정보 보호위원회 직제 시행규칙 일부개정령안.pdf
+
+# Governance documents and private application evidence
+/.governance/local/
