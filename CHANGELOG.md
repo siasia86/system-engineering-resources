@@ -8,6 +8,9 @@
 
 ### main 병합 검토 — 2026-10-04
 
+- MAIN-20261004-01에서 CAT-20261004-01 스킬 목록의 faa6574를 main에 fast-forward·일반 push하고 원격 SHA를 확인했습니다. 후보 문서 5개·링크 259개·교차 앵커 8개·inventory·Gitleaks를 재검사했고 확인된 모순·의도 불일치는 없었습니다. [병합 결과와 미실행](.governance/outputs/MAIN-20261004-01_스킬목록병합/20261004_markdown/REVIEW.md).
+
+
 - 기존 날짜 CI의 UTC 기준으로 한국 날짜의 작성일보다 갱신일이 하루 앞서지는 문제를 확인해 날짜 계산만 KST(UTC+9, POSIX TZ=KST-9)로 지정했습니다. 날짜 갱신은 기존처럼 yunli에서만 수행하며 Windows Git Bash에서도 자정 경계 두 사례를 확인했습니다.
 
 - M12-MAIN-20261004-01에서 yunli의 Codex·harness·loop 자료와 현장 .governance 적용 문서를 검토했습니다. main 고유 commit은 없으며 변경 Markdown 15개와 파일 링크·교차 fragment·diff·Gitleaks를 확인했습니다.

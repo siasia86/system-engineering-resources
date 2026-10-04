@@ -1,0 +1,21 @@
+{
+  "task": "MAIN-20261004-01",
+  "state": "catalog-candidate-merged-verified-record-publication-separate",
+  "beforeMain": "4ead6711fe31ecda45e668a54e3681b8596e59ef",
+  "mergedCommit": "faa6574e8d80ec90ee02f32091d9a939b225575a",
+  "remoteMainAtObservation": "faa6574e8d80ec90ee02f32091d9a939b225575a",
+  "review": "No confirmed contradiction or intent mismatch",
+  "markdownFiles": 5,
+  "fileLinks": 259,
+  "crossFragments": 8,
+  "pinnedToolHashesVerified": 8,
+  "styleHeadingLinksInventoryWhitespaceAndSecrets": "passed",
+  "checkout": "yunli preserved",
+  "reviewedFileHashesPreserved": true,
+  "notPerformed": [
+    "Skill installation or behavior",
+    "External factual re-investigation or HTTP availability",
+    "Remote CI",
+    "Release or operations"
+  ]
+}
