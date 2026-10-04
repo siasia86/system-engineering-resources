@@ -400,6 +400,7 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [Codex 공통 개념](06_career/ai_tools/codex_concepts.md)                      | 동작 원리, 수정 예시, 설정과 권한          |
 | [Codex CLI Linux 가이드](06_career/ai_tools/codex_cli_linux_guide.md)        | TUI, 로컬 작업, 비대화형 실행              |
 | [Codex Skills 설정 가이드](06_career/ai_tools/codex_skills_setup_guide.md)   | skill 작성·설치·호출·비활성화, 참고 URL    |
+| [Codex 스킬 목록](06_career/ai_tools/codex_skills_catalog.md)                | 세션 제공 스킬 31개·한 줄 설명·호출 예시   |
 | [Codex GUI 가이드](06_career/ai_tools/codex_gui_guide.md)                    | ChatGPT 웹·데스크톱 작업 관리              |
 | [Codex IDE 가이드](06_career/ai_tools/codex_ide_guide.md)                    | 편집기 context 기반 수정·리뷰              |
 | [Codex API·자동화 가이드](06_career/ai_tools/codex_api_guide.md)             | SDK, app-server, CI 자동화                 |
@@ -488,6 +489,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-10-03
+**마지막 업데이트**: 2026-10-04
 
 © 2026 siasia86. Licensed under CC BY 4.0.

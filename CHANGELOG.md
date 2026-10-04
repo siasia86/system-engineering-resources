@@ -15,6 +15,7 @@
 
 ### Added
 
+- `CAT-20261004-01`: `codex_skills_catalog.md`에 세션 제공 스킬 31개의 한 줄 설명, 업무별 선택과 명시적 호출 예시를 추가. 개인 7개·기본 4개·플러그인 20개를 구분하고 root·Career 목차와 설정 가이드에 연결. 스킬 설치·설정 변경은 포함하지 않음.
 - Jev 공식 참조 노트와 개념·사용 가이드 3개를 추가. TypeSafe AI 공식 문서에 따라 질문 유형, 확률·신뢰도, 모델 제한, HTTP API·Python SDK와 결과 분기를 정리하고 root·Career README 및 reference INDEX에 연결.
 - `04_security/hardening/ai_agent_sandbox_concepts.md`에 샌드박스·OS 권한·실행 승인·원격 실행기의 역할과 한계, 저장소별 책임, 환경별 권한 및 검증 기준을 개념 문서로 추가하고 root·Security README에서 연결. 운영 설정 변경은 포함하지 않음.
 - `codex_concepts.md`, `codex_gui_guide.md`, `codex_ide_guide.md`, `codex_api_guide.md`를 추가해 Codex 공통 개념과 GUI·IDE·API 사용 경로를 분리.
@@ -35,6 +36,7 @@
 
 ### Verified
 
+- `CAT-20261004-01`: `sia_scripts` v0.3.3 태그 소스로 변경 Markdown 5개의 style·heading·파일 링크 259개, 교차 fragment 8개와 root README inventory를 확인. Luna의 스킬 목록 31개 대조에서도 누락·중복 없음. 스킬 설치·실제 동작 검증은 미실행.
 - 2026-10-01 Codex 입문 문서 개편 후 기존 수정분을 포함한 변경 문서 10개의 Markdown style·heading·link, root README inventory, gitleaks와 `git diff --check`를 검증. 파일 경로 예시의 공백 포함·미포함·없는 파일 동작을 임시 디렉토리에서 확인. 실제 Codex 모델 호출은 실행하지 않음.
 - 2026-10-01 Codex 설정 관련 변경 문서 8개의 Markdown style·heading·link, root README inventory, gitleaks와 `git diff --check`를 검증. CI 체크섬·manifest를 대조한 `sia_scripts` v0.3.3을 사용하고, 로컬 Codex CLI 0.159.3의 `--help`로 `exec` 예제 12개의 인수 문법과 TOML 예제 3개의 구문을 확인. 실제 모델 호출·OAuth 로그인·설정 적용은 실행하지 않음.
 - Jev 추가 문서와 관련 인덱스의 Markdown style·heading·link 및 root README inventory를 CI 체크섬과 동일한 `sia_scripts` v0.3.3으로 검증. Python·Bash·JSON 구문과 큐 분기 경계값을 로컬에서 확인하고 gitleaks 검사를 통과. 인증된 API 호출과 SDK 실행은 수행하지 않음.

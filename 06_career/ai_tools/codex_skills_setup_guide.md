@@ -5,6 +5,8 @@ Codex CLI와 IDE에서 재사용할 skill을 작성·설치하고, 호출과 비
 
 Codex 설치·인증은 [CLI Linux 가이드](codex_cli_linux_guide.md), 기능의 역할 구분은 [Codex 공통 개념](codex_concepts.md#52-agentsmdskillsmcp의-차이)을 먼저 확인합니다. 공식 문서와 GitHub 참고 자료의 확인일은 2026-10-03이며, 명령 예제의 설치·실행 결과는 사용하는 Codex 버전과 환경에서 별도로 확인합니다.
 
+세션에서 제공된 스킬의 한 줄 설명과 업무별 선택 예시는 [Codex 스킬 목록](codex_skills_catalog.md)에서 확인합니다.
+
 ## 목차
 
 | 섹션                                                                                    |
@@ -229,6 +231,6 @@ Karpathy skills의 `CLAUDE.md` 기반 지침, gstack의 Codex host 설치, 다�
 
 **작성일**: 2026-10-03
 
-**마지막 업데이트**: 2026-10-03
+**마지막 업데이트**: 2026-10-04
 
 © 2026 siasia86. Licensed under CC BY 4.0.
