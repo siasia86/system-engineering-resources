@@ -5,7 +5,7 @@ tags:
   - index
   - reference
   - directory
-last_checked: 2026-10-03
+last_checked: 2026-10-09
 sources:
   - self (이 파일이 인덱스 역할)
 ---
@@ -86,6 +86,7 @@ sources:
 | MinIO                          | `_reference/minio_official_notes.md`                    | AGPLv3·S3-compatible·Versioning·Object Lock·Replication | 2026-09-21 | O    |
 | Storage Tools                  | `_reference/storage_tools_official_notes.md`            | 15개 도구·공식 매뉴얼 범위                              | 2026-08-18 | O    |
 | AI 코딩 도구                   | `_reference/ai_coding_tools_official_notes.md`          | 가격·모델·벤치마크 (2026-07-27)                         | 2026-07-27 | O    |
+| ASD-STE100                     | `_reference/asd_ste100_official_notes.md`               | Issue 9 공식 설명·GitHub 5개·Codex 적용 근거            | 2026-10-09 | O    |
 | Rust                           | `_reference/rust_official_notes.md`                     | 1.97.1, Edition 2021, 주요 크레이트                     | 2026-07-29 | O    |
 | Windows Server 에디션/라이선스 | `_reference/windows_server_editions_licensing_notes.md` | Standard vs Datacenter, KMS/MAK/AVMA                    | 2026-07-29 | O    |
 | Windows Server Concepts        | `_reference/windows_server_concepts_notes.md`           | Hyper-V, S2D, Failover Cluster, Shielded VM, SDN        | 2026-07-29 | O    |
@@ -128,3 +129,11 @@ sources:
   - https://...
 ---
 ```
+
+---
+
+**작성일**: 2026-05-22
+
+**마지막 업데이트**: 2026-10-09
+
+© 2026 siasia86. Licensed under CC BY 4.0.

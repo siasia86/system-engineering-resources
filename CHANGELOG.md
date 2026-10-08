@@ -6,6 +6,15 @@
 
 ## [Unreleased]
 
+### ASD-STE100 소통 적용 조사 — 2026-10-09
+
+- `STE-20261009-01`: [사용 방안](06_career/ai_tools/asd_ste100_codex_communication.md)과 [출처 노트](_reference/asd_ste100_official_notes.md)를 추가하고 root·Career·reference 색인에 연결했습니다. 공식 소개·FAQ와 OpenAI 문서, GitHub 후보 5개의 기준 커밋·파일·라이선스·설치 부작용을 대조했습니다.
+- 한국어에는 명확한 대상·행동·조건·의미 보존 원칙부터 참고하는 방안을 제안했습니다. 표준 PDF 전체·AI 백서·한국어 개선 효과는 미검증이며 skill 설치·clone·설정 변경·31 정책 작업은 미실행입니다.
+- 검증: 고정된 sia_scripts v0.3.3 태그 소스와 일치하는 검사기로 Markdown 6개의 style·heading·내부 링크 258개, 교차 앵커 2개, root README 문서 수 표기를 확인했습니다. Career의 표 형식은 검사기 지원 밖이므로 별도 대조해 AI 도구 문서 수 19개와 일치함을 확인했습니다. 담당 파일 Gitleaks와 git diff --check도 통과했습니다. CI release archive 실행과 원격 CI는 이 로컬 검증에 포함하지 않습니다.
+- 첫 검사에서 새 출처 표 행의 정렬 오류를 보정했습니다. 하위 README 검사 실패는 검사기가 (N개) 표기만 인식한 데서 발생했으며, 실제 표와 파일 수를 대조해 보완했습니다. 원본 실패 로그는 로컬 기록에 보존했습니다.
+- 커밋 필수 검사에서 기존 출처 색인의 푸터 누락을 발견했습니다. Git의 최초 추가일 2026-05-22를 확인해 푸터를 보완했습니다. 필수 검사 설정과 hook은 변경하지 않았습니다.
+
+
 ### main 병합 검토 — 2026-10-04
 
 - MAIN-20261004-01에서 CAT-20261004-01 스킬 목록의 faa6574를 main에 fast-forward·일반 push하고 원격 SHA를 확인했습니다. 후보 문서 5개·링크 259개·교차 앵커 8개·inventory·Gitleaks를 재검사했고 확인된 모순·의도 불일치는 없었습니다. [병합 결과와 미실행](.governance/outputs/MAIN-20261004-01_스킬목록병합/20261004_markdown/REVIEW.md).
