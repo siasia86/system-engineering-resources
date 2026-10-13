@@ -27,6 +27,8 @@
 
 ### Added
 
+- 2026-10-13: [Aside AI 브라우저 가이드](06_career/ai_tools/aside_browser_guide.md)와 [공식 참조 노트](_reference/aside_browser_official_notes.md)를 추가. 지원 플랫폼·기능·요금·권한·데이터 처리·CLI/MCP·제작사 벤치마크를 조사하고 공식 자료의 Max 사용량·데이터 전송 설명 차이를 기록. root·Career README와 reference INDEX에 연결.
+- 2026-10-13: Boris Cherny의 다섯 업무 원형 조사 [본문](06_career/ai_tools/ai_work_archetypes.md)과 [참조 노트](_reference/ai_work_archetypes_notes.md)를 추가. 원형 정의·제품 단계별 조합·AI 활용과 인프라 적용 예시를 구분하고 root·Career README 및 reference INDEX에 연결. X 원문 직접 열람 제한과 출처별 확인 상태를 기록.
 - `CAT-20261004-01`: `codex_skills_catalog.md`에 세션 제공 스킬 31개의 한 줄 설명, 업무별 선택과 명시적 호출 예시를 추가. 개인 7개·기본 4개·플러그인 20개를 구분하고 root·Career 목차와 설정 가이드에 연결. 스킬 설치·설정 변경은 포함하지 않음.
 - Jev 공식 참조 노트와 개념·사용 가이드 3개를 추가. TypeSafe AI 공식 문서에 따라 질문 유형, 확률·신뢰도, 모델 제한, HTTP API·Python SDK와 결과 분기를 정리하고 root·Career README 및 reference INDEX에 연결.
 - `04_security/hardening/ai_agent_sandbox_concepts.md`에 샌드박스·OS 권한·실행 승인·원격 실행기의 역할과 한계, 저장소별 책임, 환경별 권한 및 검증 기준을 개념 문서로 추가하고 root·Security README에서 연결. 운영 설정 변경은 포함하지 않음.
@@ -48,6 +50,9 @@
 
 ### Verified
 
+- 2026-10-13 main 게시 준비: 기존 ASD-STE100 변경을 보존하면서 두 조사 문서를 병합. `sia_scripts` v0.3.3 태그 소스로 담당 Markdown 8개의 style·heading·내부 링크 271개와 root README inventory를 확인했고, Career AI 도구 실제 문서 수 21개를 대조. 로컬 검사와 원격 CI 실행은 구분하며 원문 접근·제품 실행의 기존 미검증 범위는 유지.
+- 2026-10-13: Aside 관련 Markdown 6개의 style·heading·파일 링크, root README inventory와 Career `ai_tools` 실제 문서 수 20개를 확인. 공식 제품·도움말 및 다운로드·변경 이력·요금·정책을 두 차례 대조. 로컬 문서 검사는 설치된 `sia_scripts` 0.3.0을 사용하며 CI 0.3.3·Aside 설치와 실제 동작·벤치마크 재현은 미실행.
+- 2026-10-13: 다섯 업무 원형 관련 Markdown 6개의 style·heading·파일 링크 258개와 root README inventory, Career `ai_tools` 실제 문서 수 19개, 담당 파일의 Gitleaks v8.30.1·공백 검사를 통과. 설치된 `sia_scripts` 0.3.0 도구를 사용했으며 CI 고정 버전 0.3.3 실행은 미실행. 원형 명칭·복수 역할·제품 단계별 조합은 전재·보도·해설로 두 차례 대조했고 X 원문 직접 검증은 미완료로 기록.
 - `CAT-20261004-01`: `sia_scripts` v0.3.3 태그 소스로 변경 Markdown 5개의 style·heading·파일 링크 259개, 교차 fragment 8개와 root README inventory를 확인. Luna의 스킬 목록 31개 대조에서도 누락·중복 없음. 스킬 설치·실제 동작 검증은 미실행.
 - 2026-10-01 Codex 입문 문서 개편 후 기존 수정분을 포함한 변경 문서 10개의 Markdown style·heading·link, root README inventory, gitleaks와 `git diff --check`를 검증. 파일 경로 예시의 공백 포함·미포함·없는 파일 동작을 임시 디렉토리에서 확인. 실제 Codex 모델 호출은 실행하지 않음.
 - 2026-10-01 Codex 설정 관련 변경 문서 8개의 Markdown style·heading·link, root README inventory, gitleaks와 `git diff --check`를 검증. CI 체크섬·manifest를 대조한 `sia_scripts` v0.3.3을 사용하고, 로컬 Codex CLI 0.159.3의 `--help`로 `exec` 예제 12개의 인수 문법과 TOML 예제 3개의 구문을 확인. 실제 모델 호출·OAuth 로그인·설정 적용은 실행하지 않음.
@@ -961,6 +966,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-10-04
+**마지막 업데이트**: 2026-10-13
 
 © 2026 siasia86. Licensed under CC BY 4.0.

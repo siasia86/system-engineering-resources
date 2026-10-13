@@ -8,7 +8,7 @@
 |--------------------------|--------------------------------------------------------------------------|---------|
 | [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                        | 4       |
 | [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권                                            | 2       |
-| [ai_tools/](./ai_tools/) | AI 도구 — Kiro CLI, Codex, Jev, AI 개발 요청 템플릿, 프롬프트 엔지니어링 | 19      |
+| [ai_tools/](./ai_tools/) | AI 도구 — Kiro CLI, Codex, Jev, AI 개발 요청 템플릿, 프롬프트 엔지니어링 | 21      |
 
 ## 주요 문서
 
@@ -27,6 +27,8 @@
 - [loop_engineering.md](./ai_tools/loop_engineering.md) — 목표·피드백·정지 조건과 제한된 반복 설계
 - [jev_concepts.md](./ai_tools/jev_concepts.md) — System One 모델, 질문 유형, 확률·신뢰도
 - [jev_guide.md](./ai_tools/jev_guide.md) — Playground, HTTP API, Python SDK와 결과 분기
+- [ai_work_archetypes.md](./ai_tools/ai_work_archetypes.md) — Boris Cherny의 다섯 업무 원형·제품 단계별 조합·인프라 적용 예시
+- [aside_browser_guide.md](./ai_tools/aside_browser_guide.md) — Aside AI 브라우저의 기능·요금·권한·데이터 처리·CLI·MCP
 - [ip_ownership_guide.md](./legal/ip_ownership_guide.md) — 코드 저작권, 직무 발명
 
 ## 추천 학습 순서
@@ -48,6 +50,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-10-09
+**마지막 업데이트**: 2026-10-13
 
 © 2026 siasia86. Licensed under CC BY 4.0.
