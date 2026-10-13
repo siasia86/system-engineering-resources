@@ -1,6 +1,8 @@
-# GitHub CLI (gh)
+# GitHub CLI(gh) 명령어 참조
 
-GitHub 작업을 터미널에서 수행하는 공식 CLI 도구입니다. PR, Issue, Repo, Release, Workflow 등을 브라우저 없이 관리합니다.
+GitHub 작업을 터미널에서 수행하는 공식 CLI 도구입니다. PR, Issue, Repo, Release, Workflow 등을 브라우저 없이 관리합니다. 로컬 Git 명령은 [Git 명령어 실무 참조](git_command_reference.md)에서 다루고, 이 문서는 GitHub 서버 쪽 작업을 다룹니다.
+
+🟡 2026-10-13 기준 GitHub 최신 릴리스는 v2.102.0(2026-09-30)입니다. 명령 옵션은 로컬 gh 2.45.0의 `--help`로 대조했으며, 이후 버전에서 추가된 옵션에는 필요한 버전을 표시합니다.
 
 ## 목차
 
@@ -31,6 +33,8 @@ sudo apt update
 sudo apt install gh
 ```
 
+🟡 v2.101.0(2026-09-15)부터 공식 APT·RPM 저장소는 새 PGP 키(fingerprint `7F38BBB59D064DBCB3D84D725612B36462313325`)로만 서명합니다. 2026-04-08 이전에 저장소를 등록하고 keyring을 갱신하지 않았다면 설치·업데이트가 실패할 수 있으므로 [키 교체 안내](https://github.com/cli/cli/issues/13118)에 따라 keyring을 갱신합니다. Homebrew·GitHub Releases·Windows·macOS 설치는 영향이 없습니다.
+
 ### macOS
 
 ```bash
@@ -41,7 +45,11 @@ brew install gh
 
 ```bash
 gh --version
-# gh version 2.x.x (2026-xx-xx)
+# gh version 2.45.0 (2025-07-18 Ubuntu 2.45.0-1ubuntu0.3)
+# https://github.com/cli/cli/releases/tag/v2.45.0
+
+# 최신 릴리스 태그 확인
+gh release view --repo cli/cli --json tagName,publishedAt
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -67,9 +75,28 @@ gh auth login --hostname github.example.com
 
 ```bash
 gh auth status
-# ✓ Logged in to github.com as username (token)
-# ✓ Token scopes: repo, read:org, workflow
+# github.com
+#   ✓ Logged in to github.com account username (/home/user/.config/gh/hosts.yml)
+#   - Active account: true
+#   - Git operations protocol: https
+#   - Token: gho_************************************
+#   - Token scopes: 'gist', 'read:org', 'repo', 'workflow'
 ```
+
+토큰 값은 기본적으로 가려서 출력합니다. `--show-token`이나 `gh auth token`은 토큰 원문을 출력하므로 로그·화면 공유에 남지 않게 주의합니다.
+
+### Git Credential 연동과 환경 변수 토큰
+
+```bash
+# git push/pull의 HTTPS 인증에 gh 로그인 정보 사용
+gh auth setup-git
+
+# CI 등 비대화형 환경: 저장된 로그인보다 환경 변수 토큰이 우선
+export GH_TOKEN="${SECRET_TOKEN}"
+gh run list --limit 3
+```
+
+토큰 환경 변수의 우선순위는 `GH_TOKEN` → `GITHUB_TOKEN`입니다. GitHub Enterprise Server는 `GH_ENTERPRISE_TOKEN`과 `GH_HOST`를 사용합니다.
 
 ### 토큰 관리
 
@@ -101,7 +128,6 @@ Scope(범위)는 **토큰이 접근할 수 있는 권한의 범위**입니다. G
 
 ```
 scope: repo               → 코드 저장소 전체 접근 (읽기+쓰기)
-scope: repo (read)        → 코드 저장소 읽기만
 scope: workflow           → GitHub Actions 실행/관리
 scope: write:packages     → 패키지 업로드
 scope: read:org           → 조직 멤버 목록 확인
@@ -193,6 +219,22 @@ gh repo create org/my-project --public --clone
 
 # 템플릿에서 생성
 gh repo create my-app --template org/template-repo --private --clone
+```
+
+### 기본 저장소 지정
+
+```bash
+# 원격이 여러 개일 때 gh가 사용할 기본 저장소 지정
+gh repo set-default owner/repo
+
+# 현재 기본 저장소 확인
+gh repo set-default --view
+
+# 명령 한 번만 다른 저장소 지정
+gh pr list --repo owner/other-repo
+
+# 셸 세션 전체에 적용
+export GH_REPO=owner/repo
 ```
 
 ### 클론
@@ -288,6 +330,9 @@ gh pr checkout 42
 # PR 브랜치 정보 확인 후 체크아웃
 gh pr view 42
 gh pr checkout 42
+
+# 별도 worktree에 체크아웃 (v2.98.0+)
+gh pr checkout 42 --worktree
 ```
 
 ### 리뷰
@@ -320,6 +365,9 @@ gh pr merge 42 --squash --delete-branch
 
 # auto-merge (required checks 통과 후 자동 머지)
 gh pr merge 42 --auto --squash
+
+# 검토한 커밋에서만 머지: 그 사이 push가 있으면 거부
+gh pr merge 42 --squash --match-head-commit "$(gh pr view 42 --json headRefOid --jq .headRefOid)"
 ```
 
 ### 상태 확인
@@ -327,6 +375,12 @@ gh pr merge 42 --auto --squash
 ```bash
 # CI 체크 상태
 gh pr checks 42
+
+# 체크가 끝날 때까지 대기, 첫 실패 시 종료
+gh pr checks 42 --watch --fail-fast
+
+# required check만 표시
+gh pr checks 42 --required
 
 # diff 확인
 gh pr diff 42
@@ -425,7 +479,13 @@ gh release download --pattern "*.tar.gz"
 
 # 특정 버전
 gh release download v1.0.0 --pattern "*.tar.gz" --dir ./downloads/
+
+# 다른 저장소의 에셋 다운로드 후 체크섬 확인
+gh release download v1.0.0 --repo owner/tool --pattern "tool_1.0.0.tar.gz" --dir ./downloads/
+echo "<sha256>  tool_1.0.0.tar.gz" | (cd ./downloads && sha256sum --check)
 ```
+
+v2.96.0부터 공개 저장소의 `gh release download`는 인증 없이 실행할 수 있습니다. 비공개 저장소는 해당 저장소 읽기 권한이 있는 토큰이 필요합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -433,53 +493,86 @@ gh release download v1.0.0 --pattern "*.tar.gz" --dir ./downloads/
 
 ## 7. Workflow
 
-### 목록/상태
+`gh run`은 GitHub Actions 워크플로 실행 기록(run)을 다루고, `gh workflow`는 워크플로 정의(.yml)를 다룹니다. 웹의 Actions 탭과 같은 정보를 터미널에서 확인합니다.
+
+### 실행 목록 조회
+
+```bash
+# 최근 실행 (기본 20건)
+gh run list --limit 10
+
+# 브랜치·워크플로·상태로 필터링
+gh run list --branch main --limit 3
+gh run list --workflow update-date.yml
+gh run list --status failure
+gh run list --commit "$(git rev-parse HEAD)"
+```
+
+출력 예시입니다. 탭으로 구분된 열은 상태, 결과, 커밋 제목, 워크플로 이름, 브랜치, 이벤트, 실행 ID, 소요 시간, 시작 시각입니다.
+
+```text
+completed	success	docs: AI 업무 원형과 Aside 브라우저 조사 추가	Markdown validation and README dates	yunli	push	38365410580	12s	2026-10-13T07:51:52Z
+```
+
+| 상태(status)  | 결과(conclusion)                             |
+|---------------|----------------------------------------------|
+| `queued`      | 아직 없음                                    |
+| `in_progress` | 아직 없음                                    |
+| `completed`   | `success`, `failure`, `cancelled`, `skipped` |
+
+### 실행 상세와 로그
+
+```bash
+# job 결과와 annotation(경고) 확인
+gh run view 38365410580
+
+# job의 step까지 표시
+gh run view 38365410580 --verbose
+
+# 전체 로그 / 실패한 step 로그만
+gh run view 38365410580 --log
+gh run view 38365410580 --log-failed
+
+# 웹에서 열기
+gh run view 38365410580 --web
+```
+
+`gh run view` 출력의 ANNOTATIONS에는 실패뿐 아니라 사용 중단 예정 action, runner 이미지 변경 같은 경고도 표시되므로 성공한 실행도 주기적으로 확인합니다.
+
+### 진행 대기와 스크립트 판정
+
+```bash
+# 끝날 때까지 갱신, 실패하면 종료 코드 1
+gh run watch 38365410580 --exit-status
+
+# 끝난 실행의 성공 여부를 종료 코드로 판정
+gh run view 38365410580 --exit-status && echo "CI 통과"
+
+# 최신 커밋의 실행 결과만 JSON으로 확인
+gh run list --commit "$(git rev-parse HEAD)" --json status,conclusion,workflowName,url
+```
+
+`--json`에 사용할 수 있는 필드는 `gh run list --json`을 값 없이 실행하면 출력됩니다.
+
+### 실행·재실행·산출물
 
 ```bash
 # workflow 목록
 gh workflow list
 
-# 최근 실행 목록
-gh run list --limit 10
-
-# 특정 workflow 실행 내역
-gh run list --workflow=ci.yml
-```
-
-### 실행
-
-```bash
-# workflow 수동 실행 (workflow_dispatch)
+# workflow 수동 실행 (workflow_dispatch 트리거 필요)
 gh workflow run ci.yml
 
 # 브랜치 + 입력값 지정
 gh workflow run deploy.yml --ref main -f environment=production
 
-# 실행 상태 실시간 확인
-gh run watch
-```
-
-### 로그 확인
-
-```bash
-# 실행 로그
-gh run view 12345678 --log
-
-# 실패한 step만
-gh run view 12345678 --log-failed
-
-# 웹에서 열기
-gh run view 12345678 --web
-```
-
-### 재실행
-
-```bash
-# 전체 재실행
+# 전체 재실행 / 실패한 job만 재실행 / 디버그 로그 활성화
 gh run rerun 12345678
-
-# 실패한 job만 재실행
 gh run rerun 12345678 --failed
+gh run rerun 12345678 --failed --debug
+
+# 실행 산출물(artifact) 다운로드
+gh run download 12345678 --name build-output --dir ./artifacts/
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -547,8 +640,8 @@ gh ssh-key delete 12345
 ### Secret 관리 (Actions)
 
 ```bash
-# secret 설정
-gh secret set AWS_ACCESS_KEY_ID --body "AKIA..."
+# secret 설정: --body 없이 실행하면 값을 표준 입력으로 입력받음
+gh secret set AWS_ACCESS_KEY_ID
 
 # 파일에서 읽기
 gh secret set DEPLOY_KEY < ./deploy_key.pem
@@ -561,7 +654,12 @@ gh secret delete AWS_ACCESS_KEY_ID
 
 # environment secret
 gh secret set DB_PASSWORD --env production
+
+# 민감하지 않은 설정값은 variable로 관리
+gh variable set AWS_REGION --body "ap-northeast-2"
 ```
+
+🟡 `--body "값"`은 셸 history와 프로세스 목록에 secret 원문이 남을 수 있습니다. 표준 입력이나 파일 입력을 우선합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -588,6 +686,39 @@ gh config set browser "firefox"
 
 # 페이저 설정
 gh config set pager "less -R"
+```
+
+### 주요 환경 변수
+
+| 변수                 | 용도                                                |
+|----------------------|-----------------------------------------------------|
+| `GH_TOKEN`           | 인증 토큰 (`GITHUB_TOKEN`보다 우선)                 |
+| `GH_REPO`            | 대상 저장소 `[HOST/]OWNER/REPO`                     |
+| `GH_HOST`            | 기본 GitHub 호스트                                  |
+| `GH_DEBUG`           | 상세 출력, `api`로 설정하면 HTTP 요청·응답까지 출력 |
+| `GH_PAGER`           | 출력 페이저 (`PAGER`보다 우선)                      |
+| `GH_PROMPT_DISABLED` | 대화형 질문 비활성화 (스크립트·CI용)                |
+| `GH_CONFIG_DIR`      | 설정 디렉터리 변경                                  |
+| `NO_COLOR`           | 색상 escape 문자 출력 안 함                         |
+
+전체 목록은 `gh help environment`로 확인합니다.
+
+### 텔레메트리와 클립보드
+
+v2.91.0부터 gh는 가명(pseudonymous) 텔레메트리를 전송합니다. 수집 항목은 [Telemetry 안내](https://cli.github.com/telemetry)에서 확인합니다.
+
+```bash
+# 텔레메트리 비활성화 (DO_NOT_TRACK보다 우선)
+export GH_TELEMETRY=false
+
+# 전송하지 않고 표준 오류로 출력해 내용 확인
+GH_TELEMETRY=log gh repo view
+
+# 일반 도구 공통 방식
+export DO_NOT_TRACK=1
+
+# 인증 코드 클립보드 자동 복사 끄기 (v2.101.0+)
+gh config set clipboard disabled
 ```
 
 ### 유용한 설정 조합
@@ -621,7 +752,6 @@ gh extension search dashboard
 
 # 설치
 gh extension install dlvhdr/gh-dash
-gh extension install github/gh-copilot
 
 # 목록
 gh extension list
@@ -638,9 +768,10 @@ gh extension remove dlvhdr/gh-dash
 | 확장                     | 용도                    | 설치                                          |
 |--------------------------|-------------------------|-----------------------------------------------|
 | `dlvhdr/gh-dash`         | PR/Issue 대시보드 (TUI) | `gh extension install dlvhdr/gh-dash`         |
-| `github/gh-copilot`      | CLI에서 Copilot 질의    | `gh extension install github/gh-copilot`      |
 | `vilmibm/gh-screensaver` | 터미널 스크린세이버     | `gh extension install vilmibm/gh-screensaver` |
 | `mislav/gh-branch`       | 브랜치 관리 강화        | `gh extension install mislav/gh-branch`       |
+
+🟡 `github/gh-copilot` 확장은 2025-10-30 이후 저장소가 보관(archived) 처리되어 더 이상 갱신되지 않습니다. 신규 설치 대상에서 제외합니다.
 
 ### 기타 명령어
 
@@ -811,18 +942,18 @@ done
 
 ## 13. 트러블슈팅
 
-| 에러                                | 원인                       | 해결                                                       |
-|-------------------------------------|----------------------------|------------------------------------------------------------|
-| `HTTP 401: Bad credentials`         | 토큰 만료 또는 무효        | `gh auth login` 재인증                                     |
-| `HTTP 403: Resource not accessible` | scope/permission 부족      | `gh auth refresh --scopes` 또는 Fine-grained PAT 권한 추가 |
-| `HTTP 403: secondary rate limit`    | 단시간 과다 요청           | 1~2분 대기 후 재시도, `--paginate` 시 간격 추가            |
-| `HTTP 422: Validation Failed`       | PR 제목/body 규칙 위반     | branch protection 규칙 확인                                |
-| `could not determine base repo`     | git remote 미설정          | `gh repo set-default owner/repo`                           |
-| `GraphQL: Resource not accessible`  | Fine-grained PAT 권한 부족 | 필요 permission 추가 발급                                  |
-| 2FA 강제 에러                       | org이 2FA 필수 설정        | `gh auth login` (브라우저 인증 사용)                       |
-| proxy 환경 접속 불가                | HTTPS_PROXY 미설정         | `export HTTPS_PROXY=http://proxy:8080`                     |
-| SSL certificate error               | 사내 인증서 문제           | `gh config set http_unix_socket ""` 또는 `GH_HOST` 설정    |
-| `gh: command not found`             | PATH 미등록                | `which gh` 확인, shell rc 파일에 PATH 추가                 |
+| 에러                                | 원인                       | 해결                                                            |
+|-------------------------------------|----------------------------|-----------------------------------------------------------------|
+| `HTTP 401: Bad credentials`         | 토큰 만료 또는 무효        | `gh auth login` 재인증                                          |
+| `HTTP 403: Resource not accessible` | scope/permission 부족      | `gh auth refresh --scopes` 또는 Fine-grained PAT 권한 추가      |
+| `HTTP 403: secondary rate limit`    | 단시간 과다 요청           | 1~2분 대기 후 재시도, `--paginate` 시 간격 추가                 |
+| `HTTP 422: Validation Failed`       | PR 제목/body 규칙 위반     | branch protection 규칙 확인                                     |
+| `could not determine base repo`     | git remote 미설정          | `gh repo set-default owner/repo`                                |
+| `GraphQL: Resource not accessible`  | Fine-grained PAT 권한 부족 | 필요 permission 추가 발급                                       |
+| 2FA 강제 에러                       | org이 2FA 필수 설정        | `gh auth login` (브라우저 인증 사용)                            |
+| proxy 환경 접속 불가                | HTTPS_PROXY 미설정         | `export HTTPS_PROXY=http://proxy:8080`                          |
+| SSL certificate error               | 사내 인증서 문제           | 사내 CA를 운영체제 신뢰 저장소에 등록 또는 `SSL_CERT_FILE` 지정 |
+| `gh: command not found`             | PATH 미등록                | `which gh` 확인, shell rc 파일에 PATH 추가                      |
 
 ### rate limit 확인
 
@@ -841,11 +972,12 @@ GH_DEBUG=api gh pr list
 ### 인증 초기화
 
 ```bash
-# 모든 인증 정보 삭제 후 재설정
+# 인증 정보 삭제 후 재설정
 gh auth logout
-rm -rf ~/.config/gh/
 gh auth login
 ```
+
+`~/.config/gh/`를 통째로 삭제하면 alias·확장 설정까지 사라집니다. 설정 파일이 손상된 경우에만 백업 후 삭제합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -855,6 +987,8 @@ gh auth login
 
 - GitHub CLI Manual: [cli.github.com/manual](https://cli.github.com/manual/) — ★★★☆☆
 - GitHub CLI Releases: [github.com/cli/cli/releases](https://github.com/cli/cli/releases) — ★★☆☆☆
+- GitHub CLI Telemetry: [cli.github.com/telemetry](https://cli.github.com/telemetry) — ★★☆☆☆
+- [git_command_reference.md](./git_command_reference.md)
 - [git_guide.md](./git_guide.md)
 - [github_actions.md](./github_actions.md)
 
@@ -873,6 +1007,6 @@ gh auth login
 
 **작성일**: 2026-07-06
 
-**마지막 업데이트**: 2026-07-06
+**마지막 업데이트**: 2026-10-13
 
 © 2026 siasia86. Licensed under CC BY 4.0.

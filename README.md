@@ -140,7 +140,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Jenkins 설치](02_infrastructure/cicd/jenkins_install.md)                               | 설치, 플러그인, 초기 설정     |
 | [Jenkins Pipeline](02_infrastructure/cicd/jenkins_pipeline.md)                          | Declarative/Scripted          |
 | [GitHub Actions](02_infrastructure/cicd/github_actions.md)                              | 워크플로우, Runner            |
-| [GitHub CLI](02_infrastructure/cicd/github_cli.md)                                      | gh 명령어, PR/Issue           |
+| [GitHub CLI 명령어 참조](02_infrastructure/cicd/gh_command_reference.md)                | gh 명령어, PR·Actions 실행    |
 | [ArgoCD](02_infrastructure/cicd/argocd.md)                                              | GitOps CD, Application        |
 | [Harness](02_infrastructure/cicd/harness_inc.md)                                        | CI/CD 플랫폼                  |
 | [Git 가이드](02_infrastructure/cicd/git_guide.md)                                       | diff, log, rebase, stash      |
