@@ -28,13 +28,13 @@ env:
 jobs:
   validate-markdown:
     name: Validate Markdown with pinned sia_scripts
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.11'
 
@@ -112,12 +112,12 @@ jobs:
     # 별개의 봇 커밋이 생겨 main 과 yunli 가 매번 분기합니다.
     # main 은 yunli 병합으로 날짜 변경을 전달받습니다.
     if: github.event_name == 'push' && github.ref_name == 'yunli'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     permissions:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 2
 

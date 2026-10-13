@@ -36,6 +36,7 @@
 
 ### Changed
 
+- 2026-10-13: CI workflow의 Node.js 20 지원 종료·runner 전환 경고 대응. `actions/checkout` v4→v7, `actions/setup-python` v5→v7(모두 Node 24 런타임)로 올리고 `runs-on`을 `ubuntu-latest`에서 `ubuntu-26.04`로 고정. `ubuntu-latest`의 26.04 순차 전환(2026-10-19~11-19) 동안 OS가 섞이지 않게 함.
 - 2026-10-13: [`git_command_reference.md`](02_infrastructure/cicd/git_command_reference.md)의 사실 오류 정정. `git restore file_name`이 마지막 커밋이 아니라 Staging Area 기준임을 바로잡고 마지막 커밋 복원 명령을 추가, `git config --list`가 전체 범위 설정을 출력함을 명시, `store` helper의 저장 파일 범위, 기존 문법 블록의 `switch --detach` 위치, push 예시 주석, `master`·개인 브랜치명 예시를 정리. root README CI/CD 표에 연결하고 gh 문서와 상호 링크, gh 문서에 `gh run list --commit`의 전체 SHA 조건 보충.
 - 2026-10-13: `github_cli.md`를 [`gh_command_reference.md`](02_infrastructure/cicd/gh_command_reference.md)로 이름을 바꾸고 gh 문서를 하나로 통합. `gh run` 조회·대기·종료 코드 판정과 기본 저장소 지정, PR 체크 대기·`--match-head-commit`, 환경 변수·텔레메트리, Linux 패키지 서명 키 교체를 추가하고, 존재하지 않는 `repo (read)` scope, SSL 오류 해결책, 보관된 `gh-copilot` 확장, `--body` secret 입력을 바로잡음. root README 링크 갱신.
 - `codex_concepts.md`를 사람의 학습을 위한 입문 문서로 개편. 모델·에이전트·도구의 역할, 사용 화면과 실행 위치, 파일 경로 오류 수정 예시, 설정·권한 비교표와 추천 학습 순서를 추가하고 root·Career README 설명을 갱신.
