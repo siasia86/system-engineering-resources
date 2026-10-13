@@ -19,8 +19,11 @@ Git 저장소의 설정, 브랜치, 원격 저장소, 커밋, 병합, 복구 작
 ### Git 설정 확인
 
 ```bash
-# 현재 저장소의 설정 목록
+# 적용 중인 전체 설정 목록: system·global·local 설정을 합쳐 출력
 git config --list
+
+# 현재 저장소(local) 설정만 확인
+git config --local --list
 
 # 설정 파일 위치 포함
 git config --list --show-origin
@@ -48,14 +51,14 @@ git config --local user.email "user@example.com"
 ### Credential 저장
 
 ```bash
-# 현재 저장소에 Credential 저장
+# 현재 저장소에만 store helper 사용 설정
 git config credential.helper store
 
-# 모든 저장소에 Credential 저장
+# 모든 저장소에 store helper 사용 설정
 git config --global credential.helper store
 ```
 
-`store` 방식은 Credential을 일반적으로 `~/.git-credentials`에 평문으로 저장합니다. 서버 운영 환경에서는 패스워드 저장보다 SSH 키, 운영체제 Credential Manager 또는 보안 Credential Helper 사용을 우선합니다.
+helper 설정 범위와 관계없이 `store` 방식은 Credential을 기본적으로 `~/.git-credentials` 한 파일에 평문으로 저장합니다. 서버 운영 환경에서는 패스워드 저장보다 SSH 키, 운영체제 Credential Manager 또는 보안 Credential Helper 사용을 우선합니다.
 
 ```bash
 # HTTPS 대신 SSH 원격 URL 사용
@@ -189,6 +192,9 @@ git switch -c feature/login
 
 # 원격 브랜치를 추적하는 로컬 브랜치 생성
 git switch --track origin/branch_name
+
+# 특정 커밋으로 이동: detached HEAD 상태
+git switch --detach <commit_id>
 ```
 
 `git checkout`은 브랜치 이동, 커밋 이동, 파일 복원 기능을 함께 제공하는 기존 명령입니다. 신규 브랜치 작업에서는 기능이 분리된 `git switch`와 `git restore` 사용을 권장합니다.
@@ -198,10 +204,10 @@ git switch --track origin/branch_name
 git checkout branch_name
 git checkout -b feature/login
 git checkout -t origin/branch_name
-
-# 특정 커밋으로 이동: detached HEAD 상태
-git switch --detach <commit_id>
+git checkout <commit_id>
 ```
+
+`git switch`와 `git restore`는 Git 2.23부터 제공됩니다. 그보다 오래된 Git에서는 `git checkout`을 사용합니다.
 
 ### 브랜치 이름 변경·삭제
 
@@ -230,8 +236,11 @@ git branch -D branch_name
 ### 원격 브랜치로 push
 
 ```bash
-# 현재 브랜치를 원격에 push
+# 지정한 로컬 브랜치를 같은 이름의 원격 브랜치로 push
 git push origin branch_name
+
+# 현재 브랜치를 같은 이름의 원격 브랜치로 push
+git push origin HEAD
 
 # 최초 push와 추적 관계 설정
 git push -u origin branch_name
@@ -246,7 +255,7 @@ git push origin --tags
 `-u` 또는 `--set-upstream`을 사용하면 이후 `git push`, `git pull`에서 원격과 브랜치를 생략할 수 있습니다.
 
 ```bash
-git push -u origin yunli
+git push -u origin feature/login
 git push
 git pull
 ```
@@ -316,7 +325,7 @@ git merge branch_name
 git merge --abort
 
 # 공통 조상이 없는 두 history를 의도적으로 병합
-git merge master --allow-unrelated-histories
+git merge main --allow-unrelated-histories
 ```
 
 `refusing to merge unrelated histories` 오류는 두 브랜치에 공통 조상 커밋이 없다는 뜻입니다. 새 저장소의 `README.md` 초기 커밋과 기존 저장소의 전체 history를 합치는 경우처럼 의도가 명확할 때만 `--allow-unrelated-histories`를 사용합니다.
@@ -358,15 +367,20 @@ git revert HEAD
 ### 파일 복원
 
 ```bash
-# 특정 파일을 마지막 커밋 상태로 복원
+# 작업 트리 파일을 Staging Area 상태로 복원: add하지 않은 변경 폐기
 git restore file_name
 
-# 특정 커밋의 파일로 복원
+# 작업 트리와 Staging Area를 모두 마지막 커밋 상태로 복원
+git restore --source=HEAD --staged --worktree file_name
+
+# 특정 커밋의 파일로 작업 트리만 복원
 git restore --source <commit_id> file_name
 
 # Staging만 취소하고 작업 파일은 유지
 git restore --staged file_name
 ```
+
+`git restore file_name`은 `--source`를 지정하지 않으면 마지막 커밋이 아니라 Staging Area를 기준으로 복원합니다. 이미 `git add`한 변경은 남아 있으므로, 마지막 커밋 상태로 되돌리려면 `--source=HEAD --staged --worktree`를 함께 지정합니다. 복원한 작업 트리 변경은 Git에 기록되지 않아 되돌릴 수 없습니다.
 
 ### Untracked 파일 정리
 
@@ -458,6 +472,7 @@ git -C /path/to/destination tag
 - Git Documentation: [git-scm.com/docs](https://git-scm.com/docs) — ★★★☆☆
 - Pro Git Book: [git-scm.com/book](https://git-scm.com/book/en/v2) — ★★★★☆
 - Git Reference: [git-scm.com/docs/git](https://git-scm.com/docs/git) — ★★★☆☆
+- [gh_command_reference.md](./gh_command_reference.md) — GitHub 서버 작업(PR·Actions·Release)
 
 ---
 
@@ -474,6 +489,6 @@ git -C /path/to/destination tag
 
 **작성일**: 2026-08-24
 
-**마지막 업데이트**: 2026-08-24
+**마지막 업데이트**: 2026-10-13
 
 © 2026 siasia86. Licensed under CC BY 4.0.

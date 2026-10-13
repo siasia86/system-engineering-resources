@@ -144,6 +144,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [ArgoCD](02_infrastructure/cicd/argocd.md)                                              | GitOps CD, Application        |
 | [Harness](02_infrastructure/cicd/harness_inc.md)                                        | CI/CD 플랫폼                  |
 | [Git 가이드](02_infrastructure/cicd/git_guide.md)                                       | diff, log, rebase, stash      |
+| [Git 명령어 참조](02_infrastructure/cicd/git_command_reference.md)                      | 설정, 브랜치, 원격, 복구      |
 | [Airflow](02_infrastructure/cicd/airflow.md)                                            | DAG, Operator, 스케줄링       |
 | [AWS Step Functions](02_infrastructure/cicd/aws_step_functions.md)                      | 상태 머신, 워크플로우         |
 | [SVN 가이드](02_infrastructure/cicd/svn_guide.md)                                       | Subversion 기본               |

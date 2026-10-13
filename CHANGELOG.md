@@ -36,6 +36,7 @@
 
 ### Changed
 
+- 2026-10-13: [`git_command_reference.md`](02_infrastructure/cicd/git_command_reference.md)의 사실 오류 정정. `git restore file_name`이 마지막 커밋이 아니라 Staging Area 기준임을 바로잡고 마지막 커밋 복원 명령을 추가, `git config --list`가 전체 범위 설정을 출력함을 명시, `store` helper의 저장 파일 범위, 기존 문법 블록의 `switch --detach` 위치, push 예시 주석, `master`·개인 브랜치명 예시를 정리. root README CI/CD 표에 연결하고 gh 문서와 상호 링크, gh 문서에 `gh run list --commit`의 전체 SHA 조건 보충.
 - 2026-10-13: `github_cli.md`를 [`gh_command_reference.md`](02_infrastructure/cicd/gh_command_reference.md)로 이름을 바꾸고 gh 문서를 하나로 통합. `gh run` 조회·대기·종료 코드 판정과 기본 저장소 지정, PR 체크 대기·`--match-head-commit`, 환경 변수·텔레메트리, Linux 패키지 서명 키 교체를 추가하고, 존재하지 않는 `repo (read)` scope, SSL 오류 해결책, 보관된 `gh-copilot` 확장, `--body` secret 입력을 바로잡음. root README 링크 갱신.
 - `codex_concepts.md`를 사람의 학습을 위한 입문 문서로 개편. 모델·에이전트·도구의 역할, 사용 화면과 실행 위치, 파일 경로 오류 수정 예시, 설정·권한 비교표와 추천 학습 순서를 추가하고 root·Career README 설명을 갱신.
 - root의 중복 `codex_cli.md`를 제거하고 `06_career/ai_tools/codex_cli_linux_guide.md`를 Codex CLI 사용자 가이드 canonical 문서로 유지.
@@ -51,6 +52,7 @@
 
 ### Verified
 
+- 2026-10-13: Git 문서 정정 후 대상 Markdown 4개의 style·heading, 전체 Markdown 464개의 링크 1045개, root README inventory와 `git diff --check`를 확인. `git restore --source=HEAD --staged --worktree`와 `git config --local --list` 동작을 로컬 Git 2.43.0 임시 저장소에서 확인.
 - 2026-10-13: gh 문서 통합 후 대상 Markdown 2개의 style·heading, 전체 Markdown 464개의 링크 1042개, root README inventory와 `git diff --check`를 확인. 새 예시 명령은 로컬 gh 2.45.0으로 실행·도움말 대조했으며 최신 v2.102.0 전용 옵션(`--worktree`, `clipboard`)은 릴리스 노트로만 확인.
 - 2026-10-13 main 게시 준비: 기존 ASD-STE100 변경을 보존하면서 두 조사 문서를 병합. `sia_scripts` v0.3.3 태그 소스로 담당 Markdown 8개의 style·heading·내부 링크 271개와 root README inventory를 확인했고, Career AI 도구 실제 문서 수 21개를 대조. 로컬 검사와 원격 CI 실행은 구분하며 원문 접근·제품 실행의 기존 미검증 범위는 유지.
 - 2026-10-13: Aside 관련 Markdown 6개의 style·heading·파일 링크, root README inventory와 Career `ai_tools` 실제 문서 수 20개를 확인. 공식 제품·도움말 및 다운로드·변경 이력·요금·정책을 두 차례 대조. 로컬 문서 검사는 설치된 `sia_scripts` 0.3.0을 사용하며 CI 0.3.3·Aside 설치와 실제 동작·벤치마크 재현은 미실행.

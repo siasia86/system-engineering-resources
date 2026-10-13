@@ -552,7 +552,7 @@ gh run view 38365410580 --exit-status && echo "CI 통과"
 gh run list --commit "$(git rev-parse HEAD)" --json status,conclusion,workflowName,url
 ```
 
-`--json`에 사용할 수 있는 필드는 `gh run list --json`을 값 없이 실행하면 출력됩니다.
+`--commit`에는 전체 40자 SHA를 지정합니다. `9f0d239` 같은 짧은 SHA는 일치하는 실행을 찾지 못하므로 `git rev-parse`로 전체 SHA를 구합니다. `--json`에 사용할 수 있는 필드는 `gh run list --json`을 값 없이 실행하면 출력됩니다.
 
 ### 실행·재실행·산출물
 
