@@ -134,6 +134,6 @@ API key와 access token은 secret manager 또는 workload identity로 job 실행
 
 **작성일**: 2026-09-22
 
-**마지막 업데이트**: 2026-10-01
+**마지막 업데이트**: 2026-10-14
 
 © 2026 siasia86. Licensed under CC BY 4.0.
