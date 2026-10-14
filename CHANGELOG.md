@@ -8,7 +8,7 @@
 
 ### ASD-STE100 소통 적용 조사 — 2026-10-09
 
-- `STE-20261009-01`: [사용 방안](06_career/ai_tools/asd_ste100_codex_communication.md)과 [출처 노트](_reference/asd_ste100_official_notes.md)를 추가하고 root·Career·reference 색인에 연결했습니다. 공식 소개·FAQ와 OpenAI 문서, GitHub 후보 5개의 기준 커밋·파일·라이선스·설치 부작용을 대조했습니다.
+- `STE-20261009-01`: [사용 방안](06_career/ai_tools/codex/asd_ste100_codex_communication.md)과 [출처 노트](_reference/asd_ste100_official_notes.md)를 추가하고 root·Career·reference 색인에 연결했습니다. 공식 소개·FAQ와 OpenAI 문서, GitHub 후보 5개의 기준 커밋·파일·라이선스·설치 부작용을 대조했습니다.
 - 한국어에는 명확한 대상·행동·조건·의미 보존 원칙부터 참고하는 방안을 제안했습니다. 표준 PDF 전체·AI 백서·한국어 개선 효과는 미검증이며 skill 설치·clone·설정 변경·31 정책 작업은 미실행입니다.
 - 검증: 고정된 sia_scripts v0.3.3 태그 소스와 일치하는 검사기로 Markdown 6개의 style·heading·내부 링크 258개, 교차 앵커 2개, root README 문서 수 표기를 확인했습니다. Career의 표 형식은 검사기 지원 밖이므로 별도 대조해 AI 도구 문서 수 19개와 일치함을 확인했습니다. 담당 파일 Gitleaks와 git diff --check도 통과했습니다. CI release archive 실행과 원격 CI는 이 로컬 검증에 포함하지 않습니다.
 - 첫 검사에서 새 출처 표 행의 정렬 오류를 보정했습니다. 하위 README 검사 실패는 검사기가 (N개) 표기만 인식한 데서 발생했으며, 실제 표와 파일 수를 대조해 보완했습니다. 원본 실패 로그는 로컬 기록에 보존했습니다.
@@ -27,6 +27,7 @@
 
 ### Added
 
+- 2026-10-14: [Claude 참조 노트](_reference/claude_code_official_notes.md)와 Claude 문서 4개를 `06_career/ai_tools/claude/`에 추가. [공통 개념](06_career/ai_tools/claude/claude_code_concepts.md), [Linux CLI 가이드](06_career/ai_tools/claude/claude_code_cli_linux_guide.md), [확장 기능 가이드](06_career/ai_tools/claude/claude_code_extensions_guide.md), [모델 가이드](06_career/ai_tools/claude/claude_models_guide.md)에 설치·인증·권한 모드·설정·Skills·Hooks·Subagents·MCP·모델 라인업과 가격을 정리하고 root·Career README와 reference INDEX에 연결.
 - 2026-10-13: [Aside AI 브라우저 가이드](06_career/ai_tools/aside_browser_guide.md)와 [공식 참조 노트](_reference/aside_browser_official_notes.md)를 추가. 지원 플랫폼·기능·요금·권한·데이터 처리·CLI/MCP·제작사 벤치마크를 조사하고 공식 자료의 Max 사용량·데이터 전송 설명 차이를 기록. root·Career README와 reference INDEX에 연결.
 - 2026-10-13: Boris Cherny의 다섯 업무 원형 조사 [본문](06_career/ai_tools/ai_work_archetypes.md)과 [참조 노트](_reference/ai_work_archetypes_notes.md)를 추가. 원형 정의·제품 단계별 조합·AI 활용과 인프라 적용 예시를 구분하고 root·Career README 및 reference INDEX에 연결. X 원문 직접 열람 제한과 출처별 확인 상태를 기록.
 - `CAT-20261004-01`: `codex_skills_catalog.md`에 세션 제공 스킬 31개의 한 줄 설명, 업무별 선택과 명시적 호출 예시를 추가. 개인 7개·기본 4개·플러그인 20개를 구분하고 root·Career 목차와 설정 가이드에 연결. 스킬 설치·설정 변경은 포함하지 않음.
@@ -36,6 +37,8 @@
 
 ### Changed
 
+- 2026-10-14: `06_career/ai_tools/`를 공통 문서와 도구별 하위 폴더(`claude/`·`codex/`·`kiro/`·`jev/`)로 재구성. Codex 8개·Kiro 4개·Jev 2개를 `git mv`로 옮기고 저장소 전체 상대 링크, 검사 예외 설정(`.md-style-check.sia_scripts.toml`), TODO 예외 표를 새 경로로 갱신.
+- 2026-10-14: 기존 Claude 관련 내용 검토. `ai_coding_tools_comparison.md`의 Claude Code 플랫폼·플랜(모든 유료 플랜, Max $100부터), 권한 모드 6종, 클라우드 제공자 표현, 커스텀 에이전트(`.claude/agents/`), 2026-07 벤치마크 시점 안내를 정정. `harness_engineering.md`의 `CLAUDE.md`·`.cursorrules` 예시, 요청 템플릿의 Anthropic 문서 주소, AI 도구 참조 노트의 Claude Code 항목을 갱신.
 - 2026-10-13: CI workflow의 Node.js 20 지원 종료·runner 전환 경고 대응. `actions/checkout` v4→v7, `actions/setup-python` v5→v7(모두 Node 24 런타임)로 올리고 `runs-on`을 `ubuntu-latest`에서 `ubuntu-26.04`로 고정. `ubuntu-latest`의 26.04 순차 전환(2026-10-19~11-19) 동안 OS가 섞이지 않게 함.
 - 2026-10-13: [`git_command_reference.md`](02_infrastructure/cicd/git_command_reference.md)의 사실 오류 정정. `git restore file_name`이 마지막 커밋이 아니라 Staging Area 기준임을 바로잡고 마지막 커밋 복원 명령을 추가, `git config --list`가 전체 범위 설정을 출력함을 명시, `store` helper의 저장 파일 범위, 기존 문법 블록의 `switch --detach` 위치, push 예시 주석, `master`·개인 브랜치명 예시를 정리. root README CI/CD 표에 연결하고 gh 문서와 상호 링크, gh 문서에 `gh run list --commit`의 전체 SHA 조건 보충.
 - 2026-10-13: `github_cli.md`를 [`gh_command_reference.md`](02_infrastructure/cicd/gh_command_reference.md)로 이름을 바꾸고 gh 문서를 하나로 통합. `gh run` 조회·대기·종료 코드 판정과 기본 저장소 지정, PR 체크 대기·`--match-head-commit`, 환경 변수·텔레메트리, Linux 패키지 서명 키 교체를 추가하고, 존재하지 않는 `repo (read)` scope, SSL 오류 해결책, 보관된 `gh-copilot` 확장, `--body` secret 입력을 바로잡음. root README 링크 갱신.
@@ -53,6 +56,7 @@
 
 ### Verified
 
+- 2026-10-14: Claude 참조 노트는 code.claude.com 문서 13종을 1차, platform.claude.com 모델·가격·폐기 일정과 claude.com/pricing·GitHub 릴리스(v2.1.299)를 2차로 대조. `loop_engineering.md`의 `/goal`·`/loop` 설명은 공식 문서와 일치. 로컬 `claude` CLI 미설치로 실행 대조는 미실시, Kiro 모델 목록은 kiro-cli 로그인이 필요해 미확인.
 - 2026-10-13: Git 문서 정정 후 대상 Markdown 4개의 style·heading, 전체 Markdown 464개의 링크 1045개, root README inventory와 `git diff --check`를 확인. `git restore --source=HEAD --staged --worktree`와 `git config --local --list` 동작을 로컬 Git 2.43.0 임시 저장소에서 확인.
 - 2026-10-13: gh 문서 통합 후 대상 Markdown 2개의 style·heading, 전체 Markdown 464개의 링크 1042개, root README inventory와 `git diff --check`를 확인. 새 예시 명령은 로컬 gh 2.45.0으로 실행·도움말 대조했으며 최신 v2.102.0 전용 옵션(`--worktree`, `clipboard`)은 릴리스 노트로만 확인.
 - 2026-10-13 main 게시 준비: 기존 ASD-STE100 변경을 보존하면서 두 조사 문서를 병합. `sia_scripts` v0.3.3 태그 소스로 담당 Markdown 8개의 style·heading·내부 링크 271개와 root README inventory를 확인했고, Career AI 도구 실제 문서 수 21개를 대조. 로컬 검사와 원격 CI 실행은 구분하며 원문 접근·제품 실행의 기존 미검증 범위는 유지.
@@ -971,6 +975,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-10-13
+**마지막 업데이트**: 2026-10-14
 
 © 2026 siasia86. Licensed under CC BY 4.0.

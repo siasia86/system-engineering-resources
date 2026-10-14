@@ -191,14 +191,14 @@ skill 본문 변경은 기존 파일을 보관하거나 Git으로 관리하고, 
 
 ## 8. 설정 참고 URL
 
-주요 참고 저장소 20개의 용도, GitHub star 조회값, Codex 지원 근거는 [GitHub 참고 목록](../../_reference/github_references.md#1-aiagent)에서 관리합니다. 이 가이드에서는 다음 연결로 필요한 자료를 찾습니다.
+주요 참고 저장소 20개의 용도, GitHub star 조회값, Codex 지원 근거는 [GitHub 참고 목록](../../../_reference/github_references.md#1-aiagent)에서 관리합니다. 이 가이드에서는 다음 연결로 필요한 자료를 찾습니다.
 
-| 자료                                                                                                         | 참고할 내용                                                   |
-|--------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
-| [개발 행동과 엔지니어링 절차](../../_reference/github_references.md#11-개발-행동과-엔지니어링-절차)          | Karpathy skills·gstack·Matt Pocock·Superpowers 등의 개발 절차 |
-| [분야별 skill과 작성 예제](../../_reference/github_references.md#12-분야별-skill과-작성-예제)                | UI/UX, 프런트엔드, 과학·연구, 문서 작업의 예제                |
-| [공식 명세, 설치 도구와 탐색 목록](../../_reference/github_references.md#13-공식-명세-설치-도구와-탐색-목록) | Agent Skills 명세, OpenAI plugin 예제, 설치 CLI와 카탈로그    |
-| [Windows에서 확인할 범위](../../_reference/github_references.md#14-windows에서-확인할-범위)                  | Git Bash·WSL·PowerShell, 설치 경로와 부가 도구 조건           |
+| 자료                                                                                                            | 참고할 내용                                                   |
+|-----------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| [개발 행동과 엔지니어링 절차](../../../_reference/github_references.md#11-개발-행동과-엔지니어링-절차)          | Karpathy skills·gstack·Matt Pocock·Superpowers 등의 개발 절차 |
+| [분야별 skill과 작성 예제](../../../_reference/github_references.md#12-분야별-skill과-작성-예제)                | UI/UX, 프런트엔드, 과학·연구, 문서 작업의 예제                |
+| [공식 명세, 설치 도구와 탐색 목록](../../../_reference/github_references.md#13-공식-명세-설치-도구와-탐색-목록) | Agent Skills 명세, OpenAI plugin 예제, 설치 CLI와 카탈로그    |
+| [Windows에서 확인할 범위](../../../_reference/github_references.md#14-windows에서-확인할-범위)                  | Git Bash·WSL·PowerShell, 설치 경로와 부가 도구 조건           |
 
 Karpathy skills의 `CLAUDE.md` 기반 지침, gstack의 Codex host 설치, 다른 도구용 skill 예제는 각 원문이 안내하는 적용 방식으로 검토합니다. 이번 참고 자료 조사는 README와 GitHub API 확인이며, clone·설치·hook 동작·Windows 실행은 진행하지 않았습니다.
 
@@ -214,7 +214,7 @@ Karpathy skills의 `CLAUDE.md` 기반 지침, gstack의 Codex host 설치, 다�
 - OpenAI Skill 작성: [developers.openai.com/plugins/build/skills](https://developers.openai.com/plugins/build/skills) — ★★★☆☆
 - OpenAI Package your plugin: [developers.openai.com/plugins/build/plugins](https://developers.openai.com/plugins/build/plugins) — ★★★☆☆
 - OpenAI Customization: [learn.chatgpt.com/docs/customization/overview](https://learn.chatgpt.com/docs/customization/overview) — ★★★☆☆
-- GitHub 설정 자료: [GitHub 참고 목록](../../_reference/github_references.md) — ★★★☆☆
+- GitHub 설정 자료: [GitHub 참고 목록](../../../_reference/github_references.md) — ★★★☆☆
 
 ---
 

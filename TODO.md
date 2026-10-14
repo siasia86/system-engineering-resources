@@ -26,10 +26,10 @@
 
 ### 검사 예외 파일
 
-| 파일                                               | 사유                                   |
-|----------------------------------------------------|----------------------------------------|
-| `01_fundamentals/linux/vim_airline.md`             | 외부 프로젝트(vim-airline) README 원본 |
-| `06_career/ai_tools/kiro_cli_command_reference.md` | Kiro CLI 문서 (다이어그램 한글 의도적) |
+| 파일                                                    | 사유                                   |
+|---------------------------------------------------------|----------------------------------------|
+| `01_fundamentals/linux/vim_airline.md`                  | 외부 프로젝트(vim-airline) README 원본 |
+| `06_career/ai_tools/kiro/kiro_cli_command_reference.md` | Kiro CLI 문서 (다이어그램 한글 의도적) |
 
 [⬆ 목차로 돌아가기](#목차)
 

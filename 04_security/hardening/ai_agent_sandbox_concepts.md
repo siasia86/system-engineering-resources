@@ -173,7 +173,7 @@ stat -c '%A %u:%g %n' "$TARGET"
 - OpenAI Agent approvals & security: [보호 경로와 승인 경계](https://learn.chatgpt.com/docs/agent-approvals-security) — ★★★☆☆
 - [POSIX ACL·setfacl](../../01_fundamentals/linux/acl_setfacl_guide.md) — 경로별 접근 권한과 상속.
 - [Namespace 개념](../../01_fundamentals/linux/namespace_concepts.md) — 프로세스가 보는 자원 공간의 격리.
-- [Codex 공통 개념](../../06_career/ai_tools/codex_concepts.md) — 진입점과 작업 설계.
+- [Codex 공통 개념](../../06_career/ai_tools/codex/codex_concepts.md) — 진입점과 작업 설계.
 
 ---
 

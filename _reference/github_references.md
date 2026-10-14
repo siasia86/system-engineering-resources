@@ -53,7 +53,7 @@ sources:
 
 ## 1. AI/Agent
 
-Codex skill 설정 절차는 [Codex Skills 설정 가이드](../06_career/ai_tools/codex_skills_setup_guide.md)에서 확인합니다. 아래 20개는 개발 절차, 분야별 예제, 공식 명세와 탐색 도구를 함께 살펴볼 참고 목록입니다.
+Codex skill 설정 절차는 [Codex Skills 설정 가이드](../06_career/ai_tools/codex/codex_skills_setup_guide.md)에서 확인합니다. 아래 20개는 개발 절차, 분야별 예제, 공식 명세와 탐색 도구를 함께 살펴볼 참고 목록입니다.
 
 GitHub stars는 2026-10-03 GitHub REST API의 `stargazers_count` 조회값입니다. 용도와 Codex 지원 근거는 각 저장소의 README에서 확인했습니다. 실제 clone·정적 검토 상태는 [41 참고 기록](https://github.com/siasia86/41_clone-repo/blob/yunli/docs/reference_repositories.md)에서 관리하며, 설치·실행과 Windows 동작 검증은 이 목록 작성의 결과가 아닙니다.
 
@@ -104,7 +104,7 @@ gstack README는 Windows 11의 Git Bash 또는 WSL 사용과 Bun·Node.js를 안
 
 UI UX Pro Max와 Impeccable에는 Windows 관련 안내가 있고, scientific-agent-skills는 Windows에서 WSL2를 전제로 합니다. 이것은 각 저장소가 문서에 명시한 범위이며 이 환경에서 실행을 검증한 결과는 아닙니다.
 
-자료를 검토할 때는 작업 목적에 필요한 skill을 선택하고, 참조 파일·scripts·hook·MCP 의존성을 함께 확인합니다. `.agents/skills/`와 도구별 `.codex/skills/` 설치 위치는 [설정 가이드의 저장 위치](../06_career/ai_tools/codex_skills_setup_guide.md#2-저장-위치)와 해당 도구의 실제 발견 결과를 대조합니다.
+자료를 검토할 때는 작업 목적에 필요한 skill을 선택하고, 참조 파일·scripts·hook·MCP 의존성을 함께 확인합니다. `.agents/skills/`와 도구별 `.codex/skills/` 설치 위치는 [설정 가이드의 저장 위치](../06_career/ai_tools/codex/codex_skills_setup_guide.md#2-저장-위치)와 해당 도구의 실제 발견 결과를 대조합니다.
 
 ## 2. Packer/IaC
 

@@ -156,14 +156,14 @@ repo/
 
 ## 5. 관련 도구 비교
 
-| 도구/프레임워크              | 유형            | 하네스 엔지니어링 관련성                    |
-|------------------------------|-----------------|---------------------------------------------|
-| AGENTS.md                    | 컨텍스트 파일   | 에이전트에 레포 구조/규칙을 전달하는 진입점 |
-| CLAUDE.md                    | 컨텍스트 파일   | Claude Code 전용 에이전트 지시 파일         |
-| MCP (Model Context Protocol) | 프로토콜        | 에이전트-도구 인터페이스 표준               |
-| LangChain/LangGraph          | 프레임워크      | 에이전트 루프/메모리/도구 조합 프레임워크   |
-| Google ADK                   | 프레임워크      | 멀티 에이전트 토폴로지 + 평가 파이프라인    |
-| Kiro CLI                     | 에이전트 런타임 | skills, context, agents로 하네스 구성       |
+| 도구/프레임워크              | 유형            | 하네스 엔지니어링 관련성                      |
+|------------------------------|-----------------|-----------------------------------------------|
+| AGENTS.md                    | 컨텍스트 파일   | 에이전트에 레포 구조/규칙을 전달하는 진입점   |
+| CLAUDE.md                    | 컨텍스트 파일   | Claude Code 지시 파일 (없으면 AGENTS.md 읽음) |
+| MCP (Model Context Protocol) | 프로토콜        | 에이전트-도구 인터페이스 표준                 |
+| LangChain/LangGraph          | 프레임워크      | 에이전트 루프/메모리/도구 조합 프레임워크     |
+| Google ADK                   | 프레임워크      | 멀티 에이전트 토폴로지 + 평가 파이프라인      |
+| Kiro CLI                     | 에이전트 런타임 | skills, context, agents로 하네스 구성         |
 
 ### Prompt Engineering vs Harness Engineering
 
@@ -183,7 +183,7 @@ repo/
 project/
 ├── AGENTS.md          # Short entry point linking detailed guidance
 ├── ARCHITECTURE.md    # Domain/layer map
-├── .cursorrules       # Cursor (or .claude/settings.json)
+├── CLAUDE.md          # Claude Code (@AGENTS.md import)
 ├── docs/
 │   └── decisions/     # Architecture decision records
 ├── scripts/
@@ -317,6 +317,6 @@ git worktree는 작업 파일을 분리하는 수단입니다. OS 권한·네트
 
 **작성일**: 2026-06-19
 
-**마지막 업데이트**: 2026-10-03
+**마지막 업데이트**: 2026-10-14
 
 © 2026 siasia86. Licensed under CC BY 4.0.

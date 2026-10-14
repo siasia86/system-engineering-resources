@@ -14,7 +14,7 @@ tags:
 last_checked: 2026-07-27
 sources:
   - https://kiro.dev/pricing
-  - https://docs.anthropic.com/en/docs/claude-code/overview
+  - https://code.claude.com/docs/en/overview
   - https://github.com/openai/openai-agents-python
   - https://platform.openai.com/docs/models
   - https://www.cursor.com/pricing
@@ -71,12 +71,13 @@ sources:
 - `.cursorrules`는 deprecated → `.cursor/rules`로 변경됨 (공식 docs 확인)
 - Continue.dev는 Cursor에 인수됨 (2026년, continue.dev 공식 발표)
 
-### Claude Code (docs.anthropic.com)
+### Claude Code (code.claude.com, 2026-10-14 재확인)
 
-- Claude Pro ($20/월) / Max ($100/월) 구독에 포함
-- API 직접 연결 시: `ANTHROPIC_API_KEY` 환경 변수
-- Amazon Bedrock 연동 가능
-- 플랫폼: 터미널 CLI, VS Code 확장, JetBrains 확장, 데스크탑 앱, 웹
+- 모든 유료 플랜(Pro $20/월, Max $100/월부터 5x·20x, Team, Enterprise)에 포함, 채팅과 사용량 한도 공유. 무료 플랜 미포함
+- API 직접 연결 시: `ANTHROPIC_API_KEY` 환경 변수 (Claude Console 종량제)
+- Amazon Bedrock·Google Cloud·Microsoft Foundry 연동 가능
+- 플랫폼: 터미널 CLI, VS Code 확장, JetBrains 확장, 데스크탑 앱, 웹, 모바일
+- 상세 근거: `_reference/claude_code_official_notes.md`
 
 ### Windsurf (windsurf.com/pricing)
 
@@ -216,19 +217,19 @@ Global Cross-Region은 지원되나 Kiro가 In-Region 정책 사용 → 미제�
 
 ## 5. 제품 형태 및 플랫폼 (공식 사이트 확인)
 
-| 도구        | 플랫폼                                                 | 출처                                   |
-|-------------|--------------------------------------------------------|----------------------------------------|
-| Kiro        | IDE(VS Code), CLI(`kiro-cli`), Web, Mobile             | kiro.dev                               |
-| Claude Code | 터미널 CLI, VS Code 확장, JetBrains 확장, 데스크탑, 웹 | docs.anthropic.com                     |
-| Agents SDK  | Python/TypeScript 코드 (웹서비스, CLI 모두 가능)       | github.com/openai/openai-agents-python |
-| Cursor      | VS Code fork IDE                                       | cursor.com                             |
-| Copilot     | VS Code, JetBrains, Vim, CLI 플러그인                  | github.com/features/copilot            |
-| Windsurf    | VS Code fork IDE                                       | windsurf.com                           |
-| Devin       | Desktop IDE, Cloud, CLI, Review                        | devin.ai                               |
-| Amp         | Web, 터미널 CLI, Mobile                                | ampcode.com                            |
-| Aider       | 터미널 CLI                                             | aider.chat                             |
-| v0          | 웹 브라우저                                            | v0.dev                                 |
-| Bolt.new    | 웹 브라우저 (StackBlitz WebContainers)                 | bolt.new                               |
+| 도구        | 플랫폼                                                         | 출처                                   |
+|-------------|----------------------------------------------------------------|----------------------------------------|
+| Kiro        | IDE(VS Code), CLI(`kiro-cli`), Web, Mobile                     | kiro.dev                               |
+| Claude Code | 터미널 CLI, VS Code 확장, JetBrains 확장, 데스크탑, 웹, 모바일 | code.claude.com                        |
+| Agents SDK  | Python/TypeScript 코드 (웹서비스, CLI 모두 가능)               | github.com/openai/openai-agents-python |
+| Cursor      | VS Code fork IDE                                               | cursor.com                             |
+| Copilot     | VS Code, JetBrains, Vim, CLI 플러그인                          | github.com/features/copilot            |
+| Windsurf    | VS Code fork IDE                                               | windsurf.com                           |
+| Devin       | Desktop IDE, Cloud, CLI, Review                                | devin.ai                               |
+| Amp         | Web, 터미널 CLI, Mobile                                        | ampcode.com                            |
+| Aider       | 터미널 CLI                                                     | aider.chat                             |
+| v0          | 웹 브라우저                                                    | v0.dev                                 |
+| Bolt.new    | 웹 브라우저 (StackBlitz WebContainers)                         | bolt.new                               |
 
 ---
 

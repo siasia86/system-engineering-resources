@@ -198,7 +198,7 @@ SDK의 로그는 요청·응답 본문을 가리지 않으므로 운영 로그 �
 - [TypeSafe Python SDK](https://docs.typesafe.ai/sdk/python) — ★★★★☆
 - [TypeSafe Models](https://docs.typesafe.ai/models) — ★★★★☆
 - [Jev 개념](./jev_concepts.md)
-- [Jev 공식 참조 노트](../../_reference/jev_official_notes.md)
+- [Jev 공식 참조 노트](../../../_reference/jev_official_notes.md)
 
 ---
 

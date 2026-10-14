@@ -101,7 +101,7 @@ Ticket -> Input validation -> Jev evaluation -> Routing policy -> Queue
 
 분류 결과를 서버 재시작 명령으로 직접 연결하기보다 담당 큐 배정부터 평가할 수 있습니다. 모델의 높은 신뢰도와 실행 권한은 별도의 조건입니다.
 
-관련 설계는 [Harness Engineering](./harness_engineering.md), [장애 대응](../../03_engineering/reliability/incident_management.md)을 참고합니다.
+관련 설계는 [Harness Engineering](../harness_engineering.md), [장애 대응](../../../03_engineering/reliability/incident_management.md)을 참고합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -111,7 +111,7 @@ Ticket -> Input validation -> Jev evaluation -> Routing policy -> Queue
 
 한국어 티켓, 축약어, 정보 부족, 서로 모순되는 내용, 입력 내 지시문을 포함한 사례를 평가합니다. 자동 분류 비율과 잘못된 자동 분류 비율을 함께 측정하면 신뢰도 임계값을 조정할 수 있습니다.
 
-실습은 [Jev 사용 가이드](./jev_guide.md), 확인된 공식 계약은 [참조 노트](../../_reference/jev_official_notes.md)를 참고합니다.
+실습은 [Jev 사용 가이드](./jev_guide.md), 확인된 공식 계약은 [참조 노트](../../../_reference/jev_official_notes.md)를 참고합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -123,7 +123,7 @@ Ticket -> Input validation -> Jev evaluation -> Routing policy -> Queue
 - [TypeSafe Primitives](https://docs.typesafe.ai/primitives) — ★★★★☆
 - [TypeSafe Confidence](https://docs.typesafe.ai/confidence) — ★★★★☆
 - [Jev 1.13 jaggedness](https://docs.typesafe.ai/model-jaggedness/jev-1.13) — ★★★★☆
-- [Jev 공식 참조 노트](../../_reference/jev_official_notes.md)
+- [Jev 공식 참조 노트](../../../_reference/jev_official_notes.md)
 
 ---
 

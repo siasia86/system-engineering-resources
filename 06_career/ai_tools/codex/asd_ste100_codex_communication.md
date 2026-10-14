@@ -2,7 +2,7 @@
 
 ASD-STE100은 기술 문서의 모호함을 줄이기 위한 영어 작성 표준입니다. Codex에 적용할 수 있는 공개 skill은 있지만, 이 표준 자체가 Codex의 전용 기능은 아닙니다. 한국어 소통에서는 짧은 문장·일관된 용어·조건과 행동의 분리 원칙을 참고하는 방식이 적절합니다. 이 판단은 조사 결과이며 실제 개선 효과를 측정한 결과는 아닙니다.
 
-확인일은 2026-10-09이며 작업 ID는 `STE-20261009-01`입니다. 공식 사실과 고정 커밋의 GitHub 근거는 [출처 노트](../../_reference/asd_ste100_official_notes.md)에 정리했습니다. 이번 범위는 정보 수집과 사용 방안 기록입니다.
+확인일은 2026-10-09이며 작업 ID는 `STE-20261009-01`입니다. 공식 사실과 고정 커밋의 GitHub 근거는 [출처 노트](../../../_reference/asd_ste100_official_notes.md)에 정리했습니다. 이번 범위는 정보 수집과 사용 방안 기록입니다.
 
 ## 목차
 
@@ -36,7 +36,7 @@ ASD-STE100 Simplified Technical English는 통제된 어휘와 작성 규칙으�
 
 ## 2. GitHub 후보 비교
 
-아래는 원저자 README·skill·라이선스·설치 관련 파일을 읽은 비교입니다. 설치나 코드 실행은 수행하지 않았습니다. 기준 SHA와 직접 파일 링크는 [후보별 근거](../../_reference/asd_ste100_official_notes.md#3-github-후보별-근거)에 있습니다.
+아래는 원저자 README·skill·라이선스·설치 관련 파일을 읽은 비교입니다. 설치나 코드 실행은 수행하지 않았습니다. 기준 SHA와 직접 파일 링크는 [후보별 근거](../../../_reference/asd_ste100_official_notes.md#3-github-후보별-근거)에 있습니다.
 
 | 후보                                                                                                | 대상·구성                                   | 라이선스 관찰                         | 참고 가치와 제한                                                        |
 |-----------------------------------------------------------------------------------------------------|---------------------------------------------|---------------------------------------|-------------------------------------------------------------------------|
@@ -153,7 +153,7 @@ OpenAI 공식 문서는 AGENTS.md를 지속적인 작업 지침, skill을 선택
 
 이번에 수행한 범위는 공식 소개·FAQ, OpenAI 공식 문서, GitHub 후보 5개의 파일과 기준 커밋 확인입니다. 웹 도구가 ASD 페이지 접근에 실패했지만 공식 소개·FAQ는 PowerShell HTTP 조회에서 응답 200으로 본문을 확인했습니다. 공식 다운로드 안내의 본문 조회는 시간 초과로 미완료였으며, 공식 표준 PDF 전체·AI 백서 내용은 검증하지 않았습니다.
 
-설치·clone·검사기 실행·지속 문체 적용·한국어 효과 비교·35 skill 변경·31 정책 변경은 미실행입니다. 문서의 정적 품질 검사 결과는 [완료 기록](../../CHANGELOG.md)에 따로 남깁니다.
+설치·clone·검사기 실행·지속 문체 적용·한국어 효과 비교·35 skill 변경·31 정책 변경은 미실행입니다. 문서의 정적 품질 검사 결과는 [완료 기록](../../../CHANGELOG.md)에 따로 남깁니다.
 
 [목차로 돌아가기](#목차)
 
@@ -165,7 +165,7 @@ OpenAI 공식 문서는 AGENTS.md를 지속적인 작업 지침, skill을 선택
 - [ASD 공식 FAQ](https://www.asd-ste100.org/STE_faq.html) — 사용 범위·다른 글에 참고할 원칙
 - [OpenAI Build skills](https://learn.chatgpt.com/docs/build-skills) — skill 구조·발견·선택
 - [OpenAI AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) — 지속 작업 지침
-- [공식 사실과 GitHub 고정 근거](../../_reference/asd_ste100_official_notes.md)
+- [공식 사실과 GitHub 고정 근거](../../../_reference/asd_ste100_official_notes.md)
 - [기존 Codex skill 설정 가이드](./codex_skills_setup_guide.md)
 
 ---

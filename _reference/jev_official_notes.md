@@ -33,8 +33,8 @@ sources:
 
 본문 문서 2개가 이 참조 노트를 공통으로 사용합니다.
 
-- [Jev 개념](../06_career/ai_tools/jev_concepts.md)
-- [Jev 사용 가이드](../06_career/ai_tools/jev_guide.md)
+- [Jev 개념](../06_career/ai_tools/jev/jev_concepts.md)
+- [Jev 사용 가이드](../06_career/ai_tools/jev/jev_guide.md)
 
 ## 2. 모델과 제공 조건
 

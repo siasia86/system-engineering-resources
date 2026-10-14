@@ -29,7 +29,7 @@ reason = "인접 박스 연결선에 대한 검사기 오탐"
 review = "2026-11-30"
 
 [[file_skip]]
-path = "06_career/ai_tools/kiro_cli_command_reference.md"
+path = "06_career/ai_tools/kiro/kiro_cli_command_reference.md"
 checks = ["diagram-kr"]
 reason = "Kiro CLI 문서 다이어그램 내부 한글을 보존"
 review = "상시"

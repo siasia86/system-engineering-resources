@@ -329,7 +329,7 @@ DATA_MASKING=true
 ## 참고 자료
 
 - Kiro CLI Documentation: [kiro.dev](https://kiro.dev/docs/) — ★★☆☆☆
-- Anthropic Claude Documentation: [docs.anthropic.com](https://docs.anthropic.com/) — ★★☆☆☆
+- Anthropic Claude Documentation: [platform.claude.com/docs](https://platform.claude.com/docs/) — ★★☆☆☆
 
 ---
 
@@ -346,6 +346,6 @@ DATA_MASKING=true
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-04-11
+**마지막 업데이트**: 2026-10-14
 
 © 2026 siasia86. Licensed under CC BY 4.0.

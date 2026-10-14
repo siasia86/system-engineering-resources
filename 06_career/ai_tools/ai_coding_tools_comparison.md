@@ -64,27 +64,31 @@ AWS가 만든 AI 개발 도구입니다. VS Code 기반 IDE(`kiro`), 터미널 C
 
 ### Claude Code
 
-Anthropic이 만든 AI 코딩 에이전트입니다. 터미널 CLI, IDE 확장(VS Code·JetBrains), 데스크탑 앱, 웹 브라우저 네 가지 플랫폼에서 동작합니다. Claude.ai Pro/Max 구독에 포함되며, 별도 API 비용 없이 사용 가능합니다.
+Anthropic이 만든 AI 코딩 에이전트입니다. 터미널 CLI, IDE 확장(VS Code·JetBrains), 데스크탑 앱, 웹, 모바일에서 동작합니다. Pro·Max·Team·Enterprise 등 모든 유료 플랜에 포함되며 채팅과 사용량 한도를 공유합니다. 무료 플랜에는 포함되지 않습니다.
+
+🟡 Claude Code 항목은 2026-10-14 공식 문서로 재확인했습니다. 상세 내용은 [Claude 문서 목록](claude/claude_code_concepts.md)을 참고합니다.
 
 #### 주요 특징
 
 - 코드베이스 파일을 직접 읽고 편집 (파일 참조·검색 내장)
 - Git 연동, 테스트 실행, bash 명령 실행 등 직접 수행
-- CLAUDE.md: 프로젝트별 컨텍스트·규칙 정의 파일
-- Permission 모드: 작업별 승인 범위 설정 (Auto / Manual)
-- Skills: 재사용 가능한 작업 패턴 정의 (`.claude/skills/`)
-- Hooks: 이벤트 기반 자동화 (SessionStart, UserPromptSubmit, PreToolUse, PostToolUse 등)
-- 서드파티 모델 연동: Bedrock, Vertex AI 등 (기본은 Claude)
+- CLAUDE.md: 프로젝트별 컨텍스트·규칙 정의 파일 (`CLAUDE.md`가 없으면 `AGENTS.md`를 읽음)
+- 권한 모드 6종: `default`(Manual), `acceptEdits`, `plan`, `auto`, `dontAsk`, `bypassPermissions`
+- Skills: 재사용 가능한 작업 패턴 정의 (`.claude/skills/`, Agent Skills 표준)
+- Hooks: 30여 종 이벤트 기반 자동화 (SessionStart, UserPromptSubmit, PreToolUse, PostToolUse 등)
+- Subagents: 별도 컨텍스트의 하위 에이전트 정의 (`.claude/agents/`)
+- Plugins: skill·subagent·hook·MCP 묶음 배포
+- 클라우드 제공자 연동: Amazon Bedrock, Google Cloud, Microsoft Foundry (모델은 Claude 계열)
 - MCP 서버 연동 지원
-- GitHub Actions, VS Code, JetBrains, 웹, 데스크탑 앱 통합
+- GitHub Actions, GitLab CI/CD, Slack, Chrome 연동
 
 #### 접근 방법
 
-| 방법           | 조건                               |
-|----------------|------------------------------------|
-| Claude Pro/Max | 구독에 포함 (사용량 제한)          |
-| API 직접 연결  | `ANTHROPIC_API_KEY` 환경 변수 설정 |
-| Amazon Bedrock | AWS 계정 연동                      |
+| 방법                         | 조건                                     |
+|------------------------------|------------------------------------------|
+| Pro·Max·Team·Enterprise 구독 | 구독에 포함 (채팅과 사용량 한도 공유)    |
+| Claude Console API 키        | `ANTHROPIC_API_KEY` 환경 변수, 종량제    |
+| Bedrock·Google Cloud·Foundry | `CLAUDE_CODE_USE_BEDROCK=1` 등 환경 변수 |
 
 ---
 
@@ -268,28 +272,28 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 
 ### 핵심 기능
 
-| 기능                  | Kiro          | Claude Code    | Cursor            | Copilot          |
-|-----------------------|---------------|----------------|-------------------|------------------|
-| IDE 통합              | ✅ (기본)     | 🟡 (플러그인)  | ✅ (기본)         | ✅ (플러그인)    |
-| 터미널 CLI            | ✅            | ✅ (주력)      | ❌                | 🟡 (Copilot CLI) |
-| 자동완성 (Tab)        | ✅            | ❌             | ✅                | ✅               |
-| 에이전트 모드         | ✅            | ✅             | ✅                | ✅               |
-| 멀티에이전트          | 🟡            | ✅             | ✅                | ❌               |
-| MCP 지원              | ✅            | ✅             | ✅                | ✅               |
-| 커스텀 에이전트 정의  | ✅ (파일)     | ✅ (CLAUDE.md) | ✅ (.cursorrules) | 🟡               |
-| Skills / 재사용 패턴  | ✅ (SKILL.md) | ✅ (Skills)    | ✅ (Notepads)     | ❌               |
-| Hooks / 이벤트 자동화 | ✅            | ✅             | ✅                | ✅               |
-| Git / PR 연동         | ✅            | ✅             | ✅                | ✅ (주력)        |
-| 멀티모델 선택         | ✅            | 🟡 (서드파티)  | ✅                | 🟡               |
-| AWS 통합              | ✅ (강점)     | ✅ (Bedrock)   | ❌                | ❌               |
-| GitHub Actions 통합   | ❌            | ✅             | ❌                | ✅ (강점)        |
+| 기능                  | Kiro          | Claude Code   | Cursor            | Copilot          |
+|-----------------------|---------------|---------------|-------------------|------------------|
+| IDE 통합              | ✅ (기본)     | 🟡 (플러그인) | ✅ (기본)         | ✅ (플러그인)    |
+| 터미널 CLI            | ✅            | ✅ (주력)     | ❌                | 🟡 (Copilot CLI) |
+| 자동완성 (Tab)        | ✅            | ❌            | ✅                | ✅               |
+| 에이전트 모드         | ✅            | ✅            | ✅                | ✅               |
+| 멀티에이전트          | 🟡            | ✅            | ✅                | ❌               |
+| MCP 지원              | ✅            | ✅            | ✅                | ✅               |
+| 커스텀 에이전트 정의  | ✅ (파일)     | ✅ (agents/)  | ✅ (.cursorrules) | 🟡               |
+| Skills / 재사용 패턴  | ✅ (SKILL.md) | ✅ (Skills)   | ✅ (Notepads)     | ❌               |
+| Hooks / 이벤트 자동화 | ✅            | ✅            | ✅                | ✅               |
+| Git / PR 연동         | ✅            | ✅            | ✅                | ✅ (주력)        |
+| 멀티모델 선택         | ✅            | 🟡 (Claude만) | ✅                | 🟡               |
+| AWS 통합              | ✅ (강점)     | ✅ (Bedrock)  | ❌                | ❌               |
+| GitHub Actions 통합   | ❌            | ✅            | ❌                | ✅ (강점)        |
 
 ### 커스터마이징 방식 비교
 
 | 도구        | 방식                | 진입 장벽 | 유연성 |
 |-------------|---------------------|-----------|--------|
 | Kiro        | 마크다운·JSON 파일  | 낮음      | 중간   |
-| Claude Code | CLAUDE.md 텍스트    | 낮음      | 중간   |
+| Claude Code | CLAUDE.md·Skills    | 낮음      | 중간   |
 | Agents SDK  | Python/TS 코드      | 높음      | 높음   |
 | Cursor      | .cursorrules 텍스트 | 낮음      | 중간   |
 | Copilot     | 설정 UI 위주        | 낮음      | 낮음   |
@@ -305,11 +309,11 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 | 도구        | Free                        | 기본 유료                 | 고급 유료                            |
 |-------------|-----------------------------|---------------------------|--------------------------------------|
 | Kiro        | $0 (50 크레딧/월)           | Pro $20 (1,000 크레딧/월) | Pro+ $40 / Pro Max $100 / Power $200 |
-| Claude Code | —                           | Pro $20/월 (포함)         | Max $100/월 (포함)                   |
+| Claude Code | —                           | Pro $20/월 (포함)         | Max $100/월부터 (5x·20x, 포함)       |
 | Cursor      | Hobby (무료, 제한적)        | Individual $20/월         | Teams $40/user/월                    |
 | Copilot     | Free (2,000 completions/월) | Pro $10/월                | Pro+ $39/월 / Max $100/월            |
 
-🟡 Claude Code는 별도 요금 없이 Claude Pro/Max 구독에 포함됩니다.
+🟡 Claude Code는 별도 요금 없이 모든 유료 플랜(Pro·Max·Team·Enterprise)에 포함되며 채팅과 사용량 한도를 공유합니다 (2026-10-14 확인).
 🟡 IDE형 도구가 아닌 OpenAI Agents SDK는 §3 기능 비교에서 제외했으며, 가격은 API 토큰 사용량 기반 종량제입니다 (예: GPT-5.6 Sol $5.00/$30.00 per 1M tokens).
 
 ---
@@ -345,6 +349,8 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 - 오픈 웨이트 최고: MiniMax M3 (68.8)
 - 코딩 가성비: GPT-5.6 Sol ($30 output / 1M tokens)
 - 측정 속도 1위: Grok 4.2 (233 tokens/sec)
+
+🟡 벤치마크는 2026-07-27 시점 자료입니다. 이후 출시된 Claude Fable 5.1·Opus 5.5·Sonnet 5.5·Haiku 5.5는 포함되지 않았습니다. 현재 라인업은 [Claude 모델 가이드](claude/claude_models_guide.md)를 참고합니다.
 
 🟡 도구(Kiro, Claude Code 등)가 아닌 **기반 모델** 기준 벤치마크입니다. 실제 도구 성능은 기반 모델 + 시스템 프롬프트 + 컨텍스트 처리 방식에 따라 달라집니다.
 
@@ -404,6 +410,7 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 ## 참고 자료
 
 - [_reference/ai_coding_tools_official_notes.md](../../_reference/ai_coding_tools_official_notes.md) — 가격·모델·벤치마크 검증 근거 노트
+- [_reference/claude_code_official_notes.md](../../_reference/claude_code_official_notes.md) — Claude Code·Claude 모델 검증 근거 노트 (2026-10-14)
 
 - BenchLM Computer Use: [benchlm.ai/best/computer-use](https://benchlm.ai/best/computer-use) — ★★★☆☆
 - BenchLM Coding: [benchlm.ai/best/coding](https://benchlm.ai/best/coding) — ★★★☆☆
@@ -418,6 +425,6 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 
 **작성일**: 2026-07-27
 
-**마지막 업데이트**: 2026-07-27
+**마지막 업데이트**: 2026-10-14
 
 © 2026 siasia86. Licensed under CC BY 4.0.
