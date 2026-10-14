@@ -1,16 +1,16 @@
-name: Markdown validation and README dates
+name: Markdown validation
 
 on:
   workflow_dispatch:
   push:
-    branches: [main, yunli]
+    branches: [main]
     paths:
       - '**/*.md'
       - '*.py'
       - '**/*.toml'
       - '.github/workflows/update-date.yml'
   pull_request:
-    branches: [main, yunli]
+    branches: [main]
     paths:
       - '**/*.md'
       - '*.py'
@@ -105,47 +105,3 @@ jobs:
 
       - name: Check heading structure with pinned sia_scripts
         run: "$SIA_SCRIPTS_BIN/sia-md-heading-check ."
-
-  update-date:
-    name: Update README dates
-    # yunli 에서만 날짜 커밋을 생성합니다. main 에도 적용하면 branch 별로
-    # 별개의 봇 커밋이 생겨 main 과 yunli 가 매번 분기합니다.
-    # main 은 yunli 병합으로 날짜 변경을 전달받습니다.
-    if: github.event_name == 'push' && github.ref_name == 'yunli'
-    runs-on: ubuntu-26.04
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 2
-
-      - name: Update dates in changed Markdown files
-        shell: bash
-        run: |
-          set -euo pipefail
-          # Repository document dates follow Korea time, including UTC rollover.
-          today=$(TZ=KST-9 date +%Y-%m-%d)
-          changed=$(git diff --name-only HEAD^ HEAD -- '*.md' || true)
-
-          while IFS= read -r file; do
-            [ -n "$file" ] || continue
-            if [ -f "$file" ] && grep -q '^\*\*마지막 업데이트\*\*' "$file"; then
-              sed -i "s/\*\*마지막 업데이트\*\*: [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}/**마지막 업데이트**: $today/" "$file"
-              git add "$file"
-            fi
-          done <<< "$changed"
-
-      - name: Commit and push if changed
-        shell: bash
-        run: |
-          set -euo pipefail
-          if git diff --cached --quiet; then
-            echo 'No date changes.'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git commit -m 'docs: update last modified date'
-          git push origin "${GITHUB_REF_NAME}"

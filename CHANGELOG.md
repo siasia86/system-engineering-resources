@@ -6,6 +6,7 @@
 
 ## [Unreleased]
 
+- DOCS-32 / CL2CX-16 (2026-10-14): `.github/workflows/update-date.yml`에서 README 날짜 자동화 작업을 제거하고 검증 실행 조건을 `main`으로 한정했습니다.
 ### ASD-STE100 소통 적용 조사 — 2026-10-09
 
 - `STE-20261009-01`: [사용 방안](06_career/ai_tools/codex/asd_ste100_codex_communication.md)과 [출처 노트](_reference/asd_ste100_official_notes.md)를 추가하고 root·Career·reference 색인에 연결했습니다. 공식 소개·FAQ와 OpenAI 문서, GitHub 후보 5개의 기준 커밋·파일·라이선스·설치 부작용을 대조했습니다.
