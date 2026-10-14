@@ -65,3 +65,6 @@ __pycache__/
 
 # Governance documents and private application evidence
 /.governance/local/
+
+# Claude Code session worktrees
+/.claude/worktrees/
