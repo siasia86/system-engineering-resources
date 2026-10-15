@@ -12,6 +12,18 @@
 
 설정의 TOML 해석, .gitignore의 private/생성 파일 제외와 관리 문서 포함을 확인합니다. 공통 설정과 local 구간을 구분하고 기존 규칙을 보존합니다. 문서 배치 검사는 도구·hook·skill 설치 증거가 아닙니다.
 
+CL09의 TOOLS-30 `0.5.0` 고정은 [검사 workflow](../.github/workflows/update-date.yml)에 적용했습니다. [기본 설정](../.md-style-check.toml)에 기존 CI의 파일별 예외 5개를 동일하게 반영해 hook과 CI의 정책 차이를 해소했으며, 두 설정의 나머지 검사와 범위는 유지합니다. 예외의 기존 사유와 재검토 시점은 다음과 같습니다.
+
+| 경로                                                          | 검사 항목        | 기존 사유                                         | 재검토     |
+| --------------------------------------------------------------- | ------------------ | --------------------------------------------------- | ------------ |
+| `01_fundamentals/linux/vim_airline.md`                        | `emoji-disallow` | 외부 프로젝트 README 원문 보존 — 목차 아이콘 포함 | 상시       |
+| `01_fundamentals/networking/network_headers.md`               | `box-chars`      | RFC header diagram의 필드 경계 조합을 보존        | 2026-11-30 |
+| `02_infrastructure/monitoring/game_infra_kpi_presentation.md` | `diagram-kr`     | 발표 자료의 다이어그램 내부 한글을 보존           | 상시       |
+| `04_security/cloud/ddos_defense_architecture.md`              | `diagram-width`  | 인접 박스 연결선에 대한 검사기 오탐               | 2026-11-30 |
+| `06_career/ai_tools/kiro/kiro_cli_command_reference.md`       | `diagram-kr`     | Kiro CLI 문서 다이어그램 내부 한글을 보존         | 상시       |
+
+발표 자료의 두 링크 수정은 원격 e70fc98의 선행 반영을 재사용하며, 이번 담당 변경은 workflow, 기본 style 설정, 검증 기록 세 파일입니다. 실패하면 원문과 diff를 기준으로 복구합니다.
+
 ## 3. 보안과 변경
 
 확인한 Gitleaks로 담당 파일·staged·게시 범위를 redaction과 함께 검사합니다. git diff --check 및 실제 staging 목록을 대조하고 운영 원문·계정·자격증명·다른 작업이 포함되지 않도록 확인합니다.
