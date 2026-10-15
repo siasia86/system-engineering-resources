@@ -182,10 +182,10 @@ systeminfo | findstr "부팅 시간"
 
 ### 1-7. 참고 자료
 
-- [99.9%와 99.99% SLA 차이점 상세 설명](https://medium.com/axel-springer-tech/whats-the-difference-between-99-9-and-99-99-sla-uptime-489e201a3c7b) ★★
-- [Uptime 비율별 허용 다운타임 계산](https://onlineornot.com/uptime-calculator) ★
-- [SLA Uptime 계산기 및 등급별 다운타임 산출](https://devopsprojectshq.com/tools/sla-tool/) ★
-- [SLA Uptime 산출 공식 및 활용 방법](https://deadly.hostingpost.com/) ★
+- [99.9%와 99.99% SLA 차이점 상세 설명](https://medium.com/axel-springer-tech/whats-the-difference-between-99-9-and-99-99-sla-uptime-489e201a3c7b) — ★★☆☆☆
+- [Uptime 비율별 허용 다운타임 계산](https://onlineornot.com/uptime-calculator) — ★☆☆☆☆
+- [SLA Uptime 계산기 및 등급별 다운타임 산출](https://devopsprojectshq.com/tools/sla-tool/) — ★☆☆☆☆
+- [SLA Uptime 산출 공식 및 활용 방법](https://deadly.hostingpost.com/) — ★☆☆☆☆
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -465,9 +465,9 @@ sudo mtr --report --report-cycles 10 --tcp --port 443 google.com
 
 ### 2-8. 참고 자료
 
-- [P50, P95, P99 Latency 백분위 개념 및 활용](https://oneuptime.com/blog/post/2025-09-15-p50-vs-p95-vs-p99-latency-percentiles/view) ★
-- [Latency 지표의 실무 해석 방법](https://www.sebastianduerr.com/blog/latency-metrics-that-tell-the-truth) ★★
-- [RTT 최적화를 통한 네트워크 성능 개선 전략](https://www.softwebsolutions.com/resources/reduce-rtt-optimize-network-performance/) ★★★
+- [P50, P95, P99 Latency 백분위 개념 및 활용](https://oneuptime.com/blog/post/2025-09-15-p50-vs-p95-vs-p99-latency-percentiles/view) — ★☆☆☆☆
+- [Latency 지표의 실무 해석 방법](https://www.sebastianduerr.com/blog/latency-metrics-that-tell-the-truth) — ★★☆☆☆
+- [RTT 최적화를 통한 네트워크 성능 개선 전략](https://www.softwebsolutions.com/resources/reduce-rtt-optimize-network-performance/) — ★★★☆☆
 
 ### 2.9. 추가 자료
 - [[개인자료]ASN 운영 및 IDC DDoS 대응 가이드](../../01_fundamentals/networking/asn_and_cloudflare_ddos.md) — ★★★☆☆
@@ -843,7 +843,7 @@ du -ah /var/log/ | sort -rh | head -10
 - [서버 리소스 모니터링 가이드라인](https://help.orangehrm.com/hc/en-us/articles/10204491113113-Server-Resource-Monitoring-Guidelines)
 
 ### 4-8. 추가 자료
-- [[개인자료]resource utilization monitoring.md](./resource_utilization_monitoring.md) ★★★
+- [[개인자료]resource utilization monitoring.md](./resource_utilization_monitoring.md) — ★★★☆☆
 [⬆ 목차로 돌아가기](#목차)
 
 ---

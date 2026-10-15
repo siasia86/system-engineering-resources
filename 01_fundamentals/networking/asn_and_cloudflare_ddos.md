@@ -326,7 +326,7 @@ Router A ----X---- Router B
 - KRNIC AS번호 신청: <https://nic.or.kr/jsp/business/management/asReg.jsp>
 - KRNIC AS번호 사용자 현황: <https://nic.or.kr/jsp/business/management/asList.jsp>
 - KRNIC IP주소/AS번호 통계: <https://nic.or.kr/jsp/statboard/IPAS/inter/pos/currentV4Addr.jsp>
-- BGP 기본 개념 (Cloudflare): <https://www.cloudflare.com/learning/security/glossary/what-is-bgp/> ★★★
+- BGP 기본 개념 (Cloudflare): <https://www.cloudflare.com/learning/security/glossary/what-is-bgp/> — ★★★☆☆
 - KINX (한국 IX): <https://www.kinx.net/>
 
 ### Cloudflare DDoS 서비스
@@ -372,6 +372,6 @@ Router A ----X---- Router B
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-04-11
+**마지막 업데이트**: 2026-10-15
 
 © 2026 siasia86. Licensed under CC BY 4.0.

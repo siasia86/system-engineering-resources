@@ -28,6 +28,7 @@
 
 ### Added
 
+- 2026-10-15: 출처 목록 별점 9줄을 `— ★★★☆☆` 형식(대시와 빈 별 포함)으로 맞춤. [KPI 발표 자료](02_infrastructure/monitoring/game_infra_kpi_presentation.md) 8줄, [ASN·DDoS 가이드](01_fundamentals/networking/asn_and_cloudflare_ddos.md) 1줄. 별 개수는 바꾸지 않았고, 로드맵의 언어 평가·난이도 표시는 출처 별점이 아니어서 그대로 둠.
 - 2026-10-15: [게임 인프라 KPI 발표 자료](02_infrastructure/monitoring/game_infra_kpi_presentation.md)의 깨진 내부 링크 2개(`./asn_and_cloudflare_ddos.md` → `01_fundamentals/networking/`)를 고치고 별점을 `— ★★★☆☆` 형식으로 맞춤. 링크 글자에 대괄호가 겹쳐 고정 검사 도구(0.3.3)가 놓치던 링크로, 다른 판의 검사기 대조에서 발견.
 - 2026-10-15: Claude [데스크톱 앱 가이드](06_career/ai_tools/claude/claude_code_desktop_guide.md) 8절에 Projects(beta)와 Code 세션의 차이를 추가. 스레드의 실행 위치(기본 클라우드), 로컬·SSH 세션은 프로젝트에 넣을 수 없음, Remote Control로 연결한 폴더의 Work locally 스레드, 미commit 변경 손실 위험, 사용 가능 위치와 공유 제한을 정리하고 [참조 노트](_reference/claude_code_official_notes.md)에 claude-projects 근거를 기록.
 - 2026-10-15: Claude 문서 3개를 `06_career/ai_tools/claude/`에 추가. [기본 사용법](06_career/ai_tools/claude/claude_code_basics_guide.md)에 요청 작성·plan 모드·`@`·`!` 입력·컨텍스트 관리·세션 재개·되돌리기 한계·diff 검토를, [데스크톱 앱 가이드](06_career/ai_tools/claude/claude_code_desktop_guide.md)에 Code 탭·SSH 원격 세션 요구 사항·연결 끊김·세션과 사이드바 정리·Remote Control·CLI 차이를, [스킬 목록](06_career/ai_tools/claude/claude_skills_catalog.md)에 개인 스킬 14개와 기본 제공·계정 스킬·같은 이름 우선순위를 정리. root·Career README(문서 수 28) 색인에 연결.
