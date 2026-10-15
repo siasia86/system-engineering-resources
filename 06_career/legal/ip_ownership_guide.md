@@ -82,7 +82,7 @@
 ## 참고 자료
 
 - 한국 저작권법: [law.go.kr](https://www.law.go.kr/법령/저작권법) — ★★★☆☆
-- 라이선스 가이드 (작성 예정)
+- [라이선스 가이드](../../license_guide.md), [리버스 엔지니어링 법적 기준](reverse_engineering_legal_guide.md)
 - [DRM 가이드](./drm_guide.md)
 
 ---
@@ -100,6 +100,6 @@
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-10-15
 
 © 2026 siasia86. Licensed under CC BY 4.0.

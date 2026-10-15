@@ -385,10 +385,13 @@ RDBMS, NoSQL, 운영, 포렌식.
 
 ### Legal
 
-| 문서                                                    | 설명                   |
-|---------------------------------------------------------|------------------------|
-| [DRM 가이드](06_career/legal/drm_guide.md)              | DRM, Tivoization, DMCA |
-| [업무 외 저작물](06_career/legal/ip_ownership_guide.md) | 저작권법 제9조, 귀속   |
+| 문서                                                                              | 설명                             |
+|-----------------------------------------------------------------------------------|----------------------------------|
+| [DRM 가이드](06_career/legal/drm_guide.md)                                        | DRM, Tivoization, DMCA           |
+| [업무 외 저작물](06_career/legal/ip_ownership_guide.md)                           | 저작권법 제9조, 귀속             |
+| [리버스 엔지니어링 법적 기준](06_career/legal/reverse_engineering_legal_guide.md) | 역분석 요건, 보호조치, DMCA 예외 |
+| [개인정보 보호 법령](06_career/legal/privacy_law_guide.md)                        | 법령, 감독기관                   |
+| [개인정보 보호 개선 체크리스트](06_career/legal/privacy_improvement_checklist.md) | 관리·기술 보호조치 점검          |
 
 ### AI Tools
 
@@ -497,6 +500,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-10-15
 
 © 2026 siasia86. Licensed under CC BY 4.0.

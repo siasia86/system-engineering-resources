@@ -7,7 +7,7 @@
 | 디렉토리                 | 설명                                                             | 문서 수 |
 |--------------------------|------------------------------------------------------------------|---------|
 | [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                | 4       |
-| [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권                                    | 2       |
+| [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권, 리버스 엔지니어링, 개인정보       | 5       |
 | [ai_tools/](./ai_tools/) | AI 도구 — 공통 문서와 claude/·codex/·kiro/·jev/ 도구별 하위 폴더 | 25      |
 
 ## 주요 문서
@@ -33,6 +33,7 @@
 - [jev/jev_concepts.md](./ai_tools/jev/jev_concepts.md) — System One 모델, 질문 유형, 확률·신뢰도
 - [jev/jev_guide.md](./ai_tools/jev/jev_guide.md) — Playground, HTTP API, Python SDK와 결과 분기
 - [ip_ownership_guide.md](./legal/ip_ownership_guide.md) — 코드 저작권, 직무 발명
+- [reverse_engineering_legal_guide.md](./legal/reverse_engineering_legal_guide.md) — 역분석 허용 요건, 기술적 보호조치, 정보통신망법, DMCA 예외, 작업 체크리스트
 
 ## 추천 학습 순서
 
@@ -53,6 +54,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-10-15
 
 © 2026 siasia86. Licensed under CC BY 4.0.

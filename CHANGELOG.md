@@ -28,6 +28,7 @@
 
 ### Added
 
+- 2026-10-15: [리버스 엔지니어링 법적 기준 가이드](06_career/legal/reverse_engineering_legal_guide.md) 추가. AI 기반 역분석 도구(morluto/rea) 확산을 계기로 도구 라이선스·대상 약관·법률을 구분하고, 저작권법 제101조의3·제101조의4·제104조의2·제136조, 정보통신망법 제48조·제71조, 17 U.S.C. §1201(f)(g)(j), 37 CFR §201.40(b)(18)을 정리. 원문 발췌 3개를 `06_career/legal/_reference/`에 저장하고 root·Career README, DRM·IP 가이드에 연결.
 - 2026-10-14: [Claude 참조 노트](_reference/claude_code_official_notes.md)와 Claude 문서 4개를 `06_career/ai_tools/claude/`에 추가. [공통 개념](06_career/ai_tools/claude/claude_code_concepts.md), [Linux CLI 가이드](06_career/ai_tools/claude/claude_code_cli_linux_guide.md), [확장 기능 가이드](06_career/ai_tools/claude/claude_code_extensions_guide.md), [모델 가이드](06_career/ai_tools/claude/claude_models_guide.md)에 설치·인증·권한 모드·설정·Skills·Hooks·Subagents·MCP·모델 라인업과 가격을 정리하고 root·Career README와 reference INDEX에 연결.
 - 2026-10-13: [Aside AI 브라우저 가이드](06_career/ai_tools/aside_browser_guide.md)와 [공식 참조 노트](_reference/aside_browser_official_notes.md)를 추가. 지원 플랫폼·기능·요금·권한·데이터 처리·CLI/MCP·제작사 벤치마크를 조사하고 공식 자료의 Max 사용량·데이터 전송 설명 차이를 기록. root·Career README와 reference INDEX에 연결.
 - 2026-10-13: Boris Cherny의 다섯 업무 원형 조사 [본문](06_career/ai_tools/ai_work_archetypes.md)과 [참조 노트](_reference/ai_work_archetypes_notes.md)를 추가. 원형 정의·제품 단계별 조합·AI 활용과 인프라 적용 예시를 구분하고 root·Career README 및 reference INDEX에 연결. X 원문 직접 열람 제한과 출처별 확인 상태를 기록.
@@ -38,6 +39,7 @@
 
 ### Changed
 
+- 2026-10-15: Career README의 legal 문서 수를 실제 파일 수 5개로 정정하고 색인에서 빠져 있던 개인정보 문서 2개를 root·Career README에 추가. DRM·IP 가이드의 "라이선스 가이드 (작성 예정)"를 실제 문서 링크로 교체.
 - 2026-10-14: `06_career/ai_tools/`를 공통 문서와 도구별 하위 폴더(`claude/`·`codex/`·`kiro/`·`jev/`)로 재구성. Codex 8개·Kiro 4개·Jev 2개를 `git mv`로 옮기고 저장소 전체 상대 링크, 검사 예외 설정(`.md-style-check.sia_scripts.toml`), TODO 예외 표를 새 경로로 갱신.
 - 2026-10-14: 기존 Claude 관련 내용 검토. `ai_coding_tools_comparison.md`의 Claude Code 플랫폼·플랜(모든 유료 플랜, Max $100부터), 권한 모드 6종, 클라우드 제공자 표현, 커스텀 에이전트(`.claude/agents/`), 2026-07 벤치마크 시점 안내를 정정. `harness_engineering.md`의 `CLAUDE.md`·`.cursorrules` 예시, 요청 템플릿의 Anthropic 문서 주소, AI 도구 참조 노트의 Claude Code 항목을 갱신.
 - 2026-10-13: `.gitignore`에 Claude Code 세션 worktree 위치 `/.claude/worktrees/`를 추가. 31 공통 ignore 원본(31_governances 012569e)의 같은 규칙을 이 한 줄만 병합했고 `.claude/`의 프로젝트 설정·skill은 Git 추적 대상으로 남김.
@@ -58,6 +60,7 @@
 
 ### Verified
 
+- 2026-10-15: 저작권법(법률 제21336호, 2026-08-11 시행)을 law.go.kr에서, §1201은 law.cornell.edu에서, 37 CFR §201.40은 eCFR(최종 개정 2024-10-28)에서 받아 조문 번호·요건·벌칙을 대조. 2026-02-10 개정으로 무력화 금지 벌칙이 제136조 제3항 제3호의3으로 이동한 것을 확인. EU Directive 2009/24/EC는 EUR-Lex 자동 요청 차단으로 원문 미대조.
 - 2026-10-14: Claude 참조 노트는 code.claude.com 문서 13종을 1차, platform.claude.com 모델·가격·폐기 일정과 claude.com/pricing·GitHub 릴리스(v2.1.299)를 2차로 대조. `loop_engineering.md`의 `/goal`·`/loop` 설명은 공식 문서와 일치. 로컬 `claude` CLI 미설치로 실행 대조는 미실시, Kiro 모델 목록은 kiro-cli 로그인이 필요해 미확인.
 - 2026-10-13: Git 문서 정정 후 대상 Markdown 4개의 style·heading, 전체 Markdown 464개의 링크 1045개, root README inventory와 `git diff --check`를 확인. `git restore --source=HEAD --staged --worktree`와 `git config --local --list` 동작을 로컬 Git 2.43.0 임시 저장소에서 확인.
 - 2026-10-13: gh 문서 통합 후 대상 Markdown 2개의 style·heading, 전체 Markdown 464개의 링크 1042개, root README inventory와 `git diff --check`를 확인. 새 예시 명령은 로컬 gh 2.45.0으로 실행·도움말 대조했으며 최신 v2.102.0 전용 옵션(`--worktree`, `clipboard`)은 릴리스 노트로만 확인.
@@ -977,6 +980,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-10-15
 
 © 2026 siasia86. Licensed under CC BY 4.0.
