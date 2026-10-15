@@ -3,7 +3,7 @@
 
 Claude 데스크톱 앱의 **Code 탭**에서 세션을 만들고, SSH로 Linux 서버에 연결해 작업하고, 여러 세션을 정리하는 방법을 다룹니다. 터미널 명령과 권한 규칙은 [Linux CLI 가이드](claude_code_cli_linux_guide.md), 매일 쓰는 요청·컨텍스트 관리는 [기본 사용법](claude_code_basics_guide.md)을 참고합니다.
 
-🟡 내용은 2026-10-15 공식 문서(desktop) 기준입니다. 사이드바 구성은 같은 날 데스크톱 앱의 SSH 세션에서 확인했고, 단축키는 다시 시험하지 않았습니다. 화면 이름과 메뉴 위치는 앱 버전에 따라 바뀔 수 있습니다.
+🟡 내용은 2026-10-15 공식 문서(desktop, claude-projects) 기준입니다. 사이드바 구성은 같은 날 데스크톱 앱의 SSH 세션에서 확인했고, 단축키는 다시 시험하지 않았습니다. 화면 이름과 메뉴 위치는 앱 버전에 따라 바뀔 수 있습니다.
 
 ## 목차
 
@@ -182,6 +182,25 @@ PR 상태 확인은 GitHub CLI(`gh`) 설치와 인증이 필요합니다.
 - 사이드바 위쪽 필터로 상태·프로젝트·실행 환경별로 걸러 볼 수 있습니다.
 - 자주 여는 세션은 고정하고, 허브·작업 대상처럼 성격이 같은 세션은 그룹으로 묶으면 찾기 쉽습니다.
 
+### Projects (beta)와 Code 세션
+
+사이드바에 **Projects**가 보이면 Claude가 관련 작업을 여러 스레드로 나눠 실행·추적하는 프로젝트를 만들 수 있습니다. 2026-10-15 기준 Pro·Max 플랜의 공개 beta이며 계정별로 단계적으로 제공됩니다. 프로젝트도 고정할 수 있어 Pinned에 세션과 함께 보일 수 있습니다.
+
+| 항목      | Code 세션                    | Project                                             |
+|-----------|------------------------------|-----------------------------------------------------|
+| 작업 단위 | 세션 하나 = 대화 하나        | 대화 하나가 여러 스레드(세션)를 시작·추적           |
+| 실행 위치 | Local·SSH·WSL·Cloud 중 선택  | 스레드마다 기본은 클라우드 세션                     |
+| 기준 지침 | 저장소 `CLAUDE.md`·개인 설정 | 프로젝트 지침·메모리를 모든 스레드에 적용           |
+| 코드 위치 | 선택한 폴더 그대로           | github.com 저장소 (Claude GitHub App·push 권한)     |
+| 사용 위치 | CLI·IDE·데스크톱 앱          | claude.ai/code·데스크톱 앱·모바일 앱 (CLI·IDE 불가) |
+| 공유      | 세션 단위                    | 한 사용자 전용, 공유 불가                           |
+
+- 직접 시작한 Local·SSH 세션은 프로젝트에 넣을 수 없습니다. 프로젝트가 내 컴퓨터나 서버에 닿는 방법은 그 컴퓨터에서 스레드를 실행하는 것 하나입니다.
+- 그 컴퓨터의 폴더가 필요한 작업은 먼저 폴더를 Remote Control로 연결하고(데스크톱 앱 **Settings > Claude Code > Use this computer from your phone and claude.ai**에서 폴더 추가, 또는 그 폴더에서 `claude remote-control` 실행, v2.1.280 이상), 프로젝트 대화의 **+** 메뉴에서 **Work locally**로 요청합니다. 이 스레드는 auto 모드로 실행되고, 프로젝트 지침은 받지만 메모리 파일은 받지 않으며, 그 컴퓨터가 켜져 연결된 동안만 진행됩니다.
+- 클라우드 스레드의 sandbox는 턴 사이에 멈췄다가 다시 열립니다. 다시 열지 못하면 새 clone에서 이어가므로 commit하지 않은 변경이 사라질 수 있습니다. 긴 작업은 중간 commit·push를 요청합니다.
+- claude.ai 채팅의 이전 Projects(대화와 참고 파일 묶음)와는 다른 기능입니다.
+- 한 세션 안에서 끝나는 작업이나 로컬 서버 작업이 중심이면 Code 세션이 단순합니다. 여러 저장소에 걸치거나 계속 작업이 들어오는 목표라면 프로젝트가 맞습니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -252,6 +271,7 @@ Windows·Linux 기준이며 macOS는 `Ctrl` 대신 `Cmd`를 씁니다. 세션 �
 - Claude Desktop on Linux: [code.claude.com/docs/en/desktop-linux](https://code.claude.com/docs/en/desktop-linux) — ★★★☆☆
 - Remote Control: [code.claude.com/docs/en/remote-control](https://code.claude.com/docs/en/remote-control) — ★★★☆☆
 - Worktrees: [code.claude.com/docs/en/worktrees](https://code.claude.com/docs/en/worktrees) — ★★★☆☆
+- Projects: [code.claude.com/docs/en/claude-projects](https://code.claude.com/docs/en/claude-projects) — ★★★☆☆
 
 ---
 

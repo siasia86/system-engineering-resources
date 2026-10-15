@@ -35,6 +35,7 @@ sources:
   - https://code.claude.com/docs/en/checkpointing.md
   - https://code.claude.com/docs/en/commands.md
   - https://code.claude.com/docs/en/desktop.md
+  - https://code.claude.com/docs/en/claude-projects.md
   - https://github.com/anthropics/claude-code/releases
 ---
 
@@ -194,6 +195,8 @@ sources:
 - 연동: Chrome, GitHub Actions, GitLab CI/CD, Code Review, Slack, Claude Tag.
 - Desktop 앱은 macOS·Windows를 지원하며 Ubuntu·Debian은 apt 설치 베타입니다. 유료 구독이 필요하고 CLI를 따로 설치하지 않아도 됩니다.
 
+- Projects (claude-projects, 2026-10-15): Pro·Max 공개 beta, 단계적 제공(Team·Enterprise 미제공). 대화 하나가 스레드(기본 클라우드 세션)를 시작·추적하고 프로젝트 지침·메모리를 공유합니다. claude.ai/code·데스크톱 앱·모바일 앱에서만 쓰며 터미널 CLI·VS Code·JetBrains·Bedrock·Agent Platform·Foundry에서는 쓸 수 없습니다. 직접 시작한 로컬 세션은 프로젝트에 넣을 수 없고, 로컬 폴더 작업은 Remote Control(v2.1.280 이상)로 연결한 폴더에서 **Work locally** 스레드로 실행합니다(auto 모드, 프로젝트 지침은 적용·메모리 파일은 미적용). 클라우드 sandbox를 다시 열지 못하면 새 clone에서 이어가 commit하지 않은 변경이 사라질 수 있습니다. 한 사용자 전용이며 공유할 수 없습니다. 코드 작업은 github.com 저장소와 Claude GitHub App·push 권한이 필요합니다.
+
 ## 12. 검증 기록
 
 - 1차 대조(2026-10-14): code.claude.com의 overview·setup·authentication·permission-modes·settings·memory·skills·hooks-guide·sub-agents·mcp·headless·model-config·platforms 문서 원문을 내려받아 항목별로 확인했습니다.
@@ -226,6 +229,7 @@ sources:
 - Checkpointing: https://code.claude.com/docs/en/checkpointing
 - Commands: https://code.claude.com/docs/en/commands
 - Desktop: https://code.claude.com/docs/en/desktop
+- Projects: https://code.claude.com/docs/en/claude-projects
 
 ---
 
