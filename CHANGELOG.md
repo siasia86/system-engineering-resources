@@ -28,6 +28,7 @@
 
 ### Added
 
+- 2026-10-15: 같은 문서의 "결론" 절을 상세 항목 우선순위에 맞춤. "SE라면"에 Bash(1순위 필수)와 JavaScript(3순위 권장)를 넣고 Go를 "강력 권장"으로, Ruby vs Rust의 "둘 다 우선순위 낮음"을 "Rust 4순위(권장), Ruby 낮음"으로, 추천 학습 경로를 "Python·Bash 깊게 학습 + Go 시작"으로 고침.
 - 2026-10-15: [언어별 학습 가이드](06_career/roadmap/se_complete_roadmap_programming_languages.md)의 "SE에게 추천하는 언어 우선순위" 요약을 언어별 상세 항목의 우선순위에 맞춰 다시 씀(Python·Bash 1순위, Go 2순위, JavaScript 3순위, Rust 4순위, PowerShell 조건부, C·Ruby 낮음). 우선순위 "낮음"인 C를 시스템 언어의 "권장"에서 "선택" 묶음으로 옮김.
 - 2026-10-15: [언어별 학습 가이드](06_career/roadmap/se_complete_roadmap_programming_languages.md)의 언어 이름 뒤 별 표시 10개를 제거(묶음·우선순위·학습 난이도에 같은 정보가 있음). [SE 로드맵](06_career/roadmap/se_roadmap.md) 자격증 가이드의 `난이도: ★★` 10줄을 `난이도: 2/5`처럼 숫자로 바꿔 출처 별점과 구분.
 - 2026-10-15: 출처 목록 별점 9줄을 `— ★★★☆☆` 형식(대시와 빈 별 포함)으로 맞춤. [KPI 발표 자료](02_infrastructure/monitoring/game_infra_kpi_presentation.md) 8줄, [ASN·DDoS 가이드](01_fundamentals/networking/asn_and_cloudflare_ddos.md) 1줄. 별 개수는 바꾸지 않았고, 로드맵의 언어 평가·난이도 표시는 출처 별점이 아니어서 그대로 둠.

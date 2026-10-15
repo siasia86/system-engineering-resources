@@ -95,17 +95,17 @@
 ## 결론
 
 ### SE라면
-1. **Python 마스터** (최우선)
-2. **Go 배우기** (클라우드 인프라 필수)
-3. Ruby/Rust는 필요할 때만
+1. **Python·Bash 마스터** (최우선, 필수)
+2. **Go 배우기** (클라우드 인프라, 강력 권장)
+3. JavaScript·Rust는 권장, Ruby·C는 필요할 때만
 
 ### Ruby vs Rust 선택
 - **Ruby**: Chef/Puppet 사용할 경우
 - **Rust**: 고성능 도구 개발할 경우
-- **둘 다 우선순위 낮음** (Python, Go가 더 중요)
+- **우선순위**: Rust는 4순위(권장), Ruby는 낮음 (Python·Bash·Go가 더 중요)
 
 ### 추천 학습 경로
-**Python 깊게 학습 + Go 시작**
+**Python·Bash 깊게 학습 + Go 시작**
 
 [⬆ 목차로 돌아가기](#목차)
 
