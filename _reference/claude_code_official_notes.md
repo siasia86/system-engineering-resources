@@ -7,7 +7,7 @@ tags:
   - anthropic
   - ai-agent
   - cli
-last_checked: 2026-10-14
+last_checked: 2026-10-15
 sources:
   - https://code.claude.com/docs/llms.txt
   - https://code.claude.com/docs/en/overview.md
@@ -28,6 +28,13 @@ sources:
   - https://platform.claude.com/docs/en/about-claude/pricing.md
   - https://platform.claude.com/docs/en/about-claude/model-deprecations.md
   - https://claude.com/pricing
+  - https://code.claude.com/docs/en/quickstart.md
+  - https://code.claude.com/docs/en/interactive-mode.md
+  - https://code.claude.com/docs/en/common-workflows.md
+  - https://code.claude.com/docs/en/best-practices.md
+  - https://code.claude.com/docs/en/checkpointing.md
+  - https://code.claude.com/docs/en/commands.md
+  - https://code.claude.com/docs/en/desktop.md
   - https://github.com/anthropics/claude-code/releases
 ---
 
@@ -37,7 +44,7 @@ sources:
 
 - 2026-10-14 확인한 GitHub 최신 릴리스: `v2.1.299` (2026-10-14 게시, `gh api repos/anthropics/claude-code/releases/latest`).
 - 공식 문서의 설치 확인 예시 출력은 `2.1.211 (Claude Code)`이며, 이는 형식 예시입니다.
-- 이 저장소의 작성 서버에는 `claude` CLI가 설치되어 있지 않습니다. CLI 도움말·실제 실행 대조는 하지 않았고 모든 항목은 공식 문서 기준입니다.
+- 작성 서버의 `PATH`에는 `claude` CLI가 없습니다. 2026-10-15 데스크톱 앱이 SSH 세션용으로 설치한 `~/.claude/remote/ccd-cli/2.1.295-<빌드>`에서 `--version`을 실행해 `2.1.295 (Claude Code)`를 확인했습니다. 그 밖의 CLI 도움말·실제 실행 대조는 하지 않았고 명령·옵션은 공식 문서 기준입니다.
 - 문서에 버전 조건이 붙은 기능은 해당 버전을 함께 기록합니다. 예: 내장 기본 권한 모드 `auto`는 v2.1.283 이상.
 
 ## 2. 모델 라인업 (platform.claude.com, 2026-10-14)
@@ -191,7 +198,8 @@ sources:
 
 - 1차 대조(2026-10-14): code.claude.com의 overview·setup·authentication·permission-modes·settings·memory·skills·hooks-guide·sub-agents·mcp·headless·model-config·platforms 문서 원문을 내려받아 항목별로 확인했습니다.
 - 2차 대조(2026-10-14): platform.claude.com의 models overview·pricing·model-deprecations와 claude.com/pricing, GitHub 릴리스 API로 모델 ID·가격·플랜·버전을 교차 확인했습니다. setup 문서의 "Pro, Max, Team, Enterprise, Console 계정 필요"와 pricing 페이지의 "모든 유료 플랜 포함"이 일치함을 확인했습니다.
-- 미검증: 로컬 CLI 미설치로 `claude --help`·실제 설치·로그인·모델 호출은 실행하지 않았습니다. Max 20배 요금제의 정확한 가격은 pricing 페이지 본문에서 확인하지 못했습니다.
+- 3차 대조(2026-10-15): quickstart·interactive-mode·common-workflows·best-practices·checkpointing·commands·desktop·skills 원문을 내려받아 기본 사용법·데스크톱 앱·스킬 목록 문서의 단축키·명령·plan 모드·되돌리기 한계·SSH 요구 사항·스킬 우선순위를 확인했습니다. 사이드바 섹션 구성(Pinned·Routines·Sessions·사용자 그룹)은 공식 문서에 없어 같은 날 데스크톱 앱 SSH 세션에서 관찰한 결과로 적었습니다.
+- 미검증: `claude --version` 외의 터미널 명령, 직접 설치·로그인, 단축키 동작은 실행하지 않았습니다. Max 20배 요금제의 정확한 가격은 pricing 페이지 본문에서 확인하지 못했습니다.
 
 ## 13. 공식 자료
 
@@ -211,11 +219,18 @@ sources:
 - Pricing (API): https://platform.claude.com/docs/en/about-claude/pricing
 - Pricing (plans): https://claude.com/pricing
 - Releases: https://github.com/anthropics/claude-code/releases
+- Quickstart: https://code.claude.com/docs/en/quickstart
+- Interactive mode: https://code.claude.com/docs/en/interactive-mode
+- Common workflows: https://code.claude.com/docs/en/common-workflows
+- Best practices: https://code.claude.com/docs/en/best-practices
+- Checkpointing: https://code.claude.com/docs/en/checkpointing
+- Commands: https://code.claude.com/docs/en/commands
+- Desktop: https://code.claude.com/docs/en/desktop
 
 ---
 
 **작성일**: 2026-10-14
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-10-15
 
 © 2026 siasia86. Licensed under CC BY 4.0.

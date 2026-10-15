@@ -3,7 +3,7 @@
 
 Claude Code는 코드베이스를 읽고 파일을 수정하며, 명령과 테스트를 실행하고 개발 도구와 연동하는 Anthropic의 코딩 에이전트입니다. 사용자는 원하는 결과를 설명하고, Claude Code는 필요한 파일을 찾고 변경하고 검증합니다.
 
-이 문서는 Claude Code를 처음 접하는 사람이 **무엇을 맡길 수 있는지, 어디서 실행되는지, 권한과 비용을 어떻게 다루는지** 이해하기 위한 입문 문서입니다. 설치와 명령은 [Linux CLI 가이드](claude_code_cli_linux_guide.md), 지침 파일·Skills·Hooks·MCP는 [확장 기능 가이드](claude_code_extensions_guide.md), 모델 선택은 [모델 가이드](claude_models_guide.md)에서 다룹니다.
+이 문서는 Claude Code를 처음 접하는 사람이 **무엇을 맡길 수 있는지, 어디서 실행되는지, 권한과 비용을 어떻게 다루는지** 이해하기 위한 입문 문서입니다. 설치와 명령은 [Linux CLI 가이드](claude_code_cli_linux_guide.md), 매일 쓰는 흐름은 [기본 사용법](claude_code_basics_guide.md), 데스크톱 앱은 [데스크톱 앱 가이드](claude_code_desktop_guide.md), 지침 파일·Skills·Hooks·MCP는 [확장 기능 가이드](claude_code_extensions_guide.md), 모델 선택은 [모델 가이드](claude_models_guide.md)에서 다룹니다.
 
 ## 목차
 
@@ -158,11 +158,12 @@ Claude Code는 세션을 시작할 때 다음 내용을 자동으로 읽어 작�
 ## 8. 추천 학습 순서
 
 1. 이 문서로 구성 요소와 권한 모드를 이해합니다.
-2. [Linux CLI 가이드](claude_code_cli_linux_guide.md)로 설치·로그인하고 `plan` 모드로 작은 저장소를 분석해 봅니다.
-3. [확장 기능 가이드](claude_code_extensions_guide.md)로 `CLAUDE.md`와 프로젝트 설정을 만듭니다.
-4. 반복 작업을 Skills·Hooks로 고정합니다.
-5. [모델 가이드](claude_models_guide.md)로 작업별 모델과 effort를 조정합니다.
-6. CI에서는 `claude -p`와 `dontAsk` 모드로 허용 범위를 좁혀 자동화합니다.
+2. [Linux CLI 가이드](claude_code_cli_linux_guide.md)로 설치·로그인합니다. 데스크톱 앱을 쓰면 [데스크톱 앱 가이드](claude_code_desktop_guide.md)로 세션과 SSH 연결을 만듭니다.
+3. [기본 사용법](claude_code_basics_guide.md)으로 `plan` 모드, 파일 지정, 컨텍스트 관리, 되돌리기를 익히며 작은 저장소를 분석해 봅니다.
+4. [확장 기능 가이드](claude_code_extensions_guide.md)로 `CLAUDE.md`와 프로젝트 설정을 만듭니다.
+5. 반복 작업을 Skills·Hooks로 고정합니다. 설치된 스킬은 [스킬 목록](claude_skills_catalog.md)에서 고릅니다.
+6. [모델 가이드](claude_models_guide.md)로 작업별 모델과 effort를 조정합니다.
+7. CI에서는 `claude -p`와 `dontAsk` 모드로 허용 범위를 좁혀 자동화합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -193,6 +194,6 @@ Claude Code는 세션을 시작할 때 다음 내용을 자동으로 읽어 작�
 
 **작성일**: 2026-10-14
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-10-15
 
 © 2026 siasia86. Licensed under CC BY 4.0.

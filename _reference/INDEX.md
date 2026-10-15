@@ -39,7 +39,7 @@ sources:
 | Chaos/FinOps                   | `_reference/chaos_finops_official_notes.md`             | principlesofchaos.org / finops.org                      | 2026-07-07 | X    |
 | CPU 시스템 운영                | `_reference/cpu_system_engineering_official_notes.md`   | NUMA·스케줄링·가상화·CPU 호환성                         | 2026-08-21 | O    |
 | Charset/Encoding               | `_reference/charset_encoding_official_notes.md`         | RFC 3629, Unicode 16.0                                  | 2026-07-07 | O    |
-| Claude Code                    | `_reference/claude_code_official_notes.md`              | v2.1.299·모델 5.5/Fable 5.1·권한·설정·확장·headless     | 2026-10-14 | O    |
+| Claude Code                    | `_reference/claude_code_official_notes.md`              | v2.1.299·모델 5.5/Fable 5.1·권한·설정·확장·headless·앱  | 2026-10-15 | O    |
 | Codex CLI                      | `_reference/codex_cli_official_notes.md`                | Skills 설정·plugin; CLI 도움말 v0.160.0 (로컬)          | 2026-10-03 | O    |
 | Jev                            | `_reference/jev_official_notes.md`                      | jev-1.13.0·Choice·Score·Noul·HTTP·Python SDK            | 2026-10-01 | O    |
 | CVE/Security                   | `_reference/cve_security_official_notes.md`             | NVD API 2.0, CISA KEV                                   | 2026-06-29 | O    |
@@ -137,6 +137,6 @@ sources:
 
 **작성일**: 2026-05-22
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-10-15
 
 © 2026 siasia86. Licensed under CC BY 4.0.

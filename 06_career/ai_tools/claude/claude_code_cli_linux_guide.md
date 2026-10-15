@@ -1,9 +1,9 @@
 # Claude Code CLI Linux 가이드
 <!-- reference: _reference/claude_code_official_notes.md -->
 
-Linux 서버와 WSL에서 Claude Code CLI를 설치·인증하고, 권한을 제한해 대화형·비대화형으로 사용하는 방법을 정리합니다. 개념은 [Claude Code 공통 개념](claude_code_concepts.md), 지침 파일과 확장 기능은 [확장 기능 가이드](claude_code_extensions_guide.md)를 참고합니다.
+Linux 서버와 WSL에서 Claude Code CLI를 설치·인증하고, 권한을 제한해 대화형·비대화형으로 사용하는 방법을 정리합니다. 개념은 [Claude Code 공통 개념](claude_code_concepts.md), 매일 쓰는 흐름은 [기본 사용법](claude_code_basics_guide.md), 지침 파일과 확장 기능은 [확장 기능 가이드](claude_code_extensions_guide.md)를 참고합니다.
 
-🟡 이 문서의 명령과 옵션은 2026-10-14 공식 문서 기준입니다. 작성 서버에는 CLI가 설치되어 있지 않아 실제 실행 결과로는 확인하지 않았습니다. 최신 GitHub 릴리스는 v2.1.299(2026-10-14)입니다.
+🟡 이 문서의 명령과 옵션은 2026-10-14 공식 문서 기준입니다. 2026-10-15 작성 서버에서는 데스크톱 앱이 SSH 세션용으로 설치한 Claude Code 2.1.295의 `--version`만 실행해 확인했고, 설치·인증·권한 명령은 실제 실행 결과로 확인하지 않았습니다. 최신 GitHub 릴리스는 v2.1.299(2026-10-14)입니다.
 
 ## 목차
 
@@ -34,6 +34,8 @@ uname -m
 # 기존 설치 여부 확인
 command -v claude && claude --version
 ```
+
+데스크톱 앱의 SSH 세션으로 접속한 서버에는 앱이 `~/.claude/remote/ccd-cli/<버전>`에 Claude Code를 따로 설치합니다. 이 파일은 `PATH`에 추가되지 않으므로 `command -v claude`로는 보이지 않습니다. 터미널에서 직접 쓰려면 아래 방법으로 별도 설치합니다. 데스크톱 앱 사용법은 [데스크톱 앱 가이드](claude_code_desktop_guide.md)를 참고합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -352,6 +354,6 @@ claude doctor
 
 **작성일**: 2026-10-14
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-10-15
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -28,6 +28,7 @@
 
 ### Added
 
+- 2026-10-15: Claude 문서 3개를 `06_career/ai_tools/claude/`에 추가. [기본 사용법](06_career/ai_tools/claude/claude_code_basics_guide.md)에 요청 작성·plan 모드·`@`·`!` 입력·컨텍스트 관리·세션 재개·되돌리기 한계·diff 검토를, [데스크톱 앱 가이드](06_career/ai_tools/claude/claude_code_desktop_guide.md)에 Code 탭·SSH 원격 세션 요구 사항·연결 끊김·세션과 사이드바 정리·Remote Control·CLI 차이를, [스킬 목록](06_career/ai_tools/claude/claude_skills_catalog.md)에 개인 스킬 14개와 기본 제공·계정 스킬·같은 이름 우선순위를 정리. root·Career README(문서 수 28) 색인에 연결.
 - 2026-10-15: [리버스 엔지니어링 법적 기준 가이드](06_career/legal/reverse_engineering_legal_guide.md) 추가. AI 기반 역분석 도구(morluto/rea) 확산을 계기로 도구 라이선스·대상 약관·법률을 구분하고, 저작권법 제101조의3·제101조의4·제104조의2·제136조, 정보통신망법 제48조·제71조, 17 U.S.C. §1201(f)(g)(j), 37 CFR §201.40(b)(18)을 정리. 원문 발췌 3개를 `06_career/legal/_reference/`에 저장하고 root·Career README, DRM·IP 가이드에 연결.
 - 2026-10-14: [Claude 참조 노트](_reference/claude_code_official_notes.md)와 Claude 문서 4개를 `06_career/ai_tools/claude/`에 추가. [공통 개념](06_career/ai_tools/claude/claude_code_concepts.md), [Linux CLI 가이드](06_career/ai_tools/claude/claude_code_cli_linux_guide.md), [확장 기능 가이드](06_career/ai_tools/claude/claude_code_extensions_guide.md), [모델 가이드](06_career/ai_tools/claude/claude_models_guide.md)에 설치·인증·권한 모드·설정·Skills·Hooks·Subagents·MCP·모델 라인업과 가격을 정리하고 root·Career README와 reference INDEX에 연결.
 - 2026-10-13: [Aside AI 브라우저 가이드](06_career/ai_tools/aside_browser_guide.md)와 [공식 참조 노트](_reference/aside_browser_official_notes.md)를 추가. 지원 플랫폼·기능·요금·권한·데이터 처리·CLI/MCP·제작사 벤치마크를 조사하고 공식 자료의 Max 사용량·데이터 전송 설명 차이를 기록. root·Career README와 reference INDEX에 연결.
@@ -39,6 +40,7 @@
 
 ### Changed
 
+- 2026-10-15: Claude [Linux CLI 가이드](06_career/ai_tools/claude/claude_code_cli_linux_guide.md)와 [참조 노트](_reference/claude_code_official_notes.md)의 "작성 서버에 CLI 미설치" 문구를 데스크톱 앱 SSH 세션이 설치한 2.1.295 확인 결과로 정정하고, 그 설치본이 `PATH`에 없다는 점을 추가. [공통 개념](06_career/ai_tools/claude/claude_code_concepts.md)의 도입 링크와 학습 순서에 새 문서 3개를 연결.
 - 2026-10-15: Career README의 legal 문서 수를 실제 파일 수 5개로 정정하고 색인에서 빠져 있던 개인정보 문서 2개를 root·Career README에 추가. DRM·IP 가이드의 "라이선스 가이드 (작성 예정)"를 실제 문서 링크로 교체.
 - 2026-10-14: `06_career/ai_tools/`를 공통 문서와 도구별 하위 폴더(`claude/`·`codex/`·`kiro/`·`jev/`)로 재구성. Codex 8개·Kiro 4개·Jev 2개를 `git mv`로 옮기고 저장소 전체 상대 링크, 검사 예외 설정(`.md-style-check.sia_scripts.toml`), TODO 예외 표를 새 경로로 갱신.
 - 2026-10-14: 기존 Claude 관련 내용 검토. `ai_coding_tools_comparison.md`의 Claude Code 플랫폼·플랜(모든 유료 플랜, Max $100부터), 권한 모드 6종, 클라우드 제공자 표현, 커스텀 에이전트(`.claude/agents/`), 2026-07 벤치마크 시점 안내를 정정. `harness_engineering.md`의 `CLAUDE.md`·`.cursorrules` 예시, 요청 템플릿의 Anthropic 문서 주소, AI 도구 참조 노트의 Claude Code 항목을 갱신.
@@ -60,6 +62,7 @@
 
 ### Verified
 
+- 2026-10-15: Claude 참조 노트 3차 대조로 code.claude.com의 quickstart·interactive-mode·common-workflows·best-practices·checkpointing·commands·desktop·skills 원문을 내려받아 새 문서의 명령·단축키·제약을 확인. 사이드바 섹션 구성은 공식 문서에 없어 데스크톱 앱에서 관찰한 결과로 기록. 개인 스킬 설치본 79개 파일이 SKILL-35 원본과 SHA-256 일치. 로컬 sia_scripts 0.4.0으로 전체 Markdown 473개의 링크 1127개·heading, style 383개, root README inventory, 담당 파일 Gitleaks와 `git diff --check` 통과. 단축키 동작·`--version` 외 CLI 실행은 미검증.
 - 2026-10-15: 저작권법(법률 제21336호, 2026-08-11 시행)을 law.go.kr에서, §1201은 law.cornell.edu에서, 37 CFR §201.40은 eCFR(최종 개정 2024-10-28)에서 받아 조문 번호·요건·벌칙을 대조. 2026-02-10 개정으로 무력화 금지 벌칙이 제136조 제3항 제3호의3으로 이동한 것을 확인. EU Directive 2009/24/EC는 EUR-Lex 자동 요청 차단으로 원문 미대조.
 - 2026-10-14: Claude 참조 노트는 code.claude.com 문서 13종을 1차, platform.claude.com 모델·가격·폐기 일정과 claude.com/pricing·GitHub 릴리스(v2.1.299)를 2차로 대조. `loop_engineering.md`의 `/goal`·`/loop` 설명은 공식 문서와 일치. 로컬 `claude` CLI 미설치로 실행 대조는 미실시, Kiro 모델 목록은 kiro-cli 로그인이 필요해 미확인.
 - 2026-10-13: Git 문서 정정 후 대상 Markdown 4개의 style·heading, 전체 Markdown 464개의 링크 1045개, root README inventory와 `git diff --check`를 확인. `git restore --source=HEAD --staged --worktree`와 `git config --local --list` 동작을 로컬 Git 2.43.0 임시 저장소에서 확인.

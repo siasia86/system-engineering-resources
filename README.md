@@ -406,8 +406,11 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [Loop Engineering](06_career/ai_tools/loop_engineering.md)                               | 목표·피드백·정지 조건·참고 실행기            |
 | [Claude Code 공통 개념](06_career/ai_tools/claude/claude_code_concepts.md)               | 구성 요소, 사용 환경, 권한 모드, 계정과 비용 |
 | [Claude Code CLI Linux 가이드](06_career/ai_tools/claude/claude_code_cli_linux_guide.md) | 설치, 인증, 권한 규칙, 비대화형·CI           |
+| [Claude Code 기본 사용법](06_career/ai_tools/claude/claude_code_basics_guide.md)         | plan 모드, 컨텍스트 관리, 되돌리기           |
+| [Claude Code 데스크톱 앱](06_career/ai_tools/claude/claude_code_desktop_guide.md)        | Code 탭, SSH 세션, 사이드바 정리             |
 | [Claude Code 확장 기능](06_career/ai_tools/claude/claude_code_extensions_guide.md)       | CLAUDE.md, 설정, Skills, Hooks, MCP          |
 | [Claude 모델 가이드](06_career/ai_tools/claude/claude_models_guide.md)                   | 라인업, 가격, 작업별 선택, 폐기 일정         |
+| [Claude 스킬 목록](06_career/ai_tools/claude/claude_skills_catalog.md)                   | 개인 스킬 14개·한 줄 설명·우선순위           |
 | [Codex 공통 개념](06_career/ai_tools/codex/codex_concepts.md)                            | 동작 원리, 수정 예시, 설정과 권한            |
 | [Codex CLI Linux 가이드](06_career/ai_tools/codex/codex_cli_linux_guide.md)              | TUI, 로컬 작업, 비대화형 실행                |
 | [Codex Skills 설정 가이드](06_career/ai_tools/codex/codex_skills_setup_guide.md)         | skill 작성·설치·호출·비활성화, 참고 URL      |

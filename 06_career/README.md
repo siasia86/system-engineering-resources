@@ -8,7 +8,7 @@
 |--------------------------|------------------------------------------------------------------|---------|
 | [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                | 4       |
 | [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권, 리버스 엔지니어링, 개인정보       | 5       |
-| [ai_tools/](./ai_tools/) | AI 도구 — 공통 문서와 claude/·codex/·kiro/·jev/ 도구별 하위 폴더 | 25      |
+| [ai_tools/](./ai_tools/) | AI 도구 — 공통 문서와 claude/·codex/·kiro/·jev/ 도구별 하위 폴더 | 28      |
 
 ## 주요 문서
 
@@ -19,8 +19,11 @@
 - [aside_browser_guide.md](./ai_tools/aside_browser_guide.md) — Aside AI 브라우저의 기능·요금·권한·데이터 처리·CLI·MCP
 - [claude/claude_code_concepts.md](./ai_tools/claude/claude_code_concepts.md) — Claude Code 구성 요소, 사용 환경, 권한 모드, 계정과 비용
 - [claude/claude_code_cli_linux_guide.md](./ai_tools/claude/claude_code_cli_linux_guide.md) — Claude Code Linux 설치·인증·권한 규칙·비대화형 실행
+- [claude/claude_code_basics_guide.md](./ai_tools/claude/claude_code_basics_guide.md) — 요청 작성, plan 모드, 파일 지정, 컨텍스트 관리, 세션 재개와 되돌리기
+- [claude/claude_code_desktop_guide.md](./ai_tools/claude/claude_code_desktop_guide.md) — 데스크톱 앱 Code 탭, SSH 원격 세션, 세션·사이드바 정리
 - [claude/claude_code_extensions_guide.md](./ai_tools/claude/claude_code_extensions_guide.md) — CLAUDE.md·설정·Skills·Hooks·Subagents·MCP·Plugins
 - [claude/claude_models_guide.md](./ai_tools/claude/claude_models_guide.md) — Claude 모델 라인업·가격·작업별 선택·폐기 일정
+- [claude/claude_skills_catalog.md](./ai_tools/claude/claude_skills_catalog.md) — 개인 스킬 14개와 기본 제공·계정 스킬의 한 줄 설명·우선순위
 - [codex/codex_concepts.md](./ai_tools/codex/codex_concepts.md) — Codex 동작 원리, 수정 예시, 설정과 권한, 학습 순서
 - [codex/codex_cli_linux_guide.md](./ai_tools/codex/codex_cli_linux_guide.md) — Codex CLI Linux 설치·인증·샌드박스·자동화
 - [codex/codex_skills_setup_guide.md](./ai_tools/codex/codex_skills_setup_guide.md) — Codex skill 작성·설치·호출·비활성화와 참고 URL
