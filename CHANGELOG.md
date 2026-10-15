@@ -28,6 +28,7 @@
 
 ### Added
 
+- 2026-10-15: [언어별 학습 가이드](06_career/roadmap/se_complete_roadmap_programming_languages.md)의 언어 이름 뒤 별 표시 10개를 제거(묶음·우선순위·학습 난이도에 같은 정보가 있음). [SE 로드맵](06_career/roadmap/se_roadmap.md) 자격증 가이드의 `난이도: ★★` 10줄을 `난이도: 2/5`처럼 숫자로 바꿔 출처 별점과 구분.
 - 2026-10-15: 출처 목록 별점 9줄을 `— ★★★☆☆` 형식(대시와 빈 별 포함)으로 맞춤. [KPI 발표 자료](02_infrastructure/monitoring/game_infra_kpi_presentation.md) 8줄, [ASN·DDoS 가이드](01_fundamentals/networking/asn_and_cloudflare_ddos.md) 1줄. 별 개수는 바꾸지 않았고, 로드맵의 언어 평가·난이도 표시는 출처 별점이 아니어서 그대로 둠.
 - 2026-10-15: [게임 인프라 KPI 발표 자료](02_infrastructure/monitoring/game_infra_kpi_presentation.md)의 깨진 내부 링크 2개(`./asn_and_cloudflare_ddos.md` → `01_fundamentals/networking/`)를 고치고 별점을 `— ★★★☆☆` 형식으로 맞춤. 링크 글자에 대괄호가 겹쳐 고정 검사 도구(0.3.3)가 놓치던 링크로, 다른 판의 검사기 대조에서 발견.
 - 2026-10-15: Claude [데스크톱 앱 가이드](06_career/ai_tools/claude/claude_code_desktop_guide.md) 8절에 Projects(beta)와 Code 세션의 차이를 추가. 스레드의 실행 위치(기본 클라우드), 로컬·SSH 세션은 프로젝트에 넣을 수 없음, Remote Control로 연결한 폴더의 Work locally 스레드, 미commit 변경 손실 위험, 사용 가능 위치와 공유 제한을 정리하고 [참조 노트](_reference/claude_code_official_notes.md)에 claude-projects 근거를 기록.
