@@ -470,7 +470,7 @@ sudo mtr --report --report-cycles 10 --tcp --port 443 google.com
 - [RTT 최적화를 통한 네트워크 성능 개선 전략](https://www.softwebsolutions.com/resources/reduce-rtt-optimize-network-performance/) ★★★
 
 ### 2.9. 추가 자료
-- [[개인자료]ASN 운영 및 IDC DDoS 대응 가이드](./asn_and_cloudflare_ddos.md) ★★★
+- [[개인자료]ASN 운영 및 IDC DDoS 대응 가이드](../../01_fundamentals/networking/asn_and_cloudflare_ddos.md) — ★★★☆☆
 
 
 
@@ -971,7 +971,7 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 - [fail2ban 설치 및 설정 가이드](https://www.veeble.com/kb/mastering-fail2ban-defense-for-linux-server/)
 
 ### 5-8. DDoS 관련 추가 자료
-- [[개인자료]ASN 운영 및 IDC DDoS 대응 가이드](./asn_and_cloudflare_ddos.md) ★★★
+- [[개인자료]ASN 운영 및 IDC DDoS 대응 가이드](../../01_fundamentals/networking/asn_and_cloudflare_ddos.md) — ★★★☆☆
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -1030,6 +1030,6 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-04-11
+**마지막 업데이트**: 2026-10-15
 
 © 2026 siasia86. Licensed under CC BY 4.0.
