@@ -214,9 +214,10 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Storage
 
-| 문서                                                                   | 설명                    |
-|------------------------------------------------------------------------|-------------------------|
-| [스토리지 아키텍처](02_infrastructure/storage/storage_architecture.md) | 스토리지 계층·구성 설계 |
+| 문서                                                                                          | 설명                    |
+|-----------------------------------------------------------------------------------------------|-------------------------|
+| [스토리지 아키텍처](02_infrastructure/storage/storage_architecture.md)                        | 스토리지 계층·구성 설계 |
+| [SSD 마모 분산과 fio 성능 검수](02_infrastructure/storage/ssd_wear_performance_validation.md) | 마모·쓰기량·시험 판정   |
 
 ### Web Server
 
@@ -503,6 +504,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-10-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

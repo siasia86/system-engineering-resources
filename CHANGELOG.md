@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- GWS-03 / DOCS-32 (2026-10-19): [SSD 마모 분산과 fio 성능 검수](02_infrastructure/storage/ssd_wear_performance_validation.md)를 추가하고 README Storage 목록에 연결했습니다. FTL·마모 분산, fio 설정과 실쓰기량, SSS-PTS의 판정 범위를 공식 근거로 요약했습니다. 장비 시험·환경 변경은 수행하지 않았습니다.
+
 - DOCS-32 / CL2CX-16 (2026-10-14): `.github/workflows/update-date.yml`에서 README 날짜 자동화 작업을 제거하고 검증 실행 조건을 `main`으로 한정했습니다.
 ### ASD-STE100 소통 적용 조사 — 2026-10-09
 
@@ -989,6 +991,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-10-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.
