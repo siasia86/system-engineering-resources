@@ -25,7 +25,13 @@ FTL(Flash Translation Layer)은 호스트의 논리 주소를 NAND의 물리 주
 | `numjobs`          | 동일 설정으로 복제하는 작업 수입니다.                                                                                 |
 | `cpus_allowed`     | 작업이 실행될 CPU의 배치 범위이며 작업 수를 뜻하지 않습니다.                                                          |
 
+`filename`을 명시하고 `numjobs`를 늘리면 복제 작업들이 같은 파일을 공유합니다. 파일 점유량과 각 작업의 누적 I/O를 구분하고, 공유 파일 크기에 작업 수를 곱한 값을 실제 장치 쓰기량으로 간주하지 않습니다.
+
+스크립트 중간에 `exit 0`이 있으면 같은 셸에서 그 뒤에 나열한 시험은 실행되지 않습니다. 설정 목록과 실제 실행 로그의 범위를 구분합니다.
+
 실제 쓰기량은 fio의 쓰기 결과와 시험 전후 **SSD별** NVMe SMART `Data Units Written` 차이로 대조합니다. 이 카운터는 호스트가 컨트롤러에 쓴 양이며 내부 NAND 쓰기량 자체가 아닙니다. 단위·보고 범위와 다른 작업의 쓰기도 확인해야 하므로, 파일 크기나 CPU 수만으로 장치별 쓰기량·수명 소모율을 확정하지 않습니다.
+
+RAID 논리 장치의 쓰기량, SSD별 호스트 쓰기량, 내부 NAND 쓰기량은 서로 다른 계층의 값입니다. 시험 전후 SSD별 `Percentage Used`도 함께 기록하되 제조사의 수명 소모 추정치이며, 짧은 시험에서 값이 같아도 마모가 없었다고 단정하지 않습니다.
 
 ## 3. SSS-PTS로 성능 결과 읽기
 
@@ -35,7 +41,7 @@ fio를 실행했다는 사실만으로 PTS 준수·SSD 내구성 보증·GRAID �
 
 ## 참고 자료
 
-공식 자료 확인일: 2026-10-19. fio master 문서는 조회 당시 3.42 계열, SSS-PTS는 v2.0.2를 기준으로 확인했습니다. 실제 적용 시 설치 버전과 시험 대상을 대조합니다.
+공식 자료 확인일: 2026-10-19. 공유 파일 설정과 SMART 수명 지표는 2026-10-25 공식 문서로 다시 확인했습니다. fio master 문서는 조회 당시 3.42 계열, SSS-PTS는 v2.0.2를 기준으로 확인했습니다. 실제 적용 시 설치 버전과 시험 대상을 대조합니다.
 
 - [Samsung: FTL과 쓰기 증폭](https://semiconductor.samsung.com/news-events/tech-blog/a-brief-history-of-data-placement-technologies/) — ★★☆☆☆
 - [Samsung: Wear Leveling FAQ](https://semiconductor.samsung.com/kr/consumer-storage/support/faqs/internalssd-product-information/) — ★★★☆☆
@@ -57,6 +63,6 @@ fio를 실행했다는 사실만으로 PTS 준수·SSD 내구성 보증·GRAID �
 
 **작성일**: 2026-10-19
 
-**마지막 업데이트**: 2026-10-19
+**마지막 업데이트**: 2026-10-25
 
 © 2026 siasia86. Licensed under CC BY 4.0.
