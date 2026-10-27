@@ -422,9 +422,9 @@ approval → staging → canary → live
 
 ## 참고 자료
 
-- [32 repository 계획](PLAN.md)
+- [32 repository 계획](.governance/PLAN.md)
 - [32 문서 목록](README.md)
-- [30·31·32·35·00 repository 운영 기록](CHANGELOG.md)
+- [30·31·32·35·00 repository 운영 기록](.governance/CHANGELOG.md)
 
 ---
 
@@ -441,6 +441,6 @@ approval → staging → canary → live
 
 **작성일**: 2026-09-16
 
-**마지막 업데이트**: 2026-09-16
+**마지막 업데이트**: 2026-10-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

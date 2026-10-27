@@ -10,10 +10,16 @@ P31-SKILL-ROUTES-20261004-01에서 사용자의 실제 저장소 적용 요청�
 
 복구 시 Git 제외 local/P31-SKILL-ROUTES-20261004-01/before의 원문과 application.json을 현재 파일에 대조하여 이번 추가·병합만 되돌립니다. 이후 사용자 변경과 기존 작업 기록은 유지합니다.
 
+## 3. 위치 전환 — 2026-10-27
+
+MAIN-20261027-05에서 중앙 profile(31 `aaa48f2`)의 관리 문서 위치 기준에 맞춰 루트 `TODO.md`·`PLAN.md`·`CHANGELOG.md`를 `git mv`로 `.governance/`에 옮겼습니다. 이동 문서의 상대 링크 42개와 관리 문서·TODO2·`asd_ste100_codex_communication.md`의 링크를 새 위치로 고치고, GOVERNANCE·INDEX·README의 위치 문구를 중앙 profile 문장으로 바꿨습니다. 루트에는 같은 이름의 연결 안내 문서를 별도 commit으로 두었습니다. `TODO2.md`는 루트에 유지합니다.
+
+AGENTS·INDEX·GOVERNANCE의 나머지 구성과 설정 4개, Codex 안내는 병합하지 않았으며 [ISSUE](ISSUE.md)의 ISS-05로 관리합니다. 31의 적용 이력은 변경하지 않았습니다. 복구는 이번 두 commit을 역순으로 `git revert`합니다.
+
 ---
 
 **작성일**: 2026-10-04
 
-**마지막 업데이트**: 2026-10-04
+**마지막 업데이트**: 2026-10-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

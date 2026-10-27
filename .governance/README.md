@@ -1,10 +1,10 @@
 # 32_system-engineering-resources 관리 공간
 
-기존 루트 PLAN·TODO·TODO2·CHANGELOG 위치를 유지합니다. 새 공통 진입·규칙·이슈 후보는 .governance에서 연결하며 TODO2의 별도 설계 과제를 일반 작업에 일괄 적용하지 않습니다.
+현행 PLAN·TODO·CHANGELOG와 공통 관리 문서는 .governance에 통일합니다. 이전 루트 상태·이력을 실제 적용에서 보존·병합하고 TODO2 상세 설계 과제를 일반 작업에 일괄 적용하지 않습니다.
 
 ## 1. 시작과 선택
 
-[INDEX](INDEX.md)에서 관련 작업의 첫 문서를 선택합니다. 현재 상태는 [TODO](../TODO.md), 실행 순서는 [PLAN](../PLAN.md), 원인·영향은 [ISSUE](ISSUE.md)에서 관리합니다.
+[INDEX](INDEX.md)에서 관련 작업의 첫 문서를 선택합니다. 현재 상태는 [TODO](TODO.md), 실행 순서는 [PLAN](PLAN.md), 원인·영향은 [ISSUE](ISSUE.md)에서 관리합니다.
 
 ## 2. 현장 원본 보존
 
@@ -12,12 +12,12 @@
 
 ## 3. 결과와 재개
 
-[운영 규칙](GOVERNANCE.md)의 결과물 위치·보존 기준을 따릅니다. 검사 범위는 [검증 기준](verification.md), 완료 결과는 [완료 기록](../CHANGELOG.md), 다음 세션 근거는 [HANDOFF](HANDOFF.md)에 연결합니다.
+[운영 규칙](GOVERNANCE.md)의 결과물 위치·보존 기준을 따릅니다. 검사 범위는 [검증 기준](verification.md), 완료 결과는 [완료 기록](CHANGELOG.md), 다음 세션 근거는 [HANDOFF](HANDOFF.md)에 연결합니다.
 
 ---
 
 **작성일**: 2026-10-04
 
-**마지막 업데이트**: 2026-10-04
+**마지막 업데이트**: 2026-10-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.
