@@ -88,6 +88,7 @@ sources:
 | MinIO                          | `_reference/minio_official_notes.md`                    | AGPLv3·S3-compatible·Versioning·Object Lock·Replication | 2026-09-21 | O    |
 | Storage Tools                  | `_reference/storage_tools_official_notes.md`            | 15개 도구·공식 매뉴얼 범위                              | 2026-08-18 | O    |
 | AI 코딩 도구                   | `_reference/ai_coding_tools_official_notes.md`          | 가격·모델·벤치마크 (2026-07-27)                         | 2026-07-27 | O    |
+| AI 에이전트 운영 도구          | `_reference/ai_agent_workspace_tools_official_notes.md` | herdr·omp·Orca·pi·OpenCode·cmux 등                      | 2026-10-27 | O    |
 | AI 업무 원형                   | `_reference/ai_work_archetypes_notes.md`                | Boris Cherny 제안·전재 대조·원문 직접 열람 제한         | 2026-10-13 | O    |
 | Aside AI 브라우저              | `_reference/aside_browser_official_notes.md`            | v1.0.928.1·플랫폼·요금·권한·데이터 처리·CLI·MCP         | 2026-10-13 | O    |
 | ASD-STE100                     | `_reference/asd_ste100_official_notes.md`               | Issue 9 공식 설명·GitHub 5개·Codex 적용 근거            | 2026-10-09 | O    |
