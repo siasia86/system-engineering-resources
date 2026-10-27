@@ -23,6 +23,7 @@
   - 완료 조건: 일반 테스트 기법 및 게임 테스트와 중복을 피하고, 웹 서버 역할별 테스트 케이스·검증 도구·실패 판정 기준을 정리
   - 검증: `sia-md-style-check`, `sia-md-heading-check`, `sia-md-link-check`를 대상 문서와 README에 실행
   - 롤백: 문서 변경 전 커밋으로 되돌리거나 해당 문서 변경을 `git revert`로 복원
+  - 진행: 1차 묶음(README·HTTP·Reverse Proxy·TLS/HTTPS·웹 성능·Timeout) 작성 완료(2026-10-27, `MAIN-20261027-01`). 2차 묶음(Graceful Reload, Load Balancer, Cache/CDN, 요청 보안, 관측성) 대기
 
 ### 검사 예외 파일
 
@@ -37,6 +38,6 @@
 
 **작성일**: 2026-06-21
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-10-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

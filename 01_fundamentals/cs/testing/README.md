@@ -102,6 +102,7 @@
 ## 관련 문서
 
 - [Python 테스트 실습](../../programming/python/python_testing.md) — pytest, unittest, Mock, 커버리지
+- [웹 서버 테스트](../web_testing/README.md) — HTTP, Reverse Proxy, TLS, 웹 성능·Timeout
 
 ---
 
@@ -118,6 +119,6 @@
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-09-15
+**마지막 업데이트**: 2026-10-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

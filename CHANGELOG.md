@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261027-01 / DOCS-32 (2026-10-27): [웹 서버 테스트](01_fundamentals/cs/web_testing/README.md) 1차 묶음으로 README와 HTTP 프로토콜·Reverse Proxy·TLS/HTTPS·웹 성능·Timeout 테스트 문서 4개, 공통 출처 노트 [web_testing_official_notes](_reference/web_testing_official_notes.md)를 추가하고 root·Fundamentals·테스트 README와 `_reference/INDEX.md`에 연결했습니다. RFC 9110·nginx·HAProxy 3.2·k6·h2load·testssl.sh 공식 문서와 대조했으며, `curl`·`openssl` 옵션은 로컬 도움말로 확인했습니다. 명령은 외부 호스트에 실행하지 않았고 2차 묶음 5개 주제는 TODO에 남겼습니다. Fundamentals README의 cs 문서 수를 실제 추적 파일 수 52개로 정정했습니다.
+
 - GWS-03 / DOCS-32 (2026-10-19): [SSD 마모 분산과 fio 성능 검수](02_infrastructure/storage/ssd_wear_performance_validation.md)를 추가하고 README Storage 목록에 연결했습니다. FTL·마모 분산, fio 설정과 실쓰기량, SSS-PTS의 판정 범위를 공식 근거로 요약했습니다. 장비 시험·환경 변경은 수행하지 않았습니다.
 
 - DOCS-32 / CL2CX-16 (2026-10-14): `.github/workflows/update-date.yml`에서 README 날짜 자동화 작업을 제거하고 검증 실행 조건을 `main`으로 한정했습니다.
@@ -991,6 +993,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-10-19
+**마지막 업데이트**: 2026-10-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

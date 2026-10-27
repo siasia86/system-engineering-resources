@@ -61,6 +61,7 @@ sources:
 | Advanced Testing               | `_reference/advanced_testing_official_notes.md`         | Hypothesis·PIT·Property-based·Mutation Testing          | 2026-09-15 | O    |
 | Game Testing                   | `_reference/game_testing_official_notes.md`             | Unity Test Framework·Firebase Game Loop                 | 2026-09-15 | O    |
 | Load Testing                   | `_reference/load_testing_official_notes.md`             | k6 테스트 유형·Google SRE Managing Load                 | 2026-09-15 | O    |
+| Web Testing                    | `_reference/web_testing_official_notes.md`              | RFC 9110·nginx·HAProxy 3.2 timeout·k6·h2load·testssl.sh | 2026-10-27 | O    |
 | Lean                           | `_reference/lean_official_notes.md`                     | v4.33.1, theorem proving, Lake, Elan                    | 2026-09-11 | O    |
 | MySQL                          | `_reference/mysql_official_notes.md`                    | 8.4.10 LTS, 9.7.1 Innovation                            | 2026-07-10 | O    |
 | GRAID SupremeRAID              | `_reference/graid_supremeraid_official_notes.md`        | 1.5.0, 2.0.0 (Linux)                                    | 2026-07-10 | O    |
@@ -137,6 +138,6 @@ sources:
 
 **작성일**: 2026-05-22
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-10-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

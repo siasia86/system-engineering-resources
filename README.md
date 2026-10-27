@@ -78,14 +78,15 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### CS
 
-| 문서                                                             | 설명                             |
-|------------------------------------------------------------------|----------------------------------|
-| [CPU CISC vs RISC](01_fundamentals/cs/cpu_cisc_risc_concepts.md) | 명령어 집합 아키텍처 비교        |
-| [Git 개념](01_fundamentals/cs/git_concepts.md)                   | 내부 구조, 객체 모델             |
-| [버전 관리 개념](01_fundamentals/cs/version_control_concepts.md) | VCS 비교, 브랜치 전략            |
-| [압축 알고리즘](01_fundamentals/cs/compression_algorithms.md)    | 허프만, DEFLATE, gzip, ZIP, zstd |
-| [자료구조](01_fundamentals/cs/data_structures/)                  | Array, Stack, Queue, Tree 등     |
-| [테스팅](01_fundamentals/cs/testing/)                            | Black/White Box, 테스트 레벨     |
+| 문서                                                             | 설명                              |
+|------------------------------------------------------------------|-----------------------------------|
+| [CPU CISC vs RISC](01_fundamentals/cs/cpu_cisc_risc_concepts.md) | 명령어 집합 아키텍처 비교         |
+| [Git 개념](01_fundamentals/cs/git_concepts.md)                   | 내부 구조, 객체 모델              |
+| [버전 관리 개념](01_fundamentals/cs/version_control_concepts.md) | VCS 비교, 브랜치 전략             |
+| [압축 알고리즘](01_fundamentals/cs/compression_algorithms.md)    | 허프만, DEFLATE, gzip, ZIP, zstd  |
+| [자료구조](01_fundamentals/cs/data_structures/)                  | Array, Stack, Queue, Tree 등      |
+| [테스팅](01_fundamentals/cs/testing/)                            | Black/White Box, 테스트 레벨      |
+| [웹 서버 테스트](01_fundamentals/cs/web_testing/)                | HTTP, Reverse Proxy, TLS, Timeout |
 
 ### Windows
 
@@ -504,6 +505,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-10-19
+**마지막 업데이트**: 2026-10-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

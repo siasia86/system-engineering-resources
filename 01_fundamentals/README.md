@@ -4,14 +4,14 @@
 
 ## 구조
 
-| 디렉토리                       | 설명                                                                | 문서 수 |
-|--------------------------------|---------------------------------------------------------------------|---------|
-| [linux/](./linux/)             | Linux 관리 — bash, cgroup, systemd, 파일시스템, 저장장치, 커널, vim | 47      |
-| [networking/](./networking/)   | 네트워크 기초 — TCP/IP, HTTP, DNS, CDN, VPN, IPv4/IPv6              | 15      |
-| [cs/](./cs/)                   | 컴퓨터 과학 — 자료구조, CPU 아키텍처, 버전 관리, 테스트 설계        | 23      |
-| [programming/](./programming/) | 프로그래밍 언어 — Python, Bash, C/C++, C#, Go, Rust, LSP            | 47      |
-| [math/](./math/)               | 수학 기초 — 극한과 엡실론-델타 정의                                 | 1       |
-| [windows/](./windows/)         | Windows Server 관리 — 시스템 리소스 분석                            | 1       |
+| 디렉토리                       | 설명                                                                         | 문서 수 |
+|--------------------------------|------------------------------------------------------------------------------|---------|
+| [linux/](./linux/)             | Linux 관리 — bash, cgroup, systemd, 파일시스템, 저장장치, 커널, vim          | 47      |
+| [networking/](./networking/)   | 네트워크 기초 — TCP/IP, HTTP, DNS, CDN, VPN, IPv4/IPv6                       | 15      |
+| [cs/](./cs/)                   | 컴퓨터 과학 — 자료구조, CPU 아키텍처, 버전 관리, 테스트 설계, 웹 서버 테스트 | 52      |
+| [programming/](./programming/) | 프로그래밍 언어 — Python, Bash, C/C++, C#, Go, Rust, LSP                     | 47      |
+| [math/](./math/)               | 수학 기초 — 극한과 엡실론-델타 정의                                          | 1       |
+| [windows/](./windows/)         | Windows Server 관리 — 시스템 리소스 분석                                     | 1       |
 
 ## 주요 문서
 
@@ -41,6 +41,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-10-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.
