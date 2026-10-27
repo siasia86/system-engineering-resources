@@ -1,25 +1,12 @@
-# Markdown 검사에서 제외할 디렉토리와 파일입니다.
-#
-# 제외는 최소한으로 유지합니다. 디렉토리나 파일을 통째로 빼면 표 정렬·문체 검사가
-# 함께 빠져 검사 공백이 생깁니다. 특정 항목만 빼야 하는 경우에는
-# md-style-check.py 의 KIRO_SKIP / REFERENCE_SKIP / ARCHIVE_SKIP / FILE_SKIP 을
-# 사용하여 항목 단위로 처리합니다.
-#
-# CHANGELOG/LICENSE/TODO/license_guide : 제외하지 않습니다. 모두 푸터를 갖추고 있어
-#                         일반 검사를 통과합니다.
-exclude_dirs = [
-  "99_archive",
-  "99_etc",
-  "__pycache__",
-  ".git",
-  "_reference",
-]
+# Consumer governance Markdown style configuration
+# 31 공통 원본의 exclude_dirs에 현장 제외 디렉토리를 합쳤습니다.
+# 현장 제외: 99_archive, 99_etc, _reference(원문은 frontmatter 형식 유지)
+exclude_dirs = [".git", ".venv", "__pycache__", ".sync-snapshots", ".claude/worktrees", "99_archive", "99_etc", "_reference"]
 exclude_files = []
-
-# 검사 항목 제외 목록입니다. 저장소 전체에 적용됩니다.
-# 예외의 대상·사유·재검토 시점은 저장소의 .governance/GOVERNANCE.md 또는
-# exceptions.md에 함께 기록합니다. 기본값은 비워 둡니다.
 skip_checks = []
+
+# BEGIN CONSUMER LOCAL
+# 파일별 검사 항목 제외입니다. 사유·재검토 시점은 .governance/verification.md와 같게 유지합니다.
 
 [[file_skip]]
 path = "01_fundamentals/linux/vim_airline.md"
@@ -50,3 +37,4 @@ path = "06_career/ai_tools/kiro/kiro_cli_command_reference.md"
 checks = ["diagram-kr"]
 reason = "Kiro CLI 문서 다이어그램 내부 한글을 보존"
 review = "상시"
+# END CONSUMER LOCAL

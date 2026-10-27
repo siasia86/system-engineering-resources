@@ -1,24 +1,31 @@
-title = "gitleaks config"
+title = "consumer governance gitleaks config"
 minVersion = "v8.30.1"
 
 [extend]
 useDefault = true
 
 [[allowlists]]
-description = "global allowlist"
+description = "documented placeholders only"
 regexes = [
-    # placeholder values
     '''Secureuser123''',
     '''SecurePassword123''',
-    '''^U2VjdXJlUGFzc3dvcmQxMjM=$''',
     '''SecureKey123''',
     '''SecureToken123''',
     '''SecureDbName123''',
-    '''sk-1234567890abcdef''',
-    # RFC 5737 documentation IP ranges
+    '''user@example\.com''',
     '''192\.0\.2\.\d+''',
     '''198\.51\.100\.\d+''',
     '''203\.0\.113\.\d+''',
+]
+
+# BEGIN CONSUMER LOCAL
+# 32 현장 허용 목록과 탐지 규칙입니다. 31 공통 원본에 없는 항목을 보존합니다.
+
+[[allowlists]]
+description = "32 local placeholders and example paths"
+regexes = [
+    '''^U2VjdXJlUGFzc3dvcmQxMjM=$''',
+    '''sk-1234567890abcdef''',
     # 코드 예시 전화번호
     '''010-1234-5678''',
 ]
@@ -56,3 +63,4 @@ id = "company-external-ip"
 description = "Company external IP range (112.x.x.x)"
 regex = '''112\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'''
 tags = ["network", "external"]
+# END CONSUMER LOCAL

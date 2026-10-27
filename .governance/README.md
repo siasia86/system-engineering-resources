@@ -1,5 +1,7 @@
 # 32_system-engineering-resources 관리 공간
 
+관리 문서의 공통 기준 위치는 `.governance/`이며 INDEX·GOVERNANCE·PLAN·TODO·ISSUE·verification·CHANGELOG·HANDOFF의 이름과 역할을 통일합니다. 기존 기록은 보존하고 승인된 현장 전환에서 현행 상태를 한 번 병합하며 이전 위치는 연결 안내로 유지합니다. 이 profile 개정만으로 다른 현장 적용이 완료된 것은 아닙니다.
+
 현행 PLAN·TODO·CHANGELOG와 공통 관리 문서는 .governance에 통일합니다. 이전 루트 상태·이력을 실제 적용에서 보존·병합하고 TODO2 상세 설계 과제를 일반 작업에 일괄 적용하지 않습니다.
 
 ## 1. 시작과 선택

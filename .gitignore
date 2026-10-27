@@ -1,60 +1,108 @@
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# Consumer .gitignore template
+# 31 owns the common block; the consumer owns the local block.
 
-# Editor files
+# BEGIN 31 COMMON
+# Governance sync artifacts
+.kiro-lock
+.governance-sync.lock
+.governance/.governance-sync-state.json
+.governance/.sync-snapshots/
+# Private local evidence and before/after backups
+.governance/local/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.AppleDouble
 *.swp
 *.swo
 *~
 .vscode/
 .idea/
+
+# Credentials, keys, and cloud configuration
+**/.ssh/id_*
+**/.ssh/*_id_*
+**/.ssh/known_hosts
+*.pem
+*.ppk
+*.key
+.aws/
+*.awsconfig
+*.awsjson
+.git/credentials
+
+# Terraform state and sensitive variables
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars
+*.tfvars
+*.tfvars.json
+.terraform.tfstate.lock.info
+.terraformrc
+terraform.rc
+
+# Local, secret, temporary, and generated files
+*.local
+.env
+.env.*
+!.env.example
+*.log
+crash.log
+crash.*.log
+*.tmp
+*.bak
+*.pyc
+__pycache__/
+.pytest_cache/
+.venv/
+
+# Claude Code session worktrees
+/.claude/worktrees/
+.claude/settings.local.json
+CLAUDE.local.md
+/.codex/local/
+AGENTS.override.md
+# END 31 COMMON
+
+# BEGIN CONSUMER LOCAL
+# Reviewed repository-specific candidate rules.
+/.staging/
+
+# 32 현장 패턴 (31 COMMON에 없는 항목만 유지)
+# OS·편집기
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 *.sublime-project
 *.sublime-workspace
 
-# Temporary files
-*.tmp
-*.bak
-*.log
+# 임시·백업
 *.cache
-
-# Personal notes (not for sharing)
-*_private.md
-*_personal.md
-notes/
-
-# Backup files
 *.backup
 *.old
 *.bak_*
 
-# Archive
-#99_archive/
+# 개인 메모 (공유하지 않음)
+*_private.md
+*_personal.md
+notes/
+.local/
 
-# duplication directory
+# 중복 자료
 *masang*
 *masang*.md
 
-## python
-*.pyc
-__pycache__/
-
-## json_mask.py
+# 마스킹 도구 매핑 (json_mask.py, ip_mask.py)
 *.map.json
 *.map.json*
-## ip_mask.py
 *.map.ip.json
 *.map.ip.json*
-
-
-.kiro-lock
-
-# Local-only notes and environment data
-.local/
 
 # 원문 자료 기본 제외 — 저작권 무단전재 금지·개인정보 포함 가능 (로컬 유지, git 제외)
 # 공공기관 행정문서만 화이트리스트로 예외 허용
@@ -62,9 +110,4 @@ __pycache__/
 06_career/legal/_reference/*.hwp
 06_career/legal/_reference/*.hwpx
 !06_career/legal/_reference/개인정보 보호위원회 직제 시행규칙 일부개정령안.pdf
-
-# Governance documents and private application evidence
-/.governance/local/
-
-# Claude Code session worktrees
-/.claude/worktrees/
+# END CONSUMER LOCAL

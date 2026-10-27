@@ -16,6 +16,12 @@ MAIN-20261027-05에서 중앙 profile(31 `aaa48f2`)의 관리 문서 위치 기�
 
 AGENTS·INDEX·GOVERNANCE의 나머지 구성과 설정 4개, Codex 안내는 병합하지 않았으며 [ISSUE](ISSUE.md)의 ISS-05로 관리합니다. 31의 적용 이력은 변경하지 않았습니다. 복구는 이번 두 commit을 역순으로 `git revert`합니다.
 
+## 4. 공통 계층 병합 — 2026-10-27
+
+MAIN-20261027-06에서 중앙 profile(31 `origin/main` `e6ada74` 기준, 32 profile 마지막 변경 `aaa48f2`)의 common 계층을 병합했습니다. AGENTS·GOVERNANCE·INDEX는 중앙 원문으로 바꾸고, `.governance/README.md`는 중앙 첫 문단만 추가하고 현장 사실 문장을 유지했습니다.
+
+설정 4개는 중앙 공통 구간에 현장 구간을 합쳤습니다. 검사 TOML 2개는 `exclude_dirs`를 합치고 파일별 예외 6개를 보존했으며, `.gitignore`는 31 COMMON 구간 뒤 CONSUMER LOCAL 구간에 현장 패턴을 옮겼습니다. `.gitleaks.toml`은 중앙 허용 목록에 현장 허용 목록·경로와 탐지 규칙 3개를 보존해 이전과 같은 탐지 결과를 확인했습니다. Codex 계층(`.codex/repository-guidance.md`)은 적용하지 않았으며 ISS-06으로 관리합니다. 복구는 이번 commit을 `git revert`합니다.
+
 ---
 
 **작성일**: 2026-10-04

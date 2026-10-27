@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261027-06 / DOCS-32 (2026-10-27): ISS-05를 종료했습니다. 중앙 profile common 계층에 맞춰 AGENTS·GOVERNANCE·INDEX를 중앙 원문으로 바꾸고 `.governance/README.md`에 공통 첫 문단을 추가했습니다. 설정 4개(`.gitignore`·검사 TOML 2개·`.gitleaks.toml`)는 중앙 공통 구간에 현장 예외·패턴·탐지 규칙을 CONSUMER LOCAL 구간으로 보존해 합쳤고, 추적 파일 무시 목록과 gitleaks 탐지 결과가 이전과 같음을 확인했습니다. Codex 계층 안내는 ISS-06, 원문 제외 대상 법령 파일 16개의 추적 상태는 ISS-07로 등록했습니다. [적용 기록](APPLICATION.md).
+
 - MAIN-20261027-05 / DOCS-32 (2026-10-27): ISS-01을 종료했습니다. 중앙 profile 기준에 따라 루트 `TODO.md`·`PLAN.md`·`CHANGELOG.md`를 `.governance/`로 옮기고(`git mv`), 이동 문서의 상대 링크 42개와 `.governance` 관리 문서 링크 18개, `TODO2.md` 링크 2개, `asd_ste100_codex_communication.md` 링크 1개, INDEX 읽기 조건 표 2행, GOVERNANCE·INDEX·README의 위치 문구를 고쳤습니다. 루트에는 연결 안내 문서를 별도 commit으로 두었습니다. 나머지 중앙 병합은 ISS-05로 등록했으며 31은 변경하지 않았습니다. [적용 기록](APPLICATION.md).
 
 - MAIN-20261027-04 / DOCS-32 (2026-10-27): ISS-04를 종료했습니다. [테스트 기법 README](../01_fundamentals/cs/testing/README.md) 구조 tree의 옛 이름 `02_testing/`을 `testing/`으로 고치고, 루트 README CS 표에 [게임 테스트](../01_fundamentals/cs/game_testing/README.md) 연결을 추가했습니다. TODO 검사 예외 표를 설정 파일의 예외 5건(heading 예외 포함)과 맞추고 원본을 verification으로 연결했습니다. HANDOFF 사전 결정 규칙(문서 정정)에 따라 수행했습니다.
