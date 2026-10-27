@@ -86,6 +86,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [압축 알고리즘](01_fundamentals/cs/compression_algorithms.md)    | 허프만, DEFLATE, gzip, ZIP, zstd  |
 | [자료구조](01_fundamentals/cs/data_structures/)                  | Array, Stack, Queue, Tree 등      |
 | [테스팅](01_fundamentals/cs/testing/)                            | Black/White Box, 테스트 레벨      |
+| [게임 테스트](01_fundamentals/cs/game_testing/)                  | 게임 상태·시나리오·경제·성능      |
 | [웹 서버 테스트](01_fundamentals/cs/web_testing/)                | HTTP·프록시·TLS·LB·캐시·보안·관측 |
 
 ### Windows

@@ -5,7 +5,7 @@
 ## 구조
 
 ```
-02_testing/
+testing/
 ├── 01_black_box/                  # Black-box (input/output)
 │   ├── boundary_value_analysis.md
 │   ├── equivalence_partitioning.md

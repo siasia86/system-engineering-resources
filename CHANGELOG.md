@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261027-04 / DOCS-32 (2026-10-27): ISS-04를 종료했습니다. [테스트 기법 README](01_fundamentals/cs/testing/README.md) 구조 tree의 옛 이름 `02_testing/`을 `testing/`으로 고치고, 루트 README CS 표에 [게임 테스트](01_fundamentals/cs/game_testing/README.md) 연결을 추가했습니다. TODO 검사 예외 표를 설정 파일의 예외 5건(heading 예외 포함)과 맞추고 원본을 verification으로 연결했습니다. HANDOFF 사전 결정 규칙(문서 정정)에 따라 수행했습니다.
+
 - MAIN-20261027-03 / DOCS-32 (2026-10-27): `.governance`의 [HANDOFF](.governance/HANDOFF.md)·[ISSUE](.governance/ISSUE.md)·[verification](.governance/verification.md) 초기 후보 문구를 현장 상태에 맞게 정리했습니다. HANDOFF에 재개 지점 표와 사전 결정 규칙을 두고 10-04 현장 적용 사실을 바로잡았습니다. ISSUE에 열린 이슈 ISS-01~04(중앙 profile 위치 차이, 검사 예외 재검토, 적용 복구 자료 부재, 작은 색인 불일치)를 등록했습니다. verification의 일회성 CL09 작업 기록(`be2d024`, 검사 도구 0.5.0 고정과 기본 설정 예외 5개 반영)을 현재 상태 설명과 현장 검사 명령으로 바꿨습니다. 공통 규칙 문장과 중앙 profile 10-26 개정 적용은 변경하지 않았습니다.
 
 - MAIN-20261027-02 / DOCS-32 (2026-10-27): [웹 서버 테스트](01_fundamentals/cs/web_testing/README.md) 2차 묶음으로 Graceful Reload·Load Balancer·Cache/CDN·요청 보안·웹 관측성 테스트 문서 5개를 추가하고, [web_testing_official_notes](_reference/web_testing_official_notes.md)에 reload·LB·HTTP 캐시·요청 보안·관측성 기준 절 5개를 더했습니다. nginx 제어 신호·upstream·limit_req·headers 모듈, HAProxy 3.2 설정·관리 문서, RFC 9111·5861, W3C Trace Context, OWASP Secure Headers ci 목록(2026-10-18 갱신본), MDN CORS와 대조했습니다. 요청 보안 문서는 방어 설정 확인만 다루고 공격 재현 입력값은 넣지 않았습니다. 1차에서 빠진 `04_security/hardening/tls_ssl_guide.md` 연결을 TLS 문서와 README 경계 표에 보완했고, 웹 서버 테스트 항목을 TODO에서 제거했습니다. 명령은 실제 호스트에 실행하지 않았습니다.
