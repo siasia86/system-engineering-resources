@@ -21,7 +21,7 @@ TLS/HTTPS 테스트는 웹 서버의 TLS 종료 지점이 허용된 프로토콜
 | 핵심 질문 | 허용한 것만 협상되고, 모든 호스트명에 유효한 인증서가 제공되는가                  |
 | 판정 근거 | RFC 8446(TLS 1.3), RFC 8996(TLS 1.0·1.1 사용 중단), RFC 6797(HSTS), 조직 TLS 정책 |
 
-TLS 설정 권장값(Mozilla Intermediate 프로필 등)은 `_reference/web_server_official_notes.md`를 기준으로 하고, 이 문서는 적용 결과를 확인하는 방법을 다룹니다.
+TLS 설정 권장값(Mozilla Intermediate 프로필 등)은 `_reference/web_server_official_notes.md`, 인증서 구조와 Nginx TLS 설정은 [TLS/SSL 가이드](../../../04_security/hardening/tls_ssl_guide.md)를 기준으로 하고, 이 문서는 적용 결과를 확인하는 방법을 다룹니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -169,6 +169,7 @@ testssl.sh -p -S -h https://www.example.com
 - Mozilla SSL Configuration Generator: [ssl-config.mozilla.org](https://ssl-config.mozilla.org/) — ★★★☆☆
 - testssl.sh: [github.com/testssl/testssl.sh](https://github.com/testssl/testssl.sh) — ★★★☆☆
 - OpenSSL s_client: [docs.openssl.org](https://docs.openssl.org/3.0/man1/openssl-s_client/) — ★★★☆☆
+- [TLS/SSL 가이드](../../../04_security/hardening/tls_ssl_guide.md)
 - [HTTP 프로토콜 테스트](http_protocol_testing.md)
 
 ---

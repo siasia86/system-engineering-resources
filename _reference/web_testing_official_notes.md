@@ -1,12 +1,15 @@
 ---
 name: web-testing-official-notes
-description: 웹 서버·Reverse Proxy·TLS·HTTP 성능 테스트 문서에서 공통으로 쓰는 RFC·nginx·HAProxy·k6·h2load·testssl.sh 공식 기준 노트.
+description: 웹 서버 테스트 문서(HTTP·Reverse Proxy·TLS·성능·reload·LB·캐시·요청 보안·관측성)에서 공통으로 쓰는 RFC·nginx·HAProxy·W3C·OWASP·측정 도구 공식 기준 노트.
 tags:
   - web-testing
   - http
   - reverse-proxy
   - tls
   - timeout
+  - load-balancer
+  - cache
+  - observability
 last_checked: 2026-10-27
 sources:
   - https://www.rfc-editor.org/rfc/rfc9110.html
@@ -17,6 +20,18 @@ sources:
   - https://nginx.org/en/docs/http/ngx_http_core_module.html
   - https://nginx.org/en/docs/http/ngx_http_proxy_module.html
   - https://raw.githubusercontent.com/haproxy/haproxy/v3.2.0/doc/configuration.txt
+  - https://raw.githubusercontent.com/haproxy/haproxy/v3.2.0/doc/management.txt
+  - https://nginx.org/en/docs/control.html
+  - https://nginx.org/en/docs/ngx_core_module.html
+  - https://nginx.org/en/docs/http/ngx_http_upstream_module.html
+  - https://nginx.org/en/docs/http/ngx_http_limit_req_module.html
+  - https://nginx.org/en/docs/http/ngx_http_autoindex_module.html
+  - https://nginx.org/en/docs/http/ngx_http_headers_module.html
+  - https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS
+  - https://www.rfc-editor.org/rfc/rfc9111.html
+  - https://www.rfc-editor.org/rfc/rfc5861.html
+  - https://www.w3.org/TR/trace-context/
+  - https://github.com/OWASP/www-project-secure-headers/tree/master/ci
   - https://grafana.com/docs/k6/latest/using-k6/thresholds/
   - https://grafana.com/docs/k6/latest/using-k6/metrics/reference/
   - https://nghttp2.org/documentation/h2load-howto.html
@@ -27,7 +42,7 @@ sources:
 
 ## 1. 확인 범위
 
-`01_fundamentals/cs/web_testing/` 문서에서 쓰는 HTTP 의미·연결 관리·TLS·프록시 timeout·측정 도구 기준을 2026-10-27에 공식 문서로 확인했습니다. 웹 서버 설치·설정 권장값은 `_reference/web_server_official_notes.md`, 부하 테스트 유형은 `_reference/load_testing_official_notes.md`를 재사용합니다.
+`01_fundamentals/cs/web_testing/` 문서에서 쓰는 HTTP 의미·연결 관리·TLS·프록시 timeout·측정 도구 기준과, 2차 문서의 reload·Load Balancer·HTTP 캐시·요청 보안·관측성 기준을 2026-10-27에 공식 문서로 확인했습니다. 웹 서버 설치·설정 권장값은 `_reference/web_server_official_notes.md`, 부하 테스트 유형은 `_reference/load_testing_official_notes.md`를 재사용합니다.
 
 ## 2. HTTP 의미 (RFC 9110)
 
@@ -116,7 +131,106 @@ HAProxy 3.2.0 `doc/configuration.txt`에서 확인했습니다.
 - 사용법: `testssl.sh [OPTIONS] <URI>`
 - `-p`(protocols), `-S`(`--server_defaults`), `-P`(server preference), `-s`(`--std`), `-h`(headers), `-U`(vulnerabilities), `--jsonfile`(`-oj`)
 
-## 7. 적용 범위와 제한
+## 7. 설정 다시 읽기와 종료
+
+### nginx
+
+| 신호      | 의미                                                      |
+|-----------|-----------------------------------------------------------|
+| TERM, INT | 빠른 종료                                                 |
+| QUIT      | graceful 종료                                             |
+| HUP       | 설정 다시 읽기, 새 worker 시작, 이전 worker graceful 종료 |
+| USR1      | 로그 파일 다시 열기                                       |
+| USR2      | 실행 파일 교체                                            |
+| WINCH     | worker graceful 종료                                      |
+
+- HUP을 받으면 master는 설정 문법을 검사하고 새 설정(로그 파일, listen 소켓)을 적용해 봅니다. 실패하면 변경을 되돌리고 이전 설정으로 계속 동작합니다.
+- 성공하면 이전 worker는 listen 소켓을 닫고 기존 클라이언트를 끝까지 처리한 뒤 종료합니다.
+- `worker_shutdown_timeout`(1.11.11 이후, 기본값 없음)을 지정하면 그 시간이 지난 뒤 남은 연결을 닫습니다.
+
+### HAProxy
+
+- master-worker 모드에서는 master에 SIGUSR2를 보내 설정을 다시 읽습니다(`management.txt`).
+- `hard-stop-after <time>`은 soft-stop(SIGUSR1) 후 이전 프로세스가 살아 있을 최대 시간입니다. 긴 timeout의 연결이 남아도 종료를 보장합니다.
+
+## 8. Load Balancer
+
+### nginx upstream
+
+| 항목              | 기본값·동작                                                            |
+|-------------------|------------------------------------------------------------------------|
+| 분산 방식         | 가중 round-robin (`hash`, `ip_hash`, `least_conn`, `random` 선택 가능) |
+| `weight`          | 1                                                                      |
+| `max_fails`       | 1 (`0`이면 실패 집계 안 함)                                            |
+| `fail_timeout`    | 10초                                                                   |
+| 전체 서버 실패    | 마지막 서버와의 통신 결과를 클라이언트에 반환                          |
+| 서버 1대인 그룹   | `max_fails`·`fail_timeout`·`slow_start`를 무시                         |
+| 능동 health check | `health_check`(별도 모듈)는 상용 구독 기능                             |
+
+오픈소스 nginx의 서버 제외는 실제 요청 실패에 따른 수동(passive) 판정입니다. `sticky`·`drain` 등 일부 파라미터는 버전에 따라 상용·오픈소스 구분이 바뀌었으므로 대상 버전 문서를 확인합니다.
+
+### HAProxy 서버 점검과 상태
+
+| 항목                                        | 기본값·동작                                             |
+|---------------------------------------------|---------------------------------------------------------|
+| `inter`                                     | 2000ms                                                  |
+| `rise`                                      | 2회 연속 성공 시 정상                                   |
+| `fall`                                      | 3회 연속 실패 시 장애                                   |
+| `weight`                                    | 1, 최대 256                                             |
+| `set server <backend>/<server> state drain` | 분산 대상에서만 제외, 점검과 기존 세션 고정 연결은 유지 |
+| `set server <backend>/<server> state maint` | 모든 트래픽과 점검 중단                                 |
+
+## 9. HTTP 캐시 (RFC 9111, RFC 5861)
+
+| 항목                                                 | 절                                                |
+|------------------------------------------------------|---------------------------------------------------|
+| 인증 요청 응답의 저장                                | RFC 9111 3.5                                      |
+| `Vary`에 따른 캐시 키                                | RFC 9111 4.1                                      |
+| 신선도(freshness)                                    | RFC 9111 4.2                                      |
+| stale 응답 제공                                      | RFC 9111 4.2.4                                    |
+| 검증(조건부 요청)                                    | RFC 9111 4.3                                      |
+| `Age`                                                | RFC 9111 5.1                                      |
+| `max-age`·`no-cache`·`no-store`·`private`·`s-maxage` | RFC 9111 5.2.2.1·5.2.2.4·5.2.2.5·5.2.2.7·5.2.2.10 |
+| `stale-while-revalidate`                             | RFC 5861 3                                        |
+| `stale-if-error`                                     | RFC 5861 4                                        |
+
+- 공유 캐시는 `Authorization` 헤더가 있는 요청에 캐시된 응답을 쓰면 안 됩니다. 응답에 `public`·`s-maxage`·`must-revalidate` 등 공유 캐시 저장을 허용하는 지시어가 있을 때만 예외입니다.
+- RFC 5861은 Informational 문서이며 `stale-if-error`의 오류로 500·502·503·504를 듭니다.
+- nginx `$upstream_cache_status` 값: `MISS`, `BYPASS`, `EXPIRED`, `STALE`, `UPDATING`, `REVALIDATED`, `HIT`
+
+## 10. 요청 보안
+
+### nginx
+
+| 항목                | 기본값·동작                                       |
+|---------------------|---------------------------------------------------|
+| `limit_req_status`  | 503 (1.3.15 이후 변경 가능)                       |
+| `limit_req` `burst` | 기본 0, 초과분은 지연 처리, `nodelay`면 즉시 처리 |
+| `limit_req_dry_run` | 1.17.1 이후, 실제 제한 없이 초과 요청만 집계      |
+| `server_tokens`     | `on` (버전 노출)                                  |
+| `autoindex`         | `off`                                             |
+
+- `add_header`는 현재 블록에 `add_header`가 없을 때만 상위 블록 값을 상속합니다. 1.29.3부터 `add_header_inherit`(`on`·`off`·`merge`)로 상속 방식을 바꿀 수 있습니다.
+- `always`(1.7.5 이후)를 지정하지 않으면 200·201·204·206·301·302·303·304·307·308 응답에만 헤더를 추가합니다.
+
+### OWASP Secure Headers (ci 목록, 2026-10-18 갱신본)
+
+추가 권장 헤더: `Cache-Control`, `Clear-Site-Data`, `Content-Security-Policy`, `Cross-Origin-Embedder-Policy`, `Cross-Origin-Opener-Policy`, `Cross-Origin-Resource-Policy`, `Permissions-Policy`, `Referrer-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options`, `X-DNS-Prefetch-Control`, `X-Frame-Options`, `X-Permitted-Cross-Domain-Policies`
+
+- 제거 권장 목록에는 `Server`, `X-AspNet-Version`, `X-Powered-By` 등 88개가 있습니다.
+- `X-XSS-Protection`은 추가 권장 목록에 없습니다.
+- 권장 값은 애플리케이션 기능과 충돌할 수 있으므로(예: `Clear-Site-Data`, `Cross-Origin-Embedder-Policy`) 서비스 정책으로 적용 범위를 정합니다.
+
+## 11. 관측성
+
+- nginx `$request_id`(1.11.0 이후): 16바이트 난수의 16진수 요청 식별자
+- nginx `$request_time`: 클라이언트에서 첫 바이트를 읽은 뒤 경과 시간(초, ms 해상도)
+- nginx `$upstream_addr`·`$upstream_status`·`$upstream_response_time`: 재시도 시 쉼표로 구분된 여러 값
+- HAProxy는 `http-request use-service prometheus-exporter`로 내장 Prometheus 지표를 제공합니다.
+- HAProxy `unique-id-format`으로 요청 식별자를 만들 수 있습니다.
+- W3C Trace Context Level 1(W3C Recommendation, 2021-11-23): `traceparent`·`tracestate` 헤더. `traceparent`는 `version-trace-id-parent-id-trace-flags`(2·32·16·2자리 소문자 16진수, 총 55자) 형식이며 예시는 `00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01`입니다.
+
+## 12. 적용 범위와 제한
 
 - 기본값은 확인일 기준 공식 문서 값이며, 배포판 패키지·운영 설정은 다를 수 있으므로 대상 서버의 실제 설정을 우선합니다.
 - 상태 코드는 서버 구현이 RFC 정의와 다른 코드를 쓸 수 있습니다(예: nginx는 413을 "Request Entity Too Large"로 표기).

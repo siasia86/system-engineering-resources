@@ -16,14 +16,7 @@
 
 2026-09-15 테스트 문서 작업 완료 내역은 `CHANGELOG.md`의 `[5.0.2]`에 기록했습니다.
 
-- [ ] 웹 서버 중심 테스트 기법 문서화
-  - 대상 위치: `01_fundamentals/cs/web_testing/`
-  - 범위: HTTP 프로토콜, Reverse Proxy, TLS/HTTPS, 성능·부하, Timeout·연결 고갈, Graceful Reload, Load Balancer, Cache/CDN, 요청 보안, 관측성
-  - 우선 문서: 개요, HTTP 프로토콜 테스트, Reverse Proxy 테스트, TLS/HTTPS 테스트, 웹 성능·Timeout 테스트
-  - 완료 조건: 일반 테스트 기법 및 게임 테스트와 중복을 피하고, 웹 서버 역할별 테스트 케이스·검증 도구·실패 판정 기준을 정리
-  - 검증: `sia-md-style-check`, `sia-md-heading-check`, `sia-md-link-check`를 대상 문서와 README에 실행
-  - 롤백: 문서 변경 전 커밋으로 되돌리거나 해당 문서 변경을 `git revert`로 복원
-  - 진행: 1차 묶음(README·HTTP·Reverse Proxy·TLS/HTTPS·웹 성능·Timeout) 작성 완료(2026-10-27, `MAIN-20261027-01`). 2차 묶음(Graceful Reload, Load Balancer, Cache/CDN, 요청 보안, 관측성) 대기
+현재 진행 중인 잔여 작업은 없습니다. 웹 서버 테스트 문서화는 2026-10-27 `MAIN-20261027-01`·`MAIN-20261027-02`로 완료했으며 `CHANGELOG.md`의 `[Unreleased]`에 기록했습니다.
 
 ### 검사 예외 파일
 

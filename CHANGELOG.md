@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261027-02 / DOCS-32 (2026-10-27): [웹 서버 테스트](01_fundamentals/cs/web_testing/README.md) 2차 묶음으로 Graceful Reload·Load Balancer·Cache/CDN·요청 보안·웹 관측성 테스트 문서 5개를 추가하고, [web_testing_official_notes](_reference/web_testing_official_notes.md)에 reload·LB·HTTP 캐시·요청 보안·관측성 기준 절 5개를 더했습니다. nginx 제어 신호·upstream·limit_req·headers 모듈, HAProxy 3.2 설정·관리 문서, RFC 9111·5861, W3C Trace Context, OWASP Secure Headers ci 목록(2026-10-18 갱신본), MDN CORS와 대조했습니다. 요청 보안 문서는 방어 설정 확인만 다루고 공격 재현 입력값은 넣지 않았습니다. 1차에서 빠진 `04_security/hardening/tls_ssl_guide.md` 연결을 TLS 문서와 README 경계 표에 보완했고, 웹 서버 테스트 항목을 TODO에서 제거했습니다. 명령은 실제 호스트에 실행하지 않았습니다.
+
 - MAIN-20261027-01 / DOCS-32 (2026-10-27): [웹 서버 테스트](01_fundamentals/cs/web_testing/README.md) 1차 묶음으로 README와 HTTP 프로토콜·Reverse Proxy·TLS/HTTPS·웹 성능·Timeout 테스트 문서 4개, 공통 출처 노트 [web_testing_official_notes](_reference/web_testing_official_notes.md)를 추가하고 root·Fundamentals·테스트 README와 `_reference/INDEX.md`에 연결했습니다. RFC 9110·nginx·HAProxy 3.2·k6·h2load·testssl.sh 공식 문서와 대조했으며, `curl`·`openssl` 옵션은 로컬 도움말로 확인했습니다. 명령은 외부 호스트에 실행하지 않았고 2차 묶음 5개 주제는 TODO에 남겼습니다. Fundamentals README의 cs 문서 수를 실제 추적 파일 수 52개로 정정했습니다.
 
 - GWS-03 / DOCS-32 (2026-10-19): [SSD 마모 분산과 fio 성능 검수](02_infrastructure/storage/ssd_wear_performance_validation.md)를 추가하고 README Storage 목록에 연결했습니다. FTL·마모 분산, fio 설정과 실쓰기량, SSS-PTS의 판정 범위를 공식 근거로 요약했습니다. 장비 시험·환경 변경은 수행하지 않았습니다.
