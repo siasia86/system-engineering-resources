@@ -345,7 +345,7 @@ Defense in depth:
 | Object Lock    | 보존 기간 내 삭제 거부     | root 포함 모든 삭제 (Compliance) |
 | 버전 관리      | 덮어쓰기 시 이전 버전 보존 | 데이터 교체 공격                 |
 
-> 상세 STS 설정은 s3_cross_account_backup.md 참고 (private repo: 34_system-engineering-resources_private)
+> 상세 STS 설정은 s3_cross_account_backup.md 참고 (private repo: system-engineering-resources_private, `99_archive/03_aws_jobs/01_AWS_jobs/`)
 
 ---
 
@@ -383,6 +383,6 @@ Defense in depth:
 
 **작성일**: 2026-07-01
 
-**마지막 업데이트**: 2026-07-01
+**마지막 업데이트**: 2026-10-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

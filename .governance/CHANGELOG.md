@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261027-07 / DOCS-32 (2026-10-27): ISS-07을 종료했습니다. 사용자 지시로 법령 원문은 비공개 저장소 `37_law`, 민감 자료는 `system-engineering-resources_private`에 두도록 나눴습니다. `06_career/legal/_reference`의 원문 17개(hwp·hwpx 16개, PDF 1개)를 추적 해제하고(로컬 파일 유지), `.gitignore`의 허용 예외를 없애고 보관 위치 안내로 바꿨습니다. [개인정보 보호법 가이드](../06_career/legal/privacy_law_guide.md)의 원문 다운로드 링크 12개를 개인정보보호위원회 출처 게시물 주소로 바꿨으며, 각 파일이 게시물 첨부와 일치함을 확인했습니다. 원문 19개는 `37_law` `d96a7da`, 개인정보가 담긴 PDF 1개는 `system-engineering-resources_private` `9bc806b`에 commit했습니다. 비공개 저장소 이름 변경(`34_system-engineering-resources_private` → `system-engineering-resources_private`)에 맞춰 S3 문서 2개의 안내를 고치고 참고 파일의 실제 경로(`99_archive/03_aws_jobs/01_AWS_jobs/`)를 덧붙였습니다. 기존 commit 이력의 원문 사본은 그대로 남습니다.
+
 - MAIN-20261027-06 / DOCS-32 (2026-10-27): ISS-05를 종료했습니다. 중앙 profile common 계층에 맞춰 AGENTS·GOVERNANCE·INDEX를 중앙 원문으로 바꾸고 `.governance/README.md`에 공통 첫 문단을 추가했습니다. 설정 4개(`.gitignore`·검사 TOML 2개·`.gitleaks.toml`)는 중앙 공통 구간에 현장 예외·패턴·탐지 규칙을 CONSUMER LOCAL 구간으로 보존해 합쳤고, 추적 파일 무시 목록과 gitleaks 탐지 결과가 이전과 같음을 확인했습니다. Codex 계층 안내는 ISS-06, 원문 제외 대상 법령 파일 16개의 추적 상태는 ISS-07로 등록했습니다. [적용 기록](APPLICATION.md).
 
 - MAIN-20261027-05 / DOCS-32 (2026-10-27): ISS-01을 종료했습니다. 중앙 profile 기준에 따라 루트 `TODO.md`·`PLAN.md`·`CHANGELOG.md`를 `.governance/`로 옮기고(`git mv`), 이동 문서의 상대 링크 42개와 `.governance` 관리 문서 링크 18개, `TODO2.md` 링크 2개, `asd_ste100_codex_communication.md` 링크 1개, INDEX 읽기 조건 표 2행, GOVERNANCE·INDEX·README의 위치 문구를 고쳤습니다. 루트에는 연결 안내 문서를 별도 commit으로 두었습니다. 나머지 중앙 병합은 ISS-05로 등록했으며 31은 변경하지 않았습니다. [적용 기록](APPLICATION.md).

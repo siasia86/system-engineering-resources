@@ -520,7 +520,7 @@ aws ec2 stop-instances --instance-ids i-verify-server
 - AWS S3 User Guide: [docs.aws.amazon.com/AmazonS3/latest/userguide](https://docs.aws.amazon.com/AmazonS3/latest/userguide/) — ★★★☆☆
 - AWS S3 Pricing: [aws.amazon.com/s3/pricing](https://aws.amazon.com/s3/pricing/) — ★★★☆☆
 - [s3_object_lock.md](s3_object_lock.md)
-- s3_cross_account_backup.md (private repo: 34_system-engineering-resources_private)
+- s3_cross_account_backup.md (private repo: system-engineering-resources_private, `99_archive/03_aws_jobs/01_AWS_jobs/`)
 
 ---
 
@@ -537,6 +537,6 @@ aws ec2 stop-instances --instance-ids i-verify-server
 
 **작성일**: 2026-07-01
 
-**마지막 업데이트**: 2026-07-01
+**마지막 업데이트**: 2026-10-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

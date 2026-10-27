@@ -104,10 +104,9 @@ notes/
 *.map.ip.json
 *.map.ip.json*
 
-# 원문 자료 기본 제외 — 저작권 무단전재 금지·개인정보 포함 가능 (로컬 유지, git 제외)
-# 공공기관 행정문서만 화이트리스트로 예외 허용
+# 원문 자료 제외 — 법령 원문은 비공개 저장소 37_law, 개인정보 등 민감 자료는
+# system-engineering-resources_private에 보관합니다. 이 저장소에는 해설과 출처 주소만 둡니다.
 06_career/legal/_reference/*.pdf
 06_career/legal/_reference/*.hwp
 06_career/legal/_reference/*.hwpx
-!06_career/legal/_reference/개인정보 보호위원회 직제 시행규칙 일부개정령안.pdf
 # END CONSUMER LOCAL
