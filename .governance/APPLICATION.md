@@ -22,10 +22,12 @@ MAIN-20261027-06에서 중앙 profile(31 `origin/main` `e6ada74` 기준, 32 prof
 
 설정 4개는 중앙 공통 구간에 현장 구간을 합쳤습니다. 검사 TOML 2개는 `exclude_dirs`를 합치고 파일별 예외 6개를 보존했으며, `.gitignore`는 31 COMMON 구간 뒤 CONSUMER LOCAL 구간에 현장 패턴을 옮겼습니다. `.gitleaks.toml`은 중앙 허용 목록에 현장 허용 목록·경로와 탐지 규칙 3개를 보존해 이전과 같은 탐지 결과를 확인했습니다. Codex 계층(`.codex/repository-guidance.md`)은 적용하지 않았으며 ISS-06으로 관리합니다. 복구는 이번 commit을 `git revert`합니다.
 
+계층 선택 확정(2026-11-01, POLICY-31 CX2CL-20261027-03 수용 판정 31 `8558b03`): 2026-10-27 CL2CX-20261027-04 판정으로 적용 계층을 common 단독으로 유지합니다. Codex 계층은 이번 적용에서 선택하지 않았으므로 .codex/repository-guidance.md를 배치하거나 필수로 요구하지 않습니다. Codex 작업은 실제 적용 AGENTS와 제공된 개인 지침·skill을 따릅니다. 향후 저장소 고유의 Codex 조건이 필요하면 해당 작업에서 common+codex를 명시적으로 선택하고 중앙 원본을 수동 병합합니다.
+
 ---
 
 **작성일**: 2026-10-04
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-01
 
 © 2026 siasia86. Licensed under CC BY 4.0.
