@@ -48,7 +48,7 @@ sources:
 | GitHub References              | `_reference/github_references.md`                       | Codex Skills·Harness/Loop·개발 절차·명세·탐색 목록      | 2026-10-03 | O    |
 | HashiCorp Vault                | `_reference/hashicorp_vault_official_notes.md`          | KV·Database Dynamic Secret·라이선스                     | 2026-08-19 | O    |
 | GitLab CI/CD Variables         | `_reference/gitlab_ci_variables_official_notes.md`      | Protected·Masked·File·AWS OIDC                          | 2026-08-19 | O    |
-| Gitleaks                       | `_reference/gitleaks_official_notes.md`                 | v8.30.1                                                 | 2026-08-19 | O    |
+| Gitleaks                       | `_reference/gitleaks_official_notes.md`                 | v8.30.1                                                 | 2026-11-03 | O    |
 | Grafana                        | `_reference/grafana_official_notes.md`                  | v13.1.0                                                 | 2026-07-03 | O    |
 | Helm                           | `_reference/helm_official_notes.md`                     | v4.2.2                                                  | 2026-07-03 | O    |
 | ISMS-P                         | `_reference/isms_p_official_notes.md`                   | KISA 인증기준 안내서 2023                               | 2026-07-08 | X    |
@@ -139,6 +139,6 @@ sources:
 
 **작성일**: 2026-05-22
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-03
 
 © 2026 siasia86. Licensed under CC BY 4.0.
