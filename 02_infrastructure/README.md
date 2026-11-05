@@ -1,18 +1,20 @@
 # Infrastructure
 
-인프라 구축과 운영 도구. 컨테이너, CI/CD 파이프라인, IaC, 모니터링, 클라우드를 다룹니다.
+인프라 구축과 운영 도구. 컨테이너, CI/CD 파이프라인, IaC, 모니터링, 클라우드, 스토리지, Windows Server를 다룹니다.
 
 ## 구조
 
-| 디렉토리                           | 설명                                                       | 문서 수 |
-|------------------------------------|------------------------------------------------------------|---------|
-| [containers/](./containers/)       | 컨테이너 — Docker, Compose, 런타임, Kubernetes, Helm       | 10      |
-| [cicd/](./cicd/)                   | CI/CD — ArgoCD, Ansible, Jenkins, GitHub Actions, Airflow  | 13      |
-| [iac/](./iac/)                     | Infrastructure as Code — Ansible, Terraform, Playbook 운영 | 11      |
-| [monitoring/](./monitoring/)       | 모니터링 — Prometheus, Grafana, Zabbix, 시스템 메트릭      | 7       |
-| [cloud_aws/](./cloud_aws/)         | AWS 클라우드 — VPC, S3, Network Firewall, 백업             | 6       |
-| [data_pipeline/](./data_pipeline/) | 데이터 파이프라인 — Kafka, 로그 수집(100GB~100TB)          | 4       |
-| [web_server/](./web_server/)       | 웹 서버 — Nginx, Apache, HAProxy 설치 및 설정              | 4       |
+| 디렉토리                             | 설명                                                       | 문서 수 |
+|--------------------------------------|------------------------------------------------------------|---------|
+| [containers/](./containers/)         | 컨테이너 — Docker, Compose, 런타임, Kubernetes, Helm       | 10      |
+| [cicd/](./cicd/)                     | CI/CD — ArgoCD, Ansible, Jenkins, GitHub Actions, Airflow  | 16      |
+| [iac/](./iac/)                       | Infrastructure as Code — Ansible, Terraform, Playbook 운영 | 12      |
+| [monitoring/](./monitoring/)         | 모니터링 — Prometheus, Grafana, Zabbix, 시스템 메트릭      | 8       |
+| [cloud_aws/](./cloud_aws/)           | AWS 클라우드 — VPC, S3, Network Firewall, 백업             | 8       |
+| [data_pipeline/](./data_pipeline/)   | 데이터 파이프라인 — Kafka, 로그 수집(100GB~100TB)          | 4       |
+| [web_server/](./web_server/)         | 웹 서버 — Nginx, Apache, HAProxy 설치 및 설정              | 4       |
+| [storage/](./storage/)               | 스토리지 — 구조 설계, SSD 검수, 파일시스템, 백업, MinIO    | 6       |
+| [windows_server/](./windows_server/) | Windows Server — 에디션, 핵심 개념, SCVMM                  | 3       |
 
 ## 주요 문서
 
@@ -42,6 +44,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

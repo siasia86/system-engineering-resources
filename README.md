@@ -88,6 +88,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [테스팅](01_fundamentals/cs/testing/)                            | Black/White Box, 테스트 레벨      |
 | [게임 테스트](01_fundamentals/cs/game_testing/)                  | 게임 상태·시나리오·경제·성능      |
 | [웹 서버 테스트](01_fundamentals/cs/web_testing/)                | HTTP·프록시·TLS·LB·캐시·보안·관측 |
+| [알고리즘](01_fundamentals/cs/algorithms/)                       | 시간·공간 복잡도 계산 패턴        |
 
 ### Windows
 
@@ -204,6 +205,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 |------------------------------------------------------------------------------------------------|----------------------|
 | [Windows Server 에디션](02_infrastructure/windows_server/windows_server_editions_licensing.md) | 에디션/라이선스 비교 |
 | [Windows Server 핵심 개념](02_infrastructure/windows_server/windows_server_key_concepts.md)    | AD, DNS, 역할 서비스 |
+| [SCVMM 가이드](02_infrastructure/windows_server/scvmm_guide.md)                                | VM 중앙 관리 플랫폼  |
 
 ### Data Pipeline
 
@@ -220,6 +222,10 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 |-----------------------------------------------------------------------------------------------|-------------------------|
 | [스토리지 아키텍처](02_infrastructure/storage/storage_architecture.md)                        | 스토리지 계층·구성 설계 |
 | [SSD 마모 분산과 fio 성능 검수](02_infrastructure/storage/ssd_wear_performance_validation.md) | 마모·쓰기량·시험 판정   |
+| [Linux 파일시스템 비교](02_infrastructure/storage/linux_filesystem_comparison.md)             | ext4·XFS·Btrfs·ZFS      |
+| [백업 도구 비교](02_infrastructure/storage/backup_tools_comparison.md)                        | 백업 솔루션·도구 비교   |
+| [Restic 백업·복구](02_infrastructure/storage/restic_backup.md)                                | 암호화 증분 백업·복구   |
+| [MinIO Object Storage](02_infrastructure/storage/minio_object_storage.md)                     | S3 호환 객체 스토리지   |
 
 ### Web Server
 
@@ -461,6 +467,11 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [유사 레포 비교](97_misc/similar_repos.md)                                                                         | 벤치마킹, 차별화 전략                                                             |
 | [모바일 게임 사전 오픈 부하 테스트](03_engineering/delivery/game_service_testing/mobile_game_load_testing_plan.md) | Node.js·C#·Unity 기반 게임 서비스 부하 테스트 계획                                |
 | [모바일 게임 기기 테스트 솔루션](97_misc/mobile_game_device_testing_solutions.md)                                  | DeviceFarmer·Appium·Maestro·AWS Device Farm·Firebase Test Lab 비교                |
+| [Android ADB 트러블슈팅](97_misc/android_adb_troubleshooting.md)                                                   | 앱 강제 종료·크래시 원인을 ADB 로그로 분석                                        |
+| [게임 서버 아키텍처 유형](97_misc/game_server_architecture.md)                                                     | 게임 서비스의 서버 운영 방식 분류                                                 |
+| [Kiro 라이선스·비용](97_misc/kiro_license_guide.md)                                                                | Kiro 요금제와 비용 가이드                                                         |
+| [IT 레퍼런스 블로그](06_career/it_reference_blogs.md)                                                              | IT 기술 블로그·학습 사이트 모음                                                   |
+| [파닉스 영어 학습법](97_misc/phonics_english.md)                                                                   | 영어 파닉스 학습법(기술 외 개인 자료)                                             |
 | [Windows 인시던트 로그 수집](96_scripts/windows/collect_incident_logs.py)                                          | 장애 시 로그 자동 수집 스크립트                                                   |
 | [Windows Hosts 관리](96_scripts/windows/win_hosts_manager.py)                                                      | hosts 파일 관리 도구                                                              |
 | [공식 참고 문서 인덱스](_reference/INDEX.md)                                                                       | 기술별 공식 문서와 확인일 관리                                                    |

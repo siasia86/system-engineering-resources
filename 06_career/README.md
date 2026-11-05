@@ -6,14 +6,15 @@
 
 | 디렉토리                 | 설명                                                             | 문서 수 |
 |--------------------------|------------------------------------------------------------------|---------|
-| [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                | 4       |
-| [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권, 리버스 엔지니어링, 개인정보       | 5       |
+| [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                | 5       |
+| [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권, 리버스 엔지니어링, 개인정보       | 6       |
 | [ai_tools/](./ai_tools/) | AI 도구 — 공통 문서와 claude/·codex/·kiro/·jev/ 도구별 하위 폴더 | 29      |
 
 ## 주요 문서
 
 - [se_roadmap.md](./roadmap/se_roadmap.md) — 시스템 엔지니어 성장 경로
 - [sre_roadmap.md](./roadmap/sre_roadmap.md) — SRE 역할 정의, 필요 역량
+- [it_reference_blogs.md](./it_reference_blogs.md) — IT 기술 블로그·학습 사이트 모음
 - AI 공통: [ai_coding_tools_comparison.md](./ai_tools/ai_coding_tools_comparison.md) — 도구 비교, [harness_engineering.md](./ai_tools/harness_engineering.md) — 에이전트 환경·검증, [loop_engineering.md](./ai_tools/loop_engineering.md) — 제한된 반복 설계
 - [ai_agent_workspace_tools.md](./ai_tools/ai_agent_workspace_tools.md) — herdr·omp·Orca와 pi·OpenCode·cmux 등 agent 운영 도구
 - [ai_work_archetypes.md](./ai_tools/ai_work_archetypes.md) — Boris Cherny의 다섯 업무 원형·제품 단계별 조합·인프라 적용 예시
@@ -58,6 +59,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.
