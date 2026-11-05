@@ -6,7 +6,7 @@ tags:
   - monitoring
   - alerting
   - snmp
-last_checked: 2026-07-03
+last_checked: 2026-11-05
 sources:
   - https://www.zabbix.com/life_cycle_and_release_policy
   - https://repo.zabbix.com/zabbix/
@@ -14,14 +14,14 @@ sources:
 
 # Zabbix 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-05-22)
+## 1. 버전 현황 (확인일: 2026-11-05)
 
 | 버전    | 종류     | 릴리즈일       | 일반 지원 종료          | 전체 지원 종료          |
 |---------|----------|----------------|-------------------------|-------------------------|
 | 6.0 LTS | LTS      | 2022-02-08     | 2025-02-28              | 2027-02-28              |
 | 7.0 LTS | LTS      | 2024-06-04     | 2027-06-30              | 2029-06-30              |
-| 7.4     | Standard | 2025-07-01     | until 8.0 LTS (Q4 2026) | until 8.0 LTS (Q4 2026) |
-| 8.0 LTS | LTS      | Q3 2026 (예정) | Q3 2029                 | Q3 2031                 |
+| 7.4     | Standard | 2025-07-01     | until 8.0 LTS           | Q1 2027                 |
+| 8.0 LTS | LTS      | Q4 2026 (예정) | Q4 2029                 | Q4 2031                 |
 
 - LTS: 5년 지원, 18개월 주기 릴리즈
 - Standard: 12개월 지원, 6개월 주기 릴리즈

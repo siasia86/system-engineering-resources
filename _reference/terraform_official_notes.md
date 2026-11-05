@@ -6,7 +6,7 @@ tags:
   - iac
   - aws
   - infrastructure
-last_checked: 2026-07-03
+last_checked: 2026-11-05
 sources:
   - https://developer.hashicorp.com/terraform/language
   - https://developer.hashicorp.com/terraform/language/backend/s3
@@ -18,13 +18,12 @@ sources:
 
 # Terraform 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-05-22)
+## 1. 버전 현황 (확인일: 2026-11-05)
 
 | 컴포넌트          | 최신 버전 | 비고          |
 |-------------------|-----------|---------------|
-| Terraform         | v1.15.7   | stable        |
-| AWS Provider      | v6.46.0   | hashicorp/aws |
-| Terraform (alpha) | v1.16.0   | 개발 중       |
+| Terraform         | v1.17.1   | stable        |
+| AWS Provider      | v6.72.0   | hashicorp/aws |
 
 ## 2. required_version 권장 문법
 

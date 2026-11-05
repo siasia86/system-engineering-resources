@@ -6,7 +6,7 @@ tags:
   - monitoring
   - alerting
   - metrics
-last_checked: 2026-07-03
+last_checked: 2026-11-05
 sources:
   - https://prometheus.io/docs/introduction/overview/
   - https://prometheus.io/docs/concepts/data_model/
@@ -14,11 +14,11 @@ sources:
 
 # Prometheus 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-05-26)
+## 1. 버전 현황 (확인일: 2026-11-05)
 
 | 항목       | 버전    |
 |------------|---------|
-| Prometheus | v3.13.0 |
+| Prometheus | v3.15.1 |
 
 ## 2. 공식 정의
 

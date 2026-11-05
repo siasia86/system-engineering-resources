@@ -27,7 +27,7 @@ sources:
 | 기술                           | 파일                                                    | 최신 버전                                               | 확인일     | 참조 |
 |--------------------------------|---------------------------------------------------------|---------------------------------------------------------|------------|------|
 | POSIX ACL / setfacl            | `_reference/acl_setfacl_official_notes.md`              | acl 2.4.0·setfacl·getfacl·Default ACL·mask              | 2026-09-16 | O    |
-| Ansible                        | `_reference/ansible_official_notes.md`                  | 14.1.0 (core 2.21.1)                                    | 2026-07-03 | X    |
+| Ansible                        | `_reference/ansible_official_notes.md`                  | 14.6.0 (core 2.22.0)                                    | 2026-11-05 | X    |
 | API Styles                     | `_reference/api_styles_official_notes.md`               | REST·GraphQL·gRPC·SOAP·WebSocket·Webhook·JSON-RPC·SSE   | 2026-08-21 | O    |
 | GraphQL                        | `_reference/graphql_official_notes.md`                  | September2025, GraphQL over HTTP draft                  | 2026-09-14 | O    |
 | gRPC                           | `_reference/grpc_official_notes.md`                     | v1.84.0, HTTP/2 RPC·streaming·deadline·status·TLS       | 2026-09-11 | O    |
@@ -35,7 +35,7 @@ sources:
 | REST API                       | `_reference/rest_api_official_notes.md`                 | RFC 9110·9457·5789, OpenAPI 3.2.0                       | 2026-09-11 | O    |
 | AWS STS/IAM/S3/KMS             | `_reference/aws_sts_iam_s3_kms_official_notes.md`       | AssumeRole, session, cross-account 권한                 | 2026-08-13 | O    |
 | AWS Secrets Manager            | `_reference/aws_secrets_manager_official_notes.md`      | Secret lifecycle·Rotation·IAM                           | 2026-08-19 | O    |
-| ArgoCD                         | `_reference/argocd_official_notes.md`                   | v3.4.4                                                  | 2026-07-03 | O    |
+| ArgoCD                         | `_reference/argocd_official_notes.md`                   | v3.6.1                                                  | 2026-11-05 | O    |
 | Chaos/FinOps                   | `_reference/chaos_finops_official_notes.md`             | principlesofchaos.org / finops.org                      | 2026-07-07 | X    |
 | CPU 시스템 운영                | `_reference/cpu_system_engineering_official_notes.md`   | NUMA·스케줄링·가상화·CPU 호환성                         | 2026-08-21 | O    |
 | Charset/Encoding               | `_reference/charset_encoding_official_notes.md`         | RFC 3629, Unicode 16.0                                  | 2026-07-07 | O    |
@@ -43,7 +43,7 @@ sources:
 | Codex CLI                      | `_reference/codex_cli_official_notes.md`                | Skills 설정·plugin; CLI 도움말 v0.160.0 (로컬)          | 2026-10-03 | O    |
 | Jev                            | `_reference/jev_official_notes.md`                      | jev-1.13.0·Choice·Score·Noul·HTTP·Python SDK            | 2026-10-01 | O    |
 | CVE/Security                   | `_reference/cve_security_official_notes.md`             | NVD API 2.0, CISA KEV                                   | 2026-06-29 | O    |
-| Docker                         | `_reference/docker_official_notes.md`                   | Engine 29.6.1, Compose v5.3.0                           | 2026-07-03 | O    |
+| Docker                         | `_reference/docker_official_notes.md`                   | Engine 29.9.3, Compose v5.7.0                           | 2026-11-05 | O    |
 | Epsilon-Delta (Math)           | `_reference/epsilon_delta_math_notes.md`                | Rudin Ch.4, Weierstrass                                 | 2026-07-14 | O    |
 | GitHub References              | `_reference/github_references.md`                       | Codex Skills·Harness/Loop·개발 절차·명세·탐색 목록      | 2026-10-03 | O    |
 | HashiCorp Vault                | `_reference/hashicorp_vault_official_notes.md`          | KV·Database Dynamic Secret·라이선스                     | 2026-08-19 | O    |
@@ -52,10 +52,10 @@ sources:
 | Trivy                          | `_reference/trivy_official_notes.md`                    | v0.76.1·GHSA-69fq 공급망 사고·action v0.36.0            | 2026-11-05 | O    |
 | TLS 인증서 수명 주기           | `_reference/tls_cert_lifecycle_official_notes.md`       | BR v2.3.1·LE 45일·RFC 9773·blackbox v0.29.1             | 2026-11-05 | O    |
 | Lynis                          | `_reference/lynis_official_notes.md`                    | 3.1.7·GPG 서명·프로필·보고서 형식·Hardening index       | 2026-11-05 | O    |
-| Grafana                        | `_reference/grafana_official_notes.md`                  | v13.1.0                                                 | 2026-07-03 | O    |
-| Helm                           | `_reference/helm_official_notes.md`                     | v4.2.2                                                  | 2026-07-03 | O    |
+| Grafana                        | `_reference/grafana_official_notes.md`                  | v13.3.0                                                 | 2026-11-05 | O    |
+| Helm                           | `_reference/helm_official_notes.md`                     | v4.3.1                                                  | 2026-11-05 | O    |
 | ISMS-P                         | `_reference/isms_p_official_notes.md`                   | KISA 인증기준 안내서 2023                               | 2026-07-08 | X    |
-| Kubernetes                     | `_reference/kubernetes_official_notes.md`               | v1.36.2                                                 | 2026-07-03 | O    |
+| Kubernetes                     | `_reference/kubernetes_official_notes.md`               | v1.37.2                                                 | 2026-11-05 | O    |
 | Linux Kernel                   | `_reference/linux_kernel_official_notes.md`             | namespace, cgroup, scheduler                            | 2026-07-03 | O    |
 | Time Complexity / Algorithms   | `_reference/time_complexity_official_notes.md`          | MIT OCW 6.006·Python 3.14.7, asymptotic·cost model      | 2026-09-14 | O    |
 | Merkle Tree / Git Objects      | `_reference/merkle_tree_official_notes.md`              | RFC 9162·Git 2.55.0, inclusion proof·Merkle DAG         | 2026-09-14 | O    |
@@ -72,18 +72,18 @@ sources:
 | iperf3                         | `_reference/iperf3_official_notes.md`                   | 3.21, TCP·UDP·SCTP throughput                           | 2026-08-28 | O    |
 | OpenZFS                        | `_reference/openzfs_official_notes.md`                  | COW·checksum·Snapshot·RAIDZ·복제·압축·암호화            | 2026-09-21 | O    |
 | Platform Engineering           | `_reference/platform_engineering_official_notes.md`     | CNCF Platforms WP                                       | 2026-07-07 | X    |
-| PostgreSQL                     | `_reference/postgresql_official_notes.md`               | 18.4 (EOL 2030-11)                                      | 2026-07-07 | X    |
-| Prometheus                     | `_reference/prometheus_official_notes.md`               | v3.13.0                                                 | 2026-07-03 | O    |
+| PostgreSQL                     | `_reference/postgresql_official_notes.md`               | 18.6 (EOL 2030-11)                                      | 2026-11-05 | X    |
+| Prometheus                     | `_reference/prometheus_official_notes.md`               | v3.15.1                                                 | 2026-11-05 | O    |
 | Protocol Error Codes           | `_reference/protocol_error_codes_official_notes.md`     | RFC 9110 / RFC 5321 / RFC 959                           | 2026-05-26 | O    |
 | Rsync                          | `_reference/rsync_official_notes.md`                    | 3.5.0, daemon·SSH·TLS·rrsync 보안                       | 2026-09-14 | O    |
 | Restic                         | `_reference/restic_official_notes.md`                   | v0.19.1, Snapshot·암호화·중복 제거·S3·무결성 검사       | 2026-09-21 | O    |
 | Backup Tools                   | `_reference/backup_tools_official_notes.md`             | rsnapshot·lsyncd·Bacula·Borg·Duplicity·Amanda·Bareos    | 2026-09-21 | O    |
 | SRE Operations                 | `_reference/sre_operations_official_notes.md`           | Google SRE Book / ITIL v4                               | 2026-07-07 | X    |
-| Terraform                      | `_reference/terraform_official_notes.md`                | v1.15.7, AWS Provider v6.46.0                           | 2026-07-03 | O    |
+| Terraform                      | `_reference/terraform_official_notes.md`                | v1.17.1, AWS Provider v6.72.0                           | 2026-11-05 | O    |
 | VPN Protocol                   | `_reference/vpn_protocol_official_notes.md`             | RFC 7296 / WireGuard protocol                           | 2026-08-10 | O    |
 | Web Server                     | `_reference/web_server_official_notes.md`               | Nginx 1.30.3, Apache 2.4.68                             | 2026-08-20 | O    |
 | YAML Spec                      | `_reference/yaml_spec_notes.md`                         | 1.2 (1.1 호환)                                          | 2026-05-26 | O    |
-| Zabbix                         | `_reference/zabbix_official_notes.md`                   | 7.4.11 (LTS: 7.0)                                       | 2026-07-03 | O    |
+| Zabbix                         | `_reference/zabbix_official_notes.md`                   | 7.4.16 (LTS: 7.0)                                       | 2026-11-05 | O    |
 | e4fsprogs (CentOS 5)           | `_reference/e4fsprogs_centos5_notes.md`                 | 1.41.12-4.el5_10, fsck.ext4                             | 2026-07-22 | O    |
 | Android ADB                    | `_reference/android_adb_official_notes.md`              | platform-tools 37.0.1, logcat                           | 2026-07-16 | O    |
 | Windows Server 2022 Monitoring | `_reference/windows_server_2022_monitoring_notes.md`    | Get-Counter, 카운터, 임계치                             | 2026-07-23 | O    |
@@ -95,11 +95,11 @@ sources:
 | AI 업무 원형                   | `_reference/ai_work_archetypes_notes.md`                | Boris Cherny 제안·전재 대조·원문 직접 열람 제한         | 2026-10-13 | O    |
 | Aside AI 브라우저              | `_reference/aside_browser_official_notes.md`            | v1.0.928.1·플랫폼·요금·권한·데이터 처리·CLI·MCP         | 2026-10-13 | O    |
 | ASD-STE100                     | `_reference/asd_ste100_official_notes.md`               | Issue 9 공식 설명·GitHub 5개·Codex 적용 근거            | 2026-10-09 | O    |
-| Rust                           | `_reference/rust_official_notes.md`                     | 1.97.1, Edition 2021, 주요 크레이트                     | 2026-07-29 | O    |
+| Rust                           | `_reference/rust_official_notes.md`                     | 1.99.1, Edition 2024, 주요 크레이트                     | 2026-11-05 | O    |
 | Windows Server 에디션/라이선스 | `_reference/windows_server_editions_licensing_notes.md` | Standard vs Datacenter, KMS/MAK/AVMA                    | 2026-07-29 | O    |
 | Windows Server Concepts        | `_reference/windows_server_concepts_notes.md`           | Hyper-V, S2D, Failover Cluster, Shielded VM, SDN        | 2026-07-29 | O    |
 | SCVMM                          | `_reference/scvmm_official_notes.md`                    | System Center 2025, 호스트 관리·베어메탈·Arc            | 2026-08-21 | O    |
-| SVN (Subversion)               | `_reference/svn_official_notes.md`                      | 1.14.5 (LTS)                                            | 2026-07-29 | O    |
+| SVN (Subversion)               | `_reference/svn_official_notes.md`                      | 1.15.0                                                  | 2026-11-05 | O    |
 | Git                            | `_reference/git_official_notes.md`                      | 2.55.0                                                  | 2026-07-29 | O    |
 | eBPF / bpftrace                | `_reference/ebpf_bpftrace_official_notes.md`            | libbpf v1.7.0, bpftrace v0.26.1                         | 2026-08-01 | O    |
 | Linux Process / Memory / IPC   | `_reference/linux_process_official_notes.md`            | fork/exec/wait, mmap, OOM, pipe/shm/mq                  | 2026-08-01 | O    |

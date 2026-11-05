@@ -6,7 +6,7 @@ tags:
   - container
   - compose
   - runtime
-last_checked: 2026-07-03
+last_checked: 2026-11-05
 sources:
   - https://docs.docker.com/engine/install/
   - https://docs.docker.com/reference/cli/dockerd/
@@ -17,12 +17,12 @@ sources:
 
 # Docker 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-05-22)
+## 1. 버전 현황 (확인일: 2026-11-05)
 
 | 컴포넌트       | 최신 버전 | 비고           |
 |----------------|-----------|----------------|
-| Docker Engine  | 29.6.1    | moby/moby      |
-| Docker Compose | v5.3.0    | docker/compose |
+| Docker Engine  | 29.9.3    | moby/moby      |
+| Docker Compose | v5.7.0    | docker/compose |
 
 ## 2. 설치
 

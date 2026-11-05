@@ -6,7 +6,7 @@ tags:
   - monitoring
   - dashboard
   - visualization
-last_checked: 2026-07-03
+last_checked: 2026-11-05
 sources:
   - https://grafana.com/docs/grafana/latest/introduction/
   - https://grafana.com/docs/grafana/latest/datasources/
@@ -14,11 +14,11 @@ sources:
 
 # Grafana 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-05-26)
+## 1. 버전 현황 (확인일: 2026-11-05)
 
 | 항목    | 버전    | 비고             |
 |---------|---------|------------------|
-| Grafana | v13.1.0 | OSS / Enterprise |
+| Grafana | v13.3.0 | OSS / Enterprise |
 
 ## 2. 공식 정의
 

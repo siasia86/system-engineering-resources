@@ -6,7 +6,7 @@ tags:
   - container
   - orchestration
   - cncf
-last_checked: 2026-07-03
+last_checked: 2026-11-05
 sources:
   - https://kubernetes.io/docs/concepts/overview/
   - https://kubernetes.io/docs/concepts/architecture/
@@ -14,11 +14,11 @@ sources:
 
 # Kubernetes 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-05-26)
+## 1. 버전 현황 (확인일: 2026-11-05)
 
 | 항목      | 내용                 |
 |-----------|----------------------|
-| 버전      | v1.36.2              |
+| 버전      | v1.37.2              |
 | 지원 정책 | 최신 3개 마이너 버전 |
 
 ## 2. 공식 정의

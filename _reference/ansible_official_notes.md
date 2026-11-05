@@ -6,7 +6,7 @@ tags:
   - iac
   - automation
   - configuration-management
-last_checked: 2026-07-03
+last_checked: 2026-11-05
 sources:
   - https://www.ansible.com/
   - https://docs.ansible.com/ansible/latest/getting_started/index.html
@@ -15,12 +15,12 @@ sources:
 
 # Ansible 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-05-26)
+## 1. 버전 현황 (확인일: 2026-11-05)
 
 | 패키지       | 최신 버전 | 비고                                     |
 |--------------|-----------|------------------------------------------|
-| ansible      | 14.1.0    | ansible-core + 커뮤니티 컬렉션 풀 패키지 |
-| ansible-core | 2.21.0    | 최소 코어 (ansible 패키지에 포함됨)      |
+| ansible      | 14.6.0    | ansible-core + 커뮤니티 컬렉션 풀 패키지 |
+| ansible-core | 2.22.0    | 최소 코어 (ansible 패키지에 포함됨)      |
 
 - ansible 버전과 ansible-core 버전은 별개 (ansible 13.x = ansible-core 2.21)
 - control node: ansible-core 2.12+부터 최근 3개 Python 버전 지원

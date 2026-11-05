@@ -77,16 +77,16 @@ Jenkins              │
 
 | 카테고리          | 도구                     | 최신 버전 | 공식 설명                                           |
 |-------------------|--------------------------|-----------|-----------------------------------------------------|
-| 인프라 프로비저닝 | Terraform                | v1.15.8   | Infrastructure as code tool                         |
-| 서버 구성 자동화  | Ansible                  | v2.21.2   | Open source IT automation engine                    |
-| 컨테이너 런타임   | Docker Engine            | v29.7.1   | Build, share, and run containerized applications    |
-| 컨테이너 구성     | Docker Compose           | v5.4.0    | Multi-container application definition              |
-| 오케스트레이션    | Kubernetes               | v1.36.3   | Automated container deployment, scaling, management |
-| K8s 패키지 관리   | Helm                     | v4.2.3    | The package manager for Kubernetes                  |
-| GitOps CD         | ArgoCD                   | v3.5.0    | Declarative GitOps CD tool for Kubernetes           |
+| 인프라 프로비저닝 | Terraform                | v1.17.1   | Infrastructure as code tool                         |
+| 서버 구성 자동화  | Ansible                  | v2.22.0   | Open source IT automation engine                    |
+| 컨테이너 런타임   | Docker Engine            | v29.9.3   | Build, share, and run containerized applications    |
+| 컨테이너 구성     | Docker Compose           | v5.7.0    | Multi-container application definition              |
+| 오케스트레이션    | Kubernetes               | v1.37.2   | Automated container deployment, scaling, management |
+| K8s 패키지 관리   | Helm                     | v4.3.1    | The package manager for Kubernetes                  |
+| GitOps CD         | ArgoCD                   | v3.6.1    | Declarative GitOps CD tool for Kubernetes           |
 | CI/CD             | GitHub Actions / Jenkins | —         | Automate any workflow / Build great things          |
-| 메트릭 수집       | Prometheus               | v3.13.2   | Open source monitoring and alerting toolkit         |
-| 시각화            | Grafana                  | v13.1.2   | Full-stack observability platform                   |
+| 메트릭 수집       | Prometheus               | v3.15.1   | Open source monitoring and alerting toolkit         |
+| 시각화            | Grafana                  | v13.3.0   | Full-stack observability platform                   |
 | 인프라 모니터링   | Zabbix                   | 7.4       | Enterprise-class monitoring solution                |
 
 [⬆ 목차로 돌아가기](#목차)

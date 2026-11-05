@@ -6,7 +6,7 @@ tags:
   - gitops
   - kubernetes
   - cicd
-last_checked: 2026-07-03
+last_checked: 2026-11-05
 sources:
   - https://argo-cd.readthedocs.io/en/stable/
   - https://argo-cd.readthedocs.io/en/stable/core_concepts/
@@ -14,11 +14,11 @@ sources:
 
 # ArgoCD 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-05-26)
+## 1. 버전 현황 (확인일: 2026-11-05)
 
 | 항목   | 버전   |
 |--------|--------|
-| ArgoCD | v3.4.4 |
+| ArgoCD | v3.6.1 |
 
 ## 2. 공식 정의
 

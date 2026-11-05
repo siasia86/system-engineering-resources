@@ -6,7 +6,7 @@ tags:
   - kubernetes
   - package-manager
   - chart
-last_checked: 2026-07-03
+last_checked: 2026-11-05
 sources:
   - https://helm.sh/docs/intro/using_helm/
   - https://helm.sh/docs/chart_template_guide/
@@ -14,11 +14,11 @@ sources:
 
 # Helm 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-05-26)
+## 1. 버전 현황 (확인일: 2026-11-05)
 
 | 항목 | 버전   | 비고                                      |
 |------|--------|-------------------------------------------|
-| Helm | v4.2.2 | v3.8+부터 OCI GA, v4에서 digest 지원 추가 |
+| Helm | v4.3.1 | v3.8+부터 OCI GA, v4에서 digest 지원 추가 |
 
 ## 2. 공식 정의
 

@@ -93,7 +93,7 @@ k3s는 Rancher Labs(SUSE)가 개발한 경량 Kubernetes 배포판. 단일 바�
 curl -sfL https://get.k3s.io | sh -
 
 # 특정 버전 설치
-curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.36.1+k3s1 sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.37.2+k3s1 sh -
 
 # Traefik 비활성화 (Nginx Ingress 사용 시)
 curl -sfL https://get.k3s.io | sh -s - --disable traefik
@@ -371,6 +371,6 @@ sudo k3s etcd-snapshot save --name k3s-snapshot
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

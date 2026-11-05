@@ -7,7 +7,7 @@ tags:
   - systems-programming
   - cargo
   - crates
-last_checked: 2026-07-29
+last_checked: 2026-11-05
 sources:
   - https://doc.rust-lang.org/book/
   - https://doc.rust-lang.org/std/
@@ -26,7 +26,7 @@ sources:
 
 | 항목        | 버전   | 비고                                   |
 |-------------|--------|----------------------------------------|
-| Stable      | 1.97.1 | MSRV 기준 확인 필요                    |
+| Stable      | 1.99.1 | MSRV 기준 확인 필요                    |
 | Edition     | 2024   | 현행 권장 (Rust 1.85+, cargo new 기본) |
 | MSRV (최소) | 1.70   | LazyLock=1.80+, Edition 2024=1.85+     |
 
@@ -34,11 +34,11 @@ sources:
 
 | 크레이트    | 최신 버전 | 주요 변경             |
 |-------------|-----------|-----------------------|
-| tokio       | 1.53.1    | 안정적, API 변경 없음 |
+| tokio       | 1.54.1    | 안정적, API 변경 없음 |
 | serde       | 1.0.229   | 안정적                |
-| reqwest     | 0.13.4    | 0.12→0.13 breaking    |
+| reqwest     | 0.13.5    | 0.12→0.13 breaking    |
 | axum        | 0.8.9     | 0.7→0.8 breaking      |
-| clap        | 4.6.4     | derive 방식 표준화    |
+| clap        | 4.6.7     | derive 방식 표준화    |
 | anyhow      | 1.0.104   | 안정적                |
 | thiserror   | 2.0.19    | 2.x로 major bump      |
 | signal-hook | 0.4.4     | 0.3→0.4 minor 변경    |
