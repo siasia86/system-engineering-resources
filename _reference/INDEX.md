@@ -51,6 +51,7 @@ sources:
 | Gitleaks                       | `_reference/gitleaks_official_notes.md`                 | v8.30.1                                                 | 2026-11-03 | O    |
 | Trivy                          | `_reference/trivy_official_notes.md`                    | v0.76.1·GHSA-69fq 공급망 사고·action v0.36.0            | 2026-11-05 | O    |
 | TLS 인증서 수명 주기           | `_reference/tls_cert_lifecycle_official_notes.md`       | BR v2.3.1·LE 45일·RFC 9773·blackbox v0.29.1             | 2026-11-05 | O    |
+| Lynis                          | `_reference/lynis_official_notes.md`                    | 3.1.7·GPG 서명·프로필·보고서 형식·Hardening index       | 2026-11-05 | O    |
 | Grafana                        | `_reference/grafana_official_notes.md`                  | v13.1.0                                                 | 2026-07-03 | O    |
 | Helm                           | `_reference/helm_official_notes.md`                     | v4.2.2                                                  | 2026-07-03 | O    |
 | ISMS-P                         | `_reference/isms_p_official_notes.md`                   | KISA 인증기준 안내서 2023                               | 2026-07-08 | X    |

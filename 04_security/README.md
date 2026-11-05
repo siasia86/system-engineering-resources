@@ -6,7 +6,7 @@
 
 | 디렉토리                   | 설명                                                      | 문서 수 |
 |----------------------------|-----------------------------------------------------------|---------|
-| [hardening/](./hardening/) | 서버 강화 — iptables/nftables, SSH, 시크릿 관리, gitleaks | 14      |
+| [hardening/](./hardening/) | 서버 강화 — iptables/nftables, SSH, 시크릿 관리, gitleaks | 15      |
 | [cloud/](./cloud/)         | 클라우드 보안 — AWS Security, DDoS 방어, Network Firewall | 4       |
 | [cve/](./cve/)             | CVE 분석 — 2026년 Linux 커널 취약점 (Dirty Frag, LPE 등)  | 7       |
 | [web_cwe/](./web_cwe/)     | 웹 취약점 — CWE-022, CWE-078, CWE-200, CWE-434            | 4       |
@@ -20,6 +20,7 @@
 - [secret_management.md](./hardening/secret_management.md) — Vault, SOPS, AWS SSM 비교
 - [trivy_guide.md](./hardening/trivy_guide.md) — 이미지·IaC·호스트 취약점 스캔과 공급망 안전 설치
 - [tls_certificate_expiry_monitoring.md](./hardening/tls_certificate_expiry_monitoring.md) — 인증서 만료 감시와 갱신 자동화 점검
+- [lynis_audit_guide.md](./hardening/lynis_audit_guide.md) — Lynis 서버 감사, 역할별 프로필과 정기 점검·결과 비교
 - [cve_2026_43284_dirty_frag.md](./cve/cve_2026_43284_dirty_frag.md) — CVE-2026-43284 분석
 
 ## 추천 학습 순서

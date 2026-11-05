@@ -296,6 +296,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Gitleaks 가이드](04_security/hardening/gitleaks_guide.md)                         | 민감정보 탐지, pre-commit   |
 | [Trivy 가이드](04_security/hardening/trivy_guide.md)                               | 이미지·IaC 스캔, CI 연동    |
 | [TLS 인증서 만료 감시](04_security/hardening/tls_certificate_expiry_monitoring.md) | 만료 감시, 갱신 점검        |
+| [Lynis 서버 감사](04_security/hardening/lynis_audit_guide.md)                      | 서버 감사, 정기 점검·비교   |
 | [Vault 설치](04_security/hardening/vault_install.md)                               | HashiCorp Vault 설치·운영   |
 | [Windows OpenSSH](04_security/hardening/windows_openssh_install.md)                | Windows SSH 서버 설치       |
 
