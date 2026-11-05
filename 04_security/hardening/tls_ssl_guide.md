@@ -200,6 +200,8 @@ server {
 
 ## 6. 인증서 점검
 
+운영 인프라의 만료 감시 설계, 모니터링 연동, 갱신 자동화 점검은 [TLS 인증서 만료 감시 가이드](./tls_certificate_expiry_monitoring.md)에서 다룹니다.
+
 ```bash
 # 만료 임박 인증서 일괄 확인 (30일 이내)
 for cert in /etc/letsencrypt/live/*/cert.pem; do
@@ -245,6 +247,6 @@ git clone --depth 1 https://github.com/drwetter/testssl.sh.git
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-05-03
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -285,18 +285,19 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 - [AI Agent 샌드박스 개념](04_security/hardening/ai_agent_sandbox_concepts.md) — OS 권한·승인·실행기와 다층 안전장치 설계.
 
-| 문서                                                                | 설명                        |
-|---------------------------------------------------------------------|-----------------------------|
-| [Linux 서버 보안 강화](04_security/hardening/linux_hardening.md)    | sysctl, auditd, umask       |
-| [방화벽](04_security/hardening/firewall_iptables_nftables.md)       | iptables/nftables           |
-| [SSH 보안](04_security/hardening/ssh_security.md)                   | 키 인증, fail2ban           |
-| [TLS/SSL](04_security/hardening/tls_ssl_guide.md)                   | 인증서, Let's Encrypt, mTLS |
-| [시크릿 관리](04_security/hardening/secret_management.md)           | Vault, AWS Secrets Manager  |
-| [취약점 스캔](04_security/hardening/vulnerability_scanning.md)      | nmap, trivy, lynis          |
-| [Gitleaks 가이드](04_security/hardening/gitleaks_guide.md)          | 민감정보 탐지, pre-commit   |
-| [Trivy 가이드](04_security/hardening/trivy_guide.md)                | 이미지·IaC 스캔, CI 연동    |
-| [Vault 설치](04_security/hardening/vault_install.md)                | HashiCorp Vault 설치·운영   |
-| [Windows OpenSSH](04_security/hardening/windows_openssh_install.md) | Windows SSH 서버 설치       |
+| 문서                                                                               | 설명                        |
+|------------------------------------------------------------------------------------|-----------------------------|
+| [Linux 서버 보안 강화](04_security/hardening/linux_hardening.md)                   | sysctl, auditd, umask       |
+| [방화벽](04_security/hardening/firewall_iptables_nftables.md)                      | iptables/nftables           |
+| [SSH 보안](04_security/hardening/ssh_security.md)                                  | 키 인증, fail2ban           |
+| [TLS/SSL](04_security/hardening/tls_ssl_guide.md)                                  | 인증서, Let's Encrypt, mTLS |
+| [시크릿 관리](04_security/hardening/secret_management.md)                          | Vault, AWS Secrets Manager  |
+| [취약점 스캔](04_security/hardening/vulnerability_scanning.md)                     | nmap, trivy, lynis          |
+| [Gitleaks 가이드](04_security/hardening/gitleaks_guide.md)                         | 민감정보 탐지, pre-commit   |
+| [Trivy 가이드](04_security/hardening/trivy_guide.md)                               | 이미지·IaC 스캔, CI 연동    |
+| [TLS 인증서 만료 감시](04_security/hardening/tls_certificate_expiry_monitoring.md) | 만료 감시, 갱신 점검        |
+| [Vault 설치](04_security/hardening/vault_install.md)                               | HashiCorp Vault 설치·운영   |
+| [Windows OpenSSH](04_security/hardening/windows_openssh_install.md)                | Windows SSH 서버 설치       |
 
 ### Cloud Security
 
