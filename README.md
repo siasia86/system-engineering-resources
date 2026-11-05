@@ -294,6 +294,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [시크릿 관리](04_security/hardening/secret_management.md)           | Vault, AWS Secrets Manager  |
 | [취약점 스캔](04_security/hardening/vulnerability_scanning.md)      | nmap, trivy, lynis          |
 | [Gitleaks 가이드](04_security/hardening/gitleaks_guide.md)          | 민감정보 탐지, pre-commit   |
+| [Trivy 가이드](04_security/hardening/trivy_guide.md)                | 이미지·IaC 스캔, CI 연동    |
 | [Vault 설치](04_security/hardening/vault_install.md)                | HashiCorp Vault 설치·운영   |
 | [Windows OpenSSH](04_security/hardening/windows_openssh_install.md) | Windows SSH 서버 설치       |
 
@@ -507,6 +508,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.
