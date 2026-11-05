@@ -80,7 +80,7 @@ openssl pkcs12 -in server.pfx -out server.pem -nodes
 
 ## 3. Let's Encrypt
 
-Certbot을 사용한 무료 인증서 발급 (90일, 자동 갱신).
+Certbot을 사용한 무료 인증서 발급 (기본 90일, 자동 갱신). 유효 기간은 2027-02부터 단계적으로 짧아지므로 갱신 주기를 날짜로 고정하지 않습니다. 일정은 [TLS 인증서 만료 감시](./tls_certificate_expiry_monitoring.md)를 참고합니다.
 
 ```bash
 # 설치 (Ubuntu)
@@ -133,7 +133,8 @@ server {
     ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384;
     ssl_prefer_server_ciphers off;
 
-    # OCSP Stapling
+    # OCSP Stapling: 인증서에 OCSP 주소가 있을 때만 의미 있음
+    # Let's Encrypt는 2025-08-06 OCSP를 종료해 효과가 없으므로 끄거나 지움
     ssl_stapling on;
     ssl_stapling_verify on;
     ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;

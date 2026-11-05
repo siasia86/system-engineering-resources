@@ -757,7 +757,6 @@ docker exec -it web bash
 
 **Docker Compose**
 ```yaml
-version: '3'
 services:
   web:
     image: nginx
@@ -1315,6 +1314,6 @@ SE → IT Manager
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

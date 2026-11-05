@@ -98,10 +98,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '20'
           cache: 'npm'
@@ -182,20 +182,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - run: npm test
 
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - run: npm run lint
 
   build:
     runs-on: ubuntu-latest
     needs: [test, lint]   # test, lint 완료 후 실행
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - run: npm run build
 
   deploy:
@@ -222,8 +222,8 @@ jobs:
       fail-fast: false   # 하나 실패해도 나머지 계속 실행
 
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
       - run: npm test
@@ -247,7 +247,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: build-output
           path: dist/
@@ -257,7 +257,7 @@ jobs:
 ### 캐시
 
 ```yaml
-- uses: actions/cache@v5
+- uses: actions/cache@v6
   with:
     path: ~/.npm
     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -350,7 +350,7 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ap-northeast-1
@@ -401,7 +401,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v6
+    - uses: actions/setup-node@v7
       with:
         node-version: ${{ inputs.node-version }}
         cache: 'npm'
@@ -426,10 +426,10 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: arn:aws:iam::123456789012:role/github-actions-role
           aws-region: ap-northeast-1
@@ -479,10 +479,10 @@ jobs:
       ECS_SERVICE: my-app-service
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
@@ -529,9 +529,9 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: '20'
           cache: 'npm'
@@ -566,11 +566,11 @@ jobs:
       image_tag: ${{ steps.meta.outputs.version }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: 123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/my-app
           tags: |
@@ -593,15 +593,15 @@ jobs:
 
 | Action                                     | 용도               |
 |--------------------------------------------|--------------------|
-| `actions/checkout@v6`                      | 코드 체크아웃      |
-| `actions/setup-node@v6`                    | Node.js 설치       |
-| `actions/setup-python@v5`                  | Python 설치        |
-| `actions/cache@v5`                         | 의존성 캐시        |
+| `actions/checkout@v7`                      | 코드 체크아웃      |
+| `actions/setup-node@v7`                    | Node.js 설치       |
+| `actions/setup-python@v7`                  | Python 설치        |
+| `actions/cache@v6`                         | 의존성 캐시        |
 | `actions/upload-artifact@v7`               | 아티팩트 업로드    |
-| `actions/download-artifact@v4`             | 아티팩트 다운로드  |
-| `aws-actions/configure-aws-credentials@v4` | AWS 자격증명 설정  |
+| `actions/download-artifact@v8`             | 아티팩트 다운로드  |
+| `aws-actions/configure-aws-credentials@v6` | AWS 자격증명 설정  |
 | `aws-actions/amazon-ecr-login@v2`          | ECR 로그인         |
-| `docker/build-push-action@v5`              | Docker 빌드 & 푸시 |
+| `docker/build-push-action@v7`              | Docker 빌드 & 푸시 |
 
 ### 디버깅
 
@@ -650,6 +650,6 @@ steps:
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

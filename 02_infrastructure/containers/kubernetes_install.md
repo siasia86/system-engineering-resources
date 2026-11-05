@@ -30,7 +30,7 @@
 | CPU    | 1 core          | 2 core 이상              |
 | RAM    | 512 MB          | 2 GB 이상                |
 | 디스크 | 5 GB            | 20 GB 이상               |
-| OS     | Ubuntu 20.04+   | Ubuntu 22.04+ / Rocky 9+ |
+| OS     | Ubuntu 22.04+   | Ubuntu 24.04+ / Rocky 9+ |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -381,6 +381,6 @@ sudo journalctl -u kubelet -f
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-05-04
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

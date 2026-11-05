@@ -89,8 +89,13 @@ rpm -qa | grep -i mysql-community-server
 | 5.7.x      | percona-xtrabackup-24 |
 | 8.0.x      | percona-xtrabackup-80 |
 | 8.1.x      | percona-xtrabackup-81 |
+| 8.4.x      | percona-xtrabackup-84 |
 
-### 2.3 설치 (Amazon Linux 2 / CentOS 7)
+MySQL 9.7용 XtraBackup 9.7은 2026-07 기준 RC(9.7.1-rc1) 단계입니다. 운영 백업에는 정식 출시 여부를 확인한 뒤 씁니다.
+
+### 2.3 설치 (RHEL 계열)
+
+🟡 Amazon Linux 2(2026-06-30)와 CentOS 7(2024-06-30)은 지원이 끝났습니다. RHEL·Rocky·Alma 8 이상에서는 `yum`이 `dnf`로 연결되어 아래 명령을 그대로 쓸 수 있습니다.
 
 ```bash
 # Percona 저장소 추가
@@ -2245,6 +2250,6 @@ cat ${RESULTS_FILE}
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

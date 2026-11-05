@@ -17,7 +17,7 @@
 
 | 항목 | 최소            | 권장                     |
 |------|-----------------|--------------------------|
-| OS   | Ubuntu 20.04+   | Ubuntu 22.04+ / Rocky 9+ |
+| OS   | Ubuntu 22.04+   | Ubuntu 24.04+ / Rocky 9+ |
 | RAM  | 256 MB          | 1 GB 이상                |
 | 포트 | 80/tcp, 443/tcp | 80/tcp, 443/tcp          |
 
@@ -333,7 +333,8 @@ server {
     ssl_session_timeout 1d;
     ssl_session_tickets off;
 
-    # OCSP Stapling
+    # OCSP Stapling: 인증서에 OCSP 주소가 있을 때만 의미 있음
+    # Let's Encrypt는 2025-08-06 OCSP를 종료해 효과가 없으므로 끄거나 지움
     ssl_stapling        on;
     ssl_stapling_verify on;
 
@@ -451,6 +452,6 @@ ps aux | grep nginx
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-05-04
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -20,7 +20,7 @@
 | CPU    | 1 core        | 4 core 이상                              |
 | RAM    | 1 GB          | 8 GB 이상                                |
 | 디스크 | 5 GB          | SSD 100 GB 이상                          |
-| OS     | Ubuntu 20.04+ | Ubuntu 22.04 / Rocky 9 / Alma 9 / RHEL 9 |
+| OS     | Ubuntu 22.04+ | Ubuntu 24.04 / Rocky 9 / Alma 9 / RHEL 9 |
 | 포트   | 5432/tcp      | 5432/tcp                                 |
 
 ### 버전 선택 기준
@@ -625,6 +625,6 @@ sudo -u postgres psql -c "SELECT pid, usename, datname, state, query FROM pg_sta
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

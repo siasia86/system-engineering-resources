@@ -16,7 +16,7 @@
 
 | 항목 | 최소          | 권장                           |
 |------|---------------|--------------------------------|
-| OS   | Ubuntu 20.04+ | Ubuntu 22.04+ / Rocky 9+       |
+| OS   | Ubuntu 22.04+ | Ubuntu 24.04+ / Rocky 9+       |
 | RAM  | 512 MB        | 4 GB 이상 (데이터 크기에 따라) |
 | 포트 | 6379/tcp      | 6379/tcp                       |
 
@@ -373,6 +373,6 @@ redis-cli info clients | grep connected_clients
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-05-04
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -370,7 +370,7 @@ jobs:
       matrix:
         role: [ssh_setup, nginx, zabbix_agent]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: pip install molecule molecule-plugins[docker]
       - run: cd roles/${{ matrix.role }} && molecule test
 ```
@@ -401,6 +401,6 @@ jobs:
 
 **작성일**: 2026-05-15
 
-**마지막 업데이트**: 2026-05-27
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -17,7 +17,7 @@
 
 | 항목   | 최소                    | 권장                     |
 |--------|-------------------------|--------------------------|
-| OS     | Ubuntu 20.04+ / RHEL 8+ | Ubuntu 22.04+ / Rocky 9+ |
+| OS     | Ubuntu 22.04+ / RHEL 8+ | Ubuntu 24.04+ / Rocky 9+ |
 | CPU    | 1 core (64-bit)         | 2 core 이상              |
 | RAM    | 512 MB                  | 2 GB 이상                |
 | 디스크 | 10 GB                   | SSD 50 GB 이상           |
@@ -665,6 +665,6 @@ sudo ip link set macvlan0 up
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

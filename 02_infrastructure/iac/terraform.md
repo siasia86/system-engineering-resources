@@ -188,7 +188,7 @@ output "public_ip" {
 
 output "db_password" {
   value     = random_password.db.result
-  sensitive = true   # terraform output 시 마스킹
+  sensitive = true   # CLI 출력에서만 가림, -raw·-json 출력과 state에는 평문
 }
 ```
 
@@ -609,12 +609,21 @@ locals {
   db_password = jsondecode(data.aws_secretsmanager_secret_version.db.secret_string)["password"]
 }
 
-# 방법 3: sensitive 변수 (tfstate에 암호화 저장)
+# 방법 3: sensitive 변수 (화면 출력만 가림, state·plan 파일에는 평문 저장)
 variable "db_password" {
   type      = string
   sensitive = true
 }
+
+# 방법 4: ephemeral 변수 (Terraform 1.10+, state·plan 파일에 저장하지 않음)
+#   write-only 인수(1.11+, provider가 지원하는 *_wo 인수)에만 넘길 수 있음
+variable "db_password_once" {
+  type      = string
+  ephemeral = true
+}
 ```
+
+🟡 `sensitive = true`는 암호화가 아닙니다. 값은 state와 plan 파일에 그대로 남으므로 원격 backend의 저장 시 암호화(S3 `encrypt = true` 등)와 state 접근 권한 제한을 함께 적용합니다.
 
 ### .gitignore
 
@@ -723,6 +732,6 @@ terraform show -json
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

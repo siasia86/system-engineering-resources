@@ -210,7 +210,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: docker build -t myapp .
       - run: docker push myapp
 ```
@@ -305,6 +305,6 @@ AlertManager (Slack/Email 알림)
 
 **작성일**: 2026-05-26
 
-**마지막 업데이트**: 2026-08-05
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

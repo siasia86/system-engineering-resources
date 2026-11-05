@@ -13,6 +13,7 @@ sources:
   - https://developer.hashicorp.com/terraform/language/expressions/version-constraints
   - https://developer.hashicorp.com/terraform/language/style
   - https://github.com/hashicorp/terraform/releases
+  - https://developer.hashicorp.com/terraform/language/manage-sensitive-data
 ---
 
 # Terraform 공식 문서 참조 노트
@@ -89,7 +90,8 @@ terraform {
 ## 6. 보안 권장사항
 
 - 상태 파일 암호화: S3 backend `encrypt = true`
-- 민감 변수: `sensitive = true` — plan/apply 출력에서 마스킹
+- 민감 변수: `sensitive = true` — CLI 출력에서만 가림. state·plan 파일에는 평문으로 저장되고 `terraform output -raw`·`-json`은 값을 그대로 출력(확인일 2026-11-05, manage-sensitive-data)
+- ephemeral 변수·출력·블록(1.10+)과 write-only 인수(1.11+)는 state·plan 파일에 저장되지 않음. 루트 모듈 output에는 `ephemeral`을 쓸 수 없음
 - IAM 최소 권한: provider에 필요한 권한만 부여
 - 시크릿 하드코딩 금지 — `var.*`, AWS Secrets Manager, SSM Parameter Store 사용
 - `.terraform/`, `*.tfstate`, `*.tfvars` — `.gitignore`에 반드시 추가

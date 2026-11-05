@@ -242,8 +242,7 @@ CMD ["python", "app.py"]
 
 **Docker Compose**
 ```yaml
-version: '3.8'
-
+# Compose v2부터 최상위 version 키는 쓰지 않음(지정해도 무시되고 경고)
 services:
   app:
     build: .
@@ -309,7 +308,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       
       - name: Build
         run: docker build -t myapp .
@@ -2130,6 +2129,6 @@ Staff/Principal (8년+):
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-04-11
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.

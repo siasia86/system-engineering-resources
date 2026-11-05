@@ -270,7 +270,7 @@ See the [LICENSE](LICENSE) file for details.
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-08-27
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.
 ```
@@ -428,7 +428,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - run: npx license-checker --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause'
 ```
 
@@ -531,7 +531,7 @@ GitHub CLA Assistant 등 도구로 자동화 가능.
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-08-27
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.
 

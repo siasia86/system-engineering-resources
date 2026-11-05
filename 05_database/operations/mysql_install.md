@@ -20,16 +20,19 @@
 | CPU    | 1 core        | 4 core 이상                              |
 | RAM    | 1 GB          | 8 GB 이상                                |
 | 디스크 | 5 GB          | SSD 100 GB 이상                          |
-| OS     | Ubuntu 20.04+ | Ubuntu 22.04 / Rocky 9 / Alma 9 / RHEL 9 |
+| OS     | Ubuntu 22.04+ | Ubuntu 24.04 / Rocky 9 / Alma 9 / RHEL 9 |
 | 포트   | 3306/tcp      | 3306/tcp                                 |
 
 ### 버전 선택 기준
 
-| 버전      | 상태           | 권장 여부           |
-|-----------|----------------|---------------------|
-| MySQL 8.0 | LTS (2026 EOL) | 🟡 신규 구축 비권장 |
-| MySQL 8.4 | LTS (2032 EOL) | ✅ 신규 구축 권장   |
-| MySQL 9.x | Innovation     | 실험적 기능 평가용  |
+| 버전            | 상태                     | 권장 여부                     |
+|-----------------|--------------------------|-------------------------------|
+| MySQL 8.0       | 지원 종료 (2026-04-30)   | ❌ 신규 구축 금지, 8.4로 전환 |
+| MySQL 8.4       | LTS (2032-04 EOL)        | ✅ 신규 구축 권장             |
+| MySQL 9.7       | LTS (2034-04 EOL)        | ✅ 신규 구축 가능             |
+| MySQL 26.x 이후 | Innovation (연월 버전명) | 실험적 기능 평가용            |
+
+9.7은 순번 버전명의 마지막 LTS이며, 이후 릴리스는 `26.7`(2026년 7월)처럼 연월 버전명을 씁니다. Innovation 릴리스는 다음 Innovation 릴리스가 나올 때까지만 지원됩니다(MySQL Releases 문서, 확인일 2026-11-05).
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -124,7 +127,7 @@ AppStream 저장소에 포함된 버전을 사용합니다. 최신 버전이 필
 # 사용 가능한 MySQL 모듈 확인
 sudo dnf module list mysql
 
-# MySQL 8.0 설치
+# MySQL 8.0 설치 (Oracle 지원은 2026-04-30 종료, 배포판 패키지 지원 기간은 배포판 수명 주기를 따름)
 sudo dnf module enable mysql:8.0 -y
 sudo dnf install mysql-server -y
 sudo systemctl enable --now mysqld
@@ -506,6 +509,6 @@ sudo mysqladmin -u root -p processlist   # 실행 중인 쿼리
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-05-04
+**마지막 업데이트**: 2026-11-05
 
 © 2026 siasia86. Licensed under CC BY 4.0.
