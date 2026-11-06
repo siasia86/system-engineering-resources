@@ -401,7 +401,7 @@ LIVE=$(openssl s_client -connect 127.0.0.1:443 -servername app.example.com </dev
 - cert-manager Certificate: [cert-manager.io](https://cert-manager.io/docs/usage/certificate/) — ★★★★☆
 - AWS ACM EventBridge 이벤트: [docs.aws.amazon.com](https://docs.aws.amazon.com/acm/latest/userguide/supported-events.html) — ★★★★☆
 - 확인 기록: [TLS 인증서 수명 주기 참조 노트](../../_reference/tls_cert_lifecycle_official_notes.md)
-- 관련 문서: [TLS/SSL 가이드](./tls_ssl_guide.md), [Trivy 가이드](./trivy_guide.md)
+- 관련 문서: [TLS/SSL 가이드](./tls_ssl_guide.md), [Trivy 가이드](./trivy_guide.md), [HAProxy ACME 가이드](../../02_infrastructure/web_server/haproxy_acme_guide.md)
 
 ---
 
@@ -418,6 +418,6 @@ LIVE=$(openssl s_client -connect 127.0.0.1:443 -servername app.example.com </dev
 
 **작성일**: 2026-11-05
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-06
 
 © 2026 siasia86. Licensed under CC BY 4.0.

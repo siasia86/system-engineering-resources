@@ -250,7 +250,7 @@ frontend fe_web
 - `crt`에 디렉터리를 주면 안의 인증서를 모두 읽고 SNI로 고릅니다.
 - 3.4 기본 `ssl-min-ver`는 TLSv1.2입니다. 암호 목록은 [Mozilla SSL Configuration Generator](https://ssl-config.mozilla.org/)의 HAProxy 항목을 기준으로 합니다.
 - `option forwardfor`는 `X-Forwarded-For`를 붙입니다. 앞에 CDN·다른 프록시가 있으면 신뢰할 대역만 받아들이도록 서버 쪽 설정도 맞춥니다([CDN·프록시와 원본 IP](../../01_fundamentals/networking/cdn_proxy_origin_ip.md)).
-- 인증서 교체는 파일을 바꾸고 reload합니다. 만료 감시는 [TLS 인증서 만료 감시](../../04_security/hardening/tls_certificate_expiry_monitoring.md)를 봅니다. 3.2부터 ACME 자동 갱신 기능이 있으나 이 문서에서는 다루지 않습니다.
+- 인증서 교체는 파일을 바꾸고 reload합니다. 만료 감시는 [TLS 인증서 만료 감시](../../04_security/hardening/tls_certificate_expiry_monitoring.md)를 봅니다. 3.2부터 있는 내장 ACME 자동 갱신은 [HAProxy ACME 가이드](./haproxy_acme_guide.md)에서 다룹니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -400,7 +400,7 @@ api "show sess"          # 현재 세션 목록 (많으면 주의)
 - Debian/Ubuntu HAProxy 패키지: [haproxy.debian.net](https://haproxy.debian.net/) — ★★★★☆
 - Mozilla SSL Configuration Generator: [ssl-config.mozilla.org](https://ssl-config.mozilla.org/) — ★★★★☆
 - 확인 기록: [웹 서버 참조 노트 3절](../../_reference/web_server_official_notes.md#3-haproxy)
-- 관련 문서: [HAProxy 핵심 개념](./haproxy_concepts.md), [HAProxy 설치 가이드](./haproxy_install.md), [HAProxy + Keepalived 이중화](./haproxy_keepalived_ha.md), [로드 밸런서 테스트](../../01_fundamentals/cs/web_testing/load_balancer_testing.md), [graceful reload 테스트](../../01_fundamentals/cs/web_testing/graceful_reload_testing.md)
+- 관련 문서: [HAProxy 핵심 개념](./haproxy_concepts.md), [HAProxy 설치 가이드](./haproxy_install.md), [HAProxy + Keepalived 이중화](./haproxy_keepalived_ha.md), [HAProxy ACME 가이드](./haproxy_acme_guide.md), [로드 밸런서 테스트](../../01_fundamentals/cs/web_testing/load_balancer_testing.md), [graceful reload 테스트](../../01_fundamentals/cs/web_testing/graceful_reload_testing.md)
 
 ---
 

@@ -10,6 +10,7 @@ tags:
   - haproxy
   - load-balancer
   - keepalived
+  - acme
 last_checked: 2026-08-20
 sources:
   - https://nginx.org/en/docs/
@@ -22,6 +23,7 @@ sources:
   - https://haproxy.debian.net/
   - https://github.com/acassen/keepalived/blob/v2.4.3/doc/man/man5/keepalived.conf.5.in
   - https://docs.kernel.org/networking/ip-sysctl.html
+  - https://github.com/haproxy/wiki/wiki/ACME:--native-haproxy
 ---
 
 # Web Server 공식 참조 노트
@@ -239,6 +241,17 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 - v2.2.8 man 문서: `unicast_peer`, `unicast_fault_no_peer`, `check_unicast_src`, `enable_script_security`, `nopreempt` 있음. `auth_hmac` 없음.
 - `keepalived(8)`: `-t, --config-test[=FILE]`, 오류 시 0이 아닌 종료 코드.
 - Linux 커널 ip-sysctl: `ip_nonlocal_bind`는 로컬에 없는 IP bind 허용, 일부 애플리케이션을 깨뜨릴 수 있다고 명시.
+
+### ACME (확인일: 2026-11-06)
+
+- configuration.txt 12.8: 실험 기능(`expose-experimental-directives` 필요). challenge는 http-01(기본)·dns-01·dns-persist-01. dns 계열은 Data Plane API 등 외부 도구 필요, dns-persist-01은 `_validation-persist.<domain>` TXT를 한 번만 설정. 인증서·키는 메모리에만 있고 `dump ssl cert`나 `admin/cli/haproxy-dump-certs`로 저장. 스케줄러는 시작 시와 12시간마다 확인하고 `notAfter - (notAfter - notBefore)/12` 이후 갱신(notBefore 없으면 7일 전). `directory` 기본값 없음. 기본 키 ECDSA P-384, RSA는 2048비트. `account-key` 없으면 `<section>.account.key`. `challenge-ready` 기본 dns-01 `cli`, dns-persist-01 `dns,delay`. `dns-delay` 30초, `dns-timeout` 600초. `profile`(draft-ietf-acme-profiles), EAB(`eab-key-id`·`eab-mac-key`·`eab-mac-alg` 기본 HS256).
+- configuration.txt 12.7: `crt-store`의 `load crt ... acme <section> domains "<a>,<b>"`이면 파일 없이 임시 키 쌍으로 시작. 첫 도메인이 CN.
+- management.txt: `acme renew <crt>`, `acme status`(인증서·section·Running/Scheduled/Stopped·만료·예정 시각), `dump ssl cert`(admin 권한).
+- 3.4 문서에서 ARI(renewalInfo)나 갱신 시점 조정 설정은 찾지 못함.
+- haproxy-dump-certs(3.4 소스): 실험 스크립트, 지문이 같으면 건너뜀, 키 쌍 불일치면 저장 안 함, 이전 파일을 `.old.<시각>`으로 이동. `-S`, `-s`, `-p`, `-n`.
+- 공식 wiki ACME 안내: 3.2부터 실험 기능, 3.3부터 crt-store로 파일 없이 시작, reload 시 저장하지 않으면 재발급되어 CA 발급 제한 위험, systemd `ExecStop`·`ExecReload`에 저장 스크립트 추가 예시.
+- haproxy.org 공지: 3.3에서 Data Plane API 경유 DNS-01, 3.4에서 DNS-01·dns-persist-01·EAB·발급 프로필.
+- Let's Encrypt directory(운영·staging) 응답에 `renewalInfo` 항목과 프로필 `classic`·`shortlived`·`tlsserver`가 있음.
 
 ### 적용 범위와 제한
 
