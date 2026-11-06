@@ -1,18 +1,24 @@
 ---
 name: web-server-official-notes
-description: Nginx, Apache HTTP Server 공식 문서 기반 설정, 보안, 성능 참조 노트. 02_infrastructure/web_server/ 문서 생성/검토 시 참조.
+description: Nginx, Apache HTTP Server, HAProxy 공식 문서 기반 설정, 보안, 성능 참조 노트. 02_infrastructure/web_server/ 문서 생성/검토 시 참조.
 tags:
   - nginx
   - apache
   - httpd
   - web-server
   - reverse-proxy
+  - haproxy
+  - load-balancer
 last_checked: 2026-08-20
 sources:
   - https://nginx.org/en/docs/
   - https://httpd.apache.org/docs/2.4/
   - https://ssl-config.mozilla.org/
   - https://www.ssllabs.com/ssltest/
+  - https://www.haproxy.org/
+  - https://docs.haproxy.org/3.4/configuration.html
+  - https://docs.haproxy.org/3.4/management.html
+  - https://haproxy.debian.net/
 ---
 
 # Web Server 공식 참조 노트
@@ -154,28 +160,78 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 
 ## 3. HAProxy
 
-### 버전
+### 확인 범위 (확인일: 2026-11-06)
 
-| 채널 | 버전 | LTS 종료                 |
-|------|------|--------------------------|
-| LTS  | 3.4  | 2031-Q2                  |
-| LTS  | 3.2  | 2030-Q2                  |
-| LTS  | 3.0  | 2029-Q2                  |
-| LTS  | 2.8  | 2028-Q2 (critical fixes) |
+2026-11-06에 haproxy.org 첫 화면, haproxy-3.4 git 저장소의 `doc/intro.txt`·`doc/configuration.txt`(version 3.4, 2026/10/14)·`doc/management.txt`, `admin/systemd/haproxy.service.in`, `addons/promex/README`, Launchpad API, 작업 서버의 `apt-cache policy haproxy`를 읽었습니다. HAProxy를 설치·실행하지 않았습니다.
 
-- 출처: https://www.haproxy.org/
+### Version status
 
-### 핵심 설정
+| 분기 | 최신   | 상태                | 지원 종료 |
+|------|--------|---------------------|-----------|
+| 3.5  | dev11  | 개발                | 2028-Q1   |
+| 3.4  | 3.4.7  | LTS                 | 2031-Q2   |
+| 3.3  | 3.3.17 | stable              | 2027-Q1   |
+| 3.2  | 3.2.26 | LTS                 | 2030-Q2   |
+| 3.1  | 3.1.17 | 지원 종료           | 2026-Q1   |
+| 3.0  | 3.0.30 | LTS                 | 2029-Q2   |
+| 2.9  | 2.9.15 | 지원 종료           | 2025-Q1   |
+| 2.8  | 2.8.31 | critical fixes only | 2028-Q2   |
+| 2.6  | 2.6.35 | critical fixes only | 2027-Q2   |
 
-| 항목            | 권장                  | 근거             |
-|-----------------|-----------------------|------------------|
-| maxconn         | 시스템 FD 기반 산정   | ulimit -n 연동   |
-| timeout connect | 5s                    | 백엔드 연결 대기 |
-| timeout client  | 30s                   | 클라이언트 유휴  |
-| timeout server  | 30s                   | 백엔드 응답 대기 |
-| stats socket    | /var/run/haproxy.sock | 런타임 API       |
+- 짝수 분기는 LTS(5년), 홀수 분기는 stable(짧은 지원)입니다.
+- 3.4.0 배포 2026-06-03: CLI로 backend 생성·게시·삭제, HTTP/2 flood 제한, ACME DNS-01·dns-persist-01, systemd unit의 `conf.d` 디렉터리, OpenTelemetry filter(OpenTracing은 폐기 예정).
+- 3.3.0 배포 2025-11-26: 기본 분산 알고리즘이 `random(2)`로 바뀜, reload 후에도 통계 유지, KTLS.
+- 2026-02-12 공지: QUIC 파싱 취약점 CVE-2026-26081(3.0 이상)·CVE-2026-26080(3.2 이상), 조작된 패킷으로 프로세스 중단 위험. 수정판 3.0.12, 3.1.14, 3.2.12, 3.3.3.
+- 작업 서버(Ubuntu 24.04) 기본 저장소 후보 `2.8.30-0ubuntu0.24.04.2`.
+- Launchpad `~vbernat/haproxy-3.4` PPA의 게시 원본은 `3.4.7-1ppa1~resolute`(Ubuntu 26.04) 1건만 확인했습니다. 다른 Ubuntu 버전용 게시 여부는 확인하지 않았습니다.
 
-- 출처: https://docs.haproxy.org/
+### 동작 구조 (intro.txt 3.1·3.2)
+
+- 하는 일: TCP proxy, HTTP reverse proxy, TLS 종료·시작, TCP·HTTP 정규화, 헤더 수정, 내용 기반 분기, 분산, 속도 제한, 남용 방지, 압축, 메모리 캐시, FastCGI gateway.
+- 하지 않는 일: 브라우저용 forward proxy, 본문 변경, 정적 웹 서버(chroot 후 파일 접근 안 함), 패킷 기반 LB(NAT·DSR 없음, IPVS 영역).
+- event-driven non-blocking 엔진 + 우선순위 기반 멀티스레드 스케줄러. 처리 시간 대부분은 커널(TCP·HTTP close 15:85, keep-alive 30:70).
+- 서버는 swap을 쓰면 안 되고 CPU를 쪼개 할당하거나 계산 작업과 공유하지 말 것. 성능 문제의 첫 조치가 CPU 수를 줄이는 것인 경우가 많음.
+- 시작 시 설정을 모두 읽고 listen socket을 모두 bind한 뒤에야 시작하며, 실패하면 시작하지 않음.
+- 시작 후 하는 일 3가지: 연결 처리, 헬스체크, 다른 노드와 정보 교환(peers).
+- 요청 처리 9단계: frontend 수신 → frontend 규칙 → backend 전달 → backend 규칙 → 서버 선택 → backend 응답 규칙 → frontend 응답 규칙 → 로그 → HTTP면 다음 요청 대기.
+- TCP 모드는 연결 단위로, HTTP 모드는 요청 단위로 분산을 결정.
+
+### 설정 기본값 (configuration.txt)
+
+| 항목                       | 기본값·내용                                                                        |
+|----------------------------|------------------------------------------------------------------------------------|
+| `balance`                  | 다른 알고리즘·mode·option이 없으면 `random`, draw 기본 2                           |
+| `roundrobin`               | 동적(가중치 실시간 변경 가능), backend당 활성 서버 4095개 한도                     |
+| `source`·`uri`·`hash`      | 기본 정적(map-based), `hash-type consistent`로 변경 가능                           |
+| `inter`·`rise`·`fall`      | 2000ms·2·3                                                                         |
+| `option httpchk`           | 지정이 없으면 `OPTIONS / HTTP/1.0`, 새 방식은 `http-check send meth … uri … ver …` |
+| HTTP 연결 모드             | 기본 keep-alive, `option http-server-close`는 서버 쪽만 닫음                       |
+| `timeout http-request`     | 없으면 `timeout client`가 적용, 설정 시 초과 시 408                                |
+| `timeout http-keep-alive`  | 없으면 `timeout http-request` 사용                                                 |
+| `timeout queue`            | 없으면 `timeout connect` 사용                                                      |
+| `timeout tunnel`           | WebSocket·CONNECT 전환 뒤 적용, 예시 `1h`                                          |
+| `retries`                  | 기본은 새 연결 시도에만 적용, 재시도 전 min(timeout connect, 1s) 대기              |
+| `maxconn`(global)          | 없으면 `ulimit -nH` 등 FD 한도에서 자동 계산                                       |
+| `nbthread`                 | CPU affinity를 지원하면 사용 가능한 CPU 수, `haproxy -vv`에 표시                   |
+| `ssl-min-ver`              | 기본 TLSv1.2                                                                       |
+| `master-worker` 키워드     | deprecated, `-W` 또는 `-Ws` 사용                                                   |
+| `http-request use-service` | 예: `prometheus-exporter if { path /metrics }`                                     |
+
+- stick-table 예시: `stick-table type ip size 1m expire 5m store http_req_rate(10s)`와 `track-sc`, `sc_http_req_rate`.
+
+### 관리 (management.txt, systemd unit)
+
+- `-f <dir>`은 디렉터리 안의 `.cfg` 파일만, 숨김 파일을 빼고, 이름순(LC_COLLATE=C)으로 읽음. 파일마다 section 경계(`global`, `defaults`, `frontend` 등)로 시작해야 함.
+- master-worker: master가 worker를 관리하고 `SIGUSR2`로 reload. 새 worker를 띄우고 이전 worker는 진행 중인 작업이 끝날 때까지 유지. master-worker 모드에서는 `expose-fd listeners` 없이 socket을 넘김.
+- master CLI `reload`: `kill -USR2`와 같고 결과(`Success=1`)를 돌려줌. socat 기본 timeout 0.5s라 `-t300` 예시. `hard-reload` 별도.
+- Runtime API: `set server <b>/<s> state ready|drain|maint`(drain은 분산에서 빼되 헬스체크·persistent 연결 유지, maint는 트래픽·헬스체크 모두 중단), `set server … weight`, `show stat`, `show info`, `show servers state`, `show errors`, `show sess`, `show table`, `clear table`, `add server`·`del server`, 3.4의 `add backend`·`publish backend`.
+- 3.4 systemd unit: `-Ws -f $CONFIG -f $CFGDIR -p $PIDFILE -S /run/haproxy-master.sock`, `CFGDIR=/etc/haproxy/conf.d`, `ExecReload`는 `-c` 검사 뒤 `kill -USR2`, `Type=notify`, `Restart=always`. 배포판 패키지 unit은 다를 수 있음.
+- Prometheus exporter(PROMEX)는 기본 빌드에 포함되지 않음(`USE_PROMEX=1`). 포함되면 `haproxy -vv`에 `Built with the Prometheus exporter as a service`.
+
+### 적용 범위와 제한
+
+- 설정 예시는 위 문서를 근거로 썼으며 `haproxy -c`로 검사하지 않았습니다.
+- 배포판 패키지(Ubuntu·RHEL)의 unit 파일, PROMEX 포함 여부, 기본 `haproxy.cfg`는 확인하지 않았습니다.
 
 ## 4. TLS 설정 공통 (Mozilla SSL Configuration Generator)
 

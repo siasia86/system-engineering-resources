@@ -229,11 +229,13 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Web Server
 
-| 문서                                                       | 설명                       |
-|------------------------------------------------------------|----------------------------|
-| [Nginx](02_infrastructure/web_server/nginx_install.md)     | 가상 호스트, 리버스 프록시 |
-| [Apache](02_infrastructure/web_server/apache_install.md)   | MPM, SSL                   |
-| [HAProxy](02_infrastructure/web_server/haproxy_install.md) | L4/L7 LB, SSL 터미네이션   |
+| 문서                                                                            | 설명                              |
+|---------------------------------------------------------------------------------|-----------------------------------|
+| [Nginx](02_infrastructure/web_server/nginx_install.md)                          | 가상 호스트, 리버스 프록시        |
+| [Apache](02_infrastructure/web_server/apache_install.md)                        | MPM, SSL                          |
+| [HAProxy](02_infrastructure/web_server/haproxy_install.md)                      | L4/L7 LB, SSL 터미네이션          |
+| [HAProxy 핵심 개념](02_infrastructure/web_server/haproxy_concepts.md)           | 구조, 분산, 헬스체크, reload      |
+| [HAProxy 운영 가이드](02_infrastructure/web_server/haproxy_operations_guide.md) | 변경 절차, Runtime API, 장애 확인 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -521,6 +523,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-06
 
 © 2026 siasia86. Licensed under CC BY 4.0.

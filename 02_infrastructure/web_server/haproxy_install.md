@@ -51,14 +51,11 @@ sudo apt install haproxy -y
 sudo systemctl enable --now haproxy
 ```
 
-### 2-3. 설치 방법 B: PPA (최신 버전)
+### 2-3. 설치 방법 B: 패키지 팀 저장소 (3.x LTS)
 
-```bash
-sudo add-apt-repository ppa:vbernat/haproxy-2.9 -y
-sudo apt update
-sudo apt install haproxy=2.9.\* -y
-sudo systemctl enable --now haproxy
-```
+Ubuntu 24.04 기본 저장소는 2.8 분기를 제공합니다. 3.x LTS가 필요하면 [haproxy.debian.net](https://haproxy.debian.net/) 마법사에서 OS와 분기(3.4 LTS 권장)를 골라 나오는 저장소 줄을 씁니다. 분기·OS 조합마다 저장소가 다르므로 고정 명령을 적지 않습니다.
+
+🟡 이전 판의 `ppa:vbernat/haproxy-2.9`는 2.9 분기 지원 종료(2025-Q1)로 쓰지 않습니다. 분기 선택은 [HAProxy 핵심 개념 10절](./haproxy_concepts.md#10-버전-정책)을 봅니다.
 
 ### 2-4. 설치 확인
 
@@ -257,13 +254,15 @@ listen stats
     stats enable
     stats uri /stats
     stats refresh 10s
-    stats auth admin:SecurePassword123
+    stats auth admin:<STATS_PASSWORD>
     stats hide-version
 ```
 
 ```bash
 # 접속: http://SERVER_IP:8404/stats
 ```
+
+🟡 통계 화면은 내부 주소에만 bind하고 비밀번호를 설정 파일 밖(비공개 저장소·비밀 관리 도구)에서 관리합니다. 운영 기준은 [HAProxy 운영 가이드 10절](./haproxy_operations_guide.md#10-관측-로그통계지표)을 봅니다.
 
 ### Tip 2: 헬스체크 세부 설정
 
@@ -315,7 +314,8 @@ sudo tail -50 /var/log/haproxy.log
 ## 참고 자료
 
 - HAProxy Documentation: [docs.haproxy.org](https://docs.haproxy.org/) — ★★★☆☆
-- HAProxy Configuration Manual: [cbonte.github.io/haproxy-dconv](https://cbonte.github.io/haproxy-dconv/2.9/configuration.html) — ★★★☆☆
+- HAProxy 3.4 Configuration Manual: [docs.haproxy.org/3.4/configuration.html](https://docs.haproxy.org/3.4/configuration.html) — ★★★★★
+- 관련 문서: [HAProxy 핵심 개념](./haproxy_concepts.md), [HAProxy 운영 가이드](./haproxy_operations_guide.md)
 
 ---
 
@@ -332,6 +332,6 @@ sudo tail -50 /var/log/haproxy.log
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-06
 
 © 2026 siasia86. Licensed under CC BY 4.0.

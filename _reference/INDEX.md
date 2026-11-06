@@ -81,7 +81,7 @@ sources:
 | SRE Operations                 | `_reference/sre_operations_official_notes.md`           | Google SRE Book / ITIL v4                               | 2026-07-07 | X    |
 | Terraform                      | `_reference/terraform_official_notes.md`                | v1.17.1, AWS Provider v6.72.0                           | 2026-11-05 | O    |
 | VPN Protocol                   | `_reference/vpn_protocol_official_notes.md`             | RFC 7296 / WireGuard protocol                           | 2026-08-10 | O    |
-| Web Server                     | `_reference/web_server_official_notes.md`               | Nginx 1.30.3, Apache 2.4.68                             | 2026-08-20 | O    |
+| Web Server                     | `_reference/web_server_official_notes.md`               | Nginx 1.30.3, Apache 2.4.68, HAProxy 3.4.7 LTS          | 2026-08-20 | O    |
 | YAML Spec                      | `_reference/yaml_spec_notes.md`                         | 1.2 (1.1 호환)                                          | 2026-05-26 | O    |
 | Zabbix                         | `_reference/zabbix_official_notes.md`                   | 7.4.16 (LTS: 7.0)                                       | 2026-11-05 | O    |
 | e4fsprogs (CentOS 5)           | `_reference/e4fsprogs_centos5_notes.md`                 | 1.41.12-4.el5_10, fsck.ext4                             | 2026-07-22 | O    |
@@ -142,6 +142,6 @@ sources:
 
 **작성일**: 2026-05-22
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-06
 
 © 2026 siasia86. Licensed under CC BY 4.0.
