@@ -213,7 +213,7 @@ backend be_app
     server app2 192.0.2.12:8080 check cookie a2
 ```
 
-stick-table은 세션 유지 외에 요청 수·오류 수 같은 카운터를 키별로 세는 데에도 씁니다. 속도 제한 예는 [운영 가이드](./haproxy_operations_guide.md#9-요청-속도-제한)에 있습니다.
+노드가 여러 대면 peers로 stick-table을 서로 맞춥니다([이중화 가이드 6절](./haproxy_keepalived_ha.md#6-haproxy-peers-설정)). stick-table은 세션 유지 외에 요청 수·오류 수 같은 카운터를 키별로 세는 데에도 씁니다. 속도 제한 예는 [운영 가이드](./haproxy_operations_guide.md#9-요청-속도-제한)에 있습니다.
 
 🔵 세션을 Redis 같은 외부 저장소에 두는 애플리케이션이라면 세션 유지가 필요 없고, 분산이 더 고르게 됩니다.
 
@@ -348,7 +348,7 @@ client --> [frontend maxconn] --> [backend] --> [server maxconn] --> server
 - HAProxy 3.4 Configuration Manual: [docs.haproxy.org/3.4/configuration.html](https://docs.haproxy.org/3.4/configuration.html) — ★★★★★
 - HAProxy 3.4 Management Guide: [docs.haproxy.org/3.4/management.html](https://docs.haproxy.org/3.4/management.html) — ★★★★☆
 - 확인 기록: [웹 서버 참조 노트 3절](../../_reference/web_server_official_notes.md#3-haproxy)
-- 관련 문서: [HAProxy 설치 가이드](./haproxy_install.md), [HAProxy 운영 가이드](./haproxy_operations_guide.md), [로드 밸런서 테스트](../../01_fundamentals/cs/web_testing/load_balancer_testing.md)
+- 관련 문서: [HAProxy 설치 가이드](./haproxy_install.md), [HAProxy 운영 가이드](./haproxy_operations_guide.md), [HAProxy + Keepalived 이중화](./haproxy_keepalived_ha.md), [로드 밸런서 테스트](../../01_fundamentals/cs/web_testing/load_balancer_testing.md)
 
 ---
 

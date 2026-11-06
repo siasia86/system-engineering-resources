@@ -12,7 +12,7 @@
 | [monitoring/](./monitoring/)         | 모니터링 — Prometheus, Grafana, Zabbix, 시스템 메트릭      | 8       |
 | [cloud_aws/](./cloud_aws/)           | AWS 클라우드 — VPC, S3, Network Firewall, 백업             | 8       |
 | [data_pipeline/](./data_pipeline/)   | 데이터 파이프라인 — Kafka, 로그 수집(100GB~100TB)          | 4       |
-| [web_server/](./web_server/)         | 웹 서버 — Nginx, Apache, HAProxy 설치·개념·운영            | 6       |
+| [web_server/](./web_server/)         | 웹 서버 — Nginx, Apache, HAProxy 설치·개념·운영·이중화     | 7       |
 | [storage/](./storage/)               | 스토리지 — 구조 설계, SSD 검수, 파일시스템, 백업, MinIO    | 6       |
 | [windows_server/](./windows_server/) | Windows Server — 에디션, 핵심 개념, SCVMM                  | 3       |
 

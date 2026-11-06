@@ -378,7 +378,7 @@ api "show sess"          # 현재 세션 목록 (많으면 주의)
 
 1. 대상 분기의 변경 사항을 읽습니다. 공식 공지에서 기본값 변경과 제거된 키워드를 확인합니다.
 2. 시험 서버에 새 버전을 설치하고 운영 설정으로 `haproxy -c`를 실행해 오류·경고를 없앱니다.
-3. 운영 서버는 LB 이중화가 있으면 한 대씩 빼고 올립니다. 바이너리 교체는 reload가 아니라 restart가 필요할 수 있으므로 트래픽을 다른 노드로 넘긴 뒤 합니다.
+3. 운영 서버는 LB 이중화([HAProxy + Keepalived 이중화](./haproxy_keepalived_ha.md))가 있으면 한 대씩 빼고 올립니다. 바이너리 교체는 reload가 아니라 restart가 필요할 수 있으므로 트래픽을 다른 노드로 넘긴 뒤 합니다.
 4. `show info`의 Version, 로그 오류율, 응답 시간을 이전과 비교합니다.
 
 | 올릴 때 확인할 기본값 변경          | 영향                                            |
@@ -400,7 +400,7 @@ api "show sess"          # 현재 세션 목록 (많으면 주의)
 - Debian/Ubuntu HAProxy 패키지: [haproxy.debian.net](https://haproxy.debian.net/) — ★★★★☆
 - Mozilla SSL Configuration Generator: [ssl-config.mozilla.org](https://ssl-config.mozilla.org/) — ★★★★☆
 - 확인 기록: [웹 서버 참조 노트 3절](../../_reference/web_server_official_notes.md#3-haproxy)
-- 관련 문서: [HAProxy 핵심 개념](./haproxy_concepts.md), [HAProxy 설치 가이드](./haproxy_install.md), [로드 밸런서 테스트](../../01_fundamentals/cs/web_testing/load_balancer_testing.md), [graceful reload 테스트](../../01_fundamentals/cs/web_testing/graceful_reload_testing.md)
+- 관련 문서: [HAProxy 핵심 개념](./haproxy_concepts.md), [HAProxy 설치 가이드](./haproxy_install.md), [HAProxy + Keepalived 이중화](./haproxy_keepalived_ha.md), [로드 밸런서 테스트](../../01_fundamentals/cs/web_testing/load_balancer_testing.md), [graceful reload 테스트](../../01_fundamentals/cs/web_testing/graceful_reload_testing.md)
 
 ---
 

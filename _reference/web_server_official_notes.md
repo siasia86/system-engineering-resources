@@ -9,6 +9,7 @@ tags:
   - reverse-proxy
   - haproxy
   - load-balancer
+  - keepalived
 last_checked: 2026-08-20
 sources:
   - https://nginx.org/en/docs/
@@ -19,6 +20,8 @@ sources:
   - https://docs.haproxy.org/3.4/configuration.html
   - https://docs.haproxy.org/3.4/management.html
   - https://haproxy.debian.net/
+  - https://github.com/acassen/keepalived/blob/v2.4.3/doc/man/man5/keepalived.conf.5.in
+  - https://docs.kernel.org/networking/ip-sysctl.html
 ---
 
 # Web Server 공식 참조 노트
@@ -227,6 +230,15 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 - Runtime API: `set server <b>/<s> state ready|drain|maint`(drain은 분산에서 빼되 헬스체크·persistent 연결 유지, maint는 트래픽·헬스체크 모두 중단), `set server … weight`, `show stat`, `show info`, `show servers state`, `show errors`, `show sess`, `show table`, `clear table`, `add server`·`del server`, 3.4의 `add backend`·`publish backend`.
 - 3.4 systemd unit: `-Ws -f $CONFIG -f $CFGDIR -p $PIDFILE -S /run/haproxy-master.sock`, `CFGDIR=/etc/haproxy/conf.d`, `ExecReload`는 `-c` 검사 뒤 `kill -USR2`, `Type=notify`, `Restart=always`. 배포판 패키지 unit은 다를 수 있음.
 - Prometheus exporter(PROMEX)는 기본 빌드에 포함되지 않음(`USE_PROMEX=1`). 포함되면 `haproxy -vv`에 `Built with the Prometheus exporter as a service`.
+
+### 이중화: peers와 Keepalived (확인일: 2026-11-06)
+
+- HAProxy peers(configuration.txt 11.2): stick-table 항목을 TCP로 multi-master 전파, 값은 합산 없이 덮어씀. `conn_cur`는 기본으로 받지 않음(`recv-only` 표 예외). reload 때 이전 worker가 새 worker에 전체 항목을 먼저 보냄. 서버는 ID로 식별하므로 노드 간 설정을 같게 유지. 로컬 peer 이름은 hostname, `localpeer`나 `-L`로 지정하고 모든 노드에 같은 peers 선언을 권장. `peers` 안의 `table`은 `<section>/<table>`로 참조. CLI `show peers`.
+- Keepalived 태그: v2.4.3(2026-07-20), v2.4.0(2026-06-22), v2.3.4(2025-06-10). GitHub 릴리스 항목은 없음. 작업 서버(Ubuntu 24.04) 후보 `1:2.2.8-1build2`.
+- `keepalived.conf(5)` v2.4.3: `vrrp_script`의 `interval` 기본 1초, `weight` 기본 0(실패 시 FAULT), `-253..253`. `priority` 1~255(255는 주소 소유자), MASTER는 50 높게 권장. 넘어가기 시간 `3 × advert_int + skew_time`(advert 1·priority 128이면 약 3.5초). `nopreempt`는 초기 state가 MASTER가 아니어야 동작. `authentication`은 RFC 3768에서 제거, unicast 외 사용 비권장. `script_user` 기본 `keepalived_script`(없으면 실행 사용자), `enable_script_security`는 쓰기 가능한 경로의 root 실행 거부.
+- v2.2.8 man 문서: `unicast_peer`, `unicast_fault_no_peer`, `check_unicast_src`, `enable_script_security`, `nopreempt` 있음. `auth_hmac` 없음.
+- `keepalived(8)`: `-t, --config-test[=FILE]`, 오류 시 0이 아닌 종료 코드.
+- Linux 커널 ip-sysctl: `ip_nonlocal_bind`는 로컬에 없는 IP bind 허용, 일부 애플리케이션을 깨뜨릴 수 있다고 명시.
 
 ### 적용 범위와 제한
 
