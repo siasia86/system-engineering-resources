@@ -172,11 +172,12 @@ address = 192.0.2.1
 - `uid`, `gid`를 설정해 transfer worker가 root로 파일을 처리하지 않게 합니다.
 - 업로드가 필요 없는 module은 `read only = yes`를 유지합니다.
 - 수신 전용 module은 `write only = yes`로 다운로드를 차단합니다.
-- `use chroot = yes`를 유지하고, chroot 실패를 허용하는 배포판 기본 동작에 의존하지 않습니다.
+- `use chroot = yes`를 유지하고, chroot 실패 시 경고만 남기고 계속하는 기본값(rsync 3.2.7부터 미설정)에 의존하지 않습니다.
 - `hosts allow/deny`, daemon `address`, host firewall을 모두 적용합니다.
 - plain chroot module은 chroot 자체가 탈출을 막으므로 `munge symlinks` 기본값이 `no`입니다. 예시는 수신 symlink를 저장소에서 사용할 수 없는 형태로 유지하도록 `yes`를 명시하며, module 안에 `/rsyncd-munged/` 경로가 없어야 합니다.
 - `insecure links = no`를 유지하여 daemon의 symlink race 방어를 사용합니다. `yes`는 symlink escape·TOCTOU 방어를 비활성화하므로 사용하지 않습니다.
 - `refuse options = delete`는 write-only 보관 module에서 client 삭제 옵션을 제한하는 방어층입니다.
+- `auth digest`와 `insecure links`는 rsync 3.5.0(2026-08-13)에서 추가된 매개변수입니다. 이전 판 daemon은 `IGNORING unknown parameter`를 로그에 남기고 무시하므로 daemon 쪽 `rsync --version`을 먼저 확인합니다.
 
 ### secrets file 보호
 
@@ -205,7 +206,7 @@ rsync-ssl -a --dry-run --itemize-changes \
     /srv/restore-test/
 ```
 
-`RSYNC_SSL_CA_CERT`를 설정하면 서버 인증서의 CA chain과 접속 hostname을 검증합니다. 다음 설정은 암호화만 사용하고 peer 인증을 약화하므로 운영 환경에서 사용하지 않습니다.
+`RSYNC_SSL_CA_CERT`를 설정하면 서버 인증서의 CA chain과 접속 hostname을 검증합니다. stunnel backend의 hostname 검증과 아래 `RSYNC_SSL_ALLOW_INSECURE_STUNNEL`·`RSYNC_SSL_SKIP_HOSTNAME_CHECK`는 rsync 3.5.0부터 적용됩니다. 다음 설정은 암호화만 사용하고 peer 인증을 약화하므로 운영 환경에서 사용하지 않습니다.
 
 ```bash
 # 사용 금지: 인증서 검증 전체 해제
@@ -453,6 +454,7 @@ SSH 키 교체는 기존 키를 먼저 삭제하지 않습니다. 새 제한 키
 - rsync Daemon Configuration: [download.samba.org/pub/rsync/rsyncd.conf.5](https://download.samba.org/pub/rsync/rsyncd.conf.5) — ★★★☆☆
 - rrsync Manual: [download.samba.org/pub/rsync/rrsync.1](https://download.samba.org/pub/rsync/rrsync.1) — ★★★☆☆
 - rsync SSL Helper: [download.samba.org/pub/rsync/rsync-ssl.1](https://download.samba.org/pub/rsync/rsync-ssl.1) — ★★★☆☆
+- rsync NEWS(3.5.0 보안 강화 등 버전별 변경 기록): [download.samba.org/pub/rsync/NEWS](https://download.samba.org/pub/rsync/NEWS) — ★★★☆☆
 - OpenSSH `sshd(8)`: [man.openbsd.org/sshd](https://man.openbsd.org/sshd) — ★★★☆☆
 
 ---
@@ -470,6 +472,6 @@ SSH 키 교체는 기존 키를 먼저 삭제하지 않습니다. 새 제한 키
 
 **작성일**: 2026-09-14
 
-**마지막 업데이트**: 2026-09-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -20,7 +20,7 @@ Trivy는 컨테이너 이미지, 파일시스템, IaC 설정, Kubernetes 클러�
 |-----------|--------------------------------------------|
 | 언어      | Go                                         |
 | 라이선스  | Apache-2.0                                 |
-| 최신 버전 | v0.76.1 (2026-10-21 배포, 2026-11-05 확인) |
+| 최신 버전 | v0.76.2 (2026-11-05 배포, 2026-11-09 확인) |
 | GitHub    | https://github.com/aquasecurity/trivy      |
 | 공식 문서 | https://trivy.dev/                         |
 
@@ -498,10 +498,11 @@ Trivy 바이너리에는 검사 엔진만 들어 있고 검사 자료는 실행 
 
 ## 참고 자료
 
-- Trivy: [github.com/aquasecurity/trivy](https://github.com/aquasecurity/trivy) — ★★★★☆
-- Trivy 공식 문서: [trivy.dev](https://trivy.dev/) — ★★★★☆
-- 공급망 사고 공지: [GHSA-69fq-xp46-6x23](https://github.com/aquasecurity/trivy/security/advisories/GHSA-69fq-xp46-6x23) — ★★★★★
-- Trivy GitHub Action: [github.com/aquasecurity/trivy-action](https://github.com/aquasecurity/trivy-action) — ★★★★☆
+- Trivy: [github.com/aquasecurity/trivy](https://github.com/aquasecurity/trivy) — ★★★☆☆
+- Trivy 공식 문서: [trivy.dev](https://trivy.dev/) — ★★★☆☆
+- 공급망 사고 공지: [GHSA-69fq-xp46-6x23](https://github.com/aquasecurity/trivy/security/advisories/GHSA-69fq-xp46-6x23) — ★★★☆☆
+- Trivy GitHub Action: [github.com/aquasecurity/trivy-action](https://github.com/aquasecurity/trivy-action) — ★★★☆☆
+- Trivy v0.76.2 릴리스(보안 수정): [github.com/aquasecurity/trivy/releases](https://github.com/aquasecurity/trivy/releases/tag/v0.76.2) — ★★★☆☆
 - 확인 기록: [Trivy 참조 노트](../../_reference/trivy_official_notes.md)
 - 관련 문서: [취약점 스캔 개요](./vulnerability_scanning.md), [Gitleaks 가이드](./gitleaks_guide.md)
 
@@ -520,6 +521,6 @@ Trivy 바이너리에는 검사 엔진만 들어 있고 검사 자료는 실행 
 
 **작성일**: 2026-11-05
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -16,7 +16,7 @@
 |-----------|-----------------------------------------------------------|
 | CWE ID    | CWE-434                                                   |
 | 이름      | Unrestricted Upload of File with Dangerous Type           |
-| OWASP     | A04:2021 Insecure Design                                  |
+| OWASP     | A06:2025 Insecure Design                                  |
 | 영향      | RCE (웹셸 설치 → 서버 장악)                               |
 | 빈도      | 높음 — 게시판, 프로필 사진, 문서 업로드 기능에서 발생     |
 | 전제 조건 | 업로드 검증 없음 + 업로드 디렉토리에서 스크립트 실행 가능 |
@@ -192,6 +192,7 @@ $target = $upload_dir . $new_name;
 
 - CWE-434: [cwe.mitre.org/data/definitions/434.html](https://cwe.mitre.org/data/definitions/434.html) — ★★★☆☆
 - OWASP File Upload: [owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload](https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload) — ★★★☆☆
+- OWASP Top 10:2025 A06 Insecure Design(CWE-434 매핑): [top10.owasp.org/2025/A06_2025-Insecure_Design](https://top10.owasp.org/2025/A06_2025-Insecure_Design/) — ★★★☆☆
 
 ---
 
@@ -208,6 +209,6 @@ $target = $upload_dir . $new_name;
 
 **작성일**: 2026-07-02
 
-**마지막 업데이트**: 2026-07-02
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

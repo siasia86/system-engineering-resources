@@ -16,7 +16,7 @@
 |-----------|-------------------------------------------------------------------|
 | CWE ID    | CWE-78                                                            |
 | 이름      | Improper Neutralization of Special Elements used in an OS Command |
-| OWASP     | A03:2021 Injection                                                |
+| OWASP     | A05:2025 Injection                                                |
 | 영향      | RCE (Remote Code Execution)                                       |
 | 빈도      | 높음 — PHP, Python, Node.js 웹 앱에서 자주 발견                   |
 | 전제 조건 | 사용자 입력이 셸 명령에 도달 + 위험 함수 활성화                   |
@@ -125,7 +125,7 @@ curl -X POST -d "cmd=cat /etc/passwd" http://10.200.101.182/cmd_exec.php
 ### php.ini 설정
 
 ```ini
-; 위험 함수 비활성화 (가장 효과적)
+; 위험 함수 비활성화 (보조 수단 — 1차 대응은 OS 명령 호출 자체를 피하는 것)
 disable_functions = shell_exec,system,exec,passthru,popen,proc_open,pcntl_exec
 ```
 
@@ -173,6 +173,8 @@ SecRule ARGS "@rx [;|`$()]" "id:1001,deny,status:403,msg:'Command Injection atte
 
 - CWE-78: [cwe.mitre.org/data/definitions/78.html](https://cwe.mitre.org/data/definitions/78.html) — ★★★☆☆
 - OWASP Command Injection: [owasp.org/www-community/attacks/Command_Injection](https://owasp.org/www-community/attacks/Command_Injection) — ★★★☆☆
+- OWASP OS Command Injection Defense Cheat Sheet: [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html) — ★★★☆☆
+- OWASP Top 10:2025 A05 Injection(CWE-78 매핑): [top10.owasp.org/2025/A05_2025-Injection](https://top10.owasp.org/2025/A05_2025-Injection/) — ★★★☆☆
 
 ---
 
@@ -189,6 +191,6 @@ SecRule ARGS "@rx [;|`$()]" "id:1001,deny,status:403,msg:'Command Injection atte
 
 **작성일**: 2026-07-02
 
-**마지막 업데이트**: 2026-07-02
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

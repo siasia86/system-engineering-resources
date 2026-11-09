@@ -11,25 +11,25 @@
 
 ## 1. 개요
 
-| 항목      | 내용                                         |
-|-----------|----------------------------------------------|
-| CVE       | CVE-2026-43284                               |
-| 별칭      | Dirty Frag / Copy Fail 2                     |
-| CVSS      | 8.8 (HIGH)                                   |
-| 공격 벡터 | LOCAL / LOW privilege / CHANGED scope        |
-| 컴포넌트  | `net/ipv4`, `net/ipv6` — `esp4`, `esp6` 모듈 |
-| 발견자    | Hyunwoo Kim (@v4bel)                         |
-| 공개일    | 2026-05-07 (엠바고 파기로 조기 공개)         |
-| 발표일    | 2026-05-08                                   |
-| 도입 커밋 | `cac2661c53f3` (2017년 1월)                  |
-| 패치 커밋 | `f4c50a4034e6` (2026-05-07)                  |
-| CISA KEV  | ❌                                           |
-| PoC       | 공개됨                                       |
-| 영향      | 비권한 로컬 사용자 → root 권한 상승          |
+| 항목      | 내용                                                |
+|-----------|-----------------------------------------------------|
+| CVE       | CVE-2026-43284                                      |
+| 별칭      | Dirty Frag / Copy Fail 2                            |
+| CVSS      | 8.8 (HIGH, kernel.org CNA) / 7.8 (Red Hat·CISA-ADP) |
+| 공격 벡터 | LOCAL / LOW privilege / CHANGED scope               |
+| 컴포넌트  | `net/ipv4`, `net/ipv6` — `esp4`, `esp6` 모듈        |
+| 발견자    | Hyunwoo Kim (@v4bel)                                |
+| 공개일    | 2026-05-07 (엠바고 파기로 조기 공개)                |
+| 발표일    | 2026-05-08                                          |
+| 도입 커밋 | `cac2661c53f3` (2017년 1월)                         |
+| 패치 커밋 | `f4c50a4034e6` (2026-05-07)                         |
+| CISA KEV  | ❌                                                  |
+| PoC       | 공개됨                                              |
+| 영향      | 비권한 로컬 사용자 → root 권한 상승                 |
 
 🟡 **공개된 Dirty Frag PoC는 CVE-2026-43284 (xfrm/ESP) + CVE-2026-43500 (rxrpc) 두 경로를 체인으로 사용합니다.**
 
-- CVE-2026-43284 단독: Ubuntu AppArmor가 XFRM 소켓을 제한할 수 있어 불안정
+- CVE-2026-43284 단독: user namespace 생성 권한이 필요하며, Ubuntu AppArmor가 비권한 user namespace 생성을 막으면 트리거 불가
 - CVE-2026-43500 단독: `rxrpc` 모듈이 기본 미로드인 배포판에서 동작 안 함
 - **두 CVE 체인**: 서로의 제약을 보완 → 대부분 배포판에서 안정적 root 획득
 
@@ -62,15 +62,17 @@ MSG_SPLICE_PAGES → UDP skb (SKBFL_SHARED_FRAG 미설정)
 
 **취약 버전:**
 
-| 브랜치 | 취약 범위       | 패치 버전     | RHEL/CentOS          | Ubuntu           | Amazon Linux      |
-|--------|-----------------|---------------|----------------------|------------------|-------------------|
-| 5.10.x | 4.11 ~ 5.10.254 | **5.10.255+** | RHEL 8 (백포트 확인) | 20.04 LTS (HWE)  | AL2 (5.10 kernel) |
-| 5.15.x | 5.12 ~ 5.15.204 | **5.15.205+** | RHEL 9.0~9.2         | 22.04 LTS        | AL2023            |
-| 6.1.x  | 5.16 ~ 6.1.170  | **6.1.171+**  | RHEL 9.3~9.4         | 22.04 LTS (HWE)  | AL2023 (6.1)      |
-| 6.6.x  | 6.2 ~ 6.6.137   | **6.6.138+**  | RHEL 9.5+            | 24.04 LTS        | AL2023 (6.6)      |
-| 6.12.x | 6.7 ~ 6.12.86   | **6.12.87+**  | RHEL 10              | **24.04 LTS** 🟡 | —                 |
-| 6.18.x | 6.13 ~ 6.18.27  | **6.18.28+**  | —                    | 25.04            | —                 |
-| 7.0.x  | 7.0 ~ 7.0.4     | **7.0.5+**    | —                    | 25.10 (예정)     | —                 |
+| 브랜치 | 취약 범위       | 패치 버전     | RHEL/CentOS          | Ubuntu           | Amazon Linux        |
+|--------|-----------------|---------------|----------------------|------------------|---------------------|
+| 5.10.x | 4.11 ~ 5.10.254 | **5.10.255+** | RHEL 8 (백포트 확인) | 20.04 LTS (5.4)  | AL2 (core·5.4·5.10) |
+| 5.15.x | 5.12 ~ 5.15.204 | **5.15.205+** | RHEL 9 (5.14 백포트) | 22.04 LTS (5.15) | AL2 (5.15 Extra)    |
+| 6.1.x  | 5.16 ~ 6.1.170  | **6.1.171+**  | —                    | —                | AL2023 (6.1)        |
+| 6.6.x  | 6.2 ~ 6.6.137   | **6.6.138+**  | —                    | —                | —                   |
+| 6.12.x | 6.7 ~ 6.12.86   | **6.12.87+**  | RHEL 10              | **24.04 LTS** 🟡 | AL2023 (6.12)       |
+| 6.18.x | 6.13 ~ 6.18.27  | **6.18.28+**  | —                    | 25.10 (6.17)     | AL2023 (6.18)       |
+| 7.0.x  | 7.0 ~ 7.0.4     | **7.0.5+**    | —                    | 26.04 LTS (7.0)  | —                   |
+
+> 배포판 열은 기본 커널 버전이 속한 범위입니다. RHEL·Ubuntu·Amazon Linux는 자체 백포트로 수정했으므로 배포판 보안 공지의 패키지 버전으로 판정합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -128,7 +130,7 @@ grep -r "esp4\|esp6" /etc/modprobe.d/ 2>/dev/null
 # XFRM netlink 소켓 비권한 접근 여부
 python3 -c "
 import socket
-s=socket.socket(socket.AF_NETLINK,socket.SOCK_RAW,15)
+s=socket.socket(socket.AF_NETLINK,socket.SOCK_RAW,socket.NETLINK_XFRM)
 print('XFRM: OPEN (취약)')
 s.close()
 " 2>/dev/null || echo "XFRM: BLOCKED"
@@ -158,7 +160,7 @@ sudo apt update && sudo apt dist-upgrade -y && sudo reboot
 ### 임시 완화 (패치 적용 전)
 
 > 출처: [github.com/0xBlackash/CVE-2026-43284](https://github.com/0xBlackash/CVE-2026-43284) — Mitigation & Remediation 섹션
-> 출처: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — Recommended immediate actions 섹션
+> 출처: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — Fixing it 섹션
 
 **Step 1. 모듈 사용 여부 사전 확인**
 
@@ -244,7 +246,8 @@ rm -f dirty_frag_detect.py
 - Dirty Frag PoC: [github.com/0xBlackash/CVE-2026-43284](https://github.com/0xBlackash/CVE-2026-43284) — ★★☆☆☆
 - Dirty Frag 원본 (V4bel): [github.com/V4bel/dirtyfrag](https://github.com/V4bel/dirtyfrag) — ★★★☆☆
 - DirtyFrag-Detector: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — ★★☆☆☆
-- Linux Kernel Patch: [git.kernel.org](https://git.kernel.org/stable/c/f4c50a4034e62ab75f1d5cdd191dd5f9c77fdff4) — ★★★★☆
+- Linux Kernel Patch: [git.kernel.org](https://git.kernel.org/stable/c/f4c50a4034e62ab75f1d5cdd191dd5f9c77fdff4) — ★★★☆☆
+- Amazon Linux CVE-2026-43284: [explore.alas.aws.amazon.com](https://explore.alas.aws.amazon.com/CVE-2026-43284.html) — ★★★☆☆
 - [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md) — CVE-2026-31431 (CISA KEV)
 - [cve_2026_43500_dirty_frag.md](./cve_2026_43500_dirty_frag.md) — CVE-2026-43500 (rxrpc)
 - [cve_2026_46300_fragnesia.md](./cve_2026_46300_fragnesia.md) — CVE-2026-46300 (Fragnesia)
@@ -264,6 +267,6 @@ rm -f dirty_frag_detect.py
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-05-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -56,7 +56,7 @@ NLB (Network Load Balancer)
 └─────────────────────────────────────────────────────────────┘
 Linux Proxy (3-5 instances, Auto Scaling)
 │
-├─ [Pre-kernel] XDP/eBPF
+├─ [Pre-stack] XDP/eBPF
 │  ├─ Ultra-fast packet drop (millions pps)
 │  ├─ Redis sync (10s interval) ──────────────────────────────────────┐
 │  ├─ BPF Map (memory-based)                                          │
@@ -110,7 +110,7 @@ Windows Game Server (Auto Scaling)                                │   │  │
 ┌─────────────────────────────────────┐                           │   │  │
 │  CrowdSec LAPI Server               │ <─────────────────────────┘   │  │
 │  ├─ MySQL/PostgreSQL (RDS)          │                               │  │
-│  ├─ AI-based detection engine       │                               │  │
+│  ├─ Alert collection (agents)       │                               │  │
 │  ├─ Community blocklist             │                               │  │
 │  └─ Block decision management       │                               │  │
 └─────────────────────────────────────┘ <────────────────────────────────┘                              
@@ -288,7 +288,7 @@ Protocol: TCP/UDP
 ### L2 레이어 (XDP)
 
 **역할:**
-- 커널 진입 전 초고속 차단
+- 커널 네트워크 스택 진입 전(NIC 드라이버 단계) 초고속 차단
 - 대량 공격 IP 처리
 
 **동기화:**
@@ -320,7 +320,7 @@ Protocol: TCP/UDP
 
 **역할:**
 - 실시간 로그 분석
-- AI 기반 공격 탐지
+- 시나리오 기반 공격 탐지
 - Auto block decision
 
 **연동:**
@@ -406,11 +406,11 @@ Alert conditions:
 ### 로그 분석
 
 ```bash
-# S3에 저장된 로그 분석
-aws s3 cp s3://logs/network-firewall/ - | grep "DROP"
+# S3에 저장된 로그 분석 (객체 단위로 받음, Network Firewall 로그는 .log.gz 압축)
+aws s3 cp s3://logs/network-firewall/<로그 객체>.log.gz - | zcat | grep '"blocked"'
 
 # 공격 IP Top 10
-aws s3 cp s3://logs/haproxy/ - | awk '{print $1}' | sort | uniq -c | sort -rn | head -10
+aws s3 cp s3://logs/haproxy/<로그 객체> - | awk '{print $1}' | sort | uniq -c | sort -rn | head -10
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -452,7 +452,7 @@ aws s3 cp s3://logs/haproxy/ - | awk '{print $1}' | sort | uniq -c | sort -rn | 
 
 | 방법                    | 동기화 시간 | 차단 위치          |
 |-------------------------|-------------|--------------------|
-| **XDP (Redis)**         | 10초        | 커널 진입 전       |
+| **XDP (Redis)**         | 10초        | NIC 드라이버 단계  |
 | **nftables (CrowdSec)** | 10초        | 커널 네트워크 스택 |
 | **Network Firewall**    | 실시간      | VPC 경계           |
 
@@ -470,7 +470,7 @@ bpftool map dump name blocked_ips | wc -l
 ip -s link show dev eth0
 
 # nftables 통계
-nft list set inet crowdsec crowdsec-blacklists
+nft list table ip crowdsec    # 차단 set은 origin별(crowdsec-blacklists-<origin>)로 생성
 nft list chain inet filter input -a
 
 # CrowdSec 상태
@@ -510,6 +510,10 @@ redis-cli -h redis.xxxxx.cache.amazonaws.com SMEMBERS blocked_ips
 - XDP Tutorial: [github.com/xdp-project](https://github.com/xdp-project/xdp-tutorial) — ★★☆☆☆
 - nftables Wiki: [wiki.nftables.org](https://wiki.nftables.org/) — ★★★☆☆
 - HAProxy Documentation: [haproxy.org](https://www.haproxy.org/) — ★★★☆☆
+- CrowdSec Local API(경보·결정 저장과 배포): [docs.crowdsec.net/docs/next/local_api/intro](https://docs.crowdsec.net/docs/next/local_api/intro) — ★★★☆☆
+- CrowdSec 시나리오(leaky bucket 기반 탐지): [docs.crowdsec.net/docs/next/log_processor/scenarios/intro](https://docs.crowdsec.net/docs/next/log_processor/scenarios/intro) — ★★★☆☆
+- CrowdSec Firewall Bouncer nftables(table ip crowdsec): [docs.crowdsec.net/u/bouncers/firewall](https://docs.crowdsec.net/u/bouncers/firewall/) — ★★★☆☆
+- Network Firewall S3 로그 형식(.log.gz): [docs.aws.amazon.com/.../logging-s3](https://docs.aws.amazon.com/network-firewall/latest/developerguide/logging-s3.html) — ★★★☆☆
 
 ---
 
@@ -526,6 +530,6 @@ redis-cli -h redis.xxxxx.cache.amazonaws.com SMEMBERS blocked_ips
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -46,8 +46,8 @@ sudo iptables -P INPUT DROP
 sudo iptables -P FORWARD DROP
 sudo iptables -P OUTPUT ACCEPT
 
-# 규칙 저장 (Ubuntu)
-sudo iptables-save > /etc/iptables/rules.v4
+# 규칙 저장 (Ubuntu, iptables-persistent 패키지)
+sudo sh -c 'iptables-save > /etc/iptables/rules.v4'
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -115,8 +115,8 @@ sudo nft list ruleset
 # 규칙 파일 적용
 sudo nft -f /etc/nftables.conf
 
-# 규칙 저장
-sudo nft list ruleset > /etc/nftables.conf
+# 규칙 저장 (재적용 때 기존 규칙과 겹치지 않도록 flush ruleset을 앞에 둠)
+sudo sh -c 'echo "flush ruleset" > /etc/nftables.conf; nft list ruleset >> /etc/nftables.conf'
 ```
 
 ### 기본 구조
@@ -213,13 +213,13 @@ sudo nft list set inet filter blocklist
 | 성능         | 선형 탐색                 | 해시/집합 기반, 빠름           |
 | 동적 집합    | ipset 별도 설치 필요      | 내장 (`set`, `map`)            |
 | 문법         | 명령어 기반               | 선언형 설정 파일               |
-| 커널 지원    | 3.x~                      | 3.13~ (권장 4.x~)              |
+| 커널 지원    | 2.4~                      | 3.13~ (권장 4.x~)              |
 | 마이그레이션 | -                         | `iptables-translate` 변환 도구 |
 
 ```bash
 # iptables 규칙을 nftables 문법으로 변환
 iptables-translate -A INPUT -p tcp --dport 22 -j ACCEPT
-# 출력: nft add rule ip filter INPUT tcp dport 22 counter accept
+# 출력(iptables 1.8.10): nft 'add rule ip filter INPUT tcp dport 22 counter accept'
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -232,6 +232,8 @@ iptables-translate -A INPUT -p tcp --dport 22 -j ACCEPT
 - iptables man page: [netfilter.org](https://www.netfilter.org/documentation/) — ★★★☆☆
 - nftables meters (rate limiting): [wiki.nftables.org/wiki-nftables/index.php/Meters](https://wiki.nftables.org/wiki-nftables/index.php/Meters) — ★★★☆☆
 - Netfilter conntrack: [conntrack-tools.netfilter.org](https://conntrack-tools.netfilter.org/) — ★★★☆☆
+- iptables 프로젝트(지원 커널 2.4 이상): [netfilter.org/projects/iptables](https://www.netfilter.org/projects/iptables/index.html) — ★★★☆☆
+- nftables 룰셋 저장·복원: [Operations at ruleset level](https://wiki.nftables.org/wiki-nftables/index.php/Operations_at_ruleset_level) — ★★★☆☆
 
 ---
 
@@ -248,6 +250,6 @@ iptables-translate -A INPUT -p tcp --dport 22 -j ACCEPT
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-05-03
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

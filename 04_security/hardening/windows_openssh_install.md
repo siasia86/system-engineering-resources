@@ -14,12 +14,12 @@
 Windows Server 2019 / Windows 10 이상에서 OpenSSH Server를 기본 제공합니다.
 Linux에서 `ssh` 명령으로 Windows에 접속하거나, Ansible WinRM 대신 SSH 연결로 사용할 수 있습니다.
 
-| 항목      | 내용                                     |
-|-----------|------------------------------------------|
-| 대상 OS   | Windows Server 2019/2022, Windows 10/11  |
-| 포트      | 22/tcp                                   |
-| 인증 방식 | 공개키 (패스워드는 보안상 비활성화 권장) |
-| 주요 용도 | Ansible SSH 연결, 원격 관리, 파일 전송   |
+| 항목      | 내용                                         |
+|-----------|----------------------------------------------|
+| 대상 OS   | Windows Server 2019/2022/2025, Windows 10/11 |
+| 포트      | 22/tcp                                       |
+| 인증 방식 | 공개키 (패스워드는 보안상 비활성화 권장)     |
+| 주요 용도 | Ansible SSH 연결, 원격 관리, 파일 전송       |
 
 > 🟡 Windows OpenSSH 9.5 이하에서 `Administrator` 계정은 버그로 인해 접속이 안 됩니다.
 > **별도 로컬 계정을 생성해서 Administrators 그룹에 추가하는 방식을 권장합니다.**
@@ -28,7 +28,7 @@ Linux에서 `ssh` 명령으로 Windows에 접속하거나, Ansible WinRM 대신 
 
 ## 2. 설치
 
-PowerShell(관리자)에서 실행합니다.
+PowerShell(관리자)에서 실행합니다. Windows Server 2025는 OpenSSH Server가 기본 설치되어 있으므로 설치 명령은 건너뛰고 서비스 시작부터 진행합니다.
 
 ```powershell
 # 설치
@@ -129,7 +129,8 @@ $keys = @(
 # LF 강제 저장 필수 (Set-Content는 CRLF로 저장 → 인증 실패)
 $file = "C:\ProgramData\ssh\administrators_authorized_keys"
 New-Item -Path "C:\ProgramData\ssh" -ItemType Directory -Force
-[System.IO.File]::WriteAllText($file, ($keys -join "`n") + "`n", [System.Text.Encoding]::UTF8)
+# BOM 없는 UTF-8 사용 ([System.Text.Encoding]::UTF8은 BOM을 붙여 첫 줄 키를 읽지 못하게 함)
+[System.IO.File]::WriteAllText($file, ($keys -join "`n") + "`n", (New-Object System.Text.UTF8Encoding $false))
 icacls $file /inheritance:r /grant "Administrators:F" /grant "SYSTEM:F"
 
 Restart-Service sshd
@@ -192,7 +193,7 @@ Ansible playbook에서는:
   hosts: windows
   tasks:
     - name: OS 버전 확인
-      ansible.windows.win_shell: systeminfo | findstr "OS Name"
+      ansible.windows.win_shell: systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
       register: result
 
     - name: 출력
@@ -220,24 +221,23 @@ Restart-Service sshd
 ### 접속 허용 IP 제한
 
 ```powershell
-netsh advfirewall firewall set rule name="OpenSSH-Server-In-TCP" `
-  new remoteip=192.0.2.10
+Set-NetFirewallRule -Name "OpenSSH-Server-In-TCP" -RemoteAddress 192.0.2.10
 ```
 
 ---
 
 ## 6. 트러블슈팅
 
-| 증상                                    | 원인                             | 조치                                         |
-|-----------------------------------------|----------------------------------|----------------------------------------------|
-| `Connection reset` (인증 직전)          | `PubkeyAuthentication` 주석 처리 | `sshd_config` 주석 제거 후 재시작            |
-| `Connection reset` (Administrator)      | OpenSSH 9.5 버그                 | 별도 계정 생성 후 Administrators 그룹 추가   |
-| 공개키 인증 실패                        | 파일 권한 과다                   | `icacls`로 해당 계정/SYSTEM만 허용           |
-| 공개키 인증 실패 (Administrators 그룹)  | `authorized_keys` 무시           | `administrators_authorized_keys`에 등록      |
-| 공개키 인증 실패 (키 등록 후에도 안 됨) | CRLF 줄바꿈                      | `WriteAllText`로 LF 강제 저장                |
-| 접속 후 즉시 종료                       | DefaultShell 미설정              | `HKLM:\SOFTWARE\OpenSSH` DefaultShell 등록   |
-| sshd 시작 실패                          | `sshd_config` 문법 오류          | `SyslogFacility` 등 Windows 미지원 옵션 제거 |
-| 출력 한글 깨짐                          | CP949 인코딩                     | 명령 앞에 `chcp 65001` 추가                  |
+| 증상                                    | 원인                             | 조치                                       |
+|-----------------------------------------|----------------------------------|--------------------------------------------|
+| `Connection reset` (인증 직전)          | `PubkeyAuthentication` 주석 처리 | `sshd_config` 주석 제거 후 재시작          |
+| `Connection reset` (Administrator)      | OpenSSH 9.5 버그                 | 별도 계정 생성 후 Administrators 그룹 추가 |
+| 공개키 인증 실패                        | 파일 권한 과다                   | `icacls`로 해당 계정/SYSTEM만 허용         |
+| 공개키 인증 실패 (Administrators 그룹)  | `authorized_keys` 무시           | `administrators_authorized_keys`에 등록    |
+| 공개키 인증 실패 (키 등록 후에도 안 됨) | CRLF 줄바꿈                      | `WriteAllText`로 LF 강제 저장              |
+| 접속 후 즉시 종료                       | DefaultShell 미설정              | `HKLM:\SOFTWARE\OpenSSH` DefaultShell 등록 |
+| sshd 시작 실패                          | `sshd_config` 문법 오류          | `sshd.exe -t`로 오류 줄 확인 후 수정       |
+| 출력 한글 깨짐                          | CP949 인코딩                     | 명령 앞에 `chcp 65001` 추가                |
 
 ### SSH 클라이언트 config 주의사항
 
@@ -249,7 +249,7 @@ IdentityFile ~/.ssh/id_ed25519.pub
 IdentityFile ~/.ssh/id_ed25519
 ```
 
-들여쓰기는 탭/스페이스 모두 허용하나 **같은 Host 블록 안에서 혼용 금지**입니다.
+들여쓰기는 의미가 없어 탭/스페이스를 섞어도 동작하지만, 읽기 쉽도록 한 가지로 맞춥니다.
 
 ```text
 # 올바른 예
@@ -282,13 +282,17 @@ Get-WinEvent -LogName "OpenSSH/Operational" -MaxEvents 20 | Select TimeCreated, 
 
 ## 참고 자료
 
-- Microsoft Docs: [docs.microsoft.com/windows-server/administration/openssh](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse) — ★★★☆☆
-- OpenSSH for Windows: [github.com/PowerShell/Win32-OpenSSH](https://github.com/PowerShell/Win32-OpenSSH) — ★★☆☆☆
+- Microsoft Docs: [learn.microsoft.com/windows-server/administration/openssh](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse) — ★★★☆☆
+- OpenSSH Server Configuration for Windows(`SyslogFacility`·미지원 옵션): [learn.microsoft.com](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh-server-configuration) — ★★★☆☆
+- OpenSSH for Windows: [github.com/PowerShell/Win32-OpenSSH](https://github.com/PowerShell/Win32-OpenSSH) — ★★★☆☆
+- .NET `Encoding.UTF8`(BOM 포함): [learn.microsoft.com](https://learn.microsoft.com/en-us/dotnet/api/system.text.encoding.utf8) — ★★★☆☆
+- findstr(`/c:` 없는 공백은 여러 검색어 구분): [learn.microsoft.com](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/findstr) — ★★★☆☆
+- Set-NetFirewallRule(`-Name`과 지역화되는 `-DisplayName`): [learn.microsoft.com](https://learn.microsoft.com/en-us/powershell/module/netsecurity/set-netfirewallrule) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-05-18
 
-**마지막 업데이트**: 2026-05-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

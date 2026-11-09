@@ -516,8 +516,8 @@ AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 
 
 ## 참고 자료
 
-- HashiCorp Vault 공식 문서: [developer.hashicorp.com/vault/docs/what-is-vault](https://developer.hashicorp.com/vault/docs/what-is-vault) — ★★★☆☆
-- Ansible Vault Guide: [docs.ansible.com](https://docs.ansible.com/ansible/latest/vault_guide/) — ★★★☆☆
+- HashiCorp Vault 공식 문서: [developer.hashicorp.com/vault/docs/about-vault/what-is-vault](https://developer.hashicorp.com/vault/docs/about-vault/what-is-vault) — ★★★☆☆
+- Ansible Vault Guide: [docs.ansible.com](https://docs.ansible.com/projects/ansible/latest/vault_guide/) — ★★★☆☆
 - Vault Architecture (Barrier·Seal 내부 동작): [developer.hashicorp.com/vault/docs/internals/architecture](https://developer.hashicorp.com/vault/docs/internals/architecture) — ★★★☆☆
 - Vault Seal/Unseal: [developer.hashicorp.com/vault/docs/concepts/seal](https://developer.hashicorp.com/vault/docs/concepts/seal) — ★★★☆☆
 - Vault Production Hardening: [developer.hashicorp.com/vault/docs/concepts/production-hardening](https://developer.hashicorp.com/vault/docs/concepts/production-hardening) — ★★★☆☆
@@ -536,7 +536,7 @@ AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
 ![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
 ![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
 ![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
@@ -545,6 +545,6 @@ AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 
 
 **작성일**: 2026-08-20
 
-**마지막 업데이트**: 2026-08-21
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

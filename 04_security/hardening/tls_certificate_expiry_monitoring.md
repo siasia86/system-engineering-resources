@@ -391,15 +391,15 @@ LIVE=$(openssl s_client -connect 127.0.0.1:443 -servername app.example.com </dev
 
 ## 참고 자료
 
-- CA/Browser Forum TLS Baseline Requirements: [github.com/cabforum/servercert](https://github.com/cabforum/servercert/blob/main/docs/BR.md) — ★★★★★
-- CA/Browser Forum Ballot SC-081v3: [cabforum.org](https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/) — ★★★★★
-- Let's Encrypt, Decreasing Certificate Lifetimes to 45 Days: [letsencrypt.org](https://letsencrypt.org/2025/12/02/from-90-to-45) — ★★★★☆
-- Let's Encrypt, Ending Expiration Emails: [letsencrypt.org](https://letsencrypt.org/2025/01/22/ending-expiration-emails/) — ★★★★☆
-- RFC 9773 ACME Renewal Information: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9773.html) — ★★★★★
-- blackbox_exporter: [github.com/prometheus/blackbox_exporter](https://github.com/prometheus/blackbox_exporter) — ★★★★☆
-- Zabbix 템플릿 Website certificate by Zabbix agent 2: [git.zabbix.com](https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/templates/app/certificate_agent2) — ★★★★☆
-- cert-manager Certificate: [cert-manager.io](https://cert-manager.io/docs/usage/certificate/) — ★★★★☆
-- AWS ACM EventBridge 이벤트: [docs.aws.amazon.com](https://docs.aws.amazon.com/acm/latest/userguide/supported-events.html) — ★★★★☆
+- CA/Browser Forum TLS Baseline Requirements: [github.com/cabforum/servercert](https://github.com/cabforum/servercert/blob/main/docs/BR.md) — ★★★☆☆
+- CA/Browser Forum Ballot SC-081v3: [cabforum.org](https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/) — ★★★☆☆
+- Let's Encrypt, Decreasing Certificate Lifetimes to 45 Days: [letsencrypt.org](https://letsencrypt.org/2025/12/02/from-90-to-45) — ★★★☆☆
+- Let's Encrypt, Ending Expiration Emails: [letsencrypt.org](https://letsencrypt.org/2025/01/22/ending-expiration-emails/) — ★★★☆☆
+- RFC 9773 ACME Renewal Information: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9773.html) — ★★★★☆
+- blackbox_exporter: [github.com/prometheus/blackbox_exporter](https://github.com/prometheus/blackbox_exporter) — ★★★☆☆
+- Zabbix 템플릿 Website certificate by Zabbix agent 2: [git.zabbix.com](https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/templates/app/certificate_agent2) — ★★★☆☆
+- cert-manager Certificate: [cert-manager.io](https://cert-manager.io/docs/usage/certificate/) — ★★★☆☆
+- AWS ACM EventBridge 이벤트: [docs.aws.amazon.com](https://docs.aws.amazon.com/acm/latest/userguide/supported-events.html) — ★★★☆☆
 - 확인 기록: [TLS 인증서 수명 주기 참조 노트](../../_reference/tls_cert_lifecycle_official_notes.md)
 - 관련 문서: [TLS/SSL 가이드](./tls_ssl_guide.md), [Trivy 가이드](./trivy_guide.md), [HAProxy ACME 가이드](../../02_infrastructure/web_server/haproxy_acme_guide.md)
 
@@ -418,6 +418,6 @@ LIVE=$(openssl s_client -connect 127.0.0.1:443 -servername app.example.com </dev
 
 **작성일**: 2026-11-05
 
-**마지막 업데이트**: 2026-11-06
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

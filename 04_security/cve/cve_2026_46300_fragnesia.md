@@ -11,19 +11,19 @@
 
 ## 1. 개요
 
-| 항목      | 내용                                          |
-|-----------|-----------------------------------------------|
-| CVE       | CVE-2026-46300                                |
-| 별칭      | **Fragnesia**                                 |
-| CVSS      | 미등재 (NVD 등재 전)                          |
-| 공격 벡터 | LOCAL / LOW privilege / NO race condition     |
-| 컴포넌트  | `net/xfrm` — `espintcp` ULP (ESP-in-TCP 경로) |
-| 발견자    | William Bowling, V12 team                     |
-| 발표일    | 2026-05-13                                    |
-| NVD 등재  | ❌ (2026-05-18 기준 미등재)                   |
-| CISA KEV  | ❌                                            |
-| PoC       | ✅ 공개됨 (단일 명령어로 root 획득)           |
-| 영향      | 비권한 로컬 사용자 → root 권한 상승           |
+| 항목      | 내용                                               |
+|-----------|----------------------------------------------------|
+| CVE       | CVE-2026-46300                                     |
+| 별칭      | **Fragnesia**                                      |
+| CVSS      | 7.8 (HIGH, NVD·kernel.org CNA)                     |
+| 공격 벡터 | LOCAL / LOW privilege / NO race condition          |
+| 컴포넌트  | `skb_try_coalesce()` — ESP-in-TCP(`espintcp`) 경로 |
+| 발견자    | William Bowling, V12 team                          |
+| 발표일    | 2026-05-13                                         |
+| NVD 등재  | ✅ 2026-05-23                                      |
+| CISA KEV  | ✅ 2026-10-28 등재 (조치 기한 2026-10-31)          |
+| PoC       | ✅ 공개됨 (단일 명령어로 root 획득)                |
+| 영향      | 비권한 로컬 사용자 → root 권한 상승                |
 
 > Dirty Frag(CVE-2026-43284/43500)와 **별개 버그**입니다. 동일한 XFRM/ESP 클래스이며 임시 완화 방법은 동일합니다.
 
@@ -37,7 +37,7 @@
 
 ## 2. 취약점 상세
 
-> 출처: [CVE.org CVE-2026-46300](https://www.cve.org/CVERecord?id=CVE-2026-46300) / [CloudLinux Blog](https://blog.cloudlinux.com/fragnesia-mitigation-and-kernel-update)
+> 출처: [CVE.org CVE-2026-46300](https://www.cve.org/CVERecord?id=CVE-2026-46300) / [NVD CVE-2026-46300](https://nvd.nist.gov/vuln/detail/CVE-2026-46300) / [커널 패치 커밋](https://git.kernel.org/stable/c/f84eca5817390257cef78013d0112481c503b4a3) / [CloudLinux Blog](https://blog.cloudlinux.com/fragnesia-mitigation-and-kernel-update)
 
 TCP 소켓이 `espintcp` ULP 모드로 전환되기 전에 `splice(2)` / `sendfile(2)`로 파일 페이지가 수신 큐에 이미 적재된 경우, 커널이 해당 파일 페이지를 ESP 암호문으로 간주하여 **in-place 복호화**를 수행합니다.
 
@@ -87,16 +87,18 @@ CVE-2026-46300   XFRM ESP-in-TCP (Fragnesia) — William Bowling  (2026-05-13)
 
 ### 영향 배포판
 
-| 배포판 / 버전        | 영향 여부    | 패치 버전                            |
-|----------------------|--------------|--------------------------------------|
-| AlmaLinux 9          | ✅ 영향 있음 | `kernel-5.14.0-611.54.5.el9_7` 이상  |
-| AlmaLinux 10         | ✅ 영향 있음 | `kernel-6.12.0-124.56.3.el10_1` 이상 |
-| Ubuntu Noble (24.04) | ✅ 영향 있음 | 패치 배포됨                          |
-| Debian 12            | ✅ 영향 있음 | 패치 배포됨                          |
-| RHEL / CentOS        | ✅ 영향 있음 | 배포판 공지 확인 필요                |
-| Amazon Linux         | ✅ 영향 있음 | 배포판 공지 확인 필요                |
+| 배포판 / 버전        | 영향 여부    | 패치 버전                             |
+|----------------------|--------------|---------------------------------------|
+| AlmaLinux 9          | ✅ 영향 있음 | `kernel-5.14.0-611.54.5.el9_7` 이상   |
+| AlmaLinux 10         | ✅ 영향 있음 | `kernel-6.12.0-124.56.3.el10_1` 이상  |
+| Ubuntu Noble (24.04) | ✅ 영향 있음 | `linux 6.8.0-124.124` 이상            |
+| Debian 12            | ✅ 영향 있음 | `linux 6.1.174-1` 이상 (DSA-6306-1)   |
+| RHEL 8               | ✅ 영향 있음 | `kernel-4.18.0-553.125.1.el8_10` 이상 |
+| RHEL 9               | ✅ 영향 있음 | `kernel-5.14.0-687.10.1.el9_8` 이상   |
+| RHEL 10              | ✅ 영향 있음 | `kernel-6.12.0-211.16.1.el10_2` 이상  |
+| Amazon Linux         | ✅ 영향 있음 | ALAS2-2026-3307·ALAS2023-2026-1710 등 |
 
-> 상세 upstream 취약 버전 범위는 NVD 등재 후 업데이트 예정.
+> upstream 수정 버전(kernel.org CVE 기록): 5.10.257 / 5.15.208 / 6.1.174 / 6.6.141 / 6.12.91 / 6.18.33 / 7.0.10 / v7.1-rc5. 도입 커밋은 `cef401de7be8`(3.9)이고 mainline 수정 커밋은 `f84eca581739`입니다.
 
 ### 탐지 명령어
 
@@ -110,7 +112,7 @@ cat /etc/modprobe.d/dirtyfrag.conf 2>/dev/null || echo "blacklist 없음"
 # XFRM netlink 소켓 비권한 접근 여부
 python3 -c "
 import socket
-s=socket.socket(socket.AF_NETLINK,socket.SOCK_RAW,15)
+s=socket.socket(socket.AF_NETLINK,socket.SOCK_RAW,socket.NETLINK_XFRM)
 print('XFRM: OPEN (취약 가능성)')
 s.close()
 " 2>/dev/null || echo "XFRM: BLOCKED"
@@ -197,8 +199,8 @@ lsmod | grep -E "^esp4|^esp6|^rxrpc"
 find / -perm -4000 -newer /etc/passwd 2>/dev/null
 
 # 핵심 바이너리 무결성 확인
-sudo dpkg --verify sudo bash 2>/dev/null        # Ubuntu/Debian
-sudo rpm -V sudo bash coreutils 2>/dev/null     # RHEL/CentOS
+sudo dpkg --verify sudo bash util-linux 2>/dev/null        # Ubuntu/Debian (/usr/bin/su = util-linux)
+sudo rpm -V sudo bash coreutils util-linux 2>/dev/null     # RHEL/CentOS
 
 # NVD 등재 확인
 curl -s "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2026-46300" \
@@ -213,8 +215,14 @@ curl -s "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2026-46300" 
 
 - CloudLinux Blog: [blog.cloudlinux.com/fragnesia-mitigation-and-kernel-update](https://blog.cloudlinux.com/fragnesia-mitigation-and-kernel-update) — ★★☆☆☆
 - 보안뉴스 기사: [boannews.com](https://m.boannews.com/html/detail.html?idx=143652) — ★★☆☆☆
-- NVD CVE-2026-46300: [nvd.nist.gov](https://nvd.nist.gov/vuln/detail/CVE-2026-46300) — ★★★☆☆ (등재 후 유효)
+- NVD CVE-2026-46300: [nvd.nist.gov](https://nvd.nist.gov/vuln/detail/CVE-2026-46300) — ★★★☆☆
 - CVE.org: [cve.org](https://www.cve.org/CVERecord?id=CVE-2026-46300) — ★★★☆☆
+- Linux Kernel Patch: [git.kernel.org](https://git.kernel.org/stable/c/f84eca5817390257cef78013d0112481c503b4a3) — ★★★☆☆
+- CISA KEV CVE-2026-46300: [cisa.gov](https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2026-46300) — ★★★☆☆
+- Red Hat CVE-2026-46300: [access.redhat.com](https://access.redhat.com/security/cve/CVE-2026-46300) — ★★★☆☆
+- Ubuntu CVE-2026-46300: [ubuntu.com](https://ubuntu.com/security/CVE-2026-46300) — ★★★☆☆
+- Debian CVE-2026-46300: [security-tracker.debian.org](https://security-tracker.debian.org/tracker/CVE-2026-46300) — ★★★☆☆
+- Amazon Linux CVE-2026-46300: [explore.alas.aws.amazon.com](https://explore.alas.aws.amazon.com/CVE-2026-46300.html) — ★★★☆☆
 - [cve_2026_43284_dirty_frag.md](./cve_2026_43284_dirty_frag.md) — CVE-2026-43284 (xfrm/ESP)
 - [cve_2026_43500_dirty_frag.md](./cve_2026_43500_dirty_frag.md) — CVE-2026-43500 (rxrpc)
 - [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md) — CVE-2026-31431 (CISA KEV)
@@ -234,6 +242,6 @@ curl -s "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2026-46300" 
 
 **작성일**: 2026-05-18
 
-**마지막 업데이트**: 2026-05-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

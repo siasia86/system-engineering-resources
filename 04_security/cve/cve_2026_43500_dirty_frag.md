@@ -15,13 +15,13 @@
 |-----------|----------------------------------------|
 | CVE       | CVE-2026-43500                         |
 | 별칭      | Dirty Frag / Copy Fail 2               |
-| CVSS      | 7.8 (HIGH)                             |
+| CVSS      | 7.8 (HIGH, NVD)                        |
 | 공격 벡터 | LOCAL / LOW privilege / NO interaction |
 | 컴포넌트  | `net/rxrpc` — `rxrpc` 모듈             |
 | 발견자    | Hyunwoo Kim (@v4bel)                   |
 | 공개일    | 2026-05-07 (엠바고 파기로 조기 공개)   |
 | 발표일    | 2026-05-11                             |
-| 도입 커밋 | `2dc334f1a63a` (2023년 6월)            |
+| 도입 커밋 | `d0d5c0cd1e71` (2019년 8월, v5.3)      |
 | 패치 커밋 | `aa54b1d27fe0` (2026-05-10)            |
 | CISA KEV  | ❌                                     |
 | PoC       | 공개됨                                 |
@@ -29,7 +29,7 @@
 
 🟡 **공개된 Dirty Frag PoC는 CVE-2026-43284 (xfrm/ESP) + CVE-2026-43500 (rxrpc) 두 경로를 체인으로 사용합니다.**
 
-- CVE-2026-43284 단독: Ubuntu AppArmor가 XFRM 소켓을 제한할 수 있어 불안정
+- CVE-2026-43284 단독: user namespace 생성 권한이 필요하며, Ubuntu AppArmor가 비권한 user namespace 생성을 막으면 트리거 불가
 - CVE-2026-43500 단독: `rxrpc` 모듈이 기본 미로드인 배포판에서 동작 안 함
 - **두 CVE 체인**: 서로의 제약을 보완 → 대부분 배포판에서 안정적 root 획득
 
@@ -61,10 +61,12 @@ splice() → rxrpc socket → shared frag pages
 
 **취약 버전:**
 
-| 브랜치 | 취약 범위    | 패치 버전    | RHEL/CentOS             | Ubuntu       | Amazon Linux |
-|--------|--------------|--------------|-------------------------|--------------|--------------|
-| ~6.18  | ~ 6.18.28    | **6.18.29+** | RHEL 8~10 (백포트 확인) | 20.04~25.04  | AL2, AL2023  |
-| 6.19.x | 6.19 ~ 7.0.5 | **7.0.6+**   | —                       | 25.10 (예정) | —            |
+| 브랜치 | 취약 범위    | 패치 버전    | RHEL/CentOS              | Ubuntu      | Amazon Linux        |
+|--------|--------------|--------------|--------------------------|-------------|---------------------|
+| ~6.18  | ~ 6.18.28    | **6.18.29+** | 영향 없음 (Red Hat 판정) | 20.04~25.10 | AL2 (core·5.4·5.10) |
+| 6.19.x | 6.19 ~ 7.0.5 | **7.0.6+**   | —                        | 26.04 LTS   | —                   |
+
+> kernel.org CVE 기록은 5.3부터 영향, 6.6.140·6.12.88·6.18.29·7.0.6에서 수정으로 기재합니다(NVD CPE는 6.18.29 미만 전체로 기재). 발견자 README는 시작점을 `2dc334f1a63a`(2023년 6월, MSG_SPLICE_PAGES 전환)로 기재합니다. Red Hat은 RHEL 6~10을 영향 없음으로, Amazon Linux는 AL2 5.15 Extra와 AL2023을 영향 없음으로 판정했습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -83,15 +85,15 @@ git clone https://github.com/V4bel/dirtyfrag.git
 gcc -O0 -Wall -o exp exp.c -lutil
 ```
 
-| 항목                | 결과          | 비고                                            |
-|---------------------|---------------|-------------------------------------------------|
-| PoC 빌드            | ✅ 성공       | `exp` 바이너리 생성 (62,320 bytes)              |
-| 커널 버전           | ❌ 취약       | 6.8.0-101 — ~6.18 취약 범위                     |
-| CVE-2026-43500 패치 | ❌ 미적용     | upstream 패치 2026-05-10, 배포판 백포트 진행 중 |
-| `rxrpc` 모듈        | ❌ **로드됨** | `rxrpc 438272 0` — used_by 없음, 언로드 가능    |
-| AF_RXRPC 소켓       | ✅ BLOCKED    | rxrpc 로드됐으나 소켓 접근 차단됨               |
-| AFS 마운트          | ✅ 없음       | AFS 파일시스템 미사용                           |
-| blacklist           | ❌ 없음       | `/etc/modprobe.d/` dirtyfrag 설정 없음          |
+| 항목                | 결과          | 비고                                                |
+|---------------------|---------------|-----------------------------------------------------|
+| PoC 빌드            | ✅ 성공       | `exp` 바이너리 생성 (62,320 bytes)                  |
+| 커널 버전           | ❌ 취약       | 6.8.0-101 — ~6.18 취약 범위                         |
+| CVE-2026-43500 패치 | ❌ 미적용     | upstream 패치 2026-05-10, 배포판 백포트 진행 중     |
+| `rxrpc` 모듈        | ❌ **로드됨** | `rxrpc 438272 0` — used_by 없음, 언로드 가능        |
+| AF_RXRPC 소켓       | 🟡 판정 무효  | 당시 검사가 34(AF_ISDN)로 소켓을 만들어 재확인 필요 |
+| AFS 마운트          | ✅ 없음       | AFS 파일시스템 미사용                               |
+| blacklist           | ❌ 없음       | `/etc/modprobe.d/` dirtyfrag 설정 없음              |
 
 **결론: rxrpc 모듈 로드됨 — 즉시 blacklist 등록 및 언로드 필요**
 
@@ -120,7 +122,7 @@ grep "rxrpc" /etc/modprobe.d/*.conf 2>/dev/null
 # AF_RXRPC 소켓 접근 여부
 python3 -c "
 import socket
-s=socket.socket(34,socket.SOCK_DGRAM,0)
+s=socket.socket(33,socket.SOCK_DGRAM,0)  # 33 = AF_RXRPC
 print('AF_RXRPC: OPEN (취약)')
 s.close()
 " 2>/dev/null || echo "AF_RXRPC: BLOCKED"
@@ -149,7 +151,7 @@ sudo apt update && sudo apt dist-upgrade -y && sudo reboot
 
 ### 임시 완화 (패치 적용 전)
 
-> 출처: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — Recommended immediate actions 섹션
+> 출처: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — Fixing it 섹션
 
 **Step 1. 모듈 사용 여부 사전 확인**
 
@@ -164,7 +166,7 @@ lsmod | grep "^rxrpc"
 
 **Step 2. blacklist 등록 + 언로드**
 
-> 출처: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — Recommended immediate actions 섹션
+> 출처: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — Fixing it 섹션
 
 ```bash
 # ---- 원문 (DirtyFrag-Detector 권장) ---- #
@@ -218,7 +220,10 @@ rm -f dirty_frag_detect.py
 - NVD CVE-2026-43500: [nvd.nist.gov](https://nvd.nist.gov/vuln/detail/CVE-2026-43500) — ★★★☆☆
 - Dirty Frag 원본 (V4bel): [github.com/V4bel/dirtyfrag](https://github.com/V4bel/dirtyfrag) — ★★★☆☆
 - DirtyFrag-Detector: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — ★★☆☆☆
-- Linux Kernel Patch: [git.kernel.org](https://git.kernel.org/stable/c/aa54b1d27fe0) — ★★★★☆
+- Linux Kernel Patch: [git.kernel.org](https://git.kernel.org/stable/c/aa54b1d27fe0) — ★★★☆☆
+- CVE.org CVE-2026-43500 (kernel.org 영향 버전): [cve.org](https://www.cve.org/CVERecord?id=CVE-2026-43500) — ★★★☆☆
+- Red Hat CVE-2026-43500: [access.redhat.com](https://access.redhat.com/security/cve/CVE-2026-43500) — ★★★☆☆
+- Amazon Linux CVE-2026-43500: [explore.alas.aws.amazon.com](https://explore.alas.aws.amazon.com/CVE-2026-43500.html) — ★★★☆☆
 - [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md) — CVE-2026-31431 (CISA KEV)
 - [cve_2026_43284_dirty_frag.md](./cve_2026_43284_dirty_frag.md) — CVE-2026-43284 (xfrm/ESP)
 - [cve_2026_46300_fragnesia.md](./cve_2026_46300_fragnesia.md) — CVE-2026-46300 (Fragnesia)
@@ -238,6 +243,6 @@ rm -f dirty_frag_detect.py
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-05-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

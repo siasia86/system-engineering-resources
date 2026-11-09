@@ -336,7 +336,7 @@ sudo systemctl enable --now lynis-audit.timer
 - hosts: linux_servers
   become: true
   vars:
-    report: "/var/log/lynis/report-{{ ansible_date_time.date }}.dat"
+    report: "/var/log/lynis/report-{{ ansible_facts['date_time']['date'] }}.dat"
   tasks:
     - name: Lynis 점검
       ansible.builtin.command: >
@@ -348,12 +348,13 @@ sudo systemctl enable --now lynis-audit.timer
     - name: 보고서 수집
       ansible.builtin.fetch:
         src: "{{ report }}"
-        dest: "reports/{{ inventory_hostname }}-{{ ansible_date_time.date }}.dat"
+        dest: "reports/{{ inventory_hostname }}-{{ ansible_facts['date_time']['date'] }}.dat"
         flat: true
 ```
 
 - 종료 코드 78(경고 있음)은 점검 자체의 실패가 아니므로 수집은 계속하고, 경고는 7절의 집계로 판단합니다.
 - 수집한 보고서는 접근이 제한된 저장소에 둡니다. 공개 저장소나 공용 채팅에 붙이지 않습니다.
+- 날짜는 `ansible_facts['date_time']`로 읽습니다. `ansible_date_time` 같은 최상위 fact 변수는 ansible-core 2.20에서 deprecated되어 경고가 나고 2.24에서 기본 비활성화될 예정입니다.
 - Ansible 기본 사용법은 [Ansible 기본 가이드](../../02_infrastructure/iac/ansible_basic_guide.md)를 참고합니다.
 
 [⬆ 목차로 돌아가기](#목차)
@@ -436,10 +437,11 @@ diff <(items reports/web01-2026-11-01.dat) <(items reports/web01-2026-11-08.dat)
 
 ## 참고 자료
 
-- Lynis: [github.com/CISOfy/lynis](https://github.com/CISOfy/lynis) — ★★★★☆
-- Lynis 공식 문서: [cisofy.com/documentation/lynis](https://cisofy.com/documentation/lynis/) — ★★★★☆
-- CISOfy 소프트웨어 저장소: [packages.cisofy.com/community](https://packages.cisofy.com/community/) — ★★★★☆
-- Lynis 다운로드: [cisofy.com/downloads/lynis](https://cisofy.com/downloads/lynis/) — ★★★★☆
+- Lynis: [github.com/CISOfy/lynis](https://github.com/CISOfy/lynis) — ★★★☆☆
+- Lynis 공식 문서: [cisofy.com/documentation/lynis](https://cisofy.com/documentation/lynis/) — ★★★☆☆
+- CISOfy 소프트웨어 저장소: [packages.cisofy.com/community](https://packages.cisofy.com/community/) — ★★★☆☆
+- Lynis 다운로드: [cisofy.com/downloads/lynis](https://cisofy.com/downloads/lynis/) — ★★★☆☆
+- ansible-core 2.20 포팅 가이드(INJECT_FACTS_AS_VARS): [porting_guide_core_2.20](https://docs.ansible.com/projects/ansible/latest/porting_guides/porting_guide_core_2.20.html) — ★★★☆☆
 - 확인 기록: [Lynis 참조 노트](../../_reference/lynis_official_notes.md)
 - 관련 문서: [취약점 스캔 개요](./vulnerability_scanning.md), [Linux 서버 보안 강화](./linux_hardening.md)
 
@@ -458,6 +460,6 @@ diff <(items reports/web01-2026-11-01.dat) <(items reports/web01-2026-11-08.dat)
 
 **작성일**: 2026-11-05
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

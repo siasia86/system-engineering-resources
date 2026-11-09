@@ -15,7 +15,7 @@
 
 ## 1. 개요
 
-CVE-2026-31431 (Copy Fail), CVE-2026-43284 / CVE-2026-43500 (Dirty Frag), CVE-2026-46300 (Fragnesia)은 모두 **비권한 로컬 사용자 → root 권한 상승(LPE)** 취약점입니다.
+CVE-2026-31431 (Copy Fail), CVE-2026-43284 / CVE-2026-43500 (Dirty Frag), CVE-2026-46300 (Fragnesia), CVE-2026-43503 (DirtyClone)은 모두 **비권한 로컬 사용자 → root 권한 상승(LPE)** 취약점입니다.
 
 "일반 계정에서 `sudo`로 root를 취득할 수 있는데 실효성이 있는가?"라는 질문에 대한 답은 **전제가 다르다**는 것입니다.
 
@@ -46,7 +46,7 @@ root          ← 최고 권한
 └── nobody    ← sudo 없음 (최소 권한 프로세스)
 ```
 
-`www-data`, `postgres` 등은 정상적으로는 절대 root가 될 수 없습니다. 이 CVE는 그 경계를 무너뜨립니다.
+`www-data`, `postgres` 등은 정상 경로로는 root가 될 수 없습니다. 이 CVE는 그 경계를 무너뜨립니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -105,8 +105,8 @@ page cache write primitive 획득
 호스트 root 권한 획득
 ```
 
-Copy Fail(CVE-2026-31431) 원문:
-> "page-cache write bypasses on-disk file-integrity tools and crosses container boundaries"
+Copy Fail(CVE-2026-31431) 발견자 Xint 블로그 원문:
+> "The page cache is shared across all processes on a system, including across container boundaries."
 
 ### on-disk 무결성 우회
 
@@ -251,6 +251,7 @@ ls -la /etc/cron* /var/spool/cron/crontabs/ 2>/dev/null
 - [cve_2026_43500_dirty_frag.md](./cve_2026_43500_dirty_frag.md) — CVE-2026-43500 (Dirty Frag)
 - [cve_2026_46300_fragnesia.md](./cve_2026_46300_fragnesia.md) — CVE-2026-46300 (Fragnesia)
 - Copy Fail: [copy.fail](https://copy.fail/) — ★★☆☆☆
+- Copy Fail 배포판 영향 분석 (Xint): [xint.io/blog/copy-fail-linux-distributions](https://xint.io/blog/copy-fail-linux-distributions) — ★★☆☆☆
 - Dirty Frag: [github.com/V4bel/dirtyfrag](https://github.com/V4bel/dirtyfrag) — ★★☆☆☆
 - DirtyClone: [research.jfrog.com](https://research.jfrog.com/post/dissecting-and-exploiting-linux-lpe-variant-dirtyclone-cve-2026-43503/) — ★★★☆☆
 - [cve_2026_43503_dirty_clone.md](./cve_2026_43503_dirty_clone.md) — CVE-2026-43503 (DirtyClone)
@@ -270,6 +271,6 @@ ls -la /etc/cron* /var/spool/cron/crontabs/ 2>/dev/null
 
 **작성일**: 2026-05-14
 
-**마지막 업데이트**: 2026-05-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -22,7 +22,7 @@ PermitRootLogin no
 
 # 패스워드 인증 비활성화 (키 기반만 허용)
 PasswordAuthentication no
-KbdInteractiveAuthentication no   # OpenSSH 9.0+, 구버전은 ChallengeResponseAuthentication no
+KbdInteractiveAuthentication no   # OpenSSH 8.7+, 구버전은 ChallengeResponseAuthentication no
 UsePAM yes
 
 # 빈 패스워드 금지
@@ -35,7 +35,8 @@ X11Forwarding no
 AllowUsers deploy Secureuser123
 # AllowGroups sshusers
 
-# 유휴 세션 타임아웃 (300초 = 5분)
+# 응답 없는 클라이언트 연결 끊기 (300초 간격 × 2회 무응답 = 약 10분)
+# 응답하는 클라이언트의 유휴 세션은 끊지 않음
 ClientAliveInterval 300
 ClientAliveCountMax 2
 
@@ -110,9 +111,9 @@ sudo apt install fail2ban
 
 # /etc/fail2ban/jail.local
 [DEFAULT]
-bantime  = 3600     # 차단 시간 (초)
-findtime = 600      # 탐지 시간 윈도우
-maxretry = 3        # 최대 실패 횟수
+bantime  = 3600     ; 차단 시간 (초)
+findtime = 600      ; 탐지 시간 윈도우
+maxretry = 3        ; 최대 실패 횟수
 banaction = nftables-multiport
 
 [sshd]
@@ -155,7 +156,7 @@ google-authenticator
 auth required pam_google_authenticator.so
 
 # sshd_config 수정
-KbdInteractiveAuthentication yes   # OpenSSH 9.0+, 구버전은 ChallengeResponseAuthentication yes
+KbdInteractiveAuthentication yes   # OpenSSH 8.7+, 구버전은 ChallengeResponseAuthentication yes
 AuthenticationMethods publickey,keyboard-interactive
 ```
 
@@ -165,14 +166,14 @@ AuthenticationMethods publickey,keyboard-interactive
 
 ## 5. SSH 점검 체크리스트
 
-| 항목                   | 확인 명령어                                        |
-|------------------------|----------------------------------------------------|
-| 루트 로그인 비활성화   | `grep PermitRootLogin /etc/ssh/sshd_config`        |
-| 패스워드 인증 비활성화 | `grep PasswordAuthentication /etc/ssh/sshd_config` |
-| 포트 변경 여부         | `ss -tlnp | grep sshd`                             |
-| authorized_keys 권한   | `stat ~/.ssh/authorized_keys`                      |
-| fail2ban 동작 여부     | `sudo fail2ban-client status sshd`                 |
-| 최근 로그인 실패 기록  | `sudo journalctl -u sshd | grep Failed | tail -20` |
+| 항목                   | 확인 명령어                                          |
+|------------------------|------------------------------------------------------|
+| 루트 로그인 비활성화   | `grep PermitRootLogin /etc/ssh/sshd_config`          |
+| 패스워드 인증 비활성화 | `grep PasswordAuthentication /etc/ssh/sshd_config`   |
+| 포트 변경 여부         | `ss -tlnp \| grep sshd`                              |
+| authorized_keys 권한   | `stat ~/.ssh/authorized_keys`                        |
+| fail2ban 동작 여부     | `sudo fail2ban-client status sshd`                   |
+| 최근 로그인 실패 기록  | `sudo journalctl -u sshd \| grep Failed \| tail -20` |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -181,10 +182,11 @@ AuthenticationMethods publickey,keyboard-interactive
 ## 참고 자료
 
 - OpenSSH Manual: [man.openbsd.org/sshd_config](https://man.openbsd.org/sshd_config) — ★★★☆☆
-- fail2ban Documentation: [fail2ban.org](https://www.fail2ban.org/wiki/index.php/Main_Page) — ★★★☆☆
+- fail2ban 공식 저장소·wiki: [github.com/fail2ban/fail2ban](https://github.com/fail2ban/fail2ban/wiki) — ★★★☆☆
+- fail2ban jail.conf 주석 규칙(줄 끝 주석은 `;`): [github.com/fail2ban/fail2ban](https://github.com/fail2ban/fail2ban/blob/master/config/jail.conf) — ★★★☆☆
 - Mozilla SSH Guidelines: [infosec.mozilla.org](https://infosec.mozilla.org/guidelines/openssh) — ★★★☆☆
-- OpenSSH 9.0 릴리즈 노트 (ChallengeResponseAuthentication deprecated): [openssh.com/releasenotes](https://www.openssh.com/releasenotes.html) — ★★★☆☆
-- libpam-google-authenticator: [github.com/google/google-authenticator-libpam](https://github.com/google/google-authenticator-libpam) — ★★☆☆☆
+- OpenSSH 8.7 릴리즈 노트 (ChallengeResponseAuthentication deprecated): [openssh.org/txt/release-8.7](https://www.openssh.org/txt/release-8.7) — ★★★☆☆
+- libpam-google-authenticator: [github.com/google/google-authenticator-libpam](https://github.com/google/google-authenticator-libpam) — ★★★☆☆
 
 ---
 
@@ -201,6 +203,6 @@ AuthenticationMethods publickey,keyboard-interactive
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-05-03
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -18,7 +18,7 @@ Root CA (자체 서명)
                     ├── Subject: CN=example.com
                     ├── SAN: DNS:example.com, DNS:www.example.com
                     ├── Public Key
-                    └── Validity: 90일 (Let's Encrypt) / 1년
+                    └── Validity: 90일 (Let's Encrypt) / 최대 200일
 ```
 
 ### TLS Handshake (TLS 1.3)
@@ -120,7 +120,8 @@ sudo certbot renew --dry-run
 
 ```nginx
 server {
-    listen 443 ssl http2;
+    listen 443 ssl;
+    http2 on;    # nginx 1.25.1+, 이전 버전은 listen 443 ssl http2;
     server_name example.com;
 
     ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
@@ -190,8 +191,8 @@ server {
     ssl_client_certificate /etc/ssl/ca.crt;
     ssl_verify_client on;
 
-    # 클라이언트 CN을 헤더로 전달
-    proxy_set_header X-Client-Cert-CN $ssl_client_s_dn_cn;
+    # 클라이언트 인증서의 subject DN을 헤더로 전달 (nginx에는 CN만 담는 변수가 없음)
+    proxy_set_header X-Client-Cert-DN $ssl_client_s_dn;
 }
 ```
 
@@ -206,7 +207,7 @@ server {
 ```bash
 # 만료 임박 인증서 일괄 확인 (30일 이내)
 for cert in /etc/letsencrypt/live/*/cert.pem; do
-    domain=$(echo $cert | cut -d/ -f6)
+    domain=$(echo $cert | cut -d/ -f5)
     expiry=$(openssl x509 -in $cert -noout -enddate | cut -d= -f2)
     days=$(( ( $(date -d "$expiry" +%s) - $(date +%s) ) / 86400 ))
     [ $days -lt 30 ] && echo "🟡  $domain: $days 일 남음"
@@ -215,8 +216,8 @@ done
 # SSL Labs 등급 확인 (외부)
 # https://www.ssllabs.com/ssltest/
 
-# 로컬 TLS 설정 점검 (testssl.sh — apt 패키지 아님, GitHub에서 직접 설치)
-git clone --depth 1 https://github.com/drwetter/testssl.sh.git
+# 로컬 TLS 설정 점검 (testssl.sh — Debian/Ubuntu 패키지는 버전이 늦을 수 있어 GitHub에서 직접 설치)
+git clone --depth 1 https://github.com/testssl/testssl.sh.git
 ./testssl.sh/testssl.sh example.com
 ```
 
@@ -227,11 +228,16 @@ git clone --depth 1 https://github.com/drwetter/testssl.sh.git
 ## 참고 자료
 
 - Let's Encrypt Documentation: [letsencrypt.org/docs](https://letsencrypt.org/docs/) — ★★★☆☆
-- Mozilla SSL Configuration Generator: [ssl-config.mozilla.org](https://ssl-config.mozilla.org/) — ★★☆☆☆
-- RFC 8446: TLS 1.3 — ★★★★☆
+- Mozilla SSL Configuration Generator: [ssl-config.mozilla.org](https://ssl-config.mozilla.org/) — ★★★☆☆
+- RFC 9846: TLS 1.3 (RFC 8446 대체) — ★★★★☆
 - RFC 6066: TLS Extensions (OCSP Stapling §8) — ★★★★☆
 - RFC 6797: HTTP Strict Transport Security (HSTS) — ★★★★☆
-- testssl.sh: [github.com/drwetter/testssl.sh](https://github.com/drwetter/testssl.sh) — ★★☆☆☆
+- testssl.sh: [github.com/testssl/testssl.sh](https://github.com/testssl/testssl.sh) — ★★★☆☆
+- CA/Browser Forum TLS Baseline Requirements 6.3.2(최대 유효기간): [github.com/cabforum/servercert](https://github.com/cabforum/servercert/blob/main/docs/BR.md) — ★★★☆☆
+- nginx `listen`의 `http2` 파라미터 폐기: [nginx.org/en/docs/http/ngx_http_core_module.html](https://nginx.org/en/docs/http/ngx_http_core_module.html#listen) — ★★★☆☆
+- nginx `http2` 디렉티브(1.25.1+): [nginx.org/en/docs/http/ngx_http_v2_module.html](https://nginx.org/en/docs/http/ngx_http_v2_module.html#http2) — ★★★☆☆
+- nginx SSL 내장 변수: [nginx.org/en/docs/http/ngx_http_ssl_module.html](https://nginx.org/en/docs/http/ngx_http_ssl_module.html#variables) — ★★★☆☆
+- Debian testssl.sh 패키지: [packages.debian.org](https://packages.debian.org/search?keywords=testssl.sh&searchon=names) — ★★★☆☆
 
 ---
 
@@ -248,6 +254,6 @@ git clone --depth 1 https://github.com/drwetter/testssl.sh.git
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

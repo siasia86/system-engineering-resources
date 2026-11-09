@@ -15,7 +15,7 @@
 |------------|-------------------------------------------------------------|
 | CVE        | CVE-2026-43503                                              |
 | 별칭       | **DirtyClone**                                              |
-| CVSS       | 8.8 (HIGH)                                                  |
+| CVSS       | 8.8 (HIGH, kernel.org CNA) / 7.0 (Red Hat)                  |
 | 벡터       | `CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H`              |
 | 공격 벡터  | LOCAL / LOW privilege / CHANGED scope / NO interaction      |
 | 컴포넌트   | `net/core/skbuff.c` — `__pskb_copy_fclone()`, `skb_shift()` |
@@ -38,7 +38,7 @@
 
 ## 2. 취약점 상세
 
-> 출처: [JFrog Research — DirtyClone](https://research.jfrog.com/post/dissecting-and-exploiting-linux-lpe-variant-dirtyclone-cve-2026-43503/) / [NVD CVE-2026-43503](https://nvd.nist.gov/vuln/detail/CVE-2026-43503) / [커널 패치 커밋](https://git.kernel.org/stable/c/9bc9d6d6967a2239aa57af2aa53554eddd640d20)
+> 출처: [JFrog Research — DirtyClone](https://research.jfrog.com/post/dissecting-and-exploiting-linux-lpe-variant-dirtyclone-cve-2026-43503/) / [NVD CVE-2026-43503](https://nvd.nist.gov/vuln/detail/CVE-2026-43503) / [커널 패치 커밋](https://git.kernel.org/stable/c/48f6a5356a33dd78e7144ae1faef95ffc990aae0)
 
 `__pskb_copy_fclone()`과 `skb_shift()`가 frag descriptor를 복사할 때 `SKBFL_SHARED_FRAG` 비트를 전파하지 않습니다. `iptables TEE`(`nf_dup_ipv4()`) 규칙이 존재하면 `__pskb_copy_fclone()`을 통해 skb가 복제되며, 복제된 skb에서 shared frag 마커가 사라집니다.
 
@@ -60,27 +60,28 @@ vmsplice/splice → UDP skb (page-cache backed)
 
 **기존 DirtyFrag 패치와의 차이:**
 
-| CVE            | 버그 위치                 | 마커 누락 경로      |
-|----------------|---------------------------|---------------------|
-| CVE-2026-43284 | `ip_append_data()` splice | UDP splice → ESP    |
-| CVE-2026-46300 | `skb_try_coalesce()`      | GRO coalesce → ESP  |
-| CVE-2026-43503 | `__pskb_copy_fclone()`    | TEE/dup clone → ESP |
+| CVE            | 버그 위치                 | 마커 누락 경로          |
+|----------------|---------------------------|-------------------------|
+| CVE-2026-43284 | `ip_append_data()` splice | UDP splice → ESP        |
+| CVE-2026-46300 | `skb_try_coalesce()`      | TCP 수신 coalesce → ESP |
+| CVE-2026-43503 | `__pskb_copy_fclone()`    | TEE/dup clone → ESP     |
 
 **패치 내용:** frag descriptor 이동 시 `SKBFL_SHARED_FRAG` 비트를 destination skb에도 설정합니다. 수정 대상: `__pskb_copy_fclone()`, `skb_shift()`, `skb_gro_receive()`, `skb_gro_receive_list()`, `tcp_clone_payload()`, `skb_segment()`.
 
 **취약 버전:**
 
-| 브랜치 | 취약 범위       | 패치 버전     | RHEL/CentOS          | Ubuntu           | Amazon Linux      |
-|--------|-----------------|---------------|----------------------|------------------|-------------------|
-| 5.10.x | 3.9 ~ 5.10.256  | **5.10.257+** | RHEL 8 (백포트 확인) | 20.04 LTS (HWE)  | AL2 (5.10 kernel) |
-| 5.15.x | 5.11 ~ 5.15.207 | **5.15.208+** | RHEL 9.0~9.2         | 22.04 LTS        | AL2023            |
-| 6.1.x  | 5.16 ~ 6.1.173  | **6.1.174+**  | RHEL 9.3~9.4         | 22.04 LTS (HWE)  | AL2023 (6.1)      |
-| 6.6.x  | 6.2 ~ 6.6.140   | **6.6.141+**  | RHEL 9.5+            | 24.04 LTS        | AL2023 (6.6)      |
-| 6.12.x | 6.7 ~ 6.12.90   | **6.12.91+**  | RHEL 10              | **24.04 LTS** 🟡 | —                 |
-| 6.18.x | 6.13 ~ 6.18.32  | **6.18.33+**  | —                    | 25.04            | —                 |
-| 7.0.x  | 6.19 ~ 7.0.9    | **7.0.10+**   | —                    | 25.10 (예정)     | —                 |
+| 브랜치 | 취약 범위       | 패치 버전     | RHEL/CentOS          | Ubuntu           | Amazon Linux        |
+|--------|-----------------|---------------|----------------------|------------------|---------------------|
+| 5.10.x | 3.9 ~ 5.10.256  | **5.10.257+** | RHEL 8 (백포트 확인) | 20.04 LTS (5.4)  | AL2 (core·5.4·5.10) |
+| 5.15.x | 5.11 ~ 5.15.207 | **5.15.208+** | RHEL 9 (5.14 백포트) | 22.04 LTS (5.15) | AL2 (5.15 Extra)    |
+| 6.1.x  | 5.16 ~ 6.1.173  | **6.1.174+**  | —                    | —                | AL2023 (6.1)        |
+| 6.6.x  | 6.2 ~ 6.6.140   | **6.6.141+**  | —                    | —                | —                   |
+| 6.12.x | 6.7 ~ 6.12.90   | **6.12.91+**  | RHEL 10              | **24.04 LTS** 🟡 | AL2023 (6.12)       |
+| 6.18.x | 6.13 ~ 6.18.32  | **6.18.33+**  | —                    | 25.10 (6.17)     | AL2023 (6.18)       |
+| 7.0.x  | 6.19 ~ 7.0.9    | **7.0.10+**   | —                    | 26.04 LTS (7.0)  | —                   |
 
 > 첫 패치 태그: v7.1-rc5 (2026-05-24)
+> 배포판 열은 기본 커널 버전이 속한 범위입니다. RHEL·Ubuntu·Amazon Linux는 자체 백포트로 수정했으므로 배포판 보안 공지의 패키지 버전으로 판정합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -96,6 +97,8 @@ vmsplice/splice → UDP skb (page-cache backed)
 | 비권한 user namespace    | Debian/Fedora/Ubuntu 기본 활성 → userns로 획득 |
 | iptables TEE 또는 nf_dup | `__pskb_copy_fclone()` 트리거에 필요           |
 | ESP 모듈 (`esp4`/`esp6`) | in-place decrypt 경로                          |
+
+🟡 Ubuntu 24.04는 AppArmor로 비권한 user namespace 생성을 기본 제한합니다(`kernel.apparmor_restrict_unprivileged_userns=1`). JFrog는 Ubuntu 22.04 기본 설정에서 영향을 확인했습니다.
 
 ### JFrog 확인 배포판
 
@@ -184,6 +187,7 @@ echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
 # CAP_NET_ADMIN 비권한 획득 차단
 sudo sysctl -w kernel.unprivileged_userns_clone=0
 echo "kernel.unprivileged_userns_clone=0" | sudo tee /etc/sysctl.d/99-no-userns.conf
+# Fedora 등 위 sysctl이 없는 배포판: user.max_user_namespaces=0 (JFrog 권고)
 ```
 
 🟡 이 방법은 비권한 userns에 의존하는 애플리케이션(Chrome sandbox, Flatpak 등)에 영향을 줄 수 있습니다.
@@ -211,8 +215,8 @@ lsmod | grep -E "^esp4|^esp6|^rxrpc"
 # 출력 없으면 정상
 
 # 핵심 바이너리 무결성 확인
-sudo dpkg --verify sudo bash su 2>/dev/null        # Ubuntu/Debian
-sudo rpm -V sudo bash coreutils 2>/dev/null        # RHEL/CentOS
+sudo dpkg --verify sudo bash util-linux 2>/dev/null        # Ubuntu/Debian (/usr/bin/su = util-linux)
+sudo rpm -V sudo bash coreutils util-linux 2>/dev/null     # RHEL/CentOS
 
 # page cache 초기화 (익스플로잇 흔적 제거)
 echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
@@ -226,7 +230,8 @@ echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
 
 - JFrog Research: [research.jfrog.com/post/dissecting-and-exploiting-linux-lpe-variant-dirtyclone-cve-2026-43503](https://research.jfrog.com/post/dissecting-and-exploiting-linux-lpe-variant-dirtyclone-cve-2026-43503/) — ★★★☆☆
 - NVD CVE-2026-43503: [nvd.nist.gov](https://nvd.nist.gov/vuln/detail/CVE-2026-43503) — ★★★☆☆
-- Linux Kernel Patch (mainline): [git.kernel.org](https://git.kernel.org/stable/c/9bc9d6d6967a2239aa57af2aa53554eddd640d20) — ★★★★☆
+- Linux Kernel Patch (mainline): [git.kernel.org](https://git.kernel.org/stable/c/48f6a5356a33dd78e7144ae1faef95ffc990aae0) — ★★★☆☆
+- Amazon Linux CVE-2026-43503: [explore.alas.aws.amazon.com](https://explore.alas.aws.amazon.com/CVE-2026-43503.html) — ★★★☆☆
 - 데일리시큐 기사: [dailysecu.com](https://www.dailysecu.com/news/articleView.html?idxno=207338) — ★★☆☆☆
 - [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md) — CVE-2026-31431 (Copy Fail / CISA KEV)
 - [cve_2026_43284_dirty_frag.md](./cve_2026_43284_dirty_frag.md) — CVE-2026-43284 (Dirty Frag / xfrm ESP)
@@ -248,6 +253,6 @@ echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
 
 **작성일**: 2026-06-29
 
-**마지막 업데이트**: 2026-06-29
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

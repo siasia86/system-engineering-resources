@@ -37,7 +37,7 @@
 ```
 
 ```bash
-# IAM Access Analyzer — 미사용 권한 탐지
+# IAM Access Analyzer — 외부 접근 탐지 (미사용 권한 분석은 --type ACCOUNT_UNUSED_ACCESS)
 aws accessanalyzer create-analyzer \
     --analyzer-name "account-analyzer" \
     --type ACCOUNT
@@ -183,7 +183,7 @@ aws guardduty list-detectors --region ap-northeast-2
 # 탐지 결과 조회 (HIGH 이상)
 aws guardduty list-findings \
     --detector-id <detector-id> \
-    --finding-criteria '{"Criterion":{"severity":{"Gte":7}}}' \
+    --finding-criteria '{"Criterion":{"severity":{"GreaterThanOrEqual":7}}}' \
     --region ap-northeast-2
 
 # 결과 상세 조회
@@ -195,13 +195,13 @@ aws guardduty get-findings \
 
 ### 주요 탐지 유형
 
-| 유형                                      | 설명                 |
-|-------------------------------------------|----------------------|
-| `UnauthorizedAccess:EC2/SSHBruteForce`    | SSH brute-force 시도 |
-| `Recon:EC2/PortProbeUnprotectedPort`      | 포트 스캔 탐지       |
-| `CryptoCurrency:EC2/BitcoinTool`          | 암호화폐 채굴 탐지   |
-| `Trojan:EC2/BlackholeTraffic`             | C&C 서버 통신 탐지   |
-| `UnauthorizedAccess:IAMUser/ConsoleLogin` | 비정상 콘솔 로그인   |
+| 유형                                               | 설명                 |
+|----------------------------------------------------|----------------------|
+| `UnauthorizedAccess:EC2/SSHBruteForce`             | SSH brute-force 시도 |
+| `Recon:EC2/PortProbeUnprotectedPort`               | 포트 스캔 탐지       |
+| `CryptoCurrency:EC2/BitcoinTool.B`                 | 암호화폐 채굴 탐지   |
+| `Backdoor:EC2/C&CActivity.B`                       | C&C 서버 통신 탐지   |
+| `UnauthorizedAccess:IAMUser/ConsoleLoginSuccess.B` | 비정상 콘솔 로그인   |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -253,7 +253,7 @@ aws cloudwatch put-metric-alarm \
 ## 6. 보안 점검 체크리스트
 
 ```bash
-# AWS Security Hub 활성화 (통합 보안 점검)
+# AWS Security Hub CSPM 활성화 (보안 태세 점검, 옛 이름 Security Hub)
 aws securityhub enable-security-hub --region ap-northeast-2
 
 # 점검 결과 조회 (CRITICAL)
@@ -284,6 +284,10 @@ aws securityhub get-findings \
 - AWS IAM Best Practices: [docs.aws.amazon.com/IAM/latest/UserGuide/best-practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) — ★★★☆☆
 - Amazon GuardDuty Finding Types: [docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-active](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-active.html) — ★★★☆☆
 - AWS CloudTrail User Guide: [docs.aws.amazon.com/awscloudtrail/latest/userguide](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/) — ★★★☆☆
+- GuardDuty Retired Finding Types: [docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-retired](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-retired.html) — ★★★☆☆
+- GuardDuty Condition(Gte 등 폐기 멤버): [docs.aws.amazon.com/guardduty/latest/APIReference/API_Condition](https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Condition.html) — ★★★☆☆
+- IAM Access Analyzer CreateAnalyzer(type 값): [docs.aws.amazon.com/access-analyzer/latest/APIReference/API_CreateAnalyzer](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_CreateAnalyzer.html) — ★★★☆☆
+- Enabling Security Hub CSPM: [docs.aws.amazon.com/securityhub/latest/userguide/securityhub-settingup](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-settingup.html) — ★★★☆☆
 
 ---
 
@@ -300,6 +304,6 @@ aws securityhub get-findings \
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-05-03
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

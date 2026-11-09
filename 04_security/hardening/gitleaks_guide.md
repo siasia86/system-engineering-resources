@@ -121,8 +121,10 @@ cat app.env | gitleaks stdin --redact
 
 ### 출력 예시
 
+탐지 항목별 상세는 `-v`를 붙였을 때 출력되며, `-v`가 없으면 배너와 마지막 요약 줄만 나옵니다.
+
 ```
-○
+    ○
     │╲
     │ ○
     ○ ░
@@ -131,16 +133,21 @@ cat app.env | gitleaks stdin --redact
 Finding:     AKIAIOSFODNN7EXAMPLE
 Secret:      AKIAIOSFODNN7EXAMPLE
 RuleID:      aws-access-token
-Entropy:     3.08
+Entropy:     3.684184
 File:        config/aws.json
 Line:        5
 Commit:      a1b2c3d4
-Author:      user@example.com
+Author:      user
+Email:       user@example.com
 Date:        2026-05-07T10:00:00Z
 Fingerprint: a1b2c3d4:config/aws.json:aws-access-token:5
 
-1 leak(s) detected
+4:33PM INF 1 commits scanned.
+4:33PM INF scanned ~125 bytes (125 bytes) in 25.3ms
+4:33PM WRN leaks found: 1
 ```
+
+🟡 위 값은 형식 설명용입니다. 실제 기본 규칙 `aws-access-token`은 `EXAMPLE`로 끝나는 값을 규칙별 허용 목록(`.+EXAMPLE$`)으로 제외하므로 이 값은 탐지되지 않습니다.
 
 ### 주요 옵션
 
@@ -148,7 +155,7 @@ Fingerprint: a1b2c3d4:config/aws.json:aws-access-token:5
 |------------------------------|----------------------------------------------------------------|
 | `-v, --verbose`              | 상세 출력                                                      |
 | `-r, --report-path`          | 결과 파일 저장 경로                                            |
-| `-f, --report-format`        | 출력 형식 (`json`, `csv`, `sarif`, `junit`)                    |
+| `-f, --report-format`        | 출력 형식 (`json`, `csv`, `sarif`, `junit`, `template`)        |
 | `--baseline-path`            | baseline 파일 지정 (기존 탐지 결과 제외)                       |
 | `--config`                   | 커스텀 설정 파일 지정                                          |
 | `--max-target-megabytes`     | 스캔 파일 크기 제한                                            |
@@ -158,7 +165,7 @@ Fingerprint: a1b2c3d4:config/aws.json:aws-access-token:5
 | `--exit-code`                | 탐지 시 종료 코드 지정 (기본 1)                                |
 | `--enable-rule`              | 지정한 규칙 ID만 실행                                          |
 | `-i, --gitleaks-ignore-path` | `.gitleaksignore` 파일 또는 그 파일이 있는 폴더 지정           |
-| `--max-decode-depth`         | 인코딩된 값 재귀 디코딩 깊이 (기본 0, 사용 안 함)              |
+| `--max-decode-depth`         | 인코딩된 값 재귀 디코딩 깊이 (기본 5, 0이면 사용 안 함)        |
 | `--max-archive-depth`        | 압축 파일 내부 재귀 스캔 깊이 (기본 0, 사용 안 함)             |
 | `--timeout`                  | 명령 제한 시간(초, 기본 0은 제한 없음)                         |
 
@@ -172,7 +179,7 @@ gitleaks git --redact
 # 특정 설정 파일 사용
 gitleaks git --config .gitleaks.toml
 
-# base64·hex·percent 인코딩 값까지 디코딩해 검사
+# base64·hex·percent 인코딩 값의 재귀 디코딩 깊이 지정 (v8.30.0부터 기본 5, 0이면 끔)
 gitleaks dir --max-decode-depth 2 --redact .
 
 # zip·tar 등 압축 파일 내부까지 검사
@@ -519,7 +526,7 @@ ls -l "$(git rev-parse --git-path hooks)"/pre-commit \
 # pre-push 범위 입력 형식 테스트
 BRANCH=$(git symbolic-ref --short HEAD)
 HEAD_SHA=$(git rev-parse HEAD)
-printf 'refs/heads/%s %s refs/remotes/origin/%s %s\n' \
+printf 'refs/heads/%s %s refs/heads/%s %s\n' \
   "${BRANCH}" "${HEAD_SHA}" "${BRANCH}" "${HEAD_SHA}" \
   | .githooks/pre-push
 ```
@@ -597,7 +604,9 @@ jobs:
 ```yaml
 # .gitlab-ci.yml
 gitleaks:
-  image: zricethezav/gitleaks:v8.30.1
+  image:
+    name: zricethezav/gitleaks:v8.30.1
+    entrypoint: [""]  # 이미지 ENTRYPOINT가 gitleaks라 script 실행을 위해 비움
   stage: test
   script:
     - gitleaks git --redact --no-banner -v .
@@ -669,10 +678,13 @@ for r in rules: print(r)
 
 ## 참고 자료
 
-- gitleaks: [github.com/gitleaks/gitleaks](https://github.com/gitleaks/gitleaks) — ★★★★☆
-- Gitleaks 공식 README: [github.com/gitleaks/gitleaks#readme](https://github.com/gitleaks/gitleaks#readme) — ★★★★☆
-- Gitleaks 기본 규칙: [config/gitleaks.toml](https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml) — ★★★★☆
-- Gitleaks GitHub Action: [github.com/gitleaks/gitleaks-action](https://github.com/gitleaks/gitleaks-action) — ★★★★☆
+- gitleaks: [github.com/gitleaks/gitleaks](https://github.com/gitleaks/gitleaks) — ★★★☆☆
+- Gitleaks 공식 README: [github.com/gitleaks/gitleaks#readme](https://github.com/gitleaks/gitleaks#readme) — ★★★☆☆
+- Gitleaks 기본 규칙: [config/gitleaks.toml](https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml) — ★★★☆☆
+- Gitleaks GitHub Action: [github.com/gitleaks/gitleaks-action](https://github.com/gitleaks/gitleaks-action) — ★★★☆☆
+- Gitleaks v8.30.0 릴리스(디코딩 기본 깊이 0→5): [releases/tag/v8.30.0](https://github.com/gitleaks/gitleaks/releases/tag/v8.30.0) — ★★★☆☆
+- GitLab CI 이미지 entrypoint 재정의: [docs.gitlab.com/ci/docker/using_docker_images](https://docs.gitlab.com/ci/docker/using_docker_images/) — ★★★☆☆
+- Git pre-push 입력 형식: [git-scm.com/docs/githooks](https://git-scm.com/docs/githooks#_pre_push) — ★★★☆☆
 - 확인 기록: [Gitleaks 참조 노트](../../_reference/gitleaks_official_notes.md)
 
 ---
@@ -690,6 +702,6 @@ for r in rules: print(r)
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-11-03
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

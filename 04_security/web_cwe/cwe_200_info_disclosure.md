@@ -16,7 +16,7 @@
 |-----------|------------------------------------------------------------|
 | CWE ID    | CWE-200                                                    |
 | 이름      | Exposure of Sensitive Information to an Unauthorized Actor |
-| OWASP     | A01:2021 Broken Access Control                             |
+| OWASP     | A01:2025 Broken Access Control                             |
 | 영향      | 정보 수집 (후속 공격의 기초 데이터 제공)                   |
 | 빈도      | 매우 높음 — phpinfo(), 에러 메시지, 디렉토리 리스팅        |
 | 전제 조건 | 디버깅 설정 미제거, 기본 설정 그대로 운영                  |
@@ -181,6 +181,7 @@ Header always unset X-Powered-By
 
 - CWE-200: [cwe.mitre.org/data/definitions/200.html](https://cwe.mitre.org/data/definitions/200.html) — ★★★☆☆
 - OWASP Information Disclosure: [owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering) — ★★★☆☆
+- OWASP Top 10:2025 A01 Broken Access Control(CWE-200 매핑): [top10.owasp.org/2025/A01_2025-Broken_Access_Control](https://top10.owasp.org/2025/A01_2025-Broken_Access_Control/) — ★★★☆☆
 
 ---
 
@@ -197,6 +198,6 @@ Header always unset X-Powered-By
 
 **작성일**: 2026-07-02
 
-**마지막 업데이트**: 2026-07-02
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

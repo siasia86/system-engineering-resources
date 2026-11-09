@@ -8,8 +8,8 @@
 |----------------------------|-----------------------------------------------------------|---------|
 | [hardening/](./hardening/) | 서버 강화 — iptables/nftables, SSH, 시크릿 관리, gitleaks | 15      |
 | [cloud/](./cloud/)         | 클라우드 보안 — AWS Security, DDoS 방어, Network Firewall | 4       |
-| [cve/](./cve/)             | CVE 분석 — 2026년 Linux 커널 취약점 (Dirty Frag, LPE 등)  | 9       |
-| [web_cwe/](./web_cwe/)     | 웹 취약점 — CWE-022, CWE-078, CWE-200, CWE-434            | 4       |
+| [cve/](./cve/)             | CVE 분석 — 2026년 Linux 커널·PHP 취약점 (Dirty Frag 등)   | 9       |
+| [web_cwe/](./web_cwe/)     | 웹 취약점 — CWE-22, CWE-78, CWE-200, CWE-434              | 4       |
 
 ## 주요 문서
 
@@ -43,6 +43,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

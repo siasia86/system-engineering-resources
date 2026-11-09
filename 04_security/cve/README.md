@@ -1,4 +1,4 @@
-# 01_cve — CVE 취약점 분석·대응 문서
+# cve — CVE 취약점 분석·대응 문서
 
 실제 익스플로잇이 확인되었거나 CVSS HIGH 이상인 취약점의 분석·대응 문서를 관리합니다. 이 문서는 디렉토리 인덱스로서 문서 목록, CVE 간 관계, 등록 기준을 제공합니다.
 
@@ -16,15 +16,15 @@
 
 이 디렉토리는 실제 익스플로잇이 확인되었거나 CVSS HIGH 이상인 취약점의 분석·대응 문서를 관리합니다. 이 문서는 디렉토리 인덱스로서 문서 목록, CVE 간 관계, 등록 기준을 제공합니다.
 
-현재 등록된 취약점은 모두 Linux Kernel skb shared frag in-place 복호화 버그 클래스(page cache write → LPE)에 해당합니다.
+현재 등록된 취약점은 Linux Kernel skb shared frag in-place 복호화 버그 클래스(page cache write → LPE) 5건과 PHP 엔진 원격 코드 실행(PHP2Shell) 2건입니다.
 
 ### 등록 기준
 
-| 조건                                          | 설명                                     |
-|-----------------------------------------------|------------------------------------------|
-| CVSS HIGH (7.0) 이상                          | NVD 등재 기준 baseScore 7.0 이상         |
-| 실제 익스플로잇 확인 (PoC 공개 또는 CISA KEV) | 이론적 취약점이 아닌 실증된 위협         |
-| 운영 환경 영향                                | 관리 중인 서버/컨테이너에 해당 커널 사용 |
+| 조건                                          | 설명                                                |
+|-----------------------------------------------|-----------------------------------------------------|
+| CVSS HIGH (7.0) 이상                          | NVD 등재 기준 baseScore 7.0 이상                    |
+| 실제 익스플로잇 확인 (PoC 공개 또는 CISA KEV) | 이론적 취약점이 아닌 실증된 위협                    |
+| 운영 환경 영향                                | 관리 중인 서버/컨테이너에 해당 커널·소프트웨어 사용 |
 
 ### CVSS 심각도 기준
 
@@ -41,14 +41,16 @@
 
 ## 2. 문서 목록
 
-| CVE            | 별칭          | CVSS | 컴포넌트                          | 파일                                                                   |
-|----------------|---------------|------|-----------------------------------|------------------------------------------------------------------------|
-| CVE-2026-31431 | Copy Fail     | 7.8  | `algif_aead`                      | [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md)           |
-| CVE-2026-43284 | Dirty Frag    | 8.8  | `esp4`, `esp6`                    | [cve_2026_43284_dirty_frag.md](./cve_2026_43284_dirty_frag.md)         |
-| CVE-2026-43500 | Dirty Frag    | 7.8  | `rxrpc`                           | [cve_2026_43500_dirty_frag.md](./cve_2026_43500_dirty_frag.md)         |
-| CVE-2026-43503 | DirtyClone    | 8.8  | `__pskb_copy_fclone`, `skb_shift` | [cve_2026_43503_dirty_clone.md](./cve_2026_43503_dirty_clone.md)       |
-| CVE-2026-46300 | Fragnesia     | —    | `espintcp`                        | [cve_2026_46300_fragnesia.md](./cve_2026_46300_fragnesia.md)           |
-| —              | 공격 시나리오 | —    | 종합 분석                         | [cve_2026_lpe_attack_scenarios.md](./cve_2026_lpe_attack_scenarios.md) |
+| CVE             | 별칭          | CVSS | 컴포넌트                          | 파일                                                                   |
+|-----------------|---------------|------|-----------------------------------|------------------------------------------------------------------------|
+| CVE-2026-31431  | Copy Fail     | 7.8  | `algif_aead`                      | [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md)           |
+| CVE-2026-43284  | Dirty Frag    | 8.8  | `esp4`, `esp6`                    | [cve_2026_43284_dirty_frag.md](./cve_2026_43284_dirty_frag.md)         |
+| CVE-2026-43500  | Dirty Frag    | 7.8  | `rxrpc`                           | [cve_2026_43500_dirty_frag.md](./cve_2026_43500_dirty_frag.md)         |
+| CVE-2026-43503  | DirtyClone    | 8.8  | `__pskb_copy_fclone`, `skb_shift` | [cve_2026_43503_dirty_clone.md](./cve_2026_43503_dirty_clone.md)       |
+| CVE-2026-46300  | Fragnesia     | 7.8  | `skb_try_coalesce` (`espintcp`)   | [cve_2026_46300_fragnesia.md](./cve_2026_46300_fragnesia.md)           |
+| CVE-2026-109618 | PHP2Shell     | 9.8  | PHP OOM `longjmp()`               | [cve_2026_109618_php2shell.md](./cve_2026_109618_php2shell.md)         |
+| CVE-2026-109619 | PHP2Shell     | 8.1  | PHP stale global state            | [cve_2026_109619_php2shell.md](./cve_2026_109619_php2shell.md)         |
+| —               | 공격 시나리오 | —    | 종합 분석                         | [cve_2026_lpe_attack_scenarios.md](./cve_2026_lpe_attack_scenarios.md) |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -100,6 +102,6 @@ Timeline: 04-22 ──> 05-07 ──> 05-13 ──> 06-25
 
 **작성일**: 2026-06-29
 
-**마지막 업데이트**: 2026-06-29
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -100,7 +100,7 @@ sudo yum install audit                    # RHEL/CentOS
 -w /etc/sudoers -p wa -k sudoers
 -w /var/log/auth.log -p wa -k auth_log
 -a always,exit -F arch=b64 -S execve -k exec_commands
--a always,exit -F arch=b64 -S open -F exit=-EACCES -k access_denied
+-a always,exit -F arch=b64 -S open,openat -F exit=-EACCES -k access_denied
 ```
 
 ```bash
@@ -124,14 +124,19 @@ sudo aureport --summary
 minlen = 12
 minclass = 3        # 대/소문자, 숫자, 특수문자 중 3종류
 maxrepeat = 3
+# credit = -1은 해당 종류를 최소 1자 요구 (아래 4줄을 함께 쓰면 4종류 모두 필요)
 dcredit = -1
 ucredit = -1
 lcredit = -1
 ocredit = -1
 
-# 계정 잠금 정책 (/etc/pam.d/common-auth 상단에 추가)
+# 계정 잠금 정책 (/etc/pam.d/common-auth, preauth는 pam_unix.so 앞, authfail·authsucc는 뒤)
 auth required pam_faillock.so preauth silent deny=5 unlock_time=900
-auth required pam_faillock.so authfail deny=5 unlock_time=900
+auth [success=1 default=ignore] pam_unix.so
+auth [default=die] pam_faillock.so authfail deny=5 unlock_time=900
+auth sufficient pam_faillock.so authsucc deny=5 unlock_time=900
+# /etc/pam.d/common-account
+account required pam_faillock.so
 
 # 잠긴 계정 확인 및 해제
 sudo faillock --user Secureuser123
@@ -139,11 +144,11 @@ sudo faillock --user Secureuser123 --reset
 ```
 
 ```bash
-# 비활성 계정 잠금 (90일 미사용 시)
+# 신규 계정 기본값: 비밀번호 만료 후 90일이 지나면 계정 비활성화 (기존 계정은 chage -I)
 sudo useradd -D -f 90
 
-# 만료된 계정 확인
-sudo passwd -S -a | grep -v "P "
+# 잠긴(L)·비밀번호 없는(NP) 계정 확인
+sudo passwd -S -a | awk '$2 != "P"'
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -192,10 +197,13 @@ sudo journalctl -k | grep apparmor | grep DENIED
 ## 참고 자료
 
 - CIS Benchmarks: [cisecurity.org/cis-benchmarks](https://www.cisecurity.org/cis-benchmarks) — ★★★☆☆
-- Linux Audit Documentation: [linux-audit.com](https://linux-audit.com/) — ★★☆☆☆
+- Linux Audit Documentation: [linux-audit.com/linux-audit-framework](https://linux-audit.com/linux-audit-framework/) — ★★☆☆☆
 - NSA RHEL Hardening Guide: [media.defense.gov](https://media.defense.gov/) — ★★★☆☆
 - Linux kernel sysctl 파라미터 레퍼런스: [kernel.org/doc/html/latest/admin-guide/sysctl](https://www.kernel.org/doc/html/latest/admin-guide/sysctl/) — ★★★☆☆
-- Linux-PAM System Administrator's Guide: [linux-pam.org](https://www.linux-pam.org/Linux-PAM-html/Linux-PAM_SAG.html) — ★★★☆☆
+- Linux-PAM System Administrator's Guide 원본: [github.com/linux-pam/linux-pam](https://github.com/linux-pam/linux-pam/tree/master/doc/sag) — ★★★☆☆
+- pam_faillock(8): [man7.org/linux/man-pages/man8/pam_faillock.8.html](https://man7.org/linux/man-pages/man8/pam_faillock.8.html) — ★★★☆☆
+- useradd(8)·passwd(1): [useradd.8](https://man7.org/linux/man-pages/man8/useradd.8.html), [passwd.1](https://man7.org/linux/man-pages/man1/passwd.1.html) — ★★★☆☆
+- open(2) glibc의 openat 사용: [man7.org/linux/man-pages/man2/open.2.html](https://man7.org/linux/man-pages/man2/open.2.html) — ★★★☆☆
 - Red Hat SELinux Guide: [access.redhat.com/documentation/selinux](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/using_selinux/) — ★★★☆☆
 - Ubuntu AppArmor Documentation: [ubuntu.com/server/docs/apparmor](https://ubuntu.com/server/docs/apparmor) — ★★★☆☆
 
@@ -214,6 +222,6 @@ sudo journalctl -k | grep apparmor | grep DENIED
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-05-03
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

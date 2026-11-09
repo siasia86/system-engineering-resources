@@ -42,7 +42,7 @@ Vault는 패스워드, API 키, 인증서 등의 시크릿을 중앙에서 저�
 
 ## 2. Ubuntu 설치
 
-HashiCorp 공식 APT 저장소를 등록한 뒤 `vault` 패키지를 설치합니다. 공식 설치 문서 기준 최신 버전은 2026-08-20 확인 시 `2.0.4`입니다.
+HashiCorp 공식 APT 저장소를 등록한 뒤 `vault` 패키지를 설치합니다. 공식 설치 문서 기준 최신 버전은 2026-11-09 확인 시 `2.2.1`입니다.
 
 ```bash
 sudo apt-get update
@@ -291,13 +291,13 @@ vault read database/creds/myapp-role
 
 ## 7. Docker Compose로 구성
 
-Docker Compose는 개발·테스트에만 사용하고, 운영 환경에서는 영속 스토리지·TLS·백업·Unseal·방화벽을 별도로 설계합니다. 2026-08-20 확인 최신 태그는 `2.0.4`이며, 아래는 해당 멀티 아키텍처 이미지의 확인된 digest를 고정한 예시입니다.
+Docker Compose는 개발·테스트에만 사용하고, 운영 환경에서는 영속 스토리지·TLS·백업·Unseal·방화벽을 별도로 설계합니다. 2026-11-09 확인 최신 태그는 `2.2.1`이며, 아래는 해당 멀티 아키텍처 이미지의 확인된 digest를 고정한 예시입니다.
 
 ```yaml
 # compose.yaml
 services:
   vault:
-    image: hashicorp/vault:2.0.4@sha256:5be49781ecf78bfe775c5309c6a4d9f4e9e040b6c885c99eb2b12fb69855e1a2
+    image: hashicorp/vault:2.2.1@sha256:962a92876e168d68eaaa24b0b8b49bbce1cb63024060a67bba95cd158a366fc2
     ports:
       - "127.0.0.1:8200:8200"
     environment:
@@ -388,7 +388,7 @@ Unseal Key를 명령행 인자로 전달하지 말고 `vault operator unseal`을
 
 - HashiCorp Vault Install: [developer.hashicorp.com/vault/install](https://developer.hashicorp.com/vault/install) — ★★★☆☆
 - Vault TCP Listener Configuration: [developer.hashicorp.com/vault/docs/configuration/listener/tcp](https://developer.hashicorp.com/vault/docs/configuration/listener/tcp) — ★★★☆☆
-- Vault Production Hardening: [developer.hashicorp.com/vault/docs/concepts/production-hardening](https://developer.hashicorp.com/vault/docs/concepts/production-hardening) — ★★★★☆
+- Vault Production Hardening: [developer.hashicorp.com/vault/docs/concepts/production-hardening](https://developer.hashicorp.com/vault/docs/concepts/production-hardening) — ★★★☆☆
 - Vault Operator Init: [developer.hashicorp.com/vault/docs/commands/operator/init](https://developer.hashicorp.com/vault/docs/commands/operator/init) — ★★★☆☆
 - Vault KV v2: [developer.hashicorp.com/vault/docs/secrets/kv](https://developer.hashicorp.com/vault/docs/secrets/kv) — ★★★☆☆
 - Vault Policies: [developer.hashicorp.com/vault/docs/concepts/policies](https://developer.hashicorp.com/vault/docs/concepts/policies) — ★★★☆☆
@@ -404,7 +404,7 @@ Unseal Key를 명령행 인자로 전달하지 말고 `vault operator unseal`을
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
 ![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
 ![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
 ![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
@@ -413,6 +413,6 @@ Unseal Key를 명령행 인자로 전달하지 말고 `vault operator unseal`을
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-08-21
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

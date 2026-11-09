@@ -40,7 +40,7 @@ ansible-playbook site.yml --vault-password-file ~/.vault_pass
 ```
 
 ```yaml
-# vars/secrets.yml (암호화 전)
+# vars/secrets.yml (encrypt_string 결과를 붙여 넣은 형태)
 db_password: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   ...
@@ -86,7 +86,8 @@ rm -f secret.json
 # 자동 교체 활성화 (Lambda 사용)
 aws secretsmanager rotate-secret \
     --secret-id "prod/app/db" \
-    --rotation-lambda-arn arn:aws:lambda:ap-northeast-2:123456789012:function:rotate-db
+    --rotation-lambda-arn arn:aws:lambda:ap-northeast-2:123456789012:function:rotate-db \
+    --rotation-rules '{"ScheduleExpression": "rate(30 days)"}'
 ```
 
 ```python
@@ -133,6 +134,7 @@ export VAULT_TOKEN="${VAULT_TOKEN:?VAULT_TOKEN is required}"
 
 ```bash
 # KV 시크릿 엔진 사용 (kv-v2: 내부 저장 경로는 secret/data/<path>)
+# 개발 서버(-dev)는 secret/에 kv-v2가 이미 있으므로 이 줄을 생략
 vault secrets enable -path=secret kv-v2
 
 # 시크릿 저장: 실제 값은 외부에서 주입하고 코드에 기록하지 않음
@@ -348,12 +350,12 @@ Secret이 Git 이력이나 로그에 노출되면 먼저 자격증명을 폐기�
 
 ```bash
 # git 커밋 전 시크릿 스캔 (gitleaks)
-gitleaks detect --source . --verbose
+gitleaks git --verbose .
 
 # pre-commit hook 등록
 cat > .git/hooks/pre-commit << 'EOF'
 #!/bin/bash
-gitleaks protect --staged --verbose
+gitleaks git --staged --verbose
 EOF
 chmod +x .git/hooks/pre-commit
 ```
@@ -371,7 +373,9 @@ chmod +x .git/hooks/pre-commit
 - GitLab CI/CD variables: [docs.gitlab.com/ci/variables](https://docs.gitlab.com/ci/variables/) — ★★★☆☆
 - GitLab AWS OIDC: [docs.gitlab.com/ci/cloud_services/aws](https://docs.gitlab.com/ci/cloud_services/aws/) — ★★★☆☆
 - Ansible Vault: [docs.ansible.com](https://docs.ansible.com/ansible/latest/vault_guide/) — ★★★☆☆
-- gitleaks (시크릿 스캔): [github.com/gitleaks/gitleaks](https://github.com/gitleaks/gitleaks) — ★★☆☆☆
+- gitleaks (시크릿 스캔, v8.19.0부터 `detect`·`protect` 대신 `git`·`dir`): [github.com/gitleaks/gitleaks](https://github.com/gitleaks/gitleaks) — ★★★☆☆
+- Vault 개발 서버(`secret/`에 kv-v2 기본 마운트): [developer.hashicorp.com/vault/docs/concepts/dev-server](https://developer.hashicorp.com/vault/docs/concepts/dev-server) — ★★★☆☆
+- AWS Secrets Manager RotateSecret API(`RotationRules`): [docs.aws.amazon.com](https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_RotateSecret.html) — ★★★☆☆
 
 ---
 
@@ -388,6 +392,6 @@ chmod +x .git/hooks/pre-commit
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-08-20
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

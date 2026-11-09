@@ -56,7 +56,7 @@
 
 ```bash
 # 1. 스타일 검사 (0건 통과 필수)
-sia-md-style-check 06_security/01_cve/cve_YYYY_NNNNN_alias.md
+sia-md-style-check 04_security/cve/cve_YYYY_NNNNN_alias.md
 
 # 2. NVD API 존재 확인 (출력: 1 이상)
 curl -s "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-YYYY-NNNNN" \
@@ -70,7 +70,7 @@ curl -s -o /dev/null -w "%{http_code}" "https://ubuntu.com/security/CVE-YYYY-NNN
 curl -s -o /dev/null -w "%{http_code}" "https://access.redhat.com/security/cve/CVE-YYYY-NNNNN"
 
 # 5. 내부 링크 검증
-sia-md-link-check 06_security/01_cve/cve_YYYY_NNNNN_alias.md
+sia-md-link-check 04_security/cve/cve_YYYY_NNNNN_alias.md
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -130,6 +130,6 @@ rm -f dirty_frag_detect.py
 
 **작성일**: 2026-06-29
 
-**마지막 업데이트**: 2026-08-28
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

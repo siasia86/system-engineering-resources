@@ -18,7 +18,7 @@ Stateful/Stateless 패킷 필터링, IPS(침입 방지), 도메인 필터링을 
 | 유형      | 관리형 네트워크 방화벽 (L3~L7)         |
 | 배포 위치 | VPC 내 전용 서브넷 (Firewall Subnet)   |
 | 처리 방식 | Stateless → Stateful 순서로 평가       |
-| 기본 정책 | 명시적 PASS 없으면 DROP (Default Deny) |
+| 기본 정책 | 기본 PASS (Deny는 Strict order 설정)   |
 | 비활성화  | ❌ 불가 — 삭제 또는 규칙 수정으로 우회 |
 
 ### 주요 기능
@@ -85,6 +85,10 @@ Destination        Target
 # Private Subnet Route Table
 Destination        Target
 0.0.0.0/0     →   vpce-xxxxxxxx (Firewall Endpoint)
+
+# Firewall Subnet Route Table
+Destination        Target
+0.0.0.0/0     →   igw-xxxxxxxx (Internet Gateway)
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -110,7 +114,7 @@ Network Firewall
 | Firewall             | VPC에 연결되는 실제 방화벽 인스턴스                |
 | Firewall Policy      | Rule Group 을 조합한 정책                          |
 | Stateless Rule Group | 패킷 단위 필터 (PASS / DROP / Forward to Stateful) |
-| Stateful Rule Group  | 연결 추적 기반 필터 (PASS / DROP / ALERT)          |
+| Stateful Rule Group  | 연결 추적 기반 필터 (PASS / DROP / REJECT / ALERT) |
 | Rule Group           | 재사용 가능한 규칙 묶음 (Policy에 연결)            |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -277,6 +281,7 @@ GeneratedRulesType: ALLOWLIST
 
 # DENYLIST: 차단 도메인
 Targets: ["malware.example.com"]
+TargetTypes: ["HTTP_HOST", "TLS_SNI"]
 GeneratedRulesType: DENYLIST
 ```
 
@@ -297,7 +302,7 @@ Stateless Rules (Priority 낮을수록 먼저)
             |
             ├── PASS  → 허용
             ├── DROP  → 차단
-            └── ALERT → 로깅 후 허용
+            └── ALERT → 로깅 후 평가 계속
                     |
                     v
             Default Action (정책 기본값)
@@ -309,15 +314,30 @@ Stateless Rules (Priority 낮을수록 먼저)
 
 ### 로그 유형
 
-| 로그 유형 | 내용                            | 대상                            |
-|-----------|---------------------------------|---------------------------------|
-| ALERT     | Stateful ALERT 규칙 매칭 트래픽 | CloudWatch Logs / S3 / Firehose |
-| FLOW      | 모든 허용 트래픽 흐름           | CloudWatch Logs / S3 / Firehose |
-| TLS       | TLS 검사 결과                   | CloudWatch Logs / S3 / Firehose |
+| 로그 유형 | 내용                           | 대상                            |
+|-----------|--------------------------------|---------------------------------|
+| ALERT     | DROP/ALERT/REJECT 규칙 매칭    | CloudWatch Logs / S3 / Firehose |
+| FLOW      | Stateful 엔진 전달 트래픽 흐름 | CloudWatch Logs / S3 / Firehose |
+| TLS       | TLS 검사 결과                  | CloudWatch Logs / S3 / Firehose |
 
 ### 로깅 활성화
 
 ```bash
+# 한 번의 호출에서는 LogDestinationConfig 하나만 추가·삭제·변경할 수 있습니다.
+# 1) ALERT 로그 추가
+aws network-firewall update-logging-configuration \
+  --firewall-name "main-firewall" \
+  --logging-configuration '{
+    "LogDestinationConfigs": [
+      {
+        "LogType": "ALERT",
+        "LogDestinationType": "CloudWatchLogs",
+        "LogDestination": {"logGroup": "/aws/network-firewall/alert"}
+      }
+    ]
+  }'
+
+# 2) 기존 ALERT 설정을 유지한 채 FLOW 로그 추가
 aws network-firewall update-logging-configuration \
   --firewall-name "main-firewall" \
   --logging-configuration '{
@@ -342,7 +362,7 @@ aws network-firewall update-logging-configuration \
 # AWS CLI로 로그 조회
 aws logs filter-log-events \
   --log-group-name "/aws/network-firewall/alert" \
-  --filter-pattern "DROP"
+  --filter-pattern "blocked"
 ```
 
 ```json
@@ -354,14 +374,14 @@ aws logs filter-log-events \
     "timestamp": "2026-05-12T10:00:00Z",
     "flow_id": 123456789,
     "event_type": "alert",
-    "src_ip": "192.168.10.12",
+    "src_ip": "203.0.113.50",
     "src_port": 54321,
     "dest_ip": "10.102.100.245",
-    "dest_port": 80,
+    "dest_port": 22,
     "proto": "TCP",
     "alert": {
       "action": "blocked",
-      "signature": "Block unauthorized access",
+      "signature": "Block SSH from outside",
       "signature_id": 2001
     }
   }
@@ -376,20 +396,37 @@ aws logs filter-log-events \
 
 별도 규칙 작성 없이 AWS가 관리하는 위협 시그니처를 사용합니다.
 
-| 규칙 그룹                                  | 설명                |
-|--------------------------------------------|---------------------|
-| `AWSManagedRulesCommonRuleSet`             | 일반 위협 차단      |
-| `AWSManagedRulesThreatIntelligenceRuleSet` | 알려진 악성 IP 차단 |
-| `AWSManagedRulesBotControlRuleSet`         | 봇 트래픽 차단      |
+| 규칙 그룹                            | 설명              |
+|--------------------------------------|-------------------|
+| `ThreatSignaturesMalwareActionOrder` | 악성코드 시그니처 |
+| `ThreatSignaturesBotnetActionOrder`  | 봇넷·C2 통신 탐지 |
+| `MalwareDomainsActionOrder`          | 악성 도메인 차단  |
+
+🟡 이름 끝의 `ActionOrder`·`StrictOrder`는 정책의 규칙 평가 순서에 맞춰 고릅니다. 4-3의 정책은 기본(action order)이므로 `ActionOrder`를 씁니다.
 
 ```bash
-# Firewall Policy에 관리형 규칙 추가
+# update-firewall-policy는 정책 전체를 교체하므로 현재 정책과 UpdateToken을 먼저 조회
+aws network-firewall describe-firewall-policy --firewall-policy-name "main-policy"
+
+# 기존 설정을 유지한 채 관리형 규칙 그룹 추가
 aws network-firewall update-firewall-policy \
   --firewall-policy-name "main-policy" \
+  --update-token "<describe 결과의 UpdateToken>" \
   --firewall-policy '{
+    "StatelessDefaultActions": ["aws:forward_to_sfe"],
+    "StatelessFragmentDefaultActions": ["aws:drop"],
+    "StatelessRuleGroupReferences": [
+      {
+        "ResourceArn": "arn:aws:network-firewall:ap-northeast-2:123456789012:stateless-rulegroup/stateless-basic",
+        "Priority": 10
+      }
+    ],
     "StatefulRuleGroupReferences": [
       {
-        "ResourceArn": "arn:aws:network-firewall:ap-northeast-2:aws-managed:stateful-rulegroup/ThreatSignaturesMalware"
+        "ResourceArn": "arn:aws:network-firewall:ap-northeast-2:123456789012:stateful-rulegroup/allow-domains"
+      },
+      {
+        "ResourceArn": "arn:aws:network-firewall:ap-northeast-2:aws-managed:stateful-rulegroup/ThreatSignaturesMalwareActionOrder"
       }
     ]
   }'
@@ -400,12 +437,14 @@ aws network-firewall update-firewall-policy \
 암호화된 트래픽을 복호화하여 검사합니다.
 
 ```bash
-# TLS Inspection Configuration 생성
+# TLS Inspection Configuration 생성 (아웃바운드 검사: ACM에 가져온 CA 인증서 필요)
+# 정책에는 생성할 때만 연결할 수 있습니다 (나중에 추가·제거 불가, 교체만 가능).
 aws network-firewall create-tls-inspection-configuration \
   --tls-inspection-configuration-name "tls-inspect" \
   --tls-inspection-configuration '{
     "ServerCertificateConfigurations": [
       {
+        "CertificateAuthorityArn": "arn:aws:acm:ap-northeast-2:123456789012:certificate/xxxxxxxx",
         "Scopes": [
           {
             "Sources": [{"AddressDefinition": "0.0.0.0/0"}],
@@ -497,8 +536,8 @@ aws logs filter-log-events \
 
 - **증상**: 트래픽이 Firewall을 경유하지 않음
 - **원인**: Route Table이 Firewall Endpoint가 아닌 IGW/NAT를 직접 가리킴
-
 - **해결**: 각 서브넷 Route Table의 0.0.0.0/0 → Firewall Endpoint(vpce-xxx)로 수정
+
 ### Firewall Endpoint ID 확인
 
 ```bash
@@ -530,6 +569,13 @@ pass icmp 192.168.10.0/24 any -> 10.102.0.0/16 any (sid:1003; rev:1;)
 - AWS Network Firewall: [docs.aws.amazon.com](https://docs.aws.amazon.com/network-firewall/latest/developerguide/) — ★★★☆☆
 - Suricata Rule Language: [suricata.readthedocs.io](https://suricata.readthedocs.io/en/latest/rules/) — ★★★☆☆
 - AWS Network Firewall Workshop: [catalog.workshops.aws](https://catalog.workshops.aws/networkfirewall) — ★★☆☆☆
+- Network Firewall 규칙 엔진 기본 동작: [docs.aws.amazon.com/.../firewall-rules-engines](https://docs.aws.amazon.com/network-firewall/latest/developerguide/firewall-rules-engines.html) — ★★★☆☆
+- Stateful 규칙 액션(PASS/DROP/REJECT/ALERT): [docs.aws.amazon.com/.../rule-action](https://docs.aws.amazon.com/network-firewall/latest/developerguide/rule-action.html) — ★★★☆☆
+- 로그 유형(Alert·Flow·TLS): [docs.aws.amazon.com/.../firewall-logging](https://docs.aws.amazon.com/network-firewall/latest/developerguide/firewall-logging.html) — ★★★☆☆
+- UpdateLoggingConfiguration(한 번에 하나씩 변경): [docs.aws.amazon.com/.../API_UpdateLoggingConfiguration](https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_UpdateLoggingConfiguration.html) — ★★★☆☆
+- UpdateFirewallPolicy(UpdateToken 필수): [docs.aws.amazon.com/.../API_UpdateFirewallPolicy](https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_UpdateFirewallPolicy.html) — ★★★☆☆
+- 위협 시그니처 관리형 규칙 그룹: [docs.aws.amazon.com/.../aws-managed-rule-groups-threat-signature](https://docs.aws.amazon.com/network-firewall/latest/developerguide/aws-managed-rule-groups-threat-signature.html) — ★★★☆☆
+- 단일 AZ IGW 구성의 Route Table: [docs.aws.amazon.com/.../arch-single-zone-igw](https://docs.aws.amazon.com/network-firewall/latest/developerguide/arch-single-zone-igw.html) — ★★★☆☆
 
 ---
 
@@ -546,6 +592,6 @@ pass icmp 192.168.10.0/24 any -> 10.102.0.0/16 any (sid:1003; rev:1;)
 
 **작성일**: 2026-05-12
 
-**마지막 업데이트**: 2026-05-12
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

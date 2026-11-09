@@ -64,7 +64,7 @@ approval_policy = "on-request"
 approvals_reviewer = "user"
 ```
 
-기본 `workspace-write` 정책에서도 writable root의 `.git`, `.agents`, `.codex`에는 읽기 전용 보호가 적용됩니다. 따라서 문서 편집은 가능하지만 Git 메타데이터 갱신은 별도 승인이 필요한 상황이 생길 수 있습니다. `.governance`라는 이름만으로 같은 보호가 자동 적용된다고 가정해서는 안 됩니다. [공식 보호 경로 설명](https://learn.chatgpt.com/docs/agent-approvals-security#protected-paths-in-writable-roots)
+기본 `workspace-write` 정책에서도 writable root의 `.git`과, 디렉토리로 존재하는 `.agents`, `.codex`, `.aws`에는 읽기 전용 보호가 적용됩니다. 따라서 문서 편집은 가능하지만 Git 메타데이터 갱신은 별도 승인이 필요한 상황이 생길 수 있습니다. `.governance`라는 이름만으로 같은 보호가 자동 적용된다고 가정해서는 안 됩니다. [공식 보호 경로 설명](https://learn.chatgpt.com/docs/agent-approvals-security#protected-paths-in-writable-roots)
 
 2026-09-22 점검 사례에서는 다음 차이를 관찰했습니다. 다른 세션이나 서버에도 같은 상태가 적용된다는 뜻은 아닙니다.
 
@@ -190,6 +190,6 @@ stat -c '%A %u:%g %n' "$TARGET"
 
 **작성일**: 2026-09-22
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

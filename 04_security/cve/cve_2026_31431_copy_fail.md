@@ -18,11 +18,11 @@
 | CVE           | CVE-2026-31431                                        |
 | 별칭          | **Copy Fail**                                         |
 | 발견자        | Xint Code (xint.io / copy.fail)                       |
-| CVSS          | 7.8 (HIGH)                                            |
+| CVSS          | 7.8 (HIGH, kernel.org CNA·Red Hat)                    |
 | 공격 벡터     | LOCAL / LOW privilege / NO interaction                |
 | CWE           | CWE-669 (Incorrect Resource Transfer Between Spheres) |
 | 컴포넌트      | `crypto/algif_aead`                                   |
-| 발표일        | 2026-04-22                                            |
+| 발표일        | 2026-04-22 (CVE 등재) / 2026-04-29 (상세 공개)        |
 | CISA KEV 등재 | 2026-05-01                                            |
 | 조치 기한     | **2026-05-15**                                        |
 | PoC           | 공개됨 (copy.fail — 732바이트 Python 스크립트)        |
@@ -37,7 +37,7 @@
 
 ## 2. 취약점 상세
 
-> 출처: [NVD CVE-2026-31431](https://nvd.nist.gov/vuln/detail/CVE-2026-31431) / [커널 패치 커밋](https://git.kernel.org/stable/c/19d43105a97be0810edbda875f2cd03f30dc130c) / [Copy Fail PoC](https://copy.fail/)
+> 출처: [NVD CVE-2026-31431](https://nvd.nist.gov/vuln/detail/CVE-2026-31431) / [커널 패치 커밋](https://git.kernel.org/stable/c/a664bf3d603dc3bdcf9ae47cc21e0daec706d7a5) / [Copy Fail PoC](https://copy.fail/)
 
 `algif_aead`에서 in-place 복호화 시 `skb_cloned()` 체크만 수행하고 `skb_has_frag_list()` / `skb_has_shared_frag()` 는 체크하지 않습니다. `splice()`로 UDP 소켓에 연결된 shared frag 페이지를 AEAD 복호화 경로에 전달하면 **page cache를 직접 덮어쓸 수 있어 권한 상승**이 가능합니다.
 
@@ -49,22 +49,23 @@ splice() → UDP socket → shared frag pages
                     page cache 덮어쓰기 → 권한 상승
 ```
 
-- **패치 커밋**: `19d43105a97b` (2026-04-22)
+- **패치 커밋**: `a664bf3d603d` (mainline, v7.0-rc7)
 - **도입 버전**: kernel 4.14+
 
 **취약 버전:**
 
-| 브랜치 | 취약 범위       | 패치 버전     | RHEL/CentOS          | Ubuntu           | Amazon Linux      |
-|--------|-----------------|---------------|----------------------|------------------|-------------------|
-| 5.10.x | 4.14 ~ 5.10.253 | **5.10.254+** | RHEL 8 (백포트 확인) | 20.04 LTS (HWE)  | AL2 (5.10 kernel) |
-| 5.15.x | 5.11 ~ 5.15.203 | **5.15.204+** | RHEL 9.0~9.2         | 22.04 LTS        | AL2023            |
-| 6.1.x  | 5.16 ~ 6.1.169  | **6.1.170+**  | RHEL 9.3~9.4         | 22.04 LTS (HWE)  | AL2023 (6.1)      |
-| 6.6.x  | 6.2 ~ 6.6.136   | **6.6.137+**  | RHEL 9.5+            | 24.04 LTS        | AL2023 (6.6)      |
-| 6.12.x | 6.7 ~ 6.12.84   | **6.12.85+**  | RHEL 10              | **24.04 LTS** 🟡 | —                 |
-| 6.18.x | 6.13 ~ 6.18.21  | **6.18.22+**  | —                    | 25.04            | —                 |
-| 6.19.x | 6.19 ~ 6.19.11  | **6.19.12+**  | —                    | 25.10 (예정)     | —                 |
+| 브랜치 | 취약 범위       | 패치 버전     | RHEL/CentOS          | Ubuntu           | Amazon Linux        |
+|--------|-----------------|---------------|----------------------|------------------|---------------------|
+| 5.10.x | 4.14 ~ 5.10.253 | **5.10.254+** | RHEL 8 (백포트 확인) | 20.04 LTS (5.4)  | AL2 (core·5.4·5.10) |
+| 5.15.x | 5.11 ~ 5.15.203 | **5.15.204+** | RHEL 9 (5.14 백포트) | 22.04 LTS (5.15) | AL2 (5.15 Extra)    |
+| 6.1.x  | 5.16 ~ 6.1.169  | **6.1.170+**  | —                    | —                | AL2023 (6.1)        |
+| 6.6.x  | 6.2 ~ 6.6.136   | **6.6.137+**  | —                    | —                | —                   |
+| 6.12.x | 6.7 ~ 6.12.84   | **6.12.85+**  | RHEL 10              | **24.04 LTS** 🟡 | AL2023 (6.12)       |
+| 6.18.x | 6.13 ~ 6.18.21  | **6.18.22+**  | —                    | 25.10 (6.17)     | AL2023 (6.18)       |
+| 6.19.x | 6.19 ~ 6.19.11  | **6.19.12+**  | —                    | —                | —                   |
 
 > RHEL/CentOS는 자체 백포트 패치를 적용하므로 upstream 버전과 다릅니다. `rpm -q --changelog kernel | grep CVE-2026-31431` 으로 패치 포함 여부를 직접 확인합니다.
+> 배포판 열은 기본 커널 버전이 속한 범위입니다. Ubuntu 22.04 HWE(6.8)는 6.12.x 행, 24.04 HWE(6.17)는 6.18.x 행에 해당합니다. 7.0-rc1~rc6도 취약 범위입니다(NVD).
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -100,8 +101,8 @@ apt-get changelog linux-image-$(uname -r) 2>/dev/null | grep CVE-2026-31431 | he
 lsmod | grep "^algif_aead"
 grep "algif_aead" /etc/modprobe.d/*.conf 2>/dev/null
 
-# AF_ALG 소켓 사용 여부
-ss -A alg 2>/dev/null | head -10
+# AF_ALG(aead) 소켓 사용 여부 — lsmod 3번째 열(Used by)이 0보다 크면 사용 중
+lsmod | grep "^algif_aead" | awk '{print "used:", $3}'
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -128,8 +129,7 @@ uname -r
 **Step 1. AF_ALG 소켓 사용 여부 확인**
 
 ```bash
-ss -A alg 2>/dev/null | head -10
-lsmod | grep "^algif_aead"
+lsmod | grep "^algif_aead"   # 3번째 열(Used by)이 0보다 크면 AF_ALG 소켓 사용 중
 ```
 
 | 모듈         | 사용 중인 경우                       | 언로드 시 영향                      |
@@ -178,7 +178,7 @@ curl -s "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerab
   | python3 -c "
 import sys,json
 data=json.load(sys.stdin)
-linux=[v for v in data['vulnerabilities'] if 'linux' in v.get('product','').lower()]
+linux=[v for v in data['vulnerabilities'] if v.get('vendorProject','').lower()=='linux']
 for v in sorted(linux,key=lambda x:x['dateAdded'],reverse=True)[:5]:
     print(v['cveID'], v['dateAdded'], v['dueDate'])
 "
@@ -193,7 +193,10 @@ for v in sorted(linux,key=lambda x:x['dateAdded'],reverse=True)[:5]:
 - NVD CVE-2026-31431: [nvd.nist.gov](https://nvd.nist.gov/vuln/detail/CVE-2026-31431) — ★★★☆☆
 - Copy Fail PoC: [copy.fail](https://copy.fail/) — ★★☆☆☆
 - CISA KEV Catalog: [cisa.gov/known-exploited-vulnerabilities-catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) — ★★★☆☆
-- Linux Kernel Patch: [git.kernel.org](https://git.kernel.org/stable/c/19d43105a97be0810edbda875f2cd03f30dc130c) — ★★★★☆
+- Linux Kernel Patch: [git.kernel.org](https://git.kernel.org/stable/c/a664bf3d603dc3bdcf9ae47cc21e0daec706d7a5) — ★★★☆☆
+- Copy Fail 공개 타임라인 (Xint): [xint.io/blog/copy-fail-linux-distributions](https://xint.io/blog/copy-fail-linux-distributions) — ★★☆☆☆
+- Amazon Linux CVE-2026-31431: [explore.alas.aws.amazon.com](https://explore.alas.aws.amazon.com/CVE-2026-31431.html) — ★★★☆☆
+- Ubuntu CVE-2026-31431: [ubuntu.com](https://ubuntu.com/security/CVE-2026-31431) — ★★★☆☆
 - [cve_2026_43284_dirty_frag.md](./cve_2026_43284_dirty_frag.md) — CVE-2026-43284 (Dirty Frag / xfrm ESP)
 - [cve_2026_43500_dirty_frag.md](./cve_2026_43500_dirty_frag.md) — CVE-2026-43500 (Dirty Frag / rxrpc)
 - [cve_2026_46300_fragnesia.md](./cve_2026_46300_fragnesia.md) — CVE-2026-46300 (Fragnesia)
@@ -213,6 +216,6 @@ for v in sorted(linux,key=lambda x:x['dateAdded'],reverse=True)[:5]:
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-05-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

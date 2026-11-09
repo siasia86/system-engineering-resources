@@ -19,8 +19,8 @@
 | 유형                          | 정의                                                               | 대상                          | 대응                                     |
 |-------------------------------|--------------------------------------------------------------------|-------------------------------|------------------------------------------|
 | 패킷 스니핑 (Packet Sniffing) | NIC를 promiscuous 모드로 전환하여 같은 세그먼트의 모든 패킷을 수집 | 평문 통신 (HTTP, FTP, Telnet) | 암호화 (TLS/SSH), 스위치 환경 사용       |
-| ARP 스니핑 (ARP Snooping)     | ARP 테이블 감시를 통해 트래픽 모니터링                             | LAN 내 통신                   | Dynamic ARP Inspection (DAI)             |
-| DHCP 스니핑 (DHCP Snooping)   | 비인가 DHCP 서버의 응답을 탐지·차단하는 방어 기법                  | DHCP 환경                     | 스위치 DHCP Snooping 활성화              |
+| ARP 스누핑 (ARP Snooping)     | ARP 테이블 감시를 통해 트래픽 모니터링                             | LAN 내 통신                   | Dynamic ARP Inspection (DAI)             |
+| DHCP 스누핑 (DHCP Snooping)   | 비인가 DHCP 서버의 응답을 탐지·차단하는 방어 기법                  | DHCP 환경                     | 스위치 DHCP Snooping 활성화              |
 | DNS 스니핑                    | DNS 쿼리/응답을 도청하여 접속 사이트 파악                          | DNS 트래픽 (UDP 53)           | DNS over HTTPS (DoH), DNS over TLS (DoT) |
 | 포트 미러링 악용              | 스위치 SPAN/미러링 포트에서 복제된 트래픽 수집                     | 관리형 스위치                 | 미러링 포트 접근 제한, 물리 보안         |
 
@@ -104,8 +104,8 @@ Client ──────────> Attacker ──────────> 
 | L4   | ACK Flood               | 대량 ACK → 상태 추적 테이블 고갈   | Stateful Firewall             |
 | L7   | HTTP Flood              | 정상 HTTP 요청 대량 전송           | WAF, Rate Limiting, CAPTCHA   |
 | L7   | Slowloris               | HTTP 연결을 극도로 느리게 유지     | 연결 타임아웃, mod_reqtimeout |
-| L7   | DNS Amplification       | 작은 쿼리 → 큰 응답 (증폭)         | BCP38, DNS 응답 크기 제한     |
-| L7   | NTP Amplification       | monlist 명령 악용 (증폭)           | NTP monlist 비활성화          |
+| L4   | DNS Amplification       | 작은 쿼리 → 큰 응답 (증폭)         | BCP38, DNS 응답 크기 제한     |
+| L4   | NTP Amplification       | monlist 명령 악용 (증폭)           | NTP monlist 비활성화          |
 
 ### SYN Flood 동작
 
@@ -232,7 +232,7 @@ uname -r
 | Directory Brute Force | dirb, gobuster           | 숨겨진 경로, 관리자 페이지     | 비표준 경로, 접근 제어       |
 | OS Fingerprinting     | nmap -O                  | OS 종류·버전                   | 방화벽 규칙, TCP 옵션 조정   |
 | Social Engineering    | 피싱, 전화, 사칭         | 내부 정보, 자격 증명           | 보안 교육, 인증 절차 강화    |
-| Google Dorking        | site:, filetype:, inurl: | 노출된 파일, 설정, 관리 페이지 | robots.txt, 민감 파일 제거   |
+| Google Dorking        | site:, filetype:, inurl: | 노출된 파일, 설정, 관리 페이지 | noindex, 민감 파일 제거      |
 | Shodan/Censys         | 검색 엔진                | 공개된 서비스, IoT 장비        | 불필요 포트 차단, 인증 강화  |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -242,10 +242,12 @@ uname -r
 ## 참고 자료
 
 - OWASP Top 10: [owasp.org/www-project-top-ten](https://owasp.org/www-project-top-ten/) — ★★★☆☆
-- MITRE ATT&CK: [attack.mitre.org](https://attack.mitre.org/) — ★★★★☆
+- MITRE ATT&CK: [attack.mitre.org](https://attack.mitre.org/) — ★★★☆☆
 - CWE List: [cwe.mitre.org](https://cwe.mitre.org/) — ★★★☆☆
-- [02_web_cwe (웹 취약점 실습)](../web_cwe/README.md)
-- [01_cve (CVE 분석)](../cve/README.md)
+- AWS DDoS 복원력 백서 — UDP 반사 공격(인프라 계층): [docs.aws.amazon.com/whitepapers/.../udp-reflection-attacks](https://docs.aws.amazon.com/whitepapers/latest/aws-best-practices-ddos-resiliency/udp-reflection-attacks.html) — ★★★☆☆
+- Google robots.txt 소개(색인 차단 수단 아님): [developers.google.com/search/docs/crawling-indexing/robots/intro](https://developers.google.com/search/docs/crawling-indexing/robots/intro) — ★★★☆☆
+- [web_cwe (웹 취약점 실습)](../web_cwe/README.md)
+- [cve (CVE 분석)](../cve/README.md)
 
 ---
 
@@ -262,6 +264,6 @@ uname -r
 
 **작성일**: 2026-07-02
 
-**마지막 업데이트**: 2026-07-02
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

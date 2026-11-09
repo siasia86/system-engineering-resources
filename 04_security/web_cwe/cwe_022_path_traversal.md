@@ -16,7 +16,7 @@
 |-----------|-------------------------------------------------------------|
 | CWE ID    | CWE-22                                                      |
 | 이름      | Improper Limitation of a Pathname to a Restricted Directory |
-| OWASP     | A01:2021 Broken Access Control                              |
+| OWASP     | A01:2025 Broken Access Control                              |
 | 영향      | 정보 유출 (시스템 파일, 설정 파일, 소스 코드)               |
 | 빈도      | 높음 — 파일 다운로드, 이미지 로드, 로그 뷰어에서 발생       |
 | 전제 조건 | 사용자 입력이 파일 경로에 도달 + open_basedir 미설정        |
@@ -115,7 +115,7 @@ curl "http://10.200.101.182/file_read.php?file=%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2f
 | SSH 키 유출         | ~/.ssh/id_rsa            | 원격 접속        |
 | 소스 코드 노출      | *.php                    | 추가 취약점 분석 |
 | 서버 설정           | httpd.conf, php.ini      | 보안 설정 파악   |
-| 클라우드 메타데이터 | /proc/self/environ       | AWS 자격 증명    |
+| 환경 변수 자격 증명 | /proc/self/environ       | AWS 자격 증명    |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -126,7 +126,7 @@ curl "http://10.200.101.182/file_read.php?file=%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2f
 ### php.ini 설정
 
 ```ini
-; 파일 접근 범위 제한 (가장 효과적)
+; 파일 접근 범위 제한 (보조 수단 — PHP는 open_basedir 우회를 보안 결함으로 분류하지 않으므로 코드 검증과 함께 사용)
 open_basedir = /var/www/html:/tmp
 ```
 
@@ -172,6 +172,8 @@ if (!in_array($_GET['file'], $allowed)) {
 
 - CWE-22: [cwe.mitre.org/data/definitions/22.html](https://cwe.mitre.org/data/definitions/22.html) — ★★★☆☆
 - OWASP Path Traversal: [owasp.org/www-community/attacks/Path_Traversal](https://owasp.org/www-community/attacks/Path_Traversal) — ★★★☆☆
+- OWASP Top 10:2025 A01 Broken Access Control(CWE-22 매핑): [top10.owasp.org/2025/A01_2025-Broken_Access_Control](https://top10.owasp.org/2025/A01_2025-Broken_Access_Control/) — ★★★☆☆
+- PHP 보안 분류 정책(open_basedir 우회 제외): [github.com/php/policies](https://github.com/php/policies/blob/main/security-classification.rst) — ★★★☆☆
 
 ---
 
@@ -188,6 +190,6 @@ if (!in_array($_GET['file'], $allowed)) {
 
 **작성일**: 2026-07-02
 
-**마지막 업데이트**: 2026-07-02
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

