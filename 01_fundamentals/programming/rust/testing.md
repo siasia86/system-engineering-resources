@@ -1,6 +1,6 @@
 # Rust 테스트
 
-단위 테스트, 통합 테스트, 모킹, 벤치마크를 정리합니다.
+단위 테스트, 통합 테스트, 모킹, CLI·비동기 테스트를 정리합니다.
 
 ## 목차
 
@@ -63,12 +63,12 @@ mod tests {
 
 ### 주요 assert 매크로
 
-| 매크로                       | 용도                    |
-|------------------------------|-------------------------|
-| `assert!(expr)`              | expr이 true인지 확인    |
-| `assert_eq!(a, b)`           | a == b 확인 (diff 출력) |
-| `assert_ne!(a, b)`           | a != b 확인             |
-| `assert!(expr, "msg {}", v)` | 실패 시 메시지          |
+| 매크로                       | 용도                               |
+|------------------------------|------------------------------------|
+| `assert!(expr)`              | expr이 true인지 확인               |
+| `assert_eq!(a, b)`           | a == b 확인 (실패 시 양쪽 값 출력) |
+| `assert_ne!(a, b)`           | a != b 확인                        |
+| `assert!(expr, "msg {}", v)` | 실패 시 메시지                     |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -266,7 +266,7 @@ impl HttpClient for MockClient {
     }
 }
 
-// 비즈니스 로직 (제네릭으로 클라이언트 주입)
+// 비즈니스 로직 (트레이트 객체로 클라이언트 주입)
 fn check_health(client: &dyn HttpClient, url: &str) -> bool {
     client.get(url).is_ok()
 }
@@ -420,11 +420,9 @@ async fn test_timeout() {
 - The Rust Programming Language Ch.11: [doc.rust-lang.org/book/ch11-00-testing.html](https://doc.rust-lang.org/book/ch11-00-testing.html) — ★★★★☆
 - assert_cmd: [docs.rs/assert_cmd](https://docs.rs/assert_cmd) — ★★★☆☆
 - mockall: [docs.rs/mockall](https://docs.rs/mockall) — ★★★☆☆
+- assert_eq! (실패 시 Debug 값 출력): [doc.rust-lang.org/std/macro.assert_eq.html](https://doc.rust-lang.org/std/macro.assert_eq.html) — ★★★☆☆
 
 ---
-
-## 통계
-
 
 ## 통계
 
@@ -439,6 +437,6 @@ async fn test_timeout() {
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-07-31
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

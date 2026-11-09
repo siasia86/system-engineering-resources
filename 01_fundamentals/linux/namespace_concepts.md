@@ -74,7 +74,7 @@ Host Kernel (shared, single instance)
 - 호스트 커널 1개를 모든 컨테이너가 공유
 - mnt namespace는 각 컨테이너에게 독립된 `/` 뷰를 제공
 
-`/proc`, `/sys`는 실제 파일이 없는 **가상 파일시스템(VFS)** 입니다. 커널이 각 namespace마다 별도로 생성하며, 컨테이너별로 필터링된 뷰를 제공합니다.
+`/proc`, `/sys`는 실제 파일이 없는 **가상 파일시스템(pseudo filesystem)** 입니다. 커널이 각 namespace마다 별도로 생성하며, 컨테이너별로 필터링된 뷰를 제공합니다.
 
 ```bash
 # 컨테이너 안에서 커널 버전 확인 → 호스트와 동일
@@ -210,7 +210,7 @@ cat /proc/self/cgroup
 # /sys/fs/cgroup/system.slice/docker-<id>.scope/
 ```
 
-`cgroupns_mode: host` 설정 시 호스트 cgroup 트리 전체가 보입니다. systemd 컨테이너에 필요합니다.
+`--cgroupns host`(Compose `cgroup: host`) 설정 시 호스트 cgroup 트리 전체가 보입니다. systemd 컨테이너에 필요합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -269,8 +269,10 @@ unshare(CLONE_NEWNET);
 `/proc/[pid]/ns/` 파일 디스크립터를 통해 기존 namespace에 합류합니다.
 
 ```c
+#define _GNU_SOURCE
 #include <fcntl.h>
 #include <sched.h>
+#include <unistd.h>
 
 int fd = open("/proc/1234/ns/net", O_RDONLY);
 setns(fd, CLONE_NEWNET);  // PID 1234의 네트워크 namespace에 합류
@@ -491,7 +493,7 @@ docker run --cgroupns host --privileged ...
 docker run --cgroupns private ...
 ```
 
-🟡 Docker Compose v5.x에서 `cgroupns_mode` 키가 제거되었습니다. `daemon.json`으로 기본값을 설정합니다. 상세 내용은 [docker.md 섹션 11](../../02_infrastructure/containers/docker.md#11-cgroup-namespace)을 참고합니다.
+🟡 Compose 파일에서는 `cgroup: host` 또는 `cgroup: private` 키를 사용합니다(`cgroupns_mode`는 Compose 명세의 키가 아닙니다). 데몬 기본값은 `daemon.json`의 `default-cgroupns-mode`로 설정합니다. 상세 내용은 [docker.md 섹션 11](../../02_infrastructure/containers/docker.md#11-cgroup-namespace)을 참고합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -510,11 +512,11 @@ lsns
 lsns -t pid
 lsns -t net
 
-# 컨테이너가 사용하는 namespace 수 확인
-sudo find /proc/*/ns -name 'pid' 2>/dev/null | wc -l
+# 시스템의 pid namespace 수 확인 (고유 inode 기준)
+sudo readlink /proc/*/ns/pid 2>/dev/null | sort -u | wc -l
 ```
 
-🟡 user namespace를 활성화하면 비특권 사용자도 다른 namespace를 생성할 수 있습니다. 보안 정책에 따라 `kernel.unprivileged_userns_clone=0`으로 제한할 수 있습니다.
+🟡 user namespace를 활성화하면 비특권 사용자도 다른 namespace를 생성할 수 있습니다. 보안 정책에 따라 `kernel.unprivileged_userns_clone=0`으로 제한할 수 있습니다. 이 값은 Debian·Ubuntu 계열 커널 패치의 sysctl이며, upstream 커널에서는 `user.max_user_namespaces`로 생성 개수를 제한합니다.
 
 ```bash
 # user namespace 비활성화 (보안 강화)
@@ -531,9 +533,12 @@ sudo sysctl --system
 
 ## 참고 자료
 
-- Linux man page namespaces(7): [man7.org/linux/man-pages/man7/namespaces.7.html](https://man7.org/linux/man-pages/man7/namespaces.7.html) — ★★★★☆
+- Linux man page namespaces(7): [man7.org/linux/man-pages/man7/namespaces.7.html](https://man7.org/linux/man-pages/man7/namespaces.7.html) — ★★★☆☆
 - Linux man page unshare(1): [man7.org/linux/man-pages/man1/unshare.1.html](https://man7.org/linux/man-pages/man1/unshare.1.html) — ★★★☆☆
-- LWN.net Namespaces series: [lwn.net/Articles/531114](https://lwn.net/Articles/531114/) — ★★★★☆
+- LWN.net Namespaces series: [lwn.net/Articles/531114](https://lwn.net/Articles/531114/) — ★★☆☆☆
+- Compose services `cgroup`: [docs.docker.com/reference/compose-file/services/#cgroup](https://docs.docker.com/reference/compose-file/services/#cgroup) — ★★★☆☆
+- dockerd `default-cgroupns-mode`: [docs.docker.com/reference/cli/dockerd/](https://docs.docker.com/reference/cli/dockerd/) — ★★★☆☆
+- Linux kernel sysctl user: [docs.kernel.org/admin-guide/sysctl/user.html](https://docs.kernel.org/admin-guide/sysctl/user.html) — ★★★☆☆
 - [cgroup_concepts.md](./cgroup_concepts.md)
 - [process_lifecycle.md](./process_lifecycle.md)
 - [docker.md 섹션 11](../../02_infrastructure/containers/docker.md#11-cgroup-namespace)
@@ -553,6 +558,6 @@ sudo sysctl --system
 
 **작성일** : 2026-05-15
 
-**마지막 업데이트** : 2026-05-21
+**마지막 업데이트** : 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

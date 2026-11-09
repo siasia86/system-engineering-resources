@@ -147,13 +147,15 @@ else:
 ### finally: 항상 실행
 
 ```python
+file = None
 try:
     file = open("data.txt", "r")
     content = file.read()
 except FileNotFoundError:
     print("파일을 찾을 수 없습니다")
 finally:
-    file.close()  # 항상 실행
+    if file:
+        file.close()  # 항상 실행
 ```
 
 ### 전체 구조
@@ -692,7 +694,7 @@ def bad_function():
     try:
         return "try"
     finally:
-        return "finally"  # 항상 이 값 반환
+        return "finally"  # 항상 이 값 반환 (3.14+ SyntaxWarning, PEP 765)
 
 print(bad_function())  # "finally"
 
@@ -776,6 +778,7 @@ raise ValueError("로그인 실패: 잘못된 인증 정보")
 
 - Python Documentation: [Exceptions](https://docs.python.org/3/tutorial/errors.html) — ★★★☆☆
 - Python Documentation: [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) — ★★★☆☆
+- PEP 765: [Disallow return/break/continue that exit a finally block](https://peps.python.org/pep-0765/) — ★★★★☆
 
 ---
 
@@ -792,6 +795,6 @@ raise ValueError("로그인 실패: 잘못된 인증 정보")
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

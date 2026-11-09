@@ -168,7 +168,7 @@ testssl.sh -p -S -h https://www.example.com
 - RFC 6797 HTTP Strict Transport Security: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc6797.html)
 - Mozilla SSL Configuration Generator: [ssl-config.mozilla.org](https://ssl-config.mozilla.org/) — ★★★☆☆
 - testssl.sh: [github.com/testssl/testssl.sh](https://github.com/testssl/testssl.sh) — ★★★☆☆
-- OpenSSL s_client: [docs.openssl.org](https://docs.openssl.org/3.0/man1/openssl-s_client/) — ★★★☆☆
+- OpenSSL 3.5 s_client: [docs.openssl.org](https://docs.openssl.org/3.5/man1/openssl-s_client/) — ★★★☆☆
 - [TLS/SSL 가이드](../../../04_security/hardening/tls_ssl_guide.md)
 - [HTTP 프로토콜 테스트](http_protocol_testing.md)
 
@@ -187,6 +187,6 @@ testssl.sh -p -S -h https://www.example.com
 
 **작성일**: 2026-10-27
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

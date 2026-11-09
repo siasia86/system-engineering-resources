@@ -153,7 +153,7 @@ bpftool map list
 # 맵 내용 조회
 bpftool map dump id <map_id>
 
-# 프로그램 상세 (JIT 코드 포함)
+# 프로그램 상세 (커널에 로드된 eBPF 명령어, JIT 기계어는 dump jited)
 bpftool prog dump xlated id <prog_id>
 
 # 네트워크 인터페이스에 연결된 eBPF 확인
@@ -224,6 +224,6 @@ bpftool feature probe
 
 **작성일** : 2026-05-21
 
-**마지막 업데이트** : 2026-05-21
+**마지막 업데이트** : 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -16,7 +16,7 @@ Linux CFS(Completely Fair Scheduler)와 CPU 스케줄링 메커니즘을 정리�
 
 Linux 스케줄러는 여러 프로세스가 CPU를 공정하게 나눠 쓰도록 관리합니다.
 
-🟡 Linux 6.6(2023-10)부터 CFS가 EEVDF(Earliest Eligible Virtual Deadline First)로 교체되었습니다. EEVDF는 vruntime 대신 가상 데드라인 기반으로 스케줄링하여 레이턴시 민감 작업의 응답성을 개선합니다. 아래 CFS 설명은 6.5 이하 커널 및 EEVDF의 기반 개념으로 유효합니다.
+🟡 Linux 6.6(2023-10)부터 CFS가 EEVDF(Earliest Eligible Virtual Deadline First)로 교체되었습니다. EEVDF는 vruntime으로 계산한 lag와 가상 데드라인을 함께 사용해 스케줄링하여 레이턴시 민감 작업의 응답성을 개선합니다. 아래 CFS 설명은 6.5 이하 커널 및 EEVDF의 기반 개념으로 유효합니다.
 
 ```
 Run Queue (per CPU)
@@ -46,18 +46,22 @@ CFS는 각 프로세스의 **vruntime** (가상 실행 시간)을 추적합니�
 vruntime 증가량 = 실제 실행 시간 × (기본 가중치 / 프로세스 가중치)
 
 nice=0  (기본): vruntime 증가 = 실제 시간 × 1.0
-nice=-5 (높은 우선순위): vruntime 증가 = 실제 시간 × 0.5  (더 오래 실행)
-nice=+5 (낮은 우선순위): vruntime 증가 = 실제 시간 × 2.0  (더 짧게 실행)
+nice=-5 (높은 우선순위): vruntime 증가 = 실제 시간 × 약 0.33  (더 오래 실행)
+nice=+5 (낮은 우선순위): vruntime 증가 = 실제 시간 × 약 3.1   (더 짧게 실행)
 ```
 
 ### 타임슬라이스
 
 ```bash
+# 커널 5.12 이하는 /proc/sys/kernel/sched_*, 5.13~6.5는 debugfs로 이동
 # 스케줄링 레이턴시 (모든 프로세스가 한 번씩 실행되는 목표 시간)
-cat /proc/sys/kernel/sched_latency_ns        # 기본 6ms~24ms
+cat /sys/kernel/debug/sched/latency_ns          # 기본 6ms~24ms
 
 # 최소 실행 시간 (너무 잦은 컨텍스트 스위치 방지)
-cat /proc/sys/kernel/sched_min_granularity_ns  # 기본 0.75ms
+cat /sys/kernel/debug/sched/min_granularity_ns  # 기본 0.75ms
+
+# 6.6 이상(EEVDF)은 위 두 값 대신 base_slice_ns 사용
+cat /sys/kernel/debug/sched/base_slice_ns
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -73,14 +77,14 @@ chrt -p <pid>
 # pid 1234's current scheduling priority: 0
 ```
 
-| 정책                | 값   | 대상          | 특징                             |
-|---------------------|------|---------------|----------------------------------|
-| `SCHED_OTHER` (CFS) | 0    | 일반 프로세스 | nice 기반 공정 분배              |
-| `SCHED_BATCH`       | 0    | 배치 작업     | CPU 집약적, 인터랙티브 양보      |
-| `SCHED_IDLE`        | 0    | 백그라운드    | 가장 낮은 우선순위               |
-| `SCHED_FIFO`        | 1~99 | 실시간        | 선점 없음, 우선순위 높은 것 먼저 |
-| `SCHED_RR`          | 1~99 | 실시간        | FIFO + 타임슬라이스              |
-| `SCHED_DEADLINE`    | 0    | 실시간        | 데드라인 기반 (별도 attr 설정)   |
+| 정책                | 값   | 대상          | 특징                            |
+|---------------------|------|---------------|---------------------------------|
+| `SCHED_OTHER` (CFS) | 0    | 일반 프로세스 | nice 기반 공정 분배             |
+| `SCHED_BATCH`       | 0    | 배치 작업     | CPU 집약적, 인터랙티브 양보     |
+| `SCHED_IDLE`        | 0    | 백그라운드    | 가장 낮은 우선순위              |
+| `SCHED_FIFO`        | 1~99 | 실시간        | 시분할 없음, 높은 우선순위 먼저 |
+| `SCHED_RR`          | 1~99 | 실시간        | FIFO + 타임슬라이스             |
+| `SCHED_DEADLINE`    | 0    | 실시간        | 데드라인 기반 (별도 attr 설정)  |
 
 ```bash
 # 실시간 정책으로 변경 (우선순위 50)
@@ -140,7 +144,7 @@ renice -n 10 -p <pid>
 renice -n 10 -u username    # 특정 사용자 전체
 
 # nice vs priority 관계
-# priority = 20 + nice  (nice=0 → priority=20)
+# priority = 20 + nice  (nice=0 → priority=20, ps -o priority·top PR 기준)
 # 커널 내부 priority: 0~139 (0~99=실시간, 100~139=일반)
 ```
 
@@ -173,9 +177,10 @@ cat /proc/schedstat
 ### 스케줄러 튜닝
 
 ```bash
-# 컨텍스트 스위치 과다 시 — 타임슬라이스 늘리기
-echo 12000000 > /proc/sys/kernel/sched_latency_ns      # 12ms
-echo 1500000  > /proc/sys/kernel/sched_min_granularity_ns
+# 컨텍스트 스위치 과다 시 — 타임슬라이스 늘리기 (5.13~6.5 debugfs 경로)
+echo 12000000 > /sys/kernel/debug/sched/latency_ns      # 12ms
+echo 1500000  > /sys/kernel/debug/sched/min_granularity_ns
+# 6.6 이상: echo 3000000 > /sys/kernel/debug/sched/base_slice_ns
 
 # 실시간 프로세스가 CPU 독점 방지
 cat /proc/sys/kernel/sched_rt_runtime_us   # 기본 950000 (95%)
@@ -197,12 +202,14 @@ cat /proc/sys/kernel/sched_rt_runtime_us   # 기본 950000 (95%)
 ## 참고 자료
 
 - Linux Kernel Docs: [kernel.org/doc/html/latest/scheduler](https://www.kernel.org/doc/html/latest/scheduler/) — ★★★☆☆
+- EEVDF Scheduler: [docs.kernel.org/scheduler/sched-eevdf.html](https://docs.kernel.org/scheduler/sched-eevdf.html) — ★★★☆☆
+- Linux man page sched(7): [man7.org/linux/man-pages/man7/sched.7.html](https://man7.org/linux/man-pages/man7/sched.7.html) — ★★★☆☆
 - [cgroup_concepts.md](cgroup_concepts.md)
 
 ---
 
 **작성일** : 2026-05-21
 
-**마지막 업데이트** : 2026-05-21
+**마지막 업데이트** : 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

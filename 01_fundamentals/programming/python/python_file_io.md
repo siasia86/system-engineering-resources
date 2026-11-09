@@ -496,7 +496,7 @@ path = Path('folder') / 'file.txt'
 
 ```python
 # 나쁜 예
-with open('data.txt', 'r') as file:  # 시스템 기본 인코딩
+with open('data.txt', 'r') as file:  # 시스템 기본 인코딩 (3.15+는 UTF-8 기본)
     content = file.read()
 
 # 좋은 예
@@ -702,6 +702,7 @@ content = data_file.read_text()
 
 - Python Documentation: [Reading and Writing Files](https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files) — ★★★☆☆
 - Python Documentation: [io](https://docs.python.org/3/library/io.html) — ★★★☆☆
+- What's New in Python 3.15(UTF-8 기본 인코딩, PEP 686): [docs.python.org](https://docs.python.org/3.15/whatsnew/3.15.html) — ★★★☆☆
 
 ---
 
@@ -718,6 +719,6 @@ content = data_file.read_text()
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

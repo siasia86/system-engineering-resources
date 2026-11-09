@@ -104,7 +104,7 @@
 
 ## 2. SMTP 응답 코드
 
-출처: RFC 5321 (https://datatracker.ietf.org/doc/html/rfc5321)
+출처: RFC 5321 (https://datatracker.ietf.org/doc/html/rfc5321). 334·530·535는 RFC 4954(AUTH), 521은 RFC 7504에서 정의합니다.
 
 ### 2xx — 성공
 
@@ -160,7 +160,7 @@
 
 ## 3. FTP 응답 코드
 
-출처: RFC 959 (https://datatracker.ietf.org/doc/html/rfc959)
+출처: RFC 959 (https://datatracker.ietf.org/doc/html/rfc959). 228은 RFC 1639, 229는 RFC 2428, 232·234·534는 RFC 2228에서 정의하며 231·430·434는 RFC에 없는 구현별 코드입니다.
 
 ### 1xx — 예비 응답
 
@@ -191,7 +191,7 @@
 | 229  | Entering Extended Passive Mode                |
 | 230  | User logged in                                |
 | 231  | User logged out; service terminated           |
-| 232  | Logout command noted                          |
+| 232  | User logged in (security data exchange)       |
 | 234  | AUTH command accepted                         |
 | 250  | Requested file action okay, completed         |
 | 257  | PATHNAME created                              |
@@ -228,7 +228,7 @@
 | 504  | Command not implemented for that parameter                 |
 | 530  | Not logged in                                              |
 | 532  | Need account for storing files                             |
-| 534  | Could not connect to server; issue with policy             |
+| 534  | Request denied for policy reasons                          |
 | 550  | Requested action not taken: file unavailable               |
 | 551  | Requested action aborted: page type unknown                |
 | 552  | Requested file action aborted: exceeded storage allocation |
@@ -242,28 +242,28 @@
 
 출처: IANA DNS Parameters (https://www.iana.org/assignments/dns-parameters/)
 
-| 코드 | 이름      | 설명                           |
-|------|-----------|--------------------------------|
-| 0    | NoError   | 오류 없음                      |
-| 1    | FormErr   | 쿼리 형식 오류                 |
-| 2    | ServFail  | 서버 처리 실패                 |
-| 3    | NXDomain  | 존재하지 않는 도메인           |
-| 4    | NotImp    | 미구현 쿼리 타입               |
-| 5    | Refused   | 정책상 쿼리 거부               |
-| 6    | YXDomain  | 존재하면 안 되는 이름이 존재   |
-| 7    | YXRRSet   | 존재하면 안 되는 RR Set이 존재 |
-| 8    | NXRRSet   | 존재해야 할 RR Set이 없음      |
-| 9    | NotAuth   | 해당 존에 대한 권한 없음       |
-| 10   | NotZone   | 이름이 존에 포함되지 않음      |
-| 11   | DSOTYPENI | DSO-TYPE 미구현                |
-| 16   | BADSIG    | TSIG 서명 실패                 |
-| 17   | BADKEY    | 키 인식 불가                   |
-| 18   | BADTIME   | 서명 시간 범위 초과            |
-| 19   | BADMODE   | TKEY 모드 오류                 |
-| 20   | BADNAME   | 중복 키 이름                   |
-| 21   | BADALG    | 알고리즘 미지원                |
-| 22   | BADTRUNC  | 잘못된 Truncation              |
-| 23   | BADCOOKIE | 잘못된 서버 쿠키               |
+| 코드 | 이름           | 설명                           |
+|------|----------------|--------------------------------|
+| 0    | NoError        | 오류 없음                      |
+| 1    | FormErr        | 쿼리 형식 오류                 |
+| 2    | ServFail       | 서버 처리 실패                 |
+| 3    | NXDomain       | 존재하지 않는 도메인           |
+| 4    | NotImp         | 미구현 쿼리 타입               |
+| 5    | Refused        | 정책상 쿼리 거부               |
+| 6    | YXDomain       | 존재하면 안 되는 이름이 존재   |
+| 7    | YXRRSet        | 존재하면 안 되는 RR Set이 존재 |
+| 8    | NXRRSet        | 존재해야 할 RR Set이 없음      |
+| 9    | NotAuth        | 해당 존에 대한 권한 없음       |
+| 10   | NotZone        | 이름이 존에 포함되지 않음      |
+| 11   | DSOTYPENI      | DSO-TYPE 미구현                |
+| 16   | BADVERS/BADSIG | OPT 버전 오류 / TSIG 서명 실패 |
+| 17   | BADKEY         | 키 인식 불가                   |
+| 18   | BADTIME        | 서명 시간 범위 초과            |
+| 19   | BADMODE        | TKEY 모드 오류                 |
+| 20   | BADNAME        | 중복 키 이름                   |
+| 21   | BADALG         | 알고리즘 미지원                |
+| 22   | BADTRUNC       | 잘못된 Truncation              |
+| 23   | BADCOOKIE      | 잘못된 서버 쿠키               |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -308,10 +308,10 @@
 | 28   | Operation timeout                        |
 | 35   | SSL connect error                        |
 | 47   | Too many redirects                       |
-| 51   | SSL peer certificate verification failed |
+| 51   | 사용 안 함 (7.62.0부터 60으로 통합)      |
 | 52   | Server returned nothing                  |
 | 56   | Failure in receiving network data        |
-| 60   | SSL certificate problem                  |
+| 60   | SSL peer certificate verification failed |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -330,6 +330,6 @@
 
 **작성일**: 2026-05-26
 
-**마지막 업데이트**: 2026-05-26
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

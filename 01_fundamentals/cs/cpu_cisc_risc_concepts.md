@@ -183,7 +183,7 @@ Inst 2:                    [IF]  [ID]  [EX]  [MEM] [WB]
 |----------------|-----------|--------------------------|
 | x86 (i386~)    | Intel     | 데스크톱, 서버           |
 | x86-64 (AMD64) | AMD/Intel | 데스크톱, 서버, 클라우드 |
-| Z/Architecture | IBM       | 메인프레임               |
+| z/Architecture | IBM       | 메인프레임               |
 
 ### RISC 계열
 
@@ -431,7 +431,7 @@ python3 -c "import sys; print(sys.byteorder)"
   └───┬───┘
       │  ~3-5ns
   ┌───┴───┐
-  │  L2   │  256 KB~1 MB (per core)
+  │  L2   │  256 KB~2 MB (per core)
   └───┬───┘
       │  ~10-20ns
   ┌───┴───┐
@@ -449,7 +449,7 @@ python3 -c "import sys; print(sys.byteorder)"
 |------|-------------|-----------|----------------|------------------------|
 | L1-I | 32~64 KB    | ~1 ns     | 코어 전용      | 명령어 캐시            |
 | L1-D | 32~64 KB    | ~1 ns     | 코어 전용      | 데이터 캐시            |
-| L2   | 256 KB~1 MB | 3~5 ns    | 코어 전용      | 통합 캐시              |
+| L2   | 256 KB~2 MB | 3~5 ns    | 코어 전용      | 통합 캐시              |
 | L3   | 8~64 MB     | 10~20 ns  | 전체 코어 공유 | LLC (Last Level Cache) |
 | RAM  | GB 단위     | 50~100 ns | 전체 시스템    | 메인 메모리            |
 
@@ -547,7 +547,7 @@ RISC (4 instructions, pipelined):
 | 1971  | Intel 4004 — 최초의 상용 마이크로프로세서            | CISC |
 | 1978  | Intel 8086 — x86 아키텍처의 시작                     | CISC |
 | 1980  | Patterson & Ditzel, "RISC" 개념 논문 발표            | RISC |
-| 1981  | Berkeley RISC-I 프로젝트 시작                        | RISC |
+| 1981  | Berkeley RISC-I 칩 설계·제작 (1980년 착수)           | RISC |
 | 1981  | Stanford MIPS 프로젝트 시작 (Hennessy, 1981~1984)    | RISC |
 | 1985  | ARM1 — Acorn RISC Machine 최초 칩                    | RISC |
 | 1985  | Intel 80386 — 32bit x86 (IA-32)                      | CISC |
@@ -555,7 +555,7 @@ RISC (4 instructions, pipelined):
 | 1995  | Intel Pentium Pro — 내부 RISC 마이크로옵 변환 도입   | 융합 |
 | 2003  | AMD64 (x86-64) — 64bit 확장                          | CISC |
 | 2010  | RISC-V 프로젝트 시작 (UC Berkeley)                   | RISC |
-| 2011  | ARM Cortex-A15 — 서버 시장 진출 시도                 | RISC |
+| 2010  | ARM Cortex-A15 발표 — 서버 시장 진출 시도            | RISC |
 | 2018  | AWS Graviton 1 — ARM 기반 클라우드 서버              | RISC |
 | 2020  | Apple M1 — ARM 기반 데스크톱 전환                    | RISC |
 | 2023  | AWS Graviton 4 발표 (GA 2024) — ARM 서버 경쟁력 입증 | RISC |
@@ -579,8 +579,10 @@ CISC 탄생 --> RISC 등장 --> CISC+RISC --> ARM/RISC-V
 ## 참고 자료
 
 - Patterson, David A. & Hennessy, John L. "Computer Organization and Design"
-- Intel Software Developer's Manual: [Intel SDM](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html) — ★★☆☆☆
-- ARM Architecture Reference Manual: [ARM Developer Docs](https://developer.arm.com/documentation) — ★★☆☆☆
+- Intel Software Developer's Manual: [Intel SDM](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html) — ★★★☆☆
+- ARM Architecture Reference Manual: [ARM Developer Docs](https://developer.arm.com/documentation) — ★★★☆☆
+- IEEE Milestone: [First RISC Microprocessor, 1980-1982](https://ethw.org/Milestones:First_RISC_%28Reduced_Instruction-Set_Computing%29_Microprocessor_1980-1982) — ★★☆☆☆
+- ARM Cortex-A15 발표 보도 (2010-09): [phys.org](https://phys.org/news/2010-09-arm-unveils-cortex-a15-mpcore-processor.html) — ★★☆☆☆
 
 ---
 
@@ -597,6 +599,6 @@ CISC 탄생 --> RISC 등장 --> CISC+RISC --> ARM/RISC-V
 
 **작성일**: 2026-04-24
 
-**마지막 업데이트**: 2026-04-24
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

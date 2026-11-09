@@ -49,11 +49,11 @@ fio --help
 ```bash
 fio --name=read-test \
     --filename=/path/to/existing-file \
-    --readonly --rw=read --bs=1M --iodepth=16 \
+    --readonly --rw=read --bs=1M --ioengine=libaio --iodepth=16 \
     --runtime=60 --time_based --direct=1
 ```
 
-테스트 결과의 처리량, IOPS, 평균·백분위 지연시간과 설정 조건을 함께 저장합니다.
+`--iodepth`는 `libaio`·`io_uring` 같은 비동기 엔진에서 의미가 있으며, Linux 기본 엔진인 `psync` 같은 동기 엔진에서는 1보다 크게 지정해도 효과가 없습니다. 테스트 결과의 처리량, IOPS, 평균·백분위 지연시간과 설정 조건을 함께 저장합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -78,6 +78,7 @@ fio --name=read-test \
 - 저장장치 도구 공식 참고 노트: [`_reference/storage_tools_official_notes.md`](../../_reference/storage_tools_official_notes.md)
 - 저장장치 도구 개요: [`storage_tools.md`](./storage_tools.md)
 - 공식 저장소: [github.com/axboe/fio](https://github.com/axboe/fio) — ★★★☆☆
+- 공식 문서(ioengine·iodepth): [fio documentation](https://fio.readthedocs.io/en/latest/fio_doc.html) — ★★★☆☆
 
 ---
 
@@ -94,6 +95,6 @@ fio --name=read-test \
 
 **작성일**: 2026-08-18
 
-**마지막 업데이트**: 2026-08-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -135,7 +135,7 @@ FI-002: DB 연결 실패
 
 ## 참고 자료
 
-- Principles of Chaos Engineering: [principlesofchaos.org](https://principlesofchaos.org/) — ★★★★☆
+- Principles of Chaos Engineering: [principlesofchaos.org](https://principlesofchaos.org/) — ★★★☆☆
 - AWS Fault Injection Service: [docs.aws.amazon.com/fis](https://docs.aws.amazon.com/fis/latest/userguide/) — ★★★☆☆
 - [Edge Case Testing](edge_case_testing.md)
 - [테스트 오라클](test_oracle.md)
@@ -155,6 +155,6 @@ FI-002: DB 연결 실패
 
 **작성일**: 2026-09-15
 
-**마지막 업데이트**: 2026-09-15
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

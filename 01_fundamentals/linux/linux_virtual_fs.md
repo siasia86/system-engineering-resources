@@ -144,8 +144,9 @@ cat /proc/sys/vm/swappiness
 # 쓰기 (즉시 적용, 재부팅 시 초기화)
 echo 1 > /proc/sys/net/ipv4/ip_forward
 
-# 영구 적용은 /etc/sysctl.conf 또는 sysctl 명령어 사용
+# sysctl -w도 런타임 변경이며 재부팅 시 초기화됨
 sysctl -w net.ipv4.ip_forward=1
+# 영구 적용은 /etc/sysctl.conf(또는 /etc/sysctl.d/*.conf)에 기록한 뒤 반영
 sysctl -p  # /etc/sysctl.conf 적용
 ```
 
@@ -237,9 +238,9 @@ echo performance | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governo
 ```bash
 # 모듈 파라미터 확인
 ls /sys/module/
-cat /sys/module/tcp_cubic/parameters/
+grep -r . /sys/module/tcp_cubic/parameters/
 
-# 예: nf_conntrack 최대 연결 수
+# 예: nf_conntrack 해시 테이블 크기 (최대 연결 수는 /proc/sys/net/netfilter/nf_conntrack_max)
 cat /sys/module/nf_conntrack/parameters/hashsize
 ```
 
@@ -360,7 +361,7 @@ cat /proc/sys/fs/file-nr
 # 커널 메시지 스트리밍 (블로킹, syslogd가 사용 — dmesg -w 와 유사하나 동일하지 않음)
 cat /proc/kmsg
 
-# NUMA 노드 정보
+# 노드·존별 buddy allocator 빈 블록 분포 (메모리 단편화 진단)
 cat /proc/buddyinfo
 
 # interrupt stats (IRQ 분산 확인)
@@ -376,9 +377,10 @@ inotifywait -m /sys/block/sda/queue/scheduler
 
 ## 참고 자료
 
-- Linux Kernel Documentation: [kernel.org/doc/html/latest/filesystems/proc.html](https://www.kernel.org/doc/html/latest/filesystems/proc.html) — ★★★★☆
-- sysfs Documentation: [kernel.org/doc/html/latest/filesystems/sysfs.html](https://www.kernel.org/doc/html/latest/filesystems/sysfs.html) — ★★★★☆
+- Linux Kernel Documentation: [kernel.org/doc/html/latest/filesystems/proc.html](https://www.kernel.org/doc/html/latest/filesystems/proc.html) — ★★★☆☆
+- sysfs Documentation: [kernel.org/doc/html/latest/filesystems/sysfs.html](https://www.kernel.org/doc/html/latest/filesystems/sysfs.html) — ★★★☆☆
 - Brendan Gregg Linux Performance: [brendangregg.com/linuxperf.html](https://www.brendangregg.com/linuxperf.html) — ★★★☆☆
+- Netfilter conntrack sysctl: [docs.kernel.org/networking/nf_conntrack-sysctl.html](https://docs.kernel.org/networking/nf_conntrack-sysctl.html) — ★★★☆☆
 - [cgroup_concepts.md](./cgroup_concepts.md)
 
 ---
@@ -396,6 +398,6 @@ inotifywait -m /sys/block/sda/queue/scheduler
 
 **작성일** : 2026-05-15
 
-**마지막 업데이트** : 2026-05-21
+**마지막 업데이트** : 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

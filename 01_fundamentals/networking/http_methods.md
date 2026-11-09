@@ -108,7 +108,7 @@ Content-Type: application/json
 
 ### PATCH
 - **목적**: 리소스 부분 수정
-- **멱등성**: 구현에 따라 다름 (일반적으로 있음)
+- **멱등성**: 구현에 따라 다름 (RFC 5789는 멱등성을 보장하지 않음)
 - **특징**: 변경할 필드만 전송
 
 ```http
@@ -433,7 +433,7 @@ POST /api/products
 # 실패
 → 400 Bad Request (잘못된 요청 데이터)
 → 409 Conflict (중복 리소스)
-→ 422 Unprocessable Entity (유효성 검증 실패)
+→ 422 Unprocessable Content (유효성 검증 실패)
 ```
 
 ### PUT/PATCH 요청
@@ -874,9 +874,9 @@ Response: 500 Internal Server Error
 
 | RFC      | 내용                           |
 |----------|--------------------------------|
-| RFC 7231 | HTTP/1.1 Semantics and Content |
+| RFC 9110 | HTTP Semantics (RFC 7231 대체) |
 | RFC 5789 | PATCH Method for HTTP          |
-| RFC 7540 | HTTP/2                         |
+| RFC 9113 | HTTP/2 (RFC 7540 대체)         |
 
 ### 실습 도구
 
@@ -898,7 +898,7 @@ Response: 500 Internal Server Error
 | GET     | 조회        | ✓      | ✓    | ✗    | 200, 404       |
 | POST    | 생성        | ✗      | ✗    | ✓    | 201, 400       |
 | PUT     | 전체 수정   | ✓      | ✗    | ✓    | 200, 204       |
-| PATCH   | 부분 수정   | ✓      | ✗    | ✓    | 200, 204       |
+| PATCH   | 부분 수정   | △      | ✗    | ✓    | 200, 204       |
 | DELETE  | 삭제        | ✓      | ✗    | △    | 204, 404       |
 | HEAD    | 메타데이터  | ✓      | ✓    | ✗    | 200            |
 | OPTIONS | 메서드 확인 | ✓      | ✓    | ✗    | 200            |
@@ -909,8 +909,8 @@ Response: 500 Internal Server Error
 
 ## 참고 자료
 
-- RFC 7231 - HTTP/1.1 Semantics: [RFC 7231](https://datatracker.ietf.org/doc/html/rfc7231) — ★★☆☆☆
-- RFC 5789 - PATCH Method: [RFC 5789](https://datatracker.ietf.org/doc/html/rfc5789) — ★★☆☆☆
+- RFC 9110 - HTTP Semantics (RFC 7231 대체): [RFC 9110](https://datatracker.ietf.org/doc/html/rfc9110) — ★★★★☆
+- RFC 5789 - PATCH Method: [RFC 5789](https://datatracker.ietf.org/doc/html/rfc5789) — ★★★★☆
 - MDN Web Docs - HTTP Methods: [HTTP request methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) — ★★★☆☆
 
 ---
@@ -928,6 +928,6 @@ Response: 500 Internal Server Error
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-04-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

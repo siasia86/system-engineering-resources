@@ -267,7 +267,7 @@ ff02::1 (모든 노드)
 | 5    | Redirect                | 경로 재지정           |
 | 8    | Echo Request            | ping 요청             |
 | 11   | Time Exceeded           | TTL 초과 (traceroute) |
-| 30   | Traceroute              | 경로 추적             |
+| 30   | Traceroute              | 폐기 (RFC 6918)       |
 
 ### Echo Request/Reply (ping)
 
@@ -353,7 +353,7 @@ iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
 | 필드       | 크기   | 설명                                     |
 |------------|--------|------------------------------------------|
 | **QR**     | 1 bit  | 0=Query, 1=Response                      |
-| **Opcode** | 4 bits | 0=Standard Query, 1=Inverse Query        |
+| **Opcode** | 4 bits | 0=Standard Query, 1=IQUERY(폐기)         |
 | **AA**     | 1 bit  | Authoritative Answer                     |
 | **TC**     | 1 bit  | Truncated                                |
 | **RD**     | 1 bit  | Recursion Desired                        |
@@ -457,13 +457,13 @@ X-Forwarded-For: 1.2.3.4, 10.0.0.1
 
 ### HTTP/2 vs HTTP/1.1
 
-| 특성           | HTTP/1.1   | HTTP/2               |
-|----------------|------------|----------------------|
-| **형식**       | 텍스트     | 바이너리             |
-| **멀티플렉싱** | 불가능     | 가능                 |
-| **헤더 압축**  | 없음       | HPACK                |
-| **서버 푸시**  | 불가능     | 가능                 |
-| **연결**       | 요청당 1개 | 1개 연결로 다중 요청 |
+| 특성           | HTTP/1.1  | HTTP/2               |
+|----------------|-----------|----------------------|
+| **형식**       | 텍스트    | 바이너리             |
+| **멀티플렉싱** | 불가능    | 가능                 |
+| **헤더 압축**  | 없음      | HPACK                |
+| **서버 푸시**  | 불가능    | 가능                 |
+| **연결**       | 순차 처리 | 1개 연결로 다중 요청 |
 
 ### 보안 헤더
 
@@ -524,7 +524,7 @@ Client                                              Server
 | 필드             | 크기    | 설명                                                        |
 |------------------|---------|-------------------------------------------------------------|
 | **Content Type** | 8 bits  | 20=ChangeCipherSpec, 21=Alert, 22=Handshake, 23=Application |
-| **Version**      | 16 bits | TLS 버전 (0x0303=TLS 1.2, 0x0304=TLS 1.3)                   |
+| **Version**      | 16 bits | 레코드 버전 (TLS 1.2·1.3 모두 0x0303, 1.3은 확장으로 협상)  |
 | **Length**       | 16 bits | 페이로드 길이                                               |
 
 ### TLS 버전
@@ -532,8 +532,8 @@ Client                                              Server
 | 버전    | 값     | 특징                      |
 |---------|--------|---------------------------|
 | SSL 3.0 | 0x0300 | 더 이상 사용 안 함 (취약) |
-| TLS 1.0 | 0x0301 | 레거시                    |
-| TLS 1.1 | 0x0302 | 레거시                    |
+| TLS 1.0 | 0x0301 | 폐기 (RFC 8996)           |
+| TLS 1.1 | 0x0302 | 폐기 (RFC 8996)           |
 | TLS 1.2 | 0x0303 | 현재 표준                 |
 | TLS 1.3 | 0x0304 | 최신 (더 빠르고 안전)     |
 
@@ -597,9 +597,9 @@ Extension: server_name
 GRE 캡슐화: [외부 IP][GRE][원본 IP][TCP][Data]
 ```
 
-**AWS Direct Connect:**
+**AWS Transit Gateway Connect:**
 ```
-온프레미스 ←→ GRE 터널 ←→ AWS VPC
+SD-WAN 어플라이언스 ←→ GRE 터널 + BGP ←→ Transit Gateway
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -782,8 +782,8 @@ tcpdump -i eth0 port 53
 # HTTP
 tcpdump -i eth0 -A 'tcp port 80'
 
-# TLS ClientHello
-tcpdump -i eth0 -X 'tcp port 443' | grep -A 10 "Client Hello"
+# TLS ClientHello (레코드 타입 0x16 + 핸드셰이크 타입 0x01)
+tcpdump -i eth0 -X 'tcp port 443 and (tcp[((tcp[12:1] & 0xf0) >> 2):1] = 0x16) and (tcp[((tcp[12:1] & 0xf0) >> 2)+5:1] = 0x01)'
 
 # GRE
 tcpdump -i eth0 proto gre
@@ -819,8 +819,8 @@ http.request.method == "GET"
 http.response.code == 200
 
 # TLS
-ssl.handshake.type == 1  # ClientHello
-ssl.handshake.extensions_server_name == "example.com"
+tls.handshake.type == 1  # ClientHello
+tls.handshake.extensions_server_name == "example.com"
 
 # GRE
 gre
@@ -838,10 +838,13 @@ quic
 
 ## 참고 자료
 
-- RFC 894: Ethernet / RFC 826: ARP / RFC 2460: IPv6
-- RFC 792: ICMP / RFC 1035: DNS / RFC 2616: HTTP/1.1
-- RFC 7540: HTTP/2 / RFC 8446: TLS 1.3
+- RFC 894: Ethernet / RFC 826: ARP / RFC 8200: IPv6 (RFC 2460 대체)
+- RFC 792: ICMP / RFC 1035: DNS / RFC 9110·9112: HTTP/1.1 (RFC 2616 대체)
+- RFC 9113: HTTP/2 (RFC 7540 대체) / RFC 9846: TLS 1.3 (RFC 8446 대체)
 - RFC 2784: GRE / RFC 7348: VXLAN / RFC 9000: QUIC
+- RFC 6918: ICMP Type 30 등 폐기 / RFC 3425: DNS IQUERY 폐기 / RFC 8996: TLS 1.0·1.1 폐기
+- AWS Transit Gateway Connect (GRE): [docs.aws.amazon.com](https://docs.aws.amazon.com/vpc/latest/tgw/tgw-connect.html) — ★★★☆☆
+- Wireshark TLS 표시 필터: [wireshark.org/docs/dfref/t/tls.html](https://www.wireshark.org/docs/dfref/t/tls.html) — ★★★☆☆
 
 ---
 
@@ -858,6 +861,6 @@ quic
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-04-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

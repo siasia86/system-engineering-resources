@@ -104,7 +104,8 @@ R2: VIP=Y, 금액≥5만=N → 할인 10%
 R1: VIP=Y, 금액≥5만=Y → 무료배송
 R2: VIP=Y, 금액≥5만=N → 무료배송
 
-→ 병합 가능: VIP=Y → 무료배송 (금액 무관)
+→ 무료배송 동작만 보는 표에서는 병합 가능: VIP=Y → 무료배송 (금액 무관)
+  (할인율까지 포함한 전체 표에서는 동작이 달라 병합 불가)
 ```
 
 ### 조건 수에 따른 규칙 수
@@ -120,7 +121,7 @@ R2: VIP=Y, 금액≥5만=N → 무료배송
 
 ## 참고 자료
 
-- ISTQB Foundation Level Syllabus — ★★★☆☆
+- ISTQB Foundation Level Syllabus v4.0.1: [istqb.org](https://www.istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf) — ★★★☆☆
 - [경계값 분석](boundary_value_analysis.md)
 - [동등 분할](equivalence_partitioning.md)
 
@@ -139,6 +140,6 @@ R2: VIP=Y, 금액≥5만=N → 무료배송
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-05-08
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

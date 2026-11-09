@@ -70,7 +70,7 @@ perf stat ls
 
 **상세 통계:**
 ```bash
-# 모든 카운터
+# 상세 카운터 추가 (-dd, -ddd로 확장)
 perf stat -d ls
 
 # 특정 이벤트
@@ -140,10 +140,10 @@ perf top
 # 특정 프로세스
 perf top -p <PID>
 
-# 커널만
+# 유저 공간만 (커널 심볼 숨김)
 perf top -K
 
-# 유저 공간만
+# 커널만 (유저 심볼 숨김)
 perf top -U
 ```
 
@@ -276,9 +276,9 @@ perf report --sort cpu,comm,dso,symbol
 ### 예제 5: 특정 함수 추적
 
 ```bash
-# 함수 진입/종료 추적
+# 함수 진입 추적 (uprobe 그룹 이름은 probe_<실행 파일 이름>)
 perf probe -x /path/to/binary function_name
-perf record -e probe:function_name ./myapp
+perf record -e probe_binary:function_name ./myapp
 perf script
 ```
 
@@ -332,8 +332,9 @@ sudo perf record ls
 cat /proc/sys/kernel/perf_event_paranoid
 # -1: 제한 없음
 #  0: 일부 제한
-#  1: 커널 프로파일링 제한
-#  2: 커널 프로파일링 + CPU 이벤트 제한
+#  1: CPU 이벤트 제한
+#  2: CPU 이벤트 + 커널 프로파일링 제한 (upstream 기본값)
+#  4: 비특권 사용자 perf 사용 금지 (Ubuntu 커널 패치 기본값)
 
 # 임시 변경
 echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
@@ -366,7 +367,7 @@ sudo chown $USER perf.data
 ### 1. 샘플링 주파수 조정
 
 ```bash
-# 기본: 1000Hz
+# 기본: 4000Hz
 perf record -F 1000 ./myapp
 
 # 낮은 오버헤드: 99Hz
@@ -382,15 +383,15 @@ perf record -F 4000 ./myapp
 # 기본: 127
 perf record -g ./myapp
 
-# 깊이 제한
+# DWARF 방식, 스택 덤프 크기 8192바이트
 perf record --call-graph dwarf,8192 ./myapp
 ```
 
 ### 3. 데이터 크기 제한
 
 ```bash
-# 최대 크기 설정 (MB)
-perf record -m 128 ./myapp
+# 출력 파일 최대 크기 설정
+perf record --max-size=128M ./myapp
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -419,10 +420,10 @@ perf report
 
 ```bash
 # 최적화 전
-perf stat -r 10 ./myapp_old > before.txt
+perf stat -r 10 -o before.txt ./myapp_old
 
 # 최적화 후
-perf stat -r 10 ./myapp_new > after.txt
+perf stat -r 10 -o after.txt ./myapp_new
 
 # 비교
 diff before.txt after.txt
@@ -472,6 +473,9 @@ diff before.txt after.txt
 
 - Linux perf wiki: [perf.wiki.kernel.org](https://perf.wiki.kernel.org/) — ★★★☆☆
 - Brendan Gregg - perf Examples: [brendangregg.com](https://www.brendangregg.com/perf.html) — ★★☆☆☆
+- perf-record(1): [man7.org/linux/man-pages/man1/perf-record.1.html](https://man7.org/linux/man-pages/man1/perf-record.1.html) — ★★★☆☆
+- perf-top(1): [man7.org/linux/man-pages/man1/perf-top.1.html](https://man7.org/linux/man-pages/man1/perf-top.1.html) — ★★★☆☆
+- perf_event_paranoid: [docs.kernel.org/admin-guide/sysctl/kernel.html](https://docs.kernel.org/admin-guide/sysctl/kernel.html#perf-event-paranoid) — ★★★☆☆
 
 ---
 
@@ -488,6 +492,6 @@ diff before.txt after.txt
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-08-23
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

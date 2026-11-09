@@ -105,8 +105,8 @@ interface FastEthernet0/1
 
 ```
 interface GigabitEthernet0/1
- switchport mode trunk
  switchport trunk encapsulation dot1q
+ switchport mode trunk
  switchport trunk native vlan 99
  switchport trunk allowed vlan 10,20,30
 ```
@@ -119,7 +119,7 @@ interface GigabitEthernet0/1
 | 태그 처리   | 802.1Q 태그 추가/제거                          |
 | Native VLAN | 태그 없이 전송되는 VLAN (기본: VLAN 1)         |
 | 연결 대상   | 스위치 간, 스위치-라우터, 스위치-가상화 호스트 |
-| DTP 협상    | 기본 활성 (desirable)                          |
+| DTP 협상    | 기본 활성 (DTP 프레임 송신)                    |
 
 ### Native VLAN 주의사항
 
@@ -375,7 +375,7 @@ Native VLAN이 기본값(VLAN 1)일 때, 이중 802.1Q 태그를 삽입하여 �
 ```
 
 - 단방향 공격 (응답은 돌아오지 않음)
-- Native VLAN이 VLAN 1일 때만 가능
+- 공격자 포트의 Access VLAN이 Trunk의 Native VLAN과 같을 때만 가능 (기본값 VLAN 1이 흔한 사례)
 
 방어:
 
@@ -593,7 +593,8 @@ interface range FastEthernet0/20-24
 
 ## 참고 자료
 
-- Cisco IOS Configuration Guide: [VLAN Configuration](https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9300/software/release/17-9/configuration_guide/vlan/b_179_vlan_9300_cg.html) — ★★☆☆☆
+- Cisco IOS Configuration Guide: [VLAN Configuration](https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9300/software/release/17-9/configuration_guide/vlan/b_179_vlan_9300_cg.html) — ★★★☆☆
+- Cisco Learning Network: [VLAN1 and VLAN Hopping Attack](https://learningnetwork.cisco.com/s/blogs/a0D3i000002SKPREA4/vlan1-and-vlan-hopping-attack) — ★★☆☆☆
 - IEEE 802.1Q: Virtual Bridged Local Area Networks
 - RFC 5517: Cisco Systems' Private VLANs
 
@@ -612,6 +613,6 @@ interface range FastEthernet0/20-24
 
 **작성일**: 2026-04-24
 
-**마지막 업데이트**: 2026-04-24
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

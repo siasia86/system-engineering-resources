@@ -24,7 +24,7 @@ SoftEther VPN은 멀티 프로토콜을 지원하는 오픈소스 VPN 소프트�
 
 ### 동작 원리
 
-SoftEther VPN은 커널 가상 NIC(`tun`)와 Virtual Hub(소프트웨어 스위치)를 결합하여 Ethernet over HTTPS 터널을 구성합니다.
+SoftEther VPN은 커널 가상 NIC(TAP, `tun` 모듈)와 Virtual Hub(소프트웨어 스위치)를 결합하여 Ethernet over HTTPS 터널을 구성합니다.
 
 ```
 Linux Host
@@ -33,7 +33,7 @@ Linux Host
 │       |                                                          │
 │  Kernel Routing Table                                            │
 │       |                                                          │
-│  [vpn_vpn0] TUN NIC  <---- vpnclient daemon (Ethernet/HTTPS) ───>│
+│  [vpn_vpn0] TAP NIC  <---- vpnclient daemon (Ethernet/HTTPS) ───>│
 │                              (Ethernet over HTTPS)               │
 └──────────────────────────────────────────────────────────────────┘
 ```
@@ -50,7 +50,7 @@ Linux Host
 ```
 
 - vpnclient 데몬이 서버와 TCP(443/992/1194) 연결을 맺고 Ethernet 프레임을 캡슐화합니다.
-- 커널에 `vpn_<nicname>` TUN 인터페이스가 생성되며, IP 할당 후 트래픽이 흐릅니다.
+- 커널에 `vpn_<nicname>` TAP 인터페이스가 생성되며, IP 할당 후 트래픽이 흐릅니다.
 - Virtual Hub는 소프트웨어 L2 스위치로, 연결된 클라이언트 간 Ethernet 프레임을 교환합니다.
 
 ### 서버 지원 프로토콜 및 포트
@@ -66,7 +66,7 @@ SoftEther Server는 단일 프로세스로 여러 프로토콜을 동시에 수�
 | EtherIP/IPsec     | UDP 500, 4500 | Cisco 라우터 등                         |
 | 관리 (vpncmd)     | TCP 5555      | vpncmd 원격 관리                        |
 
-🟡 992 포트는 IANA pop3s 번호를 재활용합니다. 443이 차단된 방화벽 환경에서 대체 포트로 사용합니다.
+🟡 992 포트는 IANA telnets(Telnet over TLS) 번호를 재활용합니다. 443이 차단된 방화벽 환경에서 대체 포트로 사용합니다.
 
 ### 바이너리 종류
 
@@ -205,7 +205,7 @@ SoftEther 클라이언트는 3가지 인증 방식을 지원합니다.
 |-------------------|-----------------------|------------|---------------------------------|
 | 패스워드          | `AccountPasswordSet`  | `standard` | 일반 사용자명 + 패스워드        |
 | RADIUS            | `AccountPasswordSet`  | `radius`   | RADIUS 서버 위임, OTP 연동 가능 |
-| 클라이언트 인증서 | `AccountCertSet`      | —          | 인증서 파일(.pfx/.p12) 지정     |
+| 클라이언트 인증서 | `AccountCertSet`      | —          | X.509 인증서 + 개인 키 파일     |
 | 익명              | `AccountAnonymousSet` | —          | 인증 없음, 테스트용             |
 
 #### 패스워드 인증 (standard / radius)
@@ -217,7 +217,7 @@ VPN Client> AccountPasswordSet myconn /PASSWORD:SecurePassword123 /TYPE:standard
 #### 클라이언트 인증서 인증
 
 ```
-# 인증서(.pfx) 파일을 vpnclient가 읽을 수 있는 경로에 배치
+# X.509 인증서(.crt)와 Base64 개인 키(.key)를 vpnclient가 읽을 수 있는 경로에 배치
 VPN Client> AccountCertSet myconn /LOADCERT:/etc/vpn/client.crt /LOADKEY:/etc/vpn/client.key
 ```
 
@@ -263,8 +263,8 @@ VPN Client> AccountProxyNone myconn
 연결 끊김 시 자동 재시도 횟수와 간격을 설정합니다.
 
 ```
-# NUM: 재시도 횟수 (0 = 무한), INTERVAL: 재시도 간격(초)
-VPN Client> AccountRetrySet myconn /NUM:0 /INTERVAL:15
+# NUM: 재시도 횟수 (999 = 무한, 0 = 재시도 안 함), INTERVAL: 재시도 간격(초)
+VPN Client> AccountRetrySet myconn /NUM:999 /INTERVAL:15
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -398,10 +398,10 @@ cd /opt/vpnclient && ./vpncmd
 | `AccountList`                           | 계정 목록 확인         |
 | `AccountGet <name>`                     | 계정 상세 확인         |
 | `AccountSet <name> ...`                 | 계정 기본 정보 수정    |
-| `AccountRename <name> /NEWNAME:<new>`   | 계정 이름 변경         |
+| `AccountRename <name> /NEW:<new>`       | 계정 이름 변경         |
 | `AccountDelete <name>`                  | 계정 삭제              |
 | `AccountExport <name> /SAVEPATH:<path>` | 계정 설정 내보내기     |
-| `AccountImport /LOADPATH:<path>`        | 계정 설정 가져오기     |
+| `AccountImport <path>`                  | 계정 설정 가져오기     |
 | `AccountStartupSet <name>`              | 부팅 시 자동 연결 등록 |
 | `AccountStartupRemove <name>`           | 자동 연결 해제         |
 
@@ -462,7 +462,7 @@ VPN Client> NicCreate vpn0
 # 계정 생성 (대화형)
 VPN Client> AccountCreate my_vpn
 Destination VPN Server Host Name and Port Number: vpn.example.com:80
-Destination Virtual HUB Name: VPN
+Destination Virtual Hub Name: VPN
 Connecting User Name: Secureuser123
 Used Virtual Network Adapter Name: vpn0
 
@@ -520,7 +520,7 @@ VPN Client> NicDelete vpn0
 ps aux | grep vpnclient
 
 # 로그 확인
-ls /opt/vpnclient/packet_log/
+ls /opt/vpnclient/client_log/
 ```
 
 ### 가상 NIC 미생성 (vpn_vpn0 없음)
@@ -596,12 +596,12 @@ ip addr show vpn_vpn0
 # 1. AccountStatusGet으로 연결 상태 확인
 VPN Client> AccountStatusGet myconn
 
-# 2. 재연결 설정 확인 — 무한 재시도 설정
-VPN Client> AccountRetrySet myconn /NUM:0 /INTERVAL:15
+# 2. 재연결 설정 확인 — 무한 재시도 설정 (999 = 무한)
+VPN Client> AccountRetrySet myconn /NUM:999 /INTERVAL:15
 
 # 3. Keep-Alive 활성화
 VPN Client> KeepEnable
-VPN Client> KeepSet /HOST:8.8.8.8 /PORT:80 /INTERVAL:50 /PROTOCOL:tcp
+VPN Client> KeepSet /HOST:8.8.8.8:80 /PROTOCOL:tcp /INTERVAL:50
 ```
 
 ### 방화벽이 443을 차단하는 경우
@@ -647,8 +647,8 @@ cd /opt/vpnclient
 sleep 2
 ./vpnclient start
 
-# 관리 포트(5555) 리스닝 확인
-ss -tlnp | grep 5555
+# 클라이언트 관리 포트(9930) 리스닝 확인
+ss -tlnp | grep 9930
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -691,7 +691,7 @@ conn softether-l2tp
 IPSEC
 
 # /etc/ipsec.secrets
-echo ": PSK "SecureKey123"" > /etc/ipsec.secrets
+echo ': PSK "SecKey123"' > /etc/ipsec.secrets
 ```
 
 ### OpenVPN 클라이언트로 접속
@@ -725,6 +725,8 @@ ip addr show tun0
 
 - SoftEther VPN: [softether.org](https://www.softether.org/) — ★★★☆☆
 - GitHub Releases: [github.com/SoftEtherVPN](https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases) — ★★★☆☆
+- vpncmd VPN Client 명령 레퍼런스: [softether.org 6.5](https://www.softether.org/4-docs/1-manual/6._Command_Line_Management_Utility_Manual/6.5_VPN_Client_Management_Command_Reference) — ★★★☆☆
+- 클라이언트 관리 포트·로그 폴더 상수: [GlobalConst.h](https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/blob/master/src/GlobalConst.h), [Cedar.h](https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/blob/master/src/Cedar/Cedar.h) — ★★★☆☆
 
 ---
 
@@ -741,6 +743,6 @@ ip addr show tun0
 
 **작성일**: 2026-05-11
 
-**마지막 업데이트**: 2026-08-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

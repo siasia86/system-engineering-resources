@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261109-01 / DOCS-32 (2026-11-09): 전체 문서 일회성 검증 1단계로 `01_fundamentals` 183개 문서를 9개 묶음으로 나눠 사실·최신성·일관성·출처·별점·보안을 확인하고 120개 문서를 정정했습니다. 명령·코드 예시는 python3 3.14·gcc·go·bash와 서버의 ltrace·strace·perf·tcpdump 등으로 실행해 대조했고, 폐기된 RFC(793·7231·7540·8446·5575 등)를 현행 번호로 바꿨습니다. 출처 별점은 [GOVERNANCE](GOVERNANCE.md) 5절 기준(공식 문서 3, RFC·PEP·주요 도서 4, 블로그·제3자 2)으로 맞췄습니다. 깨진 외부 링크 5건을 고치고, 예시의 실제 계정 이름을 자리표시자로 바꿨으며, root README Programming 표에 누락 문서 5개, linux·python README에 누락 문서 6개를 연결했습니다. Rust·C#은 컴파일 환경이 없어 공식 문서·소스 대조만 했고, 재작성이 필요한 예제 등 판단 항목은 고치지 않았습니다.
+
 - MAIN-20261027-06 / DOCS-32 (2026-11-01): ISS-06을 종료했습니다. POLICY-31 CL2CX-20261027-04에 대한 Codex 반환 CX2CL-20261027-03(권장안 1~2)이 31 `8558b03`에서 수용 판정되어, 적용 계층을 common 단독으로 유지하기로 확정했습니다. 근거는 AGENTS 2절이 common만 선택한 경우 Codex 안내를 필수로 요구하지 않는다는 점과, 중앙 Codex 안내가 skill 선택표·개인 skill 수정 경로 중심이라 개인 지침과 겹친다는 점입니다. 확정 문장을 [적용 기록](APPLICATION.md) 4절에 원문 그대로 넣었습니다. `.codex/repository-guidance.md`·설정 4개·개인 skill은 변경하지 않았습니다.
 
 - MAIN-20261027-07 / DOCS-32 (2026-10-27): ISS-07을 종료했습니다. 사용자 지시로 법령 원문은 비공개 저장소 `37_law`, 민감 자료는 `system-engineering-resources_private`에 두도록 나눴습니다. `06_career/legal/_reference`의 원문 17개(hwp·hwpx 16개, PDF 1개)를 추적 해제하고(로컬 파일 유지), `.gitignore`의 허용 예외를 없애고 보관 위치 안내로 바꿨습니다. [개인정보 보호법 가이드](../06_career/legal/privacy_law_guide.md)의 원문 다운로드 링크 12개를 개인정보보호위원회 출처 게시물 주소로 바꿨으며, 각 파일이 게시물 첨부와 일치함을 확인했습니다. 원문 19개는 `37_law` `d96a7da`, 개인정보가 담긴 PDF 1개는 `system-engineering-resources_private` `9bc806b`에 commit했습니다. 비공개 저장소 이름 변경(`34_system-engineering-resources_private` → `system-engineering-resources_private`)에 맞춰 S3 문서 2개의 안내를 고치고 참고 파일의 실제 경로(`99_archive/03_aws_jobs/01_AWS_jobs/`)를 덧붙였습니다. 기존 commit 이력의 원문 사본은 그대로 남습니다.
@@ -1007,6 +1009,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

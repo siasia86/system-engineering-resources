@@ -196,8 +196,7 @@ find "$BASE" -type f \
 
 ```bash
 setfacl -m \
-  d:g:example_read_only_group:r-x, \
-  d:m:r-x \
+  d:g:example_read_only_group:r-x,d:m:r-x \
   /srv/example_data
 ```
 
@@ -211,9 +210,7 @@ setfacl -m \
 BASE=/srv/example_data
 
 find "$BASE" -type d \
-  -exec setfacl -m \
-  d:g:example_read_only_group:r-x, \
-  d:m:r-x {} +
+  -exec setfacl -m d:g:example_read_only_group:r-x,d:m:r-x {} +
 ```
 
 기존 Access ACL과 신규 Default ACL을 함께 설정하는 전체 예시는 다음과 같습니다.
@@ -226,9 +223,7 @@ setfacl -R -m g:example_read_only_group:r-X "$BASE"
 
 # 기존 모든 디렉토리의 신규 항목 상속 정책
 find "$BASE" -type d \
-  -exec setfacl -m \
-  d:g:example_read_only_group:r-x, \
-  d:m:r-x {} +
+  -exec setfacl -m d:g:example_read_only_group:r-x,d:m:r-x {} +
 ```
 
 ### 5.3 생성 mode와 최종 권한
@@ -472,9 +467,7 @@ setfacl --test -m g:example_read_only_group:r-X "$BASE"
 
 ```bash
 find "$BASE" -type d \
-  -exec setfacl -m \
-  d:g:example_read_only_group:r-x, \
-  d:m:r-x {} +
+  -exec setfacl -m d:g:example_read_only_group:r-x,d:m:r-x {} +
 ```
 
 적용 후에는 디렉토리에서 `default:` 항목을, 파일에서 Access ACL을 각각 확인합니다.
@@ -570,10 +563,10 @@ namei -l "$BASE"
 ## 참고 자료
 
 - ACL project: [savannah.nongnu.org/projects/acl](https://savannah.nongnu.org/projects/acl/) — ★★★☆☆
-- `setfacl(1)`: [man7.org](https://man7.org/linux/man-pages/man1/setfacl.1.html) — ★★★★☆
-- `getfacl(1)`: [man7.org](https://man7.org/linux/man-pages/man1/getfacl.1.html) — ★★★★☆
-- `acl(5)`: [man7.org](https://man7.org/linux/man-pages/man5/acl.5.html) — ★★★★☆
-- `umask(2)`: [man7.org](https://man7.org/linux/man-pages/man2/umask.2.html) — ★★★★☆
+- `setfacl(1)`: [man7.org](https://man7.org/linux/man-pages/man1/setfacl.1.html) — ★★★☆☆
+- `getfacl(1)`: [man7.org](https://man7.org/linux/man-pages/man1/getfacl.1.html) — ★★★☆☆
+- `acl(5)`: [man7.org](https://man7.org/linux/man-pages/man5/acl.5.html) — ★★★☆☆
+- `umask(2)`: [man7.org](https://man7.org/linux/man-pages/man2/umask.2.html) — ★★★☆☆
 - `gpasswd(1)`: [man7.org](https://man7.org/linux/man-pages/man1/gpasswd.1.html) — ★★★☆☆
 - [_reference/acl_setfacl_official_notes.md](../../_reference/acl_setfacl_official_notes.md)
 
@@ -592,6 +585,6 @@ namei -l "$BASE"
 
 **작성일**: 2026-09-16
 
-**마지막 업데이트**: 2026-09-16
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

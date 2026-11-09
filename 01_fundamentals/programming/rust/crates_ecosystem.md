@@ -335,12 +335,9 @@ cargo audit --deny warnings
 - crates.io: [crates.io](https://crates.io/) — ★★★☆☆
 - lib.rs (크레이트 검색): [lib.rs](https://lib.rs/) — ★★★☆☆
 - Awesome Rust: [github.com/rust-unofficial/awesome-rust](https://github.com/rust-unofficial/awesome-rust) — ★★☆☆☆
-- Cargo Book: [doc.rust-lang.org/cargo](https://doc.rust-lang.org/cargo/) — ★★★★☆
+- Cargo Book: [doc.rust-lang.org/cargo](https://doc.rust-lang.org/cargo/) — ★★★☆☆
 
 ---
-
-## 통계
-
 
 ## 통계
 
@@ -355,6 +352,6 @@ cargo audit --deny warnings
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-08-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

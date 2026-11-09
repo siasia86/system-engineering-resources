@@ -93,8 +93,8 @@ ASCII (0-127) + 서유럽 확장 (128-255)
 
 ```
 '가' = 0xB0A1
-'힣' = 0xC8FE
-'똠' = 표현 불가 ← KS X 1001 기준 (Python euc-kr 코덱은 CP949 확장 포함)
+'힝' = 0xC8FE  ← KS X 1001 한글 마지막 글자 ('힣'은 2,350자에 없음)
+'똠' = 표현 불가 ← KS X 1001 기준 (Python euc-kr 코덱은 CP949 확장 대신 자모 조합 8바이트 시퀀스로 표현)
 ```
 
 ### CP949 (MS949)
@@ -216,7 +216,7 @@ Format-Hex file.txt | Select-Object -First 1
 ### BOM 유무에 따른 차이
 
 ```bash
-# UTF-8 BOM 있음 (Windows 메모장 기본)
+# UTF-8 BOM 있음 (Windows 10 1903 이전 메모장 기본, 이후는 BOM 없는 UTF-8이 기본)
 echo -ne '\xEF\xBB\xBF' > bom.txt
 echo "Hello" >> bom.txt
 
@@ -294,7 +294,7 @@ Get-Content input.txt -Encoding Default | Set-Content output.txt -Encoding UTF8
 
 ```python
 # 잘못된 인코딩으로 읽은 경우
-broken = '¾È³çÇÏ¼¼¿ä'  # UTF-8로 읽었지만 실제는 EUC-KR
+broken = '¾È³çÇÏ¼¼¿ä'  # Latin-1로 읽었지만 실제는 EUC-KR
 
 # 복구: 잘못 디코딩된 것을 원래 바이트로 되돌린 후 올바른 인코딩으로 디코딩
 fixed = broken.encode('latin-1').decode('euc-kr')
@@ -324,7 +324,7 @@ SHOW VARIABLES LIKE 'character_set%';
 +----------+----------+----------------------------------+
 | 바이트   | 최대 3B  | 최대 4B                          |
 | 이모지   | ❌       | ✅                               |
-| 권장     | ❌       | ✅ (MySQL 8.0 기본)              |
+| 권장     | ❌       | ✅ (MySQL 8.0부터 기본)          |
 +----------+----------+----------------------------------+
 ```
 
@@ -339,7 +339,7 @@ Content-Type: text/html; charset=utf-8
 # HTML meta 태그
 <meta charset="UTF-8">
 
-# 우선순위: HTTP 헤더 > BOM > meta 태그
+# 우선순위: BOM > HTTP 헤더 > meta 태그
 ```
 
 ### 5-6. SSH/터미널 인코딩
@@ -457,7 +457,7 @@ done
 
 ### 핵심 원칙
 
-1. 새 프로젝트는 무조건 UTF-8
+1. 새 프로젝트는 UTF-8을 기본으로 사용
 2. 입력/저장/출력 모든 단계에서 인코딩을 명시적으로 지정
 3. 인코딩 변환은 바이트 레벨에서 확인 후 진행
 4. MySQL은 `utf8`이 아닌 `utf8mb4` 사용
@@ -466,9 +466,11 @@ done
 
 ## 참고 자료
 
-- Unicode Standard: [unicode.org](https://www.unicode.org/standard/standard.html) — ★★☆☆☆
-- MySQL Character Sets: [dev.mysql.com](https://dev.mysql.com/doc/refman/8.0/en/charset.html) — ★★★☆☆
+- Unicode Standard: [unicode.org](https://www.unicode.org/standard/standard.html) — ★★★☆☆
+- MySQL Character Sets: [dev.mysql.com](https://dev.mysql.com/doc/refman/8.4/en/charset.html) — ★★★☆☆
 - Python Documentation: [codecs](https://docs.python.org/3/library/codecs.html) — ★★★☆☆
+- HTML Standard - Determining the character encoding: [html.spec.whatwg.org](https://html.spec.whatwg.org/multipage/parsing.html#determining-the-character-encoding) — ★★★☆☆
+- Windows Insider Build 18298 (메모장 UTF-8 기본값): [blogs.windows.com](https://blogs.windows.com/windows-insider/2018/12/10/announcing-windows-10-insider-preview-build-18298/) — ★★★☆☆
 
 ---
 
@@ -485,6 +487,6 @@ done
 
 **작성일**: 2026-04-03
 
-**마지막 업데이트**: 2026-04-03
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

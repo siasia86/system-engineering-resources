@@ -181,7 +181,7 @@ class HashTable:
 | Python | dict          | 개방 주소법 (탐사)                  |
 | Java   | HashMap       | 체이닝 (8개 초과 시 Red-Black Tree) |
 | C++    | unordered_map | 체이닝                              |
-| Go     | map           | 체이닝 (버킷 배열)                  |
+| Go     | map           | 개방 주소법 (Swiss Table, 1.24+)    |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -216,6 +216,7 @@ class HashTable:
 
 - Cormen, Thomas H. et al. "Introduction to Algorithms" (CLRS)
 - Python Documentation: [dict](https://docs.python.org/3/library/stdtypes.html#mapping-types-dict) — ★★★☆☆
+- The Go Blog: [Faster Go maps with Swiss Tables](https://go.dev/blog/swisstable) — ★★★☆☆
 
 ---
 
@@ -232,6 +233,6 @@ class HashTable:
 
 **작성일**: 2026-04-04
 
-**마지막 업데이트**: 2026-04-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

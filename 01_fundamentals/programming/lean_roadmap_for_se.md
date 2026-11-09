@@ -148,7 +148,7 @@ cd se_lean
 lake build
 ```
 
-프로젝트가 생성되면 `lakefile.lean`, `Main.lean`, toolchain 설정을 확인합니다. CI에서는 개발자 로컬의 암묵적인 전역 설정에 의존하지 않고 저장소의 버전 설정과 lock 상태를 함께 관리합니다.
+프로젝트가 생성되면 `lakefile.toml`(기본값, `lake new se_lean std.lean`으로 만들면 `lakefile.lean`), `Main.lean`, toolchain 설정을 확인합니다. CI에서는 개발자 로컬의 암묵적인 전역 설정에 의존하지 않고 저장소의 버전 설정과 lock 상태를 함께 관리합니다.
 
 ### 소스 파일 확인 명령
 
@@ -313,6 +313,7 @@ lake build
 - Lean 학습 자료: [lean-lang.org/learn](https://lean-lang.org/learn/) — ★★★☆☆
 - Lean Language Reference: [lean-lang.org/doc/reference/latest](https://lean-lang.org/doc/reference/latest/) — ★★★☆☆
 - Lean 4 releases: [github.com/leanprover/lean4/releases](https://github.com/leanprover/lean4/releases) — ★★★☆☆
+- Lake reference: [lean-lang.org/doc/reference/latest/Build-Tools-and-Distribution/Lake](https://lean-lang.org/doc/reference/latest/Build-Tools-and-Distribution/Lake/) — ★★★☆☆
 - [Lean 공식 문서 참조 노트](../../_reference/lean_official_notes.md)
 
 ---
@@ -330,6 +331,6 @@ lake build
 
 **작성일**: 2026-09-11
 
-**마지막 업데이트**: 2026-09-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

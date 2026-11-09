@@ -177,7 +177,7 @@ command 2>&1 > file.log    # stderr은 여전히 터미널로 출력
 ### `&>` — stdout + stderr 모두 파일로 (bash 전용 단축)
 
 ```bash
-command &> output.log       # bash 4.0+, > output.log 2>&1 과 동일
+command &> output.log       # > output.log 2>&1 과 동일
 command &>> output.log      # bash 4.0+, >> output.log 2>&1 과 동일 (append)
 ```
 
@@ -268,9 +268,9 @@ EOF
 
 ```bash
 if true; then
-    cat <<- EOF
-        들여쓰기 탭 제거됨 (탭 문자만, 스페이스는 유지)
-    EOF
+	cat <<- EOF
+		들여쓰기 탭 제거됨 (탭 문자만, 스페이스는 유지)
+	EOF
 fi
 ```
 
@@ -519,10 +519,12 @@ exec > >(tee -a "${LOG_FILE_01}") 2>&1
 echo "마지막 줄"
 # 스크립트 종료 → tee가 flush 전에 종료될 수 있음
 
-# ✅ wait로 tee 완료 보장
+# ✅ tee로 가는 FD를 닫은 뒤 wait로 tee 완료 보장
+exec 3>&1 4>&2      # 원래 stdout/stderr 백업
 exec > >(tee -a "${LOG_FILE_01}") 2>&1
-TEE_PID=$!          # 마지막 백그라운드 프로세스(tee) PID 저장
+TEE_PID=$!          # 마지막 프로세스 치환(tee) PID 저장 (bash 4.4+)
 # ... 작업 ...
+exec 1>&3 2>&4 3>&- 4>&-   # FD를 복원해 tee에 EOF 전달 (생략하면 wait가 끝나지 않음)
 wait "${TEE_PID}"   # tee가 모든 출력을 flush할 때까지 대기
 ```
 
@@ -656,6 +658,6 @@ echo "$(date) script end"
 
 **작성일**: 2026-05-21
 
-**마지막 업데이트**: 2026-05-24
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

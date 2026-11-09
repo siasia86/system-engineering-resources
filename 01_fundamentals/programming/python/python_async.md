@@ -97,7 +97,8 @@ asyncio.run(main())
 ```python
 import asyncio
 
-loop = asyncio.get_event_loop()
+# asyncio.get_event_loop()는 현재 루프가 없으면 Python 3.14부터 RuntimeError
+# → 코루틴·콜백 안에서는 get_running_loop() 사용 권장
 
 # 현재 실행 중인 루프 확인
 try:
@@ -192,7 +193,7 @@ async def main():
     tasks = [worker(str(i), (5 - i) * 0.2) for i in range(5)]
 
     # 완료된 순서대로 처리 (빠른 것 먼저)
-    # as_completed()는 일반 이터레이터 — async for가 아닌 for 사용
+    # as_completed()는 일반 이터레이터 — for 사용 (Python 3.13+는 async for도 지원)
     for coro in asyncio.as_completed(tasks):
         result = await coro
         print(f"처리: {result}")
@@ -388,7 +389,10 @@ async def main():
         result = await loop.run_in_executor(pool, cpu_intensive, 10_000_000)
         print(f"CPU 결과: {result}")
 
-asyncio.run(main())
+# 프로세스 풀은 자식이 __main__을 import하므로 진입점 보호 필요
+# (Python 3.14부터 POSIX 기본 시작 방식이 forkserver)
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ### asyncio.to_thread() (Python 3.9+) — 간편 버전
@@ -436,7 +440,8 @@ async def good_fetch(url: str) -> str:
 
 # ✅ 부득이한 경우 스레드 풀로 offload
 async def offload_fetch(url: str) -> str:
-    return await asyncio.to_thread(requests.get, url)
+    resp = await asyncio.to_thread(requests.get, url)
+    return resp.text
 ```
 
 ### 안티패턴 요약
@@ -448,7 +453,7 @@ async def offload_fetch(url: str) -> str:
 | 동기 `requests` 사용            | 이벤트 루프 블로킹              | `aiohttp`, `httpx` 사용               |
 | `CancelledError` 무시           | 취소 전파 안 됨, 리소스 누수    | `except CancelledError: raise`        |
 | CPU 작업을 코루틴에서 직접 실행 | 이벤트 루프 블로킹              | `ProcessPoolExecutor` 사용            |
-| Task 결과를 `await` 없이 버림   | 예외 손실, UnraisableException  | `await task` 또는 `add_done_callback` |
+| Task 결과를 `await` 없이 버림   | 예외 손실, 참조 없으면 GC 소멸  | `await task` 또는 `add_done_callback` |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -458,7 +463,9 @@ async def offload_fetch(url: str) -> str:
 
 - asyncio docs: [docs.python.org/3/library/asyncio.html](https://docs.python.org/3/library/asyncio.html) — ★★★☆☆
 - aiohttp docs: [docs.aiohttp.org](https://docs.aiohttp.org/) — ★★★☆☆
-- aiofiles: [github.com/Tinche/aiofiles](https://github.com/Tinche/aiofiles) — ★★☆☆☆
+- aiofiles: [github.com/Tinche/aiofiles](https://github.com/Tinche/aiofiles) — ★★★☆☆
+- asyncio 개발 가이드(never-retrieved 예외): [asyncio-dev](https://docs.python.org/3/library/asyncio-dev.html) — ★★★☆☆
+- multiprocessing 시작 방식(3.14 forkserver 기본): [multiprocessing](https://docs.python.org/3/library/multiprocessing.html) — ★★★☆☆
 
 ---
 
@@ -469,6 +476,6 @@ async def offload_fetch(url: str) -> str:
 
 **작성일**: 2026-08-09
 
-**마지막 업데이트**: 2026-08-09
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

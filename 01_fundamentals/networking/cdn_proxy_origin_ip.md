@@ -167,7 +167,7 @@ Origin IP가 실수로 노출되면 CDN/WAF를 우회한 직접 공격이 가능
 dig +short example.com
 dig +short mail.example.com
 
-# 서브도메인 열거 (노출된 Origin 찾기)
+# MX 레코드 확인 (메일 서버가 Origin을 가리키는지)
 nslookup -type=MX example.com
 
 # SSL 인증서로 IP 역추적 확인
@@ -516,11 +516,11 @@ CloudFront에서 자동 압축 활성화:
 
 #### 3. 가격 클래스 설정 (CloudFront)
 
-| 가격 클래스     | 포함 리전                                             | 비용 |
-|-----------------|-------------------------------------------------------|------|
-| Price Class All | 전체                                                  | 최고 |
-| Price Class 200 | 대부분 (남미 포함, 호주·아시아 일부 고비용 리전 제외) | 중간 |
-| Price Class 100 | 북미, 유럽만                                          | 최저 |
+| 가격 클래스     | 포함 리전                           | 비용 |
+|-----------------|-------------------------------------|------|
+| Price Class All | 전체                                | 최고 |
+| Price Class 200 | 대부분 (남미, 호주·뉴질랜드 제외)   | 중간 |
+| Price Class 100 | 북미, 유럽 (이스라엘·튀르키예 포함) | 최저 |
 
 - 사용자가 특정 지역에 집중되어 있다면 가격 클래스를 제한하여 비용 절감
 
@@ -696,8 +696,9 @@ LIMIT 20;
 
 ## 참고 자료
 
-- Cloudflare IP Ranges: [cloudflare.com](https://www.cloudflare.com/ips/) — ★★☆☆☆
-- RFC 7239: Forwarded HTTP Extension: [RFC 7239](https://datatracker.ietf.org/doc/html/rfc7239) — ★★☆☆☆
+- Cloudflare IP Ranges: [cloudflare.com](https://www.cloudflare.com/ips/) — ★★★☆☆
+- RFC 7239: Forwarded HTTP Extension: [RFC 7239](https://datatracker.ietf.org/doc/html/rfc7239) — ★★★★☆
+- Amazon CloudFront 가격 클래스·무효화 요금: [aws.amazon.com/cloudfront/pricing/pay-as-you-go](https://aws.amazon.com/cloudfront/pricing/pay-as-you-go/) — ★★★☆☆
 
 ---
 
@@ -714,6 +715,6 @@ LIMIT 20;
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-04-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

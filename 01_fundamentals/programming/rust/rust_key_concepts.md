@@ -31,7 +31,7 @@ Rust의 소유권은 컴파일러가 GC 없이 메모리 안전성을 보장하�
 
 | 방식    | 동작                        | 적용 타입                       | 비고                        |
 |---------|-----------------------------|---------------------------------|-----------------------------|
-| `Copy`  | 스택 복사, 원본 유지        | i32, f64, bool, char, &T        | 4바이트 이하 또는 참조      |
+| `Copy`  | 스택 복사, 원본 유지        | i32, f64, bool, char, &T        | 모든 구성 요소가 Copy       |
 | `Move`  | 소유권 이전, 원본 무효화    | String, Vec, Box, 커스텀 구조체 | 힙 데이터는 기본 move       |
 | `Clone` | 명시적 깊은 복사 `.clone()` | Clone 트레이트 구현 타입        | 비용 발생, 명시적 호출 필요 |
 
@@ -121,13 +121,14 @@ Rust 타입 분류
 | 동적 디스패치 | `dyn Trait`  | 런타임 vtable | ✅          |
 
 동적 디스패치 사용 시 `Box<dyn Trait>` 또는 `&dyn Trait` 형태로 사용합니다.
-Object-safe trait만 `dyn`으로 사용 가능합니다.
+dyn 호환(dyn compatible, 이전 명칭 object safe) trait만 `dyn`으로 사용 가능합니다.
 
 #### Object Safety 조건
 
-- 메서드가 `Sized` 바운드를 요구하지 않습니다.
+- 트레이트가 `Self: Sized`를 요구하지 않습니다 (`Sized` supertrait 불가).
 - 메서드가 제네릭 타입 매개변수를 사용하지 않습니다.
-- `Self`를 직접 반환하지 않습니다 (`Box<Self>` 허용).
+- receiver 외에는 `Self`를 쓰지 않습니다 (`Self`·`Box<Self>` 반환 불가, `self: Box<Self>` receiver는 허용).
+- 위 조건을 어기는 메서드는 `where Self: Sized`를 붙이면 trait object에서 제외되어 트레이트는 dyn 호환을 유지합니다.
 
 ### 제네릭 단형화(Monomorphization)
 
@@ -197,14 +198,14 @@ Object-safe trait만 `dyn`으로 사용 가능합니다.
 
 ### 컴파일 타임에 차단하는 버그 유형
 
-| 버그 유형        | C/C++         | Rust                         |
-|------------------|---------------|------------------------------|
-| Use after free   | 런타임        | ✅ 컴파일 에러               |
-| Double free      | 런타임        | ✅ 컴파일 에러               |
-| Null dereference | 런타임        | ✅ Option<T>으로 표현        |
-| Buffer overflow  | 런타임        | ✅ 슬라이스 범위 검사        |
-| Data race        | 런타임        | ✅ 컴파일 에러 (Send + Sync) |
-| Use after move   | 정의되지 않음 | ✅ 컴파일 에러               |
+| 버그 유형        | C/C++       | Rust                         |
+|------------------|-------------|------------------------------|
+| Use after free   | 런타임      | ✅ 컴파일 에러               |
+| Double free      | 런타임      | ✅ 컴파일 에러               |
+| Null dereference | 런타임      | ✅ Option<T>으로 표현        |
+| Buffer overflow  | 런타임      | ✅ 슬라이스 범위 검사        |
+| Data race        | 런타임      | ✅ 컴파일 에러 (Send + Sync) |
+| Use after move   | 미지정 상태 | ✅ 컴파일 에러               |
 
 ### Send + Sync 트레이트
 
@@ -214,7 +215,7 @@ Object-safe trait만 `dyn`으로 사용 가능합니다.
 | `Sync`   | 참조를 여러 스레드에서 동시 접근 가능 | 모든 필드가 `Sync` |
 
 ```
-Send 아닌 타입: Rc<T>, RefCell<T>, raw pointer
+Send 아닌 타입: Rc<T>, MutexGuard<T>, raw pointer
 Sync 아닌 타입: Cell<T>, RefCell<T>, UnsafeCell<T>
 ```
 
@@ -280,12 +281,12 @@ LLVM 최적화 후 두 코드는 동일한 어셈블리를 생성합니다.
 
 에디션은 언어 수준 호환성 단위입니다. 크레이트 단위로 적용되며, 서로 다른 에디션의 크레이트는 동일 바이너리에 혼재 가능합니다.
 
-| 에디션 | 출시 Rust 버전 | 주요 변경                                                           |
-|--------|----------------|---------------------------------------------------------------------|
-| 2015   | 1.0            | 초기 에디션                                                         |
-| 2018   | 1.31           | NLL 기본 활성화, `mod.rs` 불필요, use path 개선                     |
-| 2021   | 1.56           | Closure capture 개선, array `IntoIterator`                          |
-| 2024   | 1.85           | `gen` 키워드 예약, `async` 클로저 안정화, RPIT 라이프타임 캡처 규칙 |
+| 에디션 | 출시 Rust 버전 | 주요 변경                                                          |
+|--------|----------------|--------------------------------------------------------------------|
+| 2015   | 1.0            | 초기 에디션                                                        |
+| 2018   | 1.31           | NLL 기본 활성화, `mod.rs` 불필요, use path 개선                    |
+| 2021   | 1.56           | Closure capture 개선, array `IntoIterator`                         |
+| 2024   | 1.85           | `gen` 키워드 예약, `unsafe extern` 블록, RPIT 라이프타임 캡처 규칙 |
 
 ```toml
 # Cargo.toml
@@ -332,10 +333,10 @@ Cargo 역할
 
 ### Cargo.lock 관리 원칙
 
-| 프로젝트 유형 | Cargo.lock 커밋 여부 | 이유                          |
-|---------------|----------------------|-------------------------------|
-| 바이너리      | ✅ 커밋              | 재현 가능한 빌드 보장         |
-| 라이브러리    | ❌ .gitignore        | 사용자가 버전 결정하도록 위임 |
+| 프로젝트 유형 | Cargo.lock 커밋 여부 | 이유                      |
+|---------------|----------------------|---------------------------|
+| 바이너리      | ✅ 커밋              | 재현 가능한 빌드 보장     |
+| 라이브러리    | 선택 (기본 커밋)     | 소비자 빌드에는 영향 없음 |
 
 ### 빌드 프로파일
 
@@ -402,7 +403,8 @@ pub fn split_at<T>(slice: &[T], mid: usize) -> (&[T], &[T]) {
 ### FFI (Foreign Function Interface)
 
 ```rust
-extern "C" {
+// edition 2024는 extern 블록에 unsafe 필수 (Rust 1.82+ 모든 edition에서 사용 가능)
+unsafe extern "C" {
     fn abs(input: i32) -> i32;
 }
 
@@ -456,8 +458,14 @@ fn main() {
 ## 참고 자료
 
 - Rust Book: [doc.rust-lang.org/book](https://doc.rust-lang.org/book/) — ★★★★☆
-- Rust Reference: [doc.rust-lang.org/reference](https://doc.rust-lang.org/reference/) — ★★★★☆
+- Rust Reference: [doc.rust-lang.org/reference](https://doc.rust-lang.org/reference/) — ★★★☆☆
 - Rustonomicon (unsafe): [doc.rust-lang.org/nomicon](https://doc.rust-lang.org/nomicon/) — ★★★☆☆
+- Rust Reference - Dyn compatibility: [doc.rust-lang.org/reference/items/traits.html](https://doc.rust-lang.org/reference/items/traits.html) — ★★★☆☆
+- Edition Guide - Rust 2024: [doc.rust-lang.org/edition-guide/rust-2024](https://doc.rust-lang.org/edition-guide/rust-2024/index.html) — ★★★☆☆
+- std::cell::RefCell (Send, !Sync): [doc.rust-lang.org/std/cell/struct.RefCell.html](https://doc.rust-lang.org/std/cell/struct.RefCell.html) — ★★★☆☆
+- std::marker::Copy: [doc.rust-lang.org/std/marker/trait.Copy.html](https://doc.rust-lang.org/std/marker/trait.Copy.html) — ★★★☆☆
+- Change in Guidance on Committing Lockfiles (2023): [blog.rust-lang.org](https://blog.rust-lang.org/2023/08/29/committing-lockfiles/) — ★★★☆☆
+- C++ moved-from 상태: [cppreference std::move](https://en.cppreference.com/w/cpp/utility/move) — ★★☆☆☆
 - [ownership_borrowing.md](./ownership_borrowing.md)
 - [traits_generics.md](./traits_generics.md)
 - [concurrency.md](./concurrency.md)
@@ -477,6 +485,6 @@ fn main() {
 
 **작성일**: 2026-07-31
 
-**마지막 업데이트**: 2026-07-31
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

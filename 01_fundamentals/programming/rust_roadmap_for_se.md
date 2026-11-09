@@ -18,7 +18,7 @@
 | 이유                 | 설명                                                   |
 |----------------------|--------------------------------------------------------|
 | 인프라 도구 트렌드   | ripgrep, fd, bat, dust, bottom — 기존 도구 대체 가속   |
-| 메모리 안전 + 고성능 | C/C++ 수준 성능, 메모리 버그 없음                      |
+| 메모리 안전 + 고성능 | C/C++ 수준 성능, safe Rust의 메모리 안전성 보장        |
 | 시스템 프로그래밍    | 커널 모듈, eBPF, 네트워크 도구 개발                    |
 | 클라우드 네이티브    | Firecracker(AWS Lambda), Bottlerocket, tikv            |
 | CVE 감소             | 메모리 안전 언어로 전환하는 업계 흐름 (Linux, Android) |
@@ -126,7 +126,7 @@ Phase 4: 실전 프로젝트 (2~3개월)
 | 시그널 처리   | signal-hook, ctrlc     | graceful shutdown             |
 | 멀티스레딩    | std::thread, rayon     | 병렬 로그 처리                |
 | 채널          | crossbeam, tokio::sync | 프로듀서-컨슈머 패턴          |
-| async/await   | tokio, async-std       | 비동기 I/O, 네트워크 서버     |
+| async/await   | tokio, smol            | 비동기 I/O, 네트워크 서버     |
 | FFI           | libc, bindgen          | C 라이브러리 호출 (시스템 콜) |
 
 ### 학습 순서
@@ -171,7 +171,7 @@ nix crate (POSIX 시스템 콜 래퍼)
 | HTTP 클라이언트    | reqwest, hyper       | API 호출, 웹훅              |
 | HTTP 서버          | axum, actix-web      | 내부 API, 메트릭 엔드포인트 |
 | gRPC               | tonic                | 마이크로서비스 통신         |
-| DNS                | trust-dns            | DNS 조회 도구               |
+| DNS                | hickory-resolver     | DNS 조회 도구               |
 | Prometheus metrics | prometheus-client    | 커스텀 exporter 개발        |
 | SSH                | thrussh, russh       | 원격 명령 실행              |
 
@@ -305,6 +305,8 @@ use prometheus_client::registry::Registry;
 - Zero To Production In Rust: [zero2prod.com](https://www.zero2prod.com/) — ★★★☆☆
 - Rust for Rustaceans: [nostarch.com](https://nostarch.com/rust-rustaceans) — ★★★☆☆
 - Awesome Rust: [github.com/rust-unofficial/awesome-rust](https://github.com/rust-unofficial/awesome-rust) — ★★☆☆☆
+- async-std discontinued notice: [github.com/async-rs/async-std](https://github.com/async-rs/async-std) — ★★★☆☆
+- Hickory DNS (구 Trust-DNS): [github.com/hickory-dns/hickory-dns](https://github.com/hickory-dns/hickory-dns) — ★★★☆☆
 
 ---
 
@@ -321,6 +323,6 @@ use prometheus_client::registry::Registry;
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-07-28
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

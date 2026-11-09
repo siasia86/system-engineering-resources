@@ -13,7 +13,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 
 ## 1. 문서 구성
 
-현재 Linux 문서는 `README.md`를 제외하고 48개입니다. 개념 문서와 실습·분석 도구 문서를 함께 배치하여 개념 학습 후 실제 시스템 관찰로 이어지도록 구성합니다.
+현재 Linux 문서는 `README.md`를 제외하고 52개입니다. 개념 문서와 실습·분석 도구 문서를 함께 배치하여 개념 학습 후 실제 시스템 관찰로 이어지도록 구성합니다.
 
 | 주제                     | 범위                                  |
 |--------------------------|---------------------------------------|
@@ -65,6 +65,8 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 - [Bash 수학](./bash_math.md) — 셸 산술 연산과 계산.
 - [Bash trap 가이드](./bash_trap_complete_guide.md) — 신호 처리와 정리 작업.
 - [Shell 인터랙티브 모드](./shell_interactive_mode.md) — 인터랙티브·비인터랙티브 셸.
+- [Character Set·Encoding](./character_set_encoding_guide.md) — 문자 집합, 인코딩, BOM, 인코딩 문제 디버깅.
+- [zoxide](./zoxide_guide.md) — 자주 쓰는 디렉토리로 빠르게 이동.
 
 ### 3.2 프로세스·메모리·스케줄러
 
@@ -123,8 +125,11 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 
 - [Vim](./vim.md) — Linux 운영 환경의 편집기 사용.
 - [Vim airline](./vim_airline.md) — Vim 상태 표시줄 설정.
+- [Neovim](./neovim_guide.md) — Lua 설정, API, LSP, headless 실행.
+- [tmux](./tmux_guide.md) — session·window·pane 관리.
 - [lsof](./lsof.md) — 열린 파일과 소켓 조회.
 - [tcpdump](./tcpdump.md) — 패킷 캡처와 필터링.
+- [iperf3](./iperf3_guide.md) — TCP·UDP throughput, loss, jitter 측정.
 - [Bash 파일 리다이렉션](./bash_file_redirection.md) — 명령 입출력 연결.
 - [Bash trap](./bash_trap_complete_guide.md) — 운영 스크립트 정리 패턴.
 - [root password recovery](./root_password_recovery.md) — 복구 환경에서의 계정 접근 복구.
@@ -152,6 +157,6 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 
 **작성일**: 2026-08-18
 
-**마지막 업데이트**: 2026-08-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

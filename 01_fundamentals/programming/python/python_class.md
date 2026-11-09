@@ -521,7 +521,7 @@ class D(B, C):
 
 # Method Resolution Order
 print(D.__mro__)
-# (<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>)
+# (<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <class 'object'>)
 ```
 
 ### Tip 6: 복사 (얕은 복사 vs 깊은 복사)
@@ -743,6 +743,6 @@ class Dog:
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

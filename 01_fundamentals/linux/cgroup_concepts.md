@@ -92,7 +92,7 @@ cgroup(Control Groups)은 Linux 커널이 프로세스 그룹별로 리소스를
 # v2 사용 중이면 cgroup2fs 출력
 stat -fc %T /sys/fs/cgroup/
 # cgroup2fs → v2
-# cgroup    → v1 (hybrid 포함)
+# tmpfs     → v1 (hybrid 포함)
 
 # 또는
 mount | grep cgroup
@@ -247,7 +247,7 @@ echo $((512 * 1024 * 1024)) > /sys/fs/cgroup/mygroup/memory.max
 # current usage 확인 (bytes → MB: 값 / 1024 / 1024)
 cat /sys/fs/cgroup/mygroup/memory.current
 
-# OOM 발생 시 kill 대신 throttle (swap 1GB = 1073741824 bytes)
+# swap 사용 상한 설정 (swap 1GB = 1073741824 bytes)
 echo $((1024 * 1024 * 1024)) > /sys/fs/cgroup/mygroup/memory.swap.max
 
 # memory stats
@@ -274,7 +274,7 @@ lsblk -o NAME,MAJ:MIN,SIZE,TYPE
 
 ```bash
 # 형식: "major:minor rbps=<bytes> wbps=<bytes> riops=<count> wiops=<count>"
-# 값 생략 시 해당 항목은 제한 없음 (max)
+# 값 생략 시 해당 항목은 기존 값 유지 (처음 설정이면 제한 없음 max)
 
 # 읽기/쓰기 100MB/s 제한
 echo "8:16 rbps=104857600 wbps=104857600" > /sys/fs/cgroup/mygroup/io.max
@@ -545,10 +545,10 @@ sudo systemd-run --scope -p MemoryMax=256M -p CPUQuota=50% stress --cpu 4
 # 종료 시 cgroup 자동 삭제
 ```
 
-### cgexec (v1 전용)
+### cgexec (libcgroup)
 
 ```bash
-# cgexec는 cgroupv1 전용 도구 — v2 환경에서는 동작하지 않음
+# libcgroup 2.0(2021)부터 cgexec 등 도구가 cgroup v2를 지원 — 이전 버전은 v1 전용
 sudo apt install cgroup-tools
 sudo cgexec -g cpu,memory:mytest stress --cpu 4 --vm 1 --vm-bytes 512M
 ```
@@ -594,7 +594,7 @@ services:
     image: geerlingguy/docker-ubuntu2204-ansible
     privileged: true                           # Linux capability 전체 부여
     command: /lib/systemd/systemd              # systemd를 PID 1로 실행
-    cgroupns_mode: host                        # 호스트 cgroup 네임스페이스 공유
+    cgroup: host                               # 호스트 cgroup 네임스페이스 공유
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw       # cgroup 파일시스템 마운트
     tmpfs:
@@ -606,7 +606,7 @@ services:
 |---------------------------------|----------------------------------------------------------|
 | `privileged: true`              | systemd가 cgroup, mount, 네트워크 등 커널 기능 접근 필요 |
 | `command: /lib/systemd/systemd` | systemd를 PID 1로 실행 (없으면 bash 등이 PID 1)          |
-| `cgroupns_mode: host`           | 컨테이너가 호스트 cgroup 트리를 직접 보고 쓸 수 있게 함  |
+| `cgroup: host`                  | 컨테이너가 호스트 cgroup 트리를 직접 보고 쓸 수 있게 함  |
 | `/sys/fs/cgroup` 마운트         | systemd가 서비스별 cgroup 생성/관리에 필요               |
 | `tmpfs: /run`                   | systemd가 `/run`에 소켓, PID 파일 생성                   |
 
@@ -649,7 +649,7 @@ stat -fc %T /sys/fs/cgroup/
 # tmpfs → v1, cgroup2fs → v2
 ```
 
-🟡 cgroupv1 강제 사용은 보안 패치 및 신규 기능 미지원으로 권장하지 않습니다. `privileged + cgroupns_mode: host` 방식을 사용합니다.
+🟡 cgroupv1 강제 사용은 보안 패치 및 신규 기능 미지원으로 권장하지 않습니다. systemd 256부터 cgroup v1 부팅을 기본적으로 거부하고 258에서 v1 지원을 제거했으므로 이 옵션은 systemd 255 이하에서만 동작합니다. `privileged + cgroup: host` 방식을 사용합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -833,12 +833,12 @@ cgroupv2 환경(Ubuntu 22.04 컨테이너)에서 실제 검증한 결과입니�
 
 ### 테스트 환경
 
-| 항목          | 내용                                      |
-|---------------|-------------------------------------------|
-| 호스트 cgroup | `cgroup2fs` (cgroupv2)                    |
-| 컨테이너      | `02_compose-ubuntu22-1`                   |
-| 컨테이너 설정 | `privileged: true`, `cgroupns_mode: host` |
-| PID 1         | `systemd`                                 |
+| 항목          | 내용                               |
+|---------------|------------------------------------|
+| 호스트 cgroup | `cgroup2fs` (cgroupv2)             |
+| 컨테이너      | `02_compose-ubuntu22-1`            |
+| 컨테이너 설정 | `privileged: true`, `cgroup: host` |
+| PID 1         | `systemd`                          |
 
 ### systemd 동작 확인
 
@@ -880,7 +880,7 @@ echo $$ > /sys/fs/cgroup/testgroup/cgroup.procs
 cat /proc/$$/cgroup | grep '0::'
 # 0::/testgroup
 
-# 3. 제한 전 (testgroup 밖)
+# 3. 제한 전 (testgroup 밖 — 2단계 등록 전에 실행)
 dd if=/dev/zero of=/tmp/testfile bs=1M count=100 oflag=direct 2>&1
 # 104857600 bytes copied, 0.036 s, 2.9 GB/s
 
@@ -915,9 +915,13 @@ rm -f /tmp/testfile
 
 ## 참고 자료
 
-- Kernel Documentation: [kernel.org/doc/html/latest/admin-guide/cgroup-v2.html](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html) — ★★★★☆
+- Kernel Documentation: [kernel.org/doc/html/latest/admin-guide/cgroup-v2.html](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html) — ★★★☆☆
 - Red Hat cgroup v2: [access.redhat.com](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_monitoring_and_updating_the_kernel/assembly_using-cgroups-v2-to-control-distribution-of-cpu-time-for-applications_managing-monitoring-and-updating-the-kernel) — ★★★☆☆
 - Brendan Gregg: [brendangregg.com/linuxperf.html](https://www.brendangregg.com/linuxperf.html) — ★★★☆☆
+- systemd NEWS (v256·v258 cgroup v1 지원 변경): [github.com/systemd/systemd](https://github.com/systemd/systemd/blob/main/NEWS) — ★★★☆☆
+- libcgroup v2.0 릴리스 노트: [github.com/libcgroup/libcgroup](https://github.com/libcgroup/libcgroup/releases/tag/v2.0) — ★★★☆☆
+- Kubernetes cgroup 버전 확인: [kubernetes.io](https://kubernetes.io/docs/concepts/architecture/cgroups/) — ★★★☆☆
+- Compose services `cgroup`: [docs.docker.com/reference/compose-file/services/#cgroup](https://docs.docker.com/reference/compose-file/services/#cgroup) — ★★★☆☆
 
 ---
 
@@ -934,6 +938,6 @@ rm -f /tmp/testfile
 
 **작성일** : 2026-05-15
 
-**마지막 업데이트** : 2026-05-21
+**마지막 업데이트** : 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

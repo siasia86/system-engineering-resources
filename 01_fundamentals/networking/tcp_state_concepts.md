@@ -335,7 +335,7 @@ sysctl -w net.ipv4.ip_local_port_range="10000 65535"
 
 ## 참고 자료
 
-- RFC 793: Transmission Control Protocol
+- RFC 9293: Transmission Control Protocol (RFC 793 대체)
 - RFC 1122: Requirements for Internet Hosts
 - Linux Kernel Documentation: tcp.txt
 - Stevens, W. Richard. "TCP/IP Illustrated, Volume 1"
@@ -355,6 +355,6 @@ sysctl -w net.ipv4.ip_local_port_range="10000 65535"
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-08-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

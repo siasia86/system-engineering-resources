@@ -75,7 +75,7 @@ Task<int> t = Task.FromResult(42);
 await Task.CompletedTask;
 
 // Task.WhenAll: 여러 Task 병렬 대기
-var (r1, r2) = await (Task1Async(), Task2Async()); // C# 10 분해 (tuple)
+int[] results = await Task.WhenAll(Task1Async(), Task2Async()); // Task<int>[] → int[]
 await Task.WhenAll(task1, task2, task3);
 
 // Task.WhenAny: 가장 먼저 완료되는 Task 대기
@@ -250,6 +250,7 @@ async Task GoodMethod()
 
 - Microsoft Learn async/await: [learn.microsoft.com/dotnet/csharp/asynchronous-programming](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/) — ★★★☆☆
 - async return types: [learn.microsoft.com/dotnet/csharp/asynchronous-programming/async-return-types](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/async-return-types) — ★★★☆☆
+- Task.WhenAll: [learn.microsoft.com/dotnet/api/system.threading.tasks.task.whenall](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.whenall) — ★★★☆☆
 
 ---
 
@@ -260,6 +261,6 @@ async Task GoodMethod()
 
 **작성일**: 2026-08-02
 
-**마지막 업데이트**: 2026-08-02
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

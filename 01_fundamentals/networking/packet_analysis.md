@@ -78,7 +78,7 @@ tcpdump -i eth0 'ip[6] & 0x40 != 0'
 ```
 15:30:45.123456 IP 192.168.1.100.54321 > 10.0.0.1.80: Flags [S], seq 1234567890, win 65535, length 0
     0x0000:  4500 003c 1234 4000 4006 abcd c0a8 0164  E..<.4@.@......d
-    0x0010:  0a00 0001 d431 0050 499602d2 0000 0000  .....1.PI.......
+    0x0010:  0a00 0001 d431 0050 4996 02d2 0000 0000  .....1.PI.......
 ```
 
 ```
@@ -139,8 +139,8 @@ Internet Protocol Version 4, Src: 192.168.1.100, Dst: 10.0.0.1
 | **Sequence Number**       | 32 bits | 순서 번호 (데이터 바이트의 첫 번째 번호) |
 | **Acknowledgment Number** | 32 bits | 확인 응답 번호 (다음에 받을 바이트 번호) |
 | **Data Offset**           | 4 bits  | TCP 헤더 길이 (5-15, 단위: 4 bytes)      |
-| **Reserved**              | 3 bits  | 예약 (0으로 설정)                        |
-| **Flags**                 | 9 bits  | 제어 플래그 (아래 참조)                  |
+| **Reserved**              | 4 bits  | 예약 (0으로 설정, 구 NS 비트 포함)       |
+| **Flags**                 | 8 bits  | 제어 플래그 (아래 참조)                  |
 | **Window**                | 16 bits | 수신 윈도우 크기 (흐름 제어)             |
 | **Checksum**              | 16 bits | 헤더 + 데이터 오류 검사                  |
 | **Urgent Pointer**        | 16 bits | 긴급 데이터 포인터 (URG 플래그 설정 시)  |
@@ -158,7 +158,7 @@ Internet Protocol Version 4, Src: 192.168.1.100, Dst: 10.0.0.1
 | **URG** | Urgent                    | 긴급 데이터          |
 | **ECE** | ECN-Echo                  | ECN 지원 (혼잡 제어) |
 | **CWR** | Congestion Window Reduced | 혼잡 윈도우 감소     |
-| **NS**  | Nonce Sum                 | ECN 보호             |
+| **NS**  | Nonce Sum                 | 폐기 (RFC 8311)      |
 
 ### 플래그 조합
 
@@ -197,7 +197,7 @@ tcpdump -i eth0 'tcp[tcpflags] & (tcp-push|tcp-ack) == (tcp-push|tcp-ack)'
 # 특정 포트
 tcpdump -i eth0 'tcp port 80'
 
-# Sequence/Ack 번호 표시
+# 절대 Sequence/Ack 번호 표시 (상대 번호 대신)
 tcpdump -i eth0 -S tcp
 
 # 16진수 + ASCII 출력
@@ -210,7 +210,7 @@ tcpdump -i eth0 -X tcp port 80
 15:30:45.123456 IP 192.168.1.100.54321 > 10.0.0.1.80: Flags [S], seq 1234567890, win 65535, options [mss 1460], length 0
 
 # SYN+ACK 패킷
-15:30:45.124567 IP 10.0.0.1.80 > 192.168.1.100.54321: Flags [S.], seq 9876543210, ack 1234567891, win 65535, options [mss 1460], length 0
+15:30:45.124567 IP 10.0.0.1.80 > 192.168.1.100.54321: Flags [S.], seq 987654321, ack 1234567891, win 65535, options [mss 1460], length 0
 
 # ACK 패킷
 15:30:45.125678 IP 192.168.1.100.54321 > 10.0.0.1.80: Flags [.], ack 1, win 65535, length 0
@@ -230,7 +230,7 @@ Transmission Control Protocol, Src Port: 54321, Dst Port: 80, Seq: 1, Ack: 1
     1000 .... = Header Length: 32 bytes (8)
     Flags: 0x018 (PSH, ACK)
         000. .... .... = Reserved: Not set
-        ...0 .... .... = Nonce: Not set
+        ...0 .... .... = Accurate ECN: Not set
         .... 0... .... = Congestion Window Reduced (CWR): Not set
         .... .0.. .... = ECN-Echo: Not set
         .... ..0. .... = Urgent: Not set
@@ -276,6 +276,14 @@ Transmission Control Protocol, Src Port: 54321, Dst Port: 80, Seq: 1, Ack: 1
 
 ### TCP vs UDP 비교
 
+| 특성          | TCP                             | UDP                     |
+|---------------|---------------------------------|-------------------------|
+| **연결**      | 연결 지향 (Connection-oriented) | 비연결 (Connectionless) |
+| **신뢰성**    | 신뢰성 보장 (재전송, 순서 보장) | 신뢰성 없음             |
+| **속도**      | 느림 (오버헤드 큼)              | 빠름 (오버헤드 작음)    |
+| **헤더 크기** | 20-60 bytes                     | 8 bytes                 |
+| **용도**      | HTTP, FTP, SSH, SMTP            | DNS, DHCP, VoIP, 게임   |
+
 ### tcpdump 예시
 
 ```bash
@@ -308,14 +316,6 @@ tcpdump -i eth0 -v udp
 
 15:30:45.234567 IP 8.8.8.8.53 > 192.168.1.100.12345: 12345 1/0/0 A 93.184.216.34 (49)
 ```
-
-| 특성          | TCP                             | UDP                     |
-|---------------|---------------------------------|-------------------------|
-| **연결**      | 연결 지향 (Connection-oriented) | 비연결 (Connectionless) |
-| **신뢰성**    | 신뢰성 보장 (재전송, 순서 보장) | 신뢰성 없음             |
-| **속도**      | 느림 (오버헤드 큼)              | 빠름 (오버헤드 작음)    |
-| **헤더 크기** | 20-60 bytes                     | 8 bytes                 |
-| **용도**      | HTTP, FTP, SSH, SMTP            | DNS, DHCP, VoIP, 게임   |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -484,6 +484,18 @@ D4 31                                            |  Source Port: 54321
 
 ### PROXY Protocol v1 vs v2
 
+| 특성          | v1                    | v2                      |
+|---------------|-----------------------|-------------------------|
+| **형식**      | 텍스트 (ASCII)        | 바이너리                |
+| **크기**      | 가변 (최대 107 bytes) | 가변 (고정부 16 bytes)  |
+| **파싱**      | 느림 (문자열 파싱)    | 빠름 (바이너리)         |
+| **확장성**    | 제한적                | TLV 확장 가능           |
+| **IPv6 지원** | 지원 (TCP6)           | 완전 지원(Full Support) |
+
+**PROXY Protocol v1 예시:**
+```
+PROXY TCP4 192.168.1.100 10.0.0.1 54321 80\r\n
+```
 
 ### tcpdump 예시
 
@@ -507,8 +519,8 @@ tcpdump -r proxy.pcap -X | grep -A 30 "0d0a 0d0a"
 
 **출력 예시:**
 ```
-15:30:45.123456 IP 10.0.1.1.54321 > 10.0.2.1.80: Flags [P.], seq 1:100, ack 1, win 65535, length 99
-    0x0000:  4500 0087 1234 4000 4006 abcd 0a00 0101  E....4@.@.......
+15:30:45.123456 IP 10.0.1.1.54321 > 10.0.2.1.80: Flags [P.], seq 1:70, ack 1, win 65535, length 69
+    0x0000:  4500 006d 1234 4000 4006 abcd 0a00 0101  E..m.4@.@.......
     0x0010:  0a00 0201 d431 0050 1234 5678 9abc def0  .....1.P.4Vx....
     0x0020:  5018 ffff 1234 0000 0d0a 0d0a 000d 0a51  P....4.........Q
     0x0030:  5549 540a 2111 000c c0a8 0164 0a00 0001  UIT.!......d....
@@ -517,15 +529,15 @@ tcpdump -r proxy.pcap -X | grep -A 30 "0d0a 0d0a"
     0x0060:  616d 706c 652e 636f 6d0d 0a0d 0a         ample.com....
 
 해석:
-0x0020: 0d0a 0d0a 000d 0a51 5549 540a  <- PROXY Protocol v2 Signature
-0x0030: 21                              <- Version 2, PROXY command
-0x0030:   11                            <- AF=INET, Proto=STREAM
-0x0030:     000c                        <- Address length = 12 bytes
-0x0034: c0a8 0164                       <- Source IP: 192.168.1.100
-0x0038: 0a00 0001                       <- Dest IP: 10.0.0.1
-0x003c: d431                            <- Source Port: 54321
-0x003e: 0050                            <- Dest Port: 80
-0x0040: 4745 5420...                    <- HTTP GET 요청 시작
+0x0028: 0d0a 0d0a 000d 0a51 5549 540a  <- PROXY Protocol v2 Signature
+0x0034: 21                              <- Version 2, PROXY command
+0x0035: 11                              <- AF=INET, Proto=STREAM
+0x0036: 000c                            <- Address length = 12 bytes
+0x0038: c0a8 0164                       <- Source IP: 192.168.1.100
+0x003c: 0a00 0001                       <- Dest IP: 10.0.0.1
+0x0040: d431                            <- Source Port: 54321
+0x0042: 0050                            <- Dest Port: 80
+0x0044: 4745 5420...                    <- HTTP GET 요청 시작
 ```
 
 ### Python으로 PROXY Protocol 파싱
@@ -588,18 +600,6 @@ hex_string = "0d0a0d0a000d0a515549540a2111000cc0a801640a000001d4310050"
 hex_data = bytes.fromhex(hex_string)
 parse_proxy_v2_from_tcpdump(hex_data)
 ```
-| 특성          | v1                    | v2                      |
-|---------------|-----------------------|-------------------------|
-| **형식**      | 텍스트 (ASCII)        | 바이너리                |
-| **크기**      | 가변 (최대 107 bytes) | 고정 (최소 16 bytes)    |
-| **파싱**      | 느림 (문자열 파싱)    | 빠름 (바이너리)         |
-| **확장성**    | 제한적                | TLV 확장 가능           |
-| **IPv6 지원** | 제한적                | 완전 지원(Full Support) |
-
-**PROXY Protocol v1 예시:**
-```
-PROXY TCP4 192.168.1.100 10.0.0.1 54321 80\r\n
-```
 
 ---
 
@@ -630,7 +630,7 @@ stream {
         listen 80 proxy_protocol;  # PROXY Protocol 수신
         proxy_pass backend:80;
         
-        # 원본 IP 로깅
+        # 업스트림으로 PROXY Protocol 전송 (on = v1)
         proxy_protocol on;
     }
 }
@@ -827,10 +827,12 @@ tcpdump -i eth0 'tcp[tcpflags] & tcp-rst != 0'     # RST
 
 ## 참고 자료
 
-- RFC 791: IPv4 / RFC 793: TCP / RFC 768: UDP
-- PROXY Protocol v2: [proxy-protocol.txt](https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt) — ★★☆☆☆
-- Wireshark User Guide: [wireshark.org](https://www.wireshark.org/docs/) — ★★☆☆☆
-- tcpdump Manual: [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) — ★★☆☆☆
+- RFC 791: IPv4 / RFC 9293: TCP (RFC 793 대체) / RFC 768: UDP
+- RFC 8311: ECN Nonce(NS 비트) 폐기
+- PROXY Protocol v2: [proxy-protocol.txt](https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt) — ★★★☆☆
+- Wireshark User Guide: [wireshark.org](https://www.wireshark.org/docs/) — ★★★☆☆
+- tcpdump Manual: [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) — ★★★☆☆
+- nginx stream proxy_protocol: [nginx.org](https://nginx.org/en/docs/stream/ngx_stream_proxy_module.html#proxy_protocol) — ★★★☆☆
 
 ---
 
@@ -847,6 +849,6 @@ tcpdump -i eth0 'tcp[tcpflags] & tcp-rst != 0'     # RST
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-04-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -82,9 +82,11 @@ Total DISK READ:       2.50 M/s | Total DISK WRITE:       5.00 M/s
 - USER: 사용자
 - DISK READ: 읽기 속도
 - DISK WRITE: 쓰기 속도
-- SWAPIN: 스왑 사용률
-- IO>: I/O 대기 비율
+- SWAPIN: 스왑 인(swap-in) 대기 시간 비율
+- IO>: I/O 대기 시간 비율 (`>`는 현재 정렬 컬럼)
 - COMMAND: 명령어
+
+SWAPIN·IO 값은 커널 지연 계정(delay accounting)이 꺼져 있으면 `?unavailable?`로 표시됩니다. 지연 계정은 부팅 시 기본으로 꺼져 있으며 `sysctl kernel.task_delayacct=1` 또는 부팅 옵션 `delayacct`로 켭니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -111,10 +113,8 @@ sudo iotop -P -a
 ### 정렬 옵션
 
 ```bash
-# 읽기 속도로 정렬
-sudo iotop -o -k
-
-# 쓰기 속도로 정렬
+# 정렬용 명령행 옵션은 없음 — 대화형 화면에서 좌/우 화살표로 정렬 컬럼 변경, r로 순서 반전
+# -k는 정렬이 아니라 단위를 킬로바이트로 고정하는 옵션 (스크립트 처리에 유용)
 sudo iotop -o -k
 
 # I/O 대기로 정렬 (기본값)
@@ -213,10 +213,10 @@ done > iotop_timestamped.log
 
 ```bash
 # I/O 대기가 높은 프로세스
-sudo iotop -o -a | awk '$7 > 50 {print}'
+sudo iotop -b -n 1 -o | awk '$10 > 50 {print}'  # $10 = IO% (지연 계정 활성화 시)
 
 # 쓰기가 많은 프로세스
-sudo iotop -b -n 1 -o | sort -k6 -rn | head -10
+sudo iotop -b -k -n 1 -o | sort -k6 -rn | head -10  # -k로 단위를 K/s로 통일
 ```
 
 ### 예제 5: 실시간 알림
@@ -228,7 +228,7 @@ sudo iotop -b -n 1 -o | sort -k6 -rn | head -10
 THRESHOLD=100  # MB/s
 
 while true; do
-    WRITE=$(sudo iotop -b -n 1 -o | awk 'NR==1 {print $7}' | sed 's/[^0-9.]//g')
+    WRITE=$(sudo iotop -b -k -n 1 | awk 'NR==1 {printf "%.2f", $10/1024}')  # Total DISK WRITE (K/s → MB/s)
     
     if (( $(echo "$WRITE > $THRESHOLD" | bc -l) )); then
         echo "High I/O detected: ${WRITE} MB/s"
@@ -248,14 +248,14 @@ done
 ### CSV 형식 출력
 
 ```bash
-# 헤더 포함
-sudo iotop -b -n 1 -P | awk 'NR>1 {print $1","$3","$4","$5","$6","$7","$8}'
+# 헤더 제외(-qqq), 단위 K/s(-k), IO%는 지연 계정 활성화 시
+sudo iotop -b -k -qqq -n 1 -P | awk '{print $1","$3","$4","$6","$10","$12}'
 
 # 스크립트
 #!/bin/bash
 echo "Timestamp,TID,User,Read,Write,IO%,Command"
 while true; do
-    sudo iotop -b -n 1 -P -o | awk -v date="$(date +%s)" 'NR>1 {print date","$1","$3","$4","$5","$7","$8}'
+    sudo iotop -b -k -qqq -n 1 -P -o | awk -v date="$(date +%s)" '{print date","$1","$3","$4","$6","$10","$12}'
     sleep 5
 done > iotop.csv
 ```
@@ -263,11 +263,11 @@ done > iotop.csv
 ### 통계 수집
 
 ```bash
-# 1분간 평균 I/O
-sudo iotop -b -n 60 -d 1 | awk '
+# 1분간 평균 I/O (-k: K/s 단위 → /1024로 MB/s)
+sudo iotop -b -k -n 60 -d 1 | awk '
 /Total DISK READ/ {
-    read += $4;
-    write += $10;
+    read += $4 / 1024;
+    write += $10 / 1024;
     count++;
 }
 END {
@@ -296,10 +296,10 @@ sudo iotop -b -n 3600 -d 1 > iotop_$(date +%Y%m%d_%H%M).log
 
 ```bash
 # MySQL I/O 패턴 분석
-sudo iotop -p $(pgrep mysqld) -b -n 600 -d 1 > mysql_io.log
+sudo iotop -p $(pgrep mysqld) -b -k -n 600 -d 1 > mysql_io.log
 
-# 분석
-awk '/mysqld/ {read+=$4; write+=$5; count++} END {print "Avg Read:", read/count, "Avg Write:", write/count}' mysql_io.log
+# 분석 (단위 K/s)
+awk '/mysqld/ {read+=$4; write+=$6; count++} END {print "Avg Read:", read/count, "K/s", "Avg Write:", write/count, "K/s"}' mysql_io.log
 ```
 
 ### 3. 백업 모니터링
@@ -322,9 +322,9 @@ kill $IOTOP_PID
 
 ```bash
 # 일일 I/O 통계
-sudo iotop -b -n 86400 -d 1 | awk '
+sudo iotop -b -k -n 86400 -d 1 | awk '
 /Total DISK WRITE/ {
-    total += $10;
+    total += $10 / 1024;  # K/s × 1초 → MB
 }
 END {
     print "Total written today:", total, "MB";
@@ -341,7 +341,7 @@ THRESHOLD=500  # MB/s
 EMAIL="user@example.com"
 
 while true; do
-    TOTAL_WRITE=$(sudo iotop -b -n 1 | awk '/Total DISK WRITE/ {print $10}')
+    TOTAL_WRITE=$(sudo iotop -b -k -n 1 | awk '/Total DISK WRITE/ {printf "%.2f", $10/1024}')  # K/s → MB/s
     
     if (( $(echo "$TOTAL_WRITE > $THRESHOLD" | bc -l) )); then
         echo "High I/O: $TOTAL_WRITE MB/s" | mail -s "I/O Alert" $EMAIL
@@ -526,8 +526,9 @@ awk '/Total DISK READ/ {read+=$4; write+=$10; count++}
 
 ## 참고 자료
 
-- iotop GitHub: [iotop](https://github.com/Tomas-M/iotop) — ★★☆☆☆
-- Linux man pages - iotop: [man7.org](https://man7.org/linux/man-pages/man8/iotop.8.html) — ★★☆☆☆
+- iotop GitHub: [iotop](https://github.com/Tomas-M/iotop) — ★★★☆☆
+- Linux man pages - iotop: [man7.org](https://man7.org/linux/man-pages/man8/iotop.8.html) — ★★★☆☆
+- Linux 커널 문서 - Delay accounting: [docs.kernel.org](https://docs.kernel.org/accounting/delay-accounting.html) — ★★★☆☆
 
 ---
 
@@ -544,6 +545,6 @@ awk '/Total DISK READ/ {read+=$4; write+=$10; count++}
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-08-23
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

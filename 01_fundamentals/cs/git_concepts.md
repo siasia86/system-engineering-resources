@@ -58,7 +58,7 @@ Git의 모든 데이터는 4가지 객체 타입으로 구성됩니다. 각 객�
 
 ```
 commit C3
-  │  author: sjyun
+  │  author: alice
   │  message: "feat: add auth"
   │  parent: C2
   └── tree T3
@@ -360,7 +360,7 @@ if git diff --cached --name-only | grep -q '\.py$'; then
 fi
 
 # 시크릿 패턴 검사
-if git diff --cached | grep -qE '(password|secret|key)\s*=\s*["\x27][^"\x27]{8,}'; then
+if git diff --cached | grep -qE "(password|secret|key)\s*=\s*[\"'][^\"']{8,}"; then
     echo "시크릿 패턴 감지. 커밋 중단." && exit 1
 fi
 
@@ -403,13 +403,13 @@ GitOps 원칙: **Git = 단일 진실 공급원(Single Source of Truth)**.
 
 ### IaC 저장소 규칙
 
-| 항목            | 권장 설정                               |
-|-----------------|-----------------------------------------|
-| `.tfstate` 파일 | `.gitignore`에 반드시 제외              |
-| 시크릿/자격증명 | 절대 커밋 금지 — gitleaks pre-commit 훅 |
-| 브랜치 전략     | Trunk-based 또는 GitHub Flow            |
-| PR 병합 방식    | Squash merge 권장 (이력 간결화)         |
-| 태그            | 릴리스마다 annotated tag 생성           |
+| 항목            | 권장 설정                          |
+|-----------------|------------------------------------|
+| `.tfstate` 파일 | `.gitignore`에 반드시 제외         |
+| 시크릿/자격증명 | 커밋 금지 — gitleaks pre-commit 훅 |
+| 브랜치 전략     | Trunk-based 또는 GitHub Flow       |
+| PR 병합 방식    | Squash merge 권장 (이력 간결화)    |
+| 태그            | 릴리스마다 annotated tag 생성      |
 
 ### `.gitignore` IaC 필수 패턴
 
@@ -418,7 +418,8 @@ GitOps 원칙: **Git = 단일 진실 공급원(Single Source of Truth)**.
 *.tfstate
 *.tfstate.*
 .terraform/
-*.tfvars         # 시크릿 포함 가능성
+# 시크릿 포함 가능성 (gitignore는 줄 끝 주석을 지원하지 않음)
+*.tfvars
 
 # Ansible
 *.retry
@@ -457,6 +458,7 @@ git gc --prune=now --aggressive
 
 - Pro Git Book: [git-scm.com/book](https://git-scm.com/book/ko/v2) — ★★★★☆
 - Git Reference: [git-scm.com/docs](https://git-scm.com/docs) — ★★★☆☆
+- Git Documentation: [gitignore](https://git-scm.com/docs/gitignore) — ★★★☆☆
 - Git Internals: [git-scm.com/book/en/v2/Git-Internals-Git-Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects) — ★★★★☆
 - [git_guide.md](../../02_infrastructure/cicd/git_guide.md)
 
@@ -475,6 +477,6 @@ git gc --prune=now --aggressive
 
 **작성일**: 2026-07-29
 
-**마지막 업데이트**: 2026-08-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

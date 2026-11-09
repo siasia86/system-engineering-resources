@@ -83,8 +83,8 @@ bash      1234   user  txt    REG    8,1   123456  456 /bin/bash
 # 특정 파일을 연 프로세스
 lsof /var/log/syslog
 
-# 특정 디렉토리
-lsof +D /var/log
+# 특정 디렉토리 (최상위만)
+lsof +d /var/log
 
 # 재귀적 검색
 lsof +D /home/user
@@ -242,13 +242,10 @@ umount /mnt/data
 ### 조합 검색
 
 ```bash
-# AND 조건 (기본)
-lsof -u user -i :80
+# OR 조건 (기본)
+lsof -u user -i :80  # user OR port 80
 
-# OR 조건
-lsof -u user -o -i :80
-
-# 복잡한 조건
+# AND 조건
 lsof -a -u user -i :80  # user AND port 80
 ```
 
@@ -536,7 +533,7 @@ done
 
 ## 참고 자료
 
-- Linux man pages - lsof: [man7.org](https://man7.org/linux/man-pages/man8/lsof.8.html) — ★★☆☆☆
+- Linux man pages - lsof: [man7.org](https://man7.org/linux/man-pages/man8/lsof.8.html) — ★★★☆☆
 
 ---
 
@@ -553,6 +550,6 @@ done
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

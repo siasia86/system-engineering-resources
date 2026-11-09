@@ -55,7 +55,7 @@ parser.add_argument('--dry-run')          # 긴 형태만
 ```python
 parser.add_argument('--count', type=int)
 parser.add_argument('--ratio', type=float)
-parser.add_argument('--config', type=argparse.FileType('r'))
+parser.add_argument('--config', type=argparse.FileType('r'))  # 3.14+ 폐기 예정: 파싱 후 open() 권장
 ```
 
 ### choices
@@ -216,7 +216,7 @@ def cmd_disk(args):
     for line in result.stdout.strip().split('\n'):
         if args.threshold:
             parts = line.split()
-            if len(parts) >= 5 and parts[4].endswith('%'):
+            if len(parts) >= 5 and parts[4].endswith('%') and parts[4][:-1].isdigit():
                 usage = int(parts[4].replace('%', ''))
                 if usage >= args.threshold:
                     print(line)
@@ -235,7 +235,7 @@ def main():
 
     # disk
     disk_parser = subparsers.add_parser('disk', help='디스크 사용량')
-    disk_parser.add_argument('-t', '--threshold', type=int, help='임계값 (%)')
+    disk_parser.add_argument('-t', '--threshold', type=int, help='임계값 (%%)')
     disk_parser.set_defaults(func=cmd_disk)
 
     args = parser.parse_args()
@@ -295,6 +295,6 @@ $ python sysadmin.py disk -t 80
 
 **작성일**: 2026-04-20
 
-**마지막 업데이트**: 2026-04-20
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

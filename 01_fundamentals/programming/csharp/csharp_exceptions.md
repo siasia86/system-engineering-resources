@@ -91,11 +91,12 @@ Exception
 │   │   ├── ArgumentNullException        — null 인수
 │   │   └── ArgumentOutOfRangeException  — 범위 벗어난 인수
 │   ├── InvalidOperationException        — 현재 상태에서 불가한 연산
-│   ├── NotSupportedException            — 구현하지 않은 기능
+│   ├── NotSupportedException            — 지원하지 않는 연산 (설계상)
 │   ├── NotImplementedException          — 미구현 (개발 중 임시)
 │   ├── NullReferenceException           — null 역참조 (런타임)
 │   ├── IndexOutOfRangeException         — 배열 범위 초과
-│   ├── OverflowException                — 산술 오버플로우
+│   ├── ArithmeticException
+│   │   └── OverflowException            — 산술 오버플로우
 │   ├── FormatException                  — 형식 변환 오류
 │   ├── IOException
 │   │   ├── FileNotFoundException
@@ -115,7 +116,7 @@ ArgumentNullException.ThrowIfNull(name);                     // .NET 6+
 ArgumentException.ThrowIfNullOrWhiteSpace(name);             // .NET 8+
 ArgumentOutOfRangeException.ThrowIfNegative(count);          // .NET 8+
 
-// C# 10 이하 / 정밀한 메시지가 필요한 경우
+// helper가 없는 이전 .NET 대상 / 정밀한 메시지가 필요한 경우
 if (name is null)
     throw new ArgumentNullException(nameof(name));
 
@@ -402,6 +403,9 @@ catch (Exception ex)
 
 - Microsoft Learn 예외 처리: [learn.microsoft.com/dotnet/csharp/fundamentals/exceptions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/exceptions/) — ★★★☆☆
 - Exception handling best practices: [learn.microsoft.com/dotnet/standard/exceptions/best-practices-for-exceptions](https://learn.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions) — ★★★☆☆
+- OverflowException: [learn.microsoft.com/dotnet/api/system.overflowexception](https://learn.microsoft.com/en-us/dotnet/api/system.overflowexception) — ★★★☆☆
+- NotSupportedException: [learn.microsoft.com/dotnet/api/system.notsupportedexception](https://learn.microsoft.com/en-us/dotnet/api/system.notsupportedexception) — ★★★☆☆
+- ArgumentNullException.ThrowIfNull: [learn.microsoft.com/dotnet/api/system.argumentnullexception.throwifnull](https://learn.microsoft.com/en-us/dotnet/api/system.argumentnullexception.throwifnull) — ★★★☆☆
 
 ---
 
@@ -412,6 +416,6 @@ catch (Exception ex)
 
 **작성일**: 2026-08-08
 
-**마지막 업데이트**: 2026-08-08
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

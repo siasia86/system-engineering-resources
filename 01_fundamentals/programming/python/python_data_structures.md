@@ -274,7 +274,7 @@ dd = defaultdict(list)
 dd['fruits'].append('apple')
 dd['fruits'].append('banana')
 dd['vegs'].append('carrot')
-print(dd)  # {'fruits': ['apple', 'banana'], 'vegs': ['carrot']}
+print(dd)  # defaultdict(<class 'list'>, {'fruits': ['apple', 'banana'], 'vegs': ['carrot']})
 
 # 그룹화
 data = [('dev', '홍길동'), ('ops', '김철수'), ('dev', '이영희')]
@@ -411,6 +411,6 @@ print(host)  # 'localhost'
 
 **작성일**: 2026-04-20
 
-**마지막 업데이트**: 2026-04-20
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

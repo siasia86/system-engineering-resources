@@ -42,14 +42,14 @@ my-tool/
 [package]
 name = "my-tool"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 description = "서버 헬스체크 도구"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
 anyhow = "1"
 serde = { version = "1", features = ["derive"] }
-toml = "0.8"
+toml = "1"
 
 [profile.release]
 opt-level = 3
@@ -72,10 +72,11 @@ use clap::Parser;
 #[command(name = "srvcheck", version, about = "서버 헬스체크 도구")]
 struct Args {
     /// 대상 호스트 (필수)
-    #[arg(short, long)]
+    // -h는 clap이 자동 생성하는 --help가 사용하므로 대문자 H 지정
+    #[arg(short = 'H', long)]
     host: String,
 
-    /// 포트 (기본: 80)
+    /// 포트
     #[arg(short, long, default_value_t = 80)]
     port: u16,
 
@@ -114,7 +115,7 @@ struct Cli {
 enum Commands {
     /// 서버 상태 확인
     Check {
-        #[arg(short, long)]
+        #[arg(short = 'H', long)]
         host: String,
     },
     /// 서비스 재시작
@@ -152,12 +153,12 @@ $ srvcheck --help
 Usage: srvcheck [OPTIONS] --host <HOST>
 
 Options:
-  -h, --host <HOST>        대상 호스트 (필수)
+  -H, --host <HOST>        대상 호스트 (필수)
   -p, --port <PORT>        포트 [default: 80]
   -t, --timeout <TIMEOUT>  타임아웃 (초) [default: 5]
   -v, --verbose            상세 출력
   -c, --config <CONFIG>    설정 파일 경로 [default: /etc/srvcheck.toml]
-      --help               Print help
+  -h, --help               Print help
   -V, --version            Print version
 ```
 
@@ -358,8 +359,8 @@ file target/x86_64-unknown-linux-musl/release/my-tool
 ### cross 도구
 
 ```bash
-# cross 설치
-cargo install cross
+# cross 설치 (README 권장: Git 최신판, crates.io 0.2.5는 2023년 릴리스)
+cargo install cross --git https://github.com/cross-rs/cross
 
 # ARM64 (Raspberry Pi, AWS Graviton)
 cross build --release --target aarch64-unknown-linux-musl
@@ -463,15 +464,14 @@ fn run() -> Result<()> {
 
 ## 참고 자료
 
-- clap docs: [docs.rs/clap](https://docs.rs/clap) — ★★★★☆
+- clap docs: [docs.rs/clap](https://docs.rs/clap) — ★★★☆☆
 - Command-Line Rust (O'Reilly): [oreilly.com](https://www.oreilly.com/library/view/command-line-rust/9781098109424/) — ★★★★☆
 - cross: [github.com/cross-rs/cross](https://github.com/cross-rs/cross) — ★★★☆☆
-- min-sized-rust: [github.com/nicholasf/min-sized-rust](https://github.com/nicholasf/min-sized-rust) — ★★☆☆☆
+- min-sized-rust: [github.com/johnthagen/min-sized-rust](https://github.com/johnthagen/min-sized-rust) — ★★☆☆☆
+- cargo new 기본 edition: [doc.rust-lang.org/cargo/commands/cargo-new.html](https://doc.rust-lang.org/cargo/commands/cargo-new.html) — ★★★☆☆
+- toml crate: [docs.rs/toml](https://docs.rs/toml) — ★★★☆☆
 
 ---
-
-## 통계
-
 
 ## 통계
 
@@ -486,6 +486,6 @@ fn run() -> Result<()> {
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-07-31
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

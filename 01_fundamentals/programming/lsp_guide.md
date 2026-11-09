@@ -124,7 +124,7 @@ Shell 스크립트 작성 시 문법 오류 및 자동완성 제공.
 ```bash
 npm install -g bash-language-server
 
-# Node.js 없을 경우
+# Node.js 없을 경우 (bash-language-server는 Node.js 20 이상 필요, 배포판 패키지 버전 확인)
 sudo apt install nodejs npm
 ```
 
@@ -149,7 +149,7 @@ deploy_app   # ← 정의로 이동 가능
   ```bash
   sudo apt install shellcheck
   ```
-- `set -euo pipefail` 누락 등 베스트 프랙티스 위반도 감지
+- 따옴표 누락·미할당 변수 같은 shellcheck 경고 표시 (`set -euo pipefail` 누락은 검사 항목 아님)
 
 ---
 
@@ -211,8 +211,6 @@ Ansible playbook, role, task 작성 지원.
 **설치**
 
 ```bash
-pip install ansible-language-server
-# 또는
 npm install -g @ansible/ansible-language-server
 ```
 
@@ -298,10 +296,8 @@ response = ec2.describe_instances(
 ### Neovim (`nvim-lspconfig`)
 
 ```lua
--- ~/.config/nvim/init.lua
-require('lspconfig').terraformls.setup{}
-require('lspconfig').bashls.setup{}
-require('lspconfig').yamlls.setup{
+-- ~/.config/nvim/init.lua (Nvim 0.11+, require('lspconfig') 방식은 deprecated)
+vim.lsp.config('yamlls', {
   settings = {
     yaml = {
       schemas = {
@@ -309,9 +305,8 @@ require('lspconfig').yamlls.setup{
       }
     }
   }
-}
-require('lspconfig').pyright.setup{}
-require('lspconfig').ansiblels.setup{}
+})
+vim.lsp.enable({ 'terraformls', 'bashls', 'yamlls', 'pyright', 'ansiblels' })
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -361,10 +356,10 @@ require('lspconfig').ansiblels.setup{}
 ## 5. 참고 링크
 
 - [LSP 공식 스펙](https://microsoft.github.io/language-server-protocol/)
-- [SchemaStore (YAML 스키마 모음)](https://www.schemastore.org/json/)
+- [SchemaStore (YAML 스키마 모음)](https://www.schemastore.org/)
 - [terraform-ls](https://github.com/hashicorp/terraform-ls)
 - [yaml-language-server](https://github.com/redhat-developer/yaml-language-server)
-- [ansible-language-server](https://github.com/ansible/ansible-language-server)
+- [ansible-language-server (vscode-ansible 저장소)](https://github.com/ansible/vscode-ansible/tree/main/packages/ansible-language-server)
 - [pyright](https://github.com/microsoft/pyright)
 - [bash-language-server](https://github.com/bash-lsp/bash-language-server)
 
@@ -372,8 +367,12 @@ require('lspconfig').ansiblels.setup{}
 
 ## 참고 자료
 
-- Language Server Protocol Specification: [microsoft.github.io](https://microsoft.github.io/language-server-protocol/) — ★★☆☆☆
+- Language Server Protocol Specification: [microsoft.github.io](https://microsoft.github.io/language-server-protocol/) — ★★★☆☆
 - LSP Implementations: [langserver.org](https://langserver.org/) — ★★☆☆☆
+- nvim-lspconfig README: [github.com/neovim/nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) — ★★★☆☆
+- bash-language-server README: [github.com/bash-lsp/bash-language-server](https://github.com/bash-lsp/bash-language-server) — ★★★☆☆
+- ShellCheck optional checks: [github.com/koalaman/shellcheck/wiki/Optional](https://github.com/koalaman/shellcheck/wiki/Optional) — ★★★☆☆
+- Ansible Language Server: [github.com/ansible/vscode-ansible](https://github.com/ansible/vscode-ansible/tree/main/packages/ansible-language-server) — ★★★☆☆
 
 ---
 
@@ -390,6 +389,6 @@ require('lspconfig').ansiblels.setup{}
 
 **작성일**: 2026-04-08
 
-**마지막 업데이트**: 2026-04-08
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

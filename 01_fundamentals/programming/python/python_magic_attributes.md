@@ -109,7 +109,7 @@ print(greet.__doc__)  # 인사말을 반환합니다...
 
 ### `__package__`
 
-모듈이 속한 패키지의 이름을 나타냅니다.
+모듈이 속한 패키지의 이름을 나타냅니다. Python 3.13부터 폐기 예고되었으므로 `__spec__.parent` 사용을 권장합니다.
 
 ```python
 # mypackage/subpackage/module.py
@@ -121,10 +121,11 @@ print(__package__)  # '' (빈 문자열)
 
 ### `__cached__`
 
-컴파일된 `.pyc` 파일의 경로를 나타냅니다.
+컴파일된 `.pyc` 파일의 경로를 나타냅니다. Python 3.13에서 폐기 예고되었고 3.15부터는 설정되지 않으므로 `__spec__.cached`를 사용합니다.
 
 ```python
-print(__cached__)
+print(__cached__)        # 3.14까지
+print(__spec__.cached)   # 3.15 이후에도 사용 가능
 # __pycache__/my_module.cpython-311.pyc
 ```
 
@@ -221,7 +222,7 @@ class Flyable:
 class Bird(Animal, Flyable):
     pass
 
-print(Bird.__bases__)  # (<class 'Animal'>, <class 'Flyable'>)
+print(Bird.__bases__)  # (<class '__main__.Animal'>, <class '__main__.Flyable'>)
 ```
 
 ### `__mro__`
@@ -242,7 +243,7 @@ class D(B, C):
     pass
 
 print(D.__mro__)
-# (<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>)
+# (<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <class 'object'>)
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -346,7 +347,7 @@ print(dog.__dict__)  # {}
 
 # 메서드 해석 순서
 print(Dog.__mro__)
-# (<class 'Dog'>, <class 'Animal'>, <class 'object'>)
+# (<class '__main__.Dog'>, <class '__main__.Animal'>, <class 'object'>)
 ```
 
 ### 예제 4: 패키지 공개 API 정의
@@ -423,10 +424,10 @@ module1.cpython-312.pyc    # Python 3.12
 # 첫 import: 소스 → 컴파일 → .pyc 생성 → 실행
 import module1  # 느림 (컴파일 필요)
 
-# 두 번째 import: .pyc 캐시 사용 → 실행
+# 다음 실행의 import: .pyc 캐시 사용 → 실행 (같은 프로세스의 재import는 sys.modules 사용)
 import module1  # 빠름 (캐시 사용)
 
-# 소스 수정 후 import: 재컴파일 → .pyc 갱신 → 실행
+# 소스 수정 후 다음 실행의 import: 재컴파일 → .pyc 갱신 → 실행
 import module1  # 자동 감지하여 재컴파일
 ```
 
@@ -501,6 +502,7 @@ export PYTHONPYCACHEPREFIX=/tmp/pycache
 ## 참고 자료
 
 - Python Documentation: [Data Model](https://docs.python.org/3/reference/datamodel.html) — ★★★☆☆
+- What's New In Python 3.15 (`__cached__` 미설정): [docs.python.org](https://docs.python.org/3.15/whatsnew/3.15.html) — ★★★☆☆
 
 ---
 
@@ -517,6 +519,6 @@ export PYTHONPYCACHEPREFIX=/tmp/pycache
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

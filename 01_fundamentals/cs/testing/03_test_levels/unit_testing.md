@@ -171,7 +171,7 @@ def test_withdraw_valid(amount, expected):
 
 ## 참고 자료
 
-- Martin Fowler. "Unit Test" — ★★★★☆
+- Martin Fowler. "Unit Test" — ★★☆☆☆
 - Kent Beck. "Test Driven Development: By Example" — ★★★★☆
 - [Python 테스트 실습](../../../programming/python/python_testing.md)
 
@@ -190,6 +190,6 @@ def test_withdraw_valid(amount, expected):
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-05-08
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

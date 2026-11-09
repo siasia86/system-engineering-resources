@@ -39,7 +39,7 @@ tcpdump -i eth0 'ip[6] & 0x40 != 0'
 ```
 15:30:45.123456 IP 192.168.1.100.54321 > 10.0.0.1.80: Flags [S], seq 1234567890, win 65535, length 0
     0x0000:  4500 003c 1234 4000 4006 abcd c0a8 0164  E..<.4@.@......d
-    0x0010:  0a00 0001 d431 0050 499602d2 0000 0000  .....1.PI.......
+    0x0010:  0a00 0001 d431 0050 4996 02d2 0000 0000  .....1.PI.......
 ```
 
 ---
@@ -74,7 +74,7 @@ tcpdump -i eth0 'tcp[tcpflags] & (tcp-push|tcp-ack) == (tcp-push|tcp-ack)'
 # 특정 포트
 tcpdump -i eth0 'tcp port 80'
 
-# Sequence/Ack 번호 표시
+# 절대 Sequence/Ack 번호 표시 (상대 번호 대신)
 tcpdump -i eth0 -S tcp
 
 # 16진수 + ASCII 출력
@@ -87,7 +87,7 @@ tcpdump -i eth0 -X tcp port 80
 15:30:45.123456 IP 192.168.1.100.54321 > 10.0.0.1.80: Flags [S], seq 1234567890, win 65535, options [mss 1460], length 0
 
 # SYN+ACK 패킷
-15:30:45.124567 IP 10.0.0.1.80 > 192.168.1.100.54321: Flags [S.], seq 9876543210, ack 1234567891, win 65535, options [mss 1460], length 0
+15:30:45.124567 IP 10.0.0.1.80 > 192.168.1.100.54321: Flags [S.], seq 987654321, ack 1234567891, win 65535, options [mss 1460], length 0
 
 # ACK 패킷
 15:30:45.125678 IP 192.168.1.100.54321 > 10.0.0.1.80: Flags [.], ack 1, win 65535, length 0
@@ -167,8 +167,8 @@ tcpdump -r proxy.pcap -X | grep -A 30 "0d0a 0d0a"
 
 **출력 예시:**
 ```
-15:30:45.123456 IP 10.0.1.1.54321 > 10.0.2.1.80: Flags [P.], seq 1:100, ack 1, win 65535, length 99
-    0x0000:  4500 0087 1234 4000 4006 abcd 0a00 0101  E....4@.@.......
+15:30:45.123456 IP 10.0.1.1.54321 > 10.0.2.1.80: Flags [P.], seq 1:70, ack 1, win 65535, length 69
+    0x0000:  4500 006d 1234 4000 4006 abcd 0a00 0101  E..m.4@.@.......
     0x0010:  0a00 0201 d431 0050 1234 5678 9abc def0  .....1.P.4Vx....
     0x0020:  5018 ffff 1234 0000 0d0a 0d0a 000d 0a51  P....4.........Q
     0x0030:  5549 540a 2111 000c c0a8 0164 0a00 0001  UIT.!......d....
@@ -177,15 +177,15 @@ tcpdump -r proxy.pcap -X | grep -A 30 "0d0a 0d0a"
     0x0060:  616d 706c 652e 636f 6d0d 0a0d 0a         ample.com....
 
 해석:
-0x0020: 0d0a 0d0a 000d 0a51 5549 540a  <- PROXY Protocol v2 Signature
-0x0030: 21                              <- Version 2, PROXY command
-0x0030:   11                            <- AF=INET, Proto=STREAM
-0x0030:     000c                        <- Address length = 12 bytes
-0x0034: c0a8 0164                       <- Source IP: 192.168.1.100
-0x0038: 0a00 0001                       <- Dest IP: 10.0.0.1
-0x003c: d431                            <- Source Port: 54321
-0x003e: 0050                            <- Dest Port: 80
-0x0040: 4745 5420...                    <- HTTP GET 요청 시작
+0x0028: 0d0a 0d0a 000d 0a51 5549 540a  <- PROXY Protocol v2 Signature
+0x0034: 21                              <- Version 2, PROXY command
+0x0035: 11                              <- AF=INET, Proto=STREAM
+0x0036: 000c                            <- Address length = 12 bytes
+0x0038: c0a8 0164                       <- Source IP: 192.168.1.100
+0x003c: 0a00 0001                       <- Dest IP: 10.0.0.1
+0x0040: d431                            <- Source Port: 54321
+0x0042: 0050                            <- Dest Port: 80
+0x0044: 4745 5420...                    <- HTTP GET 요청 시작
 ```
 
 ### Python으로 PROXY Protocol 파싱
@@ -256,8 +256,8 @@ parse_proxy_v2_from_tcpdump(hex_data)
 
 ## 참고 자료
 
-- tcpdump Manual: [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) — ★★☆☆☆
-- PROXY Protocol v2 Specification: [proxy-protocol.txt](https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt) — ★★☆☆☆
+- tcpdump Manual: [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) — ★★★☆☆
+- PROXY Protocol v2 Specification: [proxy-protocol.txt](https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt) — ★★★☆☆
 
 ---
 
@@ -274,6 +274,6 @@ parse_proxy_v2_from_tcpdump(hex_data)
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-04-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

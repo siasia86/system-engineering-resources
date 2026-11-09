@@ -127,7 +127,7 @@ Python/Bash 스크립트 작성 시 확인해야 하는 edge case입니다.
 | 자동화          | 반복 검증, CI 통합       | pytest parametrize, BVA 자동 생성 |
 | Mock/Stub       | 외부 의존성 제거         | unittest.mock, monkeypatch        |
 | Fault injection | 장애 상황 시뮬레이션     | kill -9, tc netem, stress-ng      |
-| Fuzzing         | 예상 못한 입력 대량 생성 | AFL, hypothesis (Python)          |
+| Fuzzing         | 예상 못한 입력 대량 생성 | AFL++, hypothesis (Python)        |
 
 ### pytest 예시 (BVA + Edge case)
 
@@ -201,6 +201,6 @@ if l.strip().startswith('└') and l.strip().endswith('┘'):
 
 **작성일**: 2026-06-19
 
-**마지막 업데이트**: 2026-06-19
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -93,8 +93,8 @@ public class Animal
     // virtual: 파생 클래스에서 재정의 가능
     public virtual string Speak() => "...";
 
-    // sealed: 더 이상 재정의 불가
-    public sealed string Describe() => $"{GetType().Name}: {Name}";
+    // virtual이 아닌 메서드: 재정의 불가 (sealed는 override 메서드에만 사용)
+    public string Describe() => $"{GetType().Name}: {Name}";
 }
 
 public class Dog : Animal
@@ -224,7 +224,7 @@ foreach (var shape in shapes)
     Console.WriteLine($"{shape.GetType().Name}: {shape.Area():F2}");
 }
 
-// 타입 패턴 매칭 (C# 7+)
+// 타입 패턴 매칭 — switch 식 (C# 8+)
 foreach (var shape in shapes)
 {
     string info = shape switch
@@ -296,6 +296,8 @@ public T Max<T>(T a, T b) where T : IComparable<T>
 
 - Microsoft Learn OOP: [learn.microsoft.com/dotnet/csharp/fundamentals/object-oriented](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/) — ★★★☆☆
 - C# Language Reference: [learn.microsoft.com/dotnet/csharp/language-reference](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/) — ★★★☆☆
+- sealed modifier: [learn.microsoft.com/dotnet/csharp/language-reference/keywords/sealed](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/sealed) — ★★★☆☆
+- C# language version history: [learn.microsoft.com/dotnet/csharp/whats-new/csharp-version-history](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-version-history) — ★★★☆☆
 
 ---
 
@@ -306,6 +308,6 @@ public T Max<T>(T a, T b) where T : IComparable<T>
 
 **작성일**: 2026-08-02
 
-**마지막 업데이트**: 2026-08-02
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

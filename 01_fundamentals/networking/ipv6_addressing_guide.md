@@ -113,7 +113,7 @@ ff00::/8    → Multicast          (IPv4 브로드캐스트 대체)
 | `2001:db8::/32` | 문서/예시용 예약 (RFC 3849), 실사용 불가 |
 | `2001:4860::`   | Google                                   |
 | `2400:cb00::`   | Cloudflare (아시아)                      |
-| `240b::`        | KT (한국)                                |
+| `2001:e60::`    | KT (한국, KORNET)                        |
 
 ### 고유 로컬 주소 (fc00::/7)
 
@@ -184,8 +184,8 @@ Result IPv6:  fe80::202:b3ff:fe1e:8329/64
 ### 할당 구조
 
 ```
-AWS → VPC:    /56 블록 할당
-VPC → Subnet: /64 블록 할당 (고정, 변경 불가)
+AWS → VPC:    /56 블록 할당 (Amazon 제공 기본값, /44~/60 지정 가능)
+VPC → Subnet: /64 블록 할당 (/44~/64, /4 단위로 지정 가능)
 
 Example:
 VPC:      2600:1f14:1234:5600::/56
@@ -197,12 +197,12 @@ Subnet N: 2600:1f14:1234:56ff::/64  (max 256 subnets)
 
 ### IPv4와 차이점
 
-| 항목        | IPv4                      | IPv6                     |
-|-------------|---------------------------|--------------------------|
-| VPC 할당    | 자유롭게 지정             | AWS가 /56 자동 할당      |
-| 서브넷 크기 | 자유 (/28~/16 등)         | /64 고정                 |
-| 예약 IP     | 5개                       | 없음                     |
-| 인터넷 통신 | IGW + 공인 IP 또는 NAT GW | IGW 또는 Egress-only IGW |
+| 항목        | IPv4                      | IPv6                      |
+|-------------|---------------------------|---------------------------|
+| VPC 할당    | 자유롭게 지정             | /44~/60 (Amazon 제공 /56) |
+| 서브넷 크기 | /28~/16                   | /44~/64 (/4 단위)         |
+| 예약 IP     | 5개                       | 5개 (처음 4개 + 마지막)   |
+| 인터넷 통신 | IGW + 공인 IP 또는 NAT GW | IGW 또는 Egress-only IGW  |
 
 ### Egress-only Internet Gateway
 
@@ -226,7 +226,7 @@ IPv6: Private Subnet → Egress-only IGW → Internet (outbound only)
 | 브로드캐스트 | 있음               | 없음 (멀티캐스트 대체) |
 | 헤더 크기    | 20~60바이트 (가변) | 40바이트 (고정)        |
 | 자동 설정    | DHCP 필요          | SLAAC 지원             |
-| 보안         | IPSec 선택         | IPSec 기본 지원        |
+| 보안         | IPSec 선택         | IPsec 권장 (필수 아님) |
 | 서브넷 표준  | /24 일반적         | /64 표준               |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -284,6 +284,9 @@ print(f"First:       {subnets[0]}")
 - RFC 3849: IPv6 Address Prefix Reserved for Documentation
 - RFC 4193: Unique Local IPv6 Unicast Addresses
 - RFC 4862: IPv6 SLAAC
+- RFC 8504: IPv6 Node Requirements (IPsec SHOULD)
+- AWS VPC Subnet sizing (IPv6): [docs.aws.amazon.com](https://docs.aws.amazon.com/vpc/latest/userguide/subnet-sizing.html) — ★★★☆☆
+- APNIC RDAP `2001:e60::` (KORNET): [rdap.apnic.net](https://rdap.apnic.net/ip/2001:e60::/32) — ★★★☆☆
 
 ---
 
@@ -300,6 +303,6 @@ print(f"First:       {subnets[0]}")
 
 **작성일**: 2026-04-22
 
-**마지막 업데이트**: 2026-04-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

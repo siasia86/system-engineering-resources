@@ -377,17 +377,16 @@ fn resolve(hostname: &str) -> Vec<String> {
 }
 ```
 
-### trust-dns (비동기, 상세 제어)
+### hickory-resolver (비동기, 상세 제어)
+
+Trust-DNS는 Hickory DNS로 이름을 바꿨고 `trust-dns-resolver` 크레이트는 0.23(2023) 이후 갱신되지 않습니다. 아래는 `hickory-resolver` 0.26 기준입니다.
 
 ```rust
-use trust_dns_resolver::TokioAsyncResolver;
-use trust_dns_resolver::config::*;
+use hickory_resolver::Resolver;
 
 async fn dns_lookup(domain: &str) -> anyhow::Result<Vec<String>> {
-    let resolver = TokioAsyncResolver::tokio(
-        ResolverConfig::default(),
-        ResolverOpts::default(),
-    );
+    // 시스템 설정(/etc/resolv.conf) 사용, 기본 feature: system-config + tokio
+    let resolver = Resolver::builder_tokio()?.build()?;
 
     let response = resolver.lookup_ip(domain).await?;
     Ok(response.iter().map(|ip| ip.to_string()).collect())
@@ -516,7 +515,7 @@ async fn proxy(listen: &str, target: &str) -> anyhow::Result<()> {
 | TCP 서버        | `tokio::net`          | 에코 서버, 프록시           |
 | HTTP 클라이언트 | `reqwest`             | API 호출, 웹훅, 모니터링    |
 | HTTP 서버       | `axum`                | 메트릭 엔드포인트, 내부 API |
-| DNS             | `trust-dns`           | 도메인 조회, 검증           |
+| DNS             | `hickory-resolver`    | 도메인 조회, 검증           |
 | UDP             | `tokio::net`          | 로그 전송 (syslog), SNMP    |
 | TLS             | `rustls`/`native-tls` | HTTPS, 인증서 검증          |
 
@@ -526,15 +525,14 @@ async fn proxy(listen: &str, target: &str) -> anyhow::Result<()> {
 
 ## 참고 자료
 
-- Tokio Tutorial: [tokio.rs/tokio/tutorial](https://tokio.rs/tokio/tutorial) — ★★★★☆
+- Tokio Tutorial: [tokio.rs/tokio/tutorial](https://tokio.rs/tokio/tutorial) — ★★★☆☆
 - reqwest docs: [docs.rs/reqwest](https://docs.rs/reqwest) — ★★★☆☆
 - axum docs: [docs.rs/axum](https://docs.rs/axum) — ★★★☆☆
-- Rust Networking (book): [oreilly.com](https://www.oreilly.com/library/view/network-programming-with/9781788624893/) — ★★☆☆☆
+- hickory-resolver docs: [docs.rs/hickory-resolver](https://docs.rs/hickory-resolver) — ★★★☆☆
+- Hickory DNS (Trust-DNS 이름 변경 공지): [github.com/hickory-dns/hickory-dns](https://github.com/hickory-dns/hickory-dns) — ★★★☆☆
+- Network Programming with Rust (Packt, 2018): [oreilly.com](https://www.oreilly.com/library/view/network-programming-with/9781788624893/) — ★★★★☆
 
 ---
-
-## 통계
-
 
 ## 통계
 
@@ -549,6 +547,6 @@ async fn proxy(listen: &str, target: &str) -> anyhow::Result<()> {
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-07-31
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

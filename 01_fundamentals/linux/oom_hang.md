@@ -33,11 +33,11 @@ OOM(Out of Memory)은 커널이 메모리 할당 요청을 처리할 수 없을 
 
 ### oom_score 계산
 
-커널이 각 프로세스에 0~1000 점수를 부여합니다. 점수가 높을수록 먼저 kill됩니다.
+커널이 각 프로세스에 점수를 부여합니다. 점수가 높을수록 먼저 kill됩니다. `oom_score`는 `oom_score_adj`를 포함한 값이라 실제 범위는 0~2000입니다.
 
 ```bash
 # 현재 점수 확인
-cat /proc/<pid>/oom_score        # 커널 계산 점수 (0~1000)
+cat /proc/<pid>/oom_score        # 커널 계산 점수 (0~2000, oom_score_adj 포함)
 cat /proc/<pid>/oom_score_adj    # 관리자 조정값 (-1000~+1000)
 ```
 
@@ -54,14 +54,14 @@ cat /proc/<pid>/oom_score_adj    # 관리자 조정값 (-1000~+1000)
 ```bash
 dmesg | grep -i "oom\|killed\|out of memory"
 journalctl -k | grep -i oom
-grep -i "oom killer" /var/log/syslog
+grep -i "oom-killer" /var/log/syslog
 ```
 
 출력 예시:
 
 ```
-Out of memory: Kill process 1234 (java) score 892 or sacrifice child
-Killed process 1234 (java) total-vm:2048000kB, anon-rss:1024000kB
+java invoked oom-killer: gfp_mask=0x140cca(GFP_HIGHUSER_MOVABLE|__GFP_COMP), order=0, oom_score_adj=0
+Out of memory: Killed process 1234 (java) total-vm:2048000kB, anon-rss:1024000kB, file-rss:0kB, shmem-rss:0kB, UID:1000 pgtables:2400kB oom_score_adj:0
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -86,7 +86,7 @@ Hang은 프로세스 또는 시스템이 응답하지 않는 상태입니다. OO
 
 ```bash
 # D 상태 프로세스 목록
-ps aux | awk '$8 == "D"'
+ps aux | awk '$8 ~ /^D/'
 
 # 상세 확인
 cat /proc/<pid>/wchan    # 어떤 커널 함수에서 대기 중인지
@@ -123,8 +123,8 @@ cat /sys/fs/cgroup/<service>/memory.max
 # 시간별 메모리 증가 추적
 watch -n 5 'ps aux --sort=-%mem | head -6'
 
-# smaps로 상세 메모리 맵 확인
-cat /proc/<pid>/smaps | grep -E "^(Rss|Pss|Swap):" | awk '{sum+=$2} END {print sum/1024 " MB"}'
+# smaps로 PSS 합계 확인
+cat /proc/<pid>/smaps | grep -E "^Pss:" | awk '{sum+=$2} END {print sum/1024 " MB"}'
 ```
 
 ### I/O hang 원인 파악
@@ -136,7 +136,7 @@ iotop -o
 
 # 어떤 파일/소켓에서 대기 중인지
 lsof -p <pid>
-strace -p <pid> -e trace=read,write,open
+strace -p <pid> -e trace=read,write,openat
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -279,15 +279,15 @@ sudo smem -r -k | head -15
 
 ### cgroup v2 메모리 관련 파일 정리
 
-| 파일                 | 단위  | 설명                                      |
-|----------------------|-------|-------------------------------------------|
-| `memory.current`     | bytes | 현재 사용량                               |
-| `memory.max`         | bytes | 하드 한도 (초과 시 OOM)                   |
-| `memory.high`        | bytes | 소프트 한도 (초과 시 throttle)            |
-| `memory.swap.max`    | bytes | swap 전용 한도 (memory 제외, swap만 계산) |
-| `memory.oom_control` | -     | OOM killer 동작 제어                      |
-| `pids.current`       | 개수  | 현재 프로세스+스레드 수                   |
-| `pids.max`           | 개수  | 최대 허용 수                              |
+| 파일               | 단위  | 설명                                      |
+|--------------------|-------|-------------------------------------------|
+| `memory.current`   | bytes | 현재 사용량                               |
+| `memory.max`       | bytes | 하드 한도 (초과 시 OOM)                   |
+| `memory.high`      | bytes | 소프트 한도 (초과 시 throttle)            |
+| `memory.swap.max`  | bytes | swap 전용 한도 (memory 제외, swap만 계산) |
+| `memory.oom.group` | 0/1   | cgroup 전체를 한 단위로 OOM kill          |
+| `pids.current`     | 개수  | 현재 프로세스+스레드 수                   |
+| `pids.max`         | 개수  | 최대 허용 수                              |
 
 ### 장애 대응 순서
 
@@ -308,6 +308,8 @@ sudo smem -r -k | head -15
 
 - Linux Kernel Docs: [kernel.org/doc/html/latest/admin-guide/mm/concepts.html](https://www.kernel.org/doc/html/latest/admin-guide/mm/concepts.html) — ★★★☆☆
 - Red Hat: [access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_monitoring_and_updating_the_kernel/](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_monitoring_and_updating_the_kernel/) — ★★★☆☆
+- Linux Kernel Docs /proc oom_score: [docs.kernel.org/filesystems/proc.html](https://docs.kernel.org/filesystems/proc.html) — ★★★☆☆
+- Linux Kernel Docs cgroup v2: [docs.kernel.org/admin-guide/cgroup-v2.html](https://docs.kernel.org/admin-guide/cgroup-v2.html) — ★★★☆☆
 - [lsof.md](lsof.md)
 - [perf.md](perf.md)
 
@@ -315,6 +317,6 @@ sudo smem -r -k | head -15
 
 **작성일**: 2026-05-21
 
-**마지막 업데이트**: 2026-05-21
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -94,7 +94,7 @@ myproject/
         test_models.py
         test_services.py
     main.py
-    setup.py
+    pyproject.toml
     README.md
 ```
 
@@ -110,7 +110,7 @@ myproject/
 
 ```python
 # mypackage/__init__.py
-# 빈 파일도 가능 (Python 3.3+)
+# 빈 파일도 가능
 ```
 
 ### 패키지 초기화
@@ -923,6 +923,7 @@ from .module import func1, func2
 
 - Python Documentation: [Packages](https://docs.python.org/3/tutorial/modules.html#packages) — ★★★☆☆
 - PyPA - Python Packaging: [packaging.python.org](https://packaging.python.org/) — ★★★☆☆
+- PyPA - Is setup.py deprecated? (`pyproject.toml` 권장): [packaging.python.org](https://packaging.python.org/en/latest/discussions/setup-py-deprecated/) — ★★★☆☆
 
 ---
 
@@ -939,6 +940,6 @@ from .module import func1, func2
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

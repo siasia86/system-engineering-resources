@@ -231,7 +231,7 @@ os.chown('file.txt', uid=1000, gid=1000)
 
 # 권한 확인
 st = os.stat('file.txt')
-print(oct(st.st_mode))   # '0o100644'
+print(oct(st.st_mode))   # 0o100644
 print(st.st_uid)         # 소유자 UID
 print(st.st_gid)         # 그룹 GID
 ```
@@ -356,6 +356,6 @@ def backup_config(config_path):
 
 **작성일**: 2026-04-20
 
-**마지막 업데이트**: 2026-04-20
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

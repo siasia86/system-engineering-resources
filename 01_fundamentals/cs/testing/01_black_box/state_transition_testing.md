@@ -43,12 +43,13 @@
   ┌────────┐ ──────────────────> ┌────────┐
   │ Locked │                     │ Active │
   └────────┘ <────────────────── └────────┘
-       ^         timeout/logout       │
-       │                              │ 3 failures
-       │         3 failures           v
-       └───────────────────── ┌──────────┐
-                              │ Suspended│
-                              └──────────┘
+    │    ^       timeout/logout
+    │    │
+    │    │ admin_unlock         ┌───────────┐
+    │    └───────────────────── │           │
+    │                           │ Suspended │
+    └─────────────────────────> │           │
+       login_fail [>=3]         └───────────┘
 ```
 
 ### 상태 전이 표
@@ -56,10 +57,10 @@
 | 현재 상태 | 이벤트           | 다음 상태 | 동작           |
 |-----------|------------------|-----------|----------------|
 | Locked    | login_success    | Active    | 세션 생성      |
-| Locked    | login_fail       | Locked    | 실패 카운트 +1 |
+| Locked    | login_fail [<3]  | Locked    | 실패 카운트 +1 |
 | Active    | logout           | Locked    | 세션 삭제      |
 | Active    | timeout          | Locked    | 세션 만료      |
-| Active    | login_fail [>=3] | Suspended | 계정 잠금      |
+| Locked    | login_fail [>=3] | Suspended | 계정 잠금      |
 | Suspended | admin_unlock     | Locked    | 카운트 초기화  |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -68,12 +69,12 @@
 
 ### 커버리지 수준
 
-| 수준           | 설명                         | 테스트 수 |
-|----------------|------------------------------|-----------|
-| 모든 상태 커버 | 각 상태를 최소 1회 방문      | 적음      |
-| 모든 전이 커버 | 각 유효 전이를 최소 1회 실행 | 중간      |
-| 무효 전이 커버 | 허용되지 않는 전이 시도 검증 | 많음      |
-| N-switch 커버  | N번 연속 전이 시퀀스 검증    | 매우 많음 |
+| 수준                      | 설명                            | 테스트 수 |
+|---------------------------|---------------------------------|-----------|
+| 모든 상태 커버            | 각 상태를 최소 1회 방문         | 적음      |
+| 유효 전이 커버 (0-switch) | 각 유효 전이를 최소 1회 실행    | 중간      |
+| 모든 전이 커버            | 유효 전이 실행 + 무효 전이 시도 | 많음      |
+| N-switch 커버             | N+1개 연속 전이 시퀀스 검증     | 매우 많음 |
 
 ### 유효 전이 테스트
 
@@ -128,7 +129,7 @@ CLOSED → SYN_SENT → ESTABLISHED → FIN_WAIT_1 → FIN_WAIT_2 → TIME_WAIT 
 
 ## 참고 자료
 
-- ISTQB Foundation Level Syllabus — ★★★☆☆
+- ISTQB Foundation Level Syllabus v4.0.1: [istqb.org](https://www.istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf) — ★★★☆☆
 - [TCP 상태 전이](../../../networking/tcp_state_concepts.md)
 - [결정 테이블 테스트](decision_table_testing.md)
 
@@ -147,6 +148,6 @@ CLOSED → SYN_SENT → ESTABLISHED → FIN_WAIT_1 → FIN_WAIT_2 → TIME_WAIT 
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-05-08
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

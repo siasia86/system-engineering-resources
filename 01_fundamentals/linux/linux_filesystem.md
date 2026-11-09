@@ -61,10 +61,10 @@ VFS(Virtual Filesystem Switch)는 커널이 여러 파일시스템을 동일한 
 ### 경로 탐색 흐름
 
 ```
-open("/home/sjyun/data.txt", O_RDONLY)
+open("/home/alice/data.txt", O_RDONLY)
       |
       v
-  dentry cache lookup: "/" > "home" > "sjyun" > "data.txt"
+  dentry cache lookup: "/" > "home" > "alice" > "data.txt"
       |
       v (cache miss)
   filesystem-specific lookup (ext4_lookup)
@@ -342,8 +342,9 @@ Btrfs (CoW):
 cat /proc/mounts | grep "sdb1"
 # /dev/sdb1 /mnt/data ext4 rw,relatime,data=ordered 0 0
 
-# writeback으로 변경 (fstab 또는 mount 옵션)
-sudo mount -o remount,data=writeback /mnt/data
+# writeback으로 변경 (remount로는 data 모드를 바꿀 수 없음 — 언마운트 후 다시 마운트)
+sudo umount /mnt/data
+sudo mount -o data=writeback /dev/sdb1 /mnt/data
 
 # fstab 영구 설정
 # /dev/sdb1 /mnt/data ext4 defaults,data=writeback 0 2
@@ -569,7 +570,7 @@ sudo mount /dev/sdb1 /mnt/data
 ### 마운트 실패
 
 ```bash
-# fstab 문법 검증 (util-linux 2.30+)
+# fstab 문법 검증 (util-linux 2.29+)
 sudo findmnt --verify
 
 # 수동 마운트로 에러 확인
@@ -621,6 +622,7 @@ sudo xfs_db -r -c frag /dev/sdb1
 - XFS Documentation: [docs.kernel.org/filesystems/xfs](https://docs.kernel.org/filesystems/xfs/index.html) — ★★★☆☆
 - Btrfs Documentation: [btrfs.readthedocs.io](https://btrfs.readthedocs.io/) — ★★★☆☆
 - man fstab(5): [man7.org/fstab.5](https://man7.org/linux/man-pages/man5/fstab.5.html) — ★★★☆☆
+- util-linux 2.29 릴리스 노트(findmnt --verify): [github.com/util-linux/util-linux](https://github.com/util-linux/util-linux/blob/master/Documentation/releases/v2.29-ReleaseNotes) — ★★★☆☆
 - Evi Nemeth et al. "UNIX and Linux System Administration Handbook, 5th Edition"
 - [_reference/linux_filesystem_official_notes.md](../../_reference/linux_filesystem_official_notes.md)
 
@@ -628,6 +630,6 @@ sudo xfs_db -r -c frag /dev/sdb1
 
 **작성일**: 2026-07-17
 
-**마지막 업데이트**: 2026-07-17
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

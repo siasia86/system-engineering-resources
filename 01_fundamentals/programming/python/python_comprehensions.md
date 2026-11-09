@@ -39,8 +39,8 @@ S = [x**2 for x in range(5)]
 
 - **1990년대**: Haskell 등 함수형 언어에서 List Comprehension 개념 도입
 - **2000년**: Python 2.0에서 리스트 컴프리헨션 추가 (PEP 202)
-- **2003년**: Python 2.4에서 제너레이터 표현식 추가 (PEP 289)
-- **2007년**: Python 3.0에서 딕셔너리/세트 컴프리헨션 추가 (PEP 274, PEP 3100)
+- **2004년**: Python 2.4에서 제너레이터 표현식 추가 (PEP 289)
+- **2008년**: Python 3.0에서 딕셔너리/세트 컴프리헨션 추가 (PEP 274, PEP 3100)
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -259,7 +259,7 @@ print(sys.getsizeof(list_comp))  # ~85KB
 
 # 제너레이터 표현식
 gen_exp = (x for x in range(10000))
-print(sys.getsizeof(gen_exp))    # ~128 bytes
+print(sys.getsizeof(gen_exp))    # ~200 bytes (3.14 기준, 버전마다 다름)
 ```
 
 ### 함수와 함께 사용
@@ -569,6 +569,8 @@ result = [process_row(row) for row in matrix if sum(row) > 10]
 ## 참고 자료
 
 - Python Documentation: [List Comprehensions](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions) — ★★★☆☆
+- Python 2.4 릴리스(2004-11-30): [python.org/download/releases/2.4](https://www.python.org/download/releases/2.4/) — ★★★☆☆
+- Python 3.0 릴리스(2008-12-03): [python.org/download/releases/3.0](https://www.python.org/download/releases/3.0/) — ★★★☆☆
 
 ---
 
@@ -585,6 +587,6 @@ result = [process_row(row) for row in matrix if sum(row) > 10]
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

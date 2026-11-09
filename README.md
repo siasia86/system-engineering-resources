@@ -112,6 +112,11 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [언어 비교](01_fundamentals/programming/c_cpp_csharp_go_python_bash_comparison.md) | 6개 언어 비교               |
 | [Rust SE 로드맵](01_fundamentals/programming/rust_roadmap_for_se.md)               | SE 관점 Rust 학습 경로      |
 | [LSP 가이드](01_fundamentals/programming/lsp_guide.md)                             | Language Server Protocol    |
+| [GraphQL 가이드](01_fundamentals/programming/graphql_guide_for_se.md)              | SE 관점 GraphQL             |
+| [gRPC 가이드](01_fundamentals/programming/grpc_guide_for_se.md)                    | SE 관점 gRPC                |
+| [Protocol Buffers 가이드](01_fundamentals/programming/protobuf_guide_for_se.md)    | SE 관점 Protocol Buffers    |
+| [REST API 가이드](01_fundamentals/programming/rest_api_guide_for_se.md)            | SE 관점 REST API            |
+| [Lean SE 로드맵](01_fundamentals/programming/lean_roadmap_for_se.md)               | SE 관점 Lean 학습 경로      |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -525,6 +530,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-06
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

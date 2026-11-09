@@ -139,7 +139,7 @@ class WebUser(HttpUser):
 
 ## 참고 자료
 
-- k6 docs: [k6.io/docs](https://k6.io/docs/) — ★★★☆☆
+- k6 docs: [grafana.com/docs/k6](https://grafana.com/docs/k6/latest/) — ★★★☆☆
 - Locust docs: [docs.locust.io](https://docs.locust.io/) — ★★★☆☆
 
 ---
@@ -157,6 +157,6 @@ class WebUser(HttpUser):
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-05-08
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

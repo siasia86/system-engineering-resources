@@ -310,7 +310,7 @@ Sort-Object 'CPU(%)' -Descending | Format-Table -AutoSize
 # vCPU overcommit
 $totalLogical = (Get-CimInstance Win32_Processor | Measure-Object -Property NumberOfLogicalProcessors -Sum).Sum
 $totalVCPU = (Get-VM | Where State -eq 'Running' | Measure-Object -Property ProcessorCount -Sum).Sum
-Write-Host "Physical Cores: $totalLogical, Total vCPU: $totalVCPU, Ratio: $([math]::Round($totalVCPU/$totalLogical,1)):1"
+Write-Host "Logical Processors: $totalLogical, Total vCPU: $totalVCPU, Ratio: $([math]::Round($totalVCPU/$totalLogical,1)):1"
 
 # Memory overcommit
 $totalRAM = (Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory
@@ -321,7 +321,7 @@ Write-Host "Physical RAM: $([math]::Round($totalRAM/1GB,0))GB, VM Assigned: $([m
 ### NUMA 밸런싱 확인
 
 ```powershell
-# NUMA 노드별 메모리
+# VM 파티션별 선호 NUMA 노드
 Get-Counter '\Hyper-V VM Vid Partition(*)\Preferred NUMA Node Index' -SampleInterval 2 -MaxSamples 1
 
 # VM별 NUMA 할당
@@ -618,7 +618,7 @@ Export-Csv -Path "$dir\csv_volume.csv" -NoTypeInformation -Encoding UTF8
 - Windows Server Performance Tuning: [learn.microsoft.com](https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/) — ★★★☆☆
 - Get-Counter Reference: [learn.microsoft.com](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-counter) — ★★★☆☆
 - Storage QoS Overview: [learn.microsoft.com](https://learn.microsoft.com/en-us/windows-server/storage/storage-qos/storage-qos-overview) — ★★★☆☆
-- Sysinternals Suite: [learn.microsoft.com](https://learn.microsoft.com/en-us/sysinternals/) — ★★★★☆
+- Sysinternals Suite: [learn.microsoft.com](https://learn.microsoft.com/en-us/sysinternals/) — ★★★☆☆
 - [_reference/windows_server_2022_monitoring_notes.md](../../_reference/windows_server_2022_monitoring_notes.md)
 
 [⬆ 목차로 돌아가기](#목차)
@@ -627,6 +627,6 @@ Export-Csv -Path "$dir\csv_volume.csv" -NoTypeInformation -Encoding UTF8
 
 **작성일**: 2026-07-23
 
-**마지막 업데이트**: 2026-07-23
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

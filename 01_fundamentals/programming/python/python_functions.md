@@ -439,11 +439,14 @@ def fibonacci(n):
     return fibonacci(n-1) + fibonacci(n-2)
 
 print(fibonacci(5))
-# 계산: (0,)
 # 계산: (1,)
+# 계산: (0,)
 # 계산: (2,)
+# 캐시 사용: (1,)
 # 계산: (3,)
+# 캐시 사용: (2,)
 # 계산: (4,)
+# 캐시 사용: (3,)
 # 계산: (5,)
 # 5
 ```
@@ -568,7 +571,7 @@ def calculate_area(width: float, height: float) -> float:
         넓이 (float)
     
     Examples:
-        >>> calculate_area(5, 3)
+        >>> calculate_area(5.0, 3.0)
         15.0
     """
     return width * height
@@ -804,6 +807,6 @@ print(greet.__name__)  # greet
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

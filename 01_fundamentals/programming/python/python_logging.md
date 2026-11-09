@@ -409,7 +409,7 @@ Traceback (most recent call last):
              ~~~^~~
 ZeroDivisionError: division by zero
 ```
-> 스택 트레이스가 자동으로 포함됨
+> 스택 트레이스가 자동으로 포함됨 (방법 1과 2가 같은 내용을 한 번씩 출력하므로 실제로는 위 출력이 두 번 나옴)
 
 ### 변수 포함 로깅
 ```python
@@ -442,10 +442,14 @@ INFO: 사용자: 홍길동, 개수: 100
 # 나쁜 예 (항상 문자열 생성)
 logging.debug("값: " + str(expensive_function()))
 
-# 좋은 예 (DEBUG 레벨일 때만 실행)
+# 좋은 예 (DEBUG 레벨일 때만 문자열 변환)
 logging.debug("값: %s", expensive_function())
+
+# 함수 호출 자체를 피하려면 레벨 확인
+if logging.getLogger().isEnabledFor(logging.DEBUG):
+    logging.debug("값: %s", expensive_function())
 ```
-> % 포맷은 로그 레벨이 맞을 때만 문자열 변환 수행
+> % 포맷은 로그 레벨이 맞을 때만 문자열 변환 수행 (인자인 `expensive_function()`은 호출 시점에 항상 실행)
 
 ### 컨텍스트 정보 추가
 ```python
@@ -924,6 +928,6 @@ logger.error("에러 발생")
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

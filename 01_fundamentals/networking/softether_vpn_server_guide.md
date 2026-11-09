@@ -87,6 +87,7 @@ make
 ```bash
 mv ~/vpnserver /opt/vpnserver
 chmod 600 /opt/vpnserver/*
+chmod 700 /opt/vpnserver/vpncmd
 chmod 700 /opt/vpnserver/vpnserver
 ```
 
@@ -118,6 +119,7 @@ make
 ```bash
 mv ~/vpnserver /opt/vpnserver
 chmod 600 /opt/vpnserver/*
+chmod 700 /opt/vpnserver/vpncmd
 chmod 700 /opt/vpnserver/vpnserver
 ```
 
@@ -200,11 +202,11 @@ VPN Server> IPsecEnable
 Enable L2TP over IPsec Server Function (yes/no): yes
 Enable Raw L2TP Server Function (yes/no): no
 Enable EtherIP / L2TPv3 over IPsec Server Function (yes/no): no
-Pre Shared Key for IPsec (Input 9 characters): SecureKey123
+Pre Shared Key for IPsec (Recommended: 9 letters at maximum): SecKey123
 Default Virtual HUB in a case of omitting the HUB on the Username: VPN
 ```
 
-> IPsec 사전 공유키(PSK)는 9자 이상 권장합니다.
+> IPsec 사전 공유키(PSK)는 9자 이하를 권장합니다. 일부 Android 버전에서 10자 이상 PSK가 동작하지 않는 문제가 있기 때문입니다.
 
 ### 방화벽 포트 허용 (별도 적용 필요)
 
@@ -387,8 +389,8 @@ VPN Server> Hub <HubName>
 | 명령어              | 설명                                     |
 |---------------------|------------------------------------------|
 | `ServerPasswordSet` | 서버 관리자 패스워드 설정                |
-| `ServerInfo`        | 서버 버전 및 기본 정보 조회              |
-| `ServerStatus`      | 현재 세션 수, 트래픽 통계 조회           |
+| `ServerInfoGet`     | 서버 버전 및 기본 정보 조회              |
+| `ServerStatusGet`   | 현재 세션 수, 트래픽 통계 조회           |
 | `ListenerList`      | 리스너 포트 목록 조회                    |
 | `ListenerCreate`    | 리스너 포트 추가                         |
 | `ListenerDelete`    | 리스너 포트 삭제                         |
@@ -400,7 +402,7 @@ VPN Server> Hub <HubName>
 | `OpenVpnEnable`     | OpenVPN 서버 기능 활성화                 |
 | `OpenVpnMakeConfig` | OpenVPN 클라이언트 설정 파일(.ovpn) 생성 |
 | `SstpEnable`        | SSTP 서버 기능 활성화                    |
-| `Keep`              | Keep-alive 설정 조회                     |
+| `KeepGet`           | Keep-alive 설정 조회                     |
 | `Flush`             | 설정 파일 즉시 저장                      |
 
 ### Hub 관리
@@ -522,6 +524,8 @@ VPN Server> Flush
 
 - SoftEther VPN 공식 레퍼런스: [softether.org/4-docs/1-manual](https://www.softether.org/4-docs/1-manual) — ★★★☆☆
 - SoftEther How-to 가이드: [softether.org/4-docs/2-howto](https://www.softether.org/4-docs/2-howto) — ★★★☆☆
+- vpncmd 서버 명령 레퍼런스(IPsecEnable PSK 길이, KeepGet 등): [softether.org 6.3](https://www.softether.org/4-docs/1-manual/6._Command_Line_Management_Utility_Manual/6.3_VPN_Server_%2F%2F_VPN_Bridge_Management_Command_Reference_%28For_Entire_Server%29) — ★★★☆☆
+- Linux 설치 절차(chmod): [softether.org 7.3](https://www.softether.org/4-docs/1-manual/7._Installing_SoftEther_VPN_Server/7.3_Install_on_Linux_and_Initial_Configurations) — ★★★☆☆
 - linuxbabe.com Ubuntu 24.04 가이드: [linuxbabe.com/ubuntu/set-up-softether-vpn-server-ubuntu-24-04](https://www.linuxbabe.com/ubuntu/set-up-softether-vpn-server-ubuntu-24-04) — ★★☆☆☆
 - [SoftEther VPN Client 가이드](./softether_vpn_client_guide.md)
 - [VPN 프로토콜 개념](./vpn_protocol_concepts.md)
@@ -540,6 +544,6 @@ VPN Server> Flush
 
 **작성일**: 2026-08-05
 
-**마지막 업데이트**: 2026-08-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

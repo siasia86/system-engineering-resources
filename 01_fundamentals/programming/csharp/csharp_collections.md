@@ -165,7 +165,7 @@ IEnumerable<int> values = dict.Values;
 ### GetValueOrDefault / CollectionsMarshal (고성능)
 
 ```csharp
-// GetValueOrDefault — 없으면 default 반환 (C# 7.2+)
+// GetValueOrDefault — 없으면 default 반환 (.NET Core 2.0+)
 int count = dict.GetValueOrDefault("apple", 0);
 
 // 값 업데이트 in-place (ref 반환, .NET 6+)
@@ -203,7 +203,7 @@ concurrent.TryAdd("key1", 1);
 // GetOrAdd — 없으면 추가 (팩토리 함수는 여러 번 호출될 수 있음)
 int val = concurrent.GetOrAdd("key2", key => ExpensiveCompute(key));
 
-// AddOrUpdate — 추가 또는 업데이트 (원자적)
+// AddOrUpdate — 추가 또는 업데이트 (업데이트 팩토리는 여러 번 호출될 수 있음)
 concurrent.AddOrUpdate(
     "counter",
     addValue: 1,
@@ -214,7 +214,7 @@ concurrent.AddOrUpdate(
 bool updated = concurrent.TryUpdate("key1", newValue: 2, comparisonValue: 1);
 ```
 
-🟡 `ConcurrentDictionary`의 `GetOrAdd`는 팩토리 함수 호출과 딕셔너리 삽입이 원자적이지 않습니다. 팩토리가 여러 번 호출될 수 있으므로 side-effect가 없어야 합니다.
+🟡 `ConcurrentDictionary`의 `GetOrAdd`·`AddOrUpdate`는 팩토리 함수 호출과 딕셔너리 삽입이 원자적이지 않습니다. 팩토리가 여러 번 호출될 수 있으므로 side-effect가 없어야 합니다.
 
 ### ConcurrentQueue\<T\> / ConcurrentBag\<T\>
 
@@ -253,16 +253,16 @@ foreach (var item in bc.GetConsumingEnumerable()) // CompleteAdding 시 종료
 
 ## 5. 불변 컬렉션
 
-`System.Collections.Immutable` 네임스페이스. 변경 시 새 인스턴스를 반환합니다.
+`System.Collections.Immutable` 네임스페이스. 변경 시 새 인스턴스를 반환합니다. .NET(Core) 공유 프레임워크에 포함되어 있으므로 패키지 참조는 .NET Framework·.NET Standard 대상일 때만 필요합니다.
 
 ```xml
-<PackageReference Include="System.Collections.Immutable" Version="9.0.0" />
+<PackageReference Include="System.Collections.Immutable" Version="10.0.0" />
 ```
 
 ```csharp
 using System.Collections.Immutable;
 
-// ImmutableArray<T> — 불변 배열 (구조적 동등성, 가장 빠름)
+// ImmutableArray<T> — 불변 배열 (읽기 가장 빠름, Equals는 내부 배열 참조 비교)
 var arr = ImmutableArray.Create(1, 2, 3);
 var arr2 = arr.Add(4);   // 새 인스턴스 반환 (원본 불변)
 
@@ -314,7 +314,7 @@ ImmutableList<int> immutable = builder.ToImmutable();
 | 키/값 조회  | —     | O(n)      | O(n)            | O(1)*             | O(log n)           | O(1)*        |
 | 정렬 유지   | ❌    | ❌        | ❌              | ❌                | ✅                 | ❌           |
 
-\* 해시 충돌 없는 평균. 최악 O(n).
+\* 해시 충돌 없는 평균 또는 분할 상환(`List<T>` 추가). 최악 O(n).
 \*\* 노드 참조가 있을 때.
 
 ### 실무 권장 패턴
@@ -343,8 +343,11 @@ Span<int> span = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
 ## 참고 자료
 
 - .NET 컬렉션 개요: [learn.microsoft.com/dotnet/standard/collections](https://learn.microsoft.com/en-us/dotnet/standard/collections/) — ★★★☆☆
-- System.Collections.Immutable: [learn.microsoft.com/dotnet/standard/collections/immutable-collections](https://learn.microsoft.com/en-us/dotnet/standard/collections/immutable-collections-guidelines) — ★★★☆☆
+- System.Collections.Immutable: [learn.microsoft.com/dotnet/api/system.collections.immutable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.immutable) — ★★★☆☆
 - ConcurrentDictionary: [learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2](https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2) — ★★★☆☆
+- ConcurrentDictionary 원자성: [learn.microsoft.com/dotnet/standard/collections/thread-safe/how-to-add-and-remove-items](https://learn.microsoft.com/en-us/dotnet/standard/collections/thread-safe/how-to-add-and-remove-items) — ★★★☆☆
+- CollectionExtensions.GetValueOrDefault: [learn.microsoft.com/dotnet/api/system.collections.generic.collectionextensions.getvalueordefault](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.collectionextensions.getvalueordefault) — ★★★☆☆
+- System.Collections.Immutable 패키지: [nuget.org/packages/System.Collections.Immutable](https://www.nuget.org/packages/System.Collections.Immutable) — ★★★☆☆
 
 ---
 
@@ -355,6 +358,6 @@ Span<int> span = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
 
 **작성일**: 2026-08-08
 
-**마지막 업데이트**: 2026-08-08
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

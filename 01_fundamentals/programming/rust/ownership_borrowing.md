@@ -63,7 +63,7 @@ fn main() {
         println!("{}", s);
     } // s가 스코프를 벗어남 → drop() 호출 → 힙 메모리 해제
 
-    // println!("{}", s); // 컴파일 에러: s는 이미 해제됨
+    // println!("{}", s); // 컴파일 에러: s는 스코프 밖 (E0425)
 }
 ```
 
@@ -495,9 +495,6 @@ fn find_by_hostname<'a>(servers: &'a [Server], name: &str) -> Option<&'a Server>
 
 ## 통계
 
-
-## 통계
-
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
 ![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
@@ -509,6 +506,6 @@ fn find_by_hostname<'a>(servers: &'a [Server], name: &str) -> Option<&'a Server>
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-07-31
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

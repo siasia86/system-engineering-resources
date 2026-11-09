@@ -357,7 +357,7 @@ iperf3 server가 foreground로 실행 중이면 다음으로 종료합니다.
 Ctrl-c
 ```
 
-Windows PowerShell에서도 동일합니다.
+Windows PowerShell에서도 Ctrl-c로 종료합니다. 다른 창에서 종료해야 하면 다음을 사용합니다.
 
 ```powershell
 Stop-Process -Name iperf3
@@ -407,6 +407,6 @@ iperf3 -c 192.0.2.10 -u -b 10M -t 60 --json > iperf3-20260828-udp.json
 
 **작성일**: 2026-08-28
 
-**마지막 업데이트**: 2026-08-28
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

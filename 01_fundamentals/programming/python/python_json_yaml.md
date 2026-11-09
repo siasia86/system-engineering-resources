@@ -28,12 +28,15 @@ print(json_str)
 # {
 #   "name": "홍길동",
 #   "age": 30,
-#   "skills": ["Python", "Linux"]
+#   "skills": [
+#     "Python",
+#     "Linux"
+#   ]
 # }
 
 # JSON 문자열 → Python 객체
 parsed = json.loads(json_str)
-print(parsed['name'])  # '홍길동'
+print(parsed['name'])  # 홍길동
 ```
 
 ### 파일 읽기/쓰기
@@ -133,10 +136,11 @@ with open('multi.yml', 'r') as f:
 ### 🟡 보안 주의
 
 ```python
-# yaml.load()는 임의 코드 실행 위험
+# yaml.load()에 Loader=yaml.Loader를 주면 임의 코드 실행 위험
+# PyYAML 6.0부터 yaml.load()는 Loader 인자 필수 (생략 시 TypeError)
 # 반드시 yaml.safe_load() 사용
-config = yaml.safe_load(yaml_str)    # ✅ 안전
-# config = yaml.load(yaml_str)       # ❌ 위험
+config = yaml.safe_load(yaml_str)                   # ✅ 안전
+# config = yaml.load(yaml_str, Loader=yaml.Loader)  # ❌ 위험
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -270,7 +274,8 @@ config = load_config('prd')
 ## 참고 자료
 
 - Python Documentation: [json](https://docs.python.org/3/library/json.html) — ★★★☆☆
-- PyYAML Documentation: [pyyaml.org](https://pyyaml.org/wiki/PyYAMLDocumentation) — ★★☆☆☆
+- PyYAML Documentation: [pyyaml.org](https://pyyaml.org/wiki/PyYAMLDocumentation) — ★★★☆☆
+- PyYAML 6.0 변경 이력(`yaml.load()` Loader 필수): [CHANGES](https://github.com/yaml/pyyaml/blob/main/CHANGES) — ★★★☆☆
 
 ---
 
@@ -287,6 +292,6 @@ config = load_config('prd')
 
 **작성일**: 2026-04-20
 
-**마지막 업데이트**: 2026-04-20
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

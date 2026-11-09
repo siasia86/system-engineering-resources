@@ -535,9 +535,9 @@ Python의 자료구조 연산 비용은 언어 문법 자체와 특정 구현체
 ## 참고 자료
 
 - [시간·공간 복잡도 공식 참조 노트](../../../_reference/time_complexity_official_notes.md)
-- MIT OpenCourseWare: [6.006 Introduction to Algorithms](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/) — ★★★★☆
+- MIT OpenCourseWare: [6.006 Introduction to Algorithms](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/) — ★★★☆☆
 - Python Documentation: [collections.deque](https://docs.python.org/3/library/collections.html#collections.deque) — ★★★☆☆
-- Python Wiki: [TimeComplexity](https://wiki.python.org/moin/TimeComplexity) — ★★★☆☆
+- Python Documentation: [Time complexity of operations on built-in types](https://docs.python.org/3/builtins/time-complexity.html) — ★★★☆☆
 - Python Documentation: [Sorting HOW TO](https://docs.python.org/3/howto/sorting.html) — ★★★☆☆
 
 ---
@@ -555,6 +555,6 @@ Python의 자료구조 연산 비용은 언어 문법 자체와 특정 구현체
 
 **작성일**: 2026-09-14
 
-**마지막 업데이트**: 2026-09-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

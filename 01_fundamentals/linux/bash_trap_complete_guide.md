@@ -103,7 +103,7 @@ echo "Step 3: Never executed"
 ```
 Step 1: OK
 Step 2: OK
-Error on line 7
+Error on line 8
 ```
 
 ---
@@ -480,6 +480,7 @@ TIMEOUT=5
 
 timeout_handler() {
     echo "Timeout after $TIMEOUT seconds!"
+    kill $TASK_PID 2>/dev/null
     exit 124
 }
 
@@ -492,8 +493,11 @@ trap "kill $TIMER_PID 2>/dev/null" EXIT
 
 echo "Starting long task (timeout: ${TIMEOUT}s)..."
 
-# 긴 작업 시뮬레이션
-sleep 10  # 타임아웃보다 길면 중단됨
+# 긴 작업 시뮬레이션: 포그라운드 명령 실행 중에는 trap이 명령 종료 후에 실행되므로
+# 백그라운드로 실행하고 wait로 대기 (wait는 trap이 설정된 시그널을 받으면 즉시 반환)
+sleep 10 &
+TASK_PID=$!
+wait $TASK_PID  # 타임아웃보다 길면 중단됨
 
 # 성공 시 타이머 취소
 kill $TIMER_PID 2>/dev/null
@@ -1104,11 +1108,11 @@ trap cleanup EXIT
 # 잘못된 예
 function do_work() {
     local temp_file=$(mktemp)
-    trap "rm -f $temp_file" EXIT  # 함수 종료 시 실행됨 (스크립트 종료 시 아님)
+    trap "rm -f $temp_file" EXIT  # 함수가 아니라 스크립트 종료 시 실행되며 기존 EXIT trap을 덮어씀
 }
 
 do_work
-# temp_file이 이미 삭제됨
+# temp_file은 스크립트 종료 시까지 남고, do_work를 여러 번 호출하면 마지막 파일만 삭제됨
 ```
 
 **해결책:**
@@ -1190,7 +1194,7 @@ false  # ERR trap 실행 후 스크립트 종료
 set -e
 
 # 잘못된 예
-cat nonexistent.txt | grep "pattern"  # cat 실패해도 계속 실행
+cat nonexistent.txt | wc -l  # cat 실패해도 wc가 성공하므로 계속 실행
 echo "Still running"
 ```
 
@@ -1202,7 +1206,7 @@ set -o pipefail  # 필수!
 
 trap 'echo "Pipeline failed"' ERR
 
-cat nonexistent.txt | grep "pattern"  # 이제 에러 감지됨
+cat nonexistent.txt | wc -l  # 이제 에러 감지됨
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -1406,10 +1410,10 @@ cleanup_connections() {
 trap cleanup_connections EXIT INT TERM
 
 # SSH 터널 생성
-ssh -f -N -L 8080:localhost:80 server1 &
+ssh -N -L 8080:localhost:80 server1 &  # -f를 함께 쓰면 $!가 실제 터널 PID와 달라짐
 SSH_PIDS+=($!)
 
-ssh -f -N -L 3306:localhost:3306 server2 &
+ssh -N -L 3306:localhost:3306 server2 &
 SSH_PIDS+=($!)
 
 echo "Connections established"
@@ -1521,6 +1525,7 @@ echo "new_setting=value" >> "$CONFIG_FILE"
 # 검증
 if ! validate_config; then
     echo "Invalid configuration"
+    rollback_config  # if 조건의 실패와 exit는 ERR trap을 실행하지 않으므로 직접 호출
     exit 1
 fi
 
@@ -1601,7 +1606,7 @@ done
 ## 참고 자료
 
 - GNU Bash Manual - Signals: [bash.info](https://www.gnu.org/software/bash/manual/bash.html#Signals) — ★★★☆☆
-- Linux man pages - signal: [man7.org](https://man7.org/linux/man-pages/man7/signal.7.html) — ★★☆☆☆
+- Linux man pages - signal: [man7.org](https://man7.org/linux/man-pages/man7/signal.7.html) — ★★★☆☆
 
 ---
 
@@ -1618,6 +1623,6 @@ done
 
 **작성일**: 2026-04-28
 
-**마지막 업데이트**: 2026-03-29
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

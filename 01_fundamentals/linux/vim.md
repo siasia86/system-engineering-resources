@@ -138,7 +138,7 @@ q        " stop recording
 
 ## 참고 자료
 
-- Vim Documentation: [vimdoc.sourceforge.net](http://vimdoc.sourceforge.net/) — ★★★☆☆
+- Vim Documentation: [vimhelp.org](https://vimhelp.org/) — ★★★☆☆
 - Vim Cheat Sheet: [vim.rtorr.com](https://vim.rtorr.com/) — ★★☆☆☆
 
 ---
@@ -156,6 +156,6 @@ q        " stop recording
 
 **작성일**: 2026-04-28
 
-**마지막 업데이트**: 2026-04-12
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

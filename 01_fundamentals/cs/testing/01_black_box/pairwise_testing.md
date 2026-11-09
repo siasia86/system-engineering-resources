@@ -115,11 +115,11 @@ IPOG, AETG 등의 알고리즘으로 최소 테스트 세트를 생성합니다.
 
 ## 5. 도구
 
-| 도구     | 특징                | URL                             |
-|----------|---------------------|---------------------------------|
-| PICT     | Microsoft, CLI 도구 | github.com/microsoft/pict       |
-| AllPairs | Python 라이브러리   | `pip install allpairspy`        |
-| Jenny    | C 기반, 빠름        | burtleburtle.net/bob/math/jenny |
+| 도구     | 특징                | URL                                  |
+|----------|---------------------|--------------------------------------|
+| PICT     | Microsoft, CLI 도구 | github.com/microsoft/pict            |
+| AllPairs | Python 라이브러리   | `pip install allpairspy`             |
+| Jenny    | C 기반, 빠름        | burtleburtle.net/bob/math/jenny.html |
 
 ### PICT 사용 예시
 
@@ -172,6 +172,6 @@ for i, pair in enumerate(AllPairs(parameters)):
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-05-08
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -20,18 +20,18 @@ Python 데코레이터의 개념부터 고급 활용까지 다루는 가이드�
 
 데코레이터 = 함수를 매개변수로 받아서, 새 함수를 리턴하는 함수
 
-python
+```python
 def 데코레이터(원래함수):       # 함수를 매개변수로 받음
     def 새함수(*args):
         print("전처리")
         원래함수(*args)         # 원래 함수 실행
         print("후처리")
     return 새함수               # 새 함수를 리턴
-
+```
 
 Python에서 함수는 변수처럼 다룰 수 있어서 이게 가능합니다:
 
-python
+```python
 def hello():
     print("안녕")
 
@@ -42,7 +42,7 @@ def run(func):  # 함수를 매개변수로 받기
     func()
 
 run(hello)      # → 안녕
-
+```
 
 ### 왜 사용하나?
 
@@ -176,7 +176,7 @@ def divide(a, b):
     return a / b
 
 print(divide(10, 2))  # 5.0
-print(divide(10, 0))  # 에러 발생: division by zero
+print(divide(10, 0))  # 에러 발생: division by zero (이어서 None 출력)
 ```
 
 ### 재시도 데코레이터
@@ -748,6 +748,8 @@ def func():
 ### Tip 2: 데코레이터 체이닝
 
 ```python
+from functools import wraps
+
 def bold(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -772,6 +774,8 @@ print(greet("홍길동"))
 ### Tip 3: 조건부 데코레이터
 
 ```python
+from functools import wraps
+
 def conditional_decorator(condition):
     def decorator(func):
         if condition:
@@ -797,6 +801,8 @@ process()
 ### Tip 4: 데코레이터 매개변수 기본값
 
 ```python
+from functools import wraps
+
 def smart_decorator(func=None, *, param="default"):
     def decorator(f):
         @wraps(f)
@@ -846,6 +852,8 @@ obj.method()
 ### Tip 6: 데코레이터 비활성화
 
 ```python
+from functools import wraps
+
 def optional_decorator(enabled=True):
     def decorator(func):
         if not enabled:
@@ -1076,10 +1084,10 @@ def cache_decorator(func):
 @timer
 @cache
 def expensive_function(n):
-    # timer가 먼저 실행된다고 착각
+    # cache가 먼저 적용된다(안쪽)는 점을 놓침
     pass
 
-# 실제: cache(timer(expensive_function))
+# 실제: timer(cache(expensive_function))
 # cache가 안쪽, timer가 바깥쪽
 # 캐시된 결과도 타이머에 포함됨
 
@@ -1087,7 +1095,7 @@ def expensive_function(n):
 @cache
 @timer
 def expensive_function(n):
-    # timer(cache(expensive_function))
+    # cache(timer(expensive_function))
     # 실제 계산 시간만 측정
     pass
 ```
@@ -1140,6 +1148,6 @@ def expensive_function(n):
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

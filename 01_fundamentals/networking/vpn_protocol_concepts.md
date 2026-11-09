@@ -221,12 +221,12 @@ Outer TCP: loss detected -> retransmit wait (window shrink)
 
 #### 프로토콜별 전송 방식
 
-| VPN           | 기본 전송    | TCP 모드   | TCP meltdown 위험 | 비고                                 |
-|---------------|--------------|------------|-------------------|--------------------------------------|
-| WireGuard     | UDP 전용     | ❌ 불가    | 없음              | UDP 차단 환경 사용 불가              |
-| IPsec (IKEv2) | UDP 500/4500 | ❌ 불가    | 없음              | NAT-T로 UDP 캡슐화                   |
-| OpenVPN       | UDP 1194     | ✅ TCP 443 | 🟡 있음           | TCP 모드는 방화벽 우회용             |
-| SoftEther     | TCP 443/992  | TCP 기본   | 🟡 있음           | 여러 TCP 연결 사용 시 영향 완화 가능 |
+| VPN           | 기본 전송    | TCP 모드    | TCP meltdown 위험 | 비고                                 |
+|---------------|--------------|-------------|-------------------|--------------------------------------|
+| WireGuard     | UDP 전용     | ❌ 불가     | 없음              | UDP 차단 환경 사용 불가              |
+| IPsec (IKEv2) | UDP 500/4500 | 🟡 RFC 9329 | TCP 사용 시 있음  | NAT-T로 UDP 캡슐화, TCP는 선택 확장  |
+| OpenVPN       | UDP 1194     | ✅ TCP 443  | 🟡 있음           | TCP 모드는 방화벽 우회용             |
+| SoftEther     | TCP 443/992  | TCP 기본    | 🟡 있음           | 여러 TCP 연결 사용 시 영향 완화 가능 |
 
 🟡 OpenVPN/SoftEther의 TCP 모드는 UDP가 차단된 환경에서의 대안입니다. 성능보다 통과 가능성을 우선할 때 사용하며, 안정적인 네트워크에서는 UDP 모드 대비 처리량이 낮을 수 있습니다.
 
@@ -550,13 +550,13 @@ L2TP 터널을 IPsec ESP로 보호하는 조합입니다. RFC 3193에서는 Tran
 L2TP/IPsec은 IPsec이 먼저 수립된 후 그 안에서 L2TP가 동작합니다.
 
 ```
-1. IKE_SA_INIT (UDP 500, NAT 감지 후 필요 시 UDP 4500)
-   Client ── IKE_SA_INIT ──> Server
-   (암호 알고리즘·DH·Nonce 협상)
+1. IKE Phase 1 — Main Mode (UDP 500, NAT 감지 후 필요 시 UDP 4500)
+   Client ── Main Mode (6 messages) ──> Server
+   (암호 알고리즘·DH·Nonce 협상, PSK 또는 인증서 인증)
 
-2. IKE_AUTH (암호화된 IKE 메시지)
-   Client ── IKE_AUTH ──> Server
-   (IKE SA와 Child SA 인증·수립)
+2. IKE Phase 2 — Quick Mode (암호화된 IKE 메시지)
+   Client ── Quick Mode (3 messages) ──> Server
+   (IPsec SA 수립, RFC 3193 기본은 Transport Mode)
 
 3. L2TP over protected IPsec (UDP 1701)
    Client ── SCCRQ / ICRQ ──> Server
@@ -1027,6 +1027,8 @@ PPTP              ── ❌ 신규 사용 금지
 - RFC 7296: Internet Key Exchange Protocol Version 2 (IKEv2)
 - RFC 4555: IKEv2 Mobility and Multihoming Protocol (MOBIKE)
 - RFC 3947: Negotiation of NAT-Traversal in the IKE
+- RFC 3193: Securing L2TP using IPsec (IKEv1 Phase 1/2)
+- RFC 9329: TCP Encapsulation of IKE and IPsec Packets (RFC 8229 대체)
 - RFC 8221: Cryptographic Algorithm Implementation Requirements for ESP and AH (2017)
 - RFC 7693: The BLAKE2 Cryptographic Hash and Message Authentication Code
 - RFC 7748: Elliptic Curves for Diffie-Hellman Key Agreement (Curve25519)
@@ -1039,6 +1041,6 @@ PPTP              ── ❌ 신규 사용 금지
 
 **작성일**: 2026-06-29
 
-**마지막 업데이트**: 2026-08-10
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

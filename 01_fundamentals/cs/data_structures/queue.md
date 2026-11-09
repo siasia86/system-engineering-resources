@@ -105,10 +105,10 @@ class Queue:
 front=0, rear=4, capacity=5:
 
 ┌───┬───┬───┬───┬───┐
-│ _ │ 2 │ 3 │ 4 │ _ │
+│ 1 │ 2 │ 3 │ 4 │ 5 │
 └───┴───┴───┴───┴───┘
   0   1   2   3   4  
-      f           r  
+  f               r
 
 dequeue → front = (0+1) % 5 = 1
 enqueue → rear  = (4+1) % 5 = 0  ← Front Reuse
@@ -233,6 +233,6 @@ print(heapq.heappop(pq))  # (1, 'high') ← 우선순위 높은 것 먼저
 
 **작성일**: 2026-04-04
 
-**마지막 업데이트**: 2026-04-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

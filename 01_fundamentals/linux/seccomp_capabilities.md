@@ -20,7 +20,7 @@ root 권한을 세분화한 단위입니다. 프로세스에 필요한 권한만
 
 | Capability             | 의미                             |
 |------------------------|----------------------------------|
-| `CAP_NET_BIND_SERVICE` | 1024 이하 포트 바인딩            |
+| `CAP_NET_BIND_SERVICE` | 1024 미만 포트 바인딩            |
 | `CAP_NET_ADMIN`        | 네트워크 설정 변경               |
 | `CAP_SYS_ADMIN`        | 마운트, namespace 등 시스템 관리 |
 | `CAP_SYS_PTRACE`       | 다른 프로세스 추적 (strace 등)   |
@@ -108,7 +108,7 @@ Docker는 기본적으로 300여 개 시스템 콜 중 위험한 약 44개를 �
 ```bash
 # 기본 프로파일 위치
 cat /etc/docker/seccomp.json 2>/dev/null || \
-  curl -s https://raw.githubusercontent.com/moby/moby/master/profiles/seccomp/default.json | head -30
+  curl -s https://raw.githubusercontent.com/moby/profiles/main/seccomp/default.json | head -30
 
 # seccomp 비활성화 (테스트용, 운영 금지)
 docker run --security-opt seccomp=unconfined ubuntu
@@ -225,6 +225,6 @@ strace ./myapp 2>&1 | grep "EPERM\|EACCES"
 
 **작성일** : 2026-05-21
 
-**마지막 업데이트** : 2026-05-21
+**마지막 업데이트** : 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

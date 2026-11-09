@@ -50,6 +50,7 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 - **[JSON/YAML](python_json_yaml.md)** - 설정 파일, 데이터 교환
 - **[argparse](python_argparse.md)** - CLI 도구 제작
 - **[가상환경](python_virtual_env.md)** - venv, pip, 의존성 관리
+- **[테스트](python_testing.md)** - pytest, unittest, Mock, 커버리지
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -245,6 +246,6 @@ logging.info("작업 시작")
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-08-09
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

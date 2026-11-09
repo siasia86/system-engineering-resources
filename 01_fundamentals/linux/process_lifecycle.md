@@ -141,6 +141,7 @@ nginx (PID:1001)  <- same PID, different program
 
 ```c
 #include <stdio.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 int main() {
@@ -373,8 +374,8 @@ ulimit -u 1000
 ## 참고 자료
 
 - TheLinuxCode: [thelinuxcode.com/fork-system-call-linux](https://thelinuxcode.com/fork-system-call-linux/) — ★★☆☆☆
-- Linux man page fork(2): [man7.org/linux/man-pages/man2/fork.2.html](https://man7.org/linux/man-pages/man2/fork.2.html) — ★★★★☆
-- Linux man page exec(3): [man7.org/linux/man-pages/man3/exec.3.html](https://man7.org/linux/man-pages/man3/exec.3.html) — ★★★★☆
+- Linux man page fork(2): [man7.org/linux/man-pages/man2/fork.2.html](https://man7.org/linux/man-pages/man2/fork.2.html) — ★★★☆☆
+- Linux man page exec(3): [man7.org/linux/man-pages/man3/exec.3.html](https://man7.org/linux/man-pages/man3/exec.3.html) — ★★★☆☆
 - [apache_install.md](../../02_infrastructure/web_server/apache_install.md)
 
 ---
@@ -392,6 +393,6 @@ ulimit -u 1000
 
 **작성일** : 2026-05-15
 
-**마지막 업데이트** : 2026-05-21
+**마지막 업데이트** : 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

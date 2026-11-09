@@ -22,9 +22,9 @@ Rust의 에러 처리 방식인 Result, Option, ? 연산자, 커스텀 에러 �
 | Java   | try/catch 예외           | 런타임 비용, 어디서 발생할지 불명 |
 | Go     | (value, error) 튜플      | if err != nil 반복, 무시 가능     |
 | Python | try/except 예외          | 런타임 비용, 타입 불명확          |
-| Rust   | Result<T, E> / Option<T> | 컴파일 타임 강제, 무시 불가       |
+| Rust   | Result<T, E> / Option<T> | 타입으로 강제, 무시 시 경고       |
 
-Rust는 에러를 **타입 시스템**으로 표현합니다. 에러를 처리하지 않으면 컴파일이 되지 않습니다.
+Rust는 에러를 **타입 시스템**으로 표현합니다. 성공 값을 꺼내려면 에러 경우를 처리해야 하고, `Result`를 쓰지 않고 버리면 컴파일러가 `#[must_use]` 경고(`unused_must_use`)를 냅니다.
 
 ### 두 가지 에러 카테고리
 
@@ -53,7 +53,7 @@ enum Option<T> {
 ### 기본 사용법
 
 ```rust
-fn find_server(servers: &[&str], name: &str) -> Option<&str> {
+fn find_server<'a>(servers: &[&'a str], name: &str) -> Option<&'a str> {
     servers.iter().find(|&&s| s == name).copied()
 }
 
@@ -208,11 +208,11 @@ fn connect_from_config(path: &str) -> Result<TcpStream, io::Error> {
 
 ### ? 사용 조건
 
-| 조건                      | 설명                                    |
-|---------------------------|-----------------------------------------|
-| 함수 반환 타입이 `Result` | `?`가 `Err`를 반환할 수 있어야 함       |
-| 에러 타입 호환            | `From` 트레이트로 자동 변환 가능해야 함 |
-| `main()`에서도 사용 가능  | `fn main() -> Result<(), E>` 형태       |
+| 조건                          | 설명                                     |
+|-------------------------------|------------------------------------------|
+| 반환 타입이 `Result`/`Option` | `?`가 `Err`/`None`을 반환할 수 있어야 함 |
+| 에러 타입 호환                | `From` 트레이트로 자동 변환 가능해야 함  |
+| `main()`에서도 사용 가능      | `fn main() -> Result<(), E>` 형태        |
 
 ### main()에서 ? 사용
 
@@ -554,11 +554,9 @@ fn main() {
 - anyhow 크레이트: [docs.rs/anyhow](https://docs.rs/anyhow) — ★★★☆☆
 - thiserror 크레이트: [docs.rs/thiserror](https://docs.rs/thiserror) — ★★★☆☆
 - Error Handling in Rust (blog): [nick.groenen.me](https://nick.groenen.me/posts/rust-error-handling/) — ★★☆☆☆
+- std::result (`#[must_use]` 경고): [doc.rust-lang.org/std/result](https://doc.rust-lang.org/std/result/index.html) — ★★★☆☆
 
 ---
-
-## 통계
-
 
 ## 통계
 
@@ -573,6 +571,6 @@ fn main() {
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-07-31
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

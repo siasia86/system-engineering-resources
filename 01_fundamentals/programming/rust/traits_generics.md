@@ -115,19 +115,19 @@ struct Server {
 
 ### 자주 사용하는 트레이트
 
-| 트레이트      | 용도                   | derive 가능 | 예시                          |
-|---------------|------------------------|-------------|-------------------------------|
-| `Debug`       | `{:?}` 디버그 출력     | ✅          | `println!("{:?}", server)`    |
-| `Display`     | `{}` 사용자 출력       | ❌          | `impl fmt::Display for T`     |
-| `Clone`       | 깊은 복사 `.clone()`   | ✅          | `let s2 = s1.clone()`         |
-| `Copy`        | 암묵적 복사            | ✅          | 스택 타입만                   |
-| `PartialEq`   | `==` / `!=` 비교       | ✅          | `if a == b`                   |
-| `Eq`          | 전순서 동치 (NaN 제외) | ✅          | `HashMap` 키 조건             |
-| `Hash`        | 해시 계산              | ✅          | `HashMap`/`HashSet` 키        |
-| `Default`     | 기본값 생성            | ✅          | `Config::default()`           |
-| `From`/`Into` | 타입 변환              | ❌          | `String::from("hello")`       |
-| `Iterator`    | 반복자                 | ❌          | `for item in collection`      |
-| `Drop`        | 소멸자 (리소스 정리)   | ❌          | 파일 핸들, 네트워크 연결 정리 |
+| 트레이트      | 용도                 | derive 가능 | 예시                          |
+|---------------|----------------------|-------------|-------------------------------|
+| `Debug`       | `{:?}` 디버그 출력   | ✅          | `println!("{:?}", server)`    |
+| `Display`     | `{}` 사용자 출력     | ❌          | `impl fmt::Display for T`     |
+| `Clone`       | 깊은 복사 `.clone()` | ✅          | `let s2 = s1.clone()`         |
+| `Copy`        | 암묵적 복사          | ✅          | 스택 타입만                   |
+| `PartialEq`   | `==` / `!=` 비교     | ✅          | `if a == b`                   |
+| `Eq`          | 동치 관계 (NaN 제외) | ✅          | `HashMap` 키 조건             |
+| `Hash`        | 해시 계산            | ✅          | `HashMap`/`HashSet` 키        |
+| `Default`     | 기본값 생성          | ✅          | `Config::default()`           |
+| `From`/`Into` | 타입 변환            | ❌          | `String::from("hello")`       |
+| `Iterator`    | 반복자               | ❌          | `for item in collection`      |
+| `Drop`        | 소멸자 (리소스 정리) | ❌          | 파일 핸들, 네트워크 연결 정리 |
 
 ### Display 구현 예시
 
@@ -487,11 +487,9 @@ where
 - The Rust Programming Language Ch.10: [doc.rust-lang.org/book/ch10-00-generics.html](https://doc.rust-lang.org/book/ch10-00-generics.html) — ★★★★☆
 - Rust by Example - Traits: [doc.rust-lang.org/rust-by-example/trait.html](https://doc.rust-lang.org/rust-by-example/trait.html) — ★★★☆☆
 - Rust Design Patterns: [rust-unofficial.github.io/patterns](https://rust-unofficial.github.io/patterns/) — ★★★☆☆
+- std::cmp::Eq (동치 관계): [doc.rust-lang.org/std/cmp/trait.Eq.html](https://doc.rust-lang.org/std/cmp/trait.Eq.html) — ★★★☆☆
 
 ---
-
-## 통계
-
 
 ## 통계
 
@@ -506,6 +504,6 @@ where
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-07-31
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

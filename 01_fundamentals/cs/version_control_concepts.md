@@ -206,7 +206,7 @@ Working Copy state (e.g., after "svn up -r 180", HEAD is r185)
 
 HEAD      = r185  (repository latest)
 BASE      = r180  (current Working Copy basis)
-PREV      = r179  (BASE - 1)
+PREV      = r174  (COMMITTED - 1)
 COMMITTED = r175  (last commit of the specific file)
 ```
 
@@ -357,7 +357,7 @@ Developer A                    Developer B
 
 ### 아키텍처 비교
 
-| 항목           | SVN 1.14                   | Git 2.x                      |
+| 항목           | SVN 1.15                   | Git 2.x                      |
 |----------------|----------------------------|------------------------------|
 | 모델           | 중앙집중형 (CVCS)          | 분산형 (DVCS)                |
 | 저장소         | 서버에만 존재              | 모든 클라이언트에 전체 이력  |
@@ -366,7 +366,7 @@ Developer A                    Developer B
 | 오프라인 커밋  | 불가                       | 가능 (push는 나중에)         |
 | 부분 체크아웃  | 지원 (depth 옵션)          | sparse checkout (별도 설정)  |
 | 경로별 권한    | 기본 지원 (authz)          | 기본 미지원 (별도 도구 필요) |
-| 이진 파일 잠금 | 기본 지원                  | Git LFS + 별도 잠금 플러그인 |
+| 이진 파일 잠금 | 기본 지원                  | `git lfs lock` (LFS 내장)    |
 | 학습 곡선      | 낮음                       | 높음                         |
 | 대형 파일 처리 | 보통                       | Git LFS 필요                 |
 | 이력 재작성    | 어려움 (서버 관리자 필요)  | 용이 (rebase, amend 등)      |
@@ -411,9 +411,9 @@ git svn clone https://svn.example.com/repos/myrepo \
 ### SVN hooks를 활용한 자동화
 
 ```bash
+#!/bin/bash
 # pre-commit hook: enforce terraform validate on .tf files
 # /srv/svn/myrepo/hooks/pre-commit
-#!/bin/bash
 REPOS="$1"
 TXN="$2"
 
@@ -448,8 +448,8 @@ Monthly           : full dump to offsite (S3, tape)
 ```bash
 # crontab example
 # incremental backup at 2 AM daily
-0 2 * * * svnadmin dump /srv/svn/myrepo -r $(cat /var/svn/last_backup_rev):HEAD \
-    --incremental >> /backup/svn/myrepo_incr_$(date +\%Y\%m\%d).svndump
+# (crontab does not support line continuation; keep each entry on one line)
+0 2 * * * svnadmin dump /srv/svn/myrepo -r $(cat /var/svn/last_backup_rev):HEAD --incremental >> /backup/svn/myrepo_incr_$(date +\%Y\%m\%d).svndump
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -460,6 +460,9 @@ Monthly           : full dump to offsite (S3, tape)
 
 - SVN Book: [svnbook.red-bean.com](https://svnbook.red-bean.com/) — ★★★★☆
 - Apache Subversion: [subversion.apache.org](https://subversion.apache.org/) — ★★★☆☆
+- Apache Subversion 1.15 Release Notes: [subversion.apache.org](https://subversion.apache.org/docs/release-notes/1.15.html) — ★★★☆☆
+- Git LFS: [git-lfs-lock(1)](https://github.com/git-lfs/git-lfs/blob/main/docs/man/git-lfs-lock.adoc) — ★★★☆☆
+- Linux man-pages: [crontab(5)](https://man7.org/linux/man-pages/man5/crontab.5.html) — ★★★☆☆
 - Pro Git (Git 비교 참고): [git-scm.com/book](https://git-scm.com/book/ko/v2) — ★★★★☆
 
 ---
@@ -477,6 +480,6 @@ Monthly           : full dump to offsite (S3, tape)
 
 **작성일**: 2026-07-29
 
-**마지막 업데이트**: 2026-07-29
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

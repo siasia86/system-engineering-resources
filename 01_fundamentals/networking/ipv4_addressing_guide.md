@@ -239,9 +239,9 @@ Usable: 256 - 5 = 251
 | /18  | 16,384  | 5        | 16,379      | ✅ 대규모 VPC    |
 | /20  | 4,096   | 5        | 4,091       | ✅ 중규모 VPC    |
 | /24  | 256     | 5        | 251         | ✅ 일반적        |
-| /28  | 16      | 5        | 11          | ✅ AWS 권장 최소 |
-| /29  | 8       | 5        | 3           | 🟡 매우 제한적   |
-| /30  | 4       | 5        | 0           | ❌ 사용 불가     |
+| /28  | 16      | 5        | 11          | ✅ AWS 허용 최소 |
+| /29  | 8       | 5        | 3           | ❌ 생성 불가     |
+| /30  | 4       | 5        | 0           | ❌ 생성 불가     |
 
 ### /30 사용 불가 이유
 
@@ -260,7 +260,7 @@ Usable: 256 - 5 = 251
 All 4 IPs reserved → no hosts assignable
 ```
 
-🟡 AWS VPC 서브넷 최소 권장 크기: **/28** (실사용 11개)
+🟡 AWS VPC IPv4 서브넷은 **/16 ~ /28**만 생성할 수 있습니다. 최소 크기는 **/28** (실사용 11개)이며 /29·/30은 예약 IP 계산과 별개로 생성 자체가 불가합니다.
 
 ### 10.120.0.0/20 서브넷 분할 예시
 
@@ -362,6 +362,7 @@ AWS 실사용 IP   = 전체 IP - 5
 - RFC 1918: Private Address Space
 - RFC 4632: CIDR
 - Subnet Calculator: [subnet-calculator.com](https://www.subnet-calculator.com/) — ★☆☆☆☆
+- AWS VPC Subnet sizing: [docs.aws.amazon.com](https://docs.aws.amazon.com/vpc/latest/userguide/subnet-sizing.html) — ★★★☆☆
 
 ---
 
@@ -378,6 +379,6 @@ AWS 실사용 IP   = 전체 IP - 5
 
 **작성일**: 2026-04-22
 
-**마지막 업데이트**: 2026-04-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

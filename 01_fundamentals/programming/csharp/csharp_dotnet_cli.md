@@ -22,10 +22,10 @@ dotnet new console -n MyApp          # 콘솔 앱
 dotnet new webapi -n MyApi           # Web API
 dotnet new classlib -n MyLib         # 클래스 라이브러리
 dotnet new xunit -n MyTests          # xUnit 테스트
-dotnet new sln -n MySolution         # 솔루션 파일
+dotnet new sln -n MySolution         # 솔루션 파일 (.NET 10+: .slnx 기본)
 
 # 솔루션에 프로젝트 추가
-dotnet sln MySolution.sln add MyApp/MyApp.csproj
+dotnet sln MySolution.slnx add MyApp/MyApp.csproj
 
 # 템플릿 목록 확인
 dotnet new list
@@ -49,7 +49,7 @@ dotnet clean                         # 빌드 결과물 제거
 dotnet --version                     # SDK 버전
 dotnet --list-sdks                   # 설치된 SDK 목록
 dotnet --list-runtimes               # 설치된 런타임 목록
-dotnet -vv                           # 자세한 버전 정보
+dotnet --info                        # SDK·런타임·환경 상세 정보
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -102,11 +102,10 @@ MSBuild XML 기반입니다. 수동 편집 가능합니다.
 | 속성                    | 값 예시                   | 설명                             |
 |-------------------------|---------------------------|----------------------------------|
 | `TargetFramework`       | `net10.0`, `net8.0`       | 대상 .NET 버전                   |
-| `Nullable`              | `enable` / `disable`      | NRT 활성화                       |
+| `Nullable`              | `enable` / `disable`      | NRT 활성화 (C# 8+, `string?`)    |
 | `ImplicitUsings`        | `enable` / `disable`      | 자주 쓰는 네임스페이스 자동 추가 |
 | `LangVersion`           | `14`, `latest`, `preview` | C# 언어 버전 지정                |
 | `OutputType`            | `Exe` / `Library`         | 출력 타입                        |
-| `Nullable`              | `enable`                  | C# 8+, `string?` 등 NRT 사용     |
 | `TreatWarningsAsErrors` | `true`                    | 경고를 오류로 처리               |
 
 ### 멀티 타겟 프레임워크
@@ -209,7 +208,7 @@ dotnet publish -c Release -r linux-x64 \
 
 | 프레임워크 | 패키지               | 특징                          |
 |------------|----------------------|-------------------------------|
-| xUnit      | `xunit`              | .NET 공식 권장, 병렬 실행     |
+| xUnit      | `xunit`              | 커뮤니티 주도, 병렬 실행      |
 | NUnit      | `NUnit`              | 풍부한 어설션, 오래된 생태계  |
 | MSTest     | `MSTest.TestAdapter` | Microsoft 공식, Visual Studio |
 
@@ -264,6 +263,9 @@ dotnet test --collect:"XPlat Code Coverage"   # 코드 커버리지
 - dotnet CLI: [learn.microsoft.com/dotnet/core/tools](https://learn.microsoft.com/en-us/dotnet/core/tools/) — ★★★☆☆
 - MSBuild props: [learn.microsoft.com/dotnet/core/project-sdk/msbuild-props](https://learn.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props) — ★★★☆☆
 - NuGet CLI: [learn.microsoft.com/nuget/reference/dotnet-commands](https://learn.microsoft.com/en-us/nuget/reference/dotnet-commands) — ★★★☆☆
+- dotnet command options: [learn.microsoft.com/dotnet/core/tools/dotnet](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet) — ★★★☆☆
+- dotnet new sln SLNX default (.NET 10): [learn.microsoft.com/dotnet/core/compatibility/sdk/10.0/dotnet-new-sln-slnx-default](https://learn.microsoft.com/en-us/dotnet/core/compatibility/sdk/10.0/dotnet-new-sln-slnx-default) — ★★★☆☆
+- Testing in .NET: [learn.microsoft.com/dotnet/core/testing](https://learn.microsoft.com/en-us/dotnet/core/testing/) — ★★★☆☆
 
 ---
 
@@ -274,6 +276,6 @@ dotnet test --collect:"XPlat Code Coverage"   # 코드 커버리지
 
 **작성일**: 2026-08-02
 
-**마지막 업데이트**: 2026-08-02
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

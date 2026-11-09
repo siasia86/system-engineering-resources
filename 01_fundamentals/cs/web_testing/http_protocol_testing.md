@@ -123,9 +123,9 @@ curl -sS -o /dev/null -w '%{http_code}\n' -X DELETE https://www.example.com/
 curl -sS -o /dev/null -w '%{http_version}\n' --http2 https://www.example.com/
 curl -sS -o /dev/null -w '%{http_version}\n' --http1.1 https://www.example.com/
 
-# 한 연결에서 두 요청 (verbose 출력의 "Re-using existing connection" 확인)
+# 한 연결에서 두 요청 (verbose 출력의 "Reusing existing", 구버전은 "Re-using existing" 확인)
 curl -sS -v -o /dev/null -o /dev/null \
-  https://www.example.com/a https://www.example.com/b 2>&1 | grep -i 're-using'
+  https://www.example.com/a https://www.example.com/b 2>&1 | grep -iE 're-?using'
 
 # Host 헤더 누락 원시 요청 (평문 테스트 서버)
 printf 'GET / HTTP/1.1\r\nConnection: close\r\n\r\n' | nc 192.0.2.10 80
@@ -171,6 +171,7 @@ ALPN 결과는 `openssl s_client -connect 192.0.2.10:443 -servername www.example
 - RFC 9113 HTTP/2: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9113.html)
 - nginx ngx_http_core_module: [nginx.org](https://nginx.org/en/docs/http/ngx_http_core_module.html) — ★★★☆☆
 - curl man page: [curl.se/docs/manpage.html](https://curl.se/docs/manpage.html) — ★★★☆☆
+- curl 연결 재사용 메시지 소스(lib/url.c): [github.com/curl/curl](https://github.com/curl/curl/blob/master/lib/url.c) — ★★★☆☆
 - [HTTP 메서드](../../networking/http_methods.md)
 - [에러 코드](../../networking/error_codes.md)
 
@@ -189,6 +190,6 @@ ALPN 결과는 `openssl s_client -connect 192.0.2.10:443 -servername www.example
 
 **작성일**: 2026-10-27
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

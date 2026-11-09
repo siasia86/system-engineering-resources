@@ -241,7 +241,7 @@ fstat(3, {st_mode=S_IFREG|0644, st_size=625344, ...}) = 0
 mmap(NULL, 627472, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x730934309000
 close(3) = 0
 ```
-- **의미**: 정규표현식 처리 라이브러리 로딩 (ls의 패턴 매칭용)
+- **의미**: 정규표현식 처리 라이브러리 로딩 (libselinux가 의존하는 라이브러리)
 
 ### 7. 스레드 및 프로세스 설정
 
@@ -306,7 +306,7 @@ statfs("/selinux", 0x7ffcf0b4a740) = -1 ENOENT (No such file or directory)
 ```c
 getrandom("\x5b\x98\x60\xd6\x85\xf3\xf6\xe6", 8, GRND_NONBLOCK) = 8
 ```
-- **의미**: 보안 관련 난수 생성 (ASLR 등)
+- **의미**: glibc malloc의 tcache 키 초기화용 난수 생성 (ASLR은 커널이 처리)
 
 ### 13. 힙 확장
 
@@ -761,7 +761,7 @@ ltrace -c myapp
 strace -e trace=file myapp 2>&1 | grep -E "ENOENT|EACCES"
 
 # 메모리 문제
-ltrace -e 'malloc,free' myapp
+ltrace -e 'malloc+free' myapp
 
 # 네트워크 문제
 strace -e trace=network myapp
@@ -770,8 +770,8 @@ strace -e trace=network myapp
 **3단계: 타임라인 분석**
 ```bash
 # 시간 순서로 추적
-strace -tt -T myapp > strace.log
-ltrace -tt -T myapp > ltrace.log
+strace -tt -T -o strace.log myapp
+ltrace -tt -T -o ltrace.log myapp
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -862,7 +862,7 @@ strace -c -S time myapp
 **디버깅:**
 ```bash
 # malloc/free 추적
-ltrace -e 'malloc,calloc,realloc,free' myapp > mem.log
+ltrace -e 'malloc+calloc+realloc+free' -o mem.log myapp
 
 # 분석
 echo "Allocations: $(grep -c malloc mem.log)"
@@ -1118,11 +1118,11 @@ done
 ### 3. 조건부 추적
 
 ```bash
-# 에러만 추적
-strace -e trace=all -e fault=all myapp 2>&1 | grep -E "= -1"
+# 에러를 반환한 시스템 콜만 출력 (-Z, --failed-only)
+strace -Z myapp
 
 # 느린 시스템 콜만
-strace -T myapp 2>&1 | awk '$NF > 0.1'
+strace -T myapp 2>&1 | awk '{ t=$NF; gsub(/[<>]/,"",t); if (t+0 > 0.1) print }'
 ```
 
 ### 4. 실시간 모니터링
@@ -1151,9 +1151,9 @@ strace -e trace=file -p $(pgrep myapp) 2>&1 | grep --line-buffered openat
 - `ftrace` - 커널 함수 추적
 
 **온라인 리소스:**
-- strace GitHub: [github.com/strace/strace](https://github.com/strace/strace) — ★★☆☆☆
-- Linux man pages: [man7.org](https://man7.org/) — ★★☆☆☆
-- System call table: [syscalls.kernelgrok.com](https://syscalls.kernelgrok.com/) — ★★☆☆☆
+- strace GitHub: [github.com/strace/strace](https://github.com/strace/strace) — ★★★☆☆
+- Linux man pages: [man7.org](https://man7.org/) — ★★★☆☆
+- System call list (syscalls(2)): [man7.org/linux/man-pages/man2/syscalls.2.html](https://man7.org/linux/man-pages/man2/syscalls.2.html) — ★★★☆☆
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -1202,9 +1202,9 @@ strace -o /tmp/trace.log -s 128 -p <PID>
 
 ## 참고 자료
 
-- strace GitHub: [strace](https://github.com/strace/strace) — ★★☆☆☆
-- Linux man pages - strace: [man7.org](https://man7.org/linux/man-pages/man1/strace.1.html) — ★★☆☆☆
-- Brendan Gregg - strace: [brendangregg.com](https://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html) — ★★★☆☆
+- strace GitHub: [strace](https://github.com/strace/strace) — ★★★☆☆
+- Linux man pages - strace: [man7.org](https://man7.org/linux/man-pages/man1/strace.1.html) — ★★★☆☆
+- Brendan Gregg - strace: [brendangregg.com](https://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html) — ★★☆☆☆
 
 ---
 
@@ -1221,6 +1221,6 @@ strace -o /tmp/trace.log -s 128 -p <PID>
 
 **작성일**: 2026-01-29
 
-**마지막 업데이트**: 2026-08-23
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

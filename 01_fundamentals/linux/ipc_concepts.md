@@ -55,7 +55,8 @@ IPC(Inter-Process Communication)는 프로세스 간 데이터 교환 및 동기
 # 쉘에서 파이프
 ls -al | grep ".md"
 
-# 파이프 버퍼 크기 확인 (기본 64KB)
+# 파이프 기본 용량은 16페이지(4KB 페이지에서 64KB)
+# 아래 값은 비특권 사용자가 F_SETPIPE_SZ로 늘릴 수 있는 최대 크기 (기본 1MB)
 cat /proc/sys/fs/pipe-max-size
 ```
 
@@ -409,15 +410,15 @@ cat /proc/sys/kernel/shmall    # 전체 공유 메모리 최대 (pages)
 
 # 세마포어 한도
 cat /proc/sys/kernel/sem
-# 250 32000 32 128
-# ^   ^     ^  ^
-# 최대값 전체수 oops 배열수
+# 32000 1024000000 500 32000   (Linux 3.19+ 기본값, 이전은 250 32000 32 128)
+# SEMMSL(세트당 최대 개수) SEMMNS(전체 최대 개수) SEMOPM(semop 1회 최대 연산 수) SEMMNI(최대 세트 수)
 
 # 메시지 큐 한도
 cat /proc/sys/kernel/msgmax    # 단일 메시지 최대 크기
 cat /proc/sys/kernel/msgmnb    # 큐 최대 크기
 
-# PostgreSQL 등 DB 서버에서 자주 조정
+# Linux 3.16+는 shmmax·shmall 기본값이 ULONG_MAX - 2^24로 사실상 무제한이라 보통 조정 불필요
+# 오래된 커널에서만 필요 시 조정 (현대 커널에서 값을 지정하면 오히려 한도가 낮아짐)
 echo "kernel.shmmax=68719476736" >> /etc/sysctl.conf  # 64GB
 sysctl -p
 ```
@@ -475,6 +476,7 @@ Network
 
 - Linux man pages: [man7.org/linux/man-pages](https://man7.org/linux/man-pages/man7/ipc_namespaces.7.html) — ★★★☆☆
 - Linux man pages — svipc: [man7.org/linux/man-pages/man7/svipc.7.html](https://man7.org/linux/man-pages/man7/svipc.7.html) — ★★★☆☆
+- Linux man pages — pipe(7)·shmget(2)·semget(2): [man7.org/linux/man-pages/man7/pipe.7.html](https://man7.org/linux/man-pages/man7/pipe.7.html) — ★★★☆☆
 - [namespace_concepts.md](namespace_concepts.md)
 - [strace.md](./strace.md)
 
@@ -482,6 +484,6 @@ Network
 
 **작성일** : 2026-05-21
 
-**마지막 업데이트** : 2026-05-21
+**마지막 업데이트** : 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

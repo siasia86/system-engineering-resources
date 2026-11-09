@@ -346,16 +346,17 @@ Router A ----X---- Router B
 
 - Cloudflare BGP Blackhole 설명: <https://www.cloudflare.com/learning/ddos/glossary/ddos-blackhole-routing/>
 - RTBH (RFC 5635): <https://datatracker.ietf.org/doc/html/rfc5635>
-- BGP Flowspec (RFC 5575): <https://datatracker.ietf.org/doc/html/rfc5575>
+- BGP Flowspec (RFC 8955, RFC 5575 대체): <https://datatracker.ietf.org/doc/html/rfc8955>
 
 
 ---
 
 ## 참고 자료
 
-- Cloudflare DDoS Protection: [cloudflare.com](https://www.cloudflare.com/ddos/) — ★★☆☆☆
-- ARIN ASN Registration: [arin.net](https://www.arin.net/resources/guide/asn/) — ★★☆☆☆
-- RFC 4271: BGP-4: [RFC 4271](https://datatracker.ietf.org/doc/html/rfc4271) — ★★☆☆☆
+- Cloudflare DDoS Protection: [cloudflare.com](https://www.cloudflare.com/ddos/) — ★★★☆☆
+- ARIN ASN Registration: [arin.net](https://www.arin.net/resources/guide/asn/) — ★★★☆☆
+- RFC 4271: BGP-4: [RFC 4271](https://datatracker.ietf.org/doc/html/rfc4271) — ★★★★☆
+- RFC 8955: Dissemination of Flow Specification Rules (BGP Flowspec): [RFC 8955](https://www.rfc-editor.org/rfc/rfc8955) — ★★★★☆
 
 ---
 
@@ -372,6 +373,6 @@ Router A ----X---- Router B
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

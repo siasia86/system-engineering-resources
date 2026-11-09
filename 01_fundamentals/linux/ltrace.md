@@ -22,7 +22,7 @@
 # 가장 많이 사용하는 명령어
 ltrace ./myapp                    # 기본 추적
 ltrace -c ./myapp                 # 통계만
-ltrace -e malloc,free ./myapp     # 특정 함수만
+ltrace -e malloc+free ./myapp     # 특정 함수만
 ltrace -p <PID>                   # 실행 중인 프로세스
 ltrace -o output.log ./myapp      # 파일로 저장
 ltrace -T ./myapp                 # 시간 측정
@@ -260,7 +260,7 @@ __memcpy_chk(0x647c31e54d70, 0x647c31e4cf53, 27, 27)  = 0x647c31e54d70
 ### 10. 이후 단계 (출력에서 생략됨)
 
 **정렬:**
-- `qsort()` - 파일 목록 정렬
+- `strcoll()` - 정렬 중 파일명 비교 (정렬 자체는 ls 내부 함수로 처리)
 - 알파벳순, 시간순 등
 
 **파일 정보 가져오기 (ls -l 시):**
@@ -307,7 +307,7 @@ __memcpy_chk(0x647c31e54d70, 0x647c31e4cf53, 27, 27)  = 0x647c31e54d70
    └─ __memcpy_chk()    - 파일명 복사
 
 6. 정렬 및 출력
-   ├─ qsort()           - 정렬
+   ├─ strcoll()         - 정렬 비교
    ├─ stat()            - 파일 정보 (ls -l)
    └─ write()           - 출력
 
@@ -328,7 +328,7 @@ __memcpy_chk(0x647c31e54d70, 0x647c31e4cf53, 27, 27)  = 0x647c31e54d70
 ltrace ls
 
 # 특정 함수만 추적
-ltrace -e opendir,readdir ls
+ltrace -e opendir+readdir ls
 
 # 시스템 콜도 함께 추적
 ltrace -S ls
@@ -352,13 +352,13 @@ ltrace -o output.txt ls
 ### 필터링
 ```bash
 # 특정 라이브러리만
-ltrace -l /lib/x86_64-linux-gnu/libc.so.6 ls
+ltrace -l 'libc.so*' ls
 
 # 함수 제외
 ltrace -e '!strlen' ls
 
 # 여러 함수 추적
-ltrace -e 'open*,read*,write*' ls
+ltrace -e 'open*+read*+write*' ls
 ```
 
 ### 프로세스 추적
@@ -372,8 +372,8 @@ ltrace -f bash -c "ls | grep test"
 
 ### 디버깅
 ```bash
-# 상세 출력
-ltrace -d ls
+# ltrace 자체 디버그 출력
+ltrace -D 77 ls
 
 # 호출 횟수 카운트
 ltrace -c ls
@@ -388,22 +388,22 @@ ltrace -c ls
 ### 1. 성능 분석
 ```bash
 # 각 함수 실행 시간 측정
-ltrace -T ls 2>&1 | grep -E '\[.*\]$'
+ltrace -T ls 2>&1 | grep -E '<[0-9.]+>$'
 ```
 
 ### 2. 메모리 할당 추적
 ```bash
-ltrace -e 'malloc,calloc,realloc,free' ls
+ltrace -e 'malloc+calloc+realloc+free' ls
 ```
 
 ### 3. 파일 작업 추적
 ```bash
-ltrace -e 'open*,read*,write*,close*' ls
+ltrace -e 'open*+read*+write*+close*' ls
 ```
 
 ### 4. 문자열 처리 추적
 ```bash
-ltrace -e 'str*,mem*' ls
+ltrace -e 'str*+mem*' ls
 ```
 
 ### 5. 통계 보기
@@ -430,7 +430,7 @@ ltrace -c ls
 ### 문제 1: 출력이 너무 많음
 ```bash
 # 특정 함수만 추적
-ltrace -e opendir,readdir,closedir ls
+ltrace -e opendir+readdir+closedir ls
 ```
 
 ### 문제 2: 권한 부족
@@ -441,8 +441,8 @@ sudo ltrace -p <PID>
 
 ### 문제 3: 프로그램이 느려짐
 ```bash
-# 버퍼링 사용
-ltrace -b ls
+# 추적 함수를 줄이고 파일로 저장
+ltrace -e 'opendir+readdir' -o trace.log ls
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -511,7 +511,7 @@ ltrace -b ls
 
 ### 1. 라이브러리 의존성 확인
 ```bash
-ltrace -l /lib/x86_64-linux-gnu/libc.so.6 myapp
+ltrace -l 'libc.so*' myapp
 ```
 
 ### 2. 성능 병목 찾기
@@ -521,18 +521,19 @@ ltrace -T -c myapp
 
 ### 3. 메모리 누수 의심
 ```bash
-ltrace -e 'malloc,free' myapp | grep -c malloc
-ltrace -e 'malloc,free' myapp | grep -c free
+ltrace -e 'malloc+free' -o alloc.log myapp
+grep -c 'malloc(' alloc.log
+grep -c 'free(' alloc.log
 ```
 
 ### 4. 설정 파일 로딩 확인
 ```bash
-ltrace -e 'fopen,fread,fclose' myapp
+ltrace -e 'fopen+fread+fclose' myapp
 ```
 
 ### 5. 네트워크 함수 추적
 ```bash
-ltrace -e 'socket,connect,send,recv' myapp
+ltrace -e 'socket+connect+send+recv' myapp
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -609,14 +610,14 @@ ltrace -c myapp
 ```bash
 # 의심 영역 집중 추적
 strace -e trace=file myapp 2>&1 | grep ENOENT
-ltrace -e 'fopen,fread' myapp
+ltrace -e 'fopen+fread' myapp
 ```
 
 **3단계: 타임라인 분석**
 ```bash
 # 시간 순서로 추적
-strace -t -T myapp > strace.log
-ltrace -t -T myapp > ltrace.log
+strace -t -T -o strace.log myapp
+ltrace -t -T -o ltrace.log myapp
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -699,7 +700,7 @@ ltrace -c myapp
 **디버깅:**
 ```bash
 # malloc/free 추적
-ltrace -e 'malloc,calloc,realloc,free' myapp > mem.log
+ltrace -e 'malloc+calloc+realloc+free' -o mem.log myapp
 
 # 분석
 grep malloc mem.log | wc -l  # 할당 횟수
@@ -816,7 +817,7 @@ ltrace myapp 2>&1 | tee ltrace.log
 ```
 초기화 → 옵션 파싱 → 환경 확인 → 디렉토리 열기 → 파일 읽기 → 정렬 → 출력 → 종료
    v         v           v            v            v         v       v       v
-setlocale getopt_long  getenv      opendir      readdir   qsort   write  closedir
+setlocale getopt_long  getenv      opendir      readdir  strcoll  write  closedir
 ```
 
 **실제 출력 (축약):**
@@ -854,7 +855,7 @@ closedir(0x...) = 0
 
 **온라인 리소스:**
 - ltrace GitHub: [github.com/dkogan/ltrace](https://github.com/dkogan/ltrace) — ★★☆☆☆
-- Linux man pages: [man7.org](https://man7.org/) — ★★☆☆☆
+- Linux man pages: [man7.org](https://man7.org/) — ★★★☆☆
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -886,7 +887,7 @@ closedir(0x...) = 0
 timeout 60 ltrace -o /tmp/trace.log -p <PID>
 
 # 2. 특정 함수만
-ltrace -e 'malloc,free' -p <PID>
+ltrace -e 'malloc+free' -p <PID>
 
 # 3. 통계만 (오버헤드 최소)
 ltrace -c -p <PID>
@@ -900,7 +901,7 @@ ltrace -c -p <PID>
 
 ## 참고 자료
 
-- ltrace man page: [man7.org](https://man7.org/linux/man-pages/man1/ltrace.1.html) — ★★☆☆☆
+- ltrace man page: [man7.org](https://man7.org/linux/man-pages/man1/ltrace.1.html) — ★★★☆☆
 
 ---
 
@@ -917,6 +918,6 @@ ltrace -c -p <PID>
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-08-23
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

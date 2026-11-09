@@ -37,7 +37,7 @@
 ## 1. C
 
 ### 특징
-- **최소주의**: 작고 단순한 언어 (키워드 32개)
+- **최소주의**: 작고 단순한 언어 (C89 기준 키워드 32개)
 - **하드웨어 직접 제어**: 포인터, 메모리 주소 직접 조작
 - **이식성**: "Write once, compile anywhere"
 - **시스템 프로그래밍의 표준**: 대부분의 OS가 C로 작성됨
@@ -293,7 +293,7 @@ class Program
 - 크로스 플랫폼 (.NET Core/5+)
 
 **단점:**
-- 런타임 필요 (.NET)
+- 런타임 필요 (.NET, self-contained·Native AOT 배포는 제외)
 - GC 일시 정지 (pause)
 - C++보다는 느림
 - 주로 Microsoft 생태계
@@ -308,7 +308,7 @@ class Program
 - **단순함**: 최소한의 문법, 빠른 학습 (키워드 25개)
 - **동시성**: 고루틴으로 쉬운 병렬 처리
 - **빠른 컴파일**: 대규모 프로젝트도 초 단위 빌드
-- **정적 링킹**: 단일 바이너리에 모든 의존성 포함
+- **정적 링킹**: 단일 바이너리에 Go 의존성 포함 (cgo 사용 시 libc 동적 링크)
 
 ### 실행 방식
 ```
@@ -426,7 +426,7 @@ GOOS=linux GOARCH=amd64 go build
 - 매우 빠른 컴파일 (수백만 줄도 초 단위)
 - 단순하고 읽기 쉬운 코드
 - 우수한 동시성 지원 (고루틴)
-- 단일 바이너리 배포 (의존성 없음)
+- 단일 바이너리 배포 (cgo 미사용 시 외부 의존성 없음)
 - 강력한 표준 라이브러리
 - 빠른 실행 속도 (C++에 근접)
 - 내장 포맷터 (gofmt), 테스트 도구
@@ -470,11 +470,11 @@ print(f"Sum: {total}")
 
 **1. 기본 바이트코드 컴파일 (자동)**
 ```bash
-# 실행 시 자동으로 .pyc 생성
+# 실행 시 import한 모듈의 .pyc 자동 생성 (직접 실행한 script.py는 저장하지 않음)
 python script.py
 
 # __pycache__ 디렉토리에 바이트코드 저장됨
-# script.cpython-311.pyc
+# module.cpython-311.pyc
 ```
 
 **2. 수동 바이트코드 컴파일**
@@ -522,7 +522,7 @@ pip install cython
 
 # .py → .c → .so (공유 라이브러리)
 cython script.py --embed
-gcc -O3 script.c -o script $(python3-config --includes --ldflags)
+gcc -O3 script.c -o script $(python3-config --includes --ldflags --embed)
 ```
 
 **5. PyPy (JIT 컴파일러)**
@@ -913,7 +913,7 @@ tail -f /var/log/app.log | grep --line-buffered ERROR
 **장점:**
 - 시스템 명령어 직접 실행
 - 파이프, 리다이렉션으로 강력한 조합
-- 모든 유닉스 시스템에 기본 설치
+- 대부분의 Linux 배포판에 기본 설치 (FreeBSD 등은 별도 설치)
 - 빠른 프로토타이핑
 - 텍스트 처리 강력
 - 다른 언어 스크립트 실행 가능
@@ -1103,7 +1103,7 @@ t2 = threading.Thread(target=lambda: None)
 t1.start(); t2.start()
 t1.join(); t2.join()
 ```
-- GIL로 인해 진정한 병렬 처리 불가
+- 기본 빌드는 GIL로 인해 스레드 병렬 실행 제약 (3.13+ free-threaded 빌드는 GIL 비활성화)
 
 ### Bash
 ```bash
@@ -1159,7 +1159,7 @@ dotnet build              # 빌드
 dotnet run                # 실행
 dotnet publish            # 배포 패키지
 ```
-- .NET Runtime 필요
+- .NET Runtime 필요 (framework-dependent 배포 기준, self-contained·Native AOT는 런타임 포함)
 - NuGet으로 의존성 관리
 
 ### Go
@@ -1183,7 +1183,7 @@ bash script.sh            # 바로 실행
 chmod +x script.sh
 ./script.sh
 ```
-- 별도 설치 불필요
+- 대부분의 Linux에서 별도 설치 불필요
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -1231,9 +1231,16 @@ Bash ―― Python ―― Go ―― C# ―――――― C ―――――― C
 
 ## 참고 자료
 
-- Go Documentation: [go.dev](https://go.dev/doc/) — ★★☆☆☆
+- Go Documentation: [go.dev](https://go.dev/doc/) — ★★★☆☆
 - Python Documentation: [docs.python.org](https://docs.python.org/3/) — ★★★☆☆
-- Microsoft C# Documentation: [learn.microsoft.com](https://learn.microsoft.com/en-us/dotnet/csharp/) — ★★☆☆☆
+- Microsoft C# Documentation: [learn.microsoft.com](https://learn.microsoft.com/en-us/dotnet/csharp/) — ★★★☆☆
+- C keywords: [en.cppreference.com/c/keyword](https://en.cppreference.com/c/keyword) — ★★☆☆☆
+- Go cgo: [pkg.go.dev/cmd/cgo](https://pkg.go.dev/cmd/cgo) — ★★★☆☆
+- Python Compiled Python files: [docs.python.org/3/tutorial/modules.html](https://docs.python.org/3/tutorial/modules.html#compiled-python-files) — ★★★☆☆
+- Python 3.8 python3-config --embed: [docs.python.org/3/whatsnew/3.8.html](https://docs.python.org/3/whatsnew/3.8.html) — ★★★☆☆
+- Python free threading: [docs.python.org/3/howto/free-threading-python.html](https://docs.python.org/3/howto/free-threading-python.html) — ★★★☆☆
+- .NET application publishing: [learn.microsoft.com/dotnet/core/deploying](https://learn.microsoft.com/en-us/dotnet/core/deploying/) — ★★★☆☆
+- FreeBSD Handbook Shells: [docs.freebsd.org/en/books/handbook/basics](https://docs.freebsd.org/en/books/handbook/basics/) — ★★★☆☆
 
 ---
 
@@ -1250,6 +1257,6 @@ Bash ―― Python ―― Go ―― C# ―――――― C ―――――― C
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-08-23
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

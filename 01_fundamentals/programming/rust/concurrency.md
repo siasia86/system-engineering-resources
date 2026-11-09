@@ -14,12 +14,12 @@ Rust의 스레드, async/await, 채널, 동기화 프리미티브를 정리합�
 
 ## 1. 동시성 모델 개요
 
-| 모델        | Rust 구현            | 사용 시나리오                  |
-|-------------|----------------------|--------------------------------|
-| OS 스레드   | `std::thread`        | CPU-bound 작업, 병렬 계산      |
-| 공유 메모리 | `Arc<Mutex<T>>`      | 여러 스레드가 같은 데이터      |
-| 메시지 패싱 | `mpsc`, `crossbeam`  | 프로듀서-컨슈머                |
-| async/await | `tokio`, `async-std` | I/O-bound, 네트워크, 대량 연결 |
+| 모델        | Rust 구현           | 사용 시나리오                  |
+|-------------|---------------------|--------------------------------|
+| OS 스레드   | `std::thread`       | CPU-bound 작업, 병렬 계산      |
+| 공유 메모리 | `Arc<Mutex<T>>`     | 여러 스레드가 같은 데이터      |
+| 메시지 패싱 | `mpsc`, `crossbeam` | 프로듀서-컨슈머                |
+| async/await | `tokio`, `smol`     | I/O-bound, 네트워크, 대량 연결 |
 
 ### Rust 동시성 안전 보장
 
@@ -449,6 +449,7 @@ async fn collect_metrics() {
 ```rust
 use tokio::signal;
 use tokio::sync::broadcast;
+use tokio::time::Duration;
 
 #[tokio::main]
 async fn main() {
@@ -470,7 +471,7 @@ async fn main() {
         }
     });
 
-    // SIGTERM/SIGINT 대기
+    // SIGINT(Ctrl+C) 대기. SIGTERM은 signal::unix::signal(SignalKind::terminate()) 사용
     signal::ctrl_c().await.unwrap();
     println!("Shutdown signal received");
     let _ = shutdown_tx.send(());
@@ -504,13 +505,12 @@ async fn main() {
 ## 참고 자료
 
 - The Rust Programming Language Ch.16: [doc.rust-lang.org/book/ch16-00-concurrency.html](https://doc.rust-lang.org/book/ch16-00-concurrency.html) — ★★★★☆
-- Tokio Tutorial: [tokio.rs/tokio/tutorial](https://tokio.rs/tokio/tutorial) — ★★★★☆
+- Tokio Tutorial: [tokio.rs/tokio/tutorial](https://tokio.rs/tokio/tutorial) — ★★★☆☆
 - Async Book: [rust-lang.github.io/async-book](https://rust-lang.github.io/async-book/) — ★★★☆☆
+- tokio::signal::ctrl_c (SIGINT 처리): [docs.rs/tokio](https://docs.rs/tokio/latest/tokio/signal/fn.ctrl_c.html) — ★★★☆☆
+- async-std 중단 공지 (smol 권고): [github.com/async-rs/async-std](https://github.com/async-rs/async-std) — ★★★☆☆
 
 ---
-
-## 통계
-
 
 ## 통계
 
@@ -525,6 +525,6 @@ async fn main() {
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-07-31
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

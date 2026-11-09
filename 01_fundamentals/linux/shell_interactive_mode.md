@@ -75,9 +75,9 @@ fi
 
 ```
 login + interactive     : SSH login, su - user
-login + non-interactive : ssh user@host 'command'
+login + non-interactive : bash -l -c 'command', su - user -c 'command'
 non-login + interactive : run bash in terminal
-non-login + non-interactive : bash script.sh, cron
+non-login + non-interactive : bash script.sh, cron, ssh user@host 'command'
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -150,8 +150,8 @@ done
 # $- = "himBH" (interactive, i 포함)
 ${-#*i}  →  "mBH"   ≠  "himBH"  →  interactive
 
-# $- = "hBH" (non-interactive, i 없음)
-${-#*i}  →  "hBH"   =  "hBH"    →  non-interactive
+# $- = "hB" (non-interactive, i 없음)
+${-#*i}  →  "hB"    =  "hB"     →  non-interactive
 ```
 
 `${변수#패턴}` — 변수 앞에서 패턴과 일치하는 부분 제거 (최소 매칭).
@@ -162,7 +162,7 @@ ${-#*i}  →  "hBH"   =  "hBH"    →  non-interactive
 ```bash
 # /etc/profile.d/ 에 파일 추가 (권장)
 echo 'export PATH=$PATH:/usr/local/bin' | sudo tee /etc/profile.d/local_bin.sh
-chmod +x /etc/profile.d/local_bin.sh
+sudo chmod +x /etc/profile.d/local_bin.sh
 
 # 현재 세션 즉시 적용
 source /etc/profile.d/local_bin.sh
@@ -228,11 +228,12 @@ source ~/.bashrc && my_func /var/log
 ### SSH 원격 명령 실행 시 환경변수
 
 ```bash
-# non-interactive라 ~/.bashrc 로드 안 됨
+# non-login·non-interactive라 profile 파일 미로드
+# (bash는 sshd 원격 명령에서도 ~/.bashrc를 읽지만, Debian·Ubuntu 기본 ~/.bashrc는 non-interactive면 앞부분에서 return)
 ssh user@host 'echo $MY_VAR'   # 빈 값
 
-# 해결 1: bash -l (login shell)
-ssh user@host 'bash -l -c "echo $MY_VAR"'
+# 해결 1: bash -l (login shell), $MY_VAR는 원격 bash -l 안에서 확장되도록 인용
+ssh user@host "bash -l -c 'echo \$MY_VAR'"
 
 # 해결 2: 명시적 export
 ssh user@host 'export MY_VAR=value; your_command'
@@ -319,7 +320,7 @@ sudo rm /etc/profile.d/my_setting.sh
 ## 참고 자료
 
 - GNU Bash Manual - Interactive Shells: [bash.info](https://www.gnu.org/software/bash/manual/bash.html#Interactive-Shells) — ★★★☆☆
-- Linux man pages - bash: [man7.org](https://man7.org/linux/man-pages/man1/bash.1.html) — ★★☆☆☆
+- Linux man pages - bash: [man7.org](https://man7.org/linux/man-pages/man1/bash.1.html) — ★★★☆☆
 
 ---
 
@@ -336,6 +337,6 @@ sudo rm /etc/profile.d/my_setting.sh
 
 **작성일**: 2026-04-28
 
-**마지막 업데이트**: 2026-04-28
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

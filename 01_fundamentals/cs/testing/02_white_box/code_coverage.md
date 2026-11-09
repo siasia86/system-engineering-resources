@@ -69,7 +69,7 @@ if age >= 18 and has_id:    # 조건1: age>=18, 조건2: has_id
 | TC1 | True    | True   | True      |
 | TC2 | False   | False  | False     |
 
-조건 커버리지 100% (각 조건이 T/F 모두 경험)이지만, 분기 커버리지는 `(True, False)`, `(False, True)` 조합을 놓칠 수 있습니다.
+조건 커버리지 100% (각 조건이 T/F 모두 경험)입니다. 다만 조건 커버리지는 분기 커버리지를 보장하지 않습니다. `(True, False)`, `(False, True)` 두 TC만으로도 조건 커버리지는 100%이지만 복합 결과가 모두 False이므로 True 분기를 실행하지 못합니다.
 
 ### MC/DC (Modified Condition/Decision Coverage)
 
@@ -136,9 +136,9 @@ def get_discount(age, is_member):
 | TC2 | 70  | False     | 분기 2 |
 | TC3 | 30  | False     | 분기 3 |
 
-#### 분기 커버리지 100% 달성
+#### 조건 커버리지 100% 달성
 
-위 3개 TC + 추가:
+위 3개 TC는 두 결정문(`if`, `elif`)의 True/False를 모두 실행하므로 분기 커버리지도 100%입니다. `is_member`가 True인 경우는 없으므로 조건 커버리지 100%를 위해 다음 TC를 추가합니다:
 
 | TC  | age | is_member | 분기 1 조건  |
 |-----|-----|-----------|--------------|
@@ -197,6 +197,6 @@ def get_discount(age, is_member):
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-05-08
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -112,10 +112,11 @@ Low Address  0x0000
 # 프로세스 page fault 통계
 cat /proc/<pid>/stat | awk '{print "minor:", $10, "major:", $12}'
 
-# 시스템 전체
-vmstat 1
-# pgfault  = minor fault/s
-# pgmajfault = major fault/s
+# 시스템 전체 (누적값)
+grep -E '^(pgfault|pgmajfault) ' /proc/vmstat
+# pgfault    = 전체 page fault 누적 수
+# pgmajfault = major fault 누적 수
+# 초당 값은 sar -B 1의 fault/s, majflt/s
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -136,15 +137,15 @@ free -h
 
 cat /proc/meminfo | grep -E "Cached|Buffers|Dirty|Writeback"
 # Buffers:        512 kB   <- 블록 디바이스 버퍼
-# Cached:       4096 MB    <- 파일 page cache
-# Dirty:          64 MB    <- 수정됐지만 미기록 페이지
-# Writeback:       0 kB    <- 현재 디스크에 쓰는 중
+# Cached:     4194304 kB   <- 파일 page cache
+# Dirty:        65536 kB   <- 수정됐지만 미기록 페이지
+# Writeback:        0 kB   <- 현재 디스크에 쓰는 중
 ```
 
 ### Dirty page 제어
 
 ```bash
-# dirty page 비율 한도 (전체 메모리 대비 %)
+# dirty page 비율 한도 (free + 회수 가능 페이지 기준 %)
 cat /proc/sys/vm/dirty_ratio          # 기본 20% — 초과 시 쓰기 블록
 cat /proc/sys/vm/dirty_background_ratio  # 기본 10% — 초과 시 백그라운드 flush
 
@@ -287,6 +288,7 @@ cat /proc/pressure/memory
 ## 참고 자료
 
 - Linux Kernel Docs: [kernel.org/doc/html/latest/admin-guide/mm](https://www.kernel.org/doc/html/latest/admin-guide/mm/) — ★★★☆☆
+- Linux Kernel Docs sysctl vm: [docs.kernel.org/admin-guide/sysctl/vm.html](https://docs.kernel.org/admin-guide/sysctl/vm.html) — ★★★☆☆
 - [oom_hang.md](./oom_hang.md)
 - [cgroup_concepts.md](cgroup_concepts.md)
 
@@ -294,6 +296,6 @@ cat /proc/pressure/memory
 
 **작성일** : 2026-05-21
 
-**마지막 업데이트** : 2026-05-21
+**마지막 업데이트** : 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

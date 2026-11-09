@@ -264,7 +264,7 @@ Output: a b c <length=6, distance=3> d
 |----------|------|---------------------------------------------|----------------------------|
 | LZ77     | 1977 | 슬라이딩 윈도우 + `<length, distance>` 참조 | DEFLATE, zstd, LZ4, brotli |
 | LZ78     | 1978 | 명시적 사전 구축 + 사전 인덱스 참조         | -                          |
-| LZW      | 1984 | LZ78 변형, 사전을 출력에 싣지 않음          | GIF, 구 UNIX `compress`    |
+| LZW      | 1984 | LZ78 변형, 초기 사전 + 인덱스만 출력        | GIF, 구 UNIX `compress`    |
 | BWT      | 1994 | 블록 정렬로 같은 문자를 인접 배치           | bzip2                      |
 
 실무 포맷은 대부분 LZ77 계열을 쓰고, 그 출력을 엔트로피 코딩으로 한 번 더 줄입니다.
@@ -293,10 +293,10 @@ RFC 1951 (P. Deutsch, 1996-05) 로 규격화된 압축 방식입니다. LZ77 로
 
 | 파라미터        | 값                              | 근거            |
 |-----------------|---------------------------------|-----------------|
-| 슬라이딩 윈도우 | 32 KB (32,768 byte)             | RFC 1951 §1.1   |
+| 슬라이딩 윈도우 | 32 KB (32,768 byte)             | RFC 1951 §2     |
 | 최소 일치 길이  | 3 byte                          | RFC 1951 §3.2.5 |
-| 최대 일치 길이  | 258 byte                        | RFC 1951 §1.1   |
-| 최대 참조 거리  | 32 KB                           | RFC 1951 §1.1   |
+| 최대 일치 길이  | 258 byte                        | RFC 1951 §2     |
+| 최대 참조 거리  | 32 KB                           | RFC 1951 §2     |
 | 최악 팽창률     | 32 KB 블록당 5 byte (약 0.015%) | RFC 1951 §1.1   |
 
 윈도우가 32 KB 로 고정되어 있어서 그보다 멀리 떨어진 중복은 찾지 못합니다. 대용량 파일에서 zstd 나 xz 가 유리한 주된 이유입니다.
@@ -333,7 +333,7 @@ DEFLATE 는 압축 데이터 본체만 정의하므로, 실제 파일에는 헤�
 
 | 래퍼        | 규격     | 헤더         | 무결성 검사       | 주 용도                  |
 |-------------|----------|--------------|-------------------|--------------------------|
-| raw deflate | RFC 1951 | 없음         | 없음              | ZIP 엔트리, PNG `IDAT`   |
+| raw deflate | RFC 1951 | 없음         | 없음              | ZIP 엔트리               |
 | zlib        | RFC 1950 | 2 byte       | Adler-32 (4 byte) | HTTP `deflate`, PNG, PDF |
 | gzip        | RFC 1952 | 10 byte 이상 | CRC-32 (4 byte)   | 파일 압축, HTTP `gzip`   |
 
@@ -409,7 +409,7 @@ $ python3 -c "import zlib;print(hex(zlib.crc32(open('a.txt','rb').read())))"
 
 ### 한계
 
-`ISIZE` 가 32비트이므로 원본 크기를 modulo 2^32 로만 기록합니다. 4 GB 이상 파일에서는 `gzip -l` 이 실제와 다른 크기를 보고합니다. 또한 단일 DEFLATE 스트림이라 중간부터 해제할 수 없고 병렬 처리도 불가능합니다. 병렬화가 필요하면 여러 멤버로 나눠 쓰는 `pigz` 를 사용합니다.
+`ISIZE` 가 32비트이므로 원본 크기를 modulo 2^32 로만 기록합니다. 4 GB 이상 파일에서는 `gzip -l` 이 실제와 다른 크기를 보고합니다. 또한 단일 DEFLATE 스트림이라 중간부터 해제할 수 없고 해제를 병렬화할 수 없습니다. 압축 병렬화가 필요하면 입력을 블록으로 나눠 여러 스레드로 압축한 뒤 하나의 gzip 스트림으로 이어 쓰는 `pigz` 를 사용합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -652,7 +652,7 @@ zstd 의 특징은 레벨을 올려도 해제 속도가 거의 변하지 않는 
 | 주의 항목            | 내용                                                             |
 |----------------------|------------------------------------------------------------------|
 | `tar.gz` 랜덤 액세스 | 단일 스트림이므로 특정 파일만 뽑아도 앞부분 전체 해제 필요       |
-| `gzip` 병렬화        | 포맷상 단일 스트림. 병렬 압축은 `pigz` 등 다중 멤버 방식 필요    |
+| `gzip` 병렬화        | 포맷상 단일 스트림. 병렬 압축은 블록 분할 방식의 `pigz` 사용     |
 | `zstd --ultra`       | 레벨 20 이상은 압축·해제 양쪽 메모리 사용량 급증                 |
 | ZIP 비표준 method    | `93`(zstd), `95`(XZ) 는 수신 측 도구가 지원하지 않을 수 있음     |
 | 재압축               | JPEG, MP4, `.zst` 등은 이미 엔트로피 한계에 근접해 크기가 늘어남 |
@@ -709,9 +709,12 @@ zgrep    'pattern' file.gz
 - RFC 7932: Brotli Compressed Data Format
 - Huffman, David A. "A Method for the Construction of Minimum-Redundancy Codes". Proceedings of the IRE, vol. 40, no. 9, pp. 1098-1101, 1952
 - Ziv, Jacob and Lempel, Abraham. "A universal algorithm for sequential data compression". IEEE Transactions on Information Theory, vol. 23, no. 3, pp. 337-343, 1977
+- Welch, Terry A. "A Technique for High-Performance Data Compression". Computer, vol. 17, no. 6, pp. 8-19, 1984
 - PKWARE APPNOTE.TXT: [.ZIP File Format Specification 6.3.10](https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT) — ★★★☆☆
 - Zstandard: [github.com/facebook/zstd](https://github.com/facebook/zstd) — ★★★☆☆
 - zlib Manual: [zlib.net/manual.html](https://zlib.net/manual.html) — ★★★☆☆
+- W3C PNG Specification: [10. Compression (IDAT = zlib datastream)](https://www.w3.org/TR/png-3/) — ★★★☆☆
+- pigz: [zlib.net/pigz](https://zlib.net/pigz/) — ★★★☆☆
 - [이진 트리](data_structures/binary_tree.md)
 - [힙](data_structures/heap.md)
 
@@ -730,6 +733,6 @@ zgrep    'pattern' file.gz
 
 **작성일**: 2026-08-27
 
-**마지막 업데이트**: 2026-08-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

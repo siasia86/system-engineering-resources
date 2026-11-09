@@ -123,6 +123,7 @@ curl -sf http://app.example.com/api/version | jq .version
 ### 실행 전략
 
 ```bash
+# --timeout은 pytest-timeout 플러그인 옵션입니다
 # PR 시: smoke test (핵심 3~5개)
 pytest tests/e2e/ -m smoke --timeout=120
 
@@ -138,7 +139,8 @@ pytest tests/e2e/ --timeout=300
 ## 참고 자료
 
 - Playwright docs: [playwright.dev](https://playwright.dev/) — ★★★☆☆
-- Martin Fowler. "Test Pyramid" — ★★★★☆
+- Martin Fowler. "Test Pyramid" — ★★☆☆☆
+- pytest-timeout: [github.com/pytest-dev/pytest-timeout](https://github.com/pytest-dev/pytest-timeout) — ★★★☆☆
 - [유닛 테스트](unit_testing.md)
 - [통합 테스트](integration_testing.md)
 
@@ -157,6 +159,6 @@ pytest tests/e2e/ --timeout=300
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-05-08
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

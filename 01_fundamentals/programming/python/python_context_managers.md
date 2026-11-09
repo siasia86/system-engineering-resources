@@ -117,7 +117,7 @@ class DatabaseConnection:
         return self.conn
     
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.conn.close()
+        print("DB 연결 해제")  # 실제 연결 객체라면 self.conn.close()
         return False
     
     def connect(self):
@@ -128,6 +128,7 @@ with DatabaseConnection() as conn:
     print(f"사용: {conn}")
 # DB 연결
 # 사용: connection
+# DB 연결 해제
 ```
 
 ### 예외 처리
@@ -512,6 +513,7 @@ with retry_on_error(max_attempts=3) as attempt:
 
 ```python
 import logging
+import time
 from contextlib import contextmanager
 
 @contextmanager
@@ -849,6 +851,6 @@ class GoodContext:
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

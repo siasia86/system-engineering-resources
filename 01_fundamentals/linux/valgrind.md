@@ -84,8 +84,8 @@ valgrind --leak-check=full --track-origins=yes ./myapp
 ### 2. Cachegrind (캐시 프로파일링)
 
 ```bash
-# 캐시 프로파일링
-valgrind --tool=cachegrind ./myapp
+# 캐시 프로파일링 (3.21부터 캐시 시뮬레이션 기본값이 no)
+valgrind --tool=cachegrind --cache-sim=yes ./myapp
 
 # 결과 분석
 cg_annotate cachegrind.out.12345
@@ -167,7 +167,7 @@ valgrind --leak-check=full ./leak
 # 출력:
 # ==12345== 1,024 bytes in 1 blocks are definitely lost
 # ==12345==    at 0x...: malloc
-# ==12345==    by 0x...: main (leak.c:4)
+# ==12345==    by 0x...: main (leak.c:5)
 ```
 
 ### 예제 2: 초기화되지 않은 메모리
@@ -191,18 +191,20 @@ valgrind --track-origins=yes ./uninit
 # 출력:
 # ==12345== Conditional jump or move depends on uninitialised value(s)
 # ==12345==    at 0x...: printf
-# ==12345==    by 0x...: main (uninit.c:5)
+# ==12345==    by 0x...: main (uninit.c:6)
 ```
 
 ### 예제 3: 버퍼 오버플로우
 
 ```c
 // overflow.c
+#include <stdlib.h>
 #include <string.h>
 
 int main() {
-    char buf[10];
+    char *buf = malloc(10);  // Memcheck는 스택·전역 배열 경계를 검사하지 않으므로 힙 사용
     strcpy(buf, "This is too long!");  // 오버플로우
+    free(buf);
     return 0;
 }
 ```
@@ -215,7 +217,7 @@ valgrind ./overflow
 # 출력:
 # ==12345== Invalid write of size 1
 # ==12345==    at 0x...: strcpy
-# ==12345==    by 0x...: main (overflow.c:5)
+# ==12345==    by 0x...: main (overflow.c:7)
 ```
 
 ### 예제 4: Use After Free
@@ -239,7 +241,7 @@ valgrind ./uaf
 
 # 출력:
 # ==12345== Invalid write of size 4
-# ==12345==    at 0x...: main (uaf.c:6)
+# ==12345==    at 0x...: main (uaf.c:7)
 # ==12345==  Address 0x... is 0 bytes inside a block of size 4 free'd
 ```
 
@@ -265,7 +267,7 @@ valgrind ./double_free
 # 출력:
 # ==12345== Invalid free() / delete / delete[] / realloc()
 # ==12345==    at 0x...: free
-# ==12345==    by 0x...: main (double_free.c:6)
+# ==12345==    by 0x...: main (double_free.c:7)
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -345,7 +347,7 @@ valgrind --leak-check=full --track-origins=yes ./myapp
 **생성:**
 ```bash
 # 억제 파일 생성
-valgrind --gen-suppressions=all ./myapp > myapp.supp
+valgrind --gen-suppressions=all ./myapp 2> myapp.supp
 
 # 편집
 vim myapp.supp
@@ -407,18 +409,18 @@ gcc -m64 myapp.c -o myapp
 ### 문제 2: 너무 많은 에러
 
 ```bash
-# 에러 개수 제한
+# 에러 보고 개수 제한 해제 (기본값 yes는 일정 개수 이후 보고 중단)
 valgrind --error-limit=no ./myapp
 
-# 특정 에러만
+# 종료 시 검출 에러와 사용한 억제 목록 출력
 valgrind --show-error-list=yes ./myapp
 ```
 
 ### 문제 3: 라이브러리 에러
 
 ```bash
-# 라이브러리 에러 무시
-valgrind --suppressions=/usr/share/valgrind/default.supp ./myapp
+# 기본 억제 파일(default.supp)은 자동 적용되므로, 추가 라이브러리 에러는 별도 억제 파일로 무시
+valgrind --suppressions=lib.supp ./myapp
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -508,6 +510,8 @@ grep "ERROR SUMMARY" valgrind.log
 
 - Valgrind Documentation: [valgrind.org](https://valgrind.org/docs/manual/manual.html) — ★★★☆☆
 - Valgrind Quick Start: [valgrind.org](https://valgrind.org/docs/manual/quick-start.html) — ★★★☆☆
+- Cachegrind manual: [valgrind.org/docs/manual/cg-manual.html](https://valgrind.org/docs/manual/cg-manual.html) — ★★★☆☆
+- Valgrind FAQ: [valgrind.org/docs/manual/faq.html](https://valgrind.org/docs/manual/faq.html) — ★★★☆☆
 
 ---
 
@@ -524,6 +528,6 @@ grep "ERROR SUMMARY" valgrind.log
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-08-23
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

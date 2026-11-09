@@ -152,7 +152,8 @@ class Config:
 ```python
 from __future__ import annotations  # 어노테이션 지연 평가 (PEP 563, Python 3.7+)
 # 🟡 "기본화" 계획(PEP 563)은 Python 3.10 도입 예정이었으나 취소됨.
-#    현재(Python 3.13 기준) 기본화되지 않음 — 필요 시 명시적 import 필요.
+#    Python 3.14부터는 PEP 649/749 지연 평가가 기본이라 이 import 없이도 전방 참조 가능.
+#    3.13 이하도 지원하려면 명시적 import 필요.
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -457,7 +458,8 @@ pyright script.py
 # mypy.ini 설정 예시
 [mypy]
 python_version = 3.12
-strict = true          # 엄격 모드 (모든 타입 힌트 강제)
+# 엄격 모드 (모든 타입 힌트 강제), 줄 끝 주석은 값으로 읽히므로 별도 줄에 작성
+strict = true
 ignore_missing_imports = true
 ```
 
@@ -506,7 +508,8 @@ print(Config.instance_count())  # 2
 - Python typing docs: [docs.python.org/3/library/typing.html](https://docs.python.org/3/library/typing.html) — ★★★☆☆
 - mypy docs: [mypy.readthedocs.io](https://mypy.readthedocs.io/) — ★★★☆☆
 - PEP 484 Type Hints: [peps.python.org/pep-0484](https://peps.python.org/pep-0484/) — ★★★☆☆
-- PEP 695 Type Parameter Syntax: [peps.python.org/pep-0695](https://peps.python.org/pep-0695/) — ★★☆☆☆
+- PEP 695 Type Parameter Syntax: [peps.python.org/pep-0695](https://peps.python.org/pep-0695/) — ★★★★☆
+- What's New In Python 3.14 (PEP 649/749 지연 평가): [docs.python.org](https://docs.python.org/3.14/whatsnew/3.14.html) — ★★★☆☆
 
 ---
 
@@ -517,6 +520,6 @@ print(Config.instance_count())  # 2
 
 **작성일**: 2026-08-09
 
-**마지막 업데이트**: 2026-08-09
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

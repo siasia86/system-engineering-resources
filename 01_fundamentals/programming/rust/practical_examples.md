@@ -352,7 +352,8 @@ fn file_sha256(path: &Path) -> anyhow::Result<String> {
         hasher.update(&buffer[..n]);
     }
 
-    Ok(format!("{:x}", hasher.finalize()))
+    // sha2 0.11의 출력 타입은 {:x}(LowerHex)를 구현하지 않으므로 바이트별로 변환
+    Ok(hasher.finalize().iter().map(|b| format!("{:02x}", b)).collect())
 }
 
 fn check_integrity(manifest_path: &str) -> anyhow::Result<Vec<(String, bool)>> {
@@ -489,11 +490,9 @@ fn main() {
 - Rust Cookbook: [rust-lang-nursery.github.io/rust-cookbook](https://rust-lang-nursery.github.io/rust-cookbook/) — ★★★☆☆
 - Command-Line Rust: [oreilly.com](https://www.oreilly.com/library/view/command-line-rust/9781098109424/) — ★★★★☆
 - Zero To Production In Rust: [zero2prod.com](https://www.zero2prod.com/) — ★★★☆☆
+- sha2 crate (0.11): [docs.rs/sha2](https://docs.rs/sha2) — ★★★☆☆
 
 ---
-
-## 통계
-
 
 ## 통계
 
@@ -508,6 +507,6 @@ fn main() {
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-07-31
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

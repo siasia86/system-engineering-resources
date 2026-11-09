@@ -70,10 +70,10 @@ CPU 토폴로지와 명령어 feature를 확인합니다.
 lscpu
 lscpu -e=CPU,NODE,SOCKET,CORE
 
-# x86 CPU feature 확인
+# CPU feature 확인 (lscpu는 ARM에서도 Flags 항목으로 표시)
 lscpu | grep -i '^Flags:'
-# 또는
-lscpu | grep -i '^Features:'
+# 또는 ARM의 /proc/cpuinfo 원본 확인
+grep -m1 '^Features' /proc/cpuinfo
 ```
 
 애플리케이션이 요구하는 feature가 Flags/Features 목록에 있는지 확인합니다. VM에서는 호스트 CPU가 아니라 게스트에 노출된 feature가 표시될 수 있습니다.
@@ -450,6 +450,7 @@ Get-Counter '\System\Processor Queue Length'
 - Microsoft Learn: [Hyper-V processor compatibility](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/processor-compatibility-mode) — ★★★☆☆
 - Linux Kernel Documentation: [Scheduler](https://docs.kernel.org/scheduler/) — ★★★☆☆
 - Linux man-pages: [lscpu(1)](https://man7.org/linux/man-pages/man1/lscpu.1.html) — ★★★☆☆
+- util-linux: [lscpu-cputype.c (cpuinfo 항목 해석)](https://github.com/util-linux/util-linux/blob/master/sys-utils/lscpu-cputype.c) — ★★★☆☆
 - Linux man-pages: [perf-stat(1)](https://man7.org/linux/man-pages/man1/perf-stat.1.html) — ★★★☆☆
 - Linux man-pages: [numactl(8)](https://man7.org/linux/man-pages/man8/numactl.8.html) — ★★★☆☆
 - Linux man-pages: [numastat(8)](https://man7.org/linux/man-pages/man8/numastat.8.html) — ★★★☆☆
@@ -460,7 +461,7 @@ Get-Counter '\System\Processor Queue Length'
 
 ![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
 ![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
 ![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
 ![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
@@ -469,6 +470,6 @@ Get-Counter '\System\Processor Queue Length'
 
 **작성일**: 2026-08-21
 
-**마지막 업데이트**: 2026-08-21
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

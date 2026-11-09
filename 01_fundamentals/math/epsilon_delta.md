@@ -90,15 +90,15 @@ x→a
 ### 단계별 절차
 
 ```
-┌─────────────────────────────────────────────────────┐ 
-│              epsilon-delta Proof Structure           │
-├─────────────────────────────────────────────────────┤ 
-│  1. State: "Let ε > 0 be given"                     │ 
-│  2. Find: construct δ in terms of ε                 │ 
-│  3. Assume: 0 < |x - a| < δ                        │  
-│  4. Show: |f(x) - L| < ε                           │  
-│  5. Conclude: therefore lim f(x) = L as x → a      │  
-└─────────────────────────────────────────────────────┘ 
+┌─────────────────────────────────────────────────────┐
+│              epsilon-delta Proof Structure          │
+├─────────────────────────────────────────────────────┤
+│  1. State: "Let ε > 0 be given"                     │
+│  2. Find: construct δ in terms of ε                 │
+│  3. Assume: 0 < |x - a| < δ                         │
+│  4. Show: |f(x) - L| < ε                            │
+│  5. Conclude: therefore lim f(x) = L as x → a       │
+└─────────────────────────────────────────────────────┘
 ```
 
 ### δ 찾기 전략
@@ -248,6 +248,6 @@ f is continuous at a  ⟺  lim f(x) = f(a)
 
 **작성일**: 2026-07-14
 
-**마지막 업데이트**: 2026-07-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

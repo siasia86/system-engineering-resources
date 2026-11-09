@@ -65,14 +65,15 @@
 ### 테스트 분류 실행
 
 ```bash
+# --timeout은 pytest-timeout 플러그인 옵션입니다
 # 빠른 회귀 (PR 시)
 pytest -m "not slow" --timeout=60
 
 # 전체 회귀 (배포 전)
 pytest --timeout=300
 
-# 변경 파일 기반 선택적 실행
-pytest --co -q | grep "$(git diff --name-only HEAD~1 | sed 's/.py//')"
+# 변경 파일 경로와 일치하는 테스트 ID 조회 (--co는 수집만 하고 실행하지 않음)
+pytest --co -q | grep "$(git diff --name-only HEAD~1 | sed 's/\.py$//')"
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -94,7 +95,7 @@ pytest --co -q | grep "$(git diff --name-only HEAD~1 | sed 's/.py//')"
 
 ```python
 def test_issue_1234_negative_balance():
-    """Issue #1234: 동시 출금 시 잔액이 음수가 되는 버그"""
+    """Issue #1234: 잔액을 초과한 출금 시 잔액이 음수가 되는 버그"""
     account = Account(balance=100)
     account.withdraw(100)
     with pytest.raises(InsufficientFundsError):
@@ -106,6 +107,8 @@ def test_issue_1234_negative_balance():
 ## 참고 자료
 
 - ISTQB Foundation Level Syllabus — ★★★☆☆
+- pytest Command-line Flags: [docs.pytest.org](https://docs.pytest.org/en/stable/reference/reference.html#command-line-flags) — ★★★☆☆
+- pytest-timeout: [github.com/pytest-dev/pytest-timeout](https://github.com/pytest-dev/pytest-timeout) — ★★★☆☆
 - [유닛 테스트](unit_testing.md)
 - [통합 테스트](integration_testing.md)
 
@@ -124,6 +127,6 @@ def test_issue_1234_negative_balance():
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-05-08
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

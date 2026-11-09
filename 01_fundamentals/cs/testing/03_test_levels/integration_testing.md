@@ -163,7 +163,7 @@ class TestNginxBackend:
 ```python
 @pytest.fixture(autouse=True)
 def clean_db(db_connection):
-    """각 테스트 전후 DB 초기화"""
+    """각 테스트 후 DB 초기화"""
     yield
     db_connection.execute("TRUNCATE TABLE users")
     db_connection.commit()
@@ -183,7 +183,7 @@ pytest tests/integration/ -m integration
 
 ## 참고 자료
 
-- Martin Fowler. "Integration Test" — ★★★★☆
+- Martin Fowler. "Integration Test" — ★★☆☆☆
 - ISTQB Foundation Level Syllabus — ★★★☆☆
 - [유닛 테스트](unit_testing.md)
 - [Python 테스트 실습](../../../programming/python/python_testing.md)
@@ -203,6 +203,6 @@ pytest tests/integration/ -m integration
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-05-08
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

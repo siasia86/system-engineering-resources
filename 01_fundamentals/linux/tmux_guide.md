@@ -199,8 +199,8 @@ tmux의 scrollback 기록을 검색하거나 복사할 때 복사 모드를 사�
 
 ```text
 C-b [                  복사 모드 진입
-Space                  선택 시작
-Enter                  선택 영역 복사
+Space                  선택 시작 (vi 모드, 기본 emacs 모드는 C-Space)
+Enter                  선택 영역 복사 (vi 모드, 기본 emacs 모드는 M-w)
 q                      복사 모드 종료
 C-b ]                  붙여넣기
 ```
@@ -381,6 +381,6 @@ tmux source-file ~/.tmux.conf
 
 **작성일**: 2026-08-28
 
-**마지막 업데이트**: 2026-08-28
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

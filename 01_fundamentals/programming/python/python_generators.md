@@ -217,7 +217,7 @@ list_comp = [x for x in range(1000000)]
 gen_exp = (x for x in range(1000000))
 
 print(sys.getsizeof(list_comp))  # ~8MB
-print(sys.getsizeof(gen_exp))    # ~128 bytes
+print(sys.getsizeof(gen_exp))    # ~200 bytes
 ```
 
 ### 함수 인자로 사용
@@ -347,7 +347,10 @@ def gen_with_error():
 
 gen = gen_with_error()
 print(next(gen))  # 1
-gen.throw(ValueError)  # ValueError 처리
+try:
+    gen.throw(ValueError)  # ValueError 처리
+except StopIteration:
+    pass  # 처리 후 제너레이터가 끝나면 throw()가 StopIteration을 발생시킴
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -853,6 +856,6 @@ count = sum(1 for _ in gen)
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

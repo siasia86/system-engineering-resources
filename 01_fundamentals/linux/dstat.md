@@ -14,7 +14,7 @@
 
 ## 1. 개요
 
-`dstat`는 여러 시스템 자원 통계를 같은 시간축으로 관찰하는 데 사용합니다. 공식 저장소는 `v0.7.4` 릴리스 이후 archived 상태이므로 배포판과 설치 버전에 차이가 있을 수 있습니다.
+`dstat`는 여러 시스템 자원 통계를 같은 시간축으로 관찰하는 데 사용합니다. 공식 저장소는 `v0.7.4` 릴리스 이후 archived 상태이며, README는 개발 종료를 알리고 후속 개발이 Python 3 호환 fork인 Dool에서 진행된다고 안내합니다. 배포판과 설치 버전에 차이가 있을 수 있습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -55,7 +55,7 @@ dstat --help
 
 ## 5. 주의사항
 
-🟡 공식 저장소가 archived 상태이므로 신규 환경에서는 배포판 패키지의 유지 상태와 대체 도구를 함께 검토합니다.
+🟡 공식 저장소가 archived 상태이므로 신규 환경에서는 배포판 패키지의 유지 상태와 대체 도구(Dool 등)를 함께 검토합니다.
 
 - 통합 화면의 수치는 세부 원인 분석보다 상황 파악에 적합합니다.
 - 디바이스 확장 통계는 `iostat`, 프로세스별 I/O는 `pidstat`로 확인합니다.
@@ -73,6 +73,7 @@ dstat --help
 - 저장장치 도구 공식 참고 노트: [`_reference/storage_tools_official_notes.md`](../../_reference/storage_tools_official_notes.md)
 - 저장장치 도구 개요: [`storage_tools.md`](./storage_tools.md)
 - 공식 저장소: [github.com/dstat-real/dstat](https://github.com/dstat-real/dstat) — ★★★☆☆
+- 후속 fork 저장소(Dool): [github.com/scottchiefbaker/dool](https://github.com/scottchiefbaker/dool) — ★★★☆☆
 
 ---
 
@@ -89,6 +90,6 @@ dstat --help
 
 **작성일**: 2026-08-18
 
-**마지막 업데이트**: 2026-08-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

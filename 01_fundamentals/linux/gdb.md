@@ -324,11 +324,11 @@ gdb ./crash
 
 (gdb) run
 # Program received signal SIGSEGV, Segmentation fault.
-# 0x... in main () at crash.c:5
-# 5        *ptr = 42;
+# 0x... in main () at crash.c:6
+# 6        *ptr = 42;
 
 (gdb) backtrace
-# #0  0x... in main () at crash.c:5
+# #0  0x... in main () at crash.c:6
 
 (gdb) print ptr
 # $1 = (int *) 0x0
@@ -575,9 +575,9 @@ echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 ### 2. 로그 저장
 
 ```bash
-# 출력 로깅
-(gdb) set logging on
+# 출력 로깅 (파일을 먼저 지정한 뒤 활성화, GDB 12 이전은 set logging on)
 (gdb) set logging file debug.log
+(gdb) set logging enabled on
 ```
 
 ### 3. 조건부 명령
@@ -634,7 +634,8 @@ echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
 ## 참고 자료
 
-- GDB Documentation: [sourceware.org/gdb](https://sourceware.org/gdb/documentation/) — ★★☆☆☆
+- GDB Documentation: [sourceware.org/gdb](https://sourceware.org/gdb/documentation/) — ★★★☆☆
+- GDB Logging Output: [sourceware.org](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Logging-Output.html) — ★★★☆☆
 - GDB Cheat Sheet: [darkdust.net](https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf) — ★★☆☆☆
 
 ---
@@ -652,6 +653,6 @@ echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

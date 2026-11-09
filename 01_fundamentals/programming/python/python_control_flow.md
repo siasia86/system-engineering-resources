@@ -193,7 +193,7 @@ while True:
 ### 조건부 while
 
 ```python
-password = "SecurePassword123"
+password = ""
 
 while password != "SecurePassword123":
     password = input("비밀번호 입력: ")
@@ -478,6 +478,6 @@ def find_product():
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

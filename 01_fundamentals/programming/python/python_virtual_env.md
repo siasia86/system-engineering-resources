@@ -244,8 +244,9 @@ pip install -r requirements.txt
 ### pipx (CLI 도구 격리 설치)
 
 ```bash
-# 설치
-pip install pipx
+# 설치 (Ubuntu 23.04+·Debian 12+·Fedora 38+는 PEP 668로 pip 설치가 막히므로 배포판 패키지 사용)
+sudo apt install pipx                  # Fedora: sudo dnf install pipx
+# python3 -m pip install --user pipx   # 그 밖의 배포판
 pipx ensurepath
 
 # CLI 도구를 격리된 환경에 설치
@@ -301,6 +302,7 @@ uv pip freeze > requirements.txt
 
 - Python Documentation: [venv](https://docs.python.org/3/library/venv.html) — ★★★☆☆
 - pip Documentation: [pip.pypa.io](https://pip.pypa.io/en/stable/) — ★★★☆☆
+- pipx Documentation: [Install pipx](https://pipx.pypa.io/stable/how-to/install-pipx.html) — ★★★☆☆
 
 ---
 
@@ -317,6 +319,6 @@ uv pip freeze > requirements.txt
 
 **작성일**: 2026-04-20
 
-**마지막 업데이트**: 2026-04-20
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

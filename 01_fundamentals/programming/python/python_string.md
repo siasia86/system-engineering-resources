@@ -171,7 +171,7 @@ s = "Hello, World!"
 s[0:5]     # 'Hello'
 s[7:]      # 'World!'
 s[:5]      # 'Hello'
-s[-6:]     # 'orld!'
+s[-6:]     # 'World!'
 s[::2]     # 'Hlo ol!'
 s[::-1]    # '!dlroW ,olleH' (역순)
 ```
@@ -329,6 +329,6 @@ stem = name.rsplit('.', 1)[0]  # 'access'
 
 **작성일**: 2026-04-20
 
-**마지막 업데이트**: 2026-04-20
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

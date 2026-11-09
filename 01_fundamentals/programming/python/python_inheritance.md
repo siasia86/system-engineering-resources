@@ -205,7 +205,7 @@ print(d.method())  # B
 
 # MRO 확인
 print(D.__mro__)
-# (<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>)
+# (<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <class 'object'>)
 
 # 또는
 print(D.mro())
@@ -735,7 +735,7 @@ class Service:
 class JSONMixin:
     def to_json(self):
         import json
-        return json.dumps(self.__dict__)
+        return json.dumps(self.__dict__, ensure_ascii=False)
 
 class LogMixin:
     def log(self, msg):
@@ -816,7 +816,7 @@ class Circle(Drawable):
     def draw(self):  # 구현 강제
         print("원 그리기")
 
-# class Square(Drawable):  # draw() 미구현 시 에러!
+# class Square(Drawable):  # draw() 미구현 시 Square() 생성에서 TypeError!
 #     pass
 ```
 
@@ -863,7 +863,7 @@ class Square:
     def draw(self):
         print("사각형")
 
-def render(obj: Drawable):  # Drawable 프로토콜 준수 확인
+def render(obj: Drawable):  # 타입 검사기가 Drawable 프로토콜 준수 확인
     obj.draw()
 
 render(Circle())  # OK
@@ -1311,6 +1311,6 @@ class Child(Parent):
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -366,7 +366,7 @@ CI와 배포 검증에는 다음 항목을 포함합니다.
 ## 참고 자료
 
 - [REST API 공식 참조 노트](../../_reference/rest_api_official_notes.md)
-- REST API Semantics: [rfc-editor.org/rfc/rfc9110](https://www.rfc-editor.org/rfc/rfc9110) — ★★★★☆
+- HTTP Semantics: [rfc-editor.org/rfc/rfc9110](https://www.rfc-editor.org/rfc/rfc9110) — ★★★★☆
 - Problem Details for HTTP APIs: [rfc-editor.org/rfc/rfc9457](https://www.rfc-editor.org/rfc/rfc9457) — ★★★★☆
 - PATCH Method: [rfc-editor.org/rfc/rfc5789](https://www.rfc-editor.org/rfc/rfc5789) — ★★★☆☆
 - OpenAPI Specification: [spec.openapis.org/oas/latest](https://spec.openapis.org/oas/latest.html) — ★★★☆☆
@@ -386,6 +386,6 @@ CI와 배포 검증에는 다음 항목을 포함합니다.
 
 **작성일**: 2026-09-11
 
-**마지막 업데이트**: 2026-09-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

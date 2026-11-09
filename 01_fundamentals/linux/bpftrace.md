@@ -48,7 +48,7 @@ sudo apt-get install bpftrace
 sudo dnf install bpftrace
 
 # 소스 컴파일
-git clone https://github.com/iovisor/bpftrace
+git clone https://github.com/bpftrace/bpftrace
 cd bpftrace
 mkdir build && cd build
 cmake ..
@@ -389,17 +389,19 @@ END {
 
 ### 4. 디스크 I/O 지연
 
+`blk_account_io_start`·`blk_account_io_done`은 최근 커널(예: 6.8)에서 kprobe로 추적할 수 없는 함수이므로 block tracepoint를 사용합니다.
+
 ```bash
 #!/usr/bin/env bpftrace
 
-kprobe:blk_account_io_start {
-    @start[arg0] = nsecs;
+tracepoint:block:block_rq_issue {
+    @start[args->dev, args->sector] = nsecs;
 }
 
-kprobe:blk_account_io_done /@start[arg0]/ {
-    $duration = (nsecs - @start[arg0]) / 1000000;  // ms
+tracepoint:block:block_rq_complete /@start[args->dev, args->sector]/ {
+    $duration = (nsecs - @start[args->dev, args->sector]) / 1000000;  // ms
     @io_latency = hist($duration);
-    delete(@start[arg0]);
+    delete(@start[args->dev, args->sector]);
 }
 
 END {
@@ -503,16 +505,17 @@ sudo setcap cap_sys_admin,cap_bpf=eip /usr/bin/bpftrace
 ### 문제 2: "Could not resolve symbol"
 
 ```bash
-# 디버그 심볼 설치
-sudo apt-get install linux-headers-$(uname -r)
+# 원인: uprobe 대상 바이너리에서 함수 심볼을 찾지 못함 (strip된 바이너리 등)
+# 해결: 사용 가능한 심볼을 확인하고, 필요하면 디버그 심볼(-dbgsym) 패키지 설치
+sudo bpftrace -l 'uprobe:/path/to/binary:*'
 ```
 
 ### 문제 3: "BPF program too large"
 
 ```bash
-# 프로그램 단순화
-# 또는 커널 파라미터 조정
-sudo sysctl -w net.core.bpf_jit_limit=1000000000
+# 프로그램 단순화 (프로브·루프·맵 접근 줄이기)
+# 검증기의 명령어 처리 한도(1M)는 커널 상수이므로 sysctl로 늘릴 수 없음
+# net.core.bpf_jit_limit는 비특권 JIT 메모리 한도이며 이 오류의 해결책이 아님
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -551,7 +554,7 @@ profile:hz:999 # 높은 주파수 (높은 정확도)
 ## 14. 요약
 
 **bpftrace의 강점:**
-- 매우 낮은 오버헤드
+- 낮은 오버헤드 (프로브 종류와 워크로드에 따라 다름)
 - 프로덕션 사용 가능
 - 강력한 스크립팅
 - 커널/유저 공간 모두 추적
@@ -572,9 +575,10 @@ profile:hz:999 # 높은 주파수 (높은 정확도)
 
 ## 참고 자료
 
-- bpftrace GitHub: [bpftrace](https://github.com/bpftrace/bpftrace) — ★★☆☆☆
-- bpftrace Reference Guide: [bpftrace reference](https://github.com/bpftrace/bpftrace/blob/master/docs/reference_guide.md) — ★★☆☆☆
+- bpftrace GitHub: [bpftrace](https://github.com/bpftrace/bpftrace) — ★★★☆☆
+- bpftrace Reference Guide: [bpftrace reference](https://github.com/bpftrace/bpftrace/blob/master/docs/reference_guide.md) — ★★★☆☆
 - Brendan Gregg - BPF Performance Tools: [brendangregg.com](https://www.brendangregg.com/bpf-performance-tools-book.html) — ★★★☆☆
+- Linux 커널 문서 - net.core.bpf_jit_limit: [docs.kernel.org](https://docs.kernel.org/admin-guide/sysctl/net.html) — ★★★☆☆
 
 ---
 
@@ -591,6 +595,6 @@ profile:hz:999 # 높은 주파수 (높은 정확도)
 
 **작성일** : 2026-03-11
 
-**마지막 업데이트**: 2026-08-23
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

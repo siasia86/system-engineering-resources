@@ -247,8 +247,8 @@ sudo tcpdump -tttt
 # 상대 시간
 sudo tcpdump -ttt
 
-# 마이크로초
-sudo tcpdump -tttttt
+# 첫 패킷 기준 경과 시간
+sudo tcpdump -ttttt
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -335,7 +335,7 @@ sudo tcpdump -i eth0 'tcp[tcpflags] & tcp-syn != 0' | wc -l
 ### 예제 5: 느린 연결 디버깅
 
 ```bash
-# 재전송 패킷 확인
+# 연결 시작·종료(SYN/FIN) 패킷 확인 (재전송 판별은 tshark의 tcp.analysis.retransmission 사용)
 sudo tcpdump -i eth0 'tcp[tcpflags] & (tcp-syn|tcp-fin) != 0'
 
 # RTT 측정
@@ -396,8 +396,9 @@ sudo tcpdump vlan 100 and port 80
 # 연결 문제 확인
 sudo tcpdump -i eth0 host 192.168.1.100 and port 80
 
-# 패킷 손실 확인
-sudo tcpdump -i eth0 -c 1000 | grep -c "dup ack"
+# 패킷 손실 확인 (tcpdump 출력에는 중복 ACK 표시가 없으므로 tshark로 분석)
+sudo tcpdump -i eth0 -c 1000 -w loss.pcap
+tshark -r loss.pcap -Y tcp.analysis.duplicate_ack | wc -l
 ```
 
 ### 2. 보안 감사
@@ -528,8 +529,8 @@ sudo tcpdump -w capture.pcap
 # 버퍼 크기 증가
 sudo tcpdump -B 4096
 
-# 즉시 쓰기 비활성화
-sudo tcpdump -U
+# 패킷 단위 즉시 쓰기 (-w와 함께 사용, 버퍼링을 줄여 실시간성 우선)
+sudo tcpdump -U -w capture.pcap
 
 # 패킷 크기 제한
 sudo tcpdump -s 96  # 헤더만
@@ -545,8 +546,8 @@ sudo tcpdump -s 96  # 헤더만
 # tcpdump로 캡처, Wireshark로 분석
 sudo tcpdump -i eth0 -w - | wireshark -k -i -
 
-# 파일 변환
-sudo tcpdump -r capture.pcap -w capture.pcapng
+# 파일 변환 (tcpdump -w는 pcap 형식으로만 저장하므로 editcap 사용)
+editcap -F pcapng capture.pcap capture.pcapng
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -592,8 +593,10 @@ sudo tcpdump -r capture.pcap -w capture.pcapng
 
 ## 참고 자료
 
-- tcpdump Manual: [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) — ★★☆☆☆
-- tcpdump Filters: [tcpdump.org](https://www.tcpdump.org/manpages/pcap-filter.7.html) — ★★☆☆☆
+- tcpdump Manual: [tcpdump(1)](https://www.tcpdump.org/manpages/tcpdump.1.html) — ★★★☆☆
+- tcpdump Filters: [tcpdump.org](https://www.tcpdump.org/manpages/pcap-filter.7.html) — ★★★☆☆
+- Wireshark editcap: [wireshark.org/docs/man-pages/editcap.html](https://www.wireshark.org/docs/man-pages/editcap.html) — ★★★☆☆
+- Wireshark TCP display filter: [wireshark.org/docs/dfref/t/tcp.html](https://www.wireshark.org/docs/dfref/t/tcp.html) — ★★★☆☆
 
 ---
 
@@ -610,6 +613,6 @@ sudo tcpdump -r capture.pcap -w capture.pcapng
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.
