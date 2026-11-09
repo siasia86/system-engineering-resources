@@ -106,12 +106,23 @@ api_addr = "https://127.0.0.1:8200"
 ```
 
 ```bash
+# 패키지가 만든 자체 서명 인증서(CN=Vault)에는 SAN이 없어 https://127.0.0.1:8200 접속 시 x509 검증에 실패합니다.
+# 운영 환경은 사내 CA에서 SAN(IP·DNS)을 넣어 발급받고, 시험 환경은 아래처럼 SAN을 넣어 다시 만듭니다.
+sudo openssl req -x509 -newkey rsa:4096 -sha256 -days 365 -nodes \
+  -keyout /opt/vault/tls/tls.key -out /opt/vault/tls/tls.crt \
+  -subj "/CN=localhost" \
+  -addext "subjectAltName=IP:127.0.0.1,DNS:localhost"
+
 sudo install -d -o vault -g vault -m 0750 /opt/vault/data
 sudo chown -R vault:vault /opt/vault
+sudo chmod 600 /opt/vault/tls/tls.crt /opt/vault/tls/tls.key   # vault 소유, 600
 sudo systemctl enable --now vault
 
+# /opt/vault/tls는 vault 전용(700)이므로 CLI용으로 공개 인증서만 복사합니다(개인 키는 복사하지 않음).
+sudo cat /opt/vault/tls/tls.crt > "$HOME/vault-ca.crt"
+
 export VAULT_ADDR='https://127.0.0.1:8200'
-export VAULT_CACERT='/opt/vault/tls/tls.crt'
+export VAULT_CACERT="$HOME/vault-ca.crt"   # 사내 CA 발급이면 그 CA 인증서 경로
 vault status
 ```
 
@@ -123,7 +134,7 @@ vault status
 
 ```bash
 export VAULT_ADDR='https://127.0.0.1:8200'
-export VAULT_CACERT='/opt/vault/tls/tls.crt'
+export VAULT_CACERT="$HOME/vault-ca.crt"
 umask 077
 
 vault operator init
@@ -166,7 +177,7 @@ TLS를 사용하는 서버에서는 `VAULT_ADDR`와 `VAULT_CACERT`를 함께 설
 
 ```bash
 export VAULT_ADDR='https://127.0.0.1:8200'
-export VAULT_CACERT='/opt/vault/tls/tls.crt'
+export VAULT_CACERT="$HOME/vault-ca.crt"   # 4-1에서 복사한 공개 인증서
 ```
 
 ### 로그인
@@ -388,6 +399,9 @@ Unseal Key를 명령행 인자로 전달하지 말고 `vault operator unseal`을
 
 - HashiCorp Vault Install: [developer.hashicorp.com/vault/install](https://developer.hashicorp.com/vault/install) — ★★★☆☆
 - Vault TCP Listener Configuration: [developer.hashicorp.com/vault/docs/configuration/listener/tcp](https://developer.hashicorp.com/vault/docs/configuration/listener/tcp) — ★★★☆☆
+- Vault CLI 환경 변수(`VAULT_CACERT`): [developer.hashicorp.com/vault/docs/commands](https://developer.hashicorp.com/vault/docs/commands) — ★★★☆☆
+- Vault Linux 패키지 postinst(자체 서명 인증서 생성): [github.com/hashicorp/vault](https://github.com/hashicorp/vault/blob/main/.release/linux/postinst) — ★★★☆☆
+- OpenSSL `req -addext`: [docs.openssl.org/3.0/man1/openssl-req](https://docs.openssl.org/3.0/man1/openssl-req/) — ★★★☆☆
 - Vault Production Hardening: [developer.hashicorp.com/vault/docs/concepts/production-hardening](https://developer.hashicorp.com/vault/docs/concepts/production-hardening) — ★★★☆☆
 - Vault Operator Init: [developer.hashicorp.com/vault/docs/commands/operator/init](https://developer.hashicorp.com/vault/docs/commands/operator/init) — ★★★☆☆
 - Vault KV v2: [developer.hashicorp.com/vault/docs/secrets/kv](https://developer.hashicorp.com/vault/docs/secrets/kv) — ★★★☆☆

@@ -489,25 +489,35 @@ with monitor_performance("데이터 처리"):
 ### 예제 6: 재시도 로직
 
 ```python
-from contextlib import contextmanager
+from contextlib import suppress
 import time
 
-@contextmanager
-def retry_on_error(max_attempts=3, delay=1):
-    for attempt in range(max_attempts):
-        try:
-            yield attempt
-            break
-        except Exception as e:
-            if attempt == max_attempts - 1:
-                raise
-            print(f"시도 {attempt + 1} 실패: {e}")
-            time.sleep(delay)
+# @contextmanager는 yield를 한 번만 할 수 있어 with 블록을 다시 실행할 수 없음
+# (예외 뒤 다시 yield하면 RuntimeError) → 반복문으로 재시도하고 시도마다 suppress 사용
+def retry_call(func, max_attempts=3, delay=1, exceptions=(Exception,)):
+    for attempt in range(max_attempts - 1):
+        with suppress(*exceptions):
+            return func()  # 성공하면 바로 반환
+        print(f"시도 {attempt + 1} 실패, {delay}초 후 재시도")
+        time.sleep(delay)
+    return func()  # 마지막 시도의 예외는 그대로 전파
 
-with retry_on_error(max_attempts=3) as attempt:
-    print(f"시도 {attempt + 1}")
-    # 작업 수행
+calls = 0
+
+def unstable_task():
+    global calls
+    calls += 1
+    if calls < 3:
+        raise ConnectionError("일시적 오류")
+    return "성공"
+
+print(retry_call(unstable_task, delay=0.1, exceptions=(ConnectionError,)))
+# 시도 1 실패, 0.1초 후 재시도
+# 시도 2 실패, 0.1초 후 재시도
+# 성공
 ```
+
+함수 전체에 재시도를 붙이려면 [재시도 데코레이터](./python_decorators.md#재시도-데코레이터)를 사용합니다.
 
 ### 예제 7: 로깅 컨텍스트
 

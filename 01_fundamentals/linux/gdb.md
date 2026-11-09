@@ -549,9 +549,16 @@ gcc -g -O0 myapp.c -o myapp
 ### 문제 3: "ptrace: Operation not permitted"
 
 ```bash
-# 원인: ptrace_scope 설정
-# 해결:
+# 원인: ptrace_scope 설정 (Ubuntu 기본값 1: 자식 프로세스만 attach 가능)
+# 해결 1 (권장): CAP_SYS_PTRACE가 있는 sudo로 attach
+sudo gdb -p <PID>
+
+# 해결 2: 임시로 0으로 변경 (재부팅 시 원복)
+# 주의: 시스템 전체에서 같은 UID의 프로세스끼리 attach가 허용됨
+old=$(cat /proc/sys/kernel/yama/ptrace_scope)    # 현재 값 기록
 echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+# 디버깅 후 원래 값으로 복구 (Ubuntu 기본값 1)
+echo "$old" | sudo tee /proc/sys/kernel/yama/ptrace_scope
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -637,6 +644,7 @@ echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 - GDB Documentation: [sourceware.org/gdb](https://sourceware.org/gdb/documentation/) — ★★★☆☆
 - GDB Logging Output: [sourceware.org](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Logging-Output.html) — ★★★☆☆
 - GDB Cheat Sheet: [darkdust.net](https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf) — ★★☆☆☆
+- Linux 커널 문서 - Yama (ptrace_scope): [docs.kernel.org](https://docs.kernel.org/admin-guide/LSM/Yama.html) — ★★★☆☆
 
 ---
 

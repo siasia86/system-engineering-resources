@@ -638,7 +638,7 @@ override.tf
 # .terraform.lock.hcl  # 팀 협업 시 커밋 권장 (제외하지 않음)
 ```
 
-### IAM 최소 권한
+### IAM 서비스 단위 권한 예시 (최소 권한 아님)
 
 ```hcl
 resource "aws_iam_policy" "terraform_deploy" {
@@ -649,7 +649,7 @@ resource "aws_iam_policy" "terraform_deploy" {
     Statement = [
       {
         Effect   = "Allow"
-        Action   = ["ec2:*", "rds:*", "s3:*"]
+        Action   = ["ec2:*", "rds:*", "s3:*"] # 서비스 단위 와일드카드
         Resource = "*"
         Condition = {
           StringEquals = {
@@ -661,6 +661,8 @@ resource "aws_iam_policy" "terraform_deploy" {
   })
 }
 ```
+
+🟡 이 정책은 서비스 단위 와일드카드와 `Resource = "*"`를 쓰므로 최소 권한이 아닙니다. 리전 조건(`aws:RequestedRegion`)만 걸려 있어 그 리전에서는 EC2·RDS·S3의 모든 작업(삭제 포함)이 허용됩니다. 최소 권한으로 좁히려면 IAM Access Analyzer 정책 생성으로 CloudTrail에 기록된 실제 호출 작업만 담은 정책을 만들고, `Resource`를 대상 ARN으로 제한하며, 태그(`aws:ResourceTag/<키>`) 같은 `Condition`을 더합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -722,6 +724,8 @@ terraform show -json
 - terraform refresh (deprecated): [developer.hashicorp.com/terraform/cli/commands/refresh](https://developer.hashicorp.com/terraform/cli/commands/refresh) — ★★★☆☆
 - variable 블록 (ephemeral 참조 범위): [developer.hashicorp.com/terraform/language/block/variable](https://developer.hashicorp.com/terraform/language/block/variable) — ★★★☆☆
 - Amazon RDS for MySQL 버전 일정: [docs.aws.amazon.com](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MySQL.Concepts.VersionMgmt.html) — ★★★☆☆
+- IAM 보안 모범 사례 (최소 권한·조건): [docs.aws.amazon.com](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) — ★★★☆☆
+- IAM Access Analyzer 정책 생성: [docs.aws.amazon.com](https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-policy-generation.html) — ★★★☆☆
 
 ---
 

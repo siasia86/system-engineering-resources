@@ -102,7 +102,9 @@ cat /etc/modprobe.d/dirtyfrag.conf 2>/dev/null
 sysctl kernel.unprivileged_userns_clone 2>/dev/null
 
 # 7. DirtyFrag-Detector (자동 진단)
-curl -sO https://raw.githubusercontent.com/liamromanis101/DirtyFrag-Detector/main/dirty_frag_detect.py
+#    main 주소는 내용이 바뀔 수 있으므로 커밋 해시로 고정해 받고, 내용을 읽은 뒤 실행합니다.
+curl -fsSO https://raw.githubusercontent.com/liamromanis101/DirtyFrag-Detector/d3839b54354744dba86e6be7b7e107ea1422398e/dirty_frag_detect.py
+less dirty_frag_detect.py   # 실행 전 내용 확인
 python3 dirty_frag_detect.py
 rm -f dirty_frag_detect.py
 ```

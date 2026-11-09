@@ -63,8 +63,12 @@ ansible_connection=winrm
 ansible_winrm_transport=ntlm
 ansible_winrm_port=5986
 ansible_winrm_scheme=https
-ansible_winrm_server_cert_validation=ignore
+ansible_winrm_server_cert_validation=validate
+ansible_winrm_ca_trust_path=/etc/ansible/certs/winrm-ca.pem
+# 시험용 자체 서명 인증서에만: ansible_winrm_server_cert_validation=ignore
 ```
+
+> 🟡 `ignore`는 인증서 검증을 끄므로 시험용 자체 서명 인증서에만 씁니다. 운영에서는 WinRM 인증서를 발급한 CA의 PEM 파일을 `ansible_winrm_ca_trust_path`로 지정하고, 인증서 subject가 접속 호스트와 일치해야 합니다. 이 변수를 지정하지 않으면 certifi 패키지의 기본 CA 묶음을 씁니다.
 
 ---
 
@@ -298,6 +302,7 @@ C:\ProgramData\ssh\administrators_authorized_keys
 
 - Ansible Docs — Windows Guide: [docs.ansible.com](https://docs.ansible.com/ansible/latest/os_guide/windows_usage.html) — ★★★☆☆
 - Ansible Docs — Windows Modules: [docs.ansible.com](https://docs.ansible.com/ansible/latest/collections/ansible/windows/) — ★★★☆☆
+- Ansible Docs — Windows Remote Management (HTTPS 인증서 검증): [docs.ansible.com](https://docs.ansible.com/ansible/latest/os_guide/windows_winrm.html) — ★★★☆☆
 - [windows_openssh_install.md](../../04_security/hardening/windows_openssh_install.md)
 
 ---

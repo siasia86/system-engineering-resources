@@ -91,19 +91,19 @@ git clone https://github.com/V4bel/dirtyfrag.git
 gcc -O0 -Wall -o exp exp.c -lutil
 ```
 
-| 항목                  | 결과        | 비고                                           |
-|-----------------------|-------------|------------------------------------------------|
-| PoC 빌드              | ✅ 성공     | `exp` 바이너리 생성 (62,320 bytes)             |
-| 커널 버전             | ❌ 취약     | 6.8.0-101 — 6.12.x 브랜치 취약 범위            |
-| CVE-2026-43284 패치   | ❌ 미적용   | Ubuntu 백포트 미배포 (2026-05-14 기준)         |
-| `esp4` 모듈           | 🟡 미로드   | 모듈 파일 존재, auto-load 가능, blacklist 없음 |
-| `esp6` 모듈           | 🟡 미로드   | 모듈 파일 존재, auto-load 가능, blacklist 없음 |
-| XFRM netlink 소켓     | ❌ **OPEN** | 비권한 접근 성공 — ESP 익스플로잇 경로 활성    |
-| 비권한 user namespace | ❌ 활성     | `kernel.unprivileged_userns_clone=1`           |
-| blacklist             | ❌ 없음     | `/etc/modprobe.d/` dirtyfrag 설정 없음         |
-| AppArmor              | ✅ 활성     | XFRM 소켓 차단 안 됨                           |
+| 항목                  | 결과      | 비고                                           |
+|-----------------------|-----------|------------------------------------------------|
+| PoC 빌드              | ✅ 성공   | `exp` 바이너리 생성 (62,320 bytes)             |
+| 커널 버전             | ❌ 취약   | 6.8.0-101 — 6.12.x 브랜치 취약 범위            |
+| CVE-2026-43284 패치   | ❌ 미적용 | Ubuntu 백포트 미배포 (2026-05-14 기준)         |
+| `esp4` 모듈           | 🟡 미로드 | 모듈 파일 존재, auto-load 가능, blacklist 없음 |
+| `esp6` 모듈           | 🟡 미로드 | 모듈 파일 존재, auto-load 가능, blacklist 없음 |
+| XFRM netlink 소켓     | 🔵 생성됨 | 참고용 — 소켓 생성만 확인, 취약 판정 근거 아님 |
+| 비권한 user namespace | ❌ 활성   | `kernel.unprivileged_userns_clone=1`           |
+| blacklist             | ❌ 없음   | `/etc/modprobe.d/` dirtyfrag 설정 없음         |
+| AppArmor              | ✅ 활성   | XFRM 소켓 차단 안 됨                           |
 
-**결론: PoC 빌드 성공, XFRM 소켓 비권한 접근 가능 — CVE-2026-43284 익스플로잇 조건 충족**
+**결론: PoC 빌드 성공, 커널 패치 미적용·비권한 user namespace 활성 — CVE-2026-43284 익스플로잇 조건 충족**
 
 > PoC 실행은 수행하지 않았습니다. 실행 시 `/usr/bin/su` page cache를 덮어씁니다. 실행 후 반드시 `echo 3 > /proc/sys/vm/drop_caches` 또는 재부팅이 필요합니다.
 
@@ -127,16 +127,25 @@ uname -r
 lsmod | grep -E "^esp4|^esp6"
 grep -r "esp4\|esp6" /etc/modprobe.d/ 2>/dev/null
 
-# XFRM netlink 소켓 비권한 접근 여부
+# XFRM netlink 소켓 생성 시험 — 참고용(소켓 생성 가능 여부만 확인)
+# 소켓 생성은 비권한 사용자도 보통 성공하며, XFRM 요청 처리에는 CAP_NET_ADMIN이 필요합니다.
+# xfrm_user 모듈이 로드되지 않은 시스템에서는 이 시험이 모듈을 자동 로드할 수 있습니다.
 python3 -c "
 import socket
 s=socket.socket(socket.AF_NETLINK,socket.SOCK_RAW,socket.NETLINK_XFRM)
-print('XFRM: OPEN (취약)')
+print('XFRM: 소켓 생성 가능 (참고용)')
 s.close()
-" 2>/dev/null || echo "XFRM: BLOCKED"
+" 2>/dev/null || echo "XFRM: 소켓 생성 실패 (참고용)"
+
+# 실제 판단은 커널 판·패치 여부(uname -r, 배포판 보안 공지)와 비권한 user namespace 설정으로 합니다.
+sysctl kernel.unprivileged_userns_clone 2>/dev/null               # 1 = 비권한 userns 허용 (일부 배포판 커널)
+sysctl kernel.apparmor_restrict_unprivileged_userns 2>/dev/null   # 1 = AppArmor가 비권한 userns 제한 (Ubuntu)
+sysctl user.max_user_namespaces                                   # 0 = userns 생성 불가
 
 # DirtyFrag-Detector 실행
-curl -sO https://raw.githubusercontent.com/liamromanis101/DirtyFrag-Detector/main/dirty_frag_detect.py
+# main 주소는 내용이 바뀔 수 있으므로 커밋 해시로 고정해 받고, 내용을 읽은 뒤 실행합니다.
+curl -fsSO https://raw.githubusercontent.com/liamromanis101/DirtyFrag-Detector/d3839b54354744dba86e6be7b7e107ea1422398e/dirty_frag_detect.py
+less dirty_frag_detect.py   # 실행 전 내용 확인
 python3 dirty_frag_detect.py
 rm -f dirty_frag_detect.py
 ```
@@ -231,7 +240,9 @@ lsmod | grep -E "^esp4|^esp6"
 uname -r
 lsmod | grep -E "^esp4|^esp6"
 
-curl -sO https://raw.githubusercontent.com/liamromanis101/DirtyFrag-Detector/main/dirty_frag_detect.py
+# 커밋 고정 주소로 받아 내용을 확인한 뒤 실행합니다(3장 탐지 명령어와 같은 이유).
+curl -fsSO https://raw.githubusercontent.com/liamromanis101/DirtyFrag-Detector/d3839b54354744dba86e6be7b7e107ea1422398e/dirty_frag_detect.py
+less dirty_frag_detect.py   # 실행 전 내용 확인
 python3 dirty_frag_detect.py
 rm -f dirty_frag_detect.py
 ```
@@ -246,6 +257,8 @@ rm -f dirty_frag_detect.py
 - Dirty Frag PoC: [github.com/0xBlackash/CVE-2026-43284](https://github.com/0xBlackash/CVE-2026-43284) — ★★☆☆☆
 - Dirty Frag 원본 (V4bel): [github.com/V4bel/dirtyfrag](https://github.com/V4bel/dirtyfrag) — ★★★☆☆
 - DirtyFrag-Detector: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — ★★☆☆☆
+- AppArmor 비권한 user namespace 제한: [gitlab.com/apparmor/apparmor/-/wikis/unprivileged_userns_restriction](https://gitlab.com/apparmor/apparmor/-/wikis/unprivileged_userns_restriction) — ★★★☆☆
+- namespaces(7) `/proc/sys/user` 한도: [man7.org](https://man7.org/linux/man-pages/man7/namespaces.7.html) — ★★★☆☆
 - Linux Kernel Patch: [git.kernel.org](https://git.kernel.org/stable/c/f4c50a4034e62ab75f1d5cdd191dd5f9c77fdff4) — ★★★☆☆
 - Amazon Linux CVE-2026-43284: [explore.alas.aws.amazon.com](https://explore.alas.aws.amazon.com/CVE-2026-43284.html) — ★★★☆☆
 - [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md) — CVE-2026-31431 (CISA KEV)

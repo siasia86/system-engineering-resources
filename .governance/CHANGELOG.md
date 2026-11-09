@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261109-01 / DOCS-32 (2026-11-09): 검증 후속 D1(사용자 승인, 문서 의도를 유지한 경고·안전 옵션만)으로 그대로 따라 하면 데이터 손실·보안 약화가 생기는 예시 14건을 16개 문서에서 정정했습니다. XtraBackup 백업 전 hook은 대상 스키마 명시·`\_`·`-N`·기본 dry run으로, PITR은 binlog 별도 복사·연속 적용과 기존 datadir `mv` 보존으로, `mysqld --initialize` 재실행 안내는 빈 datadir 한정·`--init-file` 재설정으로 바꿨습니다. PAM `pam_permit` 교체에는 원인 확인·백업·원복과 시험 컨테이너 한정 경고를, WinRM 운영 예시에는 인증서 검증과 CA 경로를, Terraform 정책에는 "최소 권한 아님" 제목과 좁히는 방법을 넣었습니다. CVE 문서의 제3자 스크립트는 커밋 해시 고정·실행 전 확인으로, AF_RXRPC·XFRM 소켓 시험은 모듈 자동 로드 경고와 "참고용" 판정으로, Vault 인증서는 SAN 재생성 절차로 고쳤습니다. ssh `accept-new`, bpftrace setcap 경고·capability 목록, gdb `ptrace_scope` 원복, iotop setcap 무효(Python 판), git hook의 stash 전후 비교, `@contextmanager` 재시도 예제 교체를 반영했습니다.
+
 - MAIN-20261109-01 / DOCS-32 (2026-11-09): 전체 문서 일회성 검증 마지막 단계로 `_reference/` 출처 노트 92개를 4개 묶음으로 나눠 확인하고 66개를 정정했습니다. 앞 단계에서 본문 검증 중 수집한 노트 불일치 28건을 공식 자료로 다시 확인해 반영했고(오보 2건은 유지), 판·지원 종료·릴리스 날짜를 2026-11-09 기준으로 덧붙였습니다. 고친 노트만 `last_checked`를 2026-11-09로 바꾸고 확인만 한 노트는 날짜를 유지했으며, `_reference/INDEX.md`의 확인일과 최신 버전 열을 노트에 맞췄습니다. 도메인이 없어진 `isms.kisa.or.kr`(KISA 하위 도메인)을 `isms-p.or.kr`로, 404 주소(restic·vim man page·Windows 성능 문서)를 현행 주소로 바꿨습니다. 본문 `tls_https_testing.md`의 TLS 1.3 근거도 RFC 9846으로 맞췄습니다.
 
 - MAIN-20261109-01 / DOCS-32 (2026-11-09): 전체 문서 일회성 검증 7단계로 `97_misc` 6개 문서와 루트 `license_guide.md`를 확인하고 7개 모두 정정했습니다. Apache(광고 조항 제거는 v1.1)·BSD(1999년 3-Clause) 연혁, GPL v2/v3 호환 조건, 폐기된 SPDX 식별자(3.29.0 목록 대조), pip-licenses·Maven license 플러그인 명령을 고쳤습니다. Kiro 요금·credit pooling·모델 배율과 Amazon Q 전환 정책, GameLift Servers·Multiplay 운영사 변경, Ubuntu 24.04의 `adb` 패키지 이름, 404였던 Samsung Knox 백서 주소를 반영했습니다. 법률 단정 표현, 비공개 저장소 링크, 재작성이 필요한 권고는 고치지 않았습니다.

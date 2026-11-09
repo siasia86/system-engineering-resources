@@ -1325,7 +1325,15 @@ xtrabackup --backup \
 #### Point-in-Time Recovery (PITR)
 
 ```bash
+# 0. binlog를 별도 위치로 복사 (datadir을 비우거나 옮기기 전에)
+# 주의: binlog가 datadir(/var/lib/mysql)에 있으면 복원 과정에서 datadir과 함께 옮겨짐
+systemctl stop mysqld
+mkdir -p /backup/binlog_pitr
+cp -a /var/lib/mysql/mysql-bin.[0-9]* /backup/binlog_pitr/
+
 # 1. 백업 복원
+# 1단계 전에 6.2절의 prepare·datadir 비우기(mv로 보존) 절차를 먼저 수행하고,
+# copy-back 뒤에는 6.2절처럼 chown -R mysql:mysql /var/lib/mysql 수행
 xtrabackup --copy-back --target-dir=/backup/full/20240101-00
 
 # 2. MySQL 시작
@@ -1336,9 +1344,13 @@ cat /backup/full/20240101-00/xtrabackup_binlog_info
 # mysql-bin.000123    456789
 
 # 4. binlog 적용 (특정 시점까지)
+# 백업 시점 파일(000123)부터 이후 파일을 순서대로 모두 나열해 한 번에 적용
+# --start-position은 첫 번째 파일에만 적용됨
 mysqlbinlog --start-position=456789 \
     --stop-datetime="2024-01-01 15:30:00" \
-    /var/lib/mysql/mysql-bin.000123 \
+    /backup/binlog_pitr/mysql-bin.000123 \
+    /backup/binlog_pitr/mysql-bin.000124 \
+    /backup/binlog_pitr/mysql-bin.000125 \
     | mysql -u root -p
 
 # 5. 데이터 확인
@@ -1854,6 +1866,7 @@ done
 
 RESTORE_DATETIME="2024-01-15 14:29:00"
 BACKUP_DIR="/backup/full/20240115-00"
+BINLOG_SAVE_DIR="/backup/binlog_pitr/$(date +%Y%m%d%H%M%S)"   # binlog 보관 위치 (datadir 밖)
 
 echo "=== Point-in-Time Recovery ==="
 echo "Target time: ${RESTORE_DATETIME}"
@@ -1862,7 +1875,16 @@ echo ""
 # 1. 백업 복원
 echo "Step 1: Restoring backup..."
 systemctl stop mysqld
-rm -rf /var/lib/mysql/*
+
+# 주의: binlog가 datadir에 있으면 datadir과 함께 옮겨지므로 먼저 별도 위치로 복사 (실패하면 중단)
+# binlog 경로·이름은 log_bin 설정에 맞게 수정
+mkdir -p "${BINLOG_SAVE_DIR}"
+cp -a /var/lib/mysql/mysql-bin.[0-9]* "${BINLOG_SAVE_DIR}/" || exit 1
+
+# 기존 datadir은 지우지 않고 이름을 바꿔 보존 (6.2와 같은 방식), 빈 datadir 생성
+# 디스크 여유 공간 확인: 기존 datadir을 보존한 채 복원본이 추가로 들어감 (df -h /var/lib)
+mv /var/lib/mysql /var/lib/mysql_backup_$(date +%Y%m%d)
+mkdir /var/lib/mysql
 
 xtrabackup --prepare --target-dir="${BACKUP_DIR}"
 xtrabackup --copy-back --target-dir="${BACKUP_DIR}"
@@ -1877,15 +1899,22 @@ echo "Step 3: Checking binlog position..."
 BINLOG_FILE=$(cat ${BACKUP_DIR}/xtrabackup_binlog_info | awk '{print $1}')
 BINLOG_POS=$(cat ${BACKUP_DIR}/xtrabackup_binlog_info | awk '{print $2}')
 
+# 백업 시점 파일부터 이어지는 binlog 파일 목록 (이름순 = 생성 순서)
+BINLOG_FILES=$(printf '%s\n' "${BINLOG_SAVE_DIR}"/mysql-bin.[0-9]* \
+    | awk -v first="${BINLOG_SAVE_DIR}/${BINLOG_FILE}" '$0 >= first')
+
 echo "Binlog file: ${BINLOG_FILE}"
 echo "Binlog position: ${BINLOG_POS}"
+echo "Binlog files to apply:"
+echo "${BINLOG_FILES}"
 
 # 4. binlog 적용
+# 여러 파일을 한 번의 mysqlbinlog로 순서대로 적용 (--start-position은 첫 번째 파일에만 적용됨)
 echo "Step 4: Applying binlog to ${RESTORE_DATETIME}..."
 mysqlbinlog \
     --start-position=${BINLOG_POS} \
     --stop-datetime="${RESTORE_DATETIME}" \
-    /var/lib/mysql/${BINLOG_FILE} \
+    ${BINLOG_FILES} \
     | mysql -u root -p
 
 echo "✅ Point-in-Time Recovery completed"
@@ -2003,16 +2032,36 @@ echo "Encrypted backup: ${ENCRYPTED_FILE}"
 #!/bin/bash
 # 백업 전후 작업 자동화
 
+# 임시 테이블 정리 설정
+TMP_CLEAN_DB="mydb"      # 정리할 스키마 하나 (mysql·sys 등 시스템 스키마는 지정하지 않음)
+TMP_CLEAN_EXECUTE=0      # 0: 삭제할 목록만 출력 (dry run), 1: 목록 확인 후 실제 삭제
+
 # Pre-backup hook
 pre_backup() {
     echo "Running pre-backup tasks..."
     
     # 1. 임시 테이블 정리
-    mysql -u root -p -e "
-        SELECT CONCAT('DROP TABLE ', table_schema, '.', table_name, ';')
-        FROM information_schema.tables
-        WHERE table_name LIKE '%_tmp%' OR table_name LIKE 'tmp_%';
-    " | mysql -u root -p
+    # 주의: DROP TABLE은 되돌릴 수 없으므로 먼저 dry run으로 목록을 확인
+    # LIKE의 _는 아무 한 글자와 맞으므로 \_로 이스케이프, -N으로 머리글 줄 제외
+    # '%\_tmp%'는 user_tmpl 같은 이름에도 맞으므로 목록에서 확인
+    local drop_sql
+    drop_sql=$(mysql -N -B -u root -p "${TMP_CLEAN_DB}" <<'SQL'
+SELECT CONCAT('DROP TABLE `', table_schema, '`.`', table_name, '`;')
+FROM information_schema.tables
+WHERE table_schema = DATABASE()
+  AND table_type = 'BASE TABLE'
+  AND (table_name LIKE '%\_tmp%' OR table_name LIKE 'tmp\_%');
+SQL
+    ) || return 1
+
+    if [ -z "${drop_sql}" ]; then
+        echo "No temporary tables found in ${TMP_CLEAN_DB}"
+    elif [ "${TMP_CLEAN_EXECUTE}" -eq 1 ]; then
+        echo "${drop_sql}" | mysql -u root -p "${TMP_CLEAN_DB}"
+    else
+        echo "[DRY RUN] Tables to drop (set TMP_CLEAN_EXECUTE=1 to run):"
+        echo "${drop_sql}"
+    fi
     
     # 2. 테이블 최적화 (선택적)
     # mysql -u root -p -e "OPTIMIZE TABLE mydb.large_table;"
@@ -2248,6 +2297,11 @@ cat ${RESULTS_FILE}
 - Percona XtraBackup 8.0: [Install from APT repository](https://docs.percona.com/percona-xtrabackup/8.0/apt-repo.html) (8.0 지원 종료 안내) — ★★★☆☆
 - Percona XtraBackup 9.7: [Release notes](https://docs.percona.com/percona-xtrabackup/9.7/release-notes/release-notes.html) — ★★★☆☆
 - MySQL 8.4: [What Is New in MySQL 8.4 since MySQL 8.0](https://dev.mysql.com/doc/refman/8.4/en/mysql-nutshell.html) (제거된 복제 문장) — ★★★☆☆
+- Percona XtraBackup 8.4: [Point-in-time recovery](https://docs.percona.com/percona-xtrabackup/8.4/point-in-time-recovery.html) (`xtrabackup_binlog_info`, 여러 binlog를 한 번에 적용) — ★★★☆☆
+- MySQL 8.4: [Point-in-Time Recovery Using Binary Log](https://dev.mysql.com/doc/refman/8.4/en/point-in-time-recovery-binlog.html) (여러 binlog를 한 연결로 적용) — ★★★☆☆
+- MySQL 8.4: [mysqlbinlog](https://dev.mysql.com/doc/refman/8.4/en/mysqlbinlog.html) (`--start-position`은 첫 번째 파일에 적용) — ★★★☆☆
+- MySQL 8.4: [String Comparison Functions and Operators](https://dev.mysql.com/doc/refman/8.4/en/string-comparison-functions.html) (`LIKE`의 `_`와 `\_`) — ★★★☆☆
+- MySQL 8.4: [mysql Client Options](https://dev.mysql.com/doc/refman/8.4/en/mysql-command-options.html) (`-N`, `-B`) — ★★★☆☆
 - MariaDB Documentation: [Backup and Restore Overview](https://mariadb.com/docs/server/server-usage/backup-and-restore/backup-and-restore-overview) (MariaDB에서 XtraBackup 미지원, `mariadb-backup` 권장) — ★★★☆☆
 
 ---

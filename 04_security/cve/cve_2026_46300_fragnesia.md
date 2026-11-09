@@ -109,13 +109,20 @@ uname -r
 lsmod | grep -E "^esp4|^esp6|^rxrpc"
 cat /etc/modprobe.d/dirtyfrag.conf 2>/dev/null || echo "blacklist 없음"
 
-# XFRM netlink 소켓 비권한 접근 여부
+# XFRM netlink 소켓 생성 시험 — 참고용(소켓 생성 가능 여부만 확인)
+# 소켓 생성은 비권한 사용자도 보통 성공하며, XFRM 요청 처리에는 CAP_NET_ADMIN이 필요합니다.
+# xfrm_user 모듈이 로드되지 않은 시스템에서는 이 시험이 모듈을 자동 로드할 수 있습니다.
 python3 -c "
 import socket
 s=socket.socket(socket.AF_NETLINK,socket.SOCK_RAW,socket.NETLINK_XFRM)
-print('XFRM: OPEN (취약 가능성)')
+print('XFRM: 소켓 생성 가능 (참고용)')
 s.close()
-" 2>/dev/null || echo "XFRM: BLOCKED"
+" 2>/dev/null || echo "XFRM: 소켓 생성 실패 (참고용)"
+
+# 실제 판단은 커널 판·패치 여부(uname -r, 위 영향 배포판 표)와 비권한 user namespace 설정으로 합니다.
+sysctl kernel.unprivileged_userns_clone 2>/dev/null               # 1 = 비권한 userns 허용 (일부 배포판 커널)
+sysctl kernel.apparmor_restrict_unprivileged_userns 2>/dev/null   # 1 = AppArmor가 비권한 userns 제한 (Ubuntu)
+sysctl user.max_user_namespaces                                   # 0 = userns 생성 불가
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -223,6 +230,8 @@ curl -s "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2026-46300" 
 - Ubuntu CVE-2026-46300: [ubuntu.com](https://ubuntu.com/security/CVE-2026-46300) — ★★★☆☆
 - Debian CVE-2026-46300: [security-tracker.debian.org](https://security-tracker.debian.org/tracker/CVE-2026-46300) — ★★★☆☆
 - Amazon Linux CVE-2026-46300: [explore.alas.aws.amazon.com](https://explore.alas.aws.amazon.com/CVE-2026-46300.html) — ★★★☆☆
+- AppArmor 비권한 user namespace 제한: [gitlab.com/apparmor/apparmor/-/wikis/unprivileged_userns_restriction](https://gitlab.com/apparmor/apparmor/-/wikis/unprivileged_userns_restriction) — ★★★☆☆
+- namespaces(7) `/proc/sys/user` 한도: [man7.org](https://man7.org/linux/man-pages/man7/namespaces.7.html) — ★★★☆☆
 - [cve_2026_43284_dirty_frag.md](./cve_2026_43284_dirty_frag.md) — CVE-2026-43284 (xfrm/ESP)
 - [cve_2026_43500_dirty_frag.md](./cve_2026_43500_dirty_frag.md) — CVE-2026-43500 (rxrpc)
 - [cve_2026_31431_copy_fail.md](./cve_2026_31431_copy_fail.md) — CVE-2026-31431 (CISA KEV)

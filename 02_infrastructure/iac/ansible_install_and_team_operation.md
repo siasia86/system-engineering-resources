@@ -178,12 +178,26 @@ done
 ssh ansible@<managed-node-ip>
 ```
 
-🟡 RHEL 계열(Rocky, Amazon Linux) 컨테이너 환경에서는 `pam_sepermit.so`, `pam_nologin.so` 등이 SELinux 없는 환경에서 SSH 접속을 차단할 수 있습니다. 이 경우 `/etc/pam.d/sshd`와 `/etc/pam.d/sudo`를 최소 설정으로 교체합니다:
+🟡 RHEL 계열(Rocky, Amazon Linux) 컨테이너 시험 환경에서는 `pam_sepermit.so`, `pam_nologin.so` 등이 SELinux 없는 환경에서 SSH 접속을 차단할 수 있습니다. `pam_nologin.so`는 `/etc/nologin`이나 `/run/nologin`(`/var/run/nologin`)이 있으면 root 외 사용자의 로그인을 막으므로 이 파일부터 확인합니다. 그래도 접속되지 않을 때에만 일회용 시험 컨테이너에서 원본을 백업한 뒤 `/etc/pam.d/sshd`와 `/etc/pam.d/sudo`를 최소 설정으로 교체하고, 시험 후 원복합니다:
 
 ```bash
+# 1) 원인 확인: 파일이 있으면 pam_nologin이 root 외 로그인을 막음
+ls -l /etc/nologin /run/nologin
+# 시험 컨테이너에 남아 있는 경우에만 삭제
+sudo rm -f /run/nologin
+
+# 2) 일회용 시험 컨테이너 전용: 원본 백업 후 최소 설정으로 교체
+sudo cp -a /etc/pam.d/sshd /etc/pam.d/sshd.orig
+sudo cp -a /etc/pam.d/sudo /etc/pam.d/sudo.orig
 printf '#%%PAM-1.0\nauth     sufficient   pam_unix.so\naccount  required     pam_permit.so\nsession  sufficient   pam_unix.so\n' | sudo tee /etc/pam.d/sshd
 printf '#%%PAM-1.0\nauth     sufficient   pam_unix.so\naccount  required     pam_permit.so\nsession  sufficient   pam_unix.so\n' | sudo tee /etc/pam.d/sudo
+
+# 3) 시험 후 원복
+sudo cp -a /etc/pam.d/sshd.orig /etc/pam.d/sshd
+sudo cp -a /etc/pam.d/sudo.orig /etc/pam.d/sudo
 ```
+
+🟡 위 최소 설정은 `account` 단계를 항상 허용하는 `pam_permit.so`로 바꾸므로 계정 만료 같은 계정 검사가 이루어지지 않고, 원래 파일의 `pam_nologin.so`·`pam_limits.so` 등 다른 검사도 함께 빠집니다. 일회용 시험 컨테이너에만 쓰고 실제 서버나 배포용 이미지(Dockerfile 등)에는 넣지 않습니다.
 
 ### 4-3. ansible.cfg 설정
 
@@ -739,6 +753,8 @@ git push -u origin main
 - Ansible Inventory (group_vars 위치): [How to build your inventory](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html) — ★★★☆☆
 - Rocky Linux 10 AppStream 패키지 목록: [dl.rockylinux.org](https://dl.rockylinux.org/pub/rocky/10/AppStream/x86_64/os/Packages/a/) — ★★★☆☆
 - AWX README: [github.com/ansible/awx](https://github.com/ansible/awx) — ★★★☆☆
+- pam_nologin(8) (nologin 파일 조건): [man7.org](https://man7.org/linux/man-pages/man8/pam_nologin.8.html) — ★★★☆☆
+- pam_permit(8) (항상 허용, 사용 주의): [man7.org](https://man7.org/linux/man-pages/man8/pam_permit.8.html) — ★★★☆☆
 
 ---
 

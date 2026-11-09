@@ -406,8 +406,13 @@ iostat -x 1
 # 해결: sudo 사용
 sudo iotop
 
-# 또는 권한 부여
-sudo setcap cap_net_admin=eip /usr/sbin/iotop
+# 또는 권한 부여 (C 구현 iotop-c에만 해당)
+# Ubuntu/Debian의 iotop 패키지는 Python 스크립트(/usr/sbin/iotop-py)이고
+# 커널은 인터프리터 기준으로 권한을 계산하므로 setcap이 효과 없음 → sudo로 실행
+# 확인: readlink -f "$(command -v iotop)" / dpkg -S /usr/sbin/iotop-py
+# iotop-c 패키지(/usr/sbin/iotop-c)는 NET_ADMIN 부여로 일반 사용자 실행 가능
+# 주의: 실행 가능한 모든 사용자가 다른 사용자 프로세스의 I/O 정보를 보게 됨
+sudo setcap cap_net_admin=eip /usr/sbin/iotop-c
 ```
 
 ### 문제 3: 출력이 너무 빠름
@@ -529,6 +534,8 @@ awk '/Total DISK READ/ {read+=$4; write+=$10; count++}
 - iotop GitHub: [iotop](https://github.com/Tomas-M/iotop) — ★★★☆☆
 - Linux man pages - iotop: [man7.org](https://man7.org/linux/man-pages/man8/iotop.8.html) — ★★★☆☆
 - Linux 커널 문서 - Delay accounting: [docs.kernel.org](https://docs.kernel.org/accounting/delay-accounting.html) — ★★★☆☆
+- iotop-c man page (일반 사용자 실행과 NET_ADMIN): [GitHub](https://github.com/Tomas-M/iotop/blob/master/iotop.8) — ★★★☆☆
+- Ubuntu 패키지 - iotop-c: [packages.ubuntu.com](https://packages.ubuntu.com/noble/iotop-c) — ★★★☆☆
 
 ---
 

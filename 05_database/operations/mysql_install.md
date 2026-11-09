@@ -395,10 +395,12 @@ SHOW VARIABLES LIKE 'log_bin';
 | `Access denied for user 'root'`     | auth_socket 플러그인           | `sudo mysql -u root` 또는 인증 방식 변경 (섹션 4-4) |
 | `Can't connect to MySQL server`     | bind-address 제한 또는 방화벽  | `bind-address = 0.0.0.0` 설정 + 방화벽 허용         |
 | `ERROR 1045: Access denied`         | 계정/패스워드 불일치           | `SHOW GRANTS FOR 'user'@'host';` 확인               |
-| `Table 'mysql.user' doesn't exist`  | 초기화 미완료                  | `sudo mysqld --initialize` 재실행                   |
+| `Table 'mysql.user' doesn't exist`  | 초기화 미완료                  | 빈 datadir에서만 `--initialize` (표 아래 참고)      |
 | `InnoDB: Cannot allocate memory`    | `innodb_buffer_pool_size` 과다 | RAM의 50~70% 이하로 조정                            |
 | `Too many connections`              | `max_connections` 초과         | `SET GLOBAL max_connections = 300;`                 |
-| Rocky: `mysqld.log` 에 임시 PW 없음 | 이미 초기화된 상태             | `sudo mysqld --initialize --user=mysql` 후 재시작   |
+| Rocky: `mysqld.log` 에 임시 PW 없음 | 이미 초기화된 상태             | `--init-file`로 root PW 재설정 (표 아래 참고)       |
+
+🟡 `mysqld --initialize`는 비어 있는 데이터 디렉토리에서만 실행합니다. 데이터 디렉토리에 파일이 있으면 `--initialize specified but the data directory exists. Aborting.` 오류로 끝나고, 디렉토리를 지우거나 비우면 기존 데이터가 사라집니다. 이미 초기화되어 데이터가 있는데 root 패스워드를 모르면 다시 초기화하지 않고 `--init-file`로 재설정합니다. `ALTER USER 'root'@'localhost' IDENTIFIED BY '새 패스워드';` 한 줄을 담은 파일을 `mysql` 사용자만 읽을 수 있게 두고, 서버를 `--init-file=<파일>`로 한 번 시작(root 계정으로 시작하면 `--user=mysql`도 지정)한 뒤 파일을 지우고 정상 재시작합니다. `--skip-grant-tables` 절차도 있지만 그동안 누구나 패스워드 없이 모든 권한으로 접속할 수 있습니다([How to Reset the Root Password](https://dev.mysql.com/doc/refman/8.4/en/resetting-permissions.html)).
 
 ### 디버깅 명령
 
@@ -505,6 +507,8 @@ sudo mysqladmin -u root -p processlist   # 실행 중인 쿼리
 
 - MySQL Documentation: [Installing MySQL](https://dev.mysql.com/doc/refman/8.4/en/installing.html) — ★★★☆☆
 - MySQL Documentation: [Postinstallation Setup](https://dev.mysql.com/doc/refman/8.4/en/postinstallation.html) — ★★★☆☆
+- MySQL Documentation: [Initializing the Data Directory](https://dev.mysql.com/doc/refman/8.4/en/data-directory-initialization.html) (비어 있지 않은 데이터 디렉토리에서 `--initialize` 중단) — ★★★☆☆
+- MySQL Documentation: [How to Reset the Root Password](https://dev.mysql.com/doc/refman/8.4/en/resetting-permissions.html) (`--init-file`, `--skip-grant-tables`) — ★★★☆☆
 - MySQL Documentation: [MySQL Releases: Innovation and LTS](https://dev.mysql.com/doc/refman/8.4/en/mysql-releases.html) — ★★★☆☆
 - MySQL Documentation: [Installing MySQL on Linux Using the MySQL Yum Repository](https://dev.mysql.com/doc/refman/8.4/en/linux-installation-yum-repo.html) (EL8 모듈 비활성화, validate_password 기본 정책) — ★★★☆☆
 - MySQL Downloads: [MySQL APT Repository](https://dev.mysql.com/downloads/repo/apt/) / [MySQL Yum Repository](https://dev.mysql.com/downloads/repo/yum/) (저장소 패키지 현재 판) — ★★★☆☆

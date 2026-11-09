@@ -404,7 +404,9 @@ struct SshResult {
 fn ssh_exec(host: &str, command: &str, timeout_secs: u64) -> SshResult {
     let output = Command::new("ssh")
         .args([
-            "-o", "StrictHostKeyChecking=no",
+            // accept-new(OpenSSH 7.6+): 처음 보는 호스트 키만 자동 등록하고
+            // 바뀐 키는 거부함. no는 바뀐 키도 접속을 허용해 MITM에 취약
+            "-o", "StrictHostKeyChecking=accept-new",
             "-o", &format!("ConnectTimeout={}", timeout_secs),
             "-o", "BatchMode=yes",
             host,
@@ -491,6 +493,7 @@ fn main() {
 - Command-Line Rust: [oreilly.com](https://www.oreilly.com/library/view/command-line-rust/9781098109424/) — ★★★★☆
 - Zero To Production In Rust: [zero2prod.com](https://www.zero2prod.com/) — ★★★☆☆
 - sha2 crate (0.11): [docs.rs/sha2](https://docs.rs/sha2) — ★★★☆☆
+- OpenSSH 7.6 릴리스 노트 (StrictHostKeyChecking accept-new): [openssh.org](https://www.openssh.org/txt/release-7.6) — ★★★☆☆
 
 ---
 

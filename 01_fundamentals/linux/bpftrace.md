@@ -495,11 +495,18 @@ tracepoint:syscalls:sys_enter_setuid /args->uid == 0/ {
 ### 문제 1: "Operation not permitted"
 
 ```bash
-# 해결: sudo 사용
+# 해결: sudo 사용 (권장)
 sudo bpftrace script.bt
 
-# 또는 권한 부여
-sudo setcap cap_sys_admin,cap_bpf=eip /usr/bin/bpftrace
+# 또는 권한 부여 (주의)
+# 파일 capability는 이 파일을 실행할 수 있는 모든 사용자에게 적용됨 (capabilities(7))
+# 부여 전에 실행 권한을 전용 그룹(예: tracing)으로 제한
+# bpftrace 0.25 미만(Ubuntu 24.04의 0.20.2 등)은 root만 허용해 setcap이 효과 없음
+# 0.25 이상은 CAP_BPF·CAP_PERFMON(또는 CAP_SYS_ADMIN)과
+# CAP_DAC_READ_SEARCH·CAP_DAC_OVERRIDE를 확인함
+sudo chgrp tracing /usr/bin/bpftrace
+sudo chmod 750 /usr/bin/bpftrace
+sudo setcap cap_bpf,cap_perfmon,cap_dac_read_search,cap_dac_override=eip /usr/bin/bpftrace
 ```
 
 ### 문제 2: "Could not resolve symbol"
@@ -579,6 +586,8 @@ profile:hz:999 # 높은 주파수 (높은 정확도)
 - bpftrace Reference Guide: [bpftrace reference](https://github.com/bpftrace/bpftrace/blob/master/docs/reference_guide.md) — ★★★☆☆
 - Brendan Gregg - BPF Performance Tools: [brendangregg.com](https://www.brendangregg.com/bpf-performance-tools-book.html) — ★★★☆☆
 - Linux 커널 문서 - net.core.bpf_jit_limit: [docs.kernel.org](https://docs.kernel.org/admin-guide/sysctl/net.html) — ★★★☆☆
+- Linux man pages - capabilities(7): [man7.org](https://man7.org/linux/man-pages/man7/capabilities.7.html) — ★★★☆☆
+- bpftrace CHANGELOG (0.25.0 권한 검사 변경): [GitHub](https://github.com/bpftrace/bpftrace/blob/master/CHANGELOG.md) — ★★★☆☆
 
 ---
 

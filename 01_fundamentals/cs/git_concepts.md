@@ -352,10 +352,14 @@ Git 훅은 특정 이벤트 발생 시 실행되는 스크립트입니다. `.git
 
 # Python 파일 lint 검사
 if git diff --cached --name-only | grep -q '\.py$'; then
+    # stash가 만들어지지 않으면(첫 커밋, git add -N 항목으로 인한 실패 등)
+    # pop이 이전 stash를 꺼내므로 새로 만든 경우에만 pop
+    stash_before=$(git rev-parse -q --verify refs/stash)
     git stash -q --keep-index
+    stash_after=$(git rev-parse -q --verify refs/stash)
     python3 -m flake8 $(git diff --cached --name-only | grep '\.py$')
     status=$?
-    git stash pop -q
+    [ "$stash_before" != "$stash_after" ] && git stash pop -q
     [ $status -ne 0 ] && echo "flake8 실패. 커밋 중단." && exit 1
 fi
 

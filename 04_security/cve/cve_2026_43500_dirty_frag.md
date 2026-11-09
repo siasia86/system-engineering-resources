@@ -119,16 +119,21 @@ uname -r
 lsmod | grep "^rxrpc"
 grep "rxrpc" /etc/modprobe.d/*.conf 2>/dev/null
 
-# AF_RXRPC 소켓 접근 여부
+# AF_RXRPC 소켓 생성 시험 — 참고용(소켓 생성 가능 여부만 확인)
+# 패치된 커널에서도 소켓은 생성될 수 있으므로 취약 판정 근거로 쓰지 않습니다.
+# 주의: rxrpc가 로드되지 않은 시스템에서는 이 시험이 rxrpc 모듈을 자동 로드할 수 있습니다.
+#       위 lsmod·blacklist 결과를 먼저 확인하고, 미로드이면서 blacklist가 없으면 실행하지 않습니다.
 python3 -c "
 import socket
 s=socket.socket(33,socket.SOCK_DGRAM,0)  # 33 = AF_RXRPC
-print('AF_RXRPC: OPEN (취약)')
+print('AF_RXRPC: 소켓 생성 가능 (참고용)')
 s.close()
-" 2>/dev/null || echo "AF_RXRPC: BLOCKED"
+" 2>/dev/null || echo "AF_RXRPC: 소켓 생성 실패 (참고용)"
 
 # DirtyFrag-Detector 실행
-curl -sO https://raw.githubusercontent.com/liamromanis101/DirtyFrag-Detector/main/dirty_frag_detect.py
+# main 주소는 내용이 바뀔 수 있으므로 커밋 해시로 고정해 받고, 내용을 읽은 뒤 실행합니다.
+curl -fsSO https://raw.githubusercontent.com/liamromanis101/DirtyFrag-Detector/d3839b54354744dba86e6be7b7e107ea1422398e/dirty_frag_detect.py
+less dirty_frag_detect.py   # 실행 전 내용 확인
 python3 dirty_frag_detect.py
 rm -f dirty_frag_detect.py
 ```
@@ -206,7 +211,9 @@ lsmod | grep "^rxrpc"
 uname -r
 lsmod | grep "^rxrpc"
 
-curl -sO https://raw.githubusercontent.com/liamromanis101/DirtyFrag-Detector/main/dirty_frag_detect.py
+# 커밋 고정 주소로 받아 내용을 확인한 뒤 실행합니다(3장 탐지 명령어와 같은 이유).
+curl -fsSO https://raw.githubusercontent.com/liamromanis101/DirtyFrag-Detector/d3839b54354744dba86e6be7b7e107ea1422398e/dirty_frag_detect.py
+less dirty_frag_detect.py   # 실행 전 내용 확인
 python3 dirty_frag_detect.py
 rm -f dirty_frag_detect.py
 ```
