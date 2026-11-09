@@ -80,10 +80,7 @@ splice() → rxrpc socket → shared frag pages
 
 **PoC 빌드 테스트:**
 
-```bash
-git clone https://github.com/V4bel/dirtyfrag.git
-gcc -O0 -Wall -o exp exp.c -lutil
-```
+> 발견자 공개 자료(V4bel)로 재현 시험을 수행한 기록입니다. 이 저장소는 방어 목적 자료라 재현 명령은 싣지 않습니다.
 
 | 항목                | 결과          | 비고                                                |
 |---------------------|---------------|-----------------------------------------------------|

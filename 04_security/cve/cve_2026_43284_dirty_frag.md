@@ -86,10 +86,7 @@ MSG_SPLICE_PAGES → UDP skb (SKBFL_SHARED_FRAG 미설정)
 
 **PoC 빌드 테스트:**
 
-```bash
-git clone https://github.com/V4bel/dirtyfrag.git
-gcc -O0 -Wall -o exp exp.c -lutil
-```
+> 발견자 공개 자료(V4bel)로 재현 시험을 수행한 기록입니다. 이 저장소는 방어 목적 자료라 재현 명령은 싣지 않습니다.
 
 | 항목                  | 결과      | 비고                                           |
 |-----------------------|-----------|------------------------------------------------|
@@ -168,7 +165,6 @@ sudo apt update && sudo apt dist-upgrade -y && sudo reboot
 
 ### 임시 완화 (패치 적용 전)
 
-> 출처: [github.com/0xBlackash/CVE-2026-43284](https://github.com/0xBlackash/CVE-2026-43284) — Mitigation & Remediation 섹션
 > 출처: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — Fixing it 섹션
 
 **Step 1. 모듈 사용 여부 사전 확인**
@@ -254,7 +250,6 @@ rm -f dirty_frag_detect.py
 ## 참고 자료
 
 - NVD CVE-2026-43284: [nvd.nist.gov](https://nvd.nist.gov/vuln/detail/CVE-2026-43284) — ★★★☆☆
-- Dirty Frag PoC: [github.com/0xBlackash/CVE-2026-43284](https://github.com/0xBlackash/CVE-2026-43284) — ★★☆☆☆
 - Dirty Frag 원본 (V4bel): [github.com/V4bel/dirtyfrag](https://github.com/V4bel/dirtyfrag) — ★★★☆☆
 - DirtyFrag-Detector: [github.com/liamromanis101/DirtyFrag-Detector](https://github.com/liamromanis101/DirtyFrag-Detector) — ★★☆☆☆
 - AppArmor 비권한 user namespace 제한: [gitlab.com/apparmor/apparmor/-/wikis/unprivileged_userns_restriction](https://gitlab.com/apparmor/apparmor/-/wikis/unprivileged_userns_restriction) — ★★★☆☆

@@ -308,7 +308,7 @@ s3://backup-bucket/
               └── {filename}.tar.zst
 
 Example:
-  game-server/2026/10.200.101.50-web01/access_log_20260701_3files.tar.zst
+  game-server/2026/192.0.2.50-web01/access_log_20260701_3files.tar.zst
 ```
 
 | 설계 원칙      | 이유                                     |
@@ -323,7 +323,7 @@ Example:
 ```bash
 aws s3api put-object-tagging \
   --bucket my-backup-bucket \
-  --key game-server/2026/10.200.101.50-web01/data.tar.zst \
+  --key game-server/2026/192.0.2.50-web01/data.tar.zst \
   --tagging '{
     "TagSet": [
       {"Key": "backup-source", "Value": "i-1234567890abcdef0"},

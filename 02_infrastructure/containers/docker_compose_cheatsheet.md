@@ -184,16 +184,16 @@ networks:
       parent: eth0
     ipam:
       config:
-        - subnet: 10.200.101.0/24
-          gateway: 10.200.101.1
-          ip_range: 10.200.101.128/27
+        - subnet: 192.0.2.0/24
+          gateway: 192.0.2.1
+          ip_range: 192.0.2.128/27
 
 # 서비스에 고정 IP 할당
 services:
   ubuntu22:
     networks:
       ansible_net:
-        ipv4_address: 10.200.101.143
+        ipv4_address: 192.0.2.143
 ```
 
 ### 네트워크 명령어

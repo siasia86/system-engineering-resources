@@ -57,7 +57,7 @@ SHOW GLOBAL STATUS LIKE 'Slow_queries';
 
 ```
 # Time: 2026-07-06T14:32:11.123456Z
-# User@Host: app_user[app_user] @ [10.200.101.50]  Id: 12345
+# User@Host: app_user[app_user] @ [192.0.2.50]  Id: 12345
 # Query_time: 3.456789  Lock_time: 0.000123  Rows_sent: 1  Rows_examined: 5000000
 SET timestamp=1783348327;
 SELECT * FROM orders WHERE customer_id = 456 AND status = 'active';

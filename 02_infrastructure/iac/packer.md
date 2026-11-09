@@ -306,12 +306,12 @@ DHCP가 불안정한 환경에서는 kickstart에 static IP를 설정하고
 `ssh_host`를 명시하면 packer가 해당 IP로 직접 SSH를 시도합니다.
 
 ```hcl
-ssh_host = "10.200.101.174"
+ssh_host = "192.0.2.174"
 ```
 
 ```
 # ks.cfg
-network --bootproto=static --ip=10.200.101.174 --netmask=255.255.255.0 --gateway=10.200.101.1 --nameserver=8.8.8.8 --activate
+network --bootproto=static --ip=192.0.2.174 --netmask=255.255.255.0 --gateway=192.0.2.1 --nameserver=8.8.8.8 --activate
 ```
 
 ### provisioner SSH disconnect 방지

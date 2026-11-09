@@ -65,7 +65,7 @@
 ### 실습 URL
 
 ```
-http://10.200.101.182/info.php
+http://192.0.2.182/info.php
 ```
 
 ### phpinfo() 노출 정보 확인
@@ -79,14 +79,14 @@ http://10.200.101.182/info.php
 | disable_functions | (없음)              | Command Injection 가능 확인 |
 | open_basedir      | no value            | Path Traversal 가능 확인    |
 | upload_tmp_dir    | /tmp                | 업로드 임시 경로            |
-| REMOTE_ADDR       | 10.200.90.155       | 요청 IP                     |
-| SERVER_ADDR       | 10.200.101.182      | 서버 IP                     |
+| REMOTE_ADDR       | 198.51.100.155      | 요청 IP                     |
+| SERVER_ADDR       | 192.0.2.182         | 서버 IP                     |
 | Environment       | PATH, HOME 등       | 시스템 환경                 |
 
 ### HTTP 헤더 확인
 
 ```bash
-curl -I http://10.200.101.182/
+curl -I http://192.0.2.182/
 # 예상:
 # Server: Apache/2.4.x (Rocky Linux)
 # X-Powered-By: PHP/8.2.x
@@ -96,7 +96,7 @@ curl -I http://10.200.101.182/
 
 ```bash
 # 존재하지 않는 파일 include 시도
-curl "http://10.200.101.182/file_read.php?file=/nonexistent"
+curl "http://192.0.2.182/file_read.php?file=/nonexistent"
 # 예상: Warning: file_get_contents(/nonexistent): Failed to open stream
 #        in /var/www/html/file_read.php on line 12
 ```

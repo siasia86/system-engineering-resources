@@ -17,7 +17,7 @@
 
 ```ini
 [windows]
-win_host ansible_host=10.200.101.101
+win_host ansible_host=192.0.2.101
 
 [windows:vars]
 ansible_user=ansibleuser
@@ -30,7 +30,7 @@ ansible_ssh_private_key_file=~/.ssh/id_ed25519
 
 ```ini
 [windows]
-win_host ansible_host=10.200.101.101
+win_host ansible_host=192.0.2.101
 
 [windows:vars]
 ansible_user=ansibleuser

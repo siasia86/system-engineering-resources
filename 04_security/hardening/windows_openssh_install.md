@@ -253,7 +253,7 @@ IdentityFile ~/.ssh/id_ed25519
 
 ```text
 # 올바른 예
-Host 10.200.101.*
+Host 192.0.2.*
     User ansibleuser
     IdentityFile ~/.ssh/id_ed25519
     IdentitiesOnly yes

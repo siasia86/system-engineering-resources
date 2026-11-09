@@ -34,9 +34,9 @@ dbtrail Forensics는 이 connection_id를 **이름으로 변환**합니다.
 
 | 정보                | 출처              | 예시                               |
 |---------------------|-------------------|------------------------------------|
-| DB 사용자           | `USER()`          | `admin@10.200.90.155`              |
+| DB 사용자           | `USER()`          | `admin@198.51.100.155`             |
 | 클라이언트 프로그램 | `program_name`    | `python3`, `mysql-cli`             |
-| 호스트 IP           | `HOST`            | `10.200.90.155`                    |
+| 호스트 IP           | `HOST`            | `198.51.100.155`                   |
 | 원본 SQL            | `query_text`      | `DELETE FROM orders WHERE id=123`  |
 | 실행 시각           | `event_timestamp` | `2026-07-06 14:32:11`              |
 | 신뢰도              | confidence label  | `exact`, `corroborated`, `unknown` |
@@ -155,8 +155,8 @@ bintrail who-changed --schema shop --table orders --pk 123
 # ┌─────────────────────┬────────┬──────────────────────────┬──────────────┬─────────────┐
 # │ timestamp           │ type   │ user                     │ program      │ confidence  │
 # ├─────────────────────┼────────┼──────────────────────────┼──────────────┼─────────────┤
-# │ 2026-07-06 14:32:11 │ UPDATE │ admin@10.200.90.155      │ python3      │ corroborated│
-# │ 2026-07-06 10:15:03 │ UPDATE │ app_user@10.200.101.50   │ java         │ exact       │
+# │ 2026-07-06 14:32:11 │ UPDATE │ admin@198.51.100.155     │ python3      │ corroborated│
+# │ 2026-07-06 10:15:03 │ UPDATE │ app_user@192.0.2.50      │ java         │ exact       │
 # │ 2026-07-01 09:00:00 │ INSERT │ migration@localhost      │ mysql-cli    │ exact       │
 # └─────────────────────┴────────┴──────────────────────────┴──────────────┴─────────────┘
 ```
@@ -169,7 +169,7 @@ bintrail query --user admin --since '2026-07-06'
 
 # 특정 호스트에서의 DELETE만
 bintrail query --table orders --event-type DELETE \
-  --column-eq _meta_host=10.200.90.155
+  --column-eq _meta_host=198.51.100.155
 ```
 
 ### 원본 SQL 확인

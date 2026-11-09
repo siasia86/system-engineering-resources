@@ -106,8 +106,8 @@
         path: /etc/hosts
         marker: "# {mark} ANSIBLE MANAGED"
         block: |
-          10.200.101.151 ubuntu22
-          10.200.101.154 rocky9
+          192.0.2.151 ubuntu22
+          192.0.2.154 rocky9
       ignore_errors: true    # 컨테이너에서 /etc/hosts는 read-only
 
     # ── 사용자 관리 ──

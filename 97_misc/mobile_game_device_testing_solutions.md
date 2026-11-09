@@ -400,11 +400,11 @@ AWS Device Farm의 기기 목록과 프로젝트는 read-only CLI로 확인합�
 ```bash
 aws devicefarm list-devices \
   --region us-west-2 \
-  --profile 01_re
+  --profile <profile>
 
 aws devicefarm list-projects \
   --region us-west-2 \
-  --profile 01_re
+  --profile <profile>
 ```
 
 Android 기기·Appium·Docker·Hyper-V를 확인합니다.

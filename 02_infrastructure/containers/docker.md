@@ -209,8 +209,8 @@ docker compose ps           # 상태 확인
 docker network ls                              # 목록
 docker network create mynet                    # bridge 네트워크 생성
 docker network create -d macvlan \
-  --subnet 10.200.101.0/24 \
-  --gateway 10.200.101.1 \
+  --subnet 192.0.2.0/24 \
+  --gateway 192.0.2.1 \
   -o parent=eth0 macvlan_net                   # macvlan 네트워크 생성
 docker run --network mynet nginx               # 네트워크 지정
 docker network inspect mynet                   # 상세 정보

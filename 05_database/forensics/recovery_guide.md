@@ -344,7 +344,7 @@ mysql -h proxy -P 6033 -e "SELECT * FROM orders WHERE id=123 AS OF '2026-07-05 0
 bintrail who-changed --schema shop --table orders --pk 123
 # event_timestamp: 2026-07-06 14:32:11
 # event_type: UPDATE
-# user: admin@10.200.90.155
+# user: admin@198.51.100.155
 # program: python3
 # confidence: corroborated (identity cache)
 # query_text: UPDATE orders SET amount=0 WHERE id=123

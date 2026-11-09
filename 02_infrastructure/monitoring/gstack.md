@@ -91,8 +91,8 @@ my-project/
 ```
 # 좋은 메모리 내용 (구체적, 실행 가능)
 - SSH 키: ~/.ssh/id_ed25519
-- Docker 컨테이너 15대: 10.200.101.131~.157
-- Terraform provider: AWS ~> 5.0, profile 01_re
+- Docker 컨테이너 15대: 192.0.2.131~.157
+- Terraform provider: AWS ~> 5.0, profile <profile>
 
 # 나쁜 메모리 내용 (모호, 중복)
 - 작업 진행 중
@@ -165,6 +165,6 @@ my-project/
 
 **작성일**: 2026-06-18
 
-**마지막 업데이트**: 2026-06-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

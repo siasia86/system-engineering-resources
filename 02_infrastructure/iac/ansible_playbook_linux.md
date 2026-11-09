@@ -17,8 +17,8 @@
 
 ```ini
 [linux]
-ubuntu22 ansible_host=10.200.101.151
-rocky9   ansible_host=10.200.101.154
+ubuntu22 ansible_host=192.0.2.151
+rocky9   ansible_host=192.0.2.154
 
 [linux:vars]
 # 전용 계정 권장 (root 직접 사용 지양) — :vars 줄 끝 주석은 값에 포함되므로 별도 줄에 작성
@@ -150,8 +150,8 @@ ansible_remote_tmp=/tmp/.ansible/tmp
 - ansible.builtin.blockinfile:
     path: /etc/hosts
     block: |
-      10.200.101.151 ubuntu22
-      10.200.101.154 rocky9
+      192.0.2.151 ubuntu22
+      192.0.2.154 rocky9
 ```
 
 ---
@@ -211,7 +211,7 @@ ansible all -m ansible.builtin.copy -a "src=/tmp/test.txt dest=/tmp/test.txt"
 | `ansible_distribution`         | `Ubuntu`, `Rocky`  | 배포판 이름      |
 | `ansible_distribution_version` | `22.04`, `9.3`     | 버전             |
 | `ansible_hostname`             | `ubuntu22`         | 호스트명         |
-| `ansible_default_ipv4.address` | `10.200.101.151`   | 기본 IP          |
+| `ansible_default_ipv4.address` | `192.0.2.151`      | 기본 IP          |
 | `ansible_memtotal_mb`          | `28610`            | 전체 메모리 (MB) |
 
 ---

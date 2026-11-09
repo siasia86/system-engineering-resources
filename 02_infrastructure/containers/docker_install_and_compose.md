@@ -561,14 +561,14 @@ docker volume inspect VOLUME
 ### 개념
 
 ```
-물리 스위치 (10.200.101.1)
+물리 스위치 (192.0.2.1)
     │
-    eth0 (호스트 IP: 10.200.90.155)
+    eth0 (호스트 IP: 198.51.100.155)
     │
     macvlan
-    ├── container-a  10.200.101.151  ← 외부 PC에서 직접 접속 가능
-    ├── container-b  10.200.101.152
-    └── container-c  10.200.101.153
+    ├── container-a  192.0.2.151     ← 외부 PC에서 직접 접속 가능
+    ├── container-b  192.0.2.152
+    └── container-c  192.0.2.153
 ```
 
 🟡 macvlan 제약: 호스트 → 컨테이너 직접 통신 불가 (macvlan 특성). 외부 PC → 컨테이너는 가능합니다.
@@ -593,7 +593,7 @@ services:
     image: myapp
     networks:
       macvlan_net:
-        ipv4_address: 10.200.101.151
+        ipv4_address: 192.0.2.151
 
 networks:
   macvlan_net:
@@ -602,20 +602,20 @@ networks:
       parent: eth0          # 호스트 물리 인터페이스
     ipam:
       config:
-        - subnet: 10.200.101.0/24
-          gateway: 10.200.101.1
-          ip_range: 10.200.101.144/29   # 컨테이너 할당 범위 (network address 기준)
+        - subnet: 192.0.2.0/24
+          gateway: 192.0.2.1
+          ip_range: 192.0.2.144/29   # 컨테이너 할당 범위 (network address 기준)
 ```
 
 #### ip_range 계산
 
 `ip_range`는 CIDR 네트워크 주소 기준이어야 합니다.
 
-| 원하는 범위        | ip_range          |
-|--------------------|-------------------|
-| .144 ~ .151 (8개)  | 10.200.101.144/29 |
-| .160 ~ .175 (16개) | 10.200.101.160/28 |
-| .144 ~ .159 (16개) | 10.200.101.144/28 |
+| 원하는 범위        | ip_range       |
+|--------------------|----------------|
+| .144 ~ .151 (8개)  | 192.0.2.144/29 |
+| .160 ~ .175 (16개) | 192.0.2.160/28 |
+| .144 ~ .159 (16개) | 192.0.2.144/28 |
 
 ### 호스트 → 컨테이너 통신 (선택)
 
@@ -625,7 +625,7 @@ macvlan 특성상 호스트에서 컨테이너로 직접 통신이 안 됩니다
 ```bash
 # 호스트에 macvlan 인터페이스 추가 (재부팅 시 사라짐)
 sudo ip link add macvlan0 link eth0 type macvlan mode bridge
-sudo ip addr add 10.200.101.200/24 dev macvlan0
+sudo ip addr add 192.0.2.200/24 dev macvlan0
 sudo ip link set macvlan0 up
 
 # 영구 적용 (/etc/network/interfaces 또는 netplan)
