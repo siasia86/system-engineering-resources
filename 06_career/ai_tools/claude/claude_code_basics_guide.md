@@ -171,9 +171,9 @@ claude -r oauth-migration   # 이름이나 ID로 재개
 | Summarize from here           | 그 지점 이후를 요약해 공간 확보            |
 | Summarize up to here          | 그 지점 이전을 요약하고 이후는 그대로 유지 |
 
-🟡 checkpoint는 Claude의 파일 편집 도구로 바꾼 내용만 추적합니다. 다음은 되돌릴 수 없으므로 Git으로 관리합니다.
+🟡 checkpoint는 Claude가 파일 편집 도구로 고친 파일만 추적합니다. 다음은 되돌릴 수 없으므로 Git으로 관리합니다.
 
-- `rm`, `mv`, `cp`처럼 Bash 명령으로 바꾼 파일
+- `rm`, `mv`, `cp`처럼 Bash 명령으로만 바꾼 파일 (편집 도구로 이미 고친 파일은 이후 Bash 변경도 되돌림)
 - 대부분의 subagent 편집 (foreground로 실행한 fork skill 제외)
 - 내가 직접 고친 파일, 다른 세션이 고친 파일
 - symlink·hard link 경로
@@ -256,6 +256,6 @@ checkpoint 파일 사본은 기본으로 약 30일 뒤 정리됩니다. 장기 �
 
 **작성일**: 2026-10-15
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

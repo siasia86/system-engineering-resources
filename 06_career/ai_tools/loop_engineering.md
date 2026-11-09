@@ -378,8 +378,8 @@ Inner loop: observe -> act -> inspect feedback -> next action
 
 ## 참고 자료
 
-- Addy Osmani: [Loop Engineering](https://addyosmani.com/blog/loop-engineering/) — ★★★☆☆
-- Addy Osmani: [Practical Loop Engineering](https://addyosmani.com/blog/practical-loop-engineering/) — ★★★☆☆
+- Addy Osmani: [Loop Engineering](https://addyosmani.com/blog/loop-engineering/) — ★★☆☆☆
+- Addy Osmani: [Practical Loop Engineering](https://addyosmani.com/blog/practical-loop-engineering/) — ★★☆☆☆
 - Anthropic: [Goals](https://code.claude.com/docs/en/goal), [Scheduled tasks](https://code.claude.com/docs/en/scheduled-tasks) — ★★★☆☆
 - [Harness/Loop 참고 저장소](../../_reference/github_references.md#4-harnessloop)
 - OpenAI Skills: [learn.chatgpt.com/docs/build-skills](https://learn.chatgpt.com/docs/build-skills) — ★★★☆☆
@@ -401,6 +401,6 @@ Inner loop: observe -> act -> inspect feedback -> next action
 
 **작성일**: 2026-07-02
 
-**마지막 업데이트**: 2026-10-03
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

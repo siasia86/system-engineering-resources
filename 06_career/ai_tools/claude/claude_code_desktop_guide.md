@@ -105,7 +105,7 @@ SSH 세션에서 **Create PR**을 누르면 branch push와 `gh pr create`가 원
 | Bypass permissions | `bypassPermissions` | 확인 없이 진행. 격리된 컨테이너·VM에서만 사용          |
 
 - 터미널과 달리 데스크톱 앱에서는 `Shift+Tab`이 모드를 바꾸지 않습니다. 모드 선택기나 `Ctrl+Shift+M`(macOS `Cmd+Shift+M`)을 씁니다.
-- 선택기에서 고른 모드는 폴더별로 기억되며 `permissions.defaultMode`보다 우선합니다. Plan은 현재 세션에만 적용됩니다.
+- 선택기에서 고른 모드는 폴더별로 기억되며 프로젝트 `.claude/` 설정의 `permissions.defaultMode`보다 우선합니다. `~/.claude/settings.json`이나 managed 설정의 기본 모드로는 새 세션이 시작될 수 있으므로 첫 메시지 전에 선택기를 확인합니다. Plan은 현재 세션에만 적용됩니다.
 - `dontAsk` 모드는 CLI에서만 쓸 수 있습니다.
 - Auto나 Bypass 모드에서는 Claude가 확인 카드 없이 다른 세션을 보관(archive)할 수 있습니다. 확인을 받으려면 Manual로 바꿉니다.
 
@@ -150,9 +150,9 @@ PR 상태 확인은 GitHub CLI(`gh`) 설치와 인증이 필요합니다.
 
 | 작업                 | 방법                                                                         |
 |----------------------|------------------------------------------------------------------------------|
-| 새 세션              | 사이드바 **+ New session**, `Ctrl+N`(macOS `Cmd+N`)                          |
+| 새 세션              | 사이드바 **+ New**, `Ctrl+N`(macOS `Cmd+N`)                                  |
 | 세션 이동            | `Ctrl+Tab` / `Ctrl+Shift+Tab`                                                |
-| 분할 보기            | `Ctrl`(macOS `Cmd`)을 누른 채 사이드바의 세션 클릭, `Ctrl+\`로 닫기          |
+| 분할 보기            | `Alt`(macOS `Option`)+세션 클릭, `Ctrl+Alt+W`(macOS `Cmd+Ctrl+W`)로 해제     |
 | 이름 바꾸기          | 세션 위쪽 도구 모음의 제목 클릭                                              |
 | 보관                 | 사이드바 세션에 마우스를 올리고 보관 아이콘 (worktree도 함께 정리)           |
 | 다른 곳에서 이어가기 | 세션 메뉴 → **Open in** → Cloud 또는 편집기 (SSH·WSL 세션은 Cloud 이동 불가) |
@@ -288,6 +288,6 @@ Windows·Linux 기준이며 macOS는 `Ctrl` 대신 `Cmd`를 씁니다. 세션 �
 
 **작성일**: 2026-10-15
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

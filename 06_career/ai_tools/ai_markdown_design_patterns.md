@@ -53,10 +53,6 @@ repo/
 | analyst-agent      | Data analysis   | viz-agent, writer-agent |
 | writer-agent       | Prose & reports | human review            |
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Orchestration rules
 - All user requests enter through orchestrator-agent only
 - Failures bubble up to the orchestrator, not to the user
@@ -67,25 +63,13 @@ repo/
 ```markdown
 # analyst-agent
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Who I am
 I am the data analyst agent. I receive datasets and return
 structured AnalysisResult dicts.
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## My place in the system
 - Spawned by: orchestrator-agent
 - I hand off to: viz-agent and writer-agent
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## What I do NOT do          ← 가장 중요한 섹션
 - Write reports (→ writer-agent)
@@ -115,7 +99,7 @@ structured AnalysisResult dicts.
 |---------|----------------|----------------|----------------------------|
 | Level 1 | 항상 (시작 시) | ~100 토큰/스킬 | YAML frontmatter만         |
 | Level 2 | 스킬 트리거 시 | ~5,000 토큰    | SKILL.md 본문              |
-| Level 3 | 필요할 때만    | 무제한         | references/, scripts/ 파일 |
+| Level 3 | 필요할 때만    | 접근 전 없음   | references/, scripts/ 파일 |
 
 ### YAML Frontmatter (Level 1)
 
@@ -146,7 +130,7 @@ description: >
 ```
 my-skill/                                                        
 ├── SKILL.md           ← 필수: 메타데이터 + 지시사항 (500줄 이하)
-├── scripts/           ← 실행 가능한 스크립트 (토큰 소비 없음)   
+├── scripts/           ← 실행 가능한 스크립트 (출력만 토큰 소비)
 ├── references/        ← 참조 문서 (도메인별 분리)               
 └── assets/            ← 템플릿, 정적 리소스                     
 ```
@@ -165,10 +149,6 @@ my-skill/
 
 ```markdown
 <!-- SKILL.md 에서 -->
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Available References
 - **Server setup**: [references/server_setup.md](references/server_setup.md)
 - **Monitoring**: [references/monitoring_config.md](references/monitoring_config.md)
@@ -189,17 +169,9 @@ AI는 마크다운 헤딩(`#`, `##`, `###`)을 구조적 경계로 인식합니�
 
 ```markdown
 # Role (최상위: 역할 정의)
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Context (중간: 상황 설명)
 ### Instructions (하위: 구체적 지시)
 ### Constraints (하위: 제약 조건)
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Output Format (중간: 출력 형식)
 ```
 
@@ -218,23 +190,11 @@ You are an infrastructure engineer specializing in Linux servers.
 </context>
 
 <instructions>
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Step 1: Analyze
 Review the current server configuration.
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Step 2: Plan
 Create a migration plan with rollback steps.
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## Step 3: Execute
 Apply changes with confirmation at each step.
@@ -251,10 +211,6 @@ Apply changes with confirmation at each step.
 AI가 복잡한 절차를 순서대로 따르게 하는 패턴입니다.
 
 ```markdown
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Release Workflow
 
 Copy this checklist to track progress:
@@ -292,10 +248,6 @@ Copy this checklist to track progress:
 Print task summary before execution
 
 <!-- 비효율: 장황한 예시 -->
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 예시
 다음과 같이 작성합니다:
 - 서버 이름은 prd-app-web-frontend 형식으로 작성합니다
@@ -308,13 +260,13 @@ ex: prd-app-web-frontend, dev-db-rds-postgresql
 
 ### 토큰 절약 체크리스트
 
-| 방법                    | 절약 효과 | 적용 대상                     |
-|-------------------------|-----------|-------------------------------|
-| 스킬/프롬프트 영어 작성 | 30~50%    | SKILL.md, agent prompt        |
-| YAML frontmatter 추가   | 가변      | 3단계 로딩 활성화             |
-| 불필요한 예시 제거      | 20~30%    | AI는 패턴만 알면 됨           |
-| references/ 분리        | 가변      | 상세 내용 필요 시만 로드      |
-| scripts/ 활용           | 높음      | 코드는 실행만, 토큰 소비 없음 |
+| 방법                    | 절약 효과 | 적용 대상                       |
+|-------------------------|-----------|---------------------------------|
+| 스킬/프롬프트 영어 작성 | 30~50%    | SKILL.md, agent prompt          |
+| YAML frontmatter 추가   | 가변      | 3단계 로딩 활성화               |
+| 불필요한 예시 제거      | 20~30%    | AI는 패턴만 알면 됨             |
+| references/ 분리        | 가변      | 상세 내용 필요 시만 로드        |
+| scripts/ 활용           | 높음      | 코드는 실행만, 출력만 토큰 소비 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -419,14 +371,11 @@ description: >
 
 ## 참고 자료
 
-- 10 Practical Techniques for Mastering Agent Skills
-  https://shibuiyusuke.medium.com/10-practical-techniques-for-mastering-agent-skills-in-ai-coding-agents-6070e4038cf1
-- Instructions.md vs Skills.md vs Agent.md vs Agents.md
-  https://priyankavergadia.substack.com/p/how-to-structure-skillmd-agentsmd
-- How to Develop SKILL.md for AI Coding Agents
-  https://www.mtechzilla.com/guides/how-to-develop-skill-md-production-guide-engineering-teams
-- Agent Skills 101: a practical guide for engineers
-  https://blog.serghei.pl/posts/agent-skills-101/
+- Anthropic Agent Skills 개요(로딩 단계·토큰 비용·frontmatter 제한): [platform.claude.com](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) — ★★★☆☆
+- 10 Practical Techniques for Mastering Agent Skills: [shibuiyusuke.medium.com](https://shibuiyusuke.medium.com/10-practical-techniques-for-mastering-agent-skills-in-ai-coding-agents-6070e4038cf1) — ★★☆☆☆
+- Instructions.md vs Skills.md vs Agent.md vs Agents.md: [priyankavergadia.substack.com](https://priyankavergadia.substack.com/p/how-to-structure-skillmd-agentsmd) — ★★☆☆☆
+- How to Develop SKILL.md for AI Coding Agents: [mtechzilla.com](https://www.mtechzilla.com/guides/how-to-develop-skill-md-production-guide-engineering-teams) — ★★☆☆☆
+- Agent Skills 101: a practical guide for engineers: [blog.serghei.pl](https://blog.serghei.pl/posts/agent-skills-101/) — ★★☆☆☆
 
 
 ---
@@ -444,6 +393,6 @@ description: >
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-04-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

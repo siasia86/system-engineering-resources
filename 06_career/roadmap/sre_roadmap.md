@@ -2,13 +2,12 @@
 
 ## 목차
 
-| 섹션                                                                                                          |
-|---------------------------------------------------------------------------------------------------------------|
-| [전체 로드맵](#1-전체-로드맵) / [SRE 핵심 원칙](#2-sre-핵심-원칙) / [Junior SRE (0-2년)](#3-junior-sre-0-2년) |
-| [Mid-level SRE (2-5년)](#4-mid-level-sre-2-5년) / [Senior SRE (5-8년)](#5-senior-sre-5-8년)                   |
-| [필수 기술 스택](#7-필수-기술-스택) / [학습 자료](#8-학습-자료) / [실전 프로젝트](#9-실전-프로젝트)           |
-| [커리어 팁](#10-커리어-팁) / [마무리](#12-마무리)                                                             |
-| [Staff/Principal SRE (8년+)](#6-staffprincipal-sre-8년) / [SRE vs DevOps vs SE](#11-sre-vs-devops-vs-se)      |
+| 섹션                                                                                                                                                  |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [전체 로드맵](#1-전체-로드맵) / [SRE 핵심 원칙](#2-sre-핵심-원칙) / [Junior SRE (0-2년)](#3-junior-sre-0-2년)                                         |
+| [Mid-level SRE (2-5년)](#4-mid-level-sre-2-5년) / [Senior SRE (5-8년)](#5-senior-sre-5-8년) / [Staff/Principal SRE (8년+)](#6-staffprincipal-sre-8년) |
+| [필수 기술 스택](#7-필수-기술-스택) / [학습 자료](#8-학습-자료) / [실전 프로젝트](#9-실전-프로젝트)                                                   |
+| [커리어 팁](#10-커리어-팁) / [SRE vs DevOps vs SE](#11-sre-vs-devops-vs-se) / [마무리](#12-마무리)                                                    |
 
 ---
 
@@ -221,7 +220,7 @@ receivers:
 
 **Dockerfile**
 ```dockerfile
-FROM python:3.9-slim
+FROM python:3.14-slim
 
 WORKDIR /app
 
@@ -255,7 +254,7 @@ services:
     restart: unless-stopped
   
   db:
-    image: postgres:14
+    image: postgres:17
     environment:
       POSTGRES_PASSWORD: password
     volumes:
@@ -324,7 +323,7 @@ jobs:
 **온콜 준비**
 ```
 1. 알림 채널 확인
-   - PagerDuty, Opsgenie
+   - PagerDuty, Opsgenie(2027-04-05 서비스 종료 예정)
    - Slack, Email
 
 2. 런북 숙지
@@ -516,7 +515,7 @@ resource "aws_autoscaling_group" "web" {
 resource "aws_db_instance" "main" {
   identifier        = "main-db"
   engine            = "postgres"
-  engine_version    = "14.5"
+  engine_version    = "17"
   instance_class    = "db.t3.medium"
   allocated_storage = 100
   
@@ -768,7 +767,7 @@ if __name__ == '__main__':
 **PromQL 쿼리**
 ```promql
 # CPU 사용률 (5분 평균)
-avg(rate(node_cpu_seconds_total{mode!="idle"}[5m])) * 100
+(1 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m]))) * 100
 
 # 에러율
 sum(rate(http_errors_total[5m])) / sum(rate(http_requests_total[5m])) * 100
@@ -824,7 +823,7 @@ def get_user(user_id):
         return json.loads(cached)
     
     # DB 조회
-    user = db.query(f"SELECT * FROM users WHERE id = {user_id}")
+    user = db.query("SELECT * FROM users WHERE id = %s", (user_id,))
     
     # 캐시 저장 (1시간)
     cache.setex(f"user:{user_id}", 3600, json.dumps(user))
@@ -963,20 +962,12 @@ class CapacityPlanner:
 ```markdown
 # 포스트모템: [서비스명] 장애
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 요약
 - 발생 시간: 2026-01-29 14:30 KST
 - 종료 시간: 2026-01-29 15:45 KST
 - 지속 시간: 1시간 15분
 - 영향: 전체 사용자의 30%
 - 근본 원인: DB 연결 풀 고갈
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## 타임라인
 - 14:30 - 알림 발생 (높은 에러율)
@@ -986,38 +977,22 @@ class CapacityPlanner:
 - 15:00 - 부분 복구
 - 15:45 - 완전 복구
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 근본 원인
 트래픽 급증으로 DB 연결 풀 고갈
 - 평소 트래픽: 1000 req/s
 - 장애 시: 5000 req/s
 - 연결 풀: 50 (부족)
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 해결 방법
 1. 즉시: 연결 풀 크기 증가
 2. 단기: Auto Scaling 설정
 3. 장기: 연결 풀 동적 조정
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## 액션 아이템
 - [ ] 연결 풀 모니터링 추가
 - [ ] Auto Scaling 정책 수정
 - [ ] 부하 테스트 실시
 - [ ] 런북 업데이트
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## 교훈
 - 연결 풀 크기를 트래픽에 맞게 설정
@@ -1230,10 +1205,10 @@ trivy image myapp:latest
 checkov -d terraform/
 
 # 의존성 스캔
-safety check -r requirements.txt
+safety scan
 
 # 시크릿 스캔
-gitleaks detect --source .
+gitleaks git .
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -1274,27 +1249,15 @@ gitleaks detect --source .
 ```markdown
 # SRE 표준
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 배포 표준
 - 모든 배포는 카나리 배포
 - 자동 롤백 설정 필수
 - 배포 전 부하 테스트
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## 모니터링 표준
 - 모든 서비스는 SLO 정의
 - Golden Signals 모니터링 (Latency, Traffic, Errors, Saturation)
 - 알림은 actionable해야 함
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## 인시던트 표준
 - P0/P1은 30분 내 대응
@@ -1311,6 +1274,7 @@ package main
 
 import (
     "context"
+    "net/http"
     "time"
     "github.com/prometheus/client_golang/prometheus"
     "github.com/prometheus/client_golang/prometheus/promhttp"
@@ -1470,7 +1434,7 @@ func main() {
 
 자격증:
 - AWS Solutions Architect Associate
-- AWS SysOps Administrator
+- AWS CloudOps Engineer - Associate (구 SysOps Administrator)
 ```
 
 **Kubernetes (필수)**
@@ -1638,7 +1602,7 @@ GitOps:
 - Terraform for Beginners
 
 **A Cloud Guru**
-- AWS Certified SysOps Administrator
+- AWS Certified CloudOps Engineer - Associate (구 SysOps Administrator)
 - Kubernetes Deep Dive
 
 ### 실습 플랫폼
@@ -1646,9 +1610,9 @@ GitOps:
 **Hands-on Labs**
 - AWS Free Tier
 - Google Cloud Free Tier
-- Katacoda (Kubernetes)
+- Katacoda (Kubernetes, 2022-06 공개 서비스 종료)
 - Play with Docker
-- Terraform Cloud
+- HCP Terraform (구 Terraform Cloud)
 
 **CTF & Challenges**
 - OverTheWire (Linux)
@@ -2111,8 +2075,17 @@ Staff/Principal (8년+):
 
 - Google SRE Book: [sre.google](https://sre.google/sre-book/table-of-contents/) — ★★★★☆
 - The Site Reliability Workbook: [sre.google](https://sre.google/workbook/table-of-contents/) — ★★★★☆
-- roadmap.sh SRE: [roadmap.sh/sre](https://roadmap.sh/sre) — ★★☆☆☆
+- roadmap.sh DevOps (SRE 포함, 별도 SRE 로드맵 없음): [roadmap.sh/devops](https://roadmap.sh/devops) — ★★☆☆☆
 - AWS Well-Architected Framework: [aws.amazon.com](https://aws.amazon.com/architecture/well-architected/) — ★★★☆☆
+- AWS Certification Exam Guides (CloudOps Engineer - Associate SOA-C03): [docs.aws.amazon.com](https://docs.aws.amazon.com/aws-certification/latest/examguides/aws-certification-exam-guides.html) — ★★★☆☆
+- Python 버전 지원 상태: [devguide.python.org/versions](https://devguide.python.org/versions/) — ★★★☆☆
+- PostgreSQL Versioning Policy: [postgresql.org](https://www.postgresql.org/support/versioning/) — ★★★☆☆
+- Amazon RDS for PostgreSQL 릴리스 일정: [docs.aws.amazon.com](https://docs.aws.amazon.com/AmazonRDS/latest/PostgreSQLReleaseNotes/postgresql-release-calendar.html) — ★★★☆☆
+- Opsgenie 판매·지원 종료 공지: [atlassian.com](https://www.atlassian.com/blog/announcements/evolution-of-it-operations) — ★★★☆☆
+- Terraform Cloud → HCP Terraform 이름 변경: [hashicorp.com](https://www.hashicorp.com/blog/introducing-the-infrastructure-cloud) — ★★★☆☆
+- Safety CLI (`check` 폐기, `scan` 대체): [github.com/pyupio/safety](https://github.com/pyupio/safety) — ★★★☆☆
+- Katacoda 종료 안내: [oreilly.com](https://www.oreilly.com/online-learning/leveraging-katacoda-technology.html) — ★★★☆☆
+- 저장소 gitleaks 가이드(`detect` deprecated, `git` 모드): [gitleaks_guide.md](../../04_security/hardening/gitleaks_guide.md)
 
 ---
 
@@ -2129,6 +2102,6 @@ Staff/Principal (8년+):
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

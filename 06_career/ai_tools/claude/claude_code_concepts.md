@@ -123,13 +123,13 @@ Claude Code는 세션을 시작할 때 다음 내용을 자동으로 읽어 작�
 
 | 사용 방식                    | 과금                              | 비고                                |
 |------------------------------|-----------------------------------|-------------------------------------|
-| Pro·Max 구독                 | 월 구독료, 사용량 한도 공유       | 채팅과 Claude Code가 같은 한도 사용 |
+| Pro·Max·Ultra 구독           | 월 구독료, 사용량 한도 공유       | 채팅과 Claude Code가 같은 한도 사용 |
 | Team·Enterprise              | 좌석 요금 (+ Enterprise는 사용량) | 조직 관리, managed settings         |
 | Claude Console API 키        | 토큰 종량제                       | CI·스크립트, 사용량 기반 정산       |
 | Bedrock·Google Cloud·Foundry | 각 클라우드 요금                  | 조직 클라우드 계정 사용             |
 
 - 무료 플랜에는 Claude Code가 포함되지 않습니다.
-- 구독 사용량 한도는 5시간 단위로 초기화되고, 유료 플랜은 주간 한도도 있습니다.
+- 구독 사용량 한도는 5시간 단위와 주간 단위로 초기화됩니다. Ultra는 인증된 계정이면 5시간 한도 없이 주간 한도만 적용됩니다.
 - 구독으로 로그인했는데 `ANTHROPIC_API_KEY` 환경 변수도 있으면, 승인 후 API 키가 우선 사용되어 종량제로 과금될 수 있습니다. `/status`로 현재 인증 방식을 확인합니다.
 - 공식 문서 기준 기업 배포 평균은 활성일 개발자당 약 $13, 월 $150~250입니다.
 
@@ -147,7 +147,7 @@ Claude Code는 세션을 시작할 때 다음 내용을 자동으로 읽어 작�
 | 이벤트 자동화  | Hooks (30여 종 이벤트)                        | Hooks                |
 | 하위 에이전트  | Subagents (`.claude/agents/`)                 | Subagents            |
 | 권한 제어      | 권한 모드 6종 + 허용·거부 규칙 + 샌드박스     | 승인 정책 + 샌드박스 |
-| 구독           | Claude Pro·Max·Team·Enterprise                | ChatGPT 플랜         |
+| 구독           | Claude Pro·Max·Ultra·Team·Enterprise          | ChatGPT 플랜         |
 
 같은 저장소에서 두 도구를 함께 쓰려면 공통 규칙은 `AGENTS.md`에 두고, Claude 전용 내용만 `CLAUDE.md`에 적은 뒤 `AGENTS.md`를 import하는 방식이 관리하기 쉽습니다. Codex 쪽 개념은 [Codex 공통 개념](../codex/codex_concepts.md)을 참고합니다.
 
@@ -194,6 +194,6 @@ Claude Code는 세션을 시작할 때 다음 내용을 자동으로 읽어 작�
 
 **작성일**: 2026-10-14
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

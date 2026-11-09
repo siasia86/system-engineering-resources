@@ -272,17 +272,18 @@ codex --sandbox read-only --ask-for-approval on-request
 
 일반적인 선택 기준은 다음과 같습니다. 실제 표시 항목과 기본값은 모델·Codex 버전·계정·관리 정책에 따라 다를 수 있습니다.
 
-| 수준                   | 의미                           | 권장 용도                                                     |
-|------------------------|--------------------------------|---------------------------------------------------------------|
-| `low`                  | 빠르고 가벼운 추론             | 명확한 질의, 단순 수정, 형식 변환, 짧은 요약                  |
-| `medium`               | 속도와 분석 깊기의 균형        | 일반적인 개발·디버깅·문서 작업의 시작 수준으로 권장           |
-| `high`                 | 더 깊은 추론과 검토            | 복잡한 버그, 다단계 변경, 여러 파일·조건을 함께 고려하는 작업 |
-| `xhigh` / `extra high` | 매우 깊은 추론                 | 어려운 장시간 작업이나 높은 정확도가 중요한 분석              |
-| `max` / `ultra`        | 모델이 제공하는 높은 추론 수준 | 지원 모델에서 어려운 문제를 분석할 때; 시간·사용량 확인       |
+| 수준                   | 의미                      | 권장 용도                                                     |
+|------------------------|---------------------------|---------------------------------------------------------------|
+| `low`                  | 빠르고 가벼운 추론        | 명확한 질의, 단순 수정, 형식 변환, 짧은 요약                  |
+| `medium`               | 속도와 분석 깊기의 균형   | 일반적인 개발·디버깅·문서 작업의 시작 수준으로 권장           |
+| `high`                 | 더 깊은 추론과 검토       | 복잡한 버그, 다단계 변경, 여러 파일·조건을 함께 고려하는 작업 |
+| `xhigh` / `extra high` | 매우 깊은 추론            | 어려운 장시간 작업이나 높은 정확도가 중요한 분석              |
+| `max`                  | 한 작업을 가장 깊게 추론  | 지원 모델에서 가장 어려운 문제를 분석할 때; 시간·사용량 확인  |
+| `ultra`                | subagent로 나눠 병렬 처리 | 나눌 수 있는 큰 작업 (지원 모델만); 사용량 증가 확인          |
 
 `medium`에서 시작해 결과가 부족할 때만 `high` 이상으로 올리는 방식이 일반적입니다. reasoning effort를 높이면 복잡한 작업의 계획·검토 품질이 좋아질 수 있지만, 응답 시간이 길어지고 token 사용량도 증가합니다. 반대로 단순 작업에서 무조건 높은 수준을 사용해도 품질 향상이 작을 수 있습니다.
 
-reasoning effort와 subagent 병렬 작업은 별개의 기능입니다. 독립적인 조사·리뷰·테스트 분석이 필요할 때는 Codex에 subagent 위임을 직접 요청하고, 실행 중인 thread는 `/agent`에서 확인합니다. 각 subagent는 별도의 모델·도구 호출을 사용하므로, 같은 파일을 동시에 수정시키기보다 읽기 중심의 독립 작업에 우선 사용합니다.
+`ultra`를 제외한 reasoning effort와 subagent 병렬 작업은 별개의 기능입니다. 독립적인 조사·리뷰·테스트 분석이 필요할 때는 Codex에 subagent 위임을 직접 요청하고, 실행 중인 thread는 `/subagents`에서 확인·전환합니다. 각 subagent는 별도의 모델·도구 호출을 사용하므로, 같은 파일을 동시에 수정시키기보다 읽기 중심의 독립 작업에 우선 사용합니다.
 
 대화형 메뉴를 사용하지 않는 실행에서는 `-c`/`--config`로 reasoning effort를 한 번만 지정할 수 있습니다.
 
@@ -341,7 +342,7 @@ codex exec --sandbox workspace-write -c approval_policy=never "테스트 실패�
 ```toml
 # ~/.codex/config.toml
 # Use a model available to this account.
-model = "gpt-5.6-sol"
+model = "gpt-6.1-sol"
 # Supported values depend on the selected model.
 model_reasoning_effort = "medium"
 approval_policy = "on-request"
@@ -607,6 +608,8 @@ codex --help
 - OpenAI Skills & Plugins: [developers.openai.com/codex/skills-and-plugins.md](https://developers.openai.com/codex/skills-and-plugins.md) — ★★★☆☆
 - OpenAI Build skills: [developers.openai.com/codex/build-skills.md](https://developers.openai.com/codex/build-skills.md) — ★★★☆☆
 - OpenAI Codex releases: [github.com/openai/codex/releases](https://github.com/openai/codex/releases) — ★★★☆☆
+- OpenAI Codex models: [learn.chatgpt.com/docs/models](https://learn.chatgpt.com/docs/models) — ★★★☆☆
+- OpenAI Codex slash commands: [learn.chatgpt.com/docs/cli/slash-commands](https://learn.chatgpt.com/docs/cli/slash-commands) — ★★★☆☆
 
 ---
 
@@ -623,6 +626,6 @@ codex --help
 
 **작성일**: 2026-09-14
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

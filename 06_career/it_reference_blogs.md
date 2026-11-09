@@ -14,15 +14,15 @@
 
 개념을 처음 접하거나 정확한 정의를 확인할 때 사용합니다.
 
-| 이름                | URL                                                                | 언어   | 특징                                        | 평점  |
-|---------------------|--------------------------------------------------------------------|--------|---------------------------------------------|-------|
-| Cloudflare Learning | https://www.cloudflare.com/ko-kr/learning/                         | 한/영  | 네트워크·보안·CDN 용어를 동작 원리까지 설명 | ★★★☆☆ |
-| AWS 용어집          | https://docs.aws.amazon.com/ko_kr/general/latest/gr/glos-chap.html | 한/영  | AWS 공식 용어 정의                          | ★★★☆☆ |
-| MDN Web Docs 용어집 | https://developer.mozilla.org/ko/docs/Glossary                     | 한/영  | 웹/HTTP/TLS 등 웹 기술 용어                 | ★★★☆☆ |
-| 생활코딩            | https://opentutorials.org                                          | 한국어 | 개발 입문~실무 개념, 텍스트+영상            | ★★☆☆☆ |
-| 요즘IT              | https://yozm.wishket.com/magazine/                                 | 한국어 | IT 트렌드·개념을 실무자 관점으로 설명       | ★★☆☆☆ |
-| 널널한 개발자       | https://www.youtube.com/@nullnull_not_eq_null                      | 한국어 | 네트워크·보안 개념 강의형 영상, 입문~중급   | ★★☆☆☆ |
-| 코딩애플            | https://codingapple.com                                            | 한국어 | 개발 개념을 짧고 쉽게 설명, 입문자 친화적   | ★★☆☆☆ |
+| 이름                | URL                                                                        | 언어   | 특징                                        | 평점  |
+|---------------------|----------------------------------------------------------------------------|--------|---------------------------------------------|-------|
+| Cloudflare Learning | https://www.cloudflare.com/ko-kr/learning/                                 | 한/영  | 네트워크·보안·CDN 용어를 동작 원리까지 설명 | ★★★☆☆ |
+| AWS 용어집          | https://docs.aws.amazon.com/ko_kr/glossary/latest/reference/glos-chap.html | 한/영  | AWS 공식 용어 정의                          | ★★★☆☆ |
+| MDN Web Docs 용어집 | https://developer.mozilla.org/ko/docs/Glossary                             | 한/영  | 웹/HTTP/TLS 등 웹 기술 용어                 | ★★★☆☆ |
+| 생활코딩            | https://opentutorials.org                                                  | 한국어 | 개발 입문~실무 개념, 텍스트+영상            | ★★☆☆☆ |
+| 요즘IT              | https://yozm.wishket.com/magazine/                                         | 한국어 | IT 트렌드·개념을 실무자 관점으로 설명       | ★★☆☆☆ |
+| 널널한 개발자       | https://www.youtube.com/@nullnull_not_eq_null                              | 한국어 | 네트워크·보안 개념 강의형 영상, 입문~중급   | ★★☆☆☆ |
+| 코딩애플            | https://codingapple.com                                                    | 한국어 | 개발 개념을 짧고 쉽게 설명, 입문자 친화적   | ★★☆☆☆ |
 
 > Cloudflare Learning: 단순 정의를 넘어 동작 원리와 공격 유형까지 다루며,
 > DDoS, CDN, DNS, Zero Trust 등 네트워크·보안 개념을 실무 관점으로 설명합니다.
@@ -57,17 +57,17 @@
 
 ### 서비스/스타트업
 
-| 이름                 | URL                              | 분야                     | 평점  |
-|----------------------|----------------------------------|--------------------------|-------|
-| 당근 테크 블로그     | https://medium.com/daangn        | 클라우드, Go, 인프라     | ★★☆☆☆ |
-| 마켓컬리 헬로월드    | https://helloworld.kurly.com     | 백엔드, 인프라, MSA      | ★★☆☆☆ |
-| 뱅크샐러드 테크      | https://blog.banksalad.com/tech/ | 금융, 데이터, 인프라     | ★★☆☆☆ |
-| 쏘카 테크 블로그     | https://tech.socarcorp.kr        | 모빌리티, 인프라, 데이터 | ★★☆☆☆ |
-| 직방 테크            | https://medium.com/zigbang       | 부동산, 인프라, 백엔드   | ★★☆☆☆ |
-| 무신사 테크          | https://medium.com/musinsa-tech  | 이커머스, 인프라, 백엔드 | ★★☆☆☆ |
-| 넷마블 엔지니어링    | https://netmarble.engineering    | 게임, 인프라, 보안       | ★★☆☆☆ |
-| 지마켓 개발자 블로그 | https://dev.gmarket.com          | 이커머스, 인프라, 백엔드 | ★★☆☆☆ |
-| 여기어때 테크        | https://techblog.gccompany.co.kr | 여행, 인프라, 백엔드     | ★★☆☆☆ |
+| 이름                 | URL                                   | 분야                     | 평점  |
+|----------------------|---------------------------------------|--------------------------|-------|
+| 당근 테크 블로그     | https://medium.com/daangn             | 클라우드, Go, 인프라     | ★★☆☆☆ |
+| 마켓컬리 헬로월드    | https://helloworld.kurly.com          | 백엔드, 인프라, MSA      | ★★☆☆☆ |
+| 뱅크샐러드 테크      | https://corp.banksalad.com/blog/tech/ | 금융, 데이터, 인프라     | ★★☆☆☆ |
+| 쏘카 테크 블로그     | https://tech.socar.kr                 | 모빌리티, 인프라, 데이터 | ★★☆☆☆ |
+| 직방 테크            | https://medium.com/zigbang            | 부동산, 인프라, 백엔드   | ★★☆☆☆ |
+| 무신사 테크          | https://medium.com/musinsa-tech       | 이커머스, 인프라, 백엔드 | ★★☆☆☆ |
+| 넷마블 엔지니어링    | https://netmarble.engineering         | 게임, 인프라, 보안       | ★★☆☆☆ |
+| 지마켓 개발자 블로그 | https://dev.gmarket.com               | 이커머스, 인프라, 백엔드 | ★★☆☆☆ |
+| 여기어때 테크        | https://techblog.gccompany.co.kr      | 여행, 인프라, 백엔드     | ★★☆☆☆ |
 
 ### 클라우드/인프라 전문
 
@@ -75,7 +75,7 @@
 |------------------------|---------------------------------------|---------------------------|-------|
 | 44bits                 | https://www.44bits.io                 | 클라우드, 컨테이너, IaC   | ★★☆☆☆ |
 | 베스핀글로벌           | https://blog.bespinglobal.com         | AWS/Azure/GCP 실무, MSP   | ★★☆☆☆ |
-| 클라우드메이트         | https://tech.cloudmt.co.kr            | 클라우드, DevOps, 인프라  | ★★☆☆☆ |
+| 안랩클라우드메이트     | https://techblog.ahnlabcloudmate.com  | 클라우드, DevOps, 인프라  | ★★☆☆☆ |
 | AWS 공식 블로그 (한국) | https://aws.amazon.com/ko/blogs/korea | AWS 서비스 실무 적용 사례 | ★★★☆☆ |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -90,7 +90,7 @@
 
 | 이름            | URL                              | 분야                                                    | 평점  |
 |-----------------|----------------------------------|---------------------------------------------------------|-------|
-| Fireship        | https://fireship.io              | 기술 개념 1개를 100초 영상+글로 설명 (JS/인프라/DevOps) | ★★☆☆☆ |
+| Fireship        | https://fireship.dev             | 기술 개념 1개를 100초 영상+글로 설명 (JS/인프라/DevOps) | ★★☆☆☆ |
 | Level Up Coding | https://levelup.gitconnected.com | 개발 개념 1개를 5분 분량으로 설명 (Medium 기반)         | ★★☆☆☆ |
 
 ### 시스템 설계/아키텍처
@@ -98,10 +98,8 @@
 | 이름             | URL                         | 분야                                | 평점  |
 |------------------|-----------------------------|-------------------------------------|-------|
 | ByteByteGo       | https://blog.bytebytego.com | 시스템 설계, 인프라 개념 다이어그램 | ★★☆☆☆ |
-| Martin Fowler    | https://martinfowler.com    | 아키텍처, 패턴, 설계 원칙           | ★★★★☆ |
-| High Scalability | http://highscalability.com  | 대규모 아키텍처 사례 모음           | ★★☆☆☆ |
-
-🟡 High Scalability는 HTTPS를 지원하지 않습니다. HTTP로만 접근 가능합니다.
+| Martin Fowler    | https://martinfowler.com    | 아키텍처, 패턴, 설계 원칙           | ★★☆☆☆ |
+| High Scalability | https://highscalability.com | 대규모 아키텍처 사례 모음           | ★★☆☆☆ |
 
 ### 네트워크/보안/인프라
 
@@ -177,9 +175,9 @@
 
 - Cloudflare Learning: [cloudflare.com/ko-kr/learning](https://www.cloudflare.com/ko-kr/learning/) — ★★★☆☆
 - AWS 공식 블로그: [aws.amazon.com/blogs/aws](https://aws.amazon.com/blogs/aws) — ★★★☆☆
-- Martin Fowler: [martinfowler.com](https://martinfowler.com) — ★★★★☆
+- Martin Fowler: [martinfowler.com](https://martinfowler.com) — ★★☆☆☆
 - ByteByteGo: [blog.bytebytego.com](https://blog.bytebytego.com) — ★★☆☆☆
-- Fireship: [fireship.io](https://fireship.io) — ★★☆☆☆
+- Fireship: [fireship.dev](https://fireship.dev) — ★★☆☆☆
 - 44bits: [44bits.io](https://www.44bits.io) — ★★☆☆☆
 - GeekNews: [news.hada.io](https://news.hada.io) — ★★☆☆☆
 - AI 아키텍처 기술 블로그: [aiarchitect.tistory.com](https://aiarchitect.tistory.com) — ★★☆☆☆
@@ -201,6 +199,6 @@
 
 **작성일**: 2026-08-13
 
-**마지막 업데이트**: 2026-08-13
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

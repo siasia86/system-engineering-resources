@@ -34,7 +34,7 @@ AI 에이전트 기반 리버스 엔지니어링 도구(예: [morluto/rea](https
 
 ## 2. 한국 저작권법
 
-저작권법(법률 제21336호, 2026-08-11 시행)에서 리버스 엔지니어링과 직접 관련된 조항입니다.
+저작권법(법률 제21595호, 2026-10-29 시행. 아래 조문은 2026-10-15에 확인한 제21336호와 같음)에서 리버스 엔지니어링과 직접 관련된 조항입니다.
 
 ### 프로그램코드역분석 (제2조 제34호, 제101조의4)
 
@@ -192,10 +192,10 @@ AI 에이전트 기반 리버스 엔지니어링 도구(예: [morluto/rea](https
 - 정보통신망법 원문: [_reference/정보통신망법_law.go.kr.txt](./_reference/정보통신망법_law.go.kr.txt)
 - 17 U.S.C. §1201 발췌: [_reference/17USC1201_law.cornell.edu.txt](./_reference/17USC1201_law.cornell.edu.txt)
 - 37 CFR §201.40(b)(18) 발췌: [_reference/37CFR201.40_ecfr.gov.txt](./_reference/37CFR201.40_ecfr.gov.txt)
-- 한국 저작권법: [law.go.kr](https://www.law.go.kr/법령/저작권법) — ★★★★☆
-- 17 U.S. Code §1201: [law.cornell.edu](https://www.law.cornell.edu/uscode/text/17/1201) — ★★★★☆
-- 37 CFR §201.40: [ecfr.gov](https://www.ecfr.gov/current/title-37/chapter-II/subchapter-A/part-201/section-201.40) — ★★★★☆
-- rea DISCLAIMER: [github.com/morluto/rea](https://github.com/morluto/rea/blob/main/DISCLAIMER.md) — ★★☆☆☆
+- 한국 저작권법: [law.go.kr](https://www.law.go.kr/법령/저작권법) — ★★★☆☆
+- 17 U.S. Code §1201: [law.cornell.edu](https://www.law.cornell.edu/uscode/text/17/1201) — ★★★☆☆
+- 37 CFR §201.40: [ecfr.gov](https://www.ecfr.gov/current/title-37/chapter-II/subchapter-A/part-201/section-201.40) — ★★★☆☆
+- rea DISCLAIMER: [github.com/morluto/rea](https://github.com/morluto/rea/blob/main/DISCLAIMER.md) — ★★★☆☆
 - [DRM 가이드](drm_guide.md), [IP 귀속 가이드](ip_ownership_guide.md), [라이선스 가이드](../../license_guide.md)
 
 ---
@@ -213,6 +213,6 @@ AI 에이전트 기반 리버스 엔지니어링 도구(예: [morluto/rea](https
 
 **작성일**: 2026-10-15
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

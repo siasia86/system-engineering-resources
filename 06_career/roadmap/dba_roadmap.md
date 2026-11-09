@@ -103,13 +103,13 @@ SQL
 
 ### 일상 운영 체크리스트
 
-```bash
+```sql
 # 복제 지연 확인
 SHOW REPLICA STATUS\G  # Seconds_Behind_Source
 
 # 슬로우 쿼리 확인
 SELECT * FROM performance_schema.events_statements_summary_by_digest
-ORDER BY mean_exec_time DESC LIMIT 10;
+ORDER BY avg_timer_wait DESC LIMIT 10;
 
 # 테이블 크기 확인
 SELECT table_name, ROUND(data_length/1024/1024, 1) AS data_mb
@@ -220,20 +220,22 @@ Sharding (수평 확장)
 ### 추천 학습 순서 (내부 문서)
 
 ```
-09_database/                               
-├── rdbms_normalization.md  → 설계 기초    
-├── rdbms_index.md          → 성능 핵심    
-├── rdbms_explain.md        → 튜닝 실전    
-├── rdbms_transaction.md    → 동시성 이해  
-├── rdbms_lock.md           → 잠금 메커니즘
-├── rdbms_replication.md    → HA 기반      
-├── rdbms_partition.md      → 대용량 관리  
+05_database/rdbms/
+├── rdbms_normalization.md  → 설계 기초
+├── rdbms_index.md          → 성능 핵심
+├── rdbms_explain.md        → 튜닝 실전
+├── rdbms_transaction.md    → 동시성 이해
+└── rdbms_lock.md           → 잠금 메커니즘
+
+05_database/operations/
+├── rdbms_replication.md    → HA 기반
+├── rdbms_partition.md      → 대용량 관리
 └── rdbms_schema_migration.md → 무중단 운영
-                                           
-10_nosql/                                  
-├── nosql_mongodb.md                       
-├── nosql_redis.md                         
-└── nosql_elasticsearch.md                 
+
+05_database/nosql/
+├── nosql_mongodb.md
+├── nosql_redis.md
+└── nosql_elasticsearch.md
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -242,13 +244,13 @@ Sharding (수평 확장)
 
 ## 8. 자격증
 
-| 자격증                            | 발급 기관 | 난이도 | 추천 대상         |
-|-----------------------------------|-----------|--------|-------------------|
-| **MySQL Database Administrator**  | Oracle    | ★★★☆☆  | MySQL DBA 입문    |
-| **Oracle Database Administrator** | Oracle    | ★★★★☆  | 엔터프라이즈 환경 |
-| **AWS Database Specialty**        | AWS       | ★★★★☆  | 클라우드 DBA      |
-| **MongoDB Associate DBA**         | MongoDB   | ★★★☆☆  | NoSQL DBA         |
-| **PostgreSQL Professional**       | EDB       | ★★★☆☆  | PostgreSQL 전문화 |
+| 자격증                                    | 발급 기관 | 난이도 | 추천 대상         |
+|-------------------------------------------|-----------|--------|-------------------|
+| **MySQL Database Administrator**          | Oracle    | ★★★☆☆  | MySQL DBA 입문    |
+| **Oracle Database Administrator**         | Oracle    | ★★★★☆  | 엔터프라이즈 환경 |
+| **AWS Database Specialty** (2024-04 폐지) | AWS       | ★★★★☆  | 클라우드 DBA      |
+| **MongoDB Associate DBA**                 | MongoDB   | ★★★☆☆  | NoSQL DBA         |
+| **EDB Advanced for PostgreSQL**           | EDB       | ★★★☆☆  | PostgreSQL 전문화 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -262,6 +264,9 @@ Sharding (수평 확장)
 - Planet MySQL: [planet.mysql.com](https://planet.mysql.com/) — ★★☆☆☆
 - PostgreSQL Documentation: [postgresql.org/docs](https://www.postgresql.org/docs/current/) — ★★★☆☆
 - AWS Database Blog: [aws.amazon.com/blogs/database](https://aws.amazon.com/blogs/database/) — ★★☆☆☆
+- MySQL 8.4 Statement Summary Tables: [dev.mysql.com](https://dev.mysql.com/doc/refman/8.4/en/performance-schema-statement-summary-tables.html) — ★★★☆☆
+- AWS Certification retirements and launches (Database – Specialty 폐지): [aws.amazon.com](https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches) — ★★★☆☆
+- EDB Certification Exams Catalog: [enterprisedb.com](https://www.enterprisedb.com/training/certification-exams) — ★★★☆☆
 
 ---
 
@@ -278,6 +283,6 @@ Sharding (수평 확장)
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

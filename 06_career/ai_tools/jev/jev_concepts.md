@@ -119,10 +119,10 @@ Ticket -> Input validation -> Jev evaluation -> Routing policy -> Queue
 
 ## 참고 자료
 
-- [TypeSafe Introduction](https://docs.typesafe.ai/introduction) — ★★★★☆
-- [TypeSafe Primitives](https://docs.typesafe.ai/primitives) — ★★★★☆
-- [TypeSafe Confidence](https://docs.typesafe.ai/confidence) — ★★★★☆
-- [Jev 1.13 jaggedness](https://docs.typesafe.ai/model-jaggedness/jev-1.13) — ★★★★☆
+- [TypeSafe Introduction](https://docs.typesafe.ai/introduction) — ★★★☆☆
+- [TypeSafe Primitives](https://docs.typesafe.ai/primitives) — ★★★☆☆
+- [TypeSafe Confidence](https://docs.typesafe.ai/confidence) — ★★★☆☆
+- [Jev 1.13 jaggedness](https://docs.typesafe.ai/model-jaggedness/jev-1.13) — ★★★☆☆
 - [Jev 공식 참조 노트](../../../_reference/jev_official_notes.md)
 
 ---
@@ -140,6 +140,6 @@ Ticket -> Input validation -> Jev evaluation -> Routing policy -> Queue
 
 **작성일**: 2026-10-01
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

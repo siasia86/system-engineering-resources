@@ -81,7 +81,7 @@ GUI에서 완료 보고를 받으면 다음 정보를 남겨 다른 인터페이
 
 ## 참고 자료
 
-- OpenAI ChatGPT와 Codex 시작하기: [developers.openai.com/docs/quickstart](https://developers.openai.com/docs/quickstart) — ★★★☆☆
+- OpenAI ChatGPT와 Codex 시작하기: [learn.chatgpt.com/docs/quickstart](https://learn.chatgpt.com/docs/quickstart) — ★★★☆☆
 - OpenAI Codex CLI: [learn.chatgpt.com/docs/codex/cli](https://learn.chatgpt.com/docs/codex/cli) — ★★★☆☆
 
 ---
@@ -99,6 +99,6 @@ GUI에서 완료 보고를 받으면 다음 정보를 남겨 다른 인터페이
 
 **작성일**: 2026-09-22
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

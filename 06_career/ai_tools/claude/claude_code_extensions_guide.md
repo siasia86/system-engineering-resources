@@ -287,7 +287,7 @@ claude plugin install commit-commands@claude-plugins-official
 - Subagents: [code.claude.com/docs/en/sub-agents](https://code.claude.com/docs/en/sub-agents) — ★★★☆☆
 - MCP: [code.claude.com/docs/en/mcp](https://code.claude.com/docs/en/mcp) — ★★★☆☆
 - Plugins: [code.claude.com/docs/en/plugins/overview](https://code.claude.com/docs/en/plugins/overview) — ★★★☆☆
-- Agent Skills 표준: [agentskills.io](https://agentskills.io) — ★★☆☆☆
+- Agent Skills 표준: [agentskills.io](https://agentskills.io) — ★★★☆☆
 
 ---
 
@@ -304,6 +304,6 @@ claude plugin install commit-commands@claude-plugins-official
 
 **작성일**: 2026-10-14
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

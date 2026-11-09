@@ -26,14 +26,14 @@ Aside는 웹사이트에 로그인한 상태와 브라우저 문맥을 이용해
 
 ## 2. 플랫폼과 시작 방법
 
-| 항목         | 확인 내용                                                      |
-|--------------|----------------------------------------------------------------|
-| macOS        | 다운로드 제공; 시작 도움말은 macOS 15.0 이상 명시              |
-| Windows      | 다운로드 제공; v1.0.914.1에서 공식 제공 공지                   |
-| Linux·모바일 | 조사한 공식 자료에서 설치 지원 확인 못함                       |
-| 버전         | 변경 이력 상단 v1.0.928.1; 설치 파일 버전은 직접 확인하지 않음 |
+| 항목         | 확인 내용                                                     |
+|--------------|---------------------------------------------------------------|
+| macOS        | 다운로드 제공; 시작 도움말은 macOS 15.0 이상 명시             |
+| Windows      | 다운로드 제공; v1.0.914.1에서 공식 제공 공지                  |
+| Linux·모바일 | 조사한 공식 자료에서 설치 지원 확인 못함                      |
+| 버전         | 변경 이력 상단 v1.0.1022.1(2026-11-09); 설치 파일 버전 미확인 |
 
-출처: [다운로드](https://aside.com/download), [시작 도움말](https://docs.aside.com/help/get-started), [변경 이력](https://docs.aside.com/changelog/native). 시작 도움말은 macOS를 중심으로 설명하지만 다운로드·변경 이력은 Windows 지원도 확인해 줍니다. Windows 최소 버전과 CPU 아키텍처는 미확인입니다.
+출처: [다운로드](https://aside.com/download), [시작 도움말](https://docs.aside.com/help/get-started), [변경 이력](https://docs.aside.com/changelog/native). 시작 도움말은 macOS를 중심으로 설명하지만 다운로드·변경 이력은 Windows 지원도 확인해 줍니다. Windows 최소 버전은 미확인이며, 변경 이력 v1.0.1022.1에 Windows ARM64 공식 지원이 기록되어 있습니다(2026-11-09 확인).
 
 공식 안내의 기본 시작 흐름은 다음과 같습니다. [Get started](https://docs.aside.com/help/get-started).
 
@@ -89,7 +89,7 @@ Routine은 Cron과 Heartbeat로 구분됩니다. Cron은 별도의 반복 작업
 | Max        | USD 200/월 | Pro 포함, 사용량 확대, early access                                       |
 | Enterprise | 별도 문의  | 팀 설정·공유 계정·권한 관리                                               |
 
-**Max 사용량은 공식 자료끼리 다릅니다.** 요금 페이지는 Free의 40배, 구독 도움말은 30배로 표기합니다. 이 문서는 어느 한 값을 확정하지 않으며, 실제 부여량은 `Settings > Plan & Usage`에서 확인합니다. [Pricing](https://aside.com/pricing), [Subscription](https://docs.aside.com/help/subscription).
+**Max 사용량은 2026-11-09 확인에서 요금 페이지와 구독 도움말 모두 Free의 40배로 표기합니다.** 2026-10-13 조사 때는 구독 도움말이 30배로 표기해 자료끼리 달랐습니다. 실제 부여량은 `Settings > Plan & Usage`에서 확인합니다. [Pricing](https://aside.com/pricing), [Subscription](https://docs.aside.com/help/subscription).
 
 Aside credits는 외부 AI 구독·API 비용과 별개입니다. API 키를 연결하면 해당 공급자 계정에 비용이 청구될 수 있습니다. [구독·credits 설명](https://docs.aside.com/help/subscription). 표시 가격을 모든 모델 사용 비용이 포함된 총비용으로 해석하지 않습니다.
 
@@ -196,14 +196,14 @@ aside mcp
 
 ## 참고 자료
 
-- [Aside 공식 사이트](https://aside.com/).
-- [시작 도움말](https://docs.aside.com/help/get-started).
-- [모델 공급자 설정](https://docs.aside.com/help/ai).
-- [요금 페이지](https://aside.com/pricing), [구독 도움말](https://docs.aside.com/help/subscription).
-- [권한 설정](https://docs.aside.com/help/security), [개인정보 정책](https://aside.com/policy/privacy).
-- [CLI·MCP·REPL](https://docs.aside.com/help/developers).
-- [브라우저 변경 이력](https://docs.aside.com/changelog/native).
-- [제작사 공개 벤치마크](https://github.com/at-inc/aside-benchmarks).
+- [Aside 공식 사이트](https://aside.com/) — ★★★☆☆
+- [시작 도움말](https://docs.aside.com/help/get-started) — ★★★☆☆
+- [모델 공급자 설정](https://docs.aside.com/help/ai) — ★★★☆☆
+- [요금 페이지](https://aside.com/pricing), [구독 도움말](https://docs.aside.com/help/subscription) — ★★★☆☆
+- [권한 설정](https://docs.aside.com/help/security), [개인정보 정책](https://aside.com/policy/privacy) — ★★★☆☆
+- [CLI·MCP·REPL](https://docs.aside.com/help/developers) — ★★★☆☆
+- [브라우저 변경 이력](https://docs.aside.com/changelog/native) — ★★★☆☆
+- [제작사 공개 벤치마크](https://github.com/at-inc/aside-benchmarks) — ★★★☆☆
 - [공식 참조 노트](../../_reference/aside_browser_official_notes.md).
 
 ---
@@ -221,6 +221,6 @@ aside mcp
 
 **작성일**: 2026-10-13
 
-**마지막 업데이트**: 2026-10-13
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

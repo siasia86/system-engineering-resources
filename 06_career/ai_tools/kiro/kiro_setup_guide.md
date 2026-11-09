@@ -15,6 +15,8 @@
 Kiro CLI의 커스터마이징은 `~/.kiro/` (글로벌) 또는 `.kiro/` (프로젝트 로컬) 디렉토리 아래
 4가지 구성 요소로 이루어집니다.
 
+> 🟡 이 문서의 agent JSON·hooks·`toolsSettings` 형식은 Kiro CLI 2.x(V2 하네스) 기준입니다. 3.0.0(2026-11-03)부터 대화형 실행의 기본 하네스가 V3로 바뀌어 hooks는 PascalCase 배열 또는 `.kiro/hooks/*.json`, 도구 권한은 `permissions`(permissions.yaml)로 관리하며 `/upgrade-agent`로 변환합니다. 2.x 동작은 `kiro-cli --v2`로 실행합니다.
+
 | 구성 요소 | 위치                | 역할                           |
 |-----------|---------------------|--------------------------------|
 | Skill     | `skills/*/SKILL.md` | AI 행동 규칙·워크플로 정의     |
@@ -232,8 +234,8 @@ Agent는 Skill, 도구 권한, 페르소나를 묶은 JSON 설정 파일입니�
 | `write`          | `fs_write`                        |
 | `shell`          | `execute_bash`                    |
 | `aws`            | `use_aws`                         |
-| `delegate`       | `use_subagent`                    |
-| `knowledge`      | `web_search`, `web_fetch`         |
+| `subagent`       | `use_subagent`                    |
+| `web`            | `web_search`, `web_fetch`         |
 
 ### 4.5 실행 흐름
 
@@ -332,7 +334,7 @@ system-engineer (orchestrator)
 
 ## 5. Prompt 작성
 
-Prompt는 `/prompts <name>` 명령으로 호출하는 재사용 가능한 프롬프트 템플릿입니다.
+Prompt는 `@<name>` 또는 `/prompts get <name>`으로 호출하는 재사용 가능한 프롬프트 템플릿입니다(V3는 `/<name>`).
 반복적으로 사용하는 요청(코드 리뷰, 배포 확인, 장애 분석 등)을 파일로 관리합니다.
 
 ### 5.1 파일 위치 및 우선순위
@@ -364,10 +366,10 @@ $ARGUMENTS
 
 ### 5.3 인자 사용법
 
-`$ARGUMENTS`는 `/prompts ansible-review <추가 텍스트>` 형태로 전달한 내용으로 치환됩니다.
+`$ARGUMENTS`는 `@ansible-review <추가 텍스트>` 형태로 전달한 내용으로 치환됩니다.
 
 ```
-> /prompts ansible-review roles/nginx/tasks/main.yml 을 리뷰해줘
+> @ansible-review roles/nginx/tasks/main.yml 을 리뷰해줘
 ```
 
 ### 5.4 프롬프트 예시 모음
@@ -696,12 +698,15 @@ kiro-cli settings chat.enableCheckpoint true
 
 - addyosmani/agent-skills: [github.com](https://github.com/addyosmani/agent-skills) — ★★★☆☆
 - Kiro CLI 공식 문서: [kiro.dev/docs/cli](https://kiro.dev/docs/cli/) — ★★★☆☆
+- Kiro CLI 2.x → V3 업그레이드: [kiro.dev/docs/cli/v3](https://kiro.dev/docs/cli/v3/) — ★★★☆☆
+- Hooks 마이그레이션(V2 도구 그룹): [kiro.dev/docs/cli/v3/hooks-migration](https://kiro.dev/docs/cli/v3/hooks-migration/) — ★★★☆☆
+- 프롬프트 관리: [kiro.dev/docs/cli/chat/manage-prompts](https://kiro.dev/docs/cli/chat/manage-prompts/) — ★★★☆☆
 - [kiro_cli_command_reference.md](./kiro_cli_command_reference.md)
 
 ---
 
 **작성일**: 2026-06-09
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

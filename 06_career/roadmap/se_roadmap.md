@@ -320,15 +320,15 @@ DISK=$(df -h / | tail -1 | awk '{print $5}' | sed 's/%//')
 
 # 알림
 if [ $(echo "$CPU > 80" | bc) -eq 1 ]; then
-    echo "High CPU: $CPU%" | mail -s "Alert" siasia.linux@gmail.com
+    echo "High CPU: $CPU%" | mail -s "Alert" admin@example.com
 fi
 
 if [ $MEM -gt 80 ]; then
-    echo "High Memory: $MEM%" | mail -s "Alert" siasia.linux@gmail.com
+    echo "High Memory: $MEM%" | mail -s "Alert" admin@example.com
 fi
 
 if [ $DISK -gt 80 ]; then
-    echo "High Disk: $DISK%" | mail -s "Alert" siasia.linux@gmail.com
+    echo "High Disk: $DISK%" | mail -s "Alert" admin@example.com
 fi
 ```
 
@@ -353,7 +353,7 @@ virt-install --name vm01 \
   --ram 2048 \
   --disk path=/var/lib/libvirt/images/vm01.qcow2,size=20 \
   --vcpus 2 \
-  --os-type linux \
+  --osinfo detect=on,require=off \
   --network bridge=virbr0 \
   --cdrom /path/to/ubuntu.iso
 
@@ -692,14 +692,14 @@ sar -n DEV 1 10
 ### 데이터베이스 관리
 
 **MySQL 복제**
-```sql
--- Master 설정
+```ini
+# Master 설정
 [mysqld]
 server-id = 1
 log-bin = mysql-bin
 binlog-do-db = mydb
 
--- Slave 설정
+# Slave 설정
 [mysqld]
 server-id = 2
 relay-log = mysql-relay-bin
@@ -763,7 +763,7 @@ services:
     ports:
       - "80:80"
   db:
-    image: mysql:8.0
+    image: mysql:8.4
     environment:
       MYSQL_ROOT_PASSWORD: password
 ```
@@ -1298,6 +1298,8 @@ SE → IT Manager
 ## 참고 자료
 
 - roadmap.sh DevOps: [roadmap.sh/devops](https://roadmap.sh/devops) — ★★★☆☆
+- virt-install man page (`--osinfo`, OS 감지 실패 시 동작): [github.com/virt-manager](https://github.com/virt-manager/virt-manager/blob/main/man/virt-install.rst) — ★★★☆☆
+- MySQL 8.4 Using Option Files (주석은 `#`·`;`): [dev.mysql.com](https://dev.mysql.com/doc/refman/8.4/en/option-files.html) — ★★★☆☆
 
 ---
 
@@ -1314,6 +1316,6 @@ SE → IT Manager
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

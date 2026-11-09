@@ -137,11 +137,11 @@ DRM 우회가 곧바로 DMCA 위반을 의미하지는 않으며, 적용 요건�
 
 ### 주요 판례
 
-| 사건                  | 연도 | 내용                               |
-|-----------------------|------|------------------------------------|
-| **DVD CCA v. Bunner** | 2001 | DeCSS(DVD 암호화 우회) 배포 금지   |
-| **MGM v. Grokster**   | 2005 | P2P 서비스의 저작권 침해 방조 책임 |
-| **Oracle v. Google**  | 2021 | Java API 사용의 공정 이용 인정     |
+| 사건                    | 연도 | 내용                                       |
+|-------------------------|------|--------------------------------------------|
+| **Universal v. Corley** | 2001 | DeCSS(DVD 암호화 우회) 게시·링크 금지 인정 |
+| **MGM v. Grokster**     | 2005 | P2P 서비스의 저작권 침해 방조 책임         |
+| **Oracle v. Google**    | 2021 | Java API 사용의 공정 이용 인정             |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -191,7 +191,8 @@ def verify_license(license_key: str) -> bool:
 - DMCA 원문: [copyright.gov/dmca](https://www.copyright.gov/dmca/) — ★★★☆☆
 - FSF - GPL v3 DRM 조항: [gnu.org/licenses/rms-why-gplv3](https://www.gnu.org/licenses/rms-why-gplv3.html) — ★★★☆☆
 - W3C EME 명세: [w3.org/TR/encrypted-media](https://www.w3.org/TR/encrypted-media/) — ★★★☆☆
-- 한국 저작권법: [law.go.kr](https://www.law.go.kr/법령/저작권법) — ★★☆☆☆
+- 한국 저작권법: [law.go.kr](https://www.law.go.kr/법령/저작권법) — ★★★☆☆
+- Universal City Studios v. Corley, 273 F.3d 429 (2d Cir. 2001) 판결문: [cyber.harvard.edu](https://cyber.harvard.edu/people/tfisher/IP/2001_Corley.pdf) — ★★☆☆☆
 - [라이선스 가이드](../../license_guide.md), [리버스 엔지니어링 법적 기준](reverse_engineering_legal_guide.md)
 
 ---
@@ -209,6 +210,6 @@ def verify_license(license_key: str) -> bool:
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

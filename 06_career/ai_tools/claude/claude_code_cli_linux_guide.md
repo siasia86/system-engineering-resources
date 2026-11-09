@@ -24,7 +24,7 @@ Linux 서버와 WSL에서 Claude Code CLI를 설치·인증하고, 권한을 제
 | 하드웨어 | RAM 4GB 이상, x64 또는 ARM64                                     |
 | 네트워크 | 인터넷 연결 필요                                                 |
 | 셸       | Bash 또는 Zsh                                                    |
-| 계정     | Pro·Max·Team·Enterprise 구독 또는 Claude Console 계정            |
+| 계정     | Pro·Max·Ultra·Team·Enterprise 구독 또는 Claude Console 계정      |
 
 ```bash
 # OS·아키텍처 확인
@@ -354,6 +354,6 @@ claude doctor
 
 **작성일**: 2026-10-14
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

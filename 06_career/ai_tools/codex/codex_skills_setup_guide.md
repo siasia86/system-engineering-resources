@@ -44,7 +44,7 @@ Codex 설치·인증은 [CLI Linux 가이드](codex_cli_linux_guide.md), 기능�
 
 프로젝트에서는 현재 작업 디렉토리부터 Git 저장소 루트까지의 `.agents/skills/`를 탐색합니다. 같은 `name`이 여러 위치에 있으면 자동 병합하지 않으므로, 목록에서 출처를 확인합니다. symlink로 배치한 경우에는 링크 대상과 접근 가능 여부도 확인합니다.
 
-일부 설치 도구는 사용자 skill을 `~/.codex/skills/`에 배치합니다. 예를 들어 [Vercel skills CLI의 Codex 경로 표](https://github.com/vercel-labs/skills#supported-agents)는 전역 경로를 이렇게 안내합니다. 공식 사용자 경로와 설치 도구의 목적지가 다를 수 있으므로, 프로젝트 범위로 시작하거나 설치 결과의 경로를 확인한 뒤 Codex의 `/skills`에서 발견 여부를 검증합니다.
+일부 설치 도구는 사용자 skill을 공식 경로와 다른 곳(예: `~/.codex/skills/`)에 배치할 수 있습니다. 2026-11-09 확인 기준 [Vercel skills CLI의 agent 경로 표](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)는 Codex 전역 경로를 `~/.agents/skills/`로 안내합니다. 공식 사용자 경로와 설치 도구의 목적지가 다를 수 있으므로, 프로젝트 범위로 시작하거나 설치 결과의 경로를 확인한 뒤 Codex의 `/skills`에서 발견 여부를 검증합니다.
 
 ## 3. 사용자 skill 작성
 
@@ -231,6 +231,6 @@ Karpathy skills의 `CLAUDE.md` 기반 지침, gstack의 Codex host 설치, 다�
 
 **작성일**: 2026-10-03
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -142,11 +142,11 @@ Anthropic의 내부 업무 연구는 AI 사용으로 직원의 업무 범위가 
 
 ## 참고 자료
 
-- [Boris Cherny 원문 링크](https://x.com/bcherny/status/2071379474277613732) — 직접 열람 제한.
-- [Readside 원문 전재](https://www.readside.dev/read/9edf9c1c-b2ec-4d27-8db6-2e23e5bc501f) — 정의와 단계별 조합.
-- [Business Insider / Yahoo 보도](https://tech.yahoo.com/ai/claude/articles/5-job-archetypes-future-according-141801028.html) — 검색 본문으로 교차 확인.
-- [Anthropic 공식 웨비나](https://resources.anthropic.com/webinar/claude-code-live) — 제작진 소개.
-- [Anthropic 내부 업무 연구](https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic) — AI 활용 배경과 연구 한계.
+- Boris Cherny 원문 링크(직접 열람 제한): [x.com](https://x.com/bcherny/status/2071379474277613732) — ★★☆☆☆
+- Readside 원문 전재(정의와 단계별 조합): [readside.dev](https://www.readside.dev/read/9edf9c1c-b2ec-4d27-8db6-2e23e5bc501f) — ★★☆☆☆
+- Business Insider / Yahoo 보도(검색 본문으로 교차 확인): [tech.yahoo.com](https://tech.yahoo.com/ai/claude/articles/5-job-archetypes-future-according-141801028.html) — ★★☆☆☆
+- Anthropic 공식 웨비나(제작진 소개): [resources.anthropic.com](https://resources.anthropic.com/webinar/claude-code-live) — ★★★☆☆
+- Anthropic 내부 업무 연구(AI 활용 배경과 연구 한계): [anthropic.com](https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic) — ★★★☆☆
 - [출처와 사실 대조 기록](../../_reference/ai_work_archetypes_notes.md).
 
 ---
@@ -164,6 +164,6 @@ Anthropic의 내부 업무 연구는 AI 사용으로 직원의 업무 범위가 
 
 **작성일**: 2026-10-13
 
-**마지막 업데이트**: 2026-10-13
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -132,7 +132,7 @@ python jev_example.py
 python -m pip show typesafe-sdk
 ```
 
-`timeout=15.0`はHTTPタイムアウトです。再試行を含む全体の時間上限が必要なら `RetryPolicy.timeout`も設定します。 [Retries](https://docs.typesafe.ai/sdk/python/api/retries).
+`timeout=15.0`은 HTTP 요청 타임아웃입니다. 재시도를 포함한 전체 시간 상한이 필요하면 `RetryPolicy.timeout`도 설정합니다. [Retries](https://docs.typesafe.ai/sdk/python/api/retries).
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -193,10 +193,10 @@ SDK의 로그는 요청·응답 본문을 가리지 않으므로 운영 로그 �
 
 ## 참고 자료
 
-- [TypeSafe Quick start](https://docs.typesafe.ai/introduction/quickstart) — ★★★★☆
-- [TypeSafe API reference](https://docs.typesafe.ai/api) — ★★★★☆
-- [TypeSafe Python SDK](https://docs.typesafe.ai/sdk/python) — ★★★★☆
-- [TypeSafe Models](https://docs.typesafe.ai/models) — ★★★★☆
+- [TypeSafe Quick start](https://docs.typesafe.ai/introduction/quickstart) — ★★★☆☆
+- [TypeSafe API reference](https://docs.typesafe.ai/api) — ★★★☆☆
+- [TypeSafe Python SDK](https://docs.typesafe.ai/sdk/python) — ★★★☆☆
+- [TypeSafe Models](https://docs.typesafe.ai/models) — ★★★☆☆
 - [Jev 개념](./jev_concepts.md)
 - [Jev 공식 참조 노트](../../../_reference/jev_official_notes.md)
 
@@ -215,6 +215,6 @@ SDK의 로그는 요청·응답 본문을 가리지 않으므로 운영 로그 �
 
 **작성일**: 2026-10-01
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

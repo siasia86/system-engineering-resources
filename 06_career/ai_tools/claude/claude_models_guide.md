@@ -104,6 +104,7 @@ claude --model claude-sonnet-5-5
 
 - 별칭이 가리키는 모델은 제공자마다 다릅니다. Bedrock·Google Cloud에서는 `sonnet`이 Sonnet 4.5, `haiku`가 Haiku 4.5를 가리킵니다. 특정 모델을 고정하려면 `ANTHROPIC_DEFAULT_OPUS_MODEL`·`ANTHROPIC_DEFAULT_SONNET_MODEL` 등 환경 변수나 전체 모델 ID를 사용합니다.
 - effort 단계: Fable·Opus 5.5·Sonnet 5.5·Haiku 5.5는 `low`·`medium`·`high`·`xhigh`·`max`, Opus 4.6·Sonnet 4.6은 `xhigh`가 없습니다.
+- 1절 표의 기본 effort는 Claude API 기준입니다. Claude Code에서는 Opus 5.5·Sonnet 5.5·Haiku 5.5의 기본값이 `medium`입니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -168,6 +169,6 @@ claude --model claude-sonnet-5-5
 
 **작성일**: 2026-10-14
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

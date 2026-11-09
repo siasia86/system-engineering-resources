@@ -165,7 +165,7 @@
 #### 권장
 - **Rust**
   - 용도: 고성능 시스템 도구, 안전한 시스템 프로그래밍
-  - 도구: ripgrep, fd, bat, exa
+  - 도구: ripgrep, fd, bat, eza (유지보수가 끝난 exa의 후속 fork)
   - 학습 난이도: 어려움
   - 우선순위: 4순위
   - 특징: 메모리 안전, 높은 성능
@@ -427,7 +427,7 @@ Low Priority + Low Demand
 - **YouTube**: 무료 튜토리얼
 
 #### 실습 환경
-- **Katacoda**: 브라우저 기반 실습
+- **Katacoda**: 브라우저 기반 실습 (2022-06 공개 서비스 종료, O'Reilly 플랫폼 전용)
 - **Play with Docker/Kubernetes**: 무료 실습
 - **AWS Free Tier**: 클라우드 실습
 - **Minikube/Kind**: 로컬 K8s 환경
@@ -677,7 +677,7 @@ Low Priority + Low Demand
 
 [자격증]
 - CCNA, CCNP (선택)
-- AWS Advanced Networking
+- AWS Advanced Networking (2026-12-31 시험 종료 예정)
 
 [주의사항]
 - 전통적 네트워크 엔지니어 수요 감소
@@ -929,6 +929,9 @@ Security (선택, 고가치)
 
 - roadmap.sh: [roadmap.sh](https://roadmap.sh/) — ★★★☆☆
 - TIOBE Index: [tiobe.com](https://www.tiobe.com/tiobe-index/) — ★★☆☆☆
+- exa README (유지보수 종료, eza 안내): [github.com/ogham/exa](https://github.com/ogham/exa) — ★★★☆☆
+- Katacoda 종료 안내: [oreilly.com](https://www.oreilly.com/online-learning/leveraging-katacoda-technology.html) — ★★★☆☆
+- AWS Certified Advanced Networking - Specialty (시험 종료 안내): [aws.amazon.com](https://aws.amazon.com/certification/certified-advanced-networking-specialty/) — ★★★☆☆
 
 ---
 
@@ -945,6 +948,6 @@ Security (선택, 고가치)
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

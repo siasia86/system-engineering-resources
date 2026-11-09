@@ -216,8 +216,8 @@ project/
 ### 검증 루프 구현 패턴
 
 ```bash
-# scripts/lint-arch.sh — Architecture boundary linter
 #!/bin/bash
+# scripts/lint-arch.sh — Architecture boundary linter
 set -euo pipefail
 
 # Detect cross-domain direct imports
@@ -308,15 +308,15 @@ git worktree는 작업 파일을 분리하는 수단입니다. OS 권한·네트
 - Anthropic: [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) — ★★★☆☆
 - OpenAI: [Custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) — ★★★☆☆
 - [Harness/Loop 참고 저장소](../../_reference/github_references.md#4-harnessloop)
-- martinfowler.com: [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html) — ★★★☆☆
-- GitHub: [ai-boost/awesome-harness-engineering](https://github.com/ai-boost/awesome-harness-engineering) — ★★★☆☆
-- GitHub: [walkinglabs/awesome-harness-engineering](https://github.com/walkinglabs/awesome-harness-engineering) — ★★★☆☆
+- martinfowler.com: [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html) — ★★☆☆☆
+- GitHub: [ai-boost/awesome-harness-engineering](https://github.com/ai-boost/awesome-harness-engineering) — ★★☆☆☆
+- GitHub: [walkinglabs/awesome-harness-engineering](https://github.com/walkinglabs/awesome-harness-engineering) — ★★☆☆☆
 - Learn Harness Engineering: [walkinglabs.github.io](https://walkinglabs.github.io/learn-harness-engineering/en/) — ★★☆☆☆
 
 ---
 
 **작성일**: 2026-06-19
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

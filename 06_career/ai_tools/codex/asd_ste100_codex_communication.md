@@ -161,10 +161,10 @@ OpenAI 공식 문서는 AGENTS.md를 지속적인 작업 지침, skill을 선택
 
 ## 참고 자료
 
-- [ASD 공식 소개](https://www.asd-ste100.org/about_STE.html) — 표준의 목적·현행판
-- [ASD 공식 FAQ](https://www.asd-ste100.org/STE_faq.html) — 사용 범위·다른 글에 참고할 원칙
-- [OpenAI Build skills](https://learn.chatgpt.com/docs/build-skills) — skill 구조·발견·선택
-- [OpenAI AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) — 지속 작업 지침
+- [ASD 공식 소개](https://www.asd-ste100.org/about_STE.html) — 표준의 목적·현행판 — ★★★☆☆
+- [ASD 공식 FAQ](https://www.asd-ste100.org/STE_faq.html) — 사용 범위·다른 글에 참고할 원칙 — ★★★☆☆
+- [OpenAI Build skills](https://learn.chatgpt.com/docs/build-skills) — skill 구조·발견·선택 — ★★★☆☆
+- [OpenAI AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) — 지속 작업 지침 — ★★★☆☆
 - [공식 사실과 GitHub 고정 근거](../../../_reference/asd_ste100_official_notes.md)
 - [기존 Codex skill 설정 가이드](./codex_skills_setup_guide.md)
 
@@ -183,6 +183,6 @@ OpenAI 공식 문서는 AGENTS.md를 지속적인 작업 지침, skill을 선택
 
 **작성일**: 2026-10-09
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

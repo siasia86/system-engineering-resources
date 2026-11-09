@@ -18,18 +18,18 @@
 
 ## 1. 모델 목록
 
-| 모델                | 크레딧 배율 | 컨텍스트 | 특징                          |
-|---------------------|-------------|----------|-------------------------------|
-| `auto` (기본)       | 1.00x       | -        | 작업별 최적 모델 자동 선택    |
-| `claude-opus-4.6`   | 2.20x       | 1M       | 복잡한 추론에 적합, 최신 Opus |
-| `claude-sonnet-4.6` | 1.30x       | 1M       | 성능/비용 균형, 최신 Sonnet   |
-| `claude-sonnet-4`   | 1.30x       | -        | 일반 코딩/추론                |
-| `claude-haiku-4.5`  | 0.40x       | -        | 경량, 빠른 응답               |
-| `deepseek-3.2`      | 0.25x       | -        | 실험적 프리뷰                 |
-| `minimax-m2.5`      | 0.25x       | -        | 실험적 프리뷰                 |
-| `qwen3-coder-next`  | 0.05x       | -        | 최저 비용, 코딩 특화          |
+| 모델                | 크레딧 배율 | 컨텍스트 | 특징                       |
+|---------------------|-------------|----------|----------------------------|
+| `auto` (기본)       | 1.00x       | -        | 작업별 최적 모델 자동 선택 |
+| `claude-opus-4.6`   | 2.20x       | 1M       | 복잡한 추론에 적합         |
+| `claude-sonnet-4.6` | 1.30x       | 1M       | 성능/비용 균형             |
+| `claude-sonnet-4`   | 1.30x       | -        | 2026-10-14 지원 종료(EOL)  |
+| `claude-haiku-4.5`  | 0.40x       | -        | 경량, 빠른 응답            |
+| `deepseek-3.2`      | 0.25x       | -        | 실험적 프리뷰              |
+| `minimax-m2.5`      | 0.25x       | -        | 오픈 웨이트, 정식(Active)  |
+| `qwen3-coder-next`  | 0.05x       | -        | 최저 비용, 코딩 특화       |
 
-> 🟡 모델 목록은 리전과 시점에 따라 달라질 수 있습니다.
+> 🟡 모델 목록은 리전과 시점에 따라 달라질 수 있습니다. 2026-11 기준 공식 목록에는 Claude Opus 5.5(2.0x)·Sonnet 5.5(1.3x)·Haiku 5.5(0.06x, 100K 토큰 초과 0.3x)와 GPT-5.6 Sol·Terra·Luna 등 더 새로운 모델이 있으므로 [Kiro 모델 문서](https://kiro.dev/docs/models/)를 확인합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -141,15 +141,17 @@ kiro-cli chat --list-models
 ## 7. 선택 우선순위
 
 ```
-에이전트 model 필드 > --model 옵션 > chat.defaultModel 설정 > auto
+--model 옵션 > 에이전트 model 필드 > chat.defaultModel 설정 > auto
 ```
 
 ---
 
 ## 참고 자료
 
-- Kiro CLI Documentation: [kiro.dev](https://kiro.dev/docs/) — ★★☆☆☆
-- Anthropic Claude Models: [docs.anthropic.com](https://docs.anthropic.com/en/docs/about-claude/models/overview) — ★★☆☆☆
+- Kiro CLI Documentation: [kiro.dev](https://kiro.dev/docs/) — ★★★☆☆
+- Kiro 모델 목록·크레딧 배율: [kiro.dev/docs/models](https://kiro.dev/docs/models/) — ★★★☆☆
+- Kiro CLI 명령(`--model` 우선순위): [kiro.dev/docs/reference/cli-commands](https://kiro.dev/docs/reference/cli-commands/) — ★★★☆☆
+- Anthropic Claude Models: [platform.claude.com](https://platform.claude.com/docs/en/models/overview) — ★★★☆☆
 
 ---
 
@@ -166,6 +168,6 @@ kiro-cli chat --list-models
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

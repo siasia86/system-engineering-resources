@@ -25,8 +25,8 @@ kiro의 `.kiro/skills/` 디렉토리에 스킬로 등록하여 agent가 규칙�
 ### Lock 파일 형식
 
 ```
-user: yunli
-host: sjyun
+user: alice
+host: server01
 started: 2026-06-09T11:52:31+09:00
 session: 1780973551
 task: ansible playbook 수정
@@ -165,6 +165,6 @@ python mutex.py --agent Agent_01 --release --changes "Added validate_input()"
 
 **작성일**: 2026-06-09
 
-**마지막 업데이트**: 2026-10-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

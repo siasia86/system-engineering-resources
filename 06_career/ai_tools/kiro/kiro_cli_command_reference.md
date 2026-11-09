@@ -1,5 +1,7 @@
 # Kiro CLI Command Reference
 
+> 🟡 이 문서는 Kiro CLI 2.x(V2 하네스, 일부 Classic 화면 전용 기능 포함) 기준입니다. 3.0.0(2026-11-03)부터 대화형 실행의 기본 하네스가 V3로 바뀌었고 hooks·권한·에이전트 설정 형식과 일부 명령이 달라졌습니다. 2.x 동작은 `kiro-cli --v2`로 실행하며 변경 내용은 [Upgrade from CLI 2.x](https://kiro.dev/docs/cli/v3/)에서 확인합니다.
+
 ## 목차
 
 | 섹션                                                                                                                                                                                                          |
@@ -172,7 +174,7 @@ Context files total: 4.2% of context window
 /code logs          # LSP 로그 확인
 ```
 
-지원 언어: TypeScript, Rust, Python, Go, Java, Ruby, C/C++
+지원 언어: TypeScript, Rust, Python, Go, Java, Ruby, C/C++, Kotlin
 
 ### `/tools` — 사용 가능한 도구 확인
 
@@ -303,7 +305,7 @@ ${1} 환경에 ${2} 배포 전 체크리스트:
 #### 팁
 
 - 공통 프롬프트는 `~/.kiro/prompts/` (글로벌), 프로젝트 전용은 `.kiro/prompts/` (로컬)에 배치
-- 따옴표로 감싸면 공백 포함 인자를 하나로 전달: `@분석 "prd DB 서버"`
+- 따옴표로 감싸면 공백 포함 인자를 하나로 전달: `@server-check "prd DB 서버"`
 - MCP 프롬프트는 읽기 전용 (편집 불가)
 - 프롬프트 내에서 `@파일경로` 로 파일 참조도 함께 사용 가능
 
@@ -365,7 +367,7 @@ AI가 도구를 실행하기 전/후에 자동으로 실행되는 스크립트�
   "mcpServers": {
     "git": {
       "command": "mcp-server-git",
-      "args": ["--stdio"]
+      "args": ["--repository", "."]
     }
   }
 }
@@ -379,10 +381,10 @@ AI가 도구를 실행하기 전/후에 자동으로 실행되는 스크립트�
 | 단축키          | 기능                               | 비고                      |
 |-----------------|------------------------------------|---------------------------|
 | `Shift+Tab`     | Plan 에이전트 ↔ 이전 에이전트      | 토글 방식                 |
-| `Ctrl+F`        | 퍼지 검색                          | 설정으로 키 변경 가능     |
+| `Ctrl+S`        | 퍼지 검색 (명령, 컨텍스트 파일)    | Classic만 키 변경 가능    |
 | `Ctrl+T`        | Tangent 모드 토글                  | 활성화 필요, 키 변경 가능 |
-| `Ctrl+D`        | Delegate 모드                      | 활성화 필요, 키 변경 가능 |
-| `Ctrl+C`        | 현재 응답 중단                     | 일반 터미널 동작          |
+| `Ctrl+D`        | 세션 종료 (입력창에서)             | Classic은 Delegate 키     |
+| `Ctrl+C`        | 입력 취소 또는 세션 종료           | 응답 중단은 `Esc`         |
 | `Tab`           | 자동완성 힌트 수락                 | 키 변경 가능              |
 | `@` + `Tab`     | 프롬프트 템플릿 자동완성           |                           |
 | `↑` (위 화살표) | 이전 입력 이력                     |                           |
@@ -391,7 +393,7 @@ AI가 도구를 실행하기 전/후에 자동으로 실행되는 스크립트�
 ### 단축키 변경 설정
 
 ```bash
-# 퍼지 검색 키 변경 (기본 f → Ctrl+F)
+# 퍼지 검색 키 변경 (기본 s → Ctrl+S)
 kiro-cli settings chat.skimCommandKey "f"
 
 # Tangent 모드 키 변경 (기본 t → Ctrl+T)
@@ -404,6 +406,7 @@ kiro-cli settings chat.delegateModeKey "d"
 kiro-cli settings chat.autocompletionKey "Tab"
 ```
 
+🟡 위 네 가지 키 설정은 Classic 화면 전용이며 터미널 UI에는 적용되지 않습니다. 3.0.0부터 Classic 화면은 대화형으로 실행되지 않습니다.
 
 ### 도구 승인 프롬프트 키
 
@@ -438,11 +441,11 @@ AI가 도구 실행 허가를 요청할 때 사용하는 키입니다.
 
 사용 가능한 조합:
 
-| 수식키 (조합 가능)     | 키                            |
-|------------------------|-------------------------------|
-| `ctrl`, `shift`, `alt` | `a-z`, `0-9`, `f1-f12`, `tab` |
+| 수식키          | 키           |
+|-----------------|--------------|
+| `ctrl`, `shift` | `a-z`, `0-9` |
 
-🟡 같은 단축키를 여러 에이전트에 지정하면 충돌로 비활성화됩니다.
+🟡 같은 단축키를 여러 에이전트에 지정하면 충돌로 비활성화됩니다. `keyboardShortcut`은 2.x 전용 필드로 V3 에이전트 스키마에는 없습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -587,6 +590,8 @@ N회차: Context 90% → /compact 실행 → 이전 대화 요약 → 40% 로 �
 
 ## 6. 쉘 통합 (Shell Integration)
 
+🟡 이 절은 2.x 이하 데스크톱 앱 기능입니다. 3.0.0에서 단일 `kiro-cli` 바이너리로 바뀌면서 자동완성·인라인 제안과 `translate`·`inline`·`autocomplete`·`theme`·`dashboard` 명령이 제거되었고, `doctor`는 `diagnostic`·`issue`로 안내합니다. 3.0.0의 첫 실행은 데스크톱 앱이 추가한 쉘 통합을 제거합니다.
+
 ### 설정
 
 ```bash
@@ -646,25 +651,25 @@ kiro-cli inline status
 
 ### CLI 서브커맨드 전체 목록
 
-| 명령어                       | 설명                    |
-|------------------------------|-------------------------|
-| `kiro-cli chat`              | AI 채팅 시작            |
-| `kiro-cli agent`             | 에이전트 관리           |
-| `kiro-cli settings`          | 설정 관리               |
-| `kiro-cli translate`         | 자연어 → 쉘 명령어 변환 |
-| `kiro-cli inline`            | 쉘 인라인 자동완성      |
-| `kiro-cli init <shell> pre`  | 쉘 통합 pre 훅 생성     |
-| `kiro-cli init <shell> post` | 쉘 통합 post 훅 생성    |
-| `kiro-cli mcp`               | MCP 서버 관리           |
-| `kiro-cli doctor`            | 설치 문제 진단          |
-| `kiro-cli update`            | Kiro CLI 업데이트       |
-| `kiro-cli login`             | 로그인                  |
-| `kiro-cli logout`            | 로그아웃                |
-| `kiro-cli whoami`            | 현재 사용자 정보        |
-| `kiro-cli issue`             | GitHub 이슈 생성        |
-| `kiro-cli diagnostic`        | 진단 테스트 실행        |
-| `kiro-cli --version`         | 버전 확인               |
-| `kiro-cli --help-all`        | 전체 서브커맨드 도움말  |
+| 명령어                       | 설명                                         |
+|------------------------------|----------------------------------------------|
+| `kiro-cli chat`              | AI 채팅 시작                                 |
+| `kiro-cli agent`             | 에이전트 관리                                |
+| `kiro-cli settings`          | 설정 관리                                    |
+| `kiro-cli translate`         | 자연어 → 쉘 명령어 변환 (3.0.0 제거)         |
+| `kiro-cli inline`            | 쉘 인라인 자동완성 (3.0.0 제거)              |
+| `kiro-cli init <shell> pre`  | 쉘 통합 pre 훅 생성                          |
+| `kiro-cli init <shell> post` | 쉘 통합 post 훅 생성                         |
+| `kiro-cli mcp`               | MCP 서버 관리                                |
+| `kiro-cli doctor`            | 설치 문제 진단 (3.0.0부터 `diagnostic` 안내) |
+| `kiro-cli update`            | Kiro CLI 업데이트                            |
+| `kiro-cli login`             | 로그인                                       |
+| `kiro-cli logout`            | 로그아웃                                     |
+| `kiro-cli whoami`            | 현재 사용자 정보                             |
+| `kiro-cli issue`             | GitHub 이슈 생성                             |
+| `kiro-cli diagnostic`        | 진단 테스트 실행                             |
+| `kiro-cli --version`         | 버전 확인                                    |
+| `kiro-cli --help-all`        | 전체 서브커맨드 도움말                       |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -764,6 +769,7 @@ aws cloudwatch get-metric-statistics ...
 - `allowedTools`에 `use_aws` 추가 시 확인 없이 자동 실행
 - 인프라 변경 작업(`terminate-instances` 등)은 `allowedTools`에서 제외 권장
 - 실행 전 `hooks.preToolUse`로 위험 명령어 차단 가능
+- 🟡 V3에는 내장 `use_aws` 도구가 없으므로 AWS 작업은 AWS MCP 서버를 연결해 사용합니다
 
 ##### `web_search` — 웹 검색
 
@@ -1077,7 +1083,7 @@ Ready to exit [plan] agent to start your implementation? [y/n]: y
 
 ```json
 "resources": [
-  "skill://work-rules",        // 세션 시작 시 자동 로드
+  "skill://work-rules",        // 시작 시 이름·설명만 로드, 본문은 필요 시
   "file://~/.kiro/markdown/STYLE.md"  // 세션 시작 시 자동 로드
 ]
 ```
@@ -1110,9 +1116,10 @@ AI가 필요하다고 판단할 때만 호출되며, 자동으로 실행되지 �
 | `write`          | `fs_write`                            |
 | `shell`          | `execute_bash`                        |
 | `aws`            | `use_aws`                             |
-| `delegate`       | `use_subagent`                        |
-| `thinking`       | 내부 추론 (별도 도구명 없음)          |
-| `knowledge`      | `web_search`, `web_fetch`             |
+| `subagent`       | `use_subagent`                        |
+| `web`            | `web_search`, `web_fetch`             |
+
+🟡 `thinking`·`knowledge`·`delegate`는 카테고리가 아니라 도구 이름 그대로 `tools`에 넣습니다.
 
 실행 흐름:
 
@@ -1231,7 +1238,7 @@ kiro-cli settings chat.enableCheckpoint
 ```
 # ~/.kiro/skills/infra-rules/SKILL.md
 ---
-name: infra-operation-rules
+name: infra-rules
 description: Infrastructure operation rules for server tasks and deployments.
 ---
 # Infra Operation Rules
@@ -1459,7 +1466,7 @@ Hook은 JSON 형식으로 이벤트 정보를 STDIN으로 받습니다.
 ```json
 {
   "hook_event_name": "preToolUse",
-  "cwd": "/home/sjyun/project",
+  "cwd": "/home/alice/project",
   "tool_name": "fs_write",
   "tool_input": {
     "path": "/etc/nginx/nginx.conf",
@@ -1597,7 +1604,7 @@ exit 0
 
     "stop": [
       {
-        "command": "cd /home/sjyun/project && make lint 2>&1 | tail -5",
+        "command": "cd /home/alice/project && make lint 2>&1 | tail -5",
         "description": "응답 완료 후 lint 실행"
       }
     ]
@@ -1681,10 +1688,13 @@ tail -f ~/.kiro/audit.log
 
 ## 12. Output Style (출력 스타일 제어)
 
-Claude의 `/output-format` 같은 내장 스타일 전환 명령어는 없습니다.
+2.x에는 Claude Code의 `/output-style` 같은 내장 스타일 전환 명령어가 없습니다.
 대신 에이전트 `prompt` 또는 스킬로 출력 스타일을 제어합니다.
+V3는 `/settings display`의 Output style과 `chat.outputStyle` 설정을 제공합니다.
 
 ### 공식 설정
+
+🟡 아래 두 설정은 공식 레퍼런스에서 Classic 화면 전용으로 표시되며 터미널 UI에는 적용되지 않습니다.
 
 | 설정                            | 효과                   |
 |---------------------------------|------------------------|
@@ -1759,6 +1769,8 @@ SKILL.md에 응답 규칙을 정의하면 모든 에이전트에 공통 적용�
 ## 13. Experimental Features (실험적 기능)
 
 `/experiment` 명령어로 토글하거나 설정으로 활성화하는 실험적 기능입니다.
+
+🟡 공식 설정 레퍼런스는 `chat.enableTangentMode`·`chat.enableCheckpoint`·`chat.enableDelegate`·`chat.enableContextUsageIndicator`를 Classic 화면 전용으로 표시하며, V3에는 `thinking`·`delegate`·TODO 도구가 없습니다.
 
 ### 기능 목록
 
@@ -2042,7 +2054,7 @@ ansible-playbook deploy.yml --forks 20
 REGIONS="us-east-1 ap-northeast-2 eu-west-1"
 for REGION in $REGIONS; do
   echo "$REGION 리전의 EC2 인스턴스 목록을 조회해줘" \
-    | kiro-cli chat --no-interactive --trust-tools 2>/dev/null \
+    | kiro-cli chat --no-interactive --trust-tools=use_aws 2>/dev/null \
     > "result-${REGION}.txt" &
 done
 wait
@@ -2124,15 +2136,15 @@ code-review:
 
 ### 주의사항
 
-| 항목                | 내용                                        |
-|---------------------|---------------------------------------------|
-| 인증                | CI 환경에서 `kiro-cli login` 사전 설정 필요 |
-| 토큰 제한           | diff 가 크면 Context Window 초과 가능       |
-| 비용                | 실행마다 API 호출 발생                      |
-| `--trust-all-tools` | CI 에서는 필수 (확인 프롬프트 불가)         |
+| 항목      | 내용                                                               |
+|-----------|--------------------------------------------------------------------|
+| 인증      | `KIRO_API_KEY` 환경 변수 (Pro 이상 요금제)                         |
+| 토큰 제한 | diff 가 크면 Context Window 초과 가능                              |
+| 비용      | 실행마다 API 호출 발생                                             |
+| 도구 승인 | 확인 프롬프트 불가 → `--trust-all-tools` 또는 `--trust-tools` 지정 |
+| diff 크기 | 너무 크면 파일별로 나눠서 리뷰하는 방식 권장                       |
 
 > 도구 권한 상세는 [섹션 7. 도구 권한 관리](#7-도구-권한-관리-tool-trust) 참고
-| diff 크기            | 너무 크면 파일별로 나눠서 리뷰하는 방식 권장      |
 
 
 [⬆ 목차로 돌아가기](#목차)
@@ -2158,10 +2170,10 @@ MCP 서버를 추가하면 AI가 해당 도구를 직접 호출할 수 있습니
 
 ```bash
 # 서버 추가
-kiro-cli mcp add --name git --command mcp-server-git --args --stdio
+kiro-cli mcp add --name git --command mcp-server-git
 
 # 서버 추가 (워크스페이스 범위)
-kiro-cli mcp add --name git --command mcp-server-git --args --stdio --scope workspace
+kiro-cli mcp add --name git --command mcp-server-git --scope workspace
 
 # 서버 목록
 kiro-cli mcp list
@@ -2192,13 +2204,13 @@ kiro-cli mcp import --file servers.json workspace
   "mcpServers": {
     "git": {
       "command": "mcp-server-git",
-      "args": ["--stdio"]
+      "args": ["--repository", "."]
     },
     "github": {
-      "command": "mcp-server-github",
-      "args": ["--stdio"],
+      "command": "github-mcp-server",
+      "args": ["stdio"],
       "env": {
-        "GITHUB_TOKEN": "$GITHUB_TOKEN"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
       },
       "timeout": 120000
     }
@@ -2342,6 +2354,8 @@ kiro-cli settings open
 
 ### 주요 설정 옵션
 
+🟡 `chat.enableCheckpoint`·`chat.enableTangentMode`·`chat.enableDelegate`·`chat.enableContextUsageIndicator`·`chat.disableMarkdownRendering`·`chat.enableHistoryHints`·`chat.diffTool`과 단축키 설정은 공식 레퍼런스에서 Classic 화면 전용으로 표시되며 터미널 UI에는 적용되지 않습니다(3.0.0부터 Classic 화면은 대화형으로 실행되지 않음).
+
 #### 채팅 기능
 
 | 설정 키                       | 타입    | 기본값 | 설명                                  |
@@ -2430,22 +2444,22 @@ kiro-cli settings open
 | 모델                | 크레딧 배율 | 설명                       |
 |---------------------|-------------|----------------------------|
 | `auto` (기본)       | 1.00x       | 작업별 최적 모델 자동 선택 |
-| `claude-opus-4.6`   | 2.20x       | 최신 Opus, 1M 컨텍스트     |
-| `claude-sonnet-4.6` | 1.30x       | 최신 Sonnet, 1M 컨텍스트   |
-| `claude-sonnet-4`   | 1.30x       | 일반 코딩/추론용           |
+| `claude-opus-4.6`   | 2.20x       | Opus 4.6, 1M 컨텍스트      |
+| `claude-sonnet-4.6` | 1.30x       | Sonnet 4.6, 1M 컨텍스트    |
+| `claude-sonnet-4`   | 1.30x       | 2026-10-14 지원 종료(EOL)  |
 | `claude-haiku-4.5`  | 0.40x       | 경량 모델, 빠른 응답       |
 | `deepseek-3.2`      | 0.25x       | 실험적 프리뷰              |
-| `minimax-m2.5`      | 0.25x       | 실험적 프리뷰              |
+| `minimax-m2.5`      | 0.25x       | 오픈 웨이트, 정식(Active)  |
 | `qwen3-coder-next`  | 0.05x       | 실험적 프리뷰, 최저 비용   |
 
-🟡 모델 목록은 리전과 시점에 따라 달라질 수 있습니다.
+🟡 모델 목록은 리전과 시점에 따라 달라질 수 있습니다. 2026-11 기준 최신 모델(Claude Opus 5.5·Sonnet 5.5·Haiku 5.5, GPT-5.6 등)과 배율은 [Kiro 모델 문서](https://kiro.dev/docs/models/)와 `kiro-cli chat --list-models`로 확인합니다.
 
 ### 모델 변경 방법
 
 | 방법                        | 범위       | 명령어                                           |
 |-----------------------------|------------|--------------------------------------------------|
 | 채팅 중 대화형 선택         | 현재 세션  | `/model`                                         |
-| 채팅 중 직접 지정           | 현재 세션  | `/model claude-sonnet-4`                         |
+| 채팅 중 직접 지정           | 현재 세션  | `/model claude-sonnet-4.6`                       |
 | 현재 모델을 기본값으로 저장 | 영구       | `/model set-current-as-default`                  |
 | CLI 시작 시 지정            | 현재 세션  | `kiro-cli chat --model claude-opus-4.6`          |
 | 설정으로 기본 모델 지정     | 영구       | `kiro-cli settings chat.defaultModel <model-id>` |
@@ -2455,7 +2469,7 @@ kiro-cli settings open
 ### 모델 선택 우선순위
 
 ```
-에이전트 model 필드 > --model 옵션 > chat.defaultModel 설정 > auto (시스템 기본)
+--model 옵션 > 에이전트 model 필드 > chat.defaultModel 설정 > auto (시스템 기본)
 ```
 
 ### 용도별 추천
@@ -2484,10 +2498,10 @@ kiro-cli settings open
 ### 대화 저장/불러오기
 
 ```bash
-/chat save                    # 현재 대화 저장
-/chat save my-session         # 이름 지정 저장
-/chat load                    # 저장된 대화 목록에서 선택
-/chat load my-session         # 이름으로 불러오기
+/chat save ./my-session.json  # 현재 대화를 파일로 저장 (2.x: JSON, V3는 zip 파일)
+/chat load ./my-session.json  # 저장한 파일 불러오기 (2.x는 .json 생략 가능)
+/chat resume                  # 저장된 세션 목록에서 선택
+/chat new                     # 새 대화 시작
 ```
 
 ### CLI에서 대화 관리
@@ -2531,21 +2545,25 @@ kiro-cli chat --delete-session <ID>   # 대화 삭제
 
 ### 공식 문서 (kiro.dev)
 
-| 분류                   | URL                                                             |
-|------------------------|-----------------------------------------------------------------|
-| CLI 시작 가이드        | https://kiro.dev/docs/cli/                                      |
-| CLI 소개               | https://kiro.dev/cli/                                           |
-| 슬래시 명령어 레퍼런스 | https://kiro.dev/docs/cli/reference/slash-commands/             |
-| 내장 도구 레퍼런스     | https://kiro.dev/docs/cli/reference/built-in-tools/             |
-| 에이전트 생성          | https://kiro.dev/docs/cli/custom-agents/creating/               |
-| 에이전트 설정 레퍼런스 | https://kiro.dev/docs/cli/custom-agents/configuration-reference |
-| 에이전트 예시          | https://kiro.dev/docs/cli/custom-agents/examples                |
-| Hooks                  | https://kiro.dev/docs/cli/hooks/                                |
-| Agent Skills           | https://kiro.dev/docs/cli/skills/                               |
-| Code Intelligence      | https://kiro.dev/docs/cli/code-intelligence/                    |
-| Tangent Mode           | https://kiro.dev/docs/cli/experimental/tangent-mode/            |
-| Help Agent             | https://kiro.dev/docs/cli/chat/help-agent/                      |
-| CLI Changelog          | https://kiro.dev/changelog/cli/                                 |
+| 분류                    | URL                                                          |
+|-------------------------|--------------------------------------------------------------|
+| CLI 시작 가이드         | https://kiro.dev/docs/cli/                                   |
+| CLI 소개                | https://kiro.dev/cli/                                        |
+| CLI 2.x → V3 업그레이드 | https://kiro.dev/docs/cli/v3/                                |
+| CLI 2.x 레퍼런스        | https://kiro.dev/docs/cli/2x-reference/                      |
+| 슬래시 명령어 레퍼런스  | https://kiro.dev/docs/reference/slash-commands/              |
+| CLI 명령어 레퍼런스     | https://kiro.dev/docs/reference/cli-commands/                |
+| 설정 레퍼런스           | https://kiro.dev/docs/reference/settings/                    |
+| 내장 도구 레퍼런스      | https://kiro.dev/docs/reference/built-in-tools/              |
+| 에이전트 생성           | https://kiro.dev/docs/custom-agents/creating/                |
+| 에이전트 설정 레퍼런스  | https://kiro.dev/docs/custom-agents/configuration-reference/ |
+| 에이전트 예시           | https://kiro.dev/docs/custom-agents/examples/                |
+| Hooks                   | https://kiro.dev/docs/hooks/                                 |
+| Agent Skills            | https://kiro.dev/docs/skills/                                |
+| Code Intelligence       | https://kiro.dev/docs/tools/code-intelligence/               |
+| Tangent Mode            | https://kiro.dev/docs/cli/experimental/tangent-mode/         |
+| Help Agent              | https://kiro.dev/docs/custom-agents/built-in/                |
+| CLI Changelog           | https://kiro.dev/changelog/cli/                              |
 
 ### 커뮤니티 / 외부 자료
 
@@ -2574,6 +2592,13 @@ kiro-cli chat --delete-session <ID>   # 대화 삭제
 ## 참고 자료
 
 - Kiro CLI Documentation: [kiro.dev](https://kiro.dev/docs/cli/) — ★★★☆☆
+- Kiro CLI 2.x → V3 업그레이드(제거된 명령·변경 사항): [kiro.dev/docs/cli/v3](https://kiro.dev/docs/cli/v3/) — ★★★☆☆
+- Kiro CLI 설정 레퍼런스(Classic 전용 표시): [kiro.dev/docs/reference/settings](https://kiro.dev/docs/reference/settings/) — ★★★☆☆
+- Kiro 헤드리스 모드(`KIRO_API_KEY`): [kiro.dev/docs/cli/headless](https://kiro.dev/docs/cli/headless/) — ★★★☆☆
+- Kiro 모델 목록: [kiro.dev/docs/models](https://kiro.dev/docs/models/) — ★★★☆☆
+- mcp-server-git 실행 옵션: [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers/tree/main/src/git) — ★★★☆☆
+- GitHub MCP Server: [github/github-mcp-server](https://github.com/github/github-mcp-server) — ★★★☆☆
+- Claude Code 출력 스타일(`/output-style`): [code.claude.com](https://code.claude.com/docs/en/output-styles) — ★★★☆☆
 
 ---
 
@@ -2590,6 +2615,6 @@ kiro-cli chat --delete-session <ID>   # 대화 삭제
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.
