@@ -7,12 +7,13 @@ tags:
   - vcs
   - cicd
   - distributed
-last_checked: 2026-08-26
+last_checked: 2026-11-09
 sources:
   - https://git-scm.com/doc
   - https://git-scm.com/book/en/v2
   - https://git-scm.com/docs
   - https://github.com/git/git/tags
+  - https://github.com/git/git/blob/master/Documentation/RelNotes/2.42.0.adoc
 ---
 
 # Git 공식 문서 참조 노트
@@ -26,6 +27,8 @@ sources:
 | 최소 권장 | 2.28+  | `init.defaultBranch` 지원 (2.28) |
 
 > 출처: github.com/git/git/tags (2026-08-26 확인)
+>
+> (2026-11-09 확인: 최신 안정판은 2.56.0(2026-09-28), 이전 안정판은 2.55.0입니다.)
 
 ## 2. Git 객체 모델 (4가지)
 
@@ -49,7 +52,7 @@ commit
 
 ## 3. SHA 해시
 
-- Git 2.29+: SHA-256 지원 (실험적, 기본은 여전히 SHA-1).
+- Git 2.29+: SHA-256 지원 (2.42에서 실험 기능 경고를 완화, 기본은 여전히 SHA-1, SHA-1 저장소와 상호 운용은 미지원).
 - SHA-1 충돌 방지: `sha1collisiondetection` 라이브러리 내장 (Git 2.13+).
 - 오브젝트 ID = SHA-1 40자 또는 SHA-256 64자.
 

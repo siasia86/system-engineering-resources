@@ -7,13 +7,14 @@ tags:
   - backup
   - ssh
   - security
-last_checked: 2026-09-14
+last_checked: 2026-11-09
 sources:
   - https://rsync.samba.org/documentation.html
   - https://download.samba.org/pub/rsync/rsync.1
   - https://download.samba.org/pub/rsync/rsyncd.conf.5
   - https://download.samba.org/pub/rsync/rrsync.1
   - https://download.samba.org/pub/rsync/rsync-ssl.1
+  - https://download.samba.org/pub/rsync/NEWS
   - https://github.com/RsyncProject/rsync/releases
   - https://api.github.com/repos/RsyncProject/rsync/releases/latest
   - https://github.com/RsyncProject/rsync/blob/master/SECURITY.md
@@ -40,6 +41,7 @@ sources:
 | 최신 릴리스 | `v3.5.0`, 2026-08-13    | 2026-09-14 |
 | 지원 정책   | 현재 릴리스만 적극 지원 | 2026-09-14 |
 
+- (2026-11-09 확인: 최신 릴리스는 `v3.5.2`(2026-11-04)이며 CVE-2026-119741 등 3.5.1 이후 발견된 문제를 수정했습니다.)
 - 최신 릴리스는 공식 GitHub Releases API에서 확인합니다.
 - rsync 공식 보안 정책은 현재 릴리스만 적극적으로 지원한다고 명시합니다.
 - 클라이언트와 서버는 공통으로 지원하는 최신 protocol version을 자동 협상합니다.
@@ -227,5 +229,6 @@ chown -R lsync:lsync /home/lsync/.ssh
 - rsync Daemon Configuration: [download.samba.org/pub/rsync/rsyncd.conf.5](https://download.samba.org/pub/rsync/rsyncd.conf.5) — ★★★☆☆
 - rrsync Manual: [download.samba.org/pub/rsync/rrsync.1](https://download.samba.org/pub/rsync/rrsync.1) — ★★★☆☆
 - rsync SSL Helper: [download.samba.org/pub/rsync/rsync-ssl.1](https://download.samba.org/pub/rsync/rsync-ssl.1) — ★★★☆☆
+- rsync NEWS: [download.samba.org/pub/rsync/NEWS](https://download.samba.org/pub/rsync/NEWS) — ★★★☆☆
 - rsync Security Policy: [github.com/RsyncProject/rsync/SECURITY.md](https://github.com/RsyncProject/rsync/blob/master/SECURITY.md) — ★★★☆☆
 - OpenSSH `sshd`: [man.openbsd.org/sshd](https://man.openbsd.org/sshd) — ★★★☆☆

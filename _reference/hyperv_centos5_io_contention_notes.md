@@ -8,12 +8,13 @@ tags:
   - centos
   - legacy
   - cluster
-last_checked: 2026-07-16
+last_checked: 2026-11-09
 sources:
   - https://learn.microsoft.com/en-us/windows-server/storage/storage-qos/storage-qos-overview
   - https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/Supported-CentOS-and-Red-Hat-Enterprise-Linux-virtual-machines-on-Hyper-V
   - https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v
   - https://docs.kernel.org/admin-guide/blockdev/
+  - https://www.microsoft.com/en-us/download/details.aspx?id=55106
 ---
 
 # Hyper-V 클러스터 I/O 경합 참조 노트 — CentOS 5.x 특화
@@ -42,7 +43,8 @@ Physical Storage (LUN / SSD / HDD)
 
 - Generation 1 VM: IDE 컨트롤러(에뮬레이션) + SCSI 컨트롤러(synthetic)
 - Generation 2 VM: SCSI만 사용 (IDE 없음)
-- CentOS 5.11: Generation 1 필수, LIS 미지원 → IDE 에뮬레이션 사용
+- CentOS 5.11: Generation 1 필수, 지원 매트릭스에서 삭제됨 → LIS가 없으면 IDE 에뮬레이션 사용
+- (2026-11-09 확인: Microsoft Download Center의 LIS 4.3.5(2024-07-15 게시)는 RHEL/CentOS 5.2~5.11을 대상으로 안내하며 호스트는 Windows Server 2008 R2~2019입니다)
 
 ### I/O 격리 부재
 
@@ -120,16 +122,16 @@ Get-StorageQoSVolume | Format-Table MountPoint, IOPS, Latency, Status
 
 ### CentOS 5.11 기술 제약
 
-| 항목                       | CentOS 5.11 상태            | 최신 Linux (7.x+)   |
-|----------------------------|-----------------------------|---------------------|
-| 커널 버전                  | 2.6.18                      | 3.10+ / 4.x+        |
-| LIS (Integration Services) | 미지원 (공식 문서에서 삭제) | Built-in            |
-| 디스크 드라이버            | IDE 에뮬레이션              | storvsc (synthetic) |
-| 네트워크 드라이버          | 에뮬레이션 (legacy NIC)     | netvsc (synthetic)  |
-| I/O scheduler              | CFQ (단일 큐)               | blk-mq (멀티큐)     |
-| Generation                 | 1만 가능                    | 1 또는 2            |
-| 동적 메모리                | 미지원                      | 지원                |
-| SCSI 부팅                  | 불가                        | Generation 2 가능   |
+| 항목                       | CentOS 5.11 상태                  | 최신 Linux (7.x+)   |
+|----------------------------|-----------------------------------|---------------------|
+| 커널 버전                  | 2.6.18                            | 3.10+ / 4.x+        |
+| LIS (Integration Services) | 매트릭스에서 삭제, LIS 4.3.5 대상 | Built-in            |
+| 디스크 드라이버            | IDE 에뮬레이션                    | storvsc (synthetic) |
+| 네트워크 드라이버          | 에뮬레이션 (legacy NIC)           | netvsc (synthetic)  |
+| I/O scheduler              | CFQ (단일 큐)                     | blk-mq (멀티큐)     |
+| Generation                 | 1만 가능                          | 1 또는 2            |
+| 동적 메모리                | 미지원                            | 지원                |
+| SCSI 부팅                  | 불가                              | Generation 2 가능   |
 
 ### IDE vs Synthetic 드라이버 성능 차이
 

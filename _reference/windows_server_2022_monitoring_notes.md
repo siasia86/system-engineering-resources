@@ -7,13 +7,14 @@ tags:
   - performance
   - hyper-v
   - storage
-last_checked: 2026-07-23
+last_checked: 2026-11-09
 sources:
   - https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/
   - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-counter
   - https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/manage/live-migration-overview
   - https://learn.microsoft.com/en-us/windows-server/storage/storage-qos/storage-qos-overview
   - https://learn.microsoft.com/en-us/sysinternals/
+  - https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/role/hyper-v-server/detecting-virtualized-environment-bottlenecks
 ---
 
 # Windows Server 2022 리소스 모니터링 참조 노트
@@ -91,10 +92,11 @@ Get-VM | Select Name, MemoryAssigned, MemoryDemand, MemoryStatus
 
 ### 공식 소스
 
-- https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/subsystem/storage/
+- https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/role/hyper-v-server/detecting-virtualized-environment-bottlenecks
+- 2026-11-09 확인: 이전 출처 `performance-tuning/subsystem/storage/`는 404이며, 성능 튜닝 목차의 Storage subsystem tuning 아래에 별도 디스크 카운터 문서가 없습니다.
 
 
-🟡 아래 Disk latency 임계치(10ms/20ms)는 MS 공식 수치가 아닌 업계 표준입니다. MS는 "workload dependent"로만 안내합니다. SSD 환경에서는 5ms 이상을 경고로 볼 수 있습니다.
+🟡 아래 Disk latency 임계치(10ms/20ms)는 MS 공식 수치가 아닌 업계 표준입니다. MS Hyper-V 병목 탐지 문서는 `Avg. disk sec/Read`·`Avg. disk sec/Write` 지연이 지속적으로 50ms를 넘으면 VM 분산·더 빠른 저장소·Storage QoS 등을 검토하라고 안내합니다. SSD 환경에서는 5ms 이상을 경고로 볼 수 있습니다.
 ### 주요 카운터
 
 | 카운터                                         | 설명             | 정상     | 경고    | 위험             |

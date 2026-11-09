@@ -7,7 +7,7 @@ tags:
   - theorem-proving
   - formal-verification
   - lake
-last_checked: 2026-09-11
+last_checked: 2026-11-09
 sources:
   - https://lean-lang.org/
   - https://lean-lang.org/install/
@@ -27,6 +27,8 @@ sources:
 | 안정 릴리스        | v4.33.1         | 2026-08-21 릴리스                     |
 | 최신 릴리스        | v4.33.1         | GitHub `leanprover/lean4` 최신 릴리스 |
 | Language Reference | 4.34.0-rc2 대상 | 최신 문서 페이지가 릴리스 후보를 설명 |
+
+(2026-11-09 확인: 최신 안정 릴리스는 v4.35.0(2026-10-12)이고, Language Reference `latest`는 4.36.0-rc2를 대상으로 합니다)
 
 🟡 Language Reference의 `latest`는 안정 릴리스와 일치하지 않을 수 있습니다. 배포 프로젝트에서는
 프로젝트가 고정한 `elan` toolchain과 `lake` 의존성 버전을 기준으로 검증합니다.

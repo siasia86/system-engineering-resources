@@ -1,6 +1,6 @@
 ---
 name: tcpdump-official-notes
-last_checked: 2026-08-01
+last_checked: 2026-11-09
 sources:
   - https://www.tcpdump.org/manpages/tcpdump.1.html
   - https://www.tcpdump.org/
@@ -25,6 +25,8 @@ sources:
 | BPF 필터         | Berkeley Packet Filter 문법 사용       | tcpdump.1   |
 | 기본 동작        | 지정 인터페이스의 패킷을 캡처하여 출력 | tcpdump.1   |
 | root 권한        | 일반적으로 root 또는 CAP_NET_RAW 필요  | tcpdump.1   |
+
+- 2026-11-09 확인: 최신 stable은 4.99.7(2026-09-21)입니다(tcpdump.org).
 
 ## 2. 주요 옵션 (tcpdump.1 man page 기반)
 

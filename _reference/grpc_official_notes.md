@@ -7,7 +7,7 @@ tags:
   - http2
   - protobuf
   - streaming
-last_checked: 2026-09-11
+last_checked: 2026-11-09
 sources:
   - https://grpc.io/docs/what-is-grpc/introduction/
   - https://grpc.io/docs/what-is-grpc/core-concepts/
@@ -19,13 +19,14 @@ sources:
   - https://grpc.io/docs/guides/retry/
   - https://grpc.io/docs/guides/keepalive/
   - https://github.com/grpc/grpc/releases/tag/v1.84.0
+  - https://github.com/grpc/grpc/releases/tag/v1.85.1
 ---
 
 # gRPC 공식 참조 노트
 
 ## 1. 버전 현황
 
-- 최신 공식 GitHub 릴리스: `v1.84.0`.
+- 최신 공식 GitHub 릴리스: `v1.84.0`. (2026-11-09 확인: `v1.85.1`(2026-10-30), 1.85 계열 첫 판 `v1.85.0`은 2026-10-26)
 - gRPC는 서비스 인터페이스와 원격 메서드를 정의하고, 클라이언트가 원격 서버의 메서드를 로컬 호출처럼 사용하도록 하는 RPC 프레임워크입니다.
 - 기본 직렬화 형식으로 Protocol Buffers를 사용하지만 다른 데이터 형식도 사용할 수 있습니다.
 - 구현 언어별 API·생성 코드·지원 범위는 언어별 공식 문서에서 별도로 확인합니다.

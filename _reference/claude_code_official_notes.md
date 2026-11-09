@@ -7,7 +7,7 @@ tags:
   - anthropic
   - ai-agent
   - cli
-last_checked: 2026-10-15
+last_checked: 2026-11-09
 sources:
   - https://code.claude.com/docs/llms.txt
   - https://code.claude.com/docs/en/overview.md
@@ -43,7 +43,7 @@ sources:
 
 ## 1. 버전 상태
 
-- 2026-10-14 확인한 GitHub 최신 릴리스: `v2.1.299` (2026-10-14 게시, `gh api repos/anthropics/claude-code/releases/latest`).
+- 2026-10-14 확인한 GitHub 최신 릴리스: `v2.1.299` (2026-10-14 게시, `gh api repos/anthropics/claude-code/releases/latest`). 2026-11-09 확인: `v2.1.319` (2026-11-06 게시).
 - 공식 문서의 설치 확인 예시 출력은 `2.1.211 (Claude Code)`이며, 이는 형식 예시입니다.
 - 작성 서버의 `PATH`에는 `claude` CLI가 없습니다. 2026-10-15 데스크톱 앱이 SSH 세션용으로 설치한 `~/.claude/remote/ccd-cli/2.1.295-<빌드>`에서 `--version`을 실행해 `2.1.295 (Claude Code)`를 확인했습니다. 그 밖의 CLI 도움말·실제 실행 대조는 하지 않았고 명령·옵션은 공식 문서 기준입니다.
 - 문서에 버전 조건이 붙은 기능은 해당 버전을 함께 기록합니다. 예: 내장 기본 권한 모드 `auto`는 v2.1.283 이상.
@@ -70,16 +70,18 @@ sources:
 ## 3. 구독과 비용 (claude.com/pricing, code.claude.com/costs)
 
 - Claude Code는 모든 유료 플랜에 포함되며, 채팅과 사용량 한도를 공유합니다. 무료 플랜에는 포함되지 않습니다.
-- 사용 가능 계정: Pro, Max, Team, Enterprise, Claude Console(API 종량제). Bedrock·Google Cloud·Microsoft Foundry 같은 클라우드 제공자로도 사용할 수 있습니다.
+- 사용 가능 계정: Pro, Max, Ultra, Team, Enterprise, Claude Console(API 종량제). Bedrock·Google Cloud·Microsoft Foundry 같은 클라우드 제공자로도 사용할 수 있습니다.
 
 | 플랜       | 가격                                                        | 사용량                         |
 |------------|-------------------------------------------------------------|--------------------------------|
 | Pro        | 월 $20 (연간 결제 시 월 $17)                                | Free 대비 5시간당 5배 이상     |
 | Max        | 월 $100부터                                                 | Pro 대비 5배 또는 20배 중 선택 |
+| Ultra      | 월 $200                                                     | 주간 기준 Pro 대비 10배        |
 | Team       | Standard 좌석 $25 (연간 $20), Premium 좌석 $125 (연간 $100) | Premium은 Standard의 5배       |
 | Enterprise | 좌석당 월 $20 + API 요금 기준 사용량                        | 연간 계약                      |
 
-- 사용량 한도는 5시간 단위로 초기화되고, 유료 플랜에는 주간 한도가 추가됩니다.
+- 사용량 한도는 5시간 단위로 초기화되고, 유료 플랜에는 주간 한도가 추가됩니다. Ultra는 인증된 계정이면 5시간 한도 없이 주간 한도만 적용됩니다.
+- 2026-11-09 확인: 요금 페이지는 Ultra를 새로 표시하고 Max는 월 $100·Pro 대비 5배로만 표시합니다. setup 문서의 필요 계정도 Pro, Max, Ultra, Team, Enterprise, Console입니다.
 - 기업 배포 평균 비용: 활성일 기준 개발자당 약 $13, 월 $150~250, 사용자 90%가 활성일당 $30 미만(costs 문서).
 
 ## 4. 설치와 업데이트 (setup)
@@ -195,13 +197,14 @@ sources:
 - 연동: Chrome, GitHub Actions, GitLab CI/CD, Code Review, Slack, Claude Tag.
 - Desktop 앱은 macOS·Windows를 지원하며 Ubuntu·Debian은 apt 설치 베타입니다. 유료 구독이 필요하고 CLI를 따로 설치하지 않아도 됩니다.
 
-- Projects (claude-projects, 2026-10-15): Pro·Max 공개 beta, 단계적 제공(Team·Enterprise 미제공). 대화 하나가 스레드(기본 클라우드 세션)를 시작·추적하고 프로젝트 지침·메모리를 공유합니다. claude.ai/code·데스크톱 앱·모바일 앱에서만 쓰며 터미널 CLI·VS Code·JetBrains·Bedrock·Agent Platform·Foundry에서는 쓸 수 없습니다. 직접 시작한 로컬 세션은 프로젝트에 넣을 수 없고, 로컬 폴더 작업은 Remote Control(v2.1.280 이상)로 연결한 폴더에서 **Work locally** 스레드로 실행합니다(auto 모드, 프로젝트 지침은 적용·메모리 파일은 미적용). 클라우드 sandbox를 다시 열지 못하면 새 clone에서 이어가 commit하지 않은 변경이 사라질 수 있습니다. 한 사용자 전용이며 공유할 수 없습니다. 코드 작업은 github.com 저장소와 Claude GitHub App·push 권한이 필요합니다.
+- Projects (claude-projects, 2026-10-15, 2026-11-09 재확인): Pro·Max·Ultra 공개 beta, 단계적 제공(Team·Enterprise 미제공). 대화 하나가 스레드(기본 클라우드 세션)를 시작·추적하고 프로젝트 지침·메모리를 공유합니다. claude.ai/code·데스크톱 앱·모바일 앱에서만 쓰며 터미널 CLI·VS Code·JetBrains·Bedrock·Agent Platform·Foundry에서는 쓸 수 없습니다. 직접 시작한 로컬 세션은 프로젝트에 넣을 수 없고, 로컬 폴더 작업은 Remote Control(v2.1.280 이상)로 연결한 폴더에서 **Work locally** 스레드로 실행합니다(auto 모드, 프로젝트 지침은 적용·메모리 파일은 미적용). 클라우드 sandbox를 다시 열지 못하면 새 clone에서 이어가 commit하지 않은 변경이 사라질 수 있습니다. 한 사용자 전용이며 공유할 수 없습니다. 코드 작업은 github.com 저장소와 Claude GitHub App·push 권한이 필요합니다.
 
 ## 12. 검증 기록
 
 - 1차 대조(2026-10-14): code.claude.com의 overview·setup·authentication·permission-modes·settings·memory·skills·hooks-guide·sub-agents·mcp·headless·model-config·platforms 문서 원문을 내려받아 항목별로 확인했습니다.
 - 2차 대조(2026-10-14): platform.claude.com의 models overview·pricing·model-deprecations와 claude.com/pricing, GitHub 릴리스 API로 모델 ID·가격·플랜·버전을 교차 확인했습니다. setup 문서의 "Pro, Max, Team, Enterprise, Console 계정 필요"와 pricing 페이지의 "모든 유료 플랜 포함"이 일치함을 확인했습니다.
 - 3차 대조(2026-10-15): quickstart·interactive-mode·common-workflows·best-practices·checkpointing·commands·desktop·skills 원문을 내려받아 기본 사용법·데스크톱 앱·스킬 목록 문서의 단축키·명령·plan 모드·되돌리기 한계·SSH 요구 사항·스킬 우선순위를 확인했습니다. 사이드바 섹션 구성(Pinned·Routines·Sessions·사용자 그룹)은 공식 문서에 없어 같은 날 데스크톱 앱 SSH 세션에서 관찰한 결과로 적었습니다.
+- 4차 대조(2026-11-09): claude.com/pricing·setup·costs·claude-projects 원문과 GitHub 릴리스 API로 Ultra 플랜, 필요 계정, Projects 제공 범위, 최신 릴리스를 다시 확인했습니다.
 - 미검증: `claude --version` 외의 터미널 명령, 직접 설치·로그인, 단축키 동작은 실행하지 않았습니다. Max 20배 요금제의 정확한 가격은 pricing 페이지 본문에서 확인하지 못했습니다.
 
 ## 13. 공식 자료

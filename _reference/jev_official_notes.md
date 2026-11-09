@@ -7,7 +7,7 @@ tags:
   - typesafe-ai
   - system-one
   - decision-model
-last_checked: 2026-10-01
+last_checked: 2026-11-09
 sources:
   - https://docs.typesafe.ai/introduction
   - https://docs.typesafe.ai/introduction/coding-agents
@@ -22,7 +22,8 @@ sources:
   - https://docs.typesafe.ai/sdk/python
   - https://docs.typesafe.ai/sdk/python/api/clients/sync
   - https://docs.typesafe.ai/sdk/python/api/retries
-  - https://docs.typesafe.ai/model-jaggedness/jev-1.13
+  - https://docs.typesafe.ai/model-jaggedness
+  - https://docs.typesafe.ai/changelog
 ---
 
 # Jev 공식 참조 노트
@@ -49,6 +50,8 @@ sources:
 | 전체 요청 길이 | `state`와 모든 질문을 합쳐 64k 토큰               |
 | 개별 질문 길이 | `state`와 가장 긴 질문을 합쳐 32k 토큰            |
 | 입력 매체      | 텍스트; 이미지·음성·영상 직접 입력 미지원         |
+
+(2026-11-09 확인: Jev 1.14.0이 2026-10-14에 출시되어 `jev-latest`·`jev-preview`가 `jev-1.14.0`을 가리킵니다. 가격과 64k·32k 기본 제한은 같고, `TypeSafe-Danger-Zone-Long-Context: true` 헤더로 두 제한을 262k로 늘릴 수 있습니다. PNG·JPEG 이미지 입력과 긴 문맥은 1.13에서도 동작하며, 이미지 위치를 묻는 Box 질문은 1.14가 필요합니다. [Models](https://docs.typesafe.ai/models), [Model changelog](https://docs.typesafe.ai/changelog).)
 
 속도 제한은 공식 문서에서도 유동적인 값으로 설명하므로 배포 시 재확인합니다. 별칭 대신 버전 ID를 지정하면 모델 변경에 따른 회귀 평가 시점을 관리할 수 있습니다.
 
@@ -82,7 +85,7 @@ HTTP 요청 타임아웃과 전체 재시도 시간 예산은 구분합니다. `
 
 `state`는 문자열, JSON 객체 또는 배열로 구성합니다. 질문별로 필요한 사실을 명시하고 관련 없는 긴 로그는 줄입니다. 공식 문서는 영어 중심 학습과 다른 언어의 정확도 차이를 설명하므로 한국어 입력을 별도로 평가합니다. [State](https://docs.typesafe.ai/concepts/state).
 
-Jev 1.13의 알려진 한계에는 문자 그대로의 해석, 수치 계산, 날짜 비교, 복잡한 간접 참조, 불필요하게 큰 상태, 적대적 입력이 있습니다. 계산·정렬·권한 검증은 코드에서 처리하고 모델에는 의미 판단을 맡깁니다. [Jev 1.13 jaggedness](https://docs.typesafe.ai/model-jaggedness/jev-1.13).
+Jev 1.13의 알려진 한계에는 문자 그대로의 해석, 수치 계산, 날짜 비교, 복잡한 간접 참조, 불필요하게 큰 상태, 적대적 입력이 있습니다. 계산·정렬·권한 검증은 코드에서 처리하고 모델에는 의미 판단을 맡깁니다. [Model jaggedness](https://docs.typesafe.ai/model-jaggedness). (2026-11-09 확인: 버전별 페이지 주소는 버전 구분 없는 Model jaggedness 페이지로 옮겨졌고, 모순된 지시·선택지 순서·생성 항목이 추가되어 있습니다.)
 
 ## 6. 검증 기록
 

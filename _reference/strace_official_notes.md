@@ -1,6 +1,6 @@
 ---
 name: strace-official-notes
-last_checked: 2026-08-01
+last_checked: 2026-11-09
 sources:
   - https://man7.org/linux/man-pages/man1/strace.1.html
   - https://strace.io/
@@ -28,6 +28,8 @@ sources:
 | 출력 형식          | 시스템 콜명, 인수, 반환값 (man page 명시) | strace.1   |
 | 알 수 없는 syscall | `syscall_0x<num>` 형식으로 출력           | strace.1   |
 | 시그널 출력 형식   | 시그널 심볼 + 디코딩된 siginfo            | strace.1   |
+
+- 2026-11-09 확인: 최신 stable은 v7.3(2026-10-22)입니다(GitHub API).
 
 ## 2. 주요 옵션 (strace.1 man page 기반)
 

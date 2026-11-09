@@ -6,10 +6,11 @@ tags:
   - container
   - orchestration
   - cncf
-last_checked: 2026-11-05
+last_checked: 2026-11-09
 sources:
   - https://kubernetes.io/docs/concepts/overview/
   - https://kubernetes.io/docs/concepts/architecture/
+  - https://kubernetes.io/docs/setup/production-environment/container-runtimes/
 ---
 
 # Kubernetes 공식 문서 참조 노트
@@ -64,7 +65,7 @@ kube-controller-manager          (containerd / CRI-O)
 
 - v1.24+: dockershim 제거, CRI 표준 런타임 필수
 - v1.26+: CRI API v1 필수
-- v1.37: containerd 1.x 호환 불가 예정 (RuntimeConfig CRI RPC 미지원)
+- v1.38: containerd 1.x 호환 불가 예정 (RuntimeConfig CRI RPC 미지원 → kubelet의 cgroup driver fallback 제거)
 
 ## 7. 주의사항
 

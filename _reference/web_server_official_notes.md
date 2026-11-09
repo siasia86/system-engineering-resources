@@ -11,7 +11,7 @@ tags:
   - load-balancer
   - keepalived
   - acme
-last_checked: 2026-08-20
+last_checked: 2026-11-09
 sources:
   - https://nginx.org/en/docs/
   - https://httpd.apache.org/docs/2.4/
@@ -38,6 +38,7 @@ sources:
 | Stable   | 1.30.3 | 프로덕션 권장     |
 
 - 출처: https://nginx.org/en/download.html
+- 2026-11-09 확인: Mainline 1.31.8(2026-10-21), Stable 1.30.6(2026-10-14)입니다(nginx.org CHANGES).
 
 ### 핵심 설정
 
@@ -92,9 +93,9 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 | 버전    | 변경 사항                                        | 영향                                  |
 |---------|--------------------------------------------------|---------------------------------------|
 | 1.25.1+ | `listen` 줄 `http2` 파라미터 deprecated          | `http2 on;` 별도 디렉티브 사용        |
-| 1.25.1+ | `listen ... quic` QUIC/HTTP3 실험적 지원         | `http3 on;` 별도 디렉티브             |
+| 1.25.0+ | `listen ... quic` QUIC/HTTP3 실험적 지원         | `http3 on;` 별도 디렉티브             |
 | 1.23.4+ | TLSv1.3 프로토콜 기본 활성화                     | `ssl_protocols` 별도 설정 필요성 감소 |
-| 1.15.0+ | `ssl` 디렉티브 deprecated, `listen ... ssl` 사용 | HTTPS 활성화 방식 명확화              |
+| 1.15.0+ | `ssl` 디렉티브 deprecated, `listen ... ssl` 사용 | 1.25.1에서 `ssl` 디렉티브 제거        |
 | 1.9.0+  | stream 모듈 (TCP/UDP 프록시) 추가                | `stream {}` 블록 사용 가능            |
 
 ### 버전별 주요 변경사항 (Apache)
@@ -103,7 +104,7 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 |---------|---------------------------------|-------------------------------------|
 | 2.4.58  | mod_http2 `H2EarlyHint` 추가    | HTTP 103 Early Hints 응답 헤더 지원 |
 | 2.4.49  | CVE-2021-41773 (path traversal) | 즉시 패치 필수                      |
-| 2.4.52+ | mod_proxy_http2 백엔드 H2 지원  | 리버스 프록시 H2 pass-through       |
+| 2.4.19+ | mod_proxy_http2 백엔드 H2 지원  | 리버스 프록시 H2 (실험 모듈)        |
 | 2.4+    | event MPM 기본                  | prefork에서 전환 권장               |
 
 ## 2. Apache HTTP Server
@@ -116,6 +117,7 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 
 - 2.2.x: EOL (2017-12)
 - 출처: https://httpd.apache.org/download.cgi
+- 2026-11-09 확인: 최신 2.4.70(2026-11-06)입니다(httpd.apache.org).
 
 ### 핵심 설정
 
@@ -249,7 +251,7 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 - management.txt: `acme renew <crt>`, `acme status`(인증서·section·Running/Scheduled/Stopped·만료·예정 시각), `dump ssl cert`(admin 권한).
 - 3.4 문서에서 ARI(renewalInfo)나 갱신 시점 조정 설정은 찾지 못함.
 - haproxy-dump-certs(3.4 소스): 실험 스크립트, 지문이 같으면 건너뜀, 키 쌍 불일치면 저장 안 함, 이전 파일을 `.old.<시각>`으로 이동. `-S`, `-s`, `-p`, `-n`.
-- 공식 wiki ACME 안내: 3.2부터 실험 기능, 3.3부터 crt-store로 파일 없이 시작, reload 시 저장하지 않으면 재발급되어 CA 발급 제한 위험, systemd `ExecStop`·`ExecReload`에 저장 스크립트 추가 예시.
+- 공식 wiki ACME 안내: 3.2부터 실험 기능, 3.3부터 crt-store로 파일 없이 시작, reload 시 저장하지 않으면 재발급되어 CA 발급 제한 위험, systemd `ExecStop`·`ExecReload`에 저장 스크립트 추가 예시. wiki는 기본 키를 RSA2048로 적었지만 3.2·3.3·3.4 configuration.txt의 `keytype` 기본값은 ECDSA P-384(EC384)입니다(2026-11-09 확인).
 - haproxy.org 공지: 3.3에서 Data Plane API 경유 DNS-01, 3.4에서 DNS-01·dns-persist-01·EAB·발급 프로필.
 - Let's Encrypt directory(운영·staging) 응답에 `renewalInfo` 항목과 프로필 `classic`·`shortlived`·`tlsserver`가 있음.
 
@@ -261,6 +263,7 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 ## 4. TLS 설정 공통 (Mozilla SSL Configuration Generator)
 
 - 출처: https://ssl-config.mozilla.org/guidelines/5.7.json (v5.7, 확인일: 2026-07-14)
+- 2026-11-09 확인: 최신판은 6.0(`guidelines/latest.json`)이며, 이 노트와 본문은 5.7 기준입니다.
 - 검증: https://www.ssllabs.com/ssltest/ (A+ 목표)
 
 ### 프로필 비교

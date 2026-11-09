@@ -6,10 +6,11 @@ tags:
   - kubernetes
   - package-manager
   - chart
-last_checked: 2026-11-05
+last_checked: 2026-11-09
 sources:
   - https://helm.sh/docs/intro/using_helm/
   - https://helm.sh/docs/chart_template_guide/
+  - https://helm.sh/docs/overview/
 ---
 
 # Helm 공식 문서 참조 노트
@@ -70,10 +71,11 @@ helm list
 - **Server-Side Apply**: 여러 도구가 동일 리소스 관리 시 충돌 해결 개선
 - **Breaking**: post-renderer는 플러그인 이름으로만 지정 (직접 실행 파일 불가)
 - **Breaking**: `helm registry login`은 도메인명만 허용 (전체 URL 불가)
+- **플래그 이름 변경**: `--atomic` → `--rollback-on-failure`, `--force` → `--force-replace` (옛 이름은 deprecated 경고와 함께 동작)
 
 ## 7. 주의사항
 
 - `helm upgrade --install`: 없으면 설치, 있으면 업그레이드 (CI/CD 권장)
-- `--atomic`: 업그레이드 실패 시 자동 롤백
+- `--rollback-on-failure` (v4 이름, v3의 `--atomic`은 v4에서 deprecated): 설치·업그레이드 실패 시 자동 롤백
 - `helm template`: 실제 설치 없이 렌더링 결과 확인 (디버깅)
 - values 우선순위: `--set` > `-f values.yaml` > `values.yaml` (기본)

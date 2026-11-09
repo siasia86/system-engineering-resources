@@ -1,12 +1,12 @@
 ---
 name: cve-security-official-notes
-description: CVE/보안 취약점 문서 작성 시 참조할 공식 소스, API 엔드포인트, 검증 방법 정리. 06_security/01_cve/ 문서 생성/검토 시 참조.
+description: CVE/보안 취약점 문서 작성 시 참조할 공식 소스, API 엔드포인트, 검증 방법 정리. 04_security/cve/ 문서 생성/검토 시 참조.
 tags:
   - cve
   - security
   - vulnerability
   - nvd
-last_checked: 2026-06-29
+last_checked: 2026-11-09
 sources:
   - https://nvd.nist.gov/developers/vulnerabilities
   - https://www.cve.org/
@@ -26,10 +26,10 @@ sources:
 
 | 소스           | URL                                                          | 용도                       | 신뢰도 |
 |----------------|--------------------------------------------------------------|----------------------------|--------|
-| NVD            | https://nvd.nist.gov/vuln/detail/CVE-YYYY-NNNNN              | CVSS, CWE, 영향 버전, 참조 | ★★★★★  |
-| CVE.org        | https://www.cve.org/CVERecord?id=CVE-YYYY-NNNNN              | CVE 레코드 원본            | ★★★★★  |
-| CISA KEV       | https://www.cisa.gov/known-exploited-vulnerabilities-catalog | 실제 악용 확인, 조치 기한  | ★★★★★  |
-| git.kernel.org | https://git.kernel.org/stable/c/{commit_hash}                | 커널 패치 원본, Fixes 태그 | ★★★★★  |
+| NVD            | https://nvd.nist.gov/vuln/detail/CVE-YYYY-NNNNN              | CVSS, CWE, 영향 버전, 참조 | ★★★☆☆  |
+| CVE.org        | https://www.cve.org/CVERecord?id=CVE-YYYY-NNNNN              | CVE 레코드 원본            | ★★★☆☆  |
+| CISA KEV       | https://www.cisa.gov/known-exploited-vulnerabilities-catalog | 실제 악용 확인, 조치 기한  | ★★★☆☆  |
+| git.kernel.org | https://git.kernel.org/stable/c/{commit_hash}                | 커널 패치 원본, Fixes 태그 | ★★★☆☆  |
 
 ### 배포판 보안 공지 (백포트 패치 확인)
 
@@ -47,7 +47,7 @@ sources:
 |---------------------|------------------------------------|--------------------|-------------|
 | 발견자 GitHub       | github.com/{researcher}/{cve-repo} | PoC, 완화 가이드   | ★★☆☆☆~★★★☆☆ |
 | JFrog Research      | research.jfrog.com/post/{slug}     | 상세 기술 문서     | ★★★☆☆       |
-| Google Project Zero | googleprojectzero.blogspot.com     | 익스플로잇 분석    | ★★★★☆       |
+| Google Project Zero | googleprojectzero.blogspot.com     | 익스플로잇 분석    | ★★★☆☆       |
 | Qualys              | blog.qualys.com                    | 대규모 취약점 분석 | ★★★☆☆       |
 
 ### 뉴스/미디어 (2차 자료)
@@ -153,14 +153,14 @@ lynx -dump -nolist "https://git.kernel.org/stable/c/{commit_hash}" | grep "Fixes
 
 ## 5. DirtyFrag 계열 공통 참조
 
-현재 `06_security/01_cve/` 에 등록된 동일 버그 클래스:
+현재 `04_security/cve/` 에 등록된 동일 버그 클래스:
 
 | CVE            | 별칭       | 컴포넌트                          | 완화 모듈               |
 |----------------|------------|-----------------------------------|-------------------------|
 | CVE-2026-31431 | Copy Fail  | `algif_aead`                      | `algif_aead`            |
 | CVE-2026-43284 | Dirty Frag | `esp4`, `esp6`                    | `esp4`, `esp6`, `rxrpc` |
 | CVE-2026-43500 | Dirty Frag | `rxrpc`                           | `esp4`, `esp6`, `rxrpc` |
-| CVE-2026-46300 | Fragnesia  | `espintcp`                        | `esp4`, `esp6`, `rxrpc` |
+| CVE-2026-46300 | Fragnesia  | `skb_try_coalesce` (`espintcp`)   | `esp4`, `esp6`, `rxrpc` |
 | CVE-2026-43503 | DirtyClone | `__pskb_copy_fclone`, `skb_shift` | `esp4`, `esp6`, `rxrpc` |
 
 공통 blacklist 파일: `/etc/modprobe.d/dirtyfrag.conf`

@@ -5,13 +5,16 @@ tags:
   - vpn
   - softether
   - networking
-last_checked: 2026-08-05
+last_checked: 2026-11-09
 sources:
   - https://www.softether.org/3-spec
   - https://github.com/SoftEtherVPN/SoftEtherVPN/blob/master/src/GlobalConst.h
   - https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/blob/master/src/Cedar/Server.h
   - https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/blob/master/src/Cedar/Cedar.h
   - https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/blob/master/src/Cedar/Client.h
+  - https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases
+  - https://github.com/SoftEtherVPN/SoftEtherVPN/releases
+  - https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
 ---
 
 # SoftEther VPN 공식 참조 노트
@@ -20,13 +23,15 @@ sources:
 
 출처: GitHub API (github.com/SoftEtherVPN)
 
-| 계열           | 최신 버전      | 릴리즈일   | repo                |
-|----------------|----------------|------------|---------------------|
-| v4 안정 (RTM)  | v4.44-9807-rtm | 2025-05-07 | SoftEtherVPN (메인) |
-| v4 Stable repo | v4.41-9787-rtm | 2025-05-07 | SoftEtherVPN_Stable |
-| v5 개발        | 5.2.5188       | 2025-07-18 | SoftEtherVPN (메인) |
+| 계열          | 최신 버전      | 릴리즈일   | repo                |
+|---------------|----------------|------------|---------------------|
+| v4 안정 (RTM) | v4.44-9807-rtm | 2025-05-07 | SoftEtherVPN_Stable |
+| v4 latest API | v4.41-9787-rtm | 2025-05-07 | SoftEtherVPN_Stable |
+| v5 개발       | 5.2.5188       | 2025-07-18 | SoftEtherVPN (메인) |
 
-🟡 SoftEtherVPN_Stable repo의 `releases/latest` API는 `v4.41`을 반환합니다. 실제 최신 RTM(`v4.44`)은 메인 repo(SoftEtherVPN)의 releases에 등록되어 있습니다. 두 repo는 코드베이스를 공유하며, Stable repo는 메인 repo의 안정 스냅샷입니다.
+🟡 SoftEtherVPN_Stable repo의 `releases/latest` API는 `v4.41`을 반환하지만, 최신 RTM(`v4.44`)도 같은 Stable repo의 releases 목록에 있습니다. 메인 repo(SoftEtherVPN)는 Developer Edition(v5) 저장소로 v5 릴리스만 게시하며, Stable Edition(v4)은 SoftEtherVPN_Stable repo에서 배포합니다. README 기준 일부 기능은 Stable Edition에 없습니다.
+
+(2026-11-09 확인: v5 개발 계열 최신은 `5.2.5189`, 2026-11-05 게시입니다.)
 
 ---
 
@@ -34,13 +39,13 @@ sources:
 
 출처: `src/GlobalConst.h`, `src/Cedar/Server.h` (소스코드 직접 확인)
 
-| 상수명               | 값   | 용도                              |
-|----------------------|------|-----------------------------------|
-| `GC_DEFAULT_PORT`    | 5555 | vpncmd 관리 포트 (기본값 정의)    |
-| `SERVER_DEF_PORTS_1` | 443  | 기본 리스너 1 (HTTPS 포트 재활용) |
-| `SERVER_DEF_PORTS_2` | 992  | 기본 리스너 2 (IANA pop3s 재활용) |
-| `SERVER_DEF_PORTS_3` | 1194 | 기본 리스너 3 (OpenVPN 관용 포트) |
-| `SERVER_DEF_PORTS_4` | 5555 | 기본 리스너 4 (`GC_DEFAULT_PORT`) |
+| 상수명               | 값   | 용도                                |
+|----------------------|------|-------------------------------------|
+| `GC_DEFAULT_PORT`    | 5555 | vpncmd 관리 포트 (기본값 정의)      |
+| `SERVER_DEF_PORTS_1` | 443  | 기본 리스너 1 (HTTPS 포트 재활용)   |
+| `SERVER_DEF_PORTS_2` | 992  | 기본 리스너 2 (IANA telnets 재활용) |
+| `SERVER_DEF_PORTS_3` | 1194 | 기본 리스너 3 (OpenVPN 관용 포트)   |
+| `SERVER_DEF_PORTS_4` | 5555 | 기본 리스너 4 (`GC_DEFAULT_PORT`)   |
 
 ---
 

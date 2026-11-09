@@ -10,7 +10,7 @@ tags:
   - sdn
   - storage-replica
   - hotpatch
-last_checked: 2026-07-31
+last_checked: 2026-11-09
 sources:
   - https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/hyper-v-on-windows-server
   - https://learn.microsoft.com/en-us/windows-server/failover-clustering/failover-clustering-overview
@@ -19,6 +19,8 @@ sources:
   - https://learn.microsoft.com/en-us/windows-server/storage/storage-replica/storage-replica-overview
   - https://learn.microsoft.com/en-us/windows-server/get-started/whats-new-in-windows-server-2022
   - https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v
+  - https://learn.microsoft.com/en-us/windows-server/get-started/hotpatch
+  - https://learn.microsoft.com/en-us/windows-server/get-started/removed-deprecated-features-windows-server
 ---
 
 # Windows Server 핵심 개념 참조 노트
@@ -159,6 +161,8 @@ Applications / Hyper-V VMs
 | 암호화      | BitLocker (vTPM 기반) |
 | 도입 버전   | Windows Server 2016   |
 
+🟡 2026-11-09 확인: Microsoft의 제거·폐기 기능 목록은 Guarded Fabric and Shielded VMs를 "Features no longer in development"로 분류합니다. 지원은 계속되지만 Windows 클라이언트의 Shielded VM RSAT 기능은 제거되었습니다.
+
 ## 5. Storage Replica
 
 ### 공식 정의
@@ -195,17 +199,17 @@ Software-Defined Networking의 핵심 역할. 네트워크 정책을 중앙에�
 
 재부팅 없이 보안 패치를 적용하는 기술입니다.
 
-| 항목        | 내용                                                         |
-|-------------|--------------------------------------------------------------|
-| 필요 에디션 | **Datacenter: Azure Edition** 전용                           |
-| 지원 환경   | Azure VM / Azure Local: 2022·2025 Datacenter: Azure Edition  |
-| 도입 버전   | Windows Server 2022 Datacenter: Azure Edition                |
-| 패치 주기   | 분기별 기준 패치 + 월별 Hotpatch (재부팅 불필요)             |
-| 효과        | 월별 패치 기준 최대 12회 재부팅 → 분기별 baseline 4회로 감소 |
+| 항목        | 내용                                                                                          |
+|-------------|-----------------------------------------------------------------------------------------------|
+| 필요 에디션 | Azure·Azure Local은 **Datacenter: Azure Edition**, Azure Arc 연결 시 2025 Standard·Datacenter |
+| 지원 환경   | Azure VM / Azure Local: 2022·2025 Datacenter: Azure Edition                                   |
+| 도입 버전   | Windows Server 2022 Datacenter: Azure Edition                                                 |
+| 패치 주기   | 분기별 기준 패치 + 월별 Hotpatch (재부팅 불필요)                                              |
+| 효과        | 월별 패치 기준 최대 12회 재부팅 → 분기별 baseline 4회로 감소                                  |
 
 > 출처: learn.microsoft.com/en-us/windows-server/get-started/hotpatch
 
-🟡 Azure Arc 연결 on-premises Hotpatch는 **Windows Server 2025만** 지원합니다 (2022는 Azure VM/Azure Local 환경에서만 가능).
+🟡 Azure Arc 연결 on-premises Hotpatch는 **Windows Server 2025만** 지원합니다 (2022는 Azure VM/Azure Local 환경에서만 가능). 2026-11-09 확인: 공식 문서는 Azure Arc Hotpatch 대상 에디션을 Windows Server 2025 Standard·Datacenter로 적고, 추가 비용 없이 제공한다고 안내합니다.
 
 ## 8. RDMA (Remote Direct Memory Access)
 
@@ -273,5 +277,5 @@ Windows Server Datacenter
   │     └── Datacenter 전용
   │
   └── Hotpatch (무재부팅 패치)
-        └── Datacenter: Azure Edition 전용
+        └── Azure Edition 또는 Azure Arc 연결 2025
 ```

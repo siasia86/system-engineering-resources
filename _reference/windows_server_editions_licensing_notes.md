@@ -8,7 +8,7 @@ tags:
   - activation
   - datacenter
   - standard
-last_checked: 2026-07-29
+last_checked: 2026-11-09
 sources:
   - https://learn.microsoft.com/en-us/windows-server/get-started/editions-comparison
   - https://www.microsoft.com/en-us/licensing/product-licensing/windows-server
@@ -17,6 +17,8 @@ sources:
   - https://learn.microsoft.com/en-us/lifecycle/products/windows-server-2022
   - https://learn.microsoft.com/en-us/lifecycle/products/windows-server-2025
   - https://learn.microsoft.com/en-us/lifecycle/faq/extended-security-updates
+  - https://learn.microsoft.com/en-us/lifecycle/products/windows-server-2012-r2
+  - https://learn.microsoft.com/en-us/windows-server/get-started/install-options-server-core-desktop-experience
 ---
 
 # Windows Server 에디션 및 라이선스 참조 노트
@@ -30,6 +32,8 @@ sources:
 | Windows Server 2025 | 2024-11-01 | 2029-11-13      | 2034-11-14    | Mainstream 지원 중   |
 
 🟡 Windows Server 2022는 2026-10-13에 Mainstream 지원이 종료됩니다.
+
+- 2026-11-09 확인: Windows Server 2022는 2026-10-13에 Mainstream 지원이 끝나 Extended 지원 중이며, Windows Server 2012/R2 ESU Year 3도 2026-10-13에 끝났습니다.
 
 > 출처: learn.microsoft.com/en-us/lifecycle/products/windows-server-2022
 
@@ -172,7 +176,7 @@ slmgr /rearm
 | Evaluation → Datacenter          | ✅        | `slmgr /ipk` 키 입력 |
 | Standard → Datacenter            | ✅        | `DISM /Set-Edition`  |
 | Datacenter → Standard            | ❌        | 재설치 필요          |
-| Standard Core ↔ Standard Desktop | ✅        | `DISM /Set-Edition`  |
+| Standard Core ↔ Standard Desktop | ❌        | 재설치 필요          |
 
 ```cmd
 :: Standard → Datacenter (재부팅 필요)
@@ -183,6 +187,8 @@ DISM /online /Get-CurrentEdition
 ```
 
 ## 7. 설치 옵션 (Desktop Experience vs Core)
+
+🟡 Server Core와 Desktop Experience는 설치 후 서로 전환할 수 없으며 다른 옵션이 필요하면 새로 설치합니다(설치 옵션 문서, 적용 대상 Windows Server 2016~2025).
 
 | 옵션               | GUI | 메모리 절약 | 공격 표면 | 권장 시나리오     |
 |--------------------|-----|-------------|-----------|-------------------|

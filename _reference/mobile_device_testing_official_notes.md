@@ -9,10 +9,10 @@ tags:
   - appium
   - firebase-test-lab
   - aws-device-farm
-last_checked: 2026-09-15
+last_checked: 2026-11-09
 sources:
   - https://github.com/DeviceFarmer/stf
-  - https://github.com/DeviceFarmer/stf/releases/tag/v3.7.9
+  - https://github.com/DeviceFarmer/stf/releases/tag/v3.9.0
   - https://github.com/openstf/stf
   - https://appium.io/docs/en/latest/intro/
   - https://github.com/appium/appium/blob/master/LICENSE
@@ -36,23 +36,23 @@ sources:
 
 ## 2. 오픈소스 프로젝트
 
-| 프로젝트                           | 공식 확인 사실                                                   |
-|------------------------------------|------------------------------------------------------------------|
-| DeviceFarmer/stf                   | Android 기기 브라우저 제어·inventory 관리, `v3.7.9` release 확인 |
-| openstf/stf                        | README에서 active development가 DeviceFarmer로 이동했다고 안내   |
-| Appium                             | W3C WebDriver 기반 앱 자동화, Apache-2.0 LICENSE                 |
-| Maestro                            | Android·iOS·Web UI·E2E 자동화, YAML flow, 물리 Android 지원      |
-| Android Emulator Container Scripts | Docker 등에서 Android Emulator 실행을 위한 Google 스크립트       |
-| Mobly                              | Python 기반, 다중 장치·복잡한 환경·custom hardware 테스트        |
+| 프로젝트                           | 공식 확인 사실                                                                 |
+|------------------------------------|--------------------------------------------------------------------------------|
+| DeviceFarmer/stf                   | Android 기기 브라우저 제어·inventory 관리, 최신 `v3.9.0`(조사일 당시 `v3.7.9`) |
+| openstf/stf                        | README에서 active development가 DeviceFarmer로 이동했다고 안내                 |
+| Appium                             | W3C WebDriver 기반 앱 자동화, Apache-2.0 LICENSE                               |
+| Maestro                            | Android·iOS·Web UI·E2E 자동화, YAML flow, 물리 Android 지원                    |
+| Android Emulator Container Scripts | Docker 등에서 Android Emulator 실행을 위한 Google 스크립트                     |
+| Mobly                              | Python 기반, 다중 장치·복잡한 환경·custom hardware 테스트                      |
 
-DeviceFarmer 저장소의 GitHub license metadata는 `NOASSERTION`으로 표시됩니다. 저장소 LICENSE와 third-party dependency license는 별도 확인 대상입니다.
+DeviceFarmer/stf 최신 release는 `v3.9.0`(2026-10-26)입니다(2026-11-09 재확인, 2026-09-15 조사 당시는 `v3.7.9`). DeviceFarmer 저장소의 GitHub license metadata는 `NOASSERTION`으로 표시됩니다. 저장소 LICENSE와 third-party dependency license는 별도 확인 대상입니다.
 
 ## 3. 관리형 서비스
 
-| 서비스             | 공식 확인 내용                                                   |
-|--------------------|------------------------------------------------------------------|
-| AWS Device Farm    | AWS 호스팅 실제 Android·iOS·Web 기기, Appium·XCTest, 병렬 실행 |
-| Firebase Test Lab  | 클라우드 실제·가상 Android·iOS 기기, CLI·Game Loop              |
+| 서비스            | 공식 확인 내용                                                 |
+|-------------------|----------------------------------------------------------------|
+| AWS Device Farm   | AWS 호스팅 실제 Android·iOS·Web 기기, Appium·XCTest, 병렬 실행 |
+| Firebase Test Lab | 클라우드 실제·가상 Android·iOS 기기, CLI·Game Loop             |
 
 AWS Device Farm 문서에는 Device Farm 서비스가 `us-west-2`에서 제공된다고 기재되어 있습니다. AWS 문서는 Android·iOS·Web 테스트, 원격 브라우저 접근, client-side Appium, service-side 병렬 실행을 설명합니다.
 

@@ -1,6 +1,6 @@
 ---
 name: iperf3-official-notes
-last_checked: 2026-08-28
+last_checked: 2026-11-09
 sources:
   - https://github.com/esnet/iperf
   - https://software.es.net/iperf/invoking.html
@@ -26,6 +26,8 @@ iperf3의 명령 구조와 옵션은 ESnet 공식 문서와 공식 GitHub 저장
 | 주요 용도        | 네트워크 throughput 측정 | 공식 invoking 문서  |
 | 지원 측정 방식   | TCP, UDP, SCTP           | 공식 manual         |
 | 기본 server port | TCP 5201                 | 공식 manual         |
+
+(2026-11-09 확인: GitHub Releases API 기준 최신 release는 3.22(2026-09-29)입니다)
 
 > throughput: 단위 시간에 전송된 데이터의 처리량입니다. 링크 속도와 실제 애플리케이션 처리량은 protocol, host, buffer, congestion 등의 조건에 따라 달라질 수 있습니다.
 

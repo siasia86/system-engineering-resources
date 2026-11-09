@@ -7,12 +7,15 @@ tags:
   - nvme
   - raid
   - storage
-last_checked: 2026-07-14
+last_checked: 2026-11-09
 sources:
   - https://docs.graidtech.com/sr/
   - https://docs.graidtech.com/sr/user-guide/linux/2.0.0/
   - https://www.graidtech.com/faq/
   - https://download.graidtech.com/document/user-guide/supreme-raid/linux/1.7.2/SupremeRAID-Linux-User-Guide-v1.7.2-20250630.pdf
+  - https://download.graidtech.com/document/user-guide/supreme-raid/linux/1.5.0/SupremeRAID-Linux-User-Guide-v1.5.0-20240312.pdf
+  - https://docs.graidtech.com/sr/user-guide/linux/2.0.1/
+  - https://docs.graidtech.com/sr/release-notes/linux/2.0/2.0.1-262/
 ---
 
 # GRAID SupremeRAID 공식 문서 참조 노트
@@ -21,9 +24,9 @@ sources:
 
 | 항목                | 값                                  |
 |---------------------|-------------------------------------|
-| 최신 Linux 드라이버 | 2.0.0 Update 93 (2026 기준)         |
-| 최신 Windows        | 1.2.5 Update 85                     |
-| User Guide          | Linux 2.0.0 Rev.001 (2026-04-27)    |
+| 최신 Linux 드라이버 | 2.0.1 Update 262 (2026-11-02)       |
+| 최신 Windows        | 1.2.6 Update 190 (2026-11-03)       |
+| User Guide          | Linux 2.0.1 Rev.001 (2026-08-21)    |
 | 사용자 버전 (예시)  | 1.5.0-706 (graidctl + graid_server) |
 | 문서 사이트         | https://docs.graidtech.com/sr/      |
 
@@ -149,12 +152,14 @@ NVMe SSD → (graidctl create physical_drive)
 
 ### 점검/유지보수 명령어
 
-| 명령어                                         | 설명                   |
-|------------------------------------------------|------------------------|
-| `graidctl check consistency <dg_id>`           | Consistency Check 시작 |
-| `graidctl show consistency_check_task <dg_id>` | CC 진행 상태 확인      |
-| `nvme smart-log /dev/gpdX`                     | PD의 NVMe SMART 로그   |
-| `graidctl list event`                          | 에러/경고 이벤트 확인  |
+| 명령어                                                              | 설명                                                  |
+|---------------------------------------------------------------------|-------------------------------------------------------|
+| `graidctl start consistency_check manual_task [DG_IDs] -p <policy>` | CC 수동 시작 (policy: auto_fix·stop_on_error)         |
+| `graidctl describe consistency_check`                               | CC 설정·진행 상태 확인                                |
+| `graidctl stop consistency_check current_task`                      | 진행 중인 CC 중지                                     |
+| `graidctl set consistency_check schedule_mode <mode>`               | CC 예약(off·continuously·hourly·daily·weekly·monthly) |
+| `nvme smart-log /dev/gpdX`                                          | PD의 NVMe SMART 로그                                  |
+| `graidctl list event`                                               | 에러/경고 이벤트 확인                                 |
 
 ## Consistency Check (정합성 검사)
 
@@ -177,7 +182,7 @@ NVMe SSD → (graidctl create physical_drive)
 ## GPU 관련 참고
 
 - SupremeRAID GPU는 항상 100% utilization 표시 (polling mechanism, 정상)
-- GPU 온도/팬속도는 `graidctl show controller` 로 확인
+- GPU 온도/팬속도는 `graidctl show controller` 로 확인 (1.5.0·1.7.2·2.0.1 공식 안내서에는 `show`가 없고, 1.7.2·2.0.1은 `graidctl describe controller <id>`, 1.5.0은 `graidctl list controller`를 안내)
 - `nvidia-smi`로도 확인 가능하나, 일반 GPU 워크로드와 공유 불가
 
 ## 고가용성 (HA)
@@ -211,6 +216,7 @@ NVMe SSD → (graidctl create physical_drive)
 
 - 1.x에서 2.0.0으로 직접 업그레이드 불가
 - 반드시 1.7.2 Update 67을 경유해야 함
+- (2026-11-09 확인: 2.0.1 Update 262 릴리스 노트는 1.x에서 "the latest 1.7.2 release"를 거쳐 업그레이드하도록 안내하며 V2 라이선스 키를 요구합니다)
 - 업그레이드 중 DG/VD가 일시적으로 TRANSFORMING 상태 진입 가능 → OPTIMAL 복귀 확인 후 진행
 
 ## 라이선스

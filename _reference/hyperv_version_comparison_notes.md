@@ -7,7 +7,7 @@ tags:
   - compatibility
   - centos
   - legacy
-last_checked: 2026-07-16
+last_checked: 2026-11-09
 sources:
   - https://learn.microsoft.com/en-us/lifecycle/products/windows-server-2008
   - https://learn.microsoft.com/en-us/lifecycle/products/windows-server-2008-r2
@@ -15,6 +15,8 @@ sources:
   - https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/Supported-CentOS-and-Red-Hat-Enterprise-Linux-virtual-machines-on-Hyper-V
   - https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v
   - https://learn.microsoft.com/en-us/windows-server/storage/storage-qos/storage-qos-overview
+  - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn282281(v=ws.11)
+  - https://www.microsoft.com/en-us/download/details.aspx?id=55106
 ---
 
 # Hyper-V 버전별 비교 참조 노트
@@ -43,12 +45,14 @@ sources:
 | Storage Live Migration    | ❌                 | ❌                    | ✅                 | ✅          |
 | Dynamic Memory            | ❌                 | ✅ (SP1)              | ✅                 | ✅          |
 | CSV (Cluster Shared Vol.) | ❌                 | ✅                    | ✅                 | ✅          |
-| Storage QoS               | ❌                 | ❌                    | ❌                 | ❌ (2016+)  |
+| Storage QoS               | ❌                 | ❌                    | ❌                 | △ (VHD별)   |
 | SR-IOV                    | ❌                 | ❌                    | ✅                 | ✅          |
 | NIC Teaming (호스트)      | ❌                 | ❌                    | ✅                 | ✅          |
 | Replica                   | ❌                 | ❌                    | ✅                 | ✅          |
 | Virtual Fibre Channel     | ❌                 | ❌                    | ✅                 | ✅          |
 | RemoteFX                  | ❌                 | ✅ (SP1)              | ✅                 | ✅          |
+
+- 2012 R2의 Storage QoS는 가상 디스크별 최대 IOPS 제한(최소 IOPS는 미달 알림)입니다. 정책 기반 중앙 Storage QoS(SOFS·CSV)는 2016부터 제공합니다.
 
 ## 3. CentOS 5.x 호환성
 
@@ -56,13 +60,13 @@ sources:
 
 | 호스트 버전 | LIS 버전 | 설치 방식 | 현재 입수 가능 여부 |
 |-------------|----------|-----------|---------------------|
-| 2008        | LIS 2.x  | 별도 설치 | ❌ (다운로드 폐쇄)  |
-| 2008 R2     | LIS 3.x  | 별도 설치 | ❌ (다운로드 폐쇄)  |
-| 2012        | LIS 4.x  | 별도 설치 | ❌ (다운로드 폐쇄)  |
-| 2012 R2     | LIS 4.x  | 별도 설치 | ❌ (다운로드 폐쇄)  |
+| 2008        | LIS 2.x  | 별도 설치 | ❌ (4.3.5 대상 외)  |
+| 2008 R2     | LIS 3.x  | 별도 설치 | ✅ (LIS 4.3.5)      |
+| 2012        | LIS 4.x  | 별도 설치 | ✅ (LIS 4.3.5)      |
+| 2012 R2     | LIS 4.x  | 별도 설치 | ✅ (LIS 4.3.5)      |
 
 - 2026-07-16 기준: Microsoft 공식 지원 매트릭스에서 CentOS 5.x/6.x 항목 삭제됨
-- LIS 다운로드 페이지 폐쇄 → 기존 설치된 LIS만 사용 가능
+- Microsoft Download Center의 LIS 4.3.5(2024-07-15 게시)는 2026-11-09에도 내려받을 수 있으며, 호스트 Windows Server 2008 R2~2019와 게스트 RHEL/CentOS 5.2~5.11·6.0~6.10·7.0~7.7을 대상으로 안내합니다.
 
 ### LIS 유무에 따른 드라이버
 
@@ -82,7 +86,7 @@ sources:
 |------------------------|------|---------|------|---------|-------|
 | VHD 물리 분리          | ✅   | ✅      | ✅   | ✅      | ✅    |
 | Fixed VHD              | ✅   | ✅      | ✅   | ✅      | ✅    |
-| Storage QoS            | ❌   | ❌      | ❌   | ❌      | ✅    |
+| Storage QoS            | ❌   | ❌      | ❌   | △       | ✅    |
 | Storage Live Migration | ❌   | ❌      | ✅   | ✅      | ✅    |
 | Live Migration         | ❌   | ✅      | ✅   | ✅      | ✅    |
 | I/O timeout (게스트)   | ✅   | ✅      | ✅   | ✅      | ✅    |

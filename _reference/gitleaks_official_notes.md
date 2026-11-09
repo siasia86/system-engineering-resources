@@ -5,13 +5,15 @@ tags:
   - gitleaks
   - secret-scanning
   - security
-last_checked: 2026-11-03
+last_checked: 2026-11-09
 sources:
   - https://api.github.com/repos/gitleaks/gitleaks/releases/latest
   - https://github.com/gitleaks/gitleaks/blob/v8.30.1/README.md
   - https://raw.githubusercontent.com/gitleaks/gitleaks/v8.30.1/config/gitleaks.toml
   - https://github.com/gitleaks/gitleaks-action/blob/master/README.md
   - https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_checksums.txt
+  - https://github.com/gitleaks/gitleaks/blob/v8.30.1/cmd/root.go
+  - https://github.com/gitleaks/gitleaks/releases/tag/v8.30.0
 ---
 
 # Gitleaks Official Notes
@@ -47,7 +49,7 @@ useDefault = true
 - 허용 목록 항목: `description`, `commits`, `paths`, `regexes`, `regexTarget`(`secret` 기본·`match`·`line`), `stopwords`(v8.8.0), `condition`(`OR` 기본·`AND`), `targetRules`(전역 `[[allowlists]]`, v8.25.0).
 - 형식 변경: v8.21.0 `[rules.allowlist]` → `[[rules.allowlists]]`(이전 형식도 동작), v8.25.0 `[allowlist]` → `[[allowlists]]`. 전역 허용 목록이 규칙별 허용 목록보다 우선합니다.
 - 추가 예외: 줄 끝 `gitleaks:allow` 주석(`--ignore-gitleaks-allow`로 무시), 저장소 루트 `.gitleaksignore`의 Fingerprint(실험 기능, `-i`로 경로 지정).
-- 추가 스캔: `--max-decode-depth`(percent·hex 32자 이상·base64 16자 이상, 기본 0), `--max-archive-depth`(기본 0, 내부 경로는 `!`로 구분).
+- 추가 스캔: `--max-decode-depth`(percent·hex 32자 이상·base64 16자 이상, 기본 5), `--max-archive-depth`(기본 0, 내부 경로는 `!`로 구분). decode 기본값은 v8.30.0에서 0에서 5로 바뀌었고(`cmd/root.go`, 릴리스 노트 "0 to 5"), README의 옵션 목록에는 옛 값 0이 남아 있습니다.
 - 종료 코드: 0 탐지 없음, 1 탐지 또는 오류, 126 알 수 없는 옵션. `--exit-code`로 탐지 시 코드를 바꿉니다.
 
 ### 로컬 동작 확인 (2026-11-03, v8.30.1)

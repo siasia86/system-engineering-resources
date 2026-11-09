@@ -6,7 +6,7 @@ tags:
   - vulnerability-scanning
   - supply-chain
   - security
-last_checked: 2026-11-05
+last_checked: 2026-11-09
 sources:
   - https://api.github.com/repos/aquasecurity/trivy/releases
   - https://github.com/aquasecurity/trivy/security/advisories/GHSA-69fq-xp46-6x23
@@ -38,17 +38,18 @@ sources:
 
 - 최신 릴리스: `v0.76.1`(2026-10-21). 직전 `v0.76.0`(2026-10-14), `v0.75.0`(2026-10-01). 저장소 라이선스 Apache-2.0, archive 아님.
 - v0.76.1 릴리스는 GitHub immutable release로 표시됩니다.
+- 2026-11-09 확인: `v0.76.2`(2026-11-05, immutable)가 최신입니다. 공식 이미지를 Alpine 3.24.3으로 다시 빌드하고 `golang.org/x/net`·`go-jose` 의존성을 올린 보안 수정판이며, 새 GHSA 공지는 없습니다. `trivy-action` 최신은 그대로 `v0.36.0`입니다.
 - v0.76.1 Linux x64 자산: `trivy_0.76.1_Linux-64bit.tar.gz`, `.deb`, `.rpm`과 각 `.sigstore.json`, `trivy_0.76.1_checksums.txt`와 그 `.sigstore.json`.
 - `aquasecurity/trivy-action` 최신 릴리스 `v0.36.0`(2026-04-22, immutable). 태그 객체가 가리키는 commit은 `ed142fd0673e97e23eac54620cfb913e5ce36c25`입니다. `action.yaml`의 `version` 기본값은 `v0.70.0`입니다.
 
 ## 3. 보안 공지
 
-| 공지                | 심각도   | 영향 범위                                                   | 수정       |
-|---------------------|----------|-------------------------------------------------------------|------------|
+| 공지                | 심각도   | 영향 범위                                                   | 수정                                        |
+|---------------------|----------|-------------------------------------------------------------|---------------------------------------------|
 | GHSA-69fq-xp46-6x23 | critical | 악성 v0.69.4, trivy-action 0.35.0 외 태그, setup-trivy 태그 | 0.69.3 이하·action 0.35.0·setup-trivy 0.2.6 |
-| GHSA-mcj4-mphf-j9ff | high     | 조작된 OCI 자산의 파일 이름으로 임의 경로 쓰기              | 0.71.1     |
-| GHSA-8rc5-4fr6-64pw | medium   | 조작된 플러그인 manifest로 플러그인 폴더 밖 쓰기            | 0.72.0     |
-| GHSA-q3fv-x8vg-qqm4 | medium   | Helm chart 압축 폭탄으로 메모리 고갈                        | 0.71.0     |
+| GHSA-mcj4-mphf-j9ff | high     | 조작된 OCI 자산의 파일 이름으로 임의 경로 쓰기              | 0.71.1                                      |
+| GHSA-8rc5-4fr6-64pw | medium   | 조작된 플러그인 manifest로 플러그인 폴더 밖 쓰기            | 0.72.0                                      |
+| GHSA-q3fv-x8vg-qqm4 | medium   | Helm chart 압축 폭탄으로 메모리 고갈                        | 0.71.0                                      |
 
 - GHSA-69fq-xp46-6x23: 2026-03-19 탈취한 자격증명으로 악성 v0.69.4 배포, trivy-action 77개 태그 중 76개와 setup-trivy 7개 태그를 자격증명 탈취 코드로 교체. 2026-03-22 Docker Hub에 악성 v0.69.5·v0.69.6 이미지. 노출 시간은 v0.69.4 약 3시간, trivy-action 약 12시간, setup-trivy 약 4시간, Docker Hub 이미지 약 10시간. 원인은 2026-02 말 시작된 공격 뒤 자격증명 교체가 한꺼번에 이뤄지지 않은 것입니다. digest 참조 이미지, 소스 빌드, Homebrew 공식 formula는 영향 없음. 권장 조치: 안전 버전 사용, 노출 가능 시크릿 교체, Action 전체 SHA 고정.
 - GHSA-mcj4-mphf-j9ff: `--db-repository`·`--java-db-repository`·`--checks-bundle-repository`·`trivy module install`로 공격자 저장소를 지정한 경우만 해당. 기본 Aqua 저장소는 영향 없음.

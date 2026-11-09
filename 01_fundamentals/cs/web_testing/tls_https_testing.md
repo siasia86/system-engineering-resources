@@ -19,7 +19,7 @@ TLS/HTTPS 테스트는 웹 서버의 TLS 종료 지점이 허용된 프로토콜
 | 목적      | TLS 설정이 보안 정책과 클라이언트 호환 범위를 함께 만족하는지 확인                |
 | 실행 시점 | 인증서 발급·갱신, TLS 설정 변경, OpenSSL 등 라이브러리 업데이트 후                |
 | 핵심 질문 | 허용한 것만 협상되고, 모든 호스트명에 유효한 인증서가 제공되는가                  |
-| 판정 근거 | RFC 8446(TLS 1.3), RFC 8996(TLS 1.0·1.1 사용 중단), RFC 6797(HSTS), 조직 TLS 정책 |
+| 판정 근거 | RFC 9846(TLS 1.3), RFC 8996(TLS 1.0·1.1 사용 중단), RFC 6797(HSTS), 조직 TLS 정책 |
 
 TLS 설정 권장값(Mozilla Intermediate 프로필 등)은 `_reference/web_server_official_notes.md`, 인증서 구조와 Nginx TLS 설정은 [TLS/SSL 가이드](../../../04_security/hardening/tls_ssl_guide.md)를 기준으로 하고, 이 문서는 적용 결과를 확인하는 방법을 다룹니다.
 
@@ -163,7 +163,7 @@ testssl.sh -p -S -h https://www.example.com
 
 ## 참고 자료
 
-- RFC 8446 TLS 1.3: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc8446.html)
+- RFC 9846 TLS 1.3 (RFC 8446 대체): [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9846.html)
 - RFC 8996 Deprecating TLS 1.0 and TLS 1.1: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc8996.html)
 - RFC 6797 HTTP Strict Transport Security: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc6797.html)
 - Mozilla SSL Configuration Generator: [ssl-config.mozilla.org](https://ssl-config.mozilla.org/) — ★★★☆☆

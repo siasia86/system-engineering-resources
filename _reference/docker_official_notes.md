@@ -6,13 +6,14 @@ tags:
   - container
   - compose
   - runtime
-last_checked: 2026-11-05
+last_checked: 2026-11-09
 sources:
   - https://docs.docker.com/engine/install/
   - https://docs.docker.com/reference/cli/dockerd/
   - https://docs.docker.com/build/building/best-practices/
   - https://docs.docker.com/engine/network/drivers/macvlan/
   - https://docs.docker.com/reference/compose-file/
+  - https://docs.docker.com/engine/network/firewall-nftables/
 ---
 
 # Docker 공식 문서 참조 노트
@@ -160,4 +161,4 @@ deploy:
 - `ufw` / `firewalld` 규칙을 Docker iptables가 우회할 수 있음
 - `docker compose down -v` — 볼륨까지 삭제 (데이터 손실 주의)
 - `image: latest` — 예기치 않은 업데이트로 장애 유발 가능, 버전 고정 권장
-- `nft` (nftables) 방화벽 규칙은 Docker와 호환되지 않음 (iptables 사용)
+- 기본 방화벽 백엔드는 iptables입니다. Engine 29.0부터 `firewall-backend: nftables`(`--firewall-backend=nftables`)를 실험 기능으로 지원하며, Swarm 모드에서는 쓸 수 없고 overlay 네트워크 규칙은 아직 iptables에 있습니다(2026-11-09 확인)

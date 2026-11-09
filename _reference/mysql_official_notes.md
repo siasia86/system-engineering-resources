@@ -5,7 +5,7 @@ tags:
   - mysql
   - storage-engine
   - database
-last_checked: 2026-07-10
+last_checked: 2026-11-09
 sources:
   - https://dev.mysql.com/doc/refman/8.4/en/storage-engines.html
   - https://dev.mysql.com/doc/refman/8.4/en/innodb-introduction.html
@@ -16,11 +16,15 @@ sources:
   - https://dev.mysql.com/doc/refman/8.4/en/merge-storage-engine.html
   - https://dev.mysql.com/doc/refman/8.4/en/federated-storage-engine.html
   - https://dev.mysql.com/doc/refman/8.4/en/csv-storage-engine.html
+  - https://dev.mysql.com/doc/refman/8.4/en/system-schema.html
+  - https://dev.mysql.com/doc/refman/8.0/en/mysql-nutshell.html
+  - https://dev.mysql.com/doc/refman/9.7/en/mysql-releases.html
+  - https://dev.mysql.com/doc/relnotes/mysql/8.4/en/
 ---
 
 # MySQL Storage Engine 공식 문서 참조 노트
 
-MySQL 8.4 LTS (현재 8.4.10) / MySQL 9.7 LTS 기준.
+MySQL 8.4 LTS (2026-11-09 확인: 8.4.13) / MySQL 9.7 LTS 기준.
 
 ## 버전 정보
 
@@ -34,9 +38,13 @@ MySQL 8.4 LTS (현재 8.4.10) / MySQL 9.7 LTS 기준.
 | 아키텍처    | Pluggable Storage Engine                      |
 | 참조 매뉴얼 | Chapter 17 (InnoDB), Chapter 18 (Alternative) |
 
+- (2026-11-09 확인: 최신 판은 8.4.13과 9.7.4이며 둘 다 2026-10-20 릴리스입니다.)
+
 ## Storage Engine Feature Summary (공식 비교표)
 
 출처: Table 18.1 Storage Engines Feature Summary
+
+MySQL 8.4 매뉴얼의 Table 18.1은 MyISAM·Memory·InnoDB·Archive·NDB 5개 엔진만 비교합니다. 아래 표의 CSV·Blackhole·Merge·Federated 열과 XA transactions 행은 공식 표에 없는 보충 정리이므로 각 엔진 절에서 다시 확인합니다.
 
 | Feature             | InnoDB | MyISAM | Memory | Archive | NDB   | CSV   | Blackhole | Merge | Federated |
 |---------------------|--------|--------|--------|---------|-------|-------|-----------|-------|-----------|
@@ -55,7 +63,7 @@ MySQL 8.4 LTS (현재 8.4.10) / MySQL 9.7 LTS 기준.
 | Geospatial indexing | Yes    | Yes    | No     | No      | No    | No    | No        | Yes   | No        |
 
 - `†` MyISAM compressed: myisampack으로 압축, read-only
-- `‡` InnoDB Adaptive Hash Index: 내부적으로 hash index 자동 생성
+- `‡` 공식 표 값은 No(note 8)이며, InnoDB는 Adaptive Hash Index 기능에서 내부적으로 hash index를 사용
 - `*` Blackhole/Federated: index 선언 가능하나 실제 데이터 저장 여부와 무관
 
 ## 엔진별 핵심 요약
@@ -191,6 +199,6 @@ ALTER TABLE t ENGINE = InnoDB;
 
 - 동일 스키마 내에서 테이블별 다른 엔진 사용 가능
 - InnoDB 외 엔진 사용 시 FK, 트랜잭션 미지원 확인 필수
-- MySQL 8.4에서 시스템 테이블은 모두 InnoDB (MyISAM 시스템 테이블 제거됨)
+- 시스템 테이블은 별도 표시가 없으면 InnoDB입니다. MyISAM이던 grant table은 MySQL 8.0에서 InnoDB로 바뀌었고 8.4도 같습니다. 로그 테이블(general_log·slow_log)은 CSV 엔진을 사용합니다.
 - MEMORY 엔진은 InnoDB buffer pool로 대부분 대체 가능
 - MERGE 엔진은 파티셔닝으로 대체 권장

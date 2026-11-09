@@ -7,9 +7,10 @@ tags:
   - oncall
   - postmortem
   - itil
-last_checked: 2026-07-07
+last_checked: 2026-11-09
 sources:
   - https://sre.google/sre-book/table-of-contents/
+  - https://sre.google/sre-book/introduction/
   - https://sre.google/sre-book/being-on-call/
   - https://sre.google/sre-book/availability-table/
   - https://sre.google/workbook/table-of-contents/
@@ -18,6 +19,8 @@ sources:
   - https://response.pagerduty.com/
   - https://github.com/github/gh-ost
   - https://docs.percona.com/percona-toolkit/pt-online-schema-change.html
+  - https://docs.aws.amazon.com/wellarchitected/latest/framework/a-performance-efficiency.html
+  - https://github.com/github/gh-ost/blob/master/doc/testing-on-replica.md
 ---
 
 # SRE Operations 공식 문서 참조 노트
@@ -115,6 +118,8 @@ Error Budget = 0.1% = 43.2 minutes/month
 | 99.99%  | 52.60분       | 4.38분        | 1.01분        |
 | 99.999% | 5.26분        | 26.30초       | 6.05초        |
 
+위 값은 365.25일 연과 평균 월(365.25일/12) 기준 계산값입니다. SRE Book Table A-1 원문은 365일 연·30일 월 기준이라 일부 값이 다릅니다(예: 99.9% 연 8.76시간·월 43.2분, 99.99% 월 4.32분·주 60.5초).
+
 ### OpenSLO Spec (확인일: 2026-07-07)
 
 출처: openslo.com
@@ -159,18 +164,21 @@ spec:
 
 출처: docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/
 
-- PERF 1: How do you select the best performing architecture?
-- PERF 2: How do you select your compute solution?
-- PERF 4: How do you monitor your resources to ensure they are performing?
+현행 Well-Architected Framework 문구입니다(2026-11-09 확인). 이전 판의 모니터링 질문은 현행 질문 목록에 별도 항목으로 없습니다.
+
+- PERF 1: How do you select appropriate cloud resources and architecture for your workload?
+- PERF 2: How do you select and use compute resources in your workload?
+- PERF 4: How do you select and configure networking resources in your workload?
+- PERF 5: How do your organizational practices and culture contribute to performance efficiency in your workload?
 
 ## 4. Change Management (확인일: 2026-07-07)
 
-출처: Google SRE Book Ch.8 "Release Engineering", SRE Workbook Ch.6 "Eliminating Toil"
+출처: Google SRE Book Ch.1 "Introduction", Ch.8 "Release Engineering", SRE Workbook Ch.6 "Eliminating Toil"
 
 ### 변경의 70% 법칙 (Google)
 
 > "roughly 70% of outages are due to changes in a live system"
-> — Google SRE Book, Chapter 8
+> — Google SRE Book, Chapter 1 (Introduction)
 
 ### 변경 등급 (ITIL v4 기반)
 
@@ -221,7 +229,7 @@ spec:
 - Trigger-free: binlog stream 직접 파싱
 - 원본 테이블에 트리거 설치 없음 (Percona pt-osc와 차이점)
 - Throttle 지원: replication lag, CPU load 기반 자동 조절
-- 테스트 모드: 
+- 테스트 모드: `--test-on-replica`로 replica에서 원본 테이블을 교체하지 않고 마이그레이션을 시험(원본·ghost 테이블 비교)
 
 ### Percona pt-online-schema-change
 

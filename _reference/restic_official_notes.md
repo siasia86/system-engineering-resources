@@ -7,13 +7,13 @@ tags:
   - encryption
   - deduplication
   - s3
-last_checked: 2026-09-21
+last_checked: 2026-11-09
 sources:
   - https://restic.readthedocs.io/en/stable/
   - https://restic.readthedocs.io/en/stable/030_preparing_a_new_repo.html
   - https://restic.readthedocs.io/en/stable/040_backup.html
   - https://restic.readthedocs.io/en/stable/060_forget.html
-  - https://restic.readthedocs.io/en/stable/075_examples.html
+  - https://restic.readthedocs.io/en/stable/080_examples.html
   - https://github.com/restic/restic/releases/latest
 ---
 

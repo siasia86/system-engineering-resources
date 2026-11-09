@@ -118,8 +118,8 @@ tune4fs -l /dev/sdb | grep -i "mount count\|maximum\|interval"
 ### fstab pass 필드
 
 ```
-UUID="..."  /masang            ext4  defaults  0 2
-UUID="..."  /masang/Server/log ext4  defaults  0 2
+UUID="..."  /data01            ext4  defaults  0 2
+UUID="..."  /data01/server/log ext4  defaults  0 2
                                                ^ ^
                                                | └── pass: 0=검사 안함, 1=루트, 2=나머지
                                                └── dump: 0=백업 안함
@@ -132,12 +132,12 @@ UUID="..."  /masang/Server/log ext4  defaults  0 2
 fsck.ext4 -nf /dev/sdb
 
 # 2. 강제 검사 + 자동 복구 (마운트 해제 필수!)
-umount /masang/Server/log
-umount /masang
+umount /data01/server/log
+umount /data01
 fsck.ext4 -fy -C 0 /dev/sdb
 fsck.ext4 -fy -C 0 /dev/sdc
-mount /masang
-mount /masang/Server/log
+mount /data01
+mount /data01/server/log
 
 # 3. superblock 손상 시
 # 백업 superblock 위치 확인

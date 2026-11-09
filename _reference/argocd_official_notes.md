@@ -6,10 +6,11 @@ tags:
   - gitops
   - kubernetes
   - cicd
-last_checked: 2026-11-05
+last_checked: 2026-11-09
 sources:
   - https://argo-cd.readthedocs.io/en/stable/
   - https://argo-cd.readthedocs.io/en/stable/core_concepts/
+  - https://argo-cd.readthedocs.io/en/stable/getting_started/
 ---
 
 # ArgoCD 공식 문서 참조 노트
@@ -65,9 +66,11 @@ Kubernetes Cluster (live state = Git state)
 
 ```bash
 kubectl create namespace argocd
-kubectl apply -n argocd -f \
+kubectl apply -n argocd --server-side --force-conflicts -f \
   https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
+
+- 공식 Getting Started는 `--server-side`를 사용합니다. ApplicationSet 같은 일부 CRD가 client-side apply의 annotation 크기 제한(262KB)을 넘기 때문이며, `--force-conflicts`는 업그레이드 때 다른 도구가 관리하던 필드를 넘겨받습니다(2026-11-09 확인).
 
 ## 7. 주의사항
 

@@ -1,12 +1,13 @@
 ---
 name: ebpf-bpftrace-official-notes
-last_checked: 2026-08-01
+last_checked: 2026-11-09
 sources:
   - https://man7.org/linux/man-pages/man2/bpf.2.html
   - https://docs.kernel.org/bpf/libbpf/index.html
   - https://ebpf.io/what-is-ebpf/
   - https://github.com/bpftrace/bpftrace
   - https://github.com/libbpf/libbpf
+  - https://www.kernel.org/
 ---
 
 # eBPF / bpftrace 공식 참조 노트
@@ -30,6 +31,8 @@ sources:
 | libbpf 최신 버전  | v1.7.0 (2026-03-16)                                         | GitHub API      |
 | bpftrace 최신버전 | v0.26.1 (2026-06-02)                                        | GitHub API      |
 | kernel 버전       | docs.kernel.org 기준 7.2.0-rc5 (최신 stable 별도 확인 필요) | docs.kernel.org |
+
+(2026-11-09 확인: libbpf 최신 v1.8.0(2026-10-05), bpftrace 최신 v0.27.1(2026-10-24), kernel.org 최신 stable 7.3.3·mainline 7.4-rc2)
 
 ## 2. BPF Map 타입 (bpf.2 man page 기반)
 

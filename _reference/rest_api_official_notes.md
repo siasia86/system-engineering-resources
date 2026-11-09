@@ -7,7 +7,7 @@ tags:
   - http
   - openapi
   - problem-details
-last_checked: 2026-09-11
+last_checked: 2026-11-09
 sources:
   - https://www.rfc-editor.org/rfc/rfc9110
   - https://www.rfc-editor.org/rfc/rfc9457
@@ -25,7 +25,7 @@ sources:
 - HTTP 기반 REST API의 공통 의미론은 HTTP Semantics인 RFC 9110을 기준으로 확인합니다.
 - 부분 수정 메서드 `PATCH`는 RFC 5789를 기준으로 확인합니다.
 - HTTP API 오류의 표준 표현은 RFC 9457의 Problem Details를 기준으로 확인합니다. RFC 9457은 RFC 7807을 대체합니다.
-- 최신 OpenAPI Specification 페이지에서 확인되는 버전은 `3.2.0`입니다. OpenAPI는 HTTP API의 계약·문서화 형식이며 REST 자체의 필수 규격은 아닙니다.
+- 최신 OpenAPI Specification 페이지에서 확인되는 버전은 `3.2.1`(2026-09-10 공개)입니다. OpenAPI는 HTTP API의 계약·문서화 형식이며 REST 자체의 필수 규격은 아닙니다.
 
 ## 2. HTTP와 REST API의 관계
 
@@ -87,7 +87,7 @@ sources:
 
 - OpenAPI는 HTTP API의 paths, operations, parameters, request body, responses, security schemes 등을 기계 판독 가능한 형식으로 설명합니다.
 - OpenAPI 문서와 실제 서버 동작의 차이를 줄이기 위해 schema, status code, content type, authentication, pagination, error response를 함께 검증합니다.
-- OpenAPI의 `3.2.0` 버전을 사용하더라도 대상 언어·gateway·validator·code generator의 지원 범위를 확인합니다.
+- OpenAPI의 `3.2.1` 버전을 사용하더라도 대상 언어·gateway·validator·code generator의 지원 범위를 확인합니다.
 - OpenAPI는 API 계약 문서화 도구이며, 모든 API가 REST 제약 조건을 충족한다는 보증은 아닙니다.
 
 ## 7. 보안과 운영 확인 항목

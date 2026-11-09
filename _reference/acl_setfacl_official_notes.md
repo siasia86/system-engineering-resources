@@ -8,7 +8,7 @@ tags:
   - setfacl
   - getfacl
   - permissions
-last_checked: 2026-09-16
+last_checked: 2026-11-09
 sources:
   - https://savannah.nongnu.org/projects/acl/
   - https://savannah.nongnu.org/files/?group=acl
@@ -166,9 +166,7 @@ setfacl -R -m g:example_read_only_group:r-X "$BASE"
 
 # 기존 모든 디렉토리의 Default ACL
 find "$BASE" -type d \
-  -exec setfacl -m \
-  d:g:example_read_only_group:r-x, \
-  d:m:r-x {} +
+  -exec setfacl -m d:g:example_read_only_group:r-x,d:m:r-x {} +
 ```
 
 첫 번째 명령만 사용하면 기존 객체만 변경되고 신규 객체의 상속 정책은 설정되지 않습니다. 두 번째 명령을 최상위 디렉토리에만 실행하면 이미 존재하는 하위 디렉토리에는 Default ACL이 없을 수 있으므로, 기존 하위 디렉토리까지 대상으로 하려면 `find -type d`를 사용합니다.
@@ -225,10 +223,7 @@ getfacl -p /srv/example_data/example_file
 
 ```bash
 find "$BASE" -type d \
-  -exec setfacl -m \
-  g:example_group:rwx, \
-  d:g:example_group:rwx, \
-  d:m:rwx {} +
+  -exec setfacl -m g:example_group:rwx,d:g:example_group:rwx,d:m:rwx {} +
 
 find "$BASE" -type f \
   -exec setfacl -m g:example_group:rw- {} +
@@ -241,6 +236,7 @@ find "$BASE" -type f \
 - `d:m:...`: 신규 객체의 Default ACL mask
 - `{}`: 검색된 경로 대체
 - `+`: 여러 경로를 묶어 명령 실행
+- ACL entry 목록은 쉼표로 이어 한 인수로 전달합니다. 쉼표 뒤에서 `\`로 줄을 나누면 다음 줄 entry가 별도 인수가 되어 파일 경로로 해석됩니다(2026-11-09 setfacl 2.3.2 재현: `setfacl: d:m:r-x: No such file or directory`, 종료 코드 1).
 
 `setfacl -R`은 기존 파일·디렉토리 전체에 같은 ACL 작업을 적용할 때 편리합니다. `find -type d`와 `find -type f`는 파일·디렉토리별 정책을 명확하게 분리할 때 사용합니다.
 
@@ -279,8 +275,8 @@ gpasswd -d example_user example_read_only_group
 
 - ACL project: [savannah.nongnu.org/projects/acl](https://savannah.nongnu.org/projects/acl/) — ★★★☆☆
 - ACL releases: [savannah.nongnu.org/files/?group=acl](https://savannah.nongnu.org/files/?group=acl) — ★★★☆☆
-- `setfacl(1)`: [man7.org](https://man7.org/linux/man-pages/man1/setfacl.1.html) — ★★★★☆
-- `getfacl(1)`: [man7.org](https://man7.org/linux/man-pages/man1/getfacl.1.html) — ★★★★☆
-- `acl(5)`: [man7.org](https://man7.org/linux/man-pages/man5/acl.5.html) — ★★★★☆
-- `umask(2)`: [man7.org](https://man7.org/linux/man-pages/man2/umask.2.html) — ★★★★☆
+- `setfacl(1)`: [man7.org](https://man7.org/linux/man-pages/man1/setfacl.1.html) — ★★★☆☆
+- `getfacl(1)`: [man7.org](https://man7.org/linux/man-pages/man1/getfacl.1.html) — ★★★☆☆
+- `acl(5)`: [man7.org](https://man7.org/linux/man-pages/man5/acl.5.html) — ★★★☆☆
+- `umask(2)`: [man7.org](https://man7.org/linux/man-pages/man2/umask.2.html) — ★★★☆☆
 - `gpasswd(1)`: [man7.org](https://man7.org/linux/man-pages/man1/gpasswd.1.html) — ★★★☆☆

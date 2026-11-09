@@ -8,10 +8,11 @@ tags:
   - cdn
   - vpc
   - aws
-last_checked: 2026-07-03
+last_checked: 2026-11-09
 sources:
   - https://datatracker.ietf.org/doc/html/rfc4271
   - https://datatracker.ietf.org/doc/html/rfc5575
+  - https://datatracker.ietf.org/doc/html/rfc8955
   - https://datatracker.ietf.org/doc/html/rfc5635
   - https://datatracker.ietf.org/doc/html/rfc7239
   - https://developers.cloudflare.com/spectrum/
@@ -31,6 +32,8 @@ sources:
 | RFC 4271 | A Border Gateway Protocol 4 (BGP-4)             | BGP 프로토콜 사양        |
 | RFC 5575 | Dissemination of Flow Specification Rules       | BGP FlowSpec (DDoS 필터) |
 | RFC 5635 | Remote Triggered Black Hole Filtering with uRPF | RTBH (블랙홀 라우팅)     |
+
+- (2026-11-09 확인: RFC 5575는 RFC 8955(2020-12)로 대체되었습니다. BGP FlowSpec 현행 규격은 RFC 8955입니다.)
 
 ### 검증된 사실 (2026-07-03)
 

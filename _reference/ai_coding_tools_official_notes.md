@@ -11,7 +11,7 @@ tags:
   - devin
   - aider
   - agents-sdk
-last_checked: 2026-07-27
+last_checked: 2026-11-09
 sources:
   - https://kiro.dev/pricing
   - https://code.claude.com/docs/en/overview
@@ -28,6 +28,10 @@ sources:
   - https://benchlm.ai/best/computer-use
   - https://benchlm.ai/best/coding
   - https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json
+  - https://claude.com/pricing
+  - https://kiro.dev/docs/models/available-models/
+  - https://developers.openai.com/api/docs/models/gpt-5.6-sol
+  - https://ampcode.com/news/amp-inc
 ---
 
 # AI 코딩 도구 공식 문서 참조 노트
@@ -68,6 +72,7 @@ sources:
 | Teams      | $40/user/월 | 팀 공유 컨텍스트, Bugbot |
 | Enterprise | Custom      | SSO, SCIM, Audit logs    |
 
+- 2026-11-09 확인: 개인 플랜은 Free $0 / Plus $8 / Premium $30 / Super $100 / Ultra $200(월), Teams는 $30/user/월부터, Enterprise는 Custom입니다.
 - `.cursorrules`는 deprecated → `.cursor/rules`로 변경됨 (공식 docs 확인)
 - Continue.dev는 Cursor에 인수됨 (2026년, continue.dev 공식 발표)
 
@@ -77,6 +82,7 @@ sources:
 - API 직접 연결 시: `ANTHROPIC_API_KEY` 환경 변수 (Claude Console 종량제)
 - Amazon Bedrock·Google Cloud·Microsoft Foundry 연동 가능
 - 플랫폼: 터미널 CLI, VS Code 확장, JetBrains 확장, 데스크탑 앱, 웹, 모바일
+- 2026-11-09 확인(claude.com/pricing): Ultra $200/월(주간 Pro의 10배, 인증된 계정은 5시간 한도 없음)이 추가되었고 Max는 $100/월·Pro의 5배로 표시됩니다. Ultra에도 Claude Code가 포함됩니다.
 - 상세 근거: `_reference/claude_code_official_notes.md`
 
 ### Windsurf (windsurf.com/pricing)
@@ -88,6 +94,8 @@ sources:
 | Max   | $200/월                       |
 | Teams | $80/월 + $40/월 per full user |
 
+- 2026-11-09 확인: windsurf.com/pricing은 devin.ai/pricing으로 이동합니다.
+
 ### Devin (devin.ai/pricing)
 
 | 플랜  | 가격                          | 비고                                     |
@@ -97,7 +105,7 @@ sources:
 | Max   | $200/월                       | 높은 quota                               |
 | Teams | $80/월 + $40/월 per full user | —                                        |
 
-- 자체 모델: SWE 1.7
+- 자체 모델: SWE 1.7 (2026-11-09 확인: 요금 페이지는 SWE-2를 최신 자체 모델로 안내)
 - Devin Cloud, Devin Desktop, Devin CLI, Devin Review 제품군
 - Windsurf와 동일 회사 (Cognition AI)
 
@@ -108,13 +116,14 @@ sources:
 | Megawatt | $20/월  | orbs 750시간 + $20 agent usage |
 | Gigawatt | $200/월 | 높은 quota                     |
 
+- 제조사: 2025-12-02 Sourcegraph에서 분사한 Amp Frontier Corporation (2026-11-09 공식 공지 확인)
 - ChatGPT Pro, xAI Premium+/SuperGrok 구독 연동으로 GPT-5.6 / Grok 사용 가능
 - orbs: 원격 컨테이너 (로컬 머신 없이 에이전트 자율 실행)
 
 ### Aider (aider.chat)
 
 - 오픈소스 (Apache-2.0 라이선스), 무료
-- GitHub: github.com/paul-gauthier/aider — **47,719 stars** (2026-07-27 확인)
+- GitHub: github.com/paul-gauthier/aider — **47,719 stars** (2026-07-27 확인, 2026-11-09 확인: 저장소 이름 Aider-AI/aider, 약 50,000 stars)
 - 설치 수: 6.8M+
 - 사용 비용: 연결하는 LLM API 비용만 발생
 
@@ -128,6 +137,8 @@ sources:
 | Plus     | $30/user/월  | 전체 모델 접근, $30 크레딧/월 + 로그인 시 $2 무료 크레딧 |
 | Business | $100/user/월 | 전체 모델 접근, $30 크레딧/월 + 로그인 시 $2 무료 크레딧 |
 
+- 2026-11-09 확인(v0.app/pricing): Free는 하루 메시지 7개 제한이며, $5는 신규 사용자에게 한 번 주는 크레딧입니다.
+
 ### Bolt.new (bolt.new/pricing)
 
 🟡 Pro 플랜 실제 가격은 $25/월 (노트 이전 버전의 $30/월은 오기 — $30/월은 Teams 플랜 가격).
@@ -137,6 +148,8 @@ sources:
 | Free  | $0          | Public/private 프로젝트                   |
 | Pro   | $25/월      | 일일 토큰 제한 없음, 월 10M 토큰부터 시작 |
 | Teams | $30/월/멤버 | Pro의 모든 항목 + 중앙 청구, 팀 관리 기능 |
+
+- 2026-11-09 확인: Free는 하루 300K·월 1M 토큰을 제공합니다.
 
 ---
 
@@ -153,7 +166,9 @@ sources:
 
 출처: litellm model_prices_and_context_window.json, platform.openai.com/docs/models
 
-### Claude Opus 4.6 (Kiro 기본 모델)
+🟡 2026-11-09 OpenAI 공식 모델 페이지 기준 GPT-5.6 Terra는 $2.00/$12.00, Luna는 $0.20/$1.20입니다. Sol은 $5.00/$30.00이며 2026-11-30까지 프로모션 가격 $4.00/$20.00이 적용됩니다.
+
+### Claude Opus 4.6
 
 | 항목 | 값           |
 |------|--------------|
@@ -178,6 +193,8 @@ sources:
 | minimax-m2.1      | 0.15x       | 실험적 미리보기        |
 | glm-5             | 0.50x       | —                      |
 | qwen3-coder-next  | 0.05x       | 실험적 미리보기        |
+
+🟡 "기본 선택 모델"은 2026-07-27 kiro-cli 화면 기준입니다. 2026-11-09 공식 [Available models](https://kiro.dev/docs/models/available-models/)는 Auto를 권장(recommended)으로 표시하고 기본 모델을 따로 정하지 않습니다. 같은 날 [모델 목록](https://kiro.dev/docs/models/)(2026-10-24 갱신)에는 Claude Opus 5.5(2.0x)·Sonnet 5.5(1.3x)·Haiku 5.5(0.06x)와 GPT-5.6 Sol·Terra·Luna(4.4x·2.2x·0.6x)가 추가되었고, claude-sonnet-4(Claude Sonnet 4.0)는 2026-10-14에 지원 종료(EOL)되었습니다.
 
 🟡 Claude Sonnet 5 / Opus 5: Seoul region (ap-northeast-2)에서 In-Region 미지원.
 Global Cross-Region은 지원되나 Kiro가 In-Region 정책 사용 → 미제공.
@@ -237,9 +254,9 @@ Global Cross-Region은 지원되나 Kiro가 In-Region 정책 사용 → 미제�
 
 | 항목                                  | 상태 | 비고                                |
 |---------------------------------------|------|-------------------------------------|
-| Windsurf 지원 모델 상세 목록          | ⬜   | 공식 페이지 JS 렌더링으로 확인 불가 |
-| Devin SWE 1.7 벤치마크 점수           | ⬜   | 공개 벤치마크 미확인                |
-| Amp orbs 요금 상세 (시간당 비용)      | ⬜   | 가입 후 확인 필요                   |
-| Cursor Background Agent 지역별 가용성 | ⬜   | Pro+ 이상 필요 여부 미확인          |
-| v0 / Bolt.new 기반 모델 버전          | ⬜   | 공식 발표 없음                      |
-| Kiro Web/Mobile 기능 범위             | ⬜   | IDE와 동일 기능 여부 미확인         |
+| Windsurf 지원 모델 상세 목록          | 🟡   | 공식 페이지 JS 렌더링으로 확인 불가 |
+| Devin SWE 1.7 벤치마크 점수           | 🟡   | 공개 벤치마크 미확인                |
+| Amp orbs 요금 상세 (시간당 비용)      | 🟡   | 가입 후 확인 필요                   |
+| Cursor Background Agent 지역별 가용성 | 🟡   | Pro+ 이상 필요 여부 미확인          |
+| v0 / Bolt.new 기반 모델 버전          | 🟡   | 공식 발표 없음                      |
+| Kiro Web/Mobile 기능 범위             | 🟡   | IDE와 동일 기능 여부 미확인         |

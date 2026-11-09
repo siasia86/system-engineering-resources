@@ -7,7 +7,7 @@ tags:
   - limits
   - epsilon-delta
   - calculus
-last_checked: 2026-07-14
+last_checked: 2026-11-09
 sources:
   - https://en.wikipedia.org/wiki/(%CE%B5,_%CE%B4)-definition_of_limit
   - Rudin, Walter. "Principles of Mathematical Analysis" 3rd ed. McGraw-Hill, 1976.
@@ -90,12 +90,12 @@ If lim(x→p) f(x) = A and lim(x→p) g(x) = B, then:
 
 ## 증명 전략 요약
 
-| 전략        | 적용 조건            | δ 선택               |                   |                   |  |                 |
-|-------------|----------------------|----------------------|-------------------|-------------------|--|-----------------|
-| Direct      | f(x) - L이           | x - a                | 의 상수배         | δ = ε / c         |  |                 |
-| Bound + min |                      | x - a                | 외 다른 인수 존재 | δ = min(1, ε / M) |  |                 |
-| Squeeze     |                      | f(x) - L             | ≤ g(x) ·          | x - a             |  | δ = ε / (sup g) |
-| Composition | f = h ∘ g, 각각 연속 | δ₁ from g, δ₂ from h |                   |                   |  |                 |
+| 전략        | 적용 조건                             | δ 선택               |
+|-------------|---------------------------------------|----------------------|
+| Direct      | `\|f(x) - L\|`이 `\|x - a\|`의 상수배 | δ = ε / c            |
+| Bound + min | `\|x - a\|` 외 다른 인수 존재         | δ = min(1, ε / M)    |
+| Squeeze     | `\|f(x) - L\| ≤ g(x) · \|x - a\|`     | δ = ε / (sup g)      |
+| Composition | f = h ∘ g, 각각 연속                  | δ₁ from g, δ₂ from h |
 
 ## 관련 정리
 
@@ -117,9 +117,9 @@ If f is continuous on [a,b] (compact), then f attains its maximum and minimum.
 
 | 연도 | 인물        | 기여                                        |
 |------|-------------|---------------------------------------------|
+| 1817 | Bolzano     | 연속 함수 정의에 ε-δ 기법의 기초 도입       |
 | 1821 | Cauchy      | "Cours d'analyse"에서 극한 개념 정식화 시도 |
-| 1854 | Weierstrass | 현대적 ε-δ 정의 확립 (강의)                 |
-| 1861 | Weierstrass | 출판된 형태로 정리                          |
+| 1861 | Weierstrass | 현재 쓰는 형태의 ε-δ 극한 정의 도입         |
 
 - Cauchy는 "한없이 가까이"라는 표현을 사용했으나 정량적 정의는 Weierstrass가 완성
 - ε-δ 형식화로 미적분학이 직관에서 엄밀한 논리 체계로 전환

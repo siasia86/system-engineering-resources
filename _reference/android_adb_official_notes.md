@@ -7,7 +7,7 @@ tags:
   - logcat
   - troubleshooting
   - mobile
-last_checked: 2026-07-16
+last_checked: 2026-11-09
 sources:
   - https://developer.android.com/tools/adb
   - https://developer.android.com/tools/logcat
@@ -18,6 +18,9 @@ sources:
   - https://source.android.com/docs/security/features/verifiedboot/boot-flow
   - https://developer.android.com/google/play/integrity/verdicts
   - https://topjohnwu.github.io/Magisk/install.html
+  - https://developer.android.com/tools/releases/platform-tools
+  - https://packages.ubuntu.com/noble/adb
+  - https://groups.google.com/g/safetynet-api-clients/c/qcMXTCpHReg
 ---
 
 # Android ADB 공식 문서 참조 노트
@@ -26,12 +29,13 @@ sources:
 
 | 플랫폼           | 설치 방법                                                   | 비고                  |
 |------------------|-------------------------------------------------------------|-----------------------|
-| Ubuntu/Debian    | `sudo apt-get install -y android-tools-adb`                 | 24.04+: `adb` 패키지  |
+| Ubuntu/Debian    | `sudo apt-get install -y adb`                               | `adb` 패키지          |
 | macOS (Homebrew) | `brew install --cask android-platform-tools`                | cask 필수             |
 | Windows          | platform-tools zip 다운로드 후 PATH 추가                    | SDK Manager 또는 독립 |
 | 공식 다운로드    | https://developer.android.com/tools/releases/platform-tools | 전 플랫폼             |
 
-- 현재 버전: **37.0.1** (formulae.brew.sh 확인, 2026-07-16)
+- 현재 버전: **37.0.1** (formulae.brew.sh 확인, 2026-07-16). 2026-11-09 확인: **37.0.2** (formulae.brew.sh·공식 릴리스 노트)
+- Ubuntu 22.04·24.04·26.04와 Debian 12·13 저장소의 패키지 이름은 `adb`이며, 옛 이름 `android-tools-adb`는 검색되지 않습니다(2026-11-09 packages.ubuntu.com·packages.debian.org 확인).
 
 ## 2. logcat 핵심 옵션
 
@@ -164,7 +168,7 @@ AOSP 공식 정의에 따르면, 부트로더 언락은 비공식 이미지 플�
 
 - MEETS_DEVICE_INTEGRITY: Android 13+ 하드웨어 증명으로 부트로더 잠금 + 인증 OS 확인
 - 루팅된 기기: verdict가 빈 값(empty)으로 반환 → 앱이 실행을 거부
-- SafetyNet은 2024년 deprecate, Play Integrity API로 대체
+- SafetyNet Attestation API는 2022년 폐기 예고 후 2025-01-31에 동작이 종료되었고 Play Integrity API로 대체되었습니다(SafetyNet API 팀 공지)
 
 #### 루팅 주의사항
 
@@ -195,7 +199,7 @@ AOSP 공식 정의에 따르면, 부트로더 언락은 비공식 이미지 플�
 
 - URL: https://formulae.brew.sh/cask/android-platform-tools
 - 설치 명령: `brew install --cask android-platform-tools`
-- 버전: 37.0.1
+- 버전: 37.0.1 (2026-07-16), 2026-11-09 확인 37.0.2
 - 유형: **cask** (formula 아님, `--cask` 플래그 필수)
 
 🟡 `brew install android-platform-tools` (cask 없이)도 자동 해석되는 경우 있으나, 명시적 `--cask` 권장.

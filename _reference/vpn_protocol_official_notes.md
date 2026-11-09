@@ -6,7 +6,7 @@ tags:
   - wireguard
   - ipsec
   - networking
-last_checked: 2026-08-10
+last_checked: 2026-11-09
 sources:
   - https://datatracker.ietf.org/doc/html/rfc2637
   - https://datatracker.ietf.org/doc/html/rfc2661
@@ -20,7 +20,8 @@ sources:
   - https://datatracker.ietf.org/doc/html/rfc7296
   - https://datatracker.ietf.org/doc/html/rfc4555
   - https://www.wireguard.com/papers/wireguard.pdf
-  - https://openvpn.net/community-resources/reference-manual-for-openvpn-2-6/
+  - https://openvpn.net/community-docs/community-articles/openvpn-2-6-manual/
+  - https://github.com/OpenVPN/openvpn/releases
 ---
 
 # VPN Protocol 공식 문서 참조 노트
@@ -103,6 +104,8 @@ DH 그룹 선택은 ESP 알고리즘 요구사항을 정의하는 RFC 8221이 �
 | 모드           | --dev tun (L3), --dev tap (L2)                                              |
 | 권장 cipher    | AES-256-GCM (data-ciphers 옵션)                                             |
 | 폐기 예정      | BF-CBC, --cipher 옵션 (data-ciphers 대체)                                   |
+
+- 2026-11-09 확인: 최신 Community 릴리스는 2.7.9(2026-11-05)이고 2.6 계열도 2.6.23(2026-09-23)까지 나왔습니다. 2.6 매뉴얼 주소는 `community-docs/community-articles/openvpn-2-6-manual/`로 옮겨졌습니다.
 
 ## 6. WireGuard (확인일: 2026-08-10)
 

@@ -1,9 +1,9 @@
 ---
 name: vim-official-notes
-last_checked: 2026-08-01
+last_checked: 2026-11-09
 sources:
   - https://vimhelp.org/
-  - https://man7.org/linux/man-pages/man1/vim.1.html
+  - https://github.com/vim/vim/blob/master/runtime/doc/vim.1
   - https://github.com/vim/vim
 ---
 
@@ -13,20 +13,22 @@ sources:
 
 ### 공식 소스
 
-| 소스        | URL                                              | 용도                  |
-|-------------|--------------------------------------------------|-----------------------|
-| vimhelp.org | https://vimhelp.org/                             | 공식 도움말 HTML 버전 |
-| vim.1       | https://man7.org/linux/man-pages/man1/vim.1.html | 시작 옵션, 모드 개요  |
-| GitHub      | https://github.com/vim/vim                       | 최신 버전 확인        |
+| 소스        | URL                                                      | 용도                  |
+|-------------|----------------------------------------------------------|-----------------------|
+| vimhelp.org | https://vimhelp.org/                                     | 공식 도움말 HTML 버전 |
+| vim.1       | https://github.com/vim/vim/blob/master/runtime/doc/vim.1 | 시작 옵션, 모드 개요  |
+| GitHub      | https://github.com/vim/vim                               | 최신 버전 확인        |
 
 ### 검증된 사실 (2026-08-01)
 
 | 항목           | 값                                                                           | 출처        |
 |----------------|------------------------------------------------------------------------------|-------------|
-| 최신 버전      | 9.2 (patch 9.2.0888 기준, 2026-02-14)                                        | vimhelp.org |
+| 최신 버전      | 9.2 (2026-02-14 출시, 확인 당시 patch 9.2.0888)                              | vimhelp.org |
 | 기본 실행 방법 | `vim [options] [file ...]`                                                   | vim.1       |
 | 정상 종료 방법 | `:q` (저장 없이 종료) / `:wq` (저장 후 종료) / `:x` (변경 시만 저장 후 종료) | vimhelp.org |
 | 강제 종료      | `:q!` (변경 내용 무시하고 종료)                                              | vimhelp.org |
+
+- 2026-11-09 확인: 최신 마이너는 그대로 9.2(patch 9.2.1310)입니다. man7.org에 vim.1이 없어(404) vim.1 출처를 Vim 공식 저장소의 `runtime/doc/vim.1`로 바꿨고, 4절 옵션은 이 원문과 맞습니다.
 
 ## 2. 편집 모드 (vimhelp.org 기반)
 
@@ -70,9 +72,9 @@ sources:
 
 ### 공식 소스
 
-| 소스  | URL                                              | 용도      |
-|-------|--------------------------------------------------|-----------|
-| vim.1 | https://man7.org/linux/man-pages/man1/vim.1.html | 옵션 목록 |
+| 소스  | URL                                                      | 용도      |
+|-------|----------------------------------------------------------|-----------|
+| vim.1 | https://github.com/vim/vim/blob/master/runtime/doc/vim.1 | 옵션 목록 |
 
 ### 검증된 사실 (2026-08-01)
 

@@ -6,13 +6,14 @@ tags:
   - finops
   - cost
   - reliability
-last_checked: 2026-07-07
+last_checked: 2026-11-09
 sources:
   - https://principlesofchaos.org/
   - https://litmuschaos.io/
   - https://docs.aws.amazon.com/fis/latest/userguide/
   - https://www.finops.org/framework/
   - https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/
+  - https://aws.amazon.com/savingsplans/compute-pricing/
 ---
 
 # Chaos Engineering & FinOps 공식 문서 참조 노트
@@ -66,7 +67,9 @@ sources:
 
 출처: finops.org/framework/
 
-정의: "FinOps is an evolving cloud financial management discipline and cultural practice that enables organizations to get maximum business value by helping engineering, finance, technology and business teams to collaborate on data-driven spending decisions."
+정의: "FinOps is an operational framework and cultural practice which maximizes the business value of technology, enables timely data-driven decision making, and creates financial accountability through collaboration between engineering, finance, and business teams."
+
+- 2026-11-09 finops.org/framework 기준 정의입니다. 이전 정의("FinOps is an evolving cloud financial management discipline and cultural practice ...")는 현행 페이지에 없습니다.
 
 ### FinOps Lifecycle (3 Phase)
 
@@ -76,14 +79,16 @@ sources:
 | Optimize | 비용 효율화      | RI/SP, Right-sizing, Spot, 유휴 제거 |
 | Operate  | 지속적 거버넌스  | Policy, 자동화, 팀별 예산 책임       |
 
-### FinOps Principles (원문 그대로)
+### FinOps Principles (원문 그대로, 2026-11-09 확인)
 
 1. Teams need to collaborate
-2. Everyone takes ownership for their technology usage
-3. A centralized FinOps function drives best practices
+2. Business value drives technology decisions
+3. Everyone takes ownership for their technology usage
 4. FinOps data should be accessible, timely, and accurate
-5. Business value drives technology decisions
-6. Take advantage of the variable cost model of cloud
+5. FinOps should be enabled centrally
+6. Take advantage of the variable cost model of the cloud
+
+- 이전 판의 "A centralized FinOps function drives best practices"는 현행 페이지에서 "FinOps should be enabled centrally"로 바뀌었습니다.
 
 ### AWS Cost Optimization Pillar
 
@@ -103,3 +108,5 @@ sources:
 | Reserved Instances | 1~3년     | 30~72% | 낮음      |
 | Savings Plans      | 1~3년     | 20~66% | 중간      |
 | Spot Instances     | 없음      | 60~90% | 중단 위험 |
+
+- AWS 공식 최대 할인율: Savings Plans는 EC2 Instance SP 최대 72%, Compute SP 최대 66%입니다(2026-11-09 확인).

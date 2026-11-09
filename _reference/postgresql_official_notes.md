@@ -7,12 +7,17 @@ sources:
   - https://www.postgresql.org/docs/current/auth-password.html
   - https://wiki.postgresql.org/wiki/Apt
   - https://www.postgresql.org/download/linux/redhat/
+  - https://www.postgresql.org/docs/18/release-18.html
+  - https://www.postgresql.org/docs/18/app-initdb.html
+  - https://www.postgresql.org/docs/17/release-17.html
+  - https://www.postgresql.org/docs/16/release-16.html
+  - https://www.postgresql.org/docs/15/release-15.html
 tags:
   - postgresql
   - rdbms
   - database
   - sql
-last_checked: 2026-11-05
+last_checked: 2026-11-09
 ---
 
 # PostgreSQL Official Notes
@@ -31,6 +36,7 @@ last_checked: 2026-11-05
 | 13   | 13.23       | ❌   | 2020-09-24  | 2025-11-13 |
 
 - PostgreSQL 19 Beta 1: 2026-06-04 출시
+- PostgreSQL 19 RC 1: 2026-10-15 출시 (2026-11-09 확인, GA 전)
 - 메이저 버전 지원 기간: 최초 릴리즈 후 5년
 
 ## 설정 기본값 (PG18 기준)
@@ -69,7 +75,7 @@ last_checked: 2026-11-05
 | 파라미터                 | 기본값 | SSD 권장 | 비고                        |
 |--------------------------|--------|----------|-----------------------------|
 | random_page_cost         | 4.0    | 1.1      | SSD에서 순차/랜덤 차이 작음 |
-| effective_io_concurrency | 1      | 200      | SSD 병렬 I/O                |
+| effective_io_concurrency | 16     | 200      | SSD 병렬 I/O (PG17 이하 1)  |
 | seq_page_cost            | 1.0    | 1.0      | 기준값                      |
 
 ## 인증
@@ -79,17 +85,17 @@ last_checked: 2026-11-05
 | PG13 이하 | md5                      | md5                |                     |
 | PG14+     | scram-sha-256            | scram-sha-256      | md5 deprecated 예고 |
 
-- MD5 암호화 패스워드 지원은 deprecated (향후 제거 예정)
+- MD5 암호화 패스워드 지원은 PG18부터 deprecated (향후 제거 예정)
 - pg_hba.conf에 md5 지정해도 서버 패스워드가 SCRAM이면 SCRAM으로 자동 전환
 
 ## ICU / Locale 변경사항
 
-| 버전 | 변경                                                                       |
-|------|----------------------------------------------------------------------------|
-| PG15 | ICU collation provider 도입 (선택)                                         |
-| PG16 | ICU provider를 기본 선택 가능, LOCALE_PROVIDER 파라미터 추가               |
-| PG17 | template0/template1이 ICU provider 사용 가능, initdb --locale-provider=icu |
-| PG18 | ICU가 initdb 기본 provider (glibc 대신) — 빌드 시 ICU 필수                 |
+| 버전 | 변경                                                                    |
+|------|-------------------------------------------------------------------------|
+| PG15 | ICU를 클러스터·DB 기본 collation provider로 지정 가능                   |
+| PG16 | ICU 지원 기본 빌드(`--without-icu`로 제외), ICU 사용자 정의 정렬 규칙   |
+| PG17 | builtin provider 추가 (플랫폼 독립 C·C.UTF-8 정렬)                      |
+| PG18 | initdb 기본 provider는 libc 유지 (ICU는 `--locale-provider=icu`로 선택) |
 
 - `CREATE DATABASE ... LOCALE 'C.UTF-8'`: libc provider 사용
 - `CREATE DATABASE ... LOCALE_PROVIDER 'icu' ICU_LOCALE 'en-US'`: ICU 사용
@@ -102,15 +108,16 @@ last_checked: 2026-11-05
 ```
 키: https://www.postgresql.org/media/keys/ACCC4CF8.asc
 저장소: https://apt.postgresql.org/pub/repos/apt {codename}-pgdg main
-지원: jammy (22.04), noble (24.04), questing (25.10 amd64 only)
+지원: jammy (22.04), noble (24.04), resolute (26.04), stonking (26.10 amd64 only) (2026-11-09 확인)
 ```
 
 ### YUM/DNF (RHEL 계열)
 
 ```
+EL-10: https://download.postgresql.org/pub/repos/yum/reporpms/EL-10-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 EL-9: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 EL-8: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-주의: dnf module disable postgresql 필수 (AppStream 충돌)
+주의: EL-8은 dnf -qy module disable postgresql 필요 (AppStream 충돌, 공식 설치 스크립트는 EL-8에서만 실행)
 ```
 
 ## 설치 경로
@@ -131,10 +138,10 @@ EL-8: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-re
 | PG15 | MERGE 문, ICU collation provider, pg_stat_statements 개선 |
 | PG16 | 논리 복제 개선, pg_stat_io, 병렬 쿼리 확장                |
 | PG17 | COPY 성능 개선, JSON_TABLE, vacuum 개선                   |
-| PG18 | ICU 기본 provider, async I/O, NUMA 지원 개선              |
+| PG18 | async I/O, 데이터 체크섬 기본 활성화, NUMA 인식 빌드 옵션 |
 
 ## 미확인 — 검증 필요
 
-- PG18 ICU가 initdb 기본 provider인지 여부 (논의됐으나 GA 확정 미확인)
-- PG18 async I/O 세부 동작 (공식 릴리즈 노트 미확인)
-- PG19 예상 기능 (Beta 단계, 변경 가능)
+- PG18 ICU가 initdb 기본 provider인지 여부 (논의됐으나 GA 확정 미확인) (2026-11-09 확인: PG18 initdb 문서 기준 기본은 libc)
+- PG18 async I/O 세부 동작 (공식 릴리즈 노트 미확인) (2026-11-09 확인: 릴리스 노트에 AIO 하위 시스템 추가, `io_method`로 사용 방식 선택)
+- PG19 예상 기능 (Beta 단계, 변경 가능) (2026-11-09 확인: RC 1 단계)

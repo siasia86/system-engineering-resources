@@ -8,11 +8,12 @@ tags:
   - agpl
   - versioning
   - object-lock
-last_checked: 2026-09-21
+last_checked: 2026-11-09
 sources:
   - https://github.com/minio/minio
   - https://github.com/minio/minio/blob/master/LICENSE
-  - https://docs.min.io/community/minio-object-store/
+  - https://github.com/minio/docs
+  - https://github.com/minio/mc
   - https://min.io/
 ---
 
@@ -23,6 +24,7 @@ sources:
 - MinIO Server는 고성능 S3-compatible Object Storage입니다.
 - 공식 GitHub 저장소의 라이선스는 AGPLv3입니다.
 - MinIO Server와 상용 Enterprise 제품의 기능·지원·라이선스 범위는 구분해야 합니다.
+- (2026-11-09 확인: `minio/minio`·`minio/mc` GitHub 저장소는 archived 상태이며 README는 "THIS REPOSITORY IS NO LONGER MAINTAINED"로 안내합니다. 커뮤니티판은 소스 전용 배포로 바뀌어 미리 빌드한 바이너리를 더 제공하지 않고, 마지막 GitHub 릴리스는 `RELEASE.2025-10-15T17-29-55Z`입니다. 대안으로 AIStor Free·Enterprise를 안내하며, 기존 docs.min.io 커뮤니티 문서 주소는 AIStor 문서로 이동합니다.)
 
 ## 2. 핵심 기능
 

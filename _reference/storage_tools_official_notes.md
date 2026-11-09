@@ -1,6 +1,6 @@
 ---
 name: storage-tools-official-notes
-last_checked: 2026-08-18
+last_checked: 2026-11-09
 sources:
   - https://man7.org/linux/man-pages/man8/lsblk.8.html
   - https://man7.org/linux/man-pages/man8/findmnt.8.html
@@ -10,6 +10,7 @@ sources:
   - https://dev.yorhel.nl/ncdu/man
   - https://github.com/sysstat/sysstat
   - https://github.com/dstat-real/dstat
+  - https://github.com/scottchiefbaker/dool
   - https://github.com/Atoptool/atop
   - https://nmon.sourceforge.net/pmwiki.php
   - https://github.com/axboe/fio
@@ -84,7 +85,7 @@ sources:
 - 공식 매뉴얼: https://man7.org/linux/man-pages/man1/iostat.1.html
 - 디바이스와 파티션의 CPU 및 I/O 통계를 보고합니다.
 - `-x`는 확장 통계, `-z`는 활동이 없는 디바이스를 생략하며, 간격과 횟수 인수로 반복 측정을 수행합니다.
-- `await`, `avgqu-sz`, `%util` 등은 확장 디바이스 통계에서 확인할 수 있습니다.
+- `await`(`r_await`·`w_await`), `aqu-sz`, `%util` 등은 확장 디바이스 통계에서 확인할 수 있습니다. `aqu-sz`는 이전 판에서 `avgqu-sz`였습니다(2026-11-09 iostat.1 확인).
 
 ## 4. 종합 시스템 모니터링
 
@@ -92,6 +93,7 @@ sources:
 
 - 공식 저장소: https://github.com/dstat-real/dstat
 - 공식 저장소의 최신 릴리스 API 확인 결과: `v0.7.4` (2019-05-22), 저장소는 archived 상태입니다.
+- 2026-11-09 확인: README에 DSTAT 개발 종료가 공지되어 있고, 개발은 Dool fork(https://github.com/scottchiefbaker/dool)에서 이어집니다.
 - CPU, 디스크, 네트워크, 페이징, 시스템 통계를 함께 표시하는 자원 통계 도구입니다.
 - 배포판별 패키지와 플러그인 제공 범위가 다를 수 있으므로 실제 설치 버전의 도움말을 확인해야 합니다.
 
@@ -114,7 +116,7 @@ sources:
 ### `fio`
 
 - 공식 저장소: https://github.com/axboe/fio
-- 공식 저장소의 최신 릴리스 API 확인 결과: `fio-3.42` (2026-04-07).
+- 공식 저장소의 최신 릴리스 API 확인 결과: `fio-3.42` (2026-04-07). (2026-11-09 확인: `fio-3.43`, 2026-09-23)
 - Flexible I/O Tester로 블록 I/O 부하를 생성하고 성능을 측정합니다.
 - 블록 크기, 읽기·쓰기 방식, 큐 깊이, 작업자 수, 접근 패턴과 런타임을 작업 파일 또는 명령행 옵션으로 제어합니다.
 - 블록 장치에 직접 쓰는 작업은 기존 데이터를 덮어쓸 수 있으므로 테스트 대상과 `--readonly` 여부를 먼저 확인합니다.
@@ -141,7 +143,7 @@ sources:
 ### `nvme-cli`
 
 - 공식 저장소: https://github.com/linux-nvme/nvme-cli
-- 공식 저장소의 최신 릴리스 API 확인 결과: `v2.16` (2025-11-04).
+- 공식 저장소의 최신 릴리스 API 확인 결과: `v2.16` (2025-11-04). (2026-11-09 확인: `v3.2`, 2026-10-30. 주 버전 3은 `v3.0`(2026-09-07)부터)
 - NVMe 장치를 관리하고 컨트롤러·네임스페이스 정보와 로그를 조회합니다.
 - `nvme list`는 NVMe 장치 목록, `nvme smart-log`는 SMART 로그를 조회합니다.
 - 세부 명령어 문서는 공식 저장소의 `Documentation/` 아래에 제공됩니다.

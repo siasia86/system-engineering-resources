@@ -6,11 +6,12 @@ tags:
   - iac
   - automation
   - configuration-management
-last_checked: 2026-11-05
+last_checked: 2026-11-09
 sources:
   - https://www.ansible.com/
   - https://docs.ansible.com/ansible/latest/getting_started/index.html
   - https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html
+  - https://pypi.org/project/ansible/
 ---
 
 # Ansible 공식 문서 참조 노트
@@ -20,11 +21,11 @@ sources:
 | 패키지       | 최신 버전 | 비고                                     |
 |--------------|-----------|------------------------------------------|
 | ansible      | 14.6.0    | ansible-core + 커뮤니티 컬렉션 풀 패키지 |
-| ansible-core | 2.22.0    | 최소 코어 (ansible 패키지에 포함됨)      |
+| ansible-core | 2.22.0    | 최소 코어 (ansible 14.x는 2.21 포함)     |
 
-- ansible 버전과 ansible-core 버전은 별개 (ansible 13.x = ansible-core 2.21)
+- ansible 버전과 ansible-core 버전은 별개 (ansible 14.x = ansible-core 2.21, 13.x = 2.20). ansible-core 2.22는 개발 중인 ansible 15.0.0에 들어갑니다(2026-11-09 확인: 15.0.0b1 공개, ansible 14.6.0의 의존성은 `ansible-core~=2.21.6`)
 - control node: ansible-core 2.12+부터 최근 3개 Python 버전 지원
-- managed node: ansible-core 2.16+부터 최근 6개 Python 버전 지원
+- managed node: ansible-core 2.16+부터 최근 6개 Python 버전 지원 (2.16·2.22처럼 6번째 판마다 7개)
 - Python 2.7은 ansible-core 2.16까지만 지원
 
 ## 2. 핵심 개념

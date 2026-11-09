@@ -8,7 +8,7 @@ tags:
   - xfs
   - btrfs
   - vfs
-last_checked: 2026-07-22
+last_checked: 2026-11-09
 sources:
   - https://docs.kernel.org/filesystems/index.html
   - https://docs.kernel.org/filesystems/ext4/index.html
@@ -200,14 +200,14 @@ fsck -AR -y            # 부팅 시 자동 검사 (initscripts 사용)
 
 ### 옵션 조합 제약 (man page 명시)
 
-| 조합        | 가능 | 근거 (man page 원문)                                        |
-|-------------|------|-------------------------------------------------------------|
-| `-y` + `-n` | ❌   | "may not be specified at the same time as the -n or -p"     |
-| `-y` + `-p` | ❌   | 동일                                                        |
-| `-n` + `-p` | ❌   | "may not be specified at the same time as the -p or -y"     |
-| `-f` + `-y` | ✅   |                                                             |
-| `-f` + `-p` | ✅   |                                                             |
-| `-c` + `-n` | ❌   | "-n option is specified, and -c, -l, or -L options are not" |
+| 조합        | 가능 | 근거 (man page 원문)                                                     |
+|-------------|------|--------------------------------------------------------------------------|
+| `-y` + `-n` | ❌   | "may not be specified at the same time as the -n or -p"                  |
+| `-y` + `-p` | ❌   | 동일                                                                     |
+| `-n` + `-p` | ❌   | "may not be specified at the same time as the -p or -y"                  |
+| `-f` + `-y` | ✅   |                                                                          |
+| `-f` + `-p` | ✅   |                                                                          |
+| `-c` + `-n` | △    | 금지 아님, 마운트 중 안전 조건에서 제외: "-c, -l, or -L options are not" |
 
 ### Exit Code (man page 원문)
 

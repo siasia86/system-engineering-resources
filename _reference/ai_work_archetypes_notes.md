@@ -6,7 +6,7 @@ tags:
   - boris-cherny
   - claude-code
   - product-teams
-last_checked: 2026-10-13
+last_checked: 2026-11-09
 sources:
   - https://x.com/bcherny/status/2071379474277613732
   - https://www.readside.dev/read/9edf9c1c-b2ec-4d27-8db6-2e23e5bc501f
@@ -14,6 +14,7 @@ sources:
   - https://resources.anthropic.com/webinar/claude-code-live
   - https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic
   - https://thakicloud.com/tech-blog/en/culture/five-product-role-archetypes/
+  - https://github.com/twitter-archive/snowflake
 ---
 
 # AI 시대 다섯 업무 원형 참조 노트
@@ -33,7 +34,7 @@ sources:
 | [Anthropic 내부 업무 연구](https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic)                     | 공식 연구 | AI 활용에 따른 업무 범위 확대와 연구 한계 확인   |
 | [ThakiCloud 해설](https://thakicloud.com/tech-blog/en/culture/five-product-role-archetypes/)                                | 2차 해설  | 정의와 제품 단계별 조합 교차 확인                |
 
-Readside는 게시일을 **2026-06-28**로 표시합니다. 일부 해설은 2026-06-29로 표기하므로 날짜 차이를 보존합니다. X 원문의 표시 시간대와 게시 시각은 직접 확인하지 못했습니다. 원문 전재와 보도 대조를 원문 직접 검증으로 기록하지 않습니다.
+Readside는 게시일을 **2026-06-28**로 표시합니다. 일부 해설은 2026-06-29로 표기하므로 날짜 차이를 보존합니다. X 원문의 표시 시간대와 게시 시각은 직접 확인하지 못했습니다. 2026-11-09에 게시물 ID를 Snowflake 형식(기준 시각 `1288834974657` ms, 22비트 이동, [twitter-archive/snowflake](https://github.com/twitter-archive/snowflake))으로 계산하면 작성 시각은 2026-06-28 23:45 UTC, 한국 시간 2026-06-29 08:45입니다. 두 날짜 표기는 시간대 차이로 설명됩니다. 원문 전재와 보도 대조를 원문 직접 검증으로 기록하지 않습니다.
 
 ## 2. 확인된 주장
 
@@ -72,6 +73,7 @@ Anthropic의 2025-12-02 연구는 2025년 8월 내부 엔지니어·연구자 13
 - 1차 대조: 공식 웨비나로 제작진 소개를 확인하고, Readside 전재에서 원형 명칭·직무와의 관계·제품 단계별 조합을 확인했습니다.
 - 2차 대조: Business Insider / Yahoo 검색 본문과 ThakiCloud 해설로 명칭·복수 원형·팀 조합을 다시 확인했습니다.
 - 한계: X 원문과 댓글은 직접 확인하지 못했습니다. 날짜 표기 차이와 직접 열람 제한을 기록했습니다.
+- 날짜 대조(2026-11-09): 게시물 ID에서 작성 시각을 계산해 날짜 차이가 UTC와 한국 시간의 차이임을 확인했습니다.
 - 미확인: 다섯 분류의 통계적 타당성, 채용 성과, 인원 비율, 직무 소멸 시점은 확인된 근거가 없습니다.
 - 본문 검토: 출처에서 확인한 주장과 작성자의 적용 예시를 구분했습니다.
 

@@ -10,12 +10,12 @@ tags:
   - load-balancer
   - cache
   - observability
-last_checked: 2026-10-27
+last_checked: 2026-11-09
 sources:
   - https://www.rfc-editor.org/rfc/rfc9110.html
   - https://www.rfc-editor.org/rfc/rfc9112.html
   - https://www.rfc-editor.org/rfc/rfc9113.html
-  - https://www.rfc-editor.org/rfc/rfc8446.html
+  - https://www.rfc-editor.org/rfc/rfc9846.html
   - https://www.rfc-editor.org/rfc/rfc6797.html
   - https://nginx.org/en/docs/http/ngx_http_core_module.html
   - https://nginx.org/en/docs/http/ngx_http_proxy_module.html
@@ -31,7 +31,7 @@ sources:
   - https://www.rfc-editor.org/rfc/rfc9111.html
   - https://www.rfc-editor.org/rfc/rfc5861.html
   - https://www.w3.org/TR/trace-context/
-  - https://github.com/OWASP/www-project-secure-headers/tree/master/ci
+  - https://github.com/OWASP/secure-headers-project/tree/master/ci
   - https://grafana.com/docs/k6/latest/using-k6/thresholds/
   - https://grafana.com/docs/k6/latest/using-k6/metrics/reference/
   - https://nghttp2.org/documentation/h2load-howto.html
@@ -66,7 +66,7 @@ sources:
 
 - HTTP/1.1 연결 관리와 지속 연결은 RFC 9112 9장(Connection Management)에서 정의합니다.
 - `https` URI에서 HTTP/2는 TLS ALPN 식별자 `h2`로 협상합니다(RFC 9113 3.2, ALPN 자체는 RFC 7301).
-- TLS 1.3은 RFC 8446, TLS 1.0·1.1 사용 중단은 RFC 8996입니다.
+- TLS 1.3은 RFC 9846(2026-07, RFC 8446 대체), TLS 1.0·1.1 사용 중단은 RFC 8996입니다.
 - HSTS(`Strict-Transport-Security`)는 RFC 6797입니다.
 
 ## 4. nginx 기본값
@@ -109,6 +109,7 @@ HAProxy 3.2.0 `doc/configuration.txt`에서 확인했습니다.
 - `timeout client`·`timeout server`·`timeout connect`를 지정하지 않으면 무한 대기가 되며, 동작은 하지만 경고가 출력됩니다.
 - 문서는 요청 수신 단계에서 Slowloris 같은 공격을 막으려면 `timeout http-request`를 따로 설정하는 편이 낫다고 설명합니다.
 - `timeout http-keep-alive`를 지정하지 않으면 `timeout http-request` 값을 사용합니다.
+- 2026-11-09 확인: 현행 3.4 LTS `configuration.txt`(2026/10/14)에서도 위 timeout·`retries` 기본 동작이 같습니다. 3.2는 LTS로 계속 지원됩니다.
 
 ## 6. 측정 도구
 

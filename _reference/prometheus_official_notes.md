@@ -6,10 +6,12 @@ tags:
   - monitoring
   - alerting
   - metrics
-last_checked: 2026-11-05
+last_checked: 2026-11-09
 sources:
   - https://prometheus.io/docs/introduction/overview/
   - https://prometheus.io/docs/concepts/data_model/
+  - https://prometheus.io/docs/introduction/release-cycle/
+  - https://github.com/prometheus/prometheus/releases
 ---
 
 # Prometheus 공식 문서 참조 노트
@@ -19,6 +21,8 @@ sources:
 | 항목       | 버전    |
 |------------|---------|
 | Prometheus | v3.15.1 |
+
+- (2026-11-09 확인: 최신 릴리스는 `v3.16.0`(2026-11-04)이고, LTS는 3.13 계열(`v3.13.5`, 지원 종료 2027-07-31)입니다.)
 
 ## 2. 공식 정의
 

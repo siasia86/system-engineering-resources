@@ -191,9 +191,9 @@ Python Sorting HOWTO는 Python 정렬이 안정적이며, Timsort가 이미 정�
 
 ## 참고 자료
 
-- MIT OpenCourseWare: [6.006 Introduction to Algorithms](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/) — ★★★★☆
-- MIT OpenCourseWare: [Readings](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/pages/readings/) — ★★★★☆
-- MIT OpenCourseWare: [Lecture Notes](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/pages/lecture-notes/) — ★★★★☆
+- MIT OpenCourseWare: [6.006 Introduction to Algorithms](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/) — ★★★☆☆
+- MIT OpenCourseWare: [Readings](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/pages/readings/) — ★★★☆☆
+- MIT OpenCourseWare: [Lecture Notes](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/pages/lecture-notes/) — ★★★☆☆
 - Python Documentation: [collections.deque](https://docs.python.org/3/library/collections.html#collections.deque) — ★★★☆☆
 - Python Wiki: [TimeComplexity](https://wiki.python.org/moin/TimeComplexity) — ★★★☆☆
 - Python Documentation: [Sorting HOW TO](https://docs.python.org/3/howto/sorting.html) — ★★★☆☆

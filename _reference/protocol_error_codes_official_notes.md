@@ -7,7 +7,7 @@ tags:
   - ftp
   - error-codes
   - rfc
-last_checked: 2026-05-26
+last_checked: 2026-11-09
 sources:
   - https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
   - https://datatracker.ietf.org/doc/html/rfc9110
@@ -61,8 +61,8 @@ sources:
 
 출처: IANA DNS Parameters
 
-- 0~11: 기본 RCODE (RFC 1035, RFC 2136, RFC 2671)
-- 16~23: TSIG/TKEY 관련 확장 RCODE (RFC 2845, RFC 2930)
+- 0~11: 기본 RCODE (RFC 1035, RFC 2136, RFC 8490)
+- 16~23: EDNS·TSIG·TKEY·Cookie 관련 확장 RCODE (RFC 6891, RFC 8945, RFC 2930, RFC 7873)
 
 ## 5. 비공식 확장 코드
 
@@ -72,5 +72,5 @@ sources:
 | 499     | Nginx      | 비공식    |
 | 520~530 | Cloudflare | 비공식    |
 
-- Nginx 비공식 코드: Nginx 공식 문서에 명시됨 (http://nginx.org/en/docs/http/ngx_http_log_module.html)
-- Cloudflare 코드: Cloudflare 지원 문서에 명시됨 (https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/)
+- Nginx 비공식 코드: 444는 Nginx 공식 문서의 `return` 지시어 설명에 명시됨 (https://nginx.org/en/docs/http/ngx_http_rewrite_module.html), 499는 소스 `src/http/ngx_http_request.h`의 `NGX_HTTP_CLIENT_CLOSED_REQUEST`로 정의됨
+- Cloudflare 코드: Cloudflare 지원 문서에 명시됨 (https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/)

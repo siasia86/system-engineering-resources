@@ -6,7 +6,7 @@ tags:
   - cli
   - linux
   - openai
-last_checked: 2026-10-03
+last_checked: 2026-11-09
 sources:
   - https://developers.openai.com/codex/cli.md
   - https://developers.openai.com/codex/auth.md
@@ -30,6 +30,9 @@ sources:
   - https://github.com/openai/skills
   - https://github.com/openai/plugins
   - https://github.com/vercel-labs/skills
+  - https://learn.chatgpt.com/docs/non-interactive-mode
+  - https://learn.chatgpt.com/docs/cli/slash-commands
+  - https://learn.chatgpt.com/docs/models
 ---
 
 # Codex CLI 공식 참조 노트
@@ -39,6 +42,7 @@ sources:
 - 2026-09-14 당시 확인한 OpenAI Codex GitHub 릴리스 태그: `rust-v0.154.0`.
 - 2026-10-01 설정·지침·MCP·Skills 문서와 CLI 인수 문법을 재검증했습니다. 로컬 검증 버전은 `codex-cli 0.159.3`이며, 이 버전이 현재 GitHub 최신 릴리스라는 뜻은 아닙니다.
 - 2026-10-03 Skills 설정·plugin 배포 안내를 재확인하고 8절에 정리했습니다. 로컬 `codex-cli 0.160.0`에서 `plugin`·`plugin add`·`plugin marketplace add`의 도움말만 확인했습니다. 실제 skill·plugin 설치와 암묵적 호출은 검증하지 않았으며, 그 밖의 CLI 항목은 기존 확인일을 유지합니다.
+- 2026-11-09 확인: GitHub 최신 안정판은 `rust-v0.167.0`(2026-11-06 게시)입니다. 같은 날 로컬 `codex-cli 0.164.0`의 `--help`로 `--full-auto` 제거와 `--approve-for-me`를 확인했습니다.
 - 공식 설치 경로: macOS/Linux standalone installer, npm, Homebrew.
 - Linux 샌드박스 의존성: `bubblewrap` 패키지의 `bwrap` 실행 파일.
 - 설치·인증·릴리스 항목은 2026-09-14 검증 기록을 유지합니다. 2026-10-01 재검증은 설정 관련 항목과 CLI 문법에 한정하며, 실제 모델 호출·OAuth 로그인·배포는 실행하지 않았습니다.
@@ -71,7 +75,8 @@ API key와 `~/.codex/auth.json`은 자격증명으로 취급하며 commit·채�
 ## 4. 대화형 CLI
 
 - `codex`: 현재 프로젝트에서 대화형 TUI 시작.
-- `/model`: 모델과 reasoning effort 선택.
+- `/model`: 모델과 reasoning effort 선택. 2026-11-09 공식 Models 문서 기준 `max`는 한 작업을 더 오래 추론하고, `ultra`는 subagent로 작업을 나눠 병렬 처리합니다(지원 모델만).
+- `/subagents`: 현재 세션의 subagent thread를 확인·전환.
 - `/status`: 모델, 승인 정책, writable roots, token usage 확인.
 - `/permissions`: 활성 권한 프로필 변경.
 - `/diff`: Git 변경 확인.
@@ -105,7 +110,7 @@ API key와 `~/.codex/auth.json`은 자격증명으로 취급하며 commit·채�
 - 세션 파일 미저장: `codex exec --ephemeral "<task>"`.
 - 최근 세션 재개: `codex exec resume --last "<task>"`.
 - Git 저장소 확인을 건너뛰는 `--skip-git-repo-check`는 안전성을 직접 확인한 경우에만 사용.
-- 기존 `--full-auto`는 deprecated compatibility flag이므로 새 자동화에는 명시적 sandbox·approval 옵션 사용.
+- `--full-auto`는 더 이상 지원되지 않습니다(2026-11-09 공식 비대화형 문서, 로컬 0.164.0 `codex --help`·`codex exec --help`에 없음). 파일 수정은 `--sandbox workspace-write`, 승인 요청 자동 검토는 `--approve-for-me`(workspace-write 샌드박스)를 사용합니다.
 - CI에서는 저장소 코드가 credential을 읽지 못하도록 `OPENAI_API_KEY`를 job 전체 환경변수로 두지 않으며, 가능하면 공식 Codex GitHub Action을 사용.
 
 ## 7. 설정 및 지침 파일
@@ -149,6 +154,8 @@ API key와 `~/.codex/auth.json`은 자격증명으로 취급하며 commit·채�
 - Authentication: https://developers.openai.com/codex/auth.md
 - Sandbox: https://developers.openai.com/codex/sandboxing.md
 - Non-interactive mode: https://developers.openai.com/codex/non-interactive-mode.md
+- Slash commands: https://learn.chatgpt.com/docs/cli/slash-commands
+- Models: https://learn.chatgpt.com/docs/models
 - Configuration basics: https://developers.openai.com/codex/config-file/config-basic.md
 - Configuration reference: https://developers.openai.com/codex/config-file/config-reference.md
 - Developer commands: https://developers.openai.com/codex/developer-commands.md

@@ -1,10 +1,11 @@
 ---
 name: gdb-official-notes
-last_checked: 2026-08-01
+last_checked: 2026-11-09
 sources:
   - https://man7.org/linux/man-pages/man1/gdb.1.html
   - https://ftp.gnu.org/gnu/gdb/
   - https://sourceware.org/gdb/documentation/
+  - https://sourceware.org/gdb/
 ---
 
 # GDB 공식 참조 노트
@@ -28,6 +29,8 @@ sources:
 | 기본 실행 방법   | `gdb` / `gdb <program>` / `gdb <program> <pid>` | gdb.1   |
 | 종료 명령어      | `quit` 또는 `exit`                              | gdb.1   |
 | 온라인 도움말    | `help` 또는 `help <command>`                    | gdb.1   |
+
+(2026-11-09 확인: GNU FTP와 sourceware.org 기준 최신 stable은 18.1(2026-09-25)입니다)
 
 ## 2. 주요 명령어 (gdb.1 man page 기반)
 

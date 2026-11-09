@@ -6,7 +6,7 @@ tags:
   - ai-browser
   - browser-agent
   - automation
-last_checked: 2026-10-13
+last_checked: 2026-11-09
 sources:
   - https://aside.com/
   - https://aside.com/download
@@ -50,7 +50,9 @@ YC 회사 페이지는 Aside를 Fall 2025 기업으로 소개하고 공식 사�
 | 브라우저 버전   | 확인한 변경 이력의 상단 항목 v1.0.928.1        | [Changelog](https://docs.aside.com/changelog/native)   |
 | Linux·모바일    | 조사한 다운로드·도움말에서 설치 지원 확인 못함 | [Download](https://aside.com/download)                 |
 
-브라우저 버전과 AI 구성요소 버전은 동일한 값이라고 가정하지 않습니다. Windows의 최소 OS 버전·CPU 아키텍처는 미확인입니다.
+브라우저 버전과 AI 구성요소 버전은 동일한 값이라고 가정하지 않습니다. Windows의 최소 OS 버전은 미확인입니다.
+
+2026-11-09 확인: 변경 이력의 상단 항목은 v1.0.1022.1이며 Windows ARM64 공식 지원과 macOS Apple Silicon·Intel 별도 배포를 알립니다. 변경 이력에는 항목별 날짜가 표시되지 않습니다. [Changelog](https://docs.aside.com/changelog/native).
 
 ## 3. 기능과 연결
 
@@ -75,7 +77,7 @@ YC 회사 페이지는 Aside를 Fall 2025 기업으로 소개하고 공식 사�
 | Max        | USD 200/월 | Pro 포함, Free 사용량 40배로 표기            |
 | Enterprise | 문의       | 팀·계정·권한 관리 안내                       |
 
-Max 사용량은 요금 페이지의 **40배**와 구독 도움말의 **30배**가 다릅니다. 실제 부여량은 앱의 `Settings > Plan & Usage`에서 확인합니다. 외부 구독·API 비용과 Aside credits도 별개로 설명됩니다. [Subscription](https://docs.aside.com/help/subscription).
+2026-10-13에는 Max 사용량이 요금 페이지의 **40배**와 구독 도움말의 **30배**로 달랐으나, 2026-11-09 확인 시 두 자료 모두 **40배**로 표기합니다. 실제 부여량은 앱의 `Settings > Plan & Usage`에서 확인합니다. 외부 구독·API 비용과 Aside credits도 별개로 설명됩니다. [Subscription](https://docs.aside.com/help/subscription).
 
 ## 5. 데이터 처리와 근거의 한계
 
@@ -89,6 +91,7 @@ Max 사용량은 요금 페이지의 **40배**와 구독 도움말의 **30배**�
 
 - 1차 대조: 공식 제품·기능·도움말에서 작업 방식, 모델 연결, 권한, 메모리·routine·개발 도구 확인.
 - 2차 대조: 다운로드와 변경 이력, 요금과 구독 도움말, 홈페이지와 개인정보 정책을 교차 확인. Max 사용량과 데이터 전송 설명의 차이를 기록.
+- 재확인(2026-11-09): 요금·구독 도움말의 Max 배수 일치(40배)와 변경 이력 상단 항목(v1.0.1022.1)을 확인.
 - 벤치마크: 홈페이지의 순위 주장과 공개 결과의 평가 조건을 구분.
 - 접근 한계: 일부 `.md` 도움말 URL은 웹 도구에서 지원하지 않아 같은 경로의 HTML 문서를 확인.
 - 미실행: 설치·공급자 인증·MFA·결제·MCP 연결·routine 실행·보안 구조 검증·벤치마크 재현.

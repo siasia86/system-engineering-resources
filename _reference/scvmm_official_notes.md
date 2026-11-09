@@ -8,10 +8,11 @@ tags:
   - windows-server
   - virtualization
   - powershell
-last_checked: 2026-08-21
+last_checked: 2026-11-09
 sources:
   - https://learn.microsoft.com/en-us/system-center/vmm/overview
   - https://learn.microsoft.com/en-us/system-center/vmm/install
+  - https://learn.microsoft.com/en-us/system-center/vmm/system-requirements
   - https://learn.microsoft.com/en-us/system-center/vmm/hyper-v-existing
   - https://learn.microsoft.com/en-us/system-center/vmm/vm-template
   - https://learn.microsoft.com/en-us/system-center/vmm/network-sdn
@@ -30,7 +31,7 @@ sources:
 
 ## 2. 설치 사전 요구사항
 
-- OS: Windows Server 2019 / 2022
+- OS(VMM 서버): VMM 2022는 Windows Server 2022, VMM 2025는 Windows Server 2025 (Desktop Experience·Server Core)
 - RAM: VMM 서버 최소 4GB 권장 16GB / SQL Server 별도 서버 최소 8GB 권장 16GB
 - 컴퓨터 이름: 15자 이하 (NetBIOS 제한, 초과 시 설치 실패)
 - SQL Server: VMM 2022는 2016/2017/2019/2022 지원, VMM 2025는 2019/2022/2025 지원 (설치 전 구성 필수)

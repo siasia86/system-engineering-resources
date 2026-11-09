@@ -1,10 +1,11 @@
 ---
 name: valgrind-official-notes
-last_checked: 2026-08-01
+last_checked: 2026-11-09
 sources:
   - https://valgrind.org/docs/manual/manual.html
   - https://valgrind.org/docs/manual/mc-manual.html
   - https://sourceware.org/pub/valgrind/
+  - https://valgrind.org/docs/manual/dist.news.old.html
 ---
 
 # Valgrind 공식 참조 노트
@@ -28,6 +29,8 @@ sources:
 | 주요 도구 목록   | Memcheck, Callgrind, Cachegrind, Helgrind, DRD, Massif | valgrind manual |
 | 도구 선택 옵션   | `--tool=<toolname>` (기본값: memcheck)                 | valgrind manual |
 | 실행 방식        | `valgrind [options] <program> [args]`                  | valgrind manual |
+
+- 2026-11-09 확인: 최신 stable은 3.28.0(2026-10-23)입니다(valgrind.org, sourceware FTP).
 
 ## 2. Memcheck 오류 분류 (mc-manual 기반)
 
@@ -75,10 +78,10 @@ sources:
 
 ## 5. deprecated / 주의사항
 
-| 항목               | 상태                                               | 출처            |
-|--------------------|----------------------------------------------------|-----------------|
-| 실행 속도          | Memcheck 기준 10~30배 느린 것이 일반적             | valgrind manual |
-| --tool=exp-sgcheck | 실험적 스택/전역 배열 검사 도구 (안정성 보장 없음) | valgrind manual |
+| 항목               | 상태                                                           | 출처                 |
+|--------------------|----------------------------------------------------------------|----------------------|
+| 실행 속도          | Memcheck 기준 10~30배 느린 것이 일반적                         | valgrind manual      |
+| --tool=exp-sgcheck | 실험적 스택/전역 배열 검사 도구, 3.16.0(2020-05-27)에서 제거됨 | NEWS (dist.news.old) |
 
 ---
 

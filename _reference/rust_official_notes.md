@@ -7,22 +7,23 @@ tags:
   - systems-programming
   - cargo
   - crates
-last_checked: 2026-11-05
+last_checked: 2026-11-09
 sources:
   - https://doc.rust-lang.org/book/
   - https://doc.rust-lang.org/std/
   - https://doc.rust-lang.org/reference/
   - https://tokio.rs/tokio/tutorial
   - https://crates.io/
+  - https://blog.rust-lang.org/releases/
 ---
 
 # Rust 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-07-29)
+## 1. 버전 현황 (확인일: 2026-11-09)
 
 ### Rust 릴리스
 
-> 확인일: 2026-07-29 기준. Rust는 6주 릴리스 사이클로 업데이트됩니다.
+> 확인일: 2026-11-09 기준. Rust는 6주 릴리스 사이클로 업데이트됩니다. Stable 1.99.1은 2026-10-15에 릴리스되었습니다(2026-07-29 당시 Stable은 1.97.1).
 
 | 항목        | 버전   | 비고                                   |
 |-------------|--------|----------------------------------------|
@@ -30,7 +31,7 @@ sources:
 | Edition     | 2024   | 현행 권장 (Rust 1.85+, cargo new 기본) |
 | MSRV (최소) | 1.70   | LazyLock=1.80+, Edition 2024=1.85+     |
 
-### 주요 크레이트 최신 안정 버전 (2026-07-29)
+### 주요 크레이트 최신 안정 버전 (2026-11-09)
 
 | 크레이트    | 최신 버전 | 주요 변경             |
 |-------------|-----------|-----------------------|
@@ -40,10 +41,10 @@ sources:
 | axum        | 0.8.9     | 0.7→0.8 breaking      |
 | clap        | 4.6.7     | derive 방식 표준화    |
 | anyhow      | 1.0.104   | 안정적                |
-| thiserror   | 2.0.19    | 2.x로 major bump      |
-| signal-hook | 0.4.4     | 0.3→0.4 minor 변경    |
+| thiserror   | 2.0.21    | 2.x로 major bump      |
+| signal-hook | 0.4.6     | 0.3→0.4 minor 변경    |
 | nix         | 0.31.3    | 0.29→0.31             |
-| crossbeam   | 0.8.4     | MPMC (mpsc와 다름)    |
+| crossbeam   | 0.8.5     | MPMC (mpsc와 다름)    |
 | regex       | 1.13.1    | 안정적                |
 | chrono      | 0.4.45    | 안정적                |
 
@@ -231,14 +232,14 @@ cargo build --release --target x86_64-unknown-linux-musl
 ### fs::rename atomic 보장 조건
 
 - **같은 파일시스템** 내에서만 atomic 보장 (POSIX rename(2) 기반).
-- 다른 마운트 포인트 간 rename → `io::ErrorKind::Other` 에러.
+- 다른 마운트 포인트 간 rename → `io::ErrorKind::CrossesDevices` 에러 (Rust 1.85에서 안정화).
 - Windows: Windows 10 1607+ + FileRenameInfoEx 지원 시 atomic.
 
 > 출처: doc.rust-lang.org/std/fs/fn.rename.html
 
 ### LazyLock (Rust 1.80+)
 
-- `std::sync::LazyCell`의 thread-safe 버전 (OnceLock과 무관).
+- `std::cell::LazyCell`의 thread-safe 버전 (OnceLock과 무관).
 - `lazy_static` 크레이트 대체 가능.
 - `static` 변수에 사용하는 표준 방식.
 

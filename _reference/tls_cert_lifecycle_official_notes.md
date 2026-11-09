@@ -6,13 +6,16 @@ tags:
   - certificate
   - monitoring
   - acme
-last_checked: 2026-11-05
+last_checked: 2026-11-09
 sources:
   - https://github.com/cabforum/servercert/blob/main/docs/BR.md
   - https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/
   - https://letsencrypt.org/2025/12/02/from-90-to-45
   - https://letsencrypt.org/2025/01/22/ending-expiration-emails/
   - https://letsencrypt.org/2025/06/26/expiration-notification-service-has-ended
+  - https://letsencrypt.org/docs/profiles/
+  - https://letsencrypt.org/2024/12/05/ending-ocsp
+  - https://letsencrypt.org/2025/08/06/ocsp-service-has-reached-end-of-life
   - https://www.rfc-editor.org/rfc/rfc9773.html
   - https://github.com/certbot/certbot/blob/main/certbot/CHANGELOG.md
   - https://github.com/prometheus/blackbox_exporter/tree/v0.29.1
@@ -40,10 +43,10 @@ TLS Baseline Requirements v2.3.1(2026-10-04) 원문 6.3.2·4.2.1 표를 직접 �
 
 ## 2. Let's Encrypt
 
-- 수명 단축(2025-12-02 공지): 현재 90일·인증 재사용 30일. 2026-05-13 `tlsserver` 프로필(선택) 45일, 2027-02-10 기본 `classic` 프로필 64일·인증 재사용 10일, 2028-02-16 `classic` 45일·인증 재사용 7시간. staging은 약 한 달 먼저 바뀝니다. 6일짜리 `shortlived` 프로필이 따로 있습니다.
+- 수명 단축(2025-12-02 공지): 현재 90일·인증 재사용 30일. 2026-05-13 `tlsserver` 프로필(선택) 45일, 2027-02-10 기본 `classic` 프로필 64일·인증 재사용 10일, 2028-02-16 `classic` 45일·인증 재사용 7시간. staging은 약 한 달 먼저 바뀝니다. 6일짜리 `shortlived` 프로필이 따로 있습니다(공지 표현, 프로필 문서의 유효기간은 160시간).
 - 갱신 권장: ARI 사용. ARI가 없으면 수명의 약 2/3 시점에 갱신하며, 60일 고정 갱신은 충분하지 않다고 명시했습니다. 수동 갱신은 권장하지 않고 갱신 실패 알림을 두라고 안내합니다. DNS TXT 레코드를 매번 바꾸지 않는 DNS-PERSIST-01은 2026년 도입 예정으로 소개되었습니다.
 - 만료 알림 메일: 2025-01-22 종료를 공지했고 2025-06-04 서비스를 끝냈습니다. ACME API로 받은 메일 주소는 삭제했습니다.
-- OCSP: 2025-08-06 종료되었고 폐기 정보는 CRL로만 제공합니다(Let's Encrypt 공지를 인용한 보도와 커뮤니티 글로 확인, 공지 원문은 직접 열지 않았습니다).
+- OCSP: 2024-12-05 공지대로 2025-05-07 인증서에서 OCSP URL을 빼고 2025-08-06 OCSP 응답 서버를 껐으며, 폐기 정보는 CRL로만 제공합니다(2026-11-09 공지 원문 두 건 확인).
 
 ## 3. ACME Renewal Information (RFC 9773)
 

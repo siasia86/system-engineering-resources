@@ -6,7 +6,7 @@ tags:
   - iac
   - aws
   - infrastructure
-last_checked: 2026-11-05
+last_checked: 2026-11-09
 sources:
   - https://developer.hashicorp.com/terraform/language
   - https://developer.hashicorp.com/terraform/language/backend/s3
@@ -20,10 +20,10 @@ sources:
 
 ## 1. 버전 현황 (확인일: 2026-11-05)
 
-| 컴포넌트          | 최신 버전 | 비고          |
-|-------------------|-----------|---------------|
-| Terraform         | v1.17.1   | stable        |
-| AWS Provider      | v6.72.0   | hashicorp/aws |
+| 컴포넌트     | 최신 버전 | 비고          |
+|--------------|-----------|---------------|
+| Terraform    | v1.17.1   | stable        |
+| AWS Provider | v6.72.0   | hashicorp/aws |
 
 ## 2. required_version 권장 문법
 
@@ -69,19 +69,19 @@ terraform {
 |------|-------------------------------------------------------------|
 | 1.15 | `variable`/`output`에 `deprecated` 속성 추가                |
 | 1.14 | `terraform query` 명령어 추가                               |
-| 1.13 | Ephemeral resources, Write-only attributes 정식 지원        |
-| 1.10 | S3 backend `use_lockfile` 추가 (DynamoDB 대체)              |
-| 1.9  | `terraform test` stable, Input variable validation 강화     |
+| 1.11 | Write-only attributes 추가, S3 `use_lockfile` 정식(GA)      |
+| 1.10 | Ephemeral resources·values 추가, S3 `use_lockfile` 추가     |
+| 1.9  | Input variable validation이 다른 객체 참조 가능             |
 | 1.8  | Provider-defined functions 지원                             |
 | 1.7  | `removed` 블록 추가 (state에서 리소스 제거, 실제 삭제 없음) |
-| 1.6  | `terraform test` 실험적, `check` 블록 stable                |
-| 1.5  | `import` 블록 추가 (HCL로 import 선언), `check` 블록 실험적 |
+| 1.6  | `terraform test` 정식(GA)                                   |
+| 1.5  | `import` 블록 추가 (HCL로 import 선언), `check` 블록 추가   |
 
 ## 5. 코드 스타일 권장사항 (공식)
 
 - `terraform fmt` — 커밋 전 반드시 실행
 - `terraform validate` — 커밋 전 반드시 실행
-- 리소스 명명: `[type]_[name]` (예: `aws_instance_web`)
+- 리소스 이름: 명사·밑줄 구분, 이름에 리소스 유형을 넣지 않음 (예: `resource "aws_instance" "web_api"`)
 - 변수명: snake_case
 - 모듈 입력 변수에 `description`, `type` 필수
 - `count` vs `for_each`: 리소스 목록은 `for_each` 권장 (삭제 시 인덱스 재정렬 방지)
@@ -99,6 +99,6 @@ terraform {
 
 - `count` 사용 시 중간 요소 삭제 → 이후 인덱스 전체 재생성 위험 → `for_each` 권장
 - `depends_on` 남용 시 불필요한 재생성 발생
-- provider 버전 `~>` 고정 권장 (`version = "~> 5.0"`)
+- provider 버전 `~>` 고정 권장 (`version = "~> 6.0"`, AWS Provider 현행 주 버전 6)
 - 상태 파일 직접 편집 금지 — `terraform state` 명령어 사용
 - `terraform destroy` — 프로덕션 실행 전 반드시 plan 확인

@@ -6,7 +6,7 @@ tags:
   - dotnet
   - programming
   - microsoft
-last_checked: 2026-08-02
+last_checked: 2026-11-09
 sources:
   - https://learn.microsoft.com/en-us/dotnet/csharp/
   - https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/
@@ -37,7 +37,7 @@ sources:
 | .NET 7    | STS         | EOL         | 2024-05-14 | C# 11        | releases-index |
 | .NET 6    | LTS         | EOL         | 2024-11-12 | C# 10        | releases-index |
 
-🟡 .NET 8/9는 2026-11-10 EOL 예정.
+🟡 .NET 8/9는 2026-11-10 EOL 예정. (2026-11-09 확인: .NET 11은 STS 릴리스로 11.0.0-rc.3(2026-10-25)·go-live 단계이며, .NET 8/9의 EOL 날짜는 변동 없음)
 
 ### C# 언어 버전 ↔ .NET SDK 기본 매핑
 
@@ -120,7 +120,7 @@ sources:
 | primary constructor   | C# 12     | class/struct에서 기본 생성자 선언 가능               | language-ref |
 | 컬렉션 식             | C# 12     | `[1, 2, 3]` 형태 컬렉션 초기화                       | language-ref |
 | field 키워드          | C# 14     | auto-property backing field 접근 (C# 13에서 preview) | language-ref |
-| null 조건 할당 `??=`  | C# 8      | `x ??= defaultValue`                                 | language-ref |
+| null 병합 할당 `??=`  | C# 8      | `x ??= defaultValue`                                 | language-ref |
 
 ## 5. 프로젝트 구조 / 빌드 시스템
 

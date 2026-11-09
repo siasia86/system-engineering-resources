@@ -1,6 +1,6 @@
 ---
 name: iotop-official-notes
-last_checked: 2026-08-01
+last_checked: 2026-11-09
 sources:
   - https://man7.org/linux/man-pages/man8/iotop.8.html
   - https://github.com/Tomas-M/iotop
@@ -26,6 +26,8 @@ sources:
 | 필요 커널 설정   | CONFIG_TASK_DELAY_ACCT, CONFIG_TASK_IO_ACCOUNTING, CONFIG_TASKSTATS, CONFIG_VM_EVENT_COUNTERS | iotop.8    |
 | 비-root 실행     | `cap_net_admin` capability 부여 시 가능                                                       | iotop.8    |
 | Total vs Current | Total: 프로세스↔커널 블록 서브시스템, Current: 블록 서브시스템↔하드웨어                       | iotop.8    |
+
+(2026-11-09 확인: GitHub API 기준 최신 stable은 v1.33(2026-10-21)입니다)
 
 ## 2. 주요 옵션 (iotop.8 man page 기반)
 

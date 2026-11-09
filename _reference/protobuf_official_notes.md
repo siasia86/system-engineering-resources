@@ -7,7 +7,7 @@ tags:
   - serialization
   - schema
   - wire-format
-last_checked: 2026-09-11
+last_checked: 2026-11-09
 sources:
   - https://protobuf.dev/overview/
   - https://protobuf.dev/programming-guides/proto3/
@@ -15,13 +15,14 @@ sources:
   - https://protobuf.dev/programming-guides/serialization-not-canonical/
   - https://protobuf.dev/editions/overview/
   - https://github.com/protocolbuffers/protobuf/releases/tag/v36.1
+  - https://github.com/protocolbuffers/protobuf/releases
 ---
 
 # Protocol Buffers 공식 참조 노트
 
 ## 1. 버전 현황
 
-- 최신 공식 GitHub 릴리스: `v36.1`.
+- 최신 공식 GitHub 릴리스: `v36.1`. (2026-11-09 확인: 최신 정식 릴리스는 `v36.2`(2026-09-17)이며 시험판 `v37.0-rc1`(2026-10-15)이 나와 있습니다.)
 - Protocol Buffers 문서는 `proto2`, `proto3`, Protobuf Editions를 함께 설명합니다.
 - Editions는 기존 `proto2`·`proto3` 표기를 대체하고 `edition = "2024"` 같은 edition 번호로 기본 동작을 지정하는 모델입니다.
 - Editions는 기능(feature)의 기본 동작을 점진적으로 변경할 수 있도록 설계되며, 기존 바이너리와 메시지의 binary·text·JSON 직렬화 형식을 깨지 않는 것을 목표로 합니다.

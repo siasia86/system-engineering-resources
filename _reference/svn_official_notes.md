@@ -7,25 +7,28 @@ tags:
   - version-control
   - vcs
   - cicd
-last_checked: 2026-11-05
+last_checked: 2026-11-09
 sources:
   - https://subversion.apache.org/
   - https://svnbook.red-bean.com/
   - https://subversion.apache.org/docs/release-notes/1.14.html
   - https://svn.apache.org/repos/asf/subversion/trunk/CHANGES
+  - https://svnbook.red-bean.com/en/1.7/svn.tour.revs.specifiers.html
+  - https://subversion.apache.org/docs/release-notes/1.15.html
+  - https://git-scm.com/docs/git-sparse-checkout
 ---
 
 # SVN 공식 문서 참조 노트
 
 ## 1. 버전 현황 (확인일: 2026-11-05)
 
-| 항목           | 버전   | 비고                             |
-|----------------|--------|----------------------------------|
-| 최신·권장      | 1.15.0 | 출시: 2026-10-08                 |
-| 이전 안정 버전 | 1.14.5 | 출시: 2024-12-08                 |
-| EOL            | 1.13   | 이하 모든 버전 지원 종료         |
+| 항목           | 버전   | 비고                     |
+|----------------|--------|--------------------------|
+| 최신·권장      | 1.15.0 | 출시: 2026-10-08         |
+| 이전 안정 버전 | 1.14.5 | 출시: 2024-12-08         |
+| EOL            | 1.13   | 이하 모든 버전 지원 종료 |
 
-> 출처: subversion.apache.org 공식 릴리스 공지 (2026-07-29 확인)
+> 출처: subversion.apache.org 공식 릴리스 공지 (2026-11-09 확인)
 
 ## 2. 핵심 개념
 
@@ -36,7 +39,7 @@ sources:
 | Revision     | 저장소 전체 트리의 상태를 나타내는 전역 순번 (r1, r2, ...)      |
 | HEAD         | 저장소의 최신 리비전                                            |
 | BASE         | 현재 Working Copy의 기준 리비전 (마지막 체크아웃/업데이트 시점) |
-| PREV         | BASE - 1 리비전                                                 |
+| PREV         | COMMITTED - 1 리비전 (마지막 변경 직전)                         |
 | COMMITTED    | 파일의 마지막 커밋 리비전                                       |
 | trunk        | 메인 개발 라인 (Git의 main에 해당)                              |
 | branches/    | 분기 개발 라인                                                  |
@@ -46,7 +49,7 @@ sources:
 
 ### FSFS (File System File System)
 
-- SVN 1.1+ 기본 포맷. 파일 시스템 기반.
+- SVN 1.1에서 도입, 1.2부터 기본 포맷. 파일 시스템 기반.
 - format 4 (1.6), format 6 (1.8), format 7 (1.9), format 8 (1.10+, LZ4 압축)
 - 단순 복사로 백업 가능.
 
@@ -60,7 +63,7 @@ sources:
 - LZ4 압축 지원 → 저장 공간 절감.
 - sharding: 파일을 1000개 단위로 분산 저장.
 
-> 출처: svnbook.red-bean.com/en/1.7/svn.reposadmin.html
+> 출처: svnbook.red-bean.com/en/1.7/svn.reposadmin.html, svn.reposadmin.planning.html
 
 ## 4. 아키텍처 — 중앙집중형
 
@@ -134,21 +137,21 @@ sources:
 
 ## 10. Git과의 주요 차이
 
-| 항목           | SVN                        | Git                         |
-|----------------|----------------------------|-----------------------------|
-| 모델           | 중앙집중형                 | 분산형                      |
-| 리비전         | 전역 순번 (r1, r2, ...)    | SHA-1/SHA-256 해시          |
-| 브랜치         | 디렉토리 복사 (cheap copy) | 포인터 (O(1))               |
-| 오프라인 작업  | 제한적 (log, diff 일부)    | 완전 지원                   |
-| 커밋 단위      | 저장소 전체 트리           | 변경셋(changeset)           |
-| 부분 체크아웃  | 지원 (sparse checkout)     | 미지원 (partial clone 별도) |
-| 이진 파일 잠금 | 지원 (svn:needs-lock)      | LFS + 별도 잠금 플러그인    |
-| 학습 곡선      | 낮음                       | 높음                        |
+| 항목           | SVN                        | Git                                         |
+|----------------|----------------------------|---------------------------------------------|
+| 모델           | 중앙집중형                 | 분산형                                      |
+| 리비전         | 전역 순번 (r1, r2, ...)    | SHA-1/SHA-256 해시                          |
+| 브랜치         | 디렉토리 복사 (cheap copy) | 포인터 (O(1))                               |
+| 오프라인 작업  | 제한적 (log, diff 일부)    | 완전 지원                                   |
+| 커밋 단위      | 저장소 전체 트리           | 변경셋(changeset)                           |
+| 부분 체크아웃  | 지원 (sparse checkout)     | 지원 (`git sparse-checkout`, partial clone) |
+| 이진 파일 잠금 | 지원 (svn:needs-lock)      | LFS + 별도 잠금 플러그인                    |
+| 학습 곡선      | 낮음                       | 높음                                        |
 
 ## 11. 주의사항
 
 - `svn commit` 은 즉시 저장소에 반영. Git의 `git commit`(로컬)과 다름.
 - 병합 이력은 `svn:mergeinfo` 속성으로 관리 → 수동 편집 금지.
 - `svn cp` (브랜치/태그 생성)는 cheap copy — 저장소 내 링크이므로 빠름.
-- Working Copy 포맷은 SVN 서버 버전보다 최신일 수 없음.
+- Working Copy 포맷은 클라이언트가 정하며 서버 버전과 무관함. 1.15 클라이언트·서버는 이전 판과 상호 운용됨(1.15 release notes).
 - SVN 1.7+ Working Copy는 SVN 1.6 이하 클라이언트로 열 수 없음.
