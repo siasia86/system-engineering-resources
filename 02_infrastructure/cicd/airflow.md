@@ -579,8 +579,10 @@ def consume(s3_path: str):
 
 XCom은 자동 삭제되지 않으므로 주기적 정리가 필요합니다.
 
+🟡 아래 세션 직접 조회 코드는 Airflow 2.x 전용입니다. Airflow 3부터 태스크 코드는 메타데이터 DB 세션·모델을 직접 쓸 수 없으며, REST API(Airflow Python Client)를 사용합니다.
+
 ```python
-# DAG 완료 후 XCom 정리
+# DAG 완료 후 XCom 정리 (Airflow 2.x 전용)
 from airflow.models import XCom
 from airflow.utils.session import provide_session
 
@@ -595,7 +597,7 @@ def cleanup_xcom(context, session=None):
 ```
 
 ```bash
-# CLI로 XCom 삭제
+# 태스크 상태 초기화(태스크가 다시 실행됨): XCom을 바로 지우는 명령은 아님
 airflow tasks clear my_dag --start-date 2026-01-01 --end-date 2026-04-01
 ```
 
@@ -823,6 +825,7 @@ airflow tasks states-for-dag-run my_dag manual__2026-04-27T00:00:00+00:00
 - Airflow Concepts: [Concepts](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/index.html) — ★★★☆☆
 - Airflow 3 업그레이드 안내: [Upgrading to Airflow 3](https://airflow.apache.org/docs/apache-airflow/stable/installation/upgrading_to_airflow3.html) — ★★★☆☆
 - Airflow Release Notes: [Release Notes](https://airflow.apache.org/docs/apache-airflow/stable/release_notes.html) — ★★★☆☆
+- Airflow 소스 taskinstance.py (clear_task_instances는 XCom을 지우지 않음): [github.com/apache/airflow](https://github.com/apache/airflow/blob/main/airflow-core/src/airflow/models/taskinstance.py) — ★★★☆☆
 
 ---
 

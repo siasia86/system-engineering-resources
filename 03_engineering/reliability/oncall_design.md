@@ -50,6 +50,9 @@
 | Bi-weekly  | 4명          | 주의: 25% 초과 가능, 보완 필요       |
 | Follow-sun | 3 리전 × 2명 | 리전당 최소 2명 (백업 필수)          |
 
+> 위 Weekly 산정은 primary 1명만 온콜하는 경우입니다. Google SRE Book은 primary·secondary 2명이 항상 온콜인 단일 사이트 팀의 최소 인원을 8명(주 단위 교대 시 각자 월 1주), 2개 사이트 팀은 사이트당 6명으로 제시합니다.
+> — https://sre.google/sre-book/being-on-call/
+
 ### 일정 관리 규칙
 
 - 최소 2주 전 일정 공개

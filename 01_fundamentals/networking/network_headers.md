@@ -644,8 +644,9 @@ VXLAN 캡슐화:
 **AWS VPC:**
 ```
 EC2 인스턴스 간 통신:
-- VNI로 VPC 격리
-- 오버레이 네트워크
+- 오버레이 네트워크 (내부 캡슐화 방식은 공식 문서에 공개되지 않음)
+- 공식 문서의 VXLAN 사용 예: VPC Traffic Mirroring
+  (미러링 패킷을 UDP 4789 VXLAN으로 전달, 세션별 VNI, VNI는 신뢰 경계 아님)
 ```
 
 **멀티 테넌트:**
@@ -844,6 +845,7 @@ quic
 - RFC 2784: GRE / RFC 7348: VXLAN / RFC 9000: QUIC
 - RFC 6918: ICMP Type 30 등 폐기 / RFC 3425: DNS IQUERY 폐기 / RFC 8996: TLS 1.0·1.1 폐기
 - AWS Transit Gateway Connect (GRE): [docs.aws.amazon.com](https://docs.aws.amazon.com/vpc/latest/tgw/tgw-connect.html) — ★★★☆☆
+- AWS VPC Traffic Mirroring 패킷 형식 (VXLAN, UDP 4789): [docs.aws.amazon.com](https://docs.aws.amazon.com/vpc/latest/mirroring/traffic-mirroring-packet-formats.html) — ★★★☆☆
 - Wireshark TLS 표시 필터: [wireshark.org/docs/dfref/t/tls.html](https://www.wireshark.org/docs/dfref/t/tls.html) — ★★★☆☆
 
 ---

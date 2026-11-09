@@ -478,6 +478,8 @@ AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 
 - [ ] Ansible·CI/CD·애플리케이션 로그에 Secret이 노출되지 않습니다.
 - [ ] RTO·RPO, 비용, 운영 담당자, 라이선스 검토가 완료됩니다.
 
+> 라이선스: Vault 1.15.0 이후 판은 BSL 1.1(Business Source License)이며, IBM 유료 판과 경쟁하는 호스팅·임베디드 제공을 제한하고 각 판 공개 4년 뒤 MPL 2.0으로 전환됩니다. MPL 2.0 커뮤니티 포크로 Linux Foundation(OpenSSF) 산하 OpenBao가 있습니다.
+
 ## 9. 관련 문서
 
 - 설치·초기화·TLS 절차: [HashiCorp Vault 설치 가이드](vault_install.md)
@@ -529,6 +531,8 @@ AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 
 - AWS KMS Key Policies: [docs.aws.amazon.com/kms/latest/developerguide/key-policies.html](https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html) — ★★★☆☆
 - AWS KMS Key Deletion: [docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html](https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html) — ★★★☆☆
 - AWS KMS CloudTrail Logging: [docs.aws.amazon.com/kms/latest/developerguide/logging-using-cloudtrail.html](https://docs.aws.amazon.com/kms/latest/developerguide/logging-using-cloudtrail.html) — ★★★☆☆
+- Vault LICENSE(BSL 1.1, 1.15.0 이후): [github.com/hashicorp/vault](https://github.com/hashicorp/vault/blob/main/LICENSE) — ★★★☆☆
+- OpenBao(Vault 포크, MPL 2.0): [openbao.org](https://openbao.org/) — ★★★☆☆
 
 ---
 

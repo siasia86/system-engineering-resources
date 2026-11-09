@@ -106,6 +106,7 @@
 | Fallback to On-demand | Spot 부족 시 자동 On-demand 전환 |
 
 > AWS의 "capacity-optimized" 배치 전략은 가용 용량이 가장 많은 Spot 풀을 선택해 중단 가능성을 낮춥니다. 현재 AWS best practice는 가용 용량과 가격을 함께 고려하는 "price-capacity-optimized" 전략입니다.
+> AWS는 중단이나 용량 부족에 대비해 On-Demand로 장애 조치(fail over)하는 방식을 강하게 권장하지 않습니다. On-Demand 전환이 다른 Spot 인스턴스의 중단을 늘릴 수 있고, 중단된 인스턴스 유형·AZ 조합은 On-Demand 용량도 확보하기 어려울 수 있습니다. 위 표의 Fallback을 쓰려면 이 주의를 함께 검토합니다.
 > — https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html
 
 ## 5. Right-sizing

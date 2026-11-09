@@ -309,7 +309,7 @@ check_service nginx
 #!/bin/bash
 # 서버 헬스 체크
 
-# CPU 사용률
+# CPU 사용률 (top의 us 값 = 사용자 영역만, sy·wa 등 제외)
 CPU=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1)
 
 # 메모리 사용률

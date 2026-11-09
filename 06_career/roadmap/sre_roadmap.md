@@ -1150,6 +1150,7 @@ provider "azurerm" {
   features {}
 }
 
+# azurerm_virtual_machine은 superseded(기능 동결) → 새 구성은 azurerm_linux_virtual_machine / azurerm_windows_virtual_machine
 resource "azurerm_virtual_machine" "web" {
   name     = "web-vm"
   vm_size  = "Standard_B2s"
@@ -2085,6 +2086,7 @@ Staff/Principal (8년+):
 - Terraform Cloud → HCP Terraform 이름 변경: [hashicorp.com](https://www.hashicorp.com/blog/introducing-the-infrastructure-cloud) — ★★★☆☆
 - Safety CLI (`check` 폐기, `scan` 대체): [github.com/pyupio/safety](https://github.com/pyupio/safety) — ★★★☆☆
 - Katacoda 종료 안내: [oreilly.com](https://www.oreilly.com/online-learning/leveraging-katacoda-technology.html) — ★★★☆☆
+- Terraform azurerm `azurerm_virtual_machine`(superseded, 기능 동결): [registry.terraform.io](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine) — ★★★☆☆
 - 저장소 gitleaks 가이드(`detect` deprecated, `git` 모드): [gitleaks_guide.md](../../04_security/hardening/gitleaks_guide.md)
 
 ---

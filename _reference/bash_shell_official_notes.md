@@ -1,10 +1,11 @@
 ---
 name: bash-shell-official-notes
-last_checked: 2026-08-01
+last_checked: 2026-11-09
 sources:
   - https://www.gnu.org/software/bash/manual/bash.html
   - https://man7.org/linux/man-pages/man1/bash.1.html
   - https://ftp.gnu.org/gnu/bash/
+  - https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html
 ---
 
 # Bash Shell 공식 참조 노트
@@ -96,15 +97,17 @@ sources:
 
 ## 5. deprecated / 주의사항
 
-| 항목           | 상태                                                          | 출처        |
-|----------------|---------------------------------------------------------------|-------------|
-| `#!/bin/sh`    | POSIX sh 호환, bash 전용 기능(`[[ ]]`, `$'...'` 등) 사용 불가 | bash manual |
-| `let` / `expr` | 산술 연산은 `$(( ))` 또는 `(( ))` 사용 권장                   | bash manual |
+| 항목           | 상태                                                | 출처        |
+|----------------|-----------------------------------------------------|-------------|
+| `#!/bin/sh`    | POSIX sh 호환, bash 전용 기능(`[[ ]]` 등) 사용 불가 | bash manual |
+| `let` / `expr` | 산술 연산은 `$(( ))` 또는 `(( ))` 사용 권장         | bash manual |
+
+- `$'...'`(dollar-single-quotes)는 POSIX.1-2024(Issue 8) Shell Command Language 2.2.4에 추가돼 bash 전용 기능이 아닙니다. 다만 sh 구현별 지원이 달라 dash 0.5.12는 해석하지 않고 bash `--posix`·busybox sh는 해석합니다(2026-11-09 재현).
 
 ---
 
 **작성일**: 2026-08-01
 
-**마지막 업데이트**: 2026-08-01
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

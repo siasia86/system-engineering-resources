@@ -286,6 +286,7 @@ gameservers
 
 # ansible_python_interpreter 개별 지정 예시 (ansible.cfg auto 설정 덮어씀)
 # 우선순위: inventory 변수 > ansible.cfg
+# 주의: 대상 Python 2.7·3.6은 ansible-core 2.16까지만 지원 (2.17부터 3.7+, 2.20부터 3.9+)
 # [legacy]
 # old-host ansible_host=10.0.2.1 ansible_python_interpreter=/usr/bin/python2
 #
@@ -501,7 +502,7 @@ chmod 600 ~/.ansible_vault_pass
 | 업데이트    | `apt/dnf upgrade`       | `pip install --upgrade`  |
 | 다중 버전   | 불가                    | venv 로 버전별 분리 가능 |
 | 의존성 관리 | 자동                    | 수동 (venv 권장)         |
-| 공식 권장   | 테스트/개발 환경        | 프로덕션 환경            |
+| 작성자 권장 | 테스트/개발 환경        | 프로덕션 환경            |
 
 🟡 pip 설치 시 반드시 가상환경(venv) 사용을 권장합니다. 시스템 Python 패키지와 충돌을 방지합니다.
 

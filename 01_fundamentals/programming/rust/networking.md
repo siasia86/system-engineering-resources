@@ -324,7 +324,7 @@ async fn main() {
 ### Prometheus exporter 패턴
 
 ```rust
-use axum::{routing::get, Router};
+use axum::{extract::State, routing::get, Router};
 use std::sync::{Arc, Mutex};
 use tokio::time::{interval, Duration};
 
@@ -345,7 +345,8 @@ async fn collect_loop(metrics: Arc<Mutex<Metrics>>) {
     }
 }
 
-async fn metrics_handler(metrics: Arc<Mutex<Metrics>>) -> String {
+// 등록: Router::new().route("/metrics", get(metrics_handler)).with_state(metrics.clone())
+async fn metrics_handler(State(metrics): State<Arc<Mutex<Metrics>>>) -> String {
     let m = metrics.lock().unwrap();
     format!(
         "cpu_usage {:.1}\nmemory_used_bytes {}\ndisk_usage_percent {:.1}\n",
@@ -528,6 +529,7 @@ async fn proxy(listen: &str, target: &str) -> anyhow::Result<()> {
 - Tokio Tutorial: [tokio.rs/tokio/tutorial](https://tokio.rs/tokio/tutorial) — ★★★☆☆
 - reqwest docs: [docs.rs/reqwest](https://docs.rs/reqwest) — ★★★☆☆
 - axum docs: [docs.rs/axum](https://docs.rs/axum) — ★★★☆☆
+- axum State 추출자: [docs.rs/axum/latest/axum/extract/struct.State.html](https://docs.rs/axum/latest/axum/extract/struct.State.html) — ★★★☆☆
 - hickory-resolver docs: [docs.rs/hickory-resolver](https://docs.rs/hickory-resolver) — ★★★☆☆
 - Hickory DNS (Trust-DNS 이름 변경 공지): [github.com/hickory-dns/hickory-dns](https://github.com/hickory-dns/hickory-dns) — ★★★☆☆
 - Network Programming with Rust (Packt, 2018): [oreilly.com](https://www.oreilly.com/library/view/network-programming-with/9781788624893/) — ★★★★☆

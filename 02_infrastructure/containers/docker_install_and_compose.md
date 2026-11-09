@@ -466,13 +466,13 @@ image: mysql:latest
 image: mysql:8.4.5
 ```
 
-### Tip 5: 무중단 업데이트
+### Tip 5: 서비스 단위 업데이트
 
 ```bash
 # 1. 새 이미지 pull
 docker compose pull app
 
-# 2. 해당 서비스만 재시작 (다른 서비스 영향 없음)
+# 2. 해당 서비스만 다시 만듦 (다른 서비스 영향 없음, 컨테이너를 멈추고 새로 만드는 동안 app은 잠깐 끊김)
 docker compose up -d --no-deps app
 
 # 3. 이전 이미지 정리
@@ -651,6 +651,7 @@ sudo ip link set macvlan0 up
 - Docker Documentation: [Docker Compose](https://docs.docker.com/compose/) — ★★★☆☆
 - Docker Documentation: [Compose file reference](https://docs.docker.com/reference/compose-file/) — ★★★☆☆
 - Docker Documentation: [Configure logging drivers](https://docs.docker.com/engine/logging/configure/) — ★★★☆☆
+- Docker Documentation: [docker compose up (변경 시 멈추고 다시 만듦)](https://docs.docker.com/reference/cli/docker/compose/up/) — ★★★☆☆
 
 ---
 

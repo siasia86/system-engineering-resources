@@ -574,7 +574,7 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.1.0
+      - uses: actions/checkout@v6.1.0  # 2026-11 기준 최신 메이저는 v7(v7.0.1), 갱신 시 릴리스 노트 확인
         with:
           fetch-depth: 0  # 전체 히스토리 스캔을 위해 필요
 
@@ -685,6 +685,7 @@ for r in rules: print(r)
 - Gitleaks v8.30.0 릴리스(디코딩 기본 깊이 0→5): [releases/tag/v8.30.0](https://github.com/gitleaks/gitleaks/releases/tag/v8.30.0) — ★★★☆☆
 - GitLab CI 이미지 entrypoint 재정의: [docs.gitlab.com/ci/docker/using_docker_images](https://docs.gitlab.com/ci/docker/using_docker_images/) — ★★★☆☆
 - Git pre-push 입력 형식: [git-scm.com/docs/githooks](https://git-scm.com/docs/githooks#_pre_push) — ★★★☆☆
+- actions/checkout 릴리스(v7.0.1): [github.com/actions/checkout/releases](https://github.com/actions/checkout/releases) — ★★★☆☆
 - 확인 기록: [Gitleaks 참조 노트](../../_reference/gitleaks_official_notes.md)
 
 ---

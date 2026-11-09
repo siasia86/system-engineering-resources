@@ -710,7 +710,7 @@ MySQL NDB Cluster의 Storage Engine. 99.999% 가용성을 목표로 하며, shar
 ALTER TABLE old_table ENGINE = InnoDB;
 
 -- 대용량 테이블 변환 시 주의사항:
--- 1. 변환 중 테이블 잠금 발생 (Online DDL로 최소화)
+-- 1. 엔진 변경은 COPY 알고리즘 사용: 변환 중 읽기는 되지만 쓰기(DML)는 끝날 때까지 대기 (Online DDL 미적용)
 -- 2. 디스크 공간 2배 필요 (원본 + 새 테이블)
 -- 3. FK 관계 테이블은 순서 주의
 
@@ -802,7 +802,8 @@ CREATE TABLE audit_log (
 -- 대용량 테이블 변환 시 (InnoDB → InnoDB 재구성도 동일)
 SET GLOBAL innodb_io_capacity = 20000;       -- SSD 기준 (기본 10000)
 SET GLOBAL innodb_io_capacity_max = 40000;
-SET SESSION sort_buffer_size = 64 * 1024 * 1024;
+-- sort_buffer_size는 세션 정렬(ORDER BY 등)용이라 이 변환에는 효과 없음
+-- InnoDB DDL용 innodb_sort_buffer_size는 동적 변경 불가 (my.cnf 설정 후 재시작)
 
 ALTER TABLE large_table ENGINE = InnoDB;
 
@@ -821,6 +822,9 @@ SET GLOBAL innodb_io_capacity_max = 20000;
 - MySQL 8.4 Reference Manual — InnoDB: [dev.mysql.com/doc/refman/8.4/en/innodb-storage-engine.html](https://dev.mysql.com/doc/refman/8.4/en/innodb-storage-engine.html) — ★★★☆☆
 - MySQL 8.4 Reference Manual — InnoDB 시스템 변수 기본값: [InnoDB Startup Options and System Variables](https://dev.mysql.com/doc/refman/8.4/en/innodb-parameters.html) — ★★★☆☆
 - MySQL 8.4 Reference Manual — AUTO_INCREMENT 카운터 영구 저장: [AUTO_INCREMENT Handling in InnoDB](https://dev.mysql.com/doc/refman/8.4/en/innodb-auto-increment-handling.html) — ★★★☆☆
+- MySQL 8.4 Reference Manual — COPY 알고리즘의 동시 DML 제한: [ALTER TABLE Statement](https://dev.mysql.com/doc/refman/8.4/en/alter-table.html) — ★★★☆☆
+- MySQL 8.4 소스 — 엔진 변경 시 table copy 판정(`is_inplace_alter_impossible`): [sql/sql_table.cc](https://github.com/mysql/mysql-server/blob/8.4/sql/sql_table.cc) — ★★★☆☆
+- MySQL 8.4 Reference Manual — `sort_buffer_size`: [Server System Variables](https://dev.mysql.com/doc/refman/8.4/en/server-system-variables.html) — ★★★☆☆
 - Schwartz, Baron et al. "High Performance MySQL, 4th Edition"
 
 ---

@@ -25,7 +25,7 @@ fn read_all(path: &str) -> io::Result<String> {
     fs::read_to_string(path)
 }
 
-// 줄 단위 읽기 (대용량 파일, 메모리 효율적)
+// 줄 단위 읽기 (모든 줄을 Vec에 모음. 대용량 파일은 lines()를 순회하며 바로 처리)
 fn read_lines(path: &str) -> io::Result<Vec<String>> {
     let file = fs::File::open(path)?;
     let reader = io::BufReader::new(file);

@@ -101,6 +101,7 @@ kubectl create namespace argocd
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
 
+# 차트 9.5.15 = Argo CD v3.4.2 (판 목록: helm search repo argo/argo-cd --versions)
 helm install argocd argo/argo-cd \
   --namespace argocd \
   --version 9.5.15 \
@@ -204,6 +205,7 @@ argocd app delete my-app --cascade
 ```yaml
 spec:
   source:
+    # Bitnami 공식 안내는 OCI 저장소: repoURL: registry-1.docker.io/bitnamicharts (oci:// 없이)
     repoURL: https://charts.bitnami.com/bitnami
     chart: redis
     targetRevision: 23.1.1
@@ -500,6 +502,9 @@ metadata:
 - ArgoCD Documentation: [argo-cd.readthedocs.io](https://argo-cd.readthedocs.io/) — ★★★☆☆
 - ArgoCD Best Practices: [argo-cd.readthedocs.io/best_practices](https://argo-cd.readthedocs.io/en/stable/user-guide/best_practices/) — ★★★☆☆
 - Argo CD Image Updater: [argocd-image-updater.readthedocs.io](https://argocd-image-updater.readthedocs.io/) — ★★★☆☆
+- Argo CD Helm (OCI 차트 repoURL 형식): [argo-cd.readthedocs.io/user-guide/helm](https://argo-cd.readthedocs.io/en/stable/user-guide/helm/) — ★★★☆☆
+- Argo Helm argo-cd-9.5.15 릴리스 (appVersion v3.4.2): [github.com/argoproj/argo-helm](https://github.com/argoproj/argo-helm/releases/tag/argo-cd-9.5.15) — ★★★☆☆
+- Bitnami Charts README (OCI 설치 안내): [github.com/bitnami/charts](https://github.com/bitnami/charts) — ★★★☆☆
 
 ---
 

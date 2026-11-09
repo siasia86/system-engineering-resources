@@ -84,6 +84,7 @@ Helm은 Kubernetes 패키지 매니저. 복잡한 K8s 매니페스트를 Chart�
 # 저장소 추가
 helm repo add stable https://charts.helm.sh/stable   # 2020-11 아카이브, 갱신 없음
 helm repo add bitnami https://charts.bitnami.com/bitnami
+# Bitnami 공식 안내는 OCI 직접 설치: helm install my-redis oci://registry-1.docker.io/bitnamicharts/redis
 helm repo add argo https://argoproj.github.io/argo-helm
 
 # 저장소 목록
@@ -525,6 +526,7 @@ helm diff upgrade my-app ./my-app -f values-prod.yaml
 - Helm Best Practices: [helm.sh/docs/chart_best_practices](https://helm.sh/docs/chart_best_practices/) — ★★★☆☆
 - Helm 4 Overview (플래그 이름 변경): [helm.sh/docs/overview](https://helm.sh/docs/overview/) — ★★★☆☆
 - Charts Repo Deprecation: [helm.sh/blog/charts-repo-deprecation](https://helm.sh/blog/charts-repo-deprecation/) — ★★★☆☆
+- Bitnami Charts README (OCI 설치 안내): [github.com/bitnami/charts](https://github.com/bitnami/charts) — ★★★☆☆
 
 ---
 

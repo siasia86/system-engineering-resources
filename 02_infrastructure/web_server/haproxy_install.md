@@ -122,6 +122,8 @@ defaults
     option  httplog
     option  dontlognull
     option  forwardfor
+    # 서버 쪽 연결을 요청마다 닫음: keep-alive를 지원하지 않는 서버가 있을 때만 필요
+    # (기본 keep-alive 모드가 서버 연결 재사용에 유리)
     option  http-server-close
     timeout connect  5s
     timeout client   30s

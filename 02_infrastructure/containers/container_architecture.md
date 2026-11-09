@@ -614,7 +614,8 @@ docker run --rm --security-opt seccomp=unconfined alpine sh -c '
 '
 # Seccomp: 0  (비활성화)
 
-# 커스텀 seccomp 프로파일
+# 커스텀 seccomp 프로파일 (형식 예시)
+# 주의: read/write/exit만 허용하면 execve·mmap 등이 막혀 컨테이너가 시작되지 않음
 cat > seccomp-profile.json <<EOF
 {
   "defaultAction": "SCMP_ACT_ERRNO",
@@ -1070,6 +1071,7 @@ Kernel:      Linux Kernel (기반)
 - Docker Documentation: [docs.docker.com](https://docs.docker.com/) — ★★★☆☆
 - Linux net_cls (cgroup v1): [docs.kernel.org](https://docs.kernel.org/admin-guide/cgroup-v1/net_cls.html) — ★★★☆☆
 - LXD Documentation: [canonical.com/lxd/docs](https://canonical.com/lxd/docs/) — ★★★☆☆
+- runc standard_init_linux.go (seccomp를 execve 직전에 적용): [github.com/opencontainers/runc](https://github.com/opencontainers/runc/blob/main/libcontainer/standard_init_linux.go) — ★★★☆☆
 
 ---
 

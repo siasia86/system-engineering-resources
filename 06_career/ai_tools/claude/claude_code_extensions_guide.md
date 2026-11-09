@@ -31,6 +31,8 @@ Claude Code의 동작을 프로젝트에 맞게 고정하는 방법을 정리합
 | `AGENTS.md`와 `CLAUDE.md`가 함께 있음 | `CLAUDE.md`만             |
 | `CLAUDE.md`가 `AGENTS.md`를 import    | `CLAUDE.md` + `AGENTS.md` |
 
+🟡 `CLAUDE.local.md`도 같은 판정에 포함됩니다. `AGENTS.md`만 쓰는 저장소에 `CLAUDE.local.md`를 추가하면 `AGENTS.md`를 읽지 않으므로, 둘 다 읽게 하려면 `/config`의 Project instructions를 `claude-md-and-agents-md`로 바꿉니다.
+
 Codex 등 다른 도구와 같이 쓰는 저장소는 공통 규칙을 `AGENTS.md`에 두고, `CLAUDE.md`에서 import한 뒤 Claude 전용 내용만 추가합니다.
 
 ```markdown

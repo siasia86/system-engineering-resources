@@ -99,7 +99,9 @@ cat /etc/modprobe.d/disable-algif-aead.conf 2>/dev/null
 cat /etc/modprobe.d/dirtyfrag.conf 2>/dev/null
 
 # 6. 비권한 userns 활성 여부 (활성 = 익스플로잇 조건 충족)
-sysctl kernel.unprivileged_userns_clone 2>/dev/null
+sysctl kernel.unprivileged_userns_clone 2>/dev/null            # Debian/Ubuntu 전용 (1 = 허용)
+sysctl kernel.apparmor_restrict_unprivileged_userns 2>/dev/null  # Ubuntu 23.10+ (1 = AppArmor 프로필 없는 프로그램 제한, 24.04 기본)
+sysctl user.max_user_namespaces                                # 0 = root 포함 모든 사용자의 userns 생성 불가
 
 # 7. DirtyFrag-Detector (자동 진단)
 #    main 주소는 내용이 바뀔 수 있으므로 커밋 해시로 고정해 받고, 내용을 읽은 뒤 실행합니다.

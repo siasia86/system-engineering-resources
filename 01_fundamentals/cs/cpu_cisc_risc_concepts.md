@@ -77,7 +77,7 @@ RISC(Reduced Instruction Set Computer)는 단순하고 균일한 명령어로 �
 | 명령어 길이 | 고정 길이 (4 byte, ARM/RISC-V 기준) |
 | 실행 사이클 | 대부분 1사이클                      |
 | 메모리 접근 | Load/Store 명령어만 메모리 접근     |
-| 레지스터 수 | 많음 (32개 이상)                    |
+| 레지스터 수 | 많음 (대개 16~32개)                 |
 | 디코딩      | 단순 (하드와이어드)                 |
 
 ### 동작 방식
@@ -581,6 +581,8 @@ CISC 탄생 --> RISC 등장 --> CISC+RISC --> ARM/RISC-V
 - Patterson, David A. & Hennessy, John L. "Computer Organization and Design"
 - Intel Software Developer's Manual: [Intel SDM](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html) — ★★★☆☆
 - ARM Architecture Reference Manual: [ARM Developer Docs](https://developer.arm.com/documentation) — ★★★☆☆
+- Arm AAPCS64 (범용 레지스터 31개) / AAPCS32 (코어 레지스터 16개): [aapcs64](https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst), [aapcs32](https://github.com/ARM-software/abi-aa/blob/main/aapcs32/aapcs32.rst) — ★★★☆☆
+- RISC-V 비특권 명세 (RV32I 32개, RV32E 16개): [riscv-isa-manual](https://github.com/riscv/riscv-isa-manual) — ★★★☆☆
 - IEEE Milestone: [First RISC Microprocessor, 1980-1982](https://ethw.org/Milestones:First_RISC_%28Reduced_Instruction-Set_Computing%29_Microprocessor_1980-1982) — ★★☆☆☆
 - ARM Cortex-A15 발표 보도 (2010-09): [phys.org](https://phys.org/news/2010-09-arm-unveils-cortex-a15-mpcore-processor.html) — ★★☆☆☆
 

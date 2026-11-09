@@ -34,7 +34,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 2. [Linux 시스템 프로세스](./linux_system_processes.md) — 프로세스와 시스템 상태의 관계.
 3. [가상 메모리 개념](./virtual_memory_concepts.md) — 페이지 테이블, TLB, OOM.
 4. [Linux 파일시스템](./linux_filesystem.md) — 파일시스템 구조와 운영 개념.
-5. [Virtual File System](./linux_virtual_fs.md) — VFS와 경로 처리.
+5. [Virtual File System](./linux_virtual_fs.md) — /proc·/sys 가상 파일시스템.
 
 ### 2.2 시스템 관찰
 
@@ -83,7 +83,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 
 - [Linux 파일시스템](./linux_filesystem.md) — 파일시스템 구조와 운영.
 - [POSIX ACL·setfacl](./acl_setfacl_guide.md) — ACL·Default ACL·mask·권한 상속.
-- [Linux Virtual File System](./linux_virtual_fs.md) — VFS 계층과 경로 처리.
+- [Linux Virtual File System](./linux_virtual_fs.md) — /proc·/sys 가상 파일시스템.
 - [저장장치 도구](./storage_tools.md) — 장치·마운트·공간·I/O·상태 도구 선택.
 - [lsblk](./lsblk.md) — 블록 장치 계층 확인.
 - [findmnt](./findmnt.md) — 마운트 정보 조회.
@@ -119,7 +119,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 - [seccomp·capabilities](./seccomp_capabilities.md) — 권한과 시스템 콜 제한.
 - [netfilter·tc](./netfilter_tc.md) — 패킷 필터링과 트래픽 제어.
 - [Linux 파일시스템](./linux_filesystem.md) — 파일시스템 운영 경계.
-- [Virtual File System](./linux_virtual_fs.md) — 커널 파일시스템 계층.
+- [Virtual File System](./linux_virtual_fs.md) — /proc·/sys 가상 파일시스템.
 
 ### 3.6 편집기·운영 도구
 

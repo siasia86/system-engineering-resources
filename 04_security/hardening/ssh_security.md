@@ -49,6 +49,8 @@ LoginGraceTime 30
 # 강력한 암호화 알고리즘만 허용
 Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com
 MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+# 양자 내성 키 교환: OpenSSH 9.0+ sntrup761x25519-sha512@openssh.com, 9.9+ mlkem768x25519-sha256(10.0부터 기본)
+# 지원하는 판이면 아래 KexAlgorithms 앞쪽에 추가 (10.1부터 양자 내성이 아닌 키 교환 시 클라이언트 경고)
 KexAlgorithms curve25519-sha256,diffie-hellman-group16-sha512
 ```
 
@@ -56,6 +58,8 @@ KexAlgorithms curve25519-sha256,diffie-hellman-group16-sha512
 # 설정 검증 및 재시작
 sudo sshd -t
 sudo systemctl reload sshd
+# Ubuntu 24.04: 유닛 이름이 ssh.service(sshd.service 없음) → sudo systemctl reload ssh
+# Ubuntu 24.04 소켓 활성화: Port·ListenAddress 변경 시 sudo systemctl daemon-reload 후 sudo systemctl restart ssh.socket
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -175,6 +179,8 @@ AuthenticationMethods publickey,keyboard-interactive
 | fail2ban 동작 여부     | `sudo fail2ban-client status sshd`                   |
 | 최근 로그인 실패 기록  | `sudo journalctl -u sshd \| grep Failed \| tail -20` |
 
+> Ubuntu 24.04는 `ssh.socket`이 `ssh.service`를 시작하는 소켓 활성화를 쓰며, `sshd.service` 별칭은 `ssh.service`를 enable한 경우에만 생깁니다. 이때 로그는 `sudo journalctl -u ssh`, 수신 포트는 `systemctl status ssh.socket`으로 확인합니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -187,6 +193,9 @@ AuthenticationMethods publickey,keyboard-interactive
 - Mozilla SSH Guidelines: [infosec.mozilla.org](https://infosec.mozilla.org/guidelines/openssh) — ★★★☆☆
 - OpenSSH 8.7 릴리즈 노트 (ChallengeResponseAuthentication deprecated): [openssh.org/txt/release-8.7](https://www.openssh.org/txt/release-8.7) — ★★★☆☆
 - libpam-google-authenticator: [github.com/google/google-authenticator-libpam](https://github.com/google/google-authenticator-libpam) — ★★★☆☆
+- OpenSSH 양자 내성 키 교환(9.0 sntrup761x25519, 9.9 mlkem768x25519, 10.0 기본, 10.1 경고): [openssh.org/pq.html](https://www.openssh.org/pq.html) — ★★★☆☆
+- Ubuntu Server OpenSSH(`ssh.service` 유닛): [ubuntu.com/server/docs](https://ubuntu.com/server/docs/how-to/security/openssh-server/) — ★★★☆☆
+- Ubuntu 소켓 활성화 Port 변경 후 daemon-reload(LP #2069041): [bugs.launchpad.net](https://bugs.launchpad.net/ubuntu/+source/openssh/+bug/2069041) — ★★★☆☆
 
 ---
 

@@ -106,10 +106,11 @@ services:
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      # 컨테이너 사이는 kafka:29092, 호스트는 localhost:9092로 접속 (advertised 주소를 나눔)
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,CONTROLLER://0.0.0.0:9093,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_LOG_DIRS: /var/lib/kafka/data
@@ -121,7 +122,7 @@ services:
       - "8080:8080"
     environment:
       KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
     depends_on:
       - kafka
 ```
@@ -377,12 +378,17 @@ producer.produce(topic='events', value=message)
 # 키 있음: 동일 키 → 동일 파티션 (키 단위 순서 보장)
 producer.produce(topic='events', key='user-123', value=message)
 
-# 커스텀 파티셔너
-from confluent_kafka import Producer
+# 커스텀 파티셔너: confluent-kafka(Python)는 파티셔너 함수를 등록할 수 없으므로
+# 파티션 번호를 직접 계산해 partition 인자로 넘깁니다 (내장 방식은 'partitioner' 설정으로 선택)
+import zlib
 
-def custom_partitioner(key, all_partitions, available_partitions):
-    # 특정 로직으로 파티션 선택
-    return hash(key) % len(all_partitions)
+def custom_partitioner(key, num_partitions):
+    # 특정 로직으로 파티션 선택 (hash()는 프로세스마다 값이 달라 crc32 사용)
+    return zlib.crc32(key.encode()) % num_partitions
+
+num_partitions = len(producer.list_topics('events').topics['events'].partitions)
+producer.produce(topic='events', key='user-123', value=message,
+                 partition=custom_partitioner('user-123', num_partitions))
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -450,7 +456,9 @@ kafka:
     KAFKA_JMX_HOSTNAME: kafka
 
 jmx-exporter:
-  image: bitnami/jmx-exporter:0.19.0
+  # bitnami/jmx-exporter는 2025-09 카탈로그 개편 뒤 latest만 제공하므로 판 고정 태그는 bitnamilegacy에서 받음
+  # (bitnamilegacy는 업데이트가 없는 임시 이전용 저장소)
+  image: bitnamilegacy/jmx-exporter:0.19.0
   ports:
     - "5556:5556"
   volumes:
@@ -555,6 +563,9 @@ except Exception as e:
 - Apache Kafka 4.0 Release (ZooKeeper 제거): [kafka.apache.org/blog](https://kafka.apache.org/blog/2025/03/18/apache-kafka-4.0.0-release-announcement/) — ★★★☆☆
 - Kafka Broker Configs (node.id, broker.id 폐기 예정): [kafka.apache.org/44/configuration/broker-configs](https://kafka.apache.org/44/configuration/broker-configs/) — ★★★☆☆
 - librdkafka Configuration (partitioner, sticky.partitioning.linger.ms): [github.com/confluentinc/librdkafka](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md) — ★★★☆☆
+- confluent-kafka-python Producer 소스 (파티셔너 콜백 무시, produce의 partition 인자): [github.com/confluentinc/confluent-kafka-python](https://github.com/confluentinc/confluent-kafka-python/blob/master/src/confluent_kafka/src/Producer.c) — ★★★☆☆
+- Confluent cp-all-in-one Compose (내부·호스트 리스너 분리 예): [github.com/confluentinc/cp-all-in-one](https://github.com/confluentinc/cp-all-in-one/blob/8.2.0-post/cp-all-in-one-community/docker-compose.yml) — ★★★☆☆
+- Bitnami 카탈로그 변경 공지 (bitnamilegacy 이전): [github.com/bitnami/containers](https://github.com/bitnami/containers/issues/83267) — ★★★☆☆
 - Java Properties 형식 (주석은 줄 첫 글자 `#`·`!`만): [docs.oracle.com](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Properties.html) — ★★★☆☆
 - Kafka: The Definitive Guide: Narkhede, Shapira, Palino. "Kafka: The Definitive Guide" — ★★★★☆
 

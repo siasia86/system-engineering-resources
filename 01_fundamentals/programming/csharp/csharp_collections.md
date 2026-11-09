@@ -243,8 +243,8 @@ Task.Run(() =>
 });
 
 // 소비자
-foreach (var item in bc.GetConsumingEnumerable()) // CompleteAdding 시 종료
-    Console.WriteLine(item);
+foreach (var value in bc.GetConsumingEnumerable()) // CompleteAdding 시 종료
+    Console.WriteLine(value);
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -329,11 +329,11 @@ public IReadOnlyList<Order> Orders => _orders;
 private readonly List<Order> _orders = new();
 
 // 3. 인터페이스로 선언
-IList<int> list = new List<int>();   // 구현 교체 용이
-IDictionary<string, int> dict = new Dictionary<string, int>();
+IList<int> ids = new List<int>();    // 구현 교체 용이
+IDictionary<string, int> counts = new Dictionary<string, int>();
 
 // 4. foreach 대신 span/array — 성능 민감한 내부 루프
-Span<int> span = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list); // .NET 5+
+Span<Order> span = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list); // .NET 5+
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -348,6 +348,8 @@ Span<int> span = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
 - ConcurrentDictionary 원자성: [learn.microsoft.com/dotnet/standard/collections/thread-safe/how-to-add-and-remove-items](https://learn.microsoft.com/en-us/dotnet/standard/collections/thread-safe/how-to-add-and-remove-items) — ★★★☆☆
 - CollectionExtensions.GetValueOrDefault: [learn.microsoft.com/dotnet/api/system.collections.generic.collectionextensions.getvalueordefault](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.collectionextensions.getvalueordefault) — ★★★☆☆
 - System.Collections.Immutable 패키지: [nuget.org/packages/System.Collections.Immutable](https://www.nuget.org/packages/System.Collections.Immutable) — ★★★☆☆
+- C# 명세 7.2 선언(지역 변수 선언 공간 이름 중복 오류): [learn.microsoft.com/dotnet/csharp/language-reference/language-specification/basic-concepts](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/basic-concepts#72-declarations) — ★★★☆☆
+- Compiler Error CS0128: [learn.microsoft.com/dotnet/csharp/misc/cs0128](https://learn.microsoft.com/en-us/dotnet/csharp/misc/cs0128) — ★★★☆☆
 
 ---
 

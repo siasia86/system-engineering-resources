@@ -71,6 +71,7 @@ openssl s_client -connect example.com:443 -servername example.com </dev/null \
 
 # PEM ↔ PFX 변환
 openssl pkcs12 -export -out server.pfx -inkey server.key -in server.crt
+# -nodes: 출력 PEM의 개인키를 암호화하지 않음. OpenSSL 3.0부터 폐지 예정(deprecated)이며 -noenc 사용 권장 (위 req도 같음)
 openssl pkcs12 -in server.pfx -out server.pem -nodes
 ```
 
@@ -238,6 +239,7 @@ git clone --depth 1 https://github.com/testssl/testssl.sh.git
 - nginx `http2` 디렉티브(1.25.1+): [nginx.org/en/docs/http/ngx_http_v2_module.html](https://nginx.org/en/docs/http/ngx_http_v2_module.html#http2) — ★★★☆☆
 - nginx SSL 내장 변수: [nginx.org/en/docs/http/ngx_http_ssl_module.html](https://nginx.org/en/docs/http/ngx_http_ssl_module.html#variables) — ★★★☆☆
 - Debian testssl.sh 패키지: [packages.debian.org](https://packages.debian.org/search?keywords=testssl.sh&searchon=names) — ★★★☆☆
+- openssl-pkcs12(`-nodes`는 3.0부터 deprecated, `-noenc` 사용): [docs.openssl.org](https://docs.openssl.org/3.0/man1/openssl-pkcs12/) — ★★★☆☆
 
 ---
 

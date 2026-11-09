@@ -2120,6 +2120,8 @@ code-review:
 
 ```yaml
 - name: AI Code Review
+  env:
+    KIRO_API_KEY: ${{ secrets.KIRO_API_KEY }}
   run: |
     git diff ${{ github.event.pull_request.base.sha }}..HEAD > diff.patch
     kiro-cli chat --no-interactive --trust-all-tools \

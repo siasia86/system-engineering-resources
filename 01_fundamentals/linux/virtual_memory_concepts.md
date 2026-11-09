@@ -279,7 +279,7 @@ cat /proc/pressure/memory
 | `free` 의 `free` 컬럼만 봄 | 메모리 부족으로 오해 | `available` 컬럼 확인  |
 | `drop_caches` 남용         | 성능 저하            | 긴급 시만 사용         |
 | swap 없이 운영             | OOM 즉시 kill        | 최소 RAM 50% swap 확보 |
-| `swappiness=0` 설정        | swap 비활성화 위험   | `10` 권장              |
+| `swappiness=0` 설정        | swap 비활성화로 오해 | `10` 권장              |
 
 [⬆ 목차로 돌아가기](#목차)
 

@@ -333,7 +333,7 @@ PR 리뷰 시 확인 사항:
 ### ADR을 AI 스킬로 등록
 
 ```markdown
-<!-- ~/.kiro/skills/adr/SKILL.md -->
+<!-- ~/.kiro/skills/adr-writer/SKILL.md -->
 ---
 name: adr-writer
 description: >
@@ -382,6 +382,7 @@ AI가 기존 ADR을 참조하면 일관된 형식과 맥락을 유지할 수 있
 - Nygard, Michael. "Documenting Architecture Decisions": [cognitect.com](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) — ★★☆☆☆
 - ADR GitHub Organization: [adr.github.io](https://adr.github.io/) — ★★☆☆☆
 - adr-tools: [adr-tools](https://github.com/npryce/adr-tools) — ★★★☆☆
+- Kiro Skills(`name`은 폴더 이름과 일치): [kiro.dev/docs/skills](https://kiro.dev/docs/skills/) — ★★★☆☆
 
 ---
 

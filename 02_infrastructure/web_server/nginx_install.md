@@ -302,7 +302,8 @@ server {
 # Ubuntu
 sudo apt install certbot python3-certbot-nginx -y
 
-# Rocky
+# Rocky (certbot은 EPEL에 있으므로 CRB·EPEL 저장소를 먼저 활성화)
+sudo dnf config-manager --set-enabled crb && sudo dnf install epel-release -y
 sudo dnf install certbot python3-certbot-nginx -y
 
 # 인증서 발급 + nginx 자동 설정
@@ -439,6 +440,7 @@ ps aux | grep nginx
 - Nginx Beginner's Guide: [nginx.org/en/docs/beginners_guide](https://nginx.org/en/docs/beginners_guide.html) — ★★★☆☆
 - nginx Linux 패키지 저장소(https, `module_hotfixes`): [nginx.org/en/linux_packages.html](https://nginx.org/en/linux_packages.html) — ★★★☆☆
 - NGINX와 SELinux(프록시 연결 boolean, 파일 레이블): [f5.com/company/blog/nginx/using-nginx-plus-with-selinux](https://www.f5.com/company/blog/nginx/using-nginx-plus-with-selinux) — ★★☆☆☆
+- EPEL 시작 안내(CRB 활성화 후 epel-release 설치): [docs.fedoraproject.org/en-US/epel/getting-started](https://docs.fedoraproject.org/en-US/epel/getting-started/) — ★★★☆☆
 
 ---
 

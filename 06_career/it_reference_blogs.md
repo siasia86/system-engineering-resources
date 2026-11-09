@@ -69,6 +69,8 @@
 | 지마켓 개발자 블로그 | https://dev.gmarket.com               | 이커머스, 인프라, 백엔드 | ★★☆☆☆ |
 | 여기어때 테크        | https://techblog.gccompany.co.kr      | 여행, 인프라, 백엔드     | ★★☆☆☆ |
 
+🟡 넷마블 엔지니어링(netmarble.engineering)은 현재 서비스 종료 안내 페이지만 열립니다(2026-11-09 확인).
+
 ### 클라우드/인프라 전문
 
 | 이름                   | URL                                   | 분야                      | 평점  |

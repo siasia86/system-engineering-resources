@@ -276,9 +276,11 @@ Origin 서버: "접속 IP = 10.0.0.1" (잘못된 정보)
 ### 해결 방법 1: X-Forwarded-For 헤더
 
 ```
-X-Forwarded-For: 1.2.3.4, 10.0.0.1
-                 ^ 실제 클라이언트   ^ Proxy
+X-Forwarded-For: 1.2.3.4
+                 ^ 실제 클라이언트 (Proxy 10.0.0.1이 추가)
 ```
+
+> Proxy는 자신에게 접속한 쪽의 IP를 XFF에 덧붙입니다. Origin에 직접 연결한 Proxy(10.0.0.1)의 IP는 XFF에 들어가지 않고 접속 IP(`$remote_addr`)로 보이며, 앞단 Proxy를 더 거치면 그 IP가 클라이언트 IP 오른쪽에 차례로 붙습니다.
 
 ```nginx
 # Nginx에서 실제 클라이언트 IP 사용
@@ -698,6 +700,8 @@ LIMIT 20;
 
 - Cloudflare IP Ranges: [cloudflare.com](https://www.cloudflare.com/ips/) — ★★★☆☆
 - RFC 7239: Forwarded HTTP Extension: [RFC 7239](https://datatracker.ietf.org/doc/html/rfc7239) — ★★★★☆
+- Cloudflare HTTP 요청 헤더 (X-Forwarded-For 값): [developers.cloudflare.com](https://developers.cloudflare.com/fundamentals/reference/http-headers/) — ★★★☆☆
+- nginx `$proxy_add_x_forwarded_for`: [nginx.org](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#var_proxy_add_x_forwarded_for) — ★★★☆☆
 - Amazon CloudFront 가격 클래스·무효화 요금: [aws.amazon.com/cloudfront/pricing/pay-as-you-go](https://aws.amazon.com/cloudfront/pricing/pay-as-you-go/) — ★★★☆☆
 
 ---

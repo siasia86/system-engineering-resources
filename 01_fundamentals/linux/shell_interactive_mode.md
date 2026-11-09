@@ -66,7 +66,7 @@ fi
 | 예시                | SSH 접속, 터미널          | 쉘 스크립트, cron, `bash script.sh` |
 | 프롬프트            | `$`, `#` 표시             | 없음                                |
 | `~/.bashrc` 로드    | ✅                        | ❌                                  |
-| `/etc/profile` 로드 | ✅ (login shell)          | ❌                                  |
+| `/etc/profile` 로드 | ✅ (login shell)          | ❌ (login shell이면 읽음)           |
 | job control         | ✅ (`Ctrl+Z`, `fg`, `bg`) | ❌                                  |
 | alias 사용          | ✅                        | ❌ (별도 source 필요)               |
 | `$-` 의 `i` 플래그  | 포함                      | 미포함                              |

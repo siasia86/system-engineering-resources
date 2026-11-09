@@ -517,6 +517,9 @@ cat /proc/$$/cgroup
 # 50MB 할당 → 성공
 python3 -c "x = bytearray(50 * 1024 * 1024); print('50MB OK')"
 
+# swap이 켜져 있으면 초과분이 swap으로 나가 150MB도 성공할 수 있으므로 swap 사용을 막음
+echo 0 | sudo tee /sys/fs/cgroup/mytest/memory.swap.max
+
 # 150MB 할당 → OOM kill (제한 초과)
 python3 -c "x = bytearray(150 * 1024 * 1024); print('150MB OK')"
 # Killed

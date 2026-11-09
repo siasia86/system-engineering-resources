@@ -143,6 +143,8 @@ sudo faillock --user Secureuser123
 sudo faillock --user Secureuser123 --reset
 ```
 
+> Debian/Ubuntu의 `/etc/pam.d/common-*`는 `pam-auth-update`가 관리합니다. 관리 구간에 모듈을 직접 추가하면 이후 `pam-auth-update`가 그 파일을 로컬 수정으로 보고 갱신하지 않으며, `--force`로 실행하면 수정본을 `.pam-old`로 저장하고 덮어씁니다.
+
 ```bash
 # 신규 계정 기본값: 비밀번호 만료 후 90일이 지나면 계정 비활성화 (기존 계정은 chage -I)
 sudo useradd -D -f 90
@@ -202,6 +204,7 @@ sudo journalctl -k | grep apparmor | grep DENIED
 - Linux kernel sysctl 파라미터 레퍼런스: [kernel.org/doc/html/latest/admin-guide/sysctl](https://www.kernel.org/doc/html/latest/admin-guide/sysctl/) — ★★★☆☆
 - Linux-PAM System Administrator's Guide 원본: [github.com/linux-pam/linux-pam](https://github.com/linux-pam/linux-pam/tree/master/doc/sag) — ★★★☆☆
 - pam_faillock(8): [man7.org/linux/man-pages/man8/pam_faillock.8.html](https://man7.org/linux/man-pages/man8/pam_faillock.8.html) — ★★★☆☆
+- pam-auth-update(8)(Ubuntu 24.04): [manpages.ubuntu.com](https://manpages.ubuntu.com/manpages/noble/man8/pam-auth-update.8.html) — ★★★☆☆
 - useradd(8)·passwd(1): [useradd.8](https://man7.org/linux/man-pages/man8/useradd.8.html), [passwd.1](https://man7.org/linux/man-pages/man1/passwd.1.html) — ★★★☆☆
 - open(2) glibc의 openat 사용: [man7.org/linux/man-pages/man2/open.2.html](https://man7.org/linux/man-pages/man2/open.2.html) — ★★★☆☆
 - Red Hat SELinux Guide: [access.redhat.com/documentation/selinux](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/using_selinux/) — ★★★☆☆

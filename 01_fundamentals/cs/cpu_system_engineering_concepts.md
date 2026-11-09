@@ -377,7 +377,8 @@ CPU와 플랫폼 유지보수는 성능뿐 아니라 보안과도 연결됩니�
 Linux에서 microcode와 CPU 취약점 mitigation 상태를 확인합니다.
 
 ```bash
-lscpu | grep -i 'Microcode'
+grep -m1 'microcode' /proc/cpuinfo        # x86: 로드된 microcode 버전
+lscpu | grep -i 'Microcode version'       # util-linux 2.42 이상만 표시
 grep -H . /sys/devices/system/cpu/vulnerabilities/*
 ```
 
@@ -451,6 +452,7 @@ Get-Counter '\System\Processor Queue Length'
 - Linux Kernel Documentation: [Scheduler](https://docs.kernel.org/scheduler/) — ★★★☆☆
 - Linux man-pages: [lscpu(1)](https://man7.org/linux/man-pages/man1/lscpu.1.html) — ★★★☆☆
 - util-linux: [lscpu-cputype.c (cpuinfo 항목 해석)](https://github.com/util-linux/util-linux/blob/master/sys-utils/lscpu-cputype.c) — ★★★☆☆
+- util-linux 2.42 릴리스 노트 (lscpu 요약에 microcode 추가): [kernel.org](https://www.kernel.org/pub/linux/utils/util-linux/v2.42/v2.42-ReleaseNotes) — ★★★☆☆
 - Linux man-pages: [perf-stat(1)](https://man7.org/linux/man-pages/man1/perf-stat.1.html) — ★★★☆☆
 - Linux man-pages: [numactl(8)](https://man7.org/linux/man-pages/man8/numactl.8.html) — ★★★☆☆
 - Linux man-pages: [numastat(8)](https://man7.org/linux/man-pages/man8/numastat.8.html) — ★★★☆☆

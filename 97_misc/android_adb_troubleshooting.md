@@ -14,18 +14,18 @@
 
 ## 1. ADB vs 루팅 안전성 비교
 
-ADB logcat은 **읽기 전용 로그 조회**입니다. 시스템을 변조하지 않으므로 금융앱에 영향이 없습니다.
+ADB logcat은 **읽기 전용 로그 조회**입니다. 시스템을 변조하지 않으므로 대부분의 금융앱에는 영향이 없지만, 일부 앱은 개발자 옵션·USB 디버깅 활성화를 감지해 실행을 막을 수 있습니다.
 
 | 항목          | ADB logcat (로그 확인) | 루팅 (Magisk 등)      |
 |---------------|------------------------|-----------------------|
 | 시스템 변조   | ❌ 없음                | ✅ 시스템 파티션 변조 |
 | Knox 트립     | ❌ 안 됨               | ✅ 비가역적 트립      |
-| 금융앱 차단   | ❌ 영향 없음           | ✅ 차단됨             |
+| 금융앱 차단   | 🟡 대부분 영향 없음    | ✅ 차단됨             |
 | 삼성페이      | ❌ 정상 동작           | ✅ 사용 불가          |
 | OEM 잠금 해제 | 불필요                 | 필요                  |
 | 워런티        | 유지                   | 상실                  |
 
-🟡 금융앱(토스, 카카오뱅크, 삼성페이 등)이 차단되는 경우는 **OEM 부트로더 언락 + 루팅** 시에만 해당합니다. USB 디버깅 + logcat은 안전합니다.
+🟡 금융앱(토스, 카카오뱅크, 삼성페이 등)이 차단되는 주된 경우는 **OEM 부트로더 언락 + 루팅**입니다. USB 디버깅 + logcat은 시스템을 바꾸지 않지만, 일부 앱은 개발자 옵션이 켜져 있으면 실행을 막을 수 있습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -201,6 +201,7 @@ adb bugreport bugreport_$(date +%Y%m%d).zip
 - Samsung Knox Whitepaper: [docs.samsungknox.com/admin/fundamentals/whitepaper](https://docs.samsungknox.com/admin/fundamentals/whitepaper/) — ★★★☆☆
 - Ubuntu adb 패키지: [packages.ubuntu.com/noble/adb](https://packages.ubuntu.com/noble/adb) — ★★★☆☆
 - AOSP Debugging Native Crashes: [source.android.com/docs/core/tests/debug](https://source.android.com/docs/core/tests/debug) — ★★★☆☆
+- Android Developers — `Settings.Global`(`ADB_ENABLED`·`DEVELOPMENT_SETTINGS_ENABLED`, 앱에서 읽기 가능): [developer.android.com](https://developer.android.com/reference/android/provider/Settings.Global) — ★★★☆☆
 
 [⬆ 목차로 돌아가기](#목차)
 

@@ -218,7 +218,7 @@ cat /proc/sys/vm/overcommit_memory
 # 1: 항상 허용 — OOM 위험 높음
 # 2: 엄격 제한 — swap + RAM * ratio 초과 불가
 
-# 권장 (운영 서버)
+# 엄격 제한 예시 (워크로드별 검토: Redis 등 fork를 쓰는 서비스는 1 권장)
 echo 2 > /proc/sys/vm/overcommit_memory
 echo 80 > /proc/sys/vm/overcommit_ratio   # RAM의 80%까지만 허용
 
@@ -275,7 +275,7 @@ sudo smem -r -k | head -15
 | 중요 프로세스 전부 `-1000` 설정 | 시스템 hang   | 핵심 1~2개만 설정                  |
 | swap 없이 운영                  | OOM 즉시 kill | 최소 RAM의 50% swap 확보           |
 | `drop_caches` 남용              | 성능 저하     | 캐시는 커널이 관리, 긴급 시만 사용 |
-| `overcommit=1` 운영 서버 적용   | OOM 빈발      | `overcommit=2` + ratio 조정        |
+| `overcommit=1` 운영 서버 적용   | OOM 빈발      | 워크로드별 검토 (Redis는 `1` 권장) |
 
 ### cgroup v2 메모리 관련 파일 정리
 
@@ -307,9 +307,10 @@ sudo smem -r -k | head -15
 ## 참고 자료
 
 - Linux Kernel Docs: [kernel.org/doc/html/latest/admin-guide/mm/concepts.html](https://www.kernel.org/doc/html/latest/admin-guide/mm/concepts.html) — ★★★☆☆
-- Red Hat: [access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_monitoring_and_updating_the_kernel/](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_monitoring_and_updating_the_kernel/) — ★★★☆☆
+- Red Hat (RHEL 10): [docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/managing_monitoring_and_updating_the_kernel](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/managing_monitoring_and_updating_the_kernel) — ★★★☆☆
 - Linux Kernel Docs /proc oom_score: [docs.kernel.org/filesystems/proc.html](https://docs.kernel.org/filesystems/proc.html) — ★★★☆☆
 - Linux Kernel Docs cgroup v2: [docs.kernel.org/admin-guide/cgroup-v2.html](https://docs.kernel.org/admin-guide/cgroup-v2.html) — ★★★☆☆
+- Redis administration (`vm.overcommit_memory = 1` 권장): [redis.io/docs/latest/operate/oss_and_stack/management/admin](https://redis.io/docs/latest/operate/oss_and_stack/management/admin/) — ★★★☆☆
 - [lsof.md](lsof.md)
 - [perf.md](perf.md)
 

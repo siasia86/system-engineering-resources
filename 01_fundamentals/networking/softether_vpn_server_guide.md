@@ -214,7 +214,9 @@ Default Virtual HUB in a case of omitting the HUB on the Username: VPN
 |----------|----------|---------------|
 | UDP 500  | UDP      | IKE           |
 | UDP 4500 | UDP      | NAT-T (IPsec) |
-| UDP 1701 | UDP      | L2TP          |
+| UDP 1701 | UDP      | Raw L2TP      |
+
+> UDP 1701은 Raw L2TP(`Enable Raw L2TP Server Function: yes`)를 켤 때만 엽니다. L2TP/IPsec에서는 L2TP 패킷이 IPsec(ESP) 안에 실려 전달되므로 1701을 따로 열지 않아도 됩니다.
 
 🟡 SoftEther의 L2TP/IPsec DH Group은 MODP 768/1024/1536 (2048bit 미만)입니다. 보안 민감 환경에서는 SoftEther SSL-VPN 또는 OpenVPN 사용을 권장합니다. 상세 내용은 [`_reference/softether_official_notes.md`](../../_reference/softether_official_notes.md) §6 참고.
 
@@ -279,7 +281,7 @@ iptables -A INPUT -p tcp --dport 5555 -j ACCEPT
 # L2TP/IPsec
 iptables -A INPUT -p udp --dport 500  -j ACCEPT
 iptables -A INPUT -p udp --dport 4500 -j ACCEPT
-iptables -A INPUT -p udp --dport 1701 -j ACCEPT
+iptables -A INPUT -p udp --dport 1701 -j ACCEPT   # Raw L2TP 사용 시만
 
 # OpenVPN
 iptables -A INPUT -p udp --dport 1194 -j ACCEPT
@@ -449,11 +451,11 @@ tail -f /opt/vpnserver/server_log/vpn_*.log
 ss -tlnp | grep 443
 ```
 
-443 포트가 nginx/apache와 충돌하는 경우 443 리스너를 삭제하고 992로 운영합니다:
+443 포트가 nginx/apache와 충돌하는 경우 443 리스너를 삭제하고 992로 운영합니다. 992는 설치 시 만들어지는 기본 리스너(443·992·1194·5555)라 이미 있으면 `ListenerCreate 992`가 "The listener of the specified port number already exists." 오류를 내므로, `ListenerList`로 확인하고 목록에 없을 때만 `ListenerCreate 992`를 실행합니다:
 
 ```
 VPN Server> ListenerDelete 443
-VPN Server> ListenerCreate 992
+VPN Server> ListenerList
 ```
 
 ---
@@ -526,6 +528,8 @@ VPN Server> Flush
 - SoftEther How-to 가이드: [softether.org/4-docs/2-howto](https://www.softether.org/4-docs/2-howto) — ★★★☆☆
 - vpncmd 서버 명령 레퍼런스(IPsecEnable PSK 길이, KeepGet 등): [softether.org 6.3](https://www.softether.org/4-docs/1-manual/6._Command_Line_Management_Utility_Manual/6.3_VPN_Server_%2F%2F_VPN_Bridge_Management_Command_Reference_%28For_Entire_Server%29) — ★★★☆☆
 - Linux 설치 절차(chmod): [softether.org 7.3](https://www.softether.org/4-docs/1-manual/7._Installing_SoftEther_VPN_Server/7.3_Install_on_Linux_and_Initial_Configurations) — ★★★☆☆
+- SoftEther 소스(UDP 1701은 Raw L2TP 활성 시만 수신): [Proto_IPsec.c](https://github.com/SoftEtherVPN/SoftEtherVPN/blob/master/src/Cedar/Proto_IPsec.c) — ★★★☆☆
+- SoftEther 소스(기존 포트로 리스너 생성 시 ERR_LISTENER_ALREADY_EXISTS): [Admin.c](https://github.com/SoftEtherVPN/SoftEtherVPN/blob/master/src/Cedar/Admin.c) — ★★★☆☆
 - linuxbabe.com Ubuntu 24.04 가이드: [linuxbabe.com/ubuntu/set-up-softether-vpn-server-ubuntu-24-04](https://www.linuxbabe.com/ubuntu/set-up-softether-vpn-server-ubuntu-24-04) — ★★☆☆☆
 - [SoftEther VPN Client 가이드](./softether_vpn_client_guide.md)
 - [VPN 프로토콜 개념](./vpn_protocol_concepts.md)

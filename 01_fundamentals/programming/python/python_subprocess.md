@@ -116,7 +116,7 @@ result = subprocess.run(['ls', '-la', '/tmp'], capture_output=True, text=True)
 result = subprocess.run('ls -la /tmp | grep log', shell=True, capture_output=True, text=True)
 
 # 🟡 shell=True + 사용자 입력 = 보안 위험 (Shell Injection)
-# 절대 사용자 입력을 shell=True와 함께 사용하지 말 것
+# 사용자 입력은 shell=True 명령 문자열에 넣지 말고 리스트 인자(shell=False)로 전달
 ```
 
 ### 파이프라인 구현
@@ -317,6 +317,6 @@ def search_log(log_file, pattern, lines=10):
 
 **작성일**: 2026-04-20
 
-**마지막 업데이트**: 2026-04-20
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

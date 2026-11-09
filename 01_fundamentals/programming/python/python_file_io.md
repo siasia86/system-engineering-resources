@@ -622,7 +622,7 @@ if path.exists():
 
 ```python
 # 나쁜 예
-path = 'folder/subfolder/file.txt'  # Windows에서 문제
+path = 'folder\\subfolder\\file.txt'  # Linux·macOS에서는 역슬래시가 구분자가 아님
 
 # 좋은 예
 from pathlib import Path

@@ -102,7 +102,7 @@
 
 ## 5. Sight Words
 
-파닉스 규칙이 적용되지 않는 불규칙 단어입니다. 반복 노출로 통암기합니다.
+글에 자주 나와서 보자마자 읽도록 익히는 고빈도 단어입니다. `the`·`said`처럼 파닉스 규칙과 다르게 읽히는 단어가 많지만, Dolch 목록에는 `and`·`can`처럼 규칙대로 읽히는 단어도 있습니다. 반복 노출로 통암기합니다.
 
 | 빈도   | 예시 단어                                       |
 |--------|-------------------------------------------------|
@@ -156,6 +156,8 @@
 | `mb` | b         | `lamb`, `comb`, `climb`   |
 | `ck` | c         | `back`, `duck`, `trick`   |
 
+🟡 `ck`는 c를 묵음으로 보기보다 두 글자가 함께 /k/ 한 소리를 내는 이중자(digraph)로 다루기도 합니다. 영국 교육부 Letters and Sounds(2007)는 `ck`를 c·k와 같은 소리를 내는 두 글자 철자로 가르칩니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -170,9 +172,9 @@
 | 교재   | Explode the Code     | 미국식, 워크북 형태 집중 훈련 |
 | 앱     | Starfall             | 무료, 인터랙티브 웹/앱        |
 | 앱     | Endless Alphabet     | 어휘 + 발음 게임 형태         |
+| 앱     | Khan Academy Kids    | 무료, 체계적 커리큘럼         |
 | 유튜브 | Alphablocks (BBC)    | 애니메이션, 유아용            |
 | 유튜브 | Miss Jenny's Phonics | 노래로 소리 학습              |
-| 유튜브 | Khan Academy Kids    | 무료, 체계적 커리큘럼         |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -185,6 +187,8 @@
 - International Literacy Association: [literacyworldwide.org](https://www.literacyworldwide.org) — ★★★☆☆
 - Clymer, T. "The utility of phonic generalizations in the primary grades." (1963)
 - Cambridge Dictionary (blue·due·tune 발음): [dictionary.cambridge.org](https://dictionary.cambridge.org/dictionary/english/blue) — ★★★☆☆
+- Letters and Sounds (DfES, 2007, `ck` 두 글자 한 소리): [assets.publishing.service.gov.uk](https://assets.publishing.service.gov.uk/media/5a7aa7b6e5274a34770e630c/Letters_and_Sounds_-_DFES-00281-2007.pdf) — ★★★☆☆
+- Khan Academy Kids (iOS·Android 앱): [khanacademy.org/kids](https://www.khanacademy.org/kids) — ★★★☆☆
 
 [⬆ 목차로 돌아가기](#목차)
 

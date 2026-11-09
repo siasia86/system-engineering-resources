@@ -332,7 +332,7 @@ fn spawn_worker(config: Config) -> JoinHandle<()> {
 ```rust
 use std::borrow::Cow;
 
-fn normalize_path(path: &str) -> Cow<str> {
+fn normalize_path(path: &str) -> Cow<'_, str> {
     if path.contains("//") {
         Cow::Owned(path.replace("//", "/")) // 수정 필요: 새 String 생성
     } else {
@@ -490,6 +490,7 @@ fn find_by_hostname<'a>(servers: &'a [Server], name: &str) -> Option<&'a Server>
 - The Rust Programming Language Ch.4: [doc.rust-lang.org/book/ch04-00-understanding-ownership.html](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html) — ★★★★☆
 - Rust by Example - Ownership: [doc.rust-lang.org/rust-by-example/scope.html](https://doc.rust-lang.org/rust-by-example/scope.html) — ★★★☆☆
 - Visualizing Rust Ownership: [rufflewind.com/2017-02-15/rust-move-copy-borrow](https://rufflewind.com/2017-02-15/rust-move-copy-borrow) — ★★☆☆☆
+- rustc lint mismatched_lifetime_syntaxes: [doc.rust-lang.org/rustc/lints/listing/warn-by-default.html](https://doc.rust-lang.org/rustc/lints/listing/warn-by-default.html#mismatched-lifetime-syntaxes) — ★★★☆☆
 
 ---
 

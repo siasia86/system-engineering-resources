@@ -33,7 +33,7 @@ mysql -e "SHOW VARIABLES LIKE 'innodb_buffer_pool_size'"
 
 ## 2. InnoDB
 
-🟡 아래 표의 기본값은 MySQL 8.0 기준입니다. 8.4에서는 `innodb_io_capacity`(10000), `innodb_io_capacity_max`(2 × io_capacity), `innodb_flush_method`(Linux: O_DIRECT), `innodb_log_buffer_size`(64M), `innodb_buffer_pool_instances`(자동 계산), `innodb_read_io_threads`(논리 CPU / 2, 최소 4) 기본값이 바뀌었습니다.
+🟡 아래 표의 기본값은 MySQL 8.0 기준입니다. 8.4에서는 `innodb_io_capacity`(10000), `innodb_io_capacity_max`(2 × io_capacity), `innodb_flush_method`(Linux: O_DIRECT), `innodb_log_buffer_size`(64M), `innodb_buffer_pool_instances`(자동 계산), `innodb_read_io_threads`(논리 CPU / 2, 최소 4) 기본값이 바뀌었습니다. 권장 열의 `innodb_io_capacity`·`innodb_io_capacity_max` 값도 8.0 기본값(200·2000) 기준이며, 8.4 기본값(10000·20000)보다 낮습니다.
 
 ### 메모리
 

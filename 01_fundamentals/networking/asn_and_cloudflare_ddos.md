@@ -147,14 +147,16 @@ non-HTTP 프로토콜(TCP/UDP)을 Cloudflare Proxy로 보호. ASN 불필요.
 | ASN 필요  | ❌                                    |
 | 보호 범위 | 설정한 TCP/UDP 포트                   |
 | 원본 IP   | Cloudflare IP 사용, 원본 숨김         |
-| 비용      | Pro 이상 ($5/포트~, 대역폭별 과금)    |
+| 비용      | Pro 이상 유료 추가 기능, 전송량 과금  |
 | 설정      | Cloudflare 대시보드에서 포트별 설정   |
 | 적합 대상 | 게임서버, SSH, RDP, 메일서버          |
 | 한계      | 포트 단위 설정, 포트 많으면 비용 증가 |
 
+> Pro·Business는 SSH·Minecraft(Business는 RDP 포함) 앱 1개만 쓸 수 있고, 임의 TCP/UDP 포트는 Enterprise 유료 추가 기능입니다.
+
 ### 4-3. Magic Transit
 
-L3/L4 전체 트래픽 보호. ASN + PI IP 필수.
+L3/L4 전체 트래픽 보호. 자체 /24 이상 IP 대역(BYOIP)을 쓰거나 /24가 없으면 Cloudflare 소유 IP를 쓸 수 있으며, 자체 ASN은 필수가 아닙니다(기본 절차는 Cloudflare AS13335로 광고).
 
 ```
 ┌──────────┐     ┌──────────────────┐   GRE/IPsec    ┌────────────┐
@@ -166,7 +168,7 @@ L3/L4 전체 트래픽 보호. ASN + PI IP 필수.
 
 | 항목      | 내용                                    |
 |-----------|-----------------------------------------|
-| ASN 필요  | ✅                                      |
+| ASN 필요  | 선택 (기본 AS13335로 광고)              |
 | 보호 범위 | 전체 IP 대역 (모든 프로토콜)            |
 | IP 사용   | 자체 PI IP (Cloudflare에 BGP 광고 위임) |
 | 비용      | 수천$/월~ (트래픽 규모별)               |
@@ -184,7 +186,7 @@ L3/L4 전체 트래픽 보호. ASN + PI IP 필수.
 | 웹서비스만 운영         | DNS/Proxy                 | 불필요 |
 | 게임서버 몇 대 보호     | Spectrum                  | 불필요 |
 | non-HTTP 포트 다수      | Spectrum (비용 검토)      | 불필요 |
-| 전체 네트워크 DDoS 방어 | Magic Transit             | 필요   |
+| 전체 네트워크 DDoS 방어 | Magic Transit             | 불필요 |
 | ISP 이중화 + DDoS 방어  | Magic Transit + 멀티호밍  | 필요   |
 | 소규모, 비용 최소화     | DNS/Proxy + Spectrum 조합 | 불필요 |
 
@@ -243,8 +245,8 @@ ASN이 있으면 Cloudflare 외에도 직접 제어 가능한 방법이 생긴�
 | 서비스                        | L3/L4 방어 | L7 방어 | ASN 필요 | 최소 비용 (월)           | 특징                                  |
 |-------------------------------|------------|---------|----------|--------------------------|---------------------------------------|
 | Cloudflare (Proxy)            | ✅         | ✅      | ❌       | Free~                    | 가장 접근성 좋음, 무료 플랜           |
-| Cloudflare Spectrum           | ✅         | ❌      | ❌       | ~$5/포트                 | non-HTTP 보호                         |
-| Cloudflare Magic Transit      | ✅         | ✅      | ✅       | ~수천$                   | 전체 IP 대역 보호                     |
+| Cloudflare Spectrum           | ✅         | ❌      | ❌       | 전송량 과금              | non-HTTP 보호                         |
+| Cloudflare Magic Transit      | ✅         | ❌      | ❌       | ~수천$                   | 전체 IP 대역 보호                     |
 | AWS Shield Standard           | ✅         | ❌      | ❌       | 무료 (AWS 사용 시)       | AWS 인프라 자동 적용                  |
 | AWS Shield Advanced           | ✅         | ✅      | ❌       | $3,000                   | DRT 전담팀 지원, 비용 보호            |
 | Akamai Prolexic               | ✅         | ✅      | ✅       | Enterprise 협의          | 대규모 Scrubbing, 금융권 다수 사용    |
@@ -355,6 +357,11 @@ Router A ----X---- Router B
 
 - Cloudflare DDoS Protection: [cloudflare.com](https://www.cloudflare.com/ddos/) — ★★★☆☆
 - ARIN ASN Registration: [arin.net](https://www.arin.net/resources/guide/asn/) — ★★★☆☆
+- Cloudflare Spectrum 플랜별 프로토콜: [developers.cloudflare.com](https://developers.cloudflare.com/spectrum/protocols-per-plan/) — ★★★☆☆
+- Cloudflare 사용량 과금 (Spectrum 데이터 전송): [developers.cloudflare.com](https://developers.cloudflare.com/billing/understand/usage-based-billing/) — ★★★☆☆
+- Cloudflare BYOIP 시작하기 (/24 최소, AS13335 광고): [developers.cloudflare.com](https://developers.cloudflare.com/byoip/get-started/) — ★★★☆☆
+- Magic Transit Cloudflare 소유 IP: [developers.cloudflare.com](https://developers.cloudflare.com/magic-transit/cloudflare-ips/) — ★★★☆☆
+- Magic Transit 제품 소개 (L3 DDoS, Spectrum L4·DDoS L7과 역할 구분): [cloudflare.com](https://www.cloudflare.com/network-services/products/magic-transit/) — ★★★☆☆
 - RFC 4271: BGP-4: [RFC 4271](https://datatracker.ietf.org/doc/html/rfc4271) — ★★★★☆
 - RFC 8955: Dissemination of Flow Specification Rules (BGP Flowspec): [RFC 8955](https://www.rfc-editor.org/rfc/rfc8955) — ★★★★☆
 

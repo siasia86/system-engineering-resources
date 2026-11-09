@@ -11,6 +11,7 @@ last_checked: 2026-11-09
 sources:
   - https://doc.rust-lang.org/book/
   - https://doc.rust-lang.org/std/
+  - https://doc.rust-lang.org/std/fs/fn.rename.html
   - https://doc.rust-lang.org/reference/
   - https://tokio.rs/tokio/tutorial
   - https://crates.io/
@@ -233,7 +234,7 @@ cargo build --release --target x86_64-unknown-linux-musl
 
 - **같은 파일시스템** 내에서만 atomic 보장 (POSIX rename(2) 기반).
 - 다른 마운트 포인트 간 rename → `io::ErrorKind::CrossesDevices` 에러 (Rust 1.85에서 안정화).
-- Windows: Windows 10 1607+ + FileRenameInfoEx 지원 시 atomic.
+- Windows: `MoveFileExW`(대체 경로 `SetFileInformationByHandle`) 기반. Windows 10 1607+에서 파일시스템이 FileRenameInfoEx를 지원하면 대상이 있을 때의 동작이 Unix와 같음. 공식 문서는 Windows의 atomic 여부를 밝히지 않음(2026-11-09 확인).
 
 > 출처: doc.rust-lang.org/std/fs/fn.rename.html
 

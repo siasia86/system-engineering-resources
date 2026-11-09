@@ -108,6 +108,8 @@ CREATE DATABASE mydb
 | 간단하게 (정렬 불필요/영문 위주) | `LOCALE 'C.UTF-8'` (가장 호환성 높음)          |
 | 기존 DB 호환 유지                | `LC_COLLATE 'en_US.UTF-8'` + locale 설치 확인  |
 
+🟡 PostgreSQL 17부터는 플랫폼에 의존하지 않는 `builtin` provider(`LOCALE_PROVIDER 'builtin'` + `BUILTIN_LOCALE 'C.UTF-8'`)도 쓸 수 있습니다. glibc·ICU 같은 외부 라이브러리를 쓰지 않지만, 정렬은 코드 포인트 값만 따르므로 언어별 정렬 규칙은 적용되지 않습니다.
+
 ### 2-1. 시스템 업데이트
 
 ```bash
@@ -145,7 +147,7 @@ sudo apt install postgresql-18 -y   # 또는 postgresql-17
 sudo systemctl enable --now postgresql
 ```
 
-### 2-4. Ubuntu 24.04 특이사항: DB 생성 로케일
+### 2-4. DB 생성 로케일
 
 ```sql
 -- Ubuntu 22.04: 아래 방식 모두 가능
@@ -617,6 +619,8 @@ sudo -u postgres psql -c "SELECT pid, usename, datname, state, query FROM pg_sta
 - PostgreSQL Documentation: [Locale Support](https://www.postgresql.org/docs/current/locale.html) (libc·ICU·builtin provider) — ★★★☆☆
 - PostgreSQL Documentation: [Lock Management](https://www.postgresql.org/docs/current/runtime-config-locks.html) (`max_locks_per_transaction`) — ★★★☆☆
 - PostgreSQL: [Red Hat family Linux downloads](https://www.postgresql.org/download/linux/redhat/) (EL8만 모듈 비활성화) — ★★★☆☆
+- PostgreSQL 17 Release Notes: [E.12. Release 17](https://www.postgresql.org/docs/17/release-17.html) (builtin collation provider 추가) — ★★★☆☆
+- PostgreSQL Documentation: [CREATE DATABASE](https://www.postgresql.org/docs/current/sql-createdatabase.html) (`BUILTIN_LOCALE`) — ★★★☆☆
 - [rdbms_replication.md](./rdbms_replication.md)
 
 ---

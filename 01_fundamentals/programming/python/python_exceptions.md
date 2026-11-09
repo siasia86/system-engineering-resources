@@ -265,7 +265,7 @@ class DatabaseError(Exception):
     """데이터베이스 관련 예외"""
     pass
 
-class ConnectionError(DatabaseError):
+class DBConnectionError(DatabaseError):  # 내장 ConnectionError를 가리지 않도록 다른 이름 사용
     """연결 오류"""
     pass
 

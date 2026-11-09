@@ -149,6 +149,8 @@ ansible-playbook -i ../../05_vagrant/inventory.ini setup_webshell_lab.yml --limi
 | Info Disclosure   | phpinfo() 삭제, `expose_php = Off`, 에러 표시 Off               |
 | 권한 설정         | 최소 권한 (644/755), owner apache:apache, SELinux enforcing     |
 
+> `owner apache:apache`는 업로드 디렉토리처럼 웹 서버가 써야 하는 경로에만 적용하고, 코드·설정 파일은 root(또는 배포 계정) 소유로 두어 apache는 읽기만 합니다. mod_php·CGI는 웹 서버 사용자(`User`) 권한으로 실행되므로 그 사용자가 쓸 수 있는 파일은 침해 시 변조될 수 있습니다.
+
 ### php.ini 보안 설정 (권장)
 
 ```ini
@@ -176,6 +178,8 @@ max_file_uploads = 5
     RemoveHandler .php .phtml .phps
 </Directory>
 ```
+
+> `php_admin_flag`는 mod_php 전용 지시어라 PHP-FPM(`proxy_fcgi`) 환경에서는 httpd 설정 검사에서 오류가 납니다. 배포판 기본 설정(Ubuntu `php8.x.conf`·`php8.x-fpm.conf`, RHEL 계열 `php.conf`)은 `<FilesMatch>` 안의 `SetHandler`로 PHP를 연결하므로, 확장자 연결만 해제하는 `RemoveHandler`로는 실행이 막히지 않습니다. 적용 후 업로드 경로의 PHP 파일 요청이 실행되지 않는지 확인하고, 가능하면 DocumentRoot 밖에 저장합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -205,6 +209,9 @@ max_file_uploads = 5
 - OWASP Top 10: [owasp.org/www-project-top-ten](https://owasp.org/www-project-top-ten/) — ★★★☆☆
 - OWASP Top 10:2025(현행판, CWE 매핑): [top10.owasp.org/2025](https://top10.owasp.org/2025/) — ★★★☆☆
 - CWE List: [cwe.mitre.org](https://cwe.mitre.org/) — ★★★☆☆
+- Apache Security Tips(내장 엔진은 서버 사용자 권한으로 실행): [httpd.apache.org](https://httpd.apache.org/docs/2.4/misc/security_tips.html) — ★★★☆☆
+- Apache mod_mime(`RemoveHandler`는 확장자 연결만 해제, core의 `SetHandler`가 우선): [httpd.apache.org](https://httpd.apache.org/docs/2.4/mod/mod_mime.html) — ★★★☆☆
+- PHP 설정 변경(`php_admin_flag`는 Apache 모듈 방식 전용): [php.net](https://www.php.net/manual/en/configuration.changes.php) — ★★★☆☆
 - [cve (CVE 분석)](../cve/README.md)
 
 ---

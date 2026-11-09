@@ -209,6 +209,8 @@ catch (OperationCanceledException) when (cts.IsCancellationRequested)
 // ❌ 데드락 위험 (ASP.NET 등 동기화 컨텍스트 있는 환경)
 var result = SomeAsync().Result;
 var result2 = SomeAsync().GetAwaiter().GetResult();
+
+// ❌ 스레드 풀에서 실행해 컨텍스트 데드락은 피하지만 호출 스레드를 블로킹 (스레드 풀 고갈 위험)
 Task.Run(() => SomeAsync()).Wait();
 
 // ✅ await 사용
@@ -251,6 +253,8 @@ async Task GoodMethod()
 - Microsoft Learn async/await: [learn.microsoft.com/dotnet/csharp/asynchronous-programming](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/) — ★★★☆☆
 - async return types: [learn.microsoft.com/dotnet/csharp/asynchronous-programming/async-return-types](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/async-return-types) — ★★★☆☆
 - Task.WhenAll: [learn.microsoft.com/dotnet/api/system.threading.tasks.task.whenall](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.whenall) — ★★★☆☆
+- Async/Await Best Practices (컨텍스트 데드락 원인): [learn.microsoft.com/archive/msdn-magazine](https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming) — ★★★☆☆
+- ASP.NET Core Best Practices (블로킹 호출과 스레드 풀 고갈): [learn.microsoft.com/aspnet/core/fundamentals/best-practices](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/best-practices) — ★★★☆☆
 
 ---
 

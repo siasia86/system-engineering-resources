@@ -120,7 +120,7 @@ stages:
                 spec:
                   duration: 10m
             - step:
-                type: K8sBlueGreenSwapServices
+                type: K8sBGSwapServices
 ```
 
 ### Continuous Verification (AI 검증)
@@ -190,13 +190,13 @@ pipeline:
                 spec:
                   command: |
                     mvn clean package
-                    docker build -t my-app:${BUILD_NUMBER} .
+                    docker build -t my-app:<+pipeline.sequenceId> .
             - step:
                 type: BuildAndPushDockerRegistry
                 spec:
                   repo: my-ecr-repo/my-app
                   tags:
-                    - ${BUILD_NUMBER}
+                    - <+pipeline.sequenceId>
     - stage:
         name: Deploy
         type: Deployment
@@ -208,8 +208,9 @@ pipeline:
                 type: Verify
                 spec:
                   type: Canary
-                  duration: 10m
-                  sensitivity: MEDIUM
+                  spec:
+                    duration: 10m
+                    sensitivity: MEDIUM
 ```
 
 ## 참고 자료
@@ -217,6 +218,8 @@ pipeline:
 - Harness Documentation: [developer.harness.io/docs](https://developer.harness.io/docs/) — ★★★☆☆
 - Harness CD Concepts: [developer.harness.io/docs/continuous-delivery](https://developer.harness.io/docs/continuous-delivery/) — ★★★☆☆
 - Harness K8s Canary 배포: [developer.harness.io](https://developer.harness.io/docs/continuous-delivery/deploy-srv-diff-platforms/kubernetes/kubernetes-executions/create-a-kubernetes-canary-deployment) — ★★★☆☆
+- Harness Pipeline YAML 스키마 (단계 type 값, Verify spec 구조): [github.com/harness/harness-schema](https://github.com/harness/harness-schema/tree/main/v0/pipeline/steps) — ★★★☆☆
+- Harness Build and Push to Docker (`<+pipeline.sequenceId>` 태그): [developer.harness.io](https://developer.harness.io/docs/continuous-integration/use-ci/build-and-upload-artifacts/build-and-push-to-docker-hub-step-settings) — ★★★☆☆
 - Jenkins vs Harness 비교(Harness 제공): [harness.io/comparison-guide/jenkins-vs-harness](https://www.harness.io/comparison-guide/jenkins-vs-harness) — ★★☆☆☆
 
 ---

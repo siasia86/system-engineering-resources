@@ -150,7 +150,6 @@ Microsoft / GitHub이 만든 IDE 플러그인 형태의 AI 코딩 도구입니�
 - 인라인 코드 자동완성 (원조)
 - Copilot Chat: 코드 설명·리팩토링·테스트 생성
 - Copilot Agent: Issue → PR 자동 생성 (GitHub Actions 연동)
-- Workspace Agents: ChatGPT 내에서 GitHub 작업 트리거
 - MCP Registry 지원
 - GitHub 전체 생태계 통합 (Actions, PR, Security)
 - Copilot CLI: 터미널 기반 코딩 에이전트 (`copilot`, `gh copilot`으로도 실행). 이전 `gh copilot explain`·`suggest` 확장은 2025-10-25에 종료

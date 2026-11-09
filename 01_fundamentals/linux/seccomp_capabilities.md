@@ -106,9 +106,9 @@ ausyscall --dump | grep openat
 Docker는 기본적으로 300여 개 시스템 콜 중 위험한 약 44개를 차단합니다.
 
 ```bash
-# 기본 프로파일 위치
-cat /etc/docker/seccomp.json 2>/dev/null || \
-  curl -s https://raw.githubusercontent.com/moby/profiles/main/seccomp/default.json | head -30
+# 기본 프로파일은 dockerd에 내장되어 있어 파일로 없음 (--seccomp-profile 기본값 builtin)
+# 원본 JSON은 moby/profiles 저장소에서 확인
+curl -s https://raw.githubusercontent.com/moby/profiles/main/seccomp/default.json | head -30
 
 # seccomp 비활성화 (테스트용, 운영 금지)
 docker run --security-opt seccomp=unconfined ubuntu
@@ -219,6 +219,7 @@ strace ./myapp 2>&1 | grep "EPERM\|EACCES"
 
 - Linux man pages — capabilities: [man7.org/linux/man-pages/man7/capabilities.7.html](https://man7.org/linux/man-pages/man7/capabilities.7.html) — ★★★☆☆
 - Docker seccomp: [docs.docker.com/engine/security/seccomp](https://docs.docker.com/engine/security/seccomp/) — ★★★☆☆
+- dockerd `--seccomp-profile` (기본값 builtin): [docs.docker.com/reference/cli/dockerd](https://docs.docker.com/reference/cli/dockerd/) — ★★★☆☆
 - [namespace_concepts.md](namespace_concepts.md)
 
 ---

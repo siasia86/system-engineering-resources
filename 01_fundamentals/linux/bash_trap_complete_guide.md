@@ -301,7 +301,7 @@ echo "   Size: $(du -h "$BACKUP_FILE" | cut -f1)"
 
 ```bash
 #!/bin/bash
-set -euo pipefail
+set -Eeuo pipefail  # -E: 함수 안에서 난 에러에도 ERR trap 적용
 
 error_handler() {
     local line=$1
@@ -319,7 +319,7 @@ error_handler() {
     echo "Call stack:"
     local frame=0
     while caller $frame; do
-        ((frame++))
+        frame=$((frame + 1))  # set -e에서 ((frame++))는 0일 때 종료됨
     done
 }
 
@@ -1233,11 +1233,11 @@ done
 ```bash
 # DEBUG trap 없이
 time bash -c 'for i in {1..100000}; do x=$((i*2)); done'
-# 약 0.5초
+# 예: 약 0.1초 (bash 5.2 측정, 환경에 따라 다름)
 
 # DEBUG trap 사용
 time bash -c 'trap ":" DEBUG; for i in {1..100000}; do x=$((i*2)); done'
-# 약 5초 (10배 느림!)
+# 예: 약 0.45초 (같은 환경에서 약 4배, 환경에 따라 다름)
 ```
 
 **권장사항:**

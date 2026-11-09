@@ -48,7 +48,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected = "division by zero")]
+    #[should_panic(expected = "attempt to divide by zero")] // 정수 a / b의 panic 메시지
     fn test_panic() {
         divide(10, 0);
     }
@@ -421,6 +421,8 @@ async fn test_timeout() {
 - assert_cmd: [docs.rs/assert_cmd](https://docs.rs/assert_cmd) — ★★★☆☆
 - mockall: [docs.rs/mockall](https://docs.rs/mockall) — ★★★☆☆
 - assert_eq! (실패 시 Debug 값 출력): [doc.rust-lang.org/std/macro.assert_eq.html](https://doc.rust-lang.org/std/macro.assert_eq.html) — ★★★☆☆
+- Rust Reference - should_panic(expected는 panic 메시지에 포함되어야 함): [doc.rust-lang.org/reference/attributes/testing.html](https://doc.rust-lang.org/reference/attributes/testing.html) — ★★★☆☆
+- core::panicking (정수 0 나누기 panic 메시지): [github.com/rust-lang/rust](https://github.com/rust-lang/rust/blob/main/library/core/src/panicking.rs) — ★★★☆☆
 
 ---
 

@@ -135,7 +135,7 @@ EXPLAIN
 SELECT * FROM orders WHERE customer_id = 456 AND status = 'active';
 
 -- 핵심 지표 (EXPLAIN ANALYZE는 TREE 형식으로 실제 시간·행 수를 표시):
--- type: ALL (풀스캔 → 나쁨) / ref (인덱스 → 좋음) / const (PK → 최고)
+-- type: ALL (풀스캔 → 나쁨) / ref (인덱스 → 좋음) / const (PK → 가장 좋음)
 -- rows: 스캔 예상 행 수 (적을수록 좋음)
 -- Extra: Using filesort (정렬 부하), Using temporary (임시 테이블)
 ```

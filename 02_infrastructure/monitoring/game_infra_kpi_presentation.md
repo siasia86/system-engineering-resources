@@ -137,8 +137,10 @@ Get-Service -Name "GameServerService" | Select-Object Status, StartType
 # 포트 리스닝 상태를 확인합니다.
 netstat -an | findstr "7777"
 
-# 이벤트 로그에서 최근 1일간 서비스 장애 이력을 조회합니다.
+# 이벤트 로그에서 최근 1일간 서비스 장애 이력을 조회합니다. (Get-EventLog는 Windows PowerShell 5.1 전용)
 Get-EventLog -LogName System -EntryType Error -After (Get-Date).AddDays(-1) |  Where-Object { $_.Source -match "Service" }
+# PowerShell 7에서는 Get-WinEvent를 사용합니다. (Level 2 = Error)
+Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddDays(-1)} | Where-Object { $_.ProviderName -match "Service" }
 
 # 시스템 부팅 시간을 확인합니다.
 systeminfo | findstr "부팅 시간"
@@ -600,7 +602,7 @@ sysctl -p
 # gameuser  hard  nofile  1000000
 ```
 
-## ubuntu-24.04 mysql systemd
+#### ubuntu-24.04 mysql systemd
 ```bash
 # /etc/security/limits.conf 에서 조절 하였는데, 수치가 반영이 안되는 경우
 
@@ -610,7 +612,7 @@ dpkg -l | grep -i mysql-server
 # library (systemd) 설정 경로 확인
 dpkg -L mysql-server-8.0 | grep -i lib
 
-# vi 로 편집
+# 패키지 unit 파일 (직접 편집하면 패키지 업데이트 때 덮어써질 수 있으므로 아래처럼 드롭인으로 변경)
 /usr/lib/systemd/system/mysql.service
 
 # MySQL systemd service file
@@ -634,7 +636,8 @@ Restart=on-failure
 RuntimeDirectory=mysqld
 RuntimeDirectoryMode=755
 
-## 아래 부분 수정 후 systemctl daemon-reload 실행 뒤 systemctl restart mysql
+## sudo systemctl edit mysql 로 드롭인을 열어 [Service] 아래에 다음 줄을 넣고 systemctl restart mysql
+## (systemctl edit는 저장 뒤 daemon-reload를 자동으로 수행)
 LimitNOFILE=10000
 
 ```
@@ -998,6 +1001,8 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 | 알림        | Alertmanager, Grafana | PagerDuty, OpsGenie     |
 | APM         | Pinpoint, Jaeger      | New Relic, Datadog APM  |
 
+🟡 OpsGenie는 2025-06-04에 신규 판매가 끝났고 2027-04-05에 지원이 종료됩니다. Atlassian은 Jira Service Management로 이전을 안내합니다.
+
 ---
 
 > **핵심 메시지**: 게임 서비스 인프라 운영은 **"측정할 수 없으면 관리할 수 없다"** 는 원칙 하에,  
@@ -1014,6 +1019,9 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 ## 참고 자료
 
 - Prometheus Documentation: [prometheus.io](https://prometheus.io/docs/introduction/overview/) — ★★★☆☆
+- Get-EventLog (Windows PowerShell 5.1 전용, Get-WinEvent 권장): [learn.microsoft.com](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-eventlog?view=powershell-5.1) — ★★★☆☆
+- systemd.unit(5) (벤더 unit 설정 덮어쓰기, 드롭인): [man7.org](https://man7.org/linux/man-pages/man5/systemd.unit.5.html) — ★★★☆☆
+- Opsgenie Licensing (판매·지원 종료 일정): [atlassian.com/licensing/opsgenie](https://www.atlassian.com/licensing/opsgenie) — ★★★☆☆
 
 ---
 

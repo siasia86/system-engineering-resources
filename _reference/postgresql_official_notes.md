@@ -9,6 +9,7 @@ sources:
   - https://www.postgresql.org/download/linux/redhat/
   - https://www.postgresql.org/docs/18/release-18.html
   - https://www.postgresql.org/docs/18/app-initdb.html
+  - https://salsa.debian.org/postgresql/postgresql-common/-/blob/master/pg_createcluster
   - https://www.postgresql.org/docs/17/release-17.html
   - https://www.postgresql.org/docs/16/release-16.html
   - https://www.postgresql.org/docs/15/release-15.html
@@ -85,6 +86,7 @@ last_checked: 2026-11-09
 | PG13 이하 | md5                      | md5                |                     |
 | PG14+     | scram-sha-256            | scram-sha-256      | md5 deprecated 예고 |
 
+- 표의 pg_hba 기본 METHOD는 Debian·Ubuntu 패키지(`pg_createcluster`)가 host 연결에 넣는 값입니다(local은 peer). initdb 자체는 `-A`(`--auth`)를 지정하지 않으면 `trust`를 씁니다(2026-11-09 확인).
 - MD5 암호화 패스워드 지원은 PG18부터 deprecated (향후 제거 예정)
 - pg_hba.conf에 md5 지정해도 서버 패스워드가 SCRAM이면 SCRAM으로 자동 전환
 

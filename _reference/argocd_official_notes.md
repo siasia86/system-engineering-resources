@@ -11,6 +11,7 @@ sources:
   - https://argo-cd.readthedocs.io/en/stable/
   - https://argo-cd.readthedocs.io/en/stable/core_concepts/
   - https://argo-cd.readthedocs.io/en/stable/getting_started/
+  - https://argo-cd.readthedocs.io/en/stable/operator-manual/health/
 ---
 
 # ArgoCD 공식 문서 참조 노트
@@ -46,14 +47,14 @@ Kubernetes Cluster (live state = Git state)
 
 ## 4. 핵심 개념
 
-| 용어           | 설명                                                  |
-|----------------|-------------------------------------------------------|
-| Application    | Git 소스 + K8s 클러스터 대상을 연결한 ArgoCD 오브젝트 |
-| Sync           | Git 상태를 클러스터에 적용하는 동작                   |
-| Sync Status    | Synced / OutOfSync / Unknown                          |
-| Health Status  | Healthy / Degraded / Progressing / Missing            |
-| App of Apps    | Application을 관리하는 상위 Application 패턴          |
-| ApplicationSet | 여러 클러스터/환경에 Application 자동 생성            |
+| 용어           | 설명                                                             |
+|----------------|------------------------------------------------------------------|
+| Application    | Git 소스 + K8s 클러스터 대상을 연결한 ArgoCD 오브젝트            |
+| Sync           | Git 상태를 클러스터에 적용하는 동작                              |
+| Sync Status    | Synced / OutOfSync / Unknown                                     |
+| Health Status  | Healthy / Progressing / Degraded / Suspended / Missing / Unknown |
+| App of Apps    | Application을 관리하는 상위 Application 패턴                     |
+| ApplicationSet | 여러 클러스터/환경에 Application 자동 생성                       |
 
 ## 5. 지원 소스 타입
 

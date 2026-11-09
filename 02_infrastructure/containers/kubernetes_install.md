@@ -119,6 +119,7 @@ sudo sysctl --system
 
 ```bash
 sudo apt install containerd -y
+# Kubernetes 1.38부터 containerd 1.x는 지원되지 않음(kubelet 시작 거부): containerd --version이 2.0 이상인지 확인
 sudo mkdir -p /etc/containerd
 containerd config default | sudo tee /etc/containerd/config.toml
 # SystemdCgroup = true 설정
@@ -367,6 +368,7 @@ sudo journalctl -u kubelet -f
 - kubeadm: [Options for Highly Available Topology](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/) — ★★★☆☆
 - k3s Requirements: [docs.k3s.io/installation/requirements](https://docs.k3s.io/installation/requirements) — ★★★☆☆
 - Kubernetes Releases (지원 버전): [kubernetes.io/releases](https://kubernetes.io/releases/) — ★★★☆☆
+- KEP-4033 (containerd 1.7 지원 종료 시점 1.38): [github.com/kubernetes/enhancements](https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/4033-group-driver-detection-over-cri) — ★★★☆☆
 
 ---
 

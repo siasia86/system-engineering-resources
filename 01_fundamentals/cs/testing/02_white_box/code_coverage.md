@@ -73,7 +73,7 @@ if age >= 18 and has_id:    # 조건1: age>=18, 조건2: has_id
 
 ### MC/DC (Modified Condition/Decision Coverage)
 
-각 조건이 독립적으로 결과에 영향을 미치는지 검증합니다. 항공/의료 등 안전 필수 시스템에서 요구됩니다.
+각 조건이 독립적으로 결과에 영향을 미치는지 검증합니다. 안전 필수 시스템 중 항공 분야에서는 소프트웨어 인증 기준 DO-178C가 Level A(가장 높은 등급) 소프트웨어에 MC/DC 달성을 요구합니다.
 
 ```python
 if A and B:
@@ -174,12 +174,17 @@ def get_discount(age, is_member):
 | C/C++  | gcov, lcov                  |
 | JS/TS  | Istanbul (nyc), c8          |
 
+> Cobertura의 마지막 릴리스는 2.1.1(2015-02, Maven Central 기준)입니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ## 참고 자료
 
 - ISTQB Foundation Level Syllabus — ★★★☆☆
 - DO-178C: Software Considerations in Airborne Systems — ★★★★☆
+- NASA Langley, A Practical Approach to Modified Condition/Decision Coverage (DO-178B Level A의 MC/DC 요구): [ntrs.nasa.gov](https://ntrs.nasa.gov/api/citations/20040086014/downloads/20040086014.pdf) — ★★★☆☆
+- Research on Software Test Coverage Analysis Methods Under DO-178C (MC/DC는 Level A 적용): [atlantis-press.com](https://www.atlantis-press.com/article/125994983.pdf) — ★★☆☆☆
+- Cobertura 릴리스 목록 (마지막 2.1.1): [repo1.maven.org](https://repo1.maven.org/maven2/net/sourceforge/cobertura/cobertura/) — ★★★☆☆
 - [Python 테스트 실습](../../../programming/python/python_testing.md)
 
 ---

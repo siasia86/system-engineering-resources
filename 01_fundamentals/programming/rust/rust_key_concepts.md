@@ -432,12 +432,12 @@ fn main() {
 
 ### 에러 처리 방식 비교
 
-| 언어     | 방식                | 강제 처리 여부 |
-|----------|---------------------|----------------|
-| C        | 반환값 (int, errno) | ❌             |
-| C++/Java | 예외 (exception)    | ❌             |
-| Go       | (value, error) 튜플 | ❌             |
-| Rust     | `Result<T, E>`, `?` | ✅ 컴파일 강제 |
+| 언어     | 방식                | 강제 처리 여부                              |
+|----------|---------------------|---------------------------------------------|
+| C        | 반환값 (int, errno) | ❌                                          |
+| C++/Java | 예외 (exception)    | ❌ (Java checked 예외는 컴파일 오류로 강제) |
+| Go       | (value, error) 튜플 | ❌                                          |
+| Rust     | `Result<T, E>`, `?` | 🟡 무시하면 컴파일 경고 (`#[must_use]`)     |
 
 ### Go vs Rust 선택 기준
 
@@ -466,6 +466,8 @@ fn main() {
 - std::marker::Copy: [doc.rust-lang.org/std/marker/trait.Copy.html](https://doc.rust-lang.org/std/marker/trait.Copy.html) — ★★★☆☆
 - Change in Guidance on Committing Lockfiles (2023): [blog.rust-lang.org](https://blog.rust-lang.org/2023/08/29/committing-lockfiles/) — ★★★☆☆
 - C++ moved-from 상태: [cppreference std::move](https://en.cppreference.com/w/cpp/utility/move) — ★★☆☆☆
+- std::result (Results must be used, `#[must_use]` 경고): [doc.rust-lang.org/std/result](https://doc.rust-lang.org/std/result/index.html) — ★★★☆☆
+- JLS 11.2 Compile-Time Checking of Exceptions: [docs.oracle.com/javase/specs/jls/se21](https://docs.oracle.com/javase/specs/jls/se21/html/jls-11.html#jls-11.2) — ★★★☆☆
 - [ownership_borrowing.md](./ownership_borrowing.md)
 - [traits_generics.md](./traits_generics.md)
 - [concurrency.md](./concurrency.md)

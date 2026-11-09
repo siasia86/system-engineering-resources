@@ -166,7 +166,7 @@ reboot -f
 
 ## 참고 자료
 
-- Red Hat Documentation - Root Password Reset: [access.redhat.com](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_basic_system_settings/assembly_changing-and-resetting-the-root-password_configuring-basic-system-settings) — ★★★☆☆
+- Red Hat Documentation - Root Password Reset (RHEL 9, Managing users and groups 장): [docs.redhat.com](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_basic_system_settings/managing-users-and-groups_configuring-basic-system-settings) — ★★★☆☆
 - Ubuntu release cycle: [ubuntu.com/about/release-cycle](https://ubuntu.com/about/release-cycle) — ★★★☆☆
 
 ---

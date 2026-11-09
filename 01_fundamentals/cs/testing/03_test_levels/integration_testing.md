@@ -148,14 +148,16 @@ class TestNginxBackend:
 
     def test_upstream_failover(self):
         """백엔드 1대 다운 시 다른 서버로 전환되는지 확인"""
-        # backend-1 중지 후 요청
+        # backend-1 중지 후 요청 (assert 실패해도 finally에서 복구)
         subprocess.run(["docker", "stop", "backend-1"])
-        result = subprocess.run(
-            ["curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", "http://localhost/api/health"],
-            capture_output=True, text=True
-        )
-        assert result.stdout == "200"
-        subprocess.run(["docker", "start", "backend-1"])
+        try:
+            result = subprocess.run(
+                ["curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", "http://localhost/api/health"],
+                capture_output=True, text=True
+            )
+            assert result.stdout == "200"
+        finally:
+            subprocess.run(["docker", "start", "backend-1"])
 ```
 
 ### 테스트 격리

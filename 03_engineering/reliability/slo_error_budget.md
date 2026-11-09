@@ -161,7 +161,7 @@ Example:
 ```yaml
 error_budget_policy:
   service: payment-api
-  slo: 99.95%
+  slo: 99.9%
   window: 30d rolling
 
   actions:

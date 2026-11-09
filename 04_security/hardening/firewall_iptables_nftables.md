@@ -96,6 +96,8 @@ $IPT -A INPUT -m limit --limit 5/min -j LOG --log-prefix "iptables-DROP: "
 $IPT -A INPUT -j DROP
 ```
 
+> 이 룰셋은 IPv4(`iptables`)에만 적용되며 IPv6는 `ip6tables` 또는 nftables `inet` 테이블로 따로 설정해야 합니다. 원격(SSH)으로 적용하면 초기화와 DROP 정책 사이에 접속이 끊길 수 있으므로 콘솔 접근을 확보하거나, 확인 응답이 없으면 이전 규칙으로 되돌리는 `iptables-apply`로 적용합니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -234,6 +236,7 @@ iptables-translate -A INPUT -p tcp --dport 22 -j ACCEPT
 - Netfilter conntrack: [conntrack-tools.netfilter.org](https://conntrack-tools.netfilter.org/) — ★★★☆☆
 - iptables 프로젝트(지원 커널 2.4 이상): [netfilter.org/projects/iptables](https://www.netfilter.org/projects/iptables/index.html) — ★★★☆☆
 - nftables 룰셋 저장·복원: [Operations at ruleset level](https://wiki.nftables.org/wiki-nftables/index.php/Operations_at_ruleset_level) — ★★★☆☆
+- iptables-apply(8)(원격 적용 후 미확인 시 자동 복원): [man7.org](https://man7.org/linux/man-pages/man8/iptables-apply.8.html) — ★★★☆☆
 
 ---
 

@@ -21,7 +21,7 @@ Linux에서 `ssh` 명령으로 Windows에 접속하거나, Ansible WinRM 대신 
 | 인증 방식 | 공개키 (패스워드는 보안상 비활성화 권장)     |
 | 주요 용도 | Ansible SSH 연결, 원격 관리, 파일 전송       |
 
-> 🟡 Windows OpenSSH 9.5 이하에서 `Administrator` 계정은 버그로 인해 접속이 안 됩니다.
+> 🟡 `Administrator`를 포함한 Administrators 그룹 계정은 기본 `sshd_config`의 `Match Group administrators` 때문에 `~/.ssh/authorized_keys` 대신 `C:\ProgramData\ssh\administrators_authorized_keys`(Administrators·SYSTEM만 접근 허용)를 사용합니다.
 > **별도 로컬 계정을 생성해서 Administrators 그룹에 추가하는 방식을 권장합니다.**
 
 ---
@@ -64,7 +64,7 @@ New-NetFirewallRule -Name "OpenSSH-Server-In-TCP" `
 
 ## 3. 공개키 인증 설정
 
-### Step 1 — 전용 계정 생성 (Administrator 계정 버그 우회)
+### Step 1 — 전용 계정 생성
 
 ```powershell
 $pw = ConvertTo-SecureString "SecurePassword123" -AsPlainText -Force
@@ -126,7 +126,7 @@ $keys = @(
     "ssh-ed25519 AAAA...key2 user2@host"
 )
 
-# LF 강제 저장 필수 (Set-Content는 CRLF로 저장 → 인증 실패)
+# 줄바꿈은 LF로 저장 (CRLF도 OpenSSH가 읽음 — 인증 실패 원인은 UTF-16·BOM 인코딩)
 $file = "C:\ProgramData\ssh\administrators_authorized_keys"
 New-Item -Path "C:\ProgramData\ssh" -ItemType Directory -Force
 # BOM 없는 UTF-8 사용 ([System.Text.Encoding]::UTF8은 BOM을 붙여 첫 줄 키를 읽지 못하게 함)
@@ -228,16 +228,16 @@ Set-NetFirewallRule -Name "OpenSSH-Server-In-TCP" -RemoteAddress 192.0.2.10
 
 ## 6. 트러블슈팅
 
-| 증상                                    | 원인                             | 조치                                       |
-|-----------------------------------------|----------------------------------|--------------------------------------------|
-| `Connection reset` (인증 직전)          | `PubkeyAuthentication` 주석 처리 | `sshd_config` 주석 제거 후 재시작          |
-| `Connection reset` (Administrator)      | OpenSSH 9.5 버그                 | 별도 계정 생성 후 Administrators 그룹 추가 |
-| 공개키 인증 실패                        | 파일 권한 과다                   | `icacls`로 해당 계정/SYSTEM만 허용         |
-| 공개키 인증 실패 (Administrators 그룹)  | `authorized_keys` 무시           | `administrators_authorized_keys`에 등록    |
-| 공개키 인증 실패 (키 등록 후에도 안 됨) | CRLF 줄바꿈                      | `WriteAllText`로 LF 강제 저장              |
-| 접속 후 즉시 종료                       | DefaultShell 미설정              | `HKLM:\SOFTWARE\OpenSSH` DefaultShell 등록 |
-| sshd 시작 실패                          | `sshd_config` 문법 오류          | `sshd.exe -t`로 오류 줄 확인 후 수정       |
-| 출력 한글 깨짐                          | CP949 인코딩                     | 명령 앞에 `chcp 65001` 추가                |
+| 증상                                    | 원인                          | 조치                                       |
+|-----------------------------------------|-------------------------------|--------------------------------------------|
+| 공개키 인증 미시도 (패스워드 요구 등)   | `PubkeyAuthentication no`     | `yes`로 변경 (주석 처리 시 기본값 yes)     |
+| 공개키 인증 실패 (`Administrator`)      | Administrators 그룹 규칙 적용 | `administrators_authorized_keys`에 등록    |
+| 공개키 인증 실패                        | 파일 권한 과다                | `icacls`로 해당 계정/SYSTEM만 허용         |
+| 공개키 인증 실패 (Administrators 그룹)  | `authorized_keys` 무시        | `administrators_authorized_keys`에 등록    |
+| 공개키 인증 실패 (키 등록 후에도 안 됨) | UTF-16·BOM 인코딩             | `WriteAllText`로 BOM 없는 UTF-8 저장       |
+| 접속 후 즉시 종료                       | DefaultShell 미설정           | `HKLM:\SOFTWARE\OpenSSH` DefaultShell 등록 |
+| sshd 시작 실패                          | `sshd_config` 문법 오류       | `sshd.exe -t`로 오류 줄 확인 후 수정       |
+| 출력 한글 깨짐                          | CP949 인코딩                  | 명령 앞에 `chcp 65001` 추가                |
 
 ### SSH 클라이언트 config 주의사항
 
@@ -288,6 +288,9 @@ Get-WinEvent -LogName "OpenSSH/Operational" -MaxEvents 20 | Select TimeCreated, 
 - .NET `Encoding.UTF8`(BOM 포함): [learn.microsoft.com](https://learn.microsoft.com/en-us/dotnet/api/system.text.encoding.utf8) — ★★★☆☆
 - findstr(`/c:` 없는 공백은 여러 검색어 구분): [learn.microsoft.com](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/findstr) — ★★★☆☆
 - Set-NetFirewallRule(`-Name`과 지역화되는 `-DisplayName`): [learn.microsoft.com](https://learn.microsoft.com/en-us/powershell/module/netsecurity/set-netfirewallrule) — ★★★☆☆
+- Key-based authentication(관리자 계정 `administrators_authorized_keys`·ACL, `Add-Content` 예시): [learn.microsoft.com](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement) — ★★★☆☆
+- Win32-OpenSSH #2070(UTF-16 LE 키 파일 인증 실패, UTF-8 기대): [github.com/PowerShell/Win32-OpenSSH](https://github.com/PowerShell/Win32-OpenSSH/issues/2070) — ★★★☆☆
+- sshd_config(5) `PubkeyAuthentication` 기본값 yes: [man.openbsd.org/sshd_config](https://man.openbsd.org/sshd_config) — ★★★☆☆
 
 ---
 

@@ -15,7 +15,7 @@
 | 항목 | 값                                                            |
 |------|---------------------------------------------------------------|
 | 정의 | 시스템이 혼란 상황을 견딜 수 있다는 확신을 구축하기 위한 실험 |
-| 출처 | principlesofchaos.org (Netflix 기원, 2011)                    |
+| 출처 | principlesofchaos.org (Netflix 기원, 2010)                    |
 | 핵심 | 가설 기반 실험, 프로덕션 수행, 폭발 반경 최소화               |
 | 전제 | 모니터링 + 알림 + 자동 중단 조건이 준비된 후 시작             |
 | 연관 | Incident Management (실험 실패 시), SLO (정상 상태 정의 기준) |
@@ -32,8 +32,9 @@
 | Automate Experiments to Run Continuously | 일회성이 아닌 지속적 실험으로 회귀 방지         |
 | Minimize Blast Radius                    | 실험 범위를 최소화하여 실제 장애 방지           |
 
-> 위 5원칙은 principlesofchaos.org에 명시된 공식 원칙입니다. Netflix의 Chaos Monkey(2011)에서 시작되어 커뮤니티가 정립했습니다.
+> 위 5원칙은 principlesofchaos.org에 명시된 공식 원칙입니다. Netflix의 Chaos Monkey(2010-12 Netflix TechBlog에서 처음 공개)에서 시작되어 커뮤니티가 정립했습니다.
 > — https://principlesofchaos.org/
+> — https://netflixtechblog.com/5-lessons-weve-learned-using-aws-1f2a28588e4c
 
 ### Chaos Engineering이 아닌 것
 
@@ -191,8 +192,8 @@ After:
 | L4   | Managed    | 지속적 실험, Resilience Score 추적 |
 | L5   | Optimized  | 자동 발견 + 자동 실험 + 자동 수정  |
 
-> Chaos Engineering 성숙도 모델은 Gremlin의 "Chaos Maturity Model"을 참고한 것입니다.
-> — https://www.gremlin.com/community/tutorials/chaos-engineering-the-history-principles-and-practice/
+> "Chaos Maturity Model"은 Netflix 저자들이 쓴 O'Reilly "Chaos Engineering"(Rosenthal 외, 2017)에서 제시되었으며, 정교함(Sophistication)과 도입 범위(Adoption) 두 축으로 평가합니다. 위 L1~L5 단계는 이 문서의 편의 구분입니다.
+> — https://www.oreilly.com/content/chaos-engineering/
 
 ## 9. 트러블슈팅
 
@@ -209,6 +210,8 @@ After:
 - Principles of Chaos Engineering: [principlesofchaos.org](https://principlesofchaos.org/) — ★★★☆☆
 - LitmusChaos: [litmuschaos.io](https://litmuschaos.io/) — ★★★☆☆
 - AWS FIS: [docs.aws.amazon.com/fis](https://docs.aws.amazon.com/fis/latest/userguide/) — ★★★☆☆
+- Netflix TechBlog "5 Lessons We've Learned Using AWS"(2010-12, Chaos Monkey 첫 공개): [netflixtechblog.com](https://netflixtechblog.com/5-lessons-weve-learned-using-aws-1f2a28588e4c) — ★★★☆☆
+- O'Reilly "Chaos Engineering"(2017, Chaos Maturity Model): [oreilly.com/content/chaos-engineering](https://www.oreilly.com/content/chaos-engineering/) — ★★★☆☆
 
 ---
 

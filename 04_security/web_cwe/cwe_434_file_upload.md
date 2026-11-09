@@ -110,6 +110,8 @@ curl "http://192.0.2.182/uploads/backdoor.php?cmd=cat+/etc/passwd"
 | `shell.php.jpg` | ❌        | 더블 확장자 (설정에 따라 다름) |
 | `shell.jpg.php` | ✅        | 마지막 확장자 기준 실행        |
 
+> `.phtml` 실행 여부는 배포판 PHP 핸들러 설정에 따라 다릅니다. Ubuntu 기본 설정은 `.php`·`.phtml`·`.phar`, RHEL 계열(CentOS Stream 9) 기본 `php.conf`는 `.php`·`.phar`만 PHP로 처리합니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -166,6 +168,8 @@ if (!in_array($mime, $allowed_mime)) {
 </Directory>
 ```
 
+> `php_admin_flag`는 mod_php 전용 지시어라 PHP-FPM(`proxy_fcgi`) 환경에서는 httpd 설정 검사에서 오류가 납니다. 배포판 기본 설정은 `<FilesMatch>` 안의 `SetHandler`로 PHP를 연결하므로, 확장자 기준인 `RemoveHandler`·`AddType`으로는 실행이 막히지 않습니다. 적용 후 업로드 경로의 PHP 파일 요청이 실행되지 않는지 확인하고, 아래 저장 분리를 우선 검토합니다.
+
 ### 파일명 랜덤화
 
 ```php
@@ -193,6 +197,9 @@ $target = $upload_dir . $new_name;
 - CWE-434: [cwe.mitre.org/data/definitions/434.html](https://cwe.mitre.org/data/definitions/434.html) — ★★★☆☆
 - OWASP File Upload: [owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload](https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload) — ★★★☆☆
 - OWASP Top 10:2025 A06 Insecure Design(CWE-434 매핑): [top10.owasp.org/2025/A06_2025-Insecure_Design](https://top10.owasp.org/2025/A06_2025-Insecure_Design/) — ★★★☆☆
+- CentOS Stream 9 `php.conf`(`.php`·`.phar`만 `SetHandler`): [gitlab.com/redhat/centos-stream](https://gitlab.com/redhat/centos-stream/rpms/php/-/blob/c9s/php.conf) — ★★★☆☆
+- Apache mod_mime(`RemoveHandler`는 확장자 연결만 해제, core의 `SetHandler`가 우선): [httpd.apache.org](https://httpd.apache.org/docs/2.4/mod/mod_mime.html) — ★★★☆☆
+- PHP 설정 변경(`php_admin_flag`는 Apache 모듈 방식 전용): [php.net](https://www.php.net/manual/en/configuration.changes.php) — ★★★☆☆
 
 ---
 

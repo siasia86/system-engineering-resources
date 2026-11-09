@@ -155,13 +155,13 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # Python 버전 설치
-pyenv install 3.12.2
-pyenv install 3.11.8
+pyenv install 3.15.2
+pyenv install 3.14.10
 
 # 버전 전환
-pyenv global 3.12.2       # 시스템 전체
-pyenv local 3.11.8        # 현재 디렉토리 (.python-version 생성)
-pyenv shell 3.12.2        # 현재 셸만
+pyenv global 3.15.2       # 시스템 전체
+pyenv local 3.14.10       # 현재 디렉토리 (.python-version 생성)
+pyenv shell 3.15.2        # 현재 셸만
 
 # 확인
 pyenv versions
@@ -262,8 +262,9 @@ ansible --version
 ### uv (차세대 패키지 관리자)
 
 ```bash
-# 설치
-pip install uv
+# 설치 (공식 독립 설치기. PEP 668 배포판은 venv 밖 pip install이 막힘)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# pipx install uv                     # 또는 PyPI에서 격리 설치
 
 # 가상환경 생성 (pip보다 10~100배 빠름)
 uv venv .venv
@@ -303,6 +304,8 @@ uv pip freeze > requirements.txt
 - Python Documentation: [venv](https://docs.python.org/3/library/venv.html) — ★★★☆☆
 - pip Documentation: [pip.pypa.io](https://pip.pypa.io/en/stable/) — ★★★☆☆
 - pipx Documentation: [Install pipx](https://pipx.pypa.io/stable/how-to/install-pipx.html) — ★★★☆☆
+- uv Documentation: [Installing uv](https://docs.astral.sh/uv/getting-started/installation/) — ★★★☆☆
+- Python Releases: [python.org/downloads](https://www.python.org/downloads/) — ★★★☆☆
 
 ---
 

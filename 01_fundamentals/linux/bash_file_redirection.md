@@ -285,7 +285,7 @@ server {
 }
 EOF
 
-# tee로 root 권한 파일 생성
+# tee로 root 권한 파일 생성 (기존 /etc/hosts 전체를 덮어씀, 추가만 하려면 tee -a)
 cat << EOF | sudo tee /etc/hosts > /dev/null
 127.0.0.1 localhost
 192.168.1.1 server01

@@ -135,8 +135,8 @@ sudo yum update kernel -y && sudo reboot
 ### 컨테이너 환경 추가 대응
 
 ```bash
-# seccomp 프로파일로 splice() 제한
-# Docker 기본 seccomp 프로파일 적용 확인
+# Docker 기본 seccomp 프로파일은 splice()를 허용함 — 제한하려면 splice를 거부하는 사용자 정의 프로파일 필요 (호환성 시험 후 적용)
+# 기본 프로파일 해제(seccomp=unconfined) 여부 확인
 docker inspect <container> | grep -i seccomp
 
 # gVisor(runsc) 사용 — 커널 공유 없는 샌드박스
@@ -145,8 +145,8 @@ docker inspect <container> | grep -i seccomp
 ### 서비스 계정 최소 권한 원칙 재확인
 
 ```bash
-# sudo 권한 없는 계정 목록 확인
-grep -v "sudo\|wheel\|admin" /etc/group | grep -v "^#"
+# sudo 권한 그룹(sudo·wheel·admin) 구성원 확인 (없는 그룹은 출력 생략)
+getent group sudo wheel admin
 
 # www-data, postgres 등 서비스 계정 sudo 여부 확인
 sudo -l -U www-data 2>/dev/null
@@ -255,6 +255,7 @@ ls -la /etc/cron* /var/spool/cron/crontabs/ 2>/dev/null
 - Dirty Frag: [github.com/V4bel/dirtyfrag](https://github.com/V4bel/dirtyfrag) — ★★☆☆☆
 - DirtyClone: [research.jfrog.com](https://research.jfrog.com/post/dissecting-and-exploiting-linux-lpe-variant-dirtyclone-cve-2026-43503/) — ★★★☆☆
 - [cve_2026_43503_dirty_clone.md](./cve_2026_43503_dirty_clone.md) — CVE-2026-43503 (DirtyClone)
+- Docker 기본 seccomp 프로파일(splice·tee·vmsplice 허용): [github.com/moby/profiles](https://github.com/moby/profiles/blob/main/seccomp/default.json) — ★★★☆☆
 
 ---
 

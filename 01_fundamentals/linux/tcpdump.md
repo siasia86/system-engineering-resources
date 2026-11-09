@@ -424,7 +424,7 @@ sudo tcpdump -i eth0 -nn | awk '{print $NF}' | sort | uniq -c
 ### 4. 애플리케이션 디버깅
 
 ```bash
-# API 호출 추적
+# API 연결 추적 (443은 TLS 암호문이라 -A로 요청 내용은 보이지 않음, 연결·핸드셰이크 확인용)
 sudo tcpdump -i eth0 -A -s 0 'host api.example.com and port 443'
 
 # 데이터베이스 쿼리

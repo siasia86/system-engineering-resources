@@ -439,7 +439,8 @@ sudo a2enmod proxy proxy_http
 # Ubuntu
 sudo apt install certbot python3-certbot-apache -y
 
-# Rocky
+# Rocky (certbot은 EPEL에 있으므로 CRB·EPEL 저장소를 먼저 활성화)
+sudo dnf config-manager --set-enabled crb && sudo dnf install epel-release -y
 sudo dnf install certbot python3-certbot-apache -y
 
 # 인증서 발급 + Apache 자동 설정
@@ -582,6 +583,7 @@ apache2ctl status 2>/dev/null || curl -s http://localhost/server-status?auto
 - Apache MaxRequestWorkers(ServerLimit × ThreadsPerChild): [httpd.apache.org/docs/2.4/mod/mpm_common.html](https://httpd.apache.org/docs/2.4/mod/mpm_common.html) — ★★★☆☆
 - Mozilla 서버 TLS 권장 6.0(intermediate): [ssl-config.mozilla.org/guidelines/6.0.json](https://ssl-config.mozilla.org/guidelines/6.0.json) — ★★★☆☆
 - X-XSS-Protection 보안 고려: [developer.mozilla.org](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-XSS-Protection) — ★★★☆☆
+- EPEL 시작 안내(CRB 활성화 후 epel-release 설치): [docs.fedoraproject.org/en-US/epel/getting-started](https://docs.fedoraproject.org/en-US/epel/getting-started/) — ★★★☆☆
 
 ---
 

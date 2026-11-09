@@ -165,6 +165,8 @@ SecRule ARGS "@rx [;|`$()]" "id:1001,deny,status:403,msg:'Command Injection atte
 | chroot            | httpd를 /var/www 내로 격리             |
 | AppArmor/SELinux  | httpd 프로세스 실행 가능 바이너리 제한 |
 
+> `httpd_execmem`은 httpd 스크립트·모듈의 실행 가능 메모리(execmem·execstack) 허용 여부로 기본값이 off이며, 셸 명령 실행 자체를 막지는 않습니다. Enforcing 상태에서 `httpd_can_network_connect`(기본 off) 같은 boolean을 필요할 때만 켜 침해 후 외부 연결 범위를 줄이고, 현재 값은 `getsebool -a | grep httpd`로 확인합니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -175,6 +177,7 @@ SecRule ARGS "@rx [;|`$()]" "id:1001,deny,status:403,msg:'Command Injection atte
 - OWASP Command Injection: [owasp.org/www-community/attacks/Command_Injection](https://owasp.org/www-community/attacks/Command_Injection) — ★★★☆☆
 - OWASP OS Command Injection Defense Cheat Sheet: [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html) — ★★★☆☆
 - OWASP Top 10:2025 A05 Injection(CWE-78 매핑): [top10.owasp.org/2025/A05_2025-Injection](https://top10.owasp.org/2025/A05_2025-Injection/) — ★★★☆☆
+- SELinux httpd boolean 정의(`httpd_execmem`·`httpd_can_network_connect`): [github.com/fedora-selinux/selinux-policy](https://github.com/fedora-selinux/selinux-policy/blob/rawhide/policy/modules/contrib/apache.te) — ★★★☆☆
 
 ---
 

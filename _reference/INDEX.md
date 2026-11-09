@@ -102,7 +102,7 @@ sources:
 | SVN (Subversion)               | `_reference/svn_official_notes.md`                      | 1.15.0                                                  | 2026-11-09 | O    |
 | Git                            | `_reference/git_official_notes.md`                      | 2.56.0                                                  | 2026-11-09 | O    |
 | eBPF / bpftrace                | `_reference/ebpf_bpftrace_official_notes.md`            | libbpf v1.8.0, bpftrace v0.27.1                         | 2026-11-09 | O    |
-| Linux Process / Memory / IPC   | `_reference/linux_process_official_notes.md`            | fork/exec/wait, mmap, OOM, pipe/shm/mq                  | 2026-08-01 | O    |
+| Linux Process / Memory / IPC   | `_reference/linux_process_official_notes.md`            | fork/exec/wait, mmap, OOM, pipe/shm/mq                  | 2026-11-09 | O    |
 | GDB                            | `_reference/gdb_official_notes.md`                      | 18.1, breakpoint/watchpoint/bt, ptrace attach           | 2026-11-09 | O    |
 | strace                         | `_reference/strace_official_notes.md`                   | v7.3, syscall/signal 추적, -e trace 필터                | 2026-11-09 | O    |
 | ltrace                         | `_reference/ltrace_official_notes.md`                   | 0.8.1, 동적 라이브러리 함수 추적                        | 2026-11-09 | O    |
@@ -111,7 +111,7 @@ sources:
 | lsof                           | `_reference/lsof_official_notes.md`                     | 4.99.7, FD/TYPE 필드, -i/-p/-u/-a 필터                  | 2026-08-01 | O    |
 | iotop                          | `_reference/iotop_official_notes.md`                    | v1.33, I/O 모니터링, --only/--batch/--processes         | 2026-11-09 | O    |
 | tcpdump                        | `_reference/tcpdump_official_notes.md`                  | 4.99.7, BPF 필터, -w pcap, -n/-nn/-X 옵션               | 2026-11-09 | O    |
-| Bash Shell                     | `_reference/bash_shell_official_notes.md`               | 5.3, interactive/non-interactive, 리다이렉션            | 2026-08-01 | O    |
+| Bash Shell                     | `_reference/bash_shell_official_notes.md`               | 5.3, interactive/non-interactive, 리다이렉션            | 2026-11-09 | O    |
 | Vim                            | `_reference/vim_official_notes.md`                      | 9.2, Normal/Insert/Visual/Command 모드                  | 2026-11-09 | O    |
 | C# / .NET                      | `_reference/csharp_official_notes.md`                   | .NET 10 LTS/C# 14, async/await, NRT, dotnet CLI         | 2026-11-09 | O    |
 

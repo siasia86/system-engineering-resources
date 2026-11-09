@@ -1023,7 +1023,7 @@ xtrabackup --backup --parallel=8 --target-dir=/backup/full/...
 # 해결 2: 압축 사용
 xtrabackup --backup --compress --compress-threads=4 --target-dir=/backup/full/...
 
-# 해결 3: 네트워크 백업 시 대역폭 제한 해제
+# 해결 3: --throttle로 복사 I/O를 제한했다면 해제 (기본값 0 = 제한 없음, 옵션을 빼는 것과 같음)
 xtrabackup --backup --throttle=0 --target-dir=/backup/full/...
 ```
 
@@ -2035,6 +2035,7 @@ echo "Encrypted backup: ${ENCRYPTED_FILE}"
 # 임시 테이블 정리 설정
 TMP_CLEAN_DB="mydb"      # 정리할 스키마 하나 (mysql·sys 등 시스템 스키마는 지정하지 않음)
 TMP_CLEAN_EXECUTE=0      # 0: 삭제할 목록만 출력 (dry run), 1: 목록 확인 후 실제 삭제
+MYSQL_CNF="/etc/xtrabackup/client.cnf"  # [client] user·password, chmod 600 (cron 등 비대화형 실행에서 -p는 암호 입력을 기다림)
 
 # Pre-backup hook
 pre_backup() {
@@ -2045,7 +2046,7 @@ pre_backup() {
     # LIKE의 _는 아무 한 글자와 맞으므로 \_로 이스케이프, -N으로 머리글 줄 제외
     # '%\_tmp%'는 user_tmpl 같은 이름에도 맞으므로 목록에서 확인
     local drop_sql
-    drop_sql=$(mysql -N -B -u root -p "${TMP_CLEAN_DB}" <<'SQL'
+    drop_sql=$(mysql --defaults-extra-file="${MYSQL_CNF}" -N -B "${TMP_CLEAN_DB}" <<'SQL'
 SELECT CONCAT('DROP TABLE `', table_schema, '`.`', table_name, '`;')
 FROM information_schema.tables
 WHERE table_schema = DATABASE()
@@ -2057,17 +2058,17 @@ SQL
     if [ -z "${drop_sql}" ]; then
         echo "No temporary tables found in ${TMP_CLEAN_DB}"
     elif [ "${TMP_CLEAN_EXECUTE}" -eq 1 ]; then
-        echo "${drop_sql}" | mysql -u root -p "${TMP_CLEAN_DB}"
+        echo "${drop_sql}" | mysql --defaults-extra-file="${MYSQL_CNF}" "${TMP_CLEAN_DB}"
     else
         echo "[DRY RUN] Tables to drop (set TMP_CLEAN_EXECUTE=1 to run):"
         echo "${drop_sql}"
     fi
     
     # 2. 테이블 최적화 (선택적)
-    # mysql -u root -p -e "OPTIMIZE TABLE mydb.large_table;"
+    # mysql --defaults-extra-file="${MYSQL_CNF}" -e "OPTIMIZE TABLE mydb.large_table;"
     
     # 3. 통계 정보 업데이트
-    mysql -u root -p -e "ANALYZE TABLE mydb.important_table;"
+    mysql --defaults-extra-file="${MYSQL_CNF}" -e "ANALYZE TABLE mydb.important_table;"
     
     echo "Pre-backup tasks completed"
 }
@@ -2302,6 +2303,8 @@ cat ${RESULTS_FILE}
 - MySQL 8.4: [mysqlbinlog](https://dev.mysql.com/doc/refman/8.4/en/mysqlbinlog.html) (`--start-position`은 첫 번째 파일에 적용) — ★★★☆☆
 - MySQL 8.4: [String Comparison Functions and Operators](https://dev.mysql.com/doc/refman/8.4/en/string-comparison-functions.html) (`LIKE`의 `_`와 `\_`) — ★★★☆☆
 - MySQL 8.4: [mysql Client Options](https://dev.mysql.com/doc/refman/8.4/en/mysql-command-options.html) (`-N`, `-B`) — ★★★☆☆
+- MySQL 8.4: [Command-Line Options that Affect Option-File Handling](https://dev.mysql.com/doc/refman/8.4/en/option-file-options.html) (`--defaults-extra-file`은 다른 옵션보다 앞에 지정) — ★★★☆☆
+- Percona XtraBackup 8.4 소스: [xtrabackup.cc](https://github.com/percona/percona-xtrabackup/blob/8.4/storage/innobase/xtrabackup/src/xtrabackup.cc) (`--throttle` 기본값 0, 초당 I/O 횟수 제한) — ★★★☆☆
 - MariaDB Documentation: [Backup and Restore Overview](https://mariadb.com/docs/server/server-usage/backup-and-restore/backup-and-restore-overview) (MariaDB에서 XtraBackup 미지원, `mariadb-backup` 권장) — ★★★☆☆
 
 ---

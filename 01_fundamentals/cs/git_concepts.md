@@ -21,7 +21,7 @@ Git은 분산 버전 관리 시스템(DVCS)으로, 2005년 리누스 토르발�
 - **분산형** — 모든 클론이 전체 이력을 보유. 서버 없이도 커밋/브랜치/병합 가능.
 - **스냅샷 기반** — 파일 변경 차분(diff)이 아닌 전체 트리 스냅샷을 저장.
 - **무결성** — 모든 객체가 SHA-1(또는 SHA-256) 해시로 식별. 임의 변조 감지 가능.
-- **빠른 브랜치** — 브랜치 = SHA 포인터 파일(41 bytes). 생성/전환이 O(1).
+- **빠른 브랜치** — 브랜치 = 커밋 해시를 가리키는 ref(SHA-1 loose ref 기준 41 bytes 파일). 생성/전환이 O(1).
 
 ### Git 데이터 흐름
 
@@ -188,7 +188,7 @@ Untracked ──git add──> Staged ──git commit──> Committed
 
 ### Git 브랜치의 특성
 
-- 브랜치 = SHA 해시를 담은 41바이트 파일 → 생성/삭제/전환 O(1)
+- 브랜치 = 커밋 해시를 담은 ref(SHA-1 loose ref 기준 41바이트 파일, SHA-256 저장소는 65바이트, `git pack-refs` 뒤에는 `packed-refs`의 한 줄) → 생성/삭제/전환 O(1)
 - 브랜치 전환 시 Working Directory가 해당 커밋의 트리로 교체됨
 - 삭제된 브랜치도 커밋 SHA를 알면 `git checkout -b <name> <SHA>`로 복구 가능
 
@@ -464,6 +464,8 @@ git gc --prune=now --aggressive
 - Git Reference: [git-scm.com/docs](https://git-scm.com/docs) — ★★★☆☆
 - Git Documentation: [gitignore](https://git-scm.com/docs/gitignore) — ★★★☆☆
 - Git Internals: [git-scm.com/book/en/v2/Git-Internals-Git-Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects) — ★★★★☆
+- Pro Git Branches in a Nutshell (41 bytes = SHA-1 40자 + 개행): [git-scm.com](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell) — ★★★★☆
+- Git Documentation: [git-pack-refs](https://git-scm.com/docs/git-pack-refs) — ★★★☆☆
 - [git_guide.md](../../02_infrastructure/cicd/git_guide.md)
 
 ---

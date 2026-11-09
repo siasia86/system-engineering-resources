@@ -349,6 +349,7 @@ DELIMITER ;
 ### 패턴 2: 페이지네이션
 
 ```sql
+DELIMITER $$
 CREATE PROCEDURE get_users_paged(
     IN p_page     INT,
     IN p_per_page INT
@@ -364,12 +365,14 @@ BEGIN
     LIMIT p_per_page OFFSET p_offset;
 
     SELECT FOUND_ROWS() AS total_count;
-END;
+END$$
+DELIMITER ;
 ```
 
 ### 패턴 3: 감사 로그 (Audit Log)
 
 ```sql
+DELIMITER $$
 CREATE PROCEDURE update_salary(
     IN p_emp_id    INT,
     IN p_new_salary DECIMAL(10,2)
@@ -383,7 +386,8 @@ BEGIN
 
     INSERT INTO salary_audit (emp_id, old_salary, new_salary, changed_at, changed_by)
     VALUES (p_emp_id, v_old_salary, p_new_salary, NOW(), CURRENT_USER());
-END;
+END$$
+DELIMITER ;
 ```
 
 [⬆ 목차로 돌아가기](#목차)

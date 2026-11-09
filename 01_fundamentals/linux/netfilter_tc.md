@@ -201,6 +201,7 @@ tc qdisc del dev eth0 root
 
 ```bash
 # total 100Mbps, web 60Mbps guaranteed, db 40Mbps guaranteed
+# default 30: 필터에 걸리지 않은 트래픽은 1:30으로 보냄. 1:30 class가 없으면 미분류 트래픽은 제한 없이 나감
 tc qdisc add dev eth0 root handle 1: htb default 30
 tc class add dev eth0 parent 1: classid 1:1 htb rate 100mbit
 tc class add dev eth0 parent 1:1 classid 1:10 htb rate 60mbit ceil 100mbit
@@ -247,7 +248,8 @@ dmesg | grep "nf_conntrack: table full"
 echo 1000000 > /proc/sys/net/netfilter/nf_conntrack_max
 echo "net.netfilter.nf_conntrack_max=1000000" >> /etc/sysctl.conf
 
-# 타임아웃 단축
+# 타임아웃 단축 (기본 432000초 = 5일)
+# 주의: 60초 넘게 패킷이 없는 연결은 conntrack 항목이 지워져 NAT·상태 기반 방화벽에서 끊길 수 있음
 echo 60 > /proc/sys/net/netfilter/nf_conntrack_tcp_timeout_established
 ```
 
@@ -259,12 +261,14 @@ echo 60 > /proc/sys/net/netfilter/nf_conntrack_tcp_timeout_established
 
 - Linux tc man page: [man7.org/linux/man-pages/man8/tc.8.html](https://man7.org/linux/man-pages/man8/tc.8.html) — ★★★☆☆
 - netfilter: [netfilter.org/documentation](https://www.netfilter.org/documentation/) — ★★★☆☆
+- Linux Kernel Docs nf_conntrack sysctl: [docs.kernel.org/networking/nf_conntrack-sysctl.html](https://docs.kernel.org/networking/nf_conntrack-sysctl.html) — ★★★☆☆
+- Linux 커널 소스 sch_htb.c (기본 class가 없으면 direct 처리): [github.com/torvalds/linux](https://github.com/torvalds/linux/blob/master/net/sched/sch_htb.c) — ★★★☆☆
 - [ebpf.md](ebpf.md)
 
 ---
 
 **작성일** : 2026-05-21
 
-**마지막 업데이트**: 2026-08-23
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

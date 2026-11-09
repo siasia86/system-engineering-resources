@@ -1,10 +1,11 @@
 ---
 name: linux-process-official-notes
-last_checked: 2026-08-01
+last_checked: 2026-11-09
 sources:
   - https://man7.org/linux/man-pages/man2/fork.2.html
   - https://man7.org/linux/man-pages/man2/execve.2.html
   - https://man7.org/linux/man-pages/man2/wait.2.html
+  - https://man7.org/linux/man-pages/man2/prctl.2.html
   - https://man7.org/linux/man-pages/man2/mmap.2.html
   - https://man7.org/linux/man-pages/man7/pipe.7.html
   - https://man7.org/linux/man-pages/man2/shmget.2.html
@@ -120,8 +121,8 @@ sources:
 | PID 0            | swapper/idle 프로세스 (스케줄러)                | 커널 소스 |
 | PID 1            | init 또는 systemd (모든 사용자 프로세스의 조상) | systemd.1 |
 | kthreadd (PID 2) | 모든 커널 스레드의 부모                         | 커널 관례 |
-| orphan 프로세스  | 부모 종료 시 PID 1(init/systemd)에 입양         | wait.2    |
-| zombie 정리      | 부모가 wait 호출하지 않으면 PID 1이 회수        | wait.2    |
+| orphan 프로세스  | 가장 가까운 subreaper 조상, 없으면 PID 1이 입양 | prctl.2   |
+| zombie 정리      | 부모 종료 후 입양한 PID 1 또는 subreaper가 회수 | wait.2    |
 
 ## 6. deprecated / removed
 

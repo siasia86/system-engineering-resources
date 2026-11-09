@@ -694,6 +694,8 @@ IPSEC
 echo ': PSK "SecKey123"' > /etc/ipsec.secrets
 ```
 
+> 위 예시는 `ipsec.conf`(stroke 플러그인·starter) 방식이라 strongSwan 5.9.x 기준입니다. 6.0부터 stroke 플러그인이 기본 빌드에서 빠져(`--enable-stroke`로 따로 켜야 함) 배포판 패키지가 이를 포함하지 않으면 `swanctl.conf`(vici) 방식으로 설정해야 합니다.
+
 ### OpenVPN 클라이언트로 접속
 
 SoftEther Server에서 OpenVPN 구성 파일(.ovpn)을 받아 사용합니다.
@@ -726,6 +728,7 @@ ip addr show tun0
 - SoftEther VPN: [softether.org](https://www.softether.org/) — ★★★☆☆
 - GitHub Releases: [github.com/SoftEtherVPN](https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases) — ★★★☆☆
 - vpncmd VPN Client 명령 레퍼런스: [softether.org 6.5](https://www.softether.org/4-docs/1-manual/6._Command_Line_Management_Utility_Manual/6.5_VPN_Client_Management_Command_Reference) — ★★★☆☆
+- strongSwan 6.0.0 출시 공지(stroke 플러그인 기본 비활성): [strongswan.org](https://strongswan.org/blog/2024/12/03/strongswan-6.0.0-released.html) — ★★★☆☆
 - 클라이언트 관리 포트·로그 폴더 상수: [GlobalConst.h](https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/blob/master/src/GlobalConst.h), [Cedar.h](https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/blob/master/src/Cedar/Cedar.h) — ★★★☆☆
 
 ---

@@ -333,7 +333,7 @@ ss -tan | awk 'NR>1 {print $1}' | sort | uniq -c | sort -rn
 
 ### 수집 방식 차이
 - **sar**: 구간 평균값 (수집 간격 동안의 `/proc/stat` 등 누적 카운터 델타 계산)
-- **zabbix**: 수집 시점의 스냅샷 (아이템에 따라 구간 평균에 가까운 경우도 있음)
+- **zabbix**: 아이템마다 다름. `vm.memory.size` 같은 값은 수집 시점 값(스냅샷), `system.cpu.util`은 최근 1분 평균(기본 `avg1`), `net.if.in`에 Change per second 전처리를 쓰면 직전 수집 이후 구간의 초당 평균입니다. 아래 그림과 표의 zabbix는 수집 시점 값 아이템 기준입니다.
 
 ```
 CPU: 30% 30% 30% 95% 95% 95% 30% 30% 30% 30%
@@ -346,7 +346,7 @@ zabbix → 30% (10:00에 수집했다면) 또는 95% (10:03에 수집했다면)
 
 ### 도구별 비교
 
-| 항목           | sar (구간 평균)       | zabbix (스냅샷)            |
+| 항목           | sar (구간 평균)       | zabbix (시점 값 아이템)    |
 |----------------|-----------------------|----------------------------|
 | 수집 방식      | 구간 전체 평균        | 수집 시점 값               |
 | 기본 수집 간격 | 10분                  | 설정에 따라 (1분/3분/5분)  |
@@ -370,7 +370,7 @@ zabbix → 30% (10:00에 수집했다면) 또는 95% (10:03에 수집했다면)
 ## 참고 자료
 
 - Linux man pages: [man7.org](https://man7.org/linux/man-pages/) — ★★★☆☆
-- Zabbix agent item keys (`system.cpu.util`): [zabbix.com/documentation](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/zabbix_agent) — ★★★☆☆
+- Zabbix agent item keys (`system.cpu.util`·`net.if.in`·`vm.memory.size`): [zabbix.com/documentation](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/zabbix_agent) — ★★★☆☆
 - Brendan Gregg - Linux Performance: [brendangregg.com](https://www.brendangregg.com/linuxperf.html) — ★★★☆☆
 
 ---
