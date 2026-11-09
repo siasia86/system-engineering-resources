@@ -43,7 +43,7 @@ IDC Servers                          AWS
                                     │      │                                       │
                                     │      └──► OpenSearch (hot: 7d)               │
                                     │               │                              │
-                                    │           Kibana (ops dashboard)             │
+                                    │           OpenSearch Dashboards              │
                                     └──────────────────────────────────────────────┘
 ```
 
@@ -85,7 +85,7 @@ IDC Servers                          AWS
 | 역할     | 최근 7일 핫 데이터 운영 조회        |
 | 인스턴스 | r6g.4xlarge.search × 9 (3 AZ × 3)   |
 | 스토리지 | gp3 EBS 기준 클러스터 총 100TB 이상 |
-| ILM      | 7일 후 S3로 이동                    |
+| ISM      | 7일 후 S3로 이동                    |
 
 🟡 100TB/일 규모에서 OpenSearch 보관은 7일 이내로 제한합니다. 그 이상은 Snowflake + S3에서 처리합니다.
 
@@ -166,10 +166,10 @@ Snowflake가 이 규모에서 선택되는 이유:
 | 4    | IDC Fluentd Aggregator 배포               | 높음     |
 | 5    | Kinesis Firehose + S3 raw 적재 파이프라인 | 높음     |
 | 6    | Glue ETL Job (JSON → Parquet 변환)        | 중간     |
-| 7    | OpenSearch 클러스터 구성 + ILM 설정       | 중간     |
+| 7    | OpenSearch 클러스터 구성 + ISM 설정       | 중간     |
 | 8    | Snowflake External Stage + Snowpipe 설정  | 중간     |
 | 9    | 감사 쿼리 템플릿 작성 (Snowflake SQL)     | 낮음     |
-| 10   | Kibana 대시보드 구성                      | 낮음     |
+| 10   | OpenSearch Dashboards 구성                | 낮음     |
 
 ## 참고 자료
 
@@ -178,11 +178,13 @@ Snowflake가 이 규모에서 선택되는 이유:
 - AWS Glue: [docs.aws.amazon.com/glue](https://docs.aws.amazon.com/glue/latest/dg/) — ★★★☆☆
 - Snowpipe: [docs.snowflake.com/en/user-guide/data-load-snowpipe](https://docs.snowflake.com/en/user-guide/data-load-snowpipe-intro) — ★★★☆☆
 - OpenSearch: [opensearch.org/docs](https://opensearch.org/docs/) — ★★★☆☆
+- OpenSearch Index State Management: [docs.opensearch.org](https://docs.opensearch.org/latest/im-plugin/ism/index/) — ★★★☆☆
+- Amazon OpenSearch Service Dashboards: [docs.aws.amazon.com/opensearch-service](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/dashboards.html) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-06-18
 
-**마지막 업데이트**: 2026-06-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

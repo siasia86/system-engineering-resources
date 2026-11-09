@@ -145,8 +145,8 @@ docker compose up -d --force-recreate <서비스>
 
 ### 팁
 
-- `docker compose rm -s -v <서비스>` — 중단된 서비스 컨테이너 + 볼륨 삭제
-- `docker volume prune -f` — 사용하지 않는 dangling 볼륨 삭제
+- `docker compose rm -s -v <서비스>` — 서비스 컨테이너 중지 후 삭제 + 익명 볼륨 삭제
+- `docker volume prune -f` — 사용하지 않는 익명 볼륨 삭제 (`-a`: 이름 있는 볼륨 포함)
 - `docker network inspect <project>_default` — 네트워크 확인
 - `docker compose exec <서비스> ping <다른서비스>` — 컨테이너 간 연결 테스트
 - `-f` 옵션으로 파일 지정: `docker compose -f docker-compose.prod.yml up -d`
@@ -296,6 +296,7 @@ services:
 
 - Docker Documentation: [docs.docker.com](https://docs.docker.com/) — ★★★☆☆
 - Docker Compose Reference: [docs.docker.com/compose](https://docs.docker.com/compose/) — ★★★☆☆
+- docker volume prune: [docs.docker.com/reference/cli/docker/volume/prune](https://docs.docker.com/reference/cli/docker/volume/prune/) — ★★★☆☆
 
 ---
 
@@ -312,6 +313,6 @@ services:
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-06-16
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

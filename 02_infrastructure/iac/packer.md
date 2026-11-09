@@ -48,7 +48,7 @@ packer build ──> ISO boot ──> OS install ──> provisioner ──> shu
 ```bash
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp.gpg
 echo "deb [signed-by=/usr/share/keyrings/hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
-|  | sudo tee /etc/apt/sources.list.d/hashicorp.list |
+  | sudo tee /etc/apt/sources.list.d/hashicorp.list
 sudo apt-get update && sudo apt-get install -y packer
 ```
 
@@ -174,7 +174,7 @@ packer build file.hcl  # 빌드 실행
 | `secondary_iso_images` | 추가 CD-ROM 마운트 (kickstart ISO 등)                       |
 | `http_directory`       | Packer HTTP 서버 디렉토리 (cloud-init 등)                   |
 | `ssh_host`             | SSH 접속 대상 IP (static IP 사용 시 필수)                   |
-| `output_directory`     | VHDX 출력 경로 (기본: `output-<vm_name>`)                   |
+| `output_directory`     | VHDX 출력 경로 (기본: `output-<빌드 이름>`)                 |
 | `boot_wait`            | VM 시작 후 boot_command 전송까지 대기 시간                  |
 | `shutdown_timeout`     | shutdown 명령 후 VM 종료 대기 시간                          |
 
@@ -375,12 +375,13 @@ Remove-Item -Recurse packer_cache
 
 - Packer Documentation: [developer.hashicorp.com/packer/docs](https://developer.hashicorp.com/packer/docs) — ★★★☆☆
 - Hyper-V Builder: [developer.hashicorp.com/packer/integrations/hashicorp/hyperv](https://developer.hashicorp.com/packer/integrations/hashicorp/hyperv) — ★★★☆☆
+- Hyper-V ISO Builder 옵션 (output_directory 기본값): [developer.hashicorp.com](https://developer.hashicorp.com/packer/integrations/hashicorp/hyperv/latest/components/builder/iso) — ★★★☆☆
 - Red Hat Kickstart: [docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/performing_an_advanced_rhel_9_installation/kickstart-commands-and-options-reference_installing-rhel-as-an-experienced-user](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/performing_an_advanced_rhel_9_installation/kickstart-commands-and-options-reference_installing-rhel-as-an-experienced-user) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-06-04
 
-**마지막 업데이트**: 2026-06-04
+**마지막 업데이트**: 2026-11-09
 
 © 2026 sjyun. Licensed under CC BY 4.0.

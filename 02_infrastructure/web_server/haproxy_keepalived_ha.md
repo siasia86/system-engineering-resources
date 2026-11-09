@@ -392,11 +392,11 @@ diff <(ssh lb1 'sudo cat /etc/haproxy/haproxy.cfg /etc/haproxy/conf.d/*.cfg') \
 
 ## 참고 자료
 
-- Keepalived 설정 man 문서: [github.com/acassen/keepalived](https://github.com/acassen/keepalived/blob/v2.4.3/doc/man/man5/keepalived.conf.5.in) — ★★★★☆
+- Keepalived 설정 man 문서: [github.com/acassen/keepalived](https://github.com/acassen/keepalived/blob/v2.4.3/doc/man/man5/keepalived.conf.5.in) — ★★★☆☆
 - Keepalived 공식 사이트: [keepalived.org](https://www.keepalived.org/) — ★★★☆☆
-- RFC 5798 VRRP Version 3: [rfc-editor.org/rfc/rfc5798](https://www.rfc-editor.org/rfc/rfc5798) — ★★★★★
-- HAProxy 3.4 Configuration Manual 11.2 Peers: [docs.haproxy.org/3.4/configuration.html](https://docs.haproxy.org/3.4/configuration.html) — ★★★★★
-- Linux 커널 ip-sysctl: [docs.kernel.org/networking/ip-sysctl.html](https://docs.kernel.org/networking/ip-sysctl.html) — ★★★★☆
+- RFC 5798 VRRP Version 3: [rfc-editor.org/rfc/rfc5798](https://www.rfc-editor.org/rfc/rfc5798) — ★★★★☆
+- HAProxy 3.4 Configuration Manual 11.2 Peers: [docs.haproxy.org/3.4/configuration.html](https://docs.haproxy.org/3.4/configuration.html) — ★★★☆☆
+- Linux 커널 ip-sysctl: [docs.kernel.org/networking/ip-sysctl.html](https://docs.kernel.org/networking/ip-sysctl.html) — ★★★☆☆
 - 확인 기록: [웹 서버 참조 노트 3절](../../_reference/web_server_official_notes.md#3-haproxy)
 - 관련 문서: [HAProxy 핵심 개념](./haproxy_concepts.md), [HAProxy 운영 가이드](./haproxy_operations_guide.md), [로드 밸런서 테스트](../../01_fundamentals/cs/web_testing/load_balancer_testing.md)
 
@@ -415,6 +415,6 @@ diff <(ssh lb1 'sudo cat /etc/haproxy/haproxy.cfg /etc/haproxy/conf.d/*.cfg') \
 
 **작성일**: 2026-11-06
 
-**마지막 업데이트**: 2026-11-06
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

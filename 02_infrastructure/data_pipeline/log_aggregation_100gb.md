@@ -17,9 +17,9 @@
 | OpenSearch r6g.large × 3    | ~$450         |
 | S3 Standard (90일분 ~900GB) | ~$20          |
 | S3 Glacier Instant (18TB)   | ~$180         |
-| Athena (쿼리 100GB/월 가정) | ~$5           |
+| Athena (쿼리 100GB/월 가정) | ~$0.5         |
 | Data Transfer (IDC→AWS)     | ~$50          |
-| 합계 (5년차 기준)           | **~$855/월**  |
+| 합계 (5년차 기준)           | **~$850/월**  |
 
 ## 2. 아키텍처 개요
 
@@ -30,7 +30,7 @@ IDC Servers                    AWS
 │ OS / Infra  ├──Filebeat──►  │  Logstash (EC2)                     │
 │             │               │      │                              │
 └─────────────┘               │      ▼                              │
-                              │  OpenSearch  ◄── Kibana (search)    │
+                              │  OpenSearch  ◄── Dashboards (search)│
 AWS Servers                   │  (hot: 30d)                         │
 ┌─────────────┐               │      │                              │
 │ EC2 / ECS   ├──Filebeat──►  │      ▼                              │
@@ -65,12 +65,12 @@ IDC → AWS 구간은 Direct Connect 또는 Site-to-Site VPN을 사용합니다.
 
 ### 단기 저장 — OpenSearch
 
-| 항목      | 내용                                   |
-|-----------|----------------------------------------|
-| 역할      | 최근 30일 로그 검색/분석               |
-| 인스턴스  | r6g.large.search × 3 (3 AZ)            |
-| 스토리지  | gp3 EBS 3TB (샤드 × 3 복제본)          |
-| 보관 기간 | 30일 후 S3로 ILM(Index Lifecycle) 이동 |
+| 항목      | 내용                               |
+|-----------|------------------------------------|
+| 역할      | 최근 30일 로그 검색/분석           |
+| 인스턴스  | r6g.large.search × 3 (3 AZ)        |
+| 스토리지  | gp3 EBS 3TB (샤드 × 3 복제본)      |
+| 보관 기간 | 30일 후 S3로 이동 (OpenSearch ISM) |
 
 ### 장기 저장 — S3
 
@@ -123,9 +123,9 @@ IDC → AWS 구간은 Direct Connect 또는 Site-to-Site VPN을 사용합니다.
 | OpenSearch r6g.large × 3    | ~$450         |
 | S3 Standard (90일분 ~900GB) | ~$20          |
 | S3 Glacier Instant (18TB)   | ~$180         |
-| Athena (쿼리 100GB/월 가정) | ~$5           |
+| Athena (쿼리 100GB/월 가정) | ~$0.5         |
 | Data Transfer (IDC→AWS)     | ~$50          |
-| 합계 (5년차 기준)           | **~$855/월**  |
+| 합계 (5년차 기준)           | **~$850/월**  |
 
 🟡 Direct Connect 사용 시 데이터 전송 비용이 크게 절감됩니다.
 
@@ -139,7 +139,7 @@ IDC → AWS 구간은 Direct Connect 또는 Site-to-Site VPN을 사용합니다.
 | 4    | OpenSearch 도메인 생성                     | 중간     |
 | 5    | IDC Filebeat 배포 + VPN/DX 연동            | 중간     |
 | 6    | Athena 테이블 정의 (Glue Catalog)          | 낮음     |
-| 7    | Kibana 대시보드 구성                       | 낮음     |
+| 7    | OpenSearch Dashboards 구성                 | 낮음     |
 
 ## 참고 자료
 
@@ -147,11 +147,13 @@ IDC → AWS 구간은 Direct Connect 또는 Site-to-Site VPN을 사용합니다.
 - Elastic Filebeat: [elastic.co/beats/filebeat](https://www.elastic.co/beats/filebeat) — ★★★☆☆
 - AWS Athena: [docs.aws.amazon.com/athena](https://docs.aws.amazon.com/athena/latest/ug/) — ★★★☆☆
 - S3 Object Lock: [docs.aws.amazon.com/s3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) — ★★★☆☆
+- OpenSearch Index State Management: [docs.opensearch.org](https://docs.opensearch.org/latest/im-plugin/ism/index/) — ★★★☆☆
+- Amazon OpenSearch Service Dashboards: [docs.aws.amazon.com/opensearch-service](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/dashboards.html) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-06-18
 
-**마지막 업데이트**: 2026-06-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

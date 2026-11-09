@@ -261,7 +261,7 @@ pipeline {
             steps {
                 sh '''
                     python3 -m venv venv
-                    source venv/bin/activate
+                    . venv/bin/activate   # sh(dash)에는 source가 없음
                     pip install -r requirements.txt
                     python -m pytest tests/
                 '''
@@ -673,6 +673,6 @@ pipeline {
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

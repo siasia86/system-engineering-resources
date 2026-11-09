@@ -44,7 +44,7 @@ Apache Airflow는 **워크플로우를 코드로 정의, 스케줄링, 모니터
 
 ```
 ┌──────────────┐   ┌──────────────┐   ┌──────────────────┐
-│  Web Server  │   │  Scheduler   │   │    Executor      │
+│  API Server  │   │  Scheduler   │   │    Executor      │
 │  (UI/API)    │   │  (DAG Parse, │   │  (LocalExecutor/ │
 │              │   │   Schedule)  │   │   CeleryExecutor)│
 └──────┬───────┘   └──────┬───────┘   └────────┬─────────┘
@@ -97,9 +97,9 @@ Apache Airflow는 **워크플로우를 코드로 정의, 스케줄링, 모니터
 ### 기본 구조
 
 ```python
-from airflow import DAG
-from airflow.operators.python import PythonOperator
-from airflow.operators.bash import BashOperator
+from airflow.sdk import DAG
+from airflow.providers.standard.operators.python import PythonOperator
+from airflow.providers.standard.operators.bash import BashOperator
 from datetime import datetime, timedelta
 
 default_args = {
@@ -113,7 +113,7 @@ default_args = {
 with DAG(
     dag_id='example_pipeline',
     default_args=default_args,
-    schedule_interval='0 2 * * *',   # 매일 02:00
+    schedule='0 2 * * *',            # 매일 02:00
     start_date=datetime(2026, 1, 1),
     catchup=False,                    # 과거 실행 건너뜀
     tags=['infra', 'backup'],
@@ -143,10 +143,10 @@ with DAG(
 ### TaskFlow API (Airflow 2.0+, 권장)
 
 ```python
-from airflow.decorators import dag, task
+from airflow.sdk import dag, task
 from datetime import datetime
 
-@dag(schedule_interval='@daily', start_date=datetime(2026, 1, 1), catchup=False)
+@dag(schedule='@daily', start_date=datetime(2026, 1, 1), catchup=False)
 def my_pipeline():
 
     @task
@@ -176,21 +176,23 @@ my_pipeline()
 
 ### 주요 내장 Operator
 
-| Operator                | 용도                 | 패키지                     |
-|-------------------------|----------------------|----------------------------|
-| `BashOperator`          | 쉘 명령 실행         | airflow.operators.bash     |
-| `PythonOperator`        | Python 함수 실행     | airflow.operators.python   |
-| `EmailOperator`         | 이메일 발송          | airflow.operators.email    |
-| `HttpOperator`          | HTTP 요청            | airflow.providers.http     |
-| `S3ToRedshiftOperator`  | S3 → Redshift 로드   | airflow.providers.amazon   |
-| `PostgresOperator`      | PostgreSQL 쿼리 실행 | airflow.providers.postgres |
-| `KubernetesPodOperator` | K8s Pod 실행         | airflow.providers.cncf     |
-| `SparkSubmitOperator`   | Spark Job 제출       | airflow.providers.apache   |
+| Operator                  | 용도               | 패키지                       |
+|---------------------------|--------------------|------------------------------|
+| `BashOperator`            | 쉘 명령 실행       | airflow.providers.standard   |
+| `PythonOperator`          | Python 함수 실행   | airflow.providers.standard   |
+| `EmailOperator`           | 이메일 발송        | airflow.providers.smtp       |
+| `HttpOperator`            | HTTP 요청          | airflow.providers.http       |
+| `S3ToRedshiftOperator`    | S3 → Redshift 로드 | airflow.providers.amazon     |
+| `SQLExecuteQueryOperator` | SQL 쿼리 실행      | airflow.providers.common.sql |
+| `KubernetesPodOperator`   | K8s Pod 실행       | airflow.providers.cncf       |
+| `SparkSubmitOperator`     | Spark Job 제출     | airflow.providers.apache     |
+
+🟡 Airflow 3.0부터 Bash·Python Operator와 FileSensor는 `apache-airflow-providers-standard`로 옮겨졌습니다. `airflow.operators.*` 경로는 폐기 예정(deprecated)이며, `PostgresOperator`는 postgres provider 6.0.0에서 제거되어 `SQLExecuteQueryOperator`로 대체합니다.
 
 ### Sensor (조건 대기)
 
 ```python
-from airflow.sensors.filesystem import FileSensor
+from airflow.providers.standard.sensors.filesystem import FileSensor
 
 wait_for_file = FileSensor(
     task_id='wait_for_file',
@@ -300,11 +302,11 @@ airflow dags list
 # DAG 수동 트리거
 airflow dags trigger my_dag
 
-# Task 재실행
-airflow tasks run my_dag my_task 2026-04-27
+# Task 재실행 (clear 후 scheduler가 다시 실행)
+airflow tasks clear my_dag -t my_task -s 2026-04-27 -e 2026-04-27
 
-# 특정 날짜 범위 backfill
-airflow dags backfill my_dag --start-date 2026-04-01 --end-date 2026-04-27
+# 특정 날짜 범위 backfill (Airflow 3.0+)
+airflow backfill create --dag-id my_dag --from-date 2026-04-01 --to-date 2026-04-27
 
 # DAG 파싱 에러 확인
 airflow dags list-import-errors
@@ -319,8 +321,8 @@ airflow dags list-import-errors
 ### pip 설치
 
 ```bash
-pip install "apache-airflow==3.3.0" \
-  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.3.0/constraints-3.11.txt"
+pip install "apache-airflow==3.4.0" \
+  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.4.0/constraints-3.11.txt"
 
 # 프로바이더 추가
 pip install apache-airflow-providers-amazon
@@ -335,7 +337,7 @@ export AIRFLOW__CORE__EXECUTOR=LocalExecutor
 export AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://user:pass@localhost/airflow
 export AIRFLOW__CORE__PARALLELISM=32
 export AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG=16
-export AIRFLOW__WEBSERVER__SECRET_KEY=your-secret-key
+export AIRFLOW__API__SECRET_KEY=your-secret-key
 ```
 
 ### airflow.cfg 주요 설정
@@ -347,12 +349,14 @@ parallelism = 32
 max_active_tasks_per_dag = 16
 max_active_runs_per_dag = 1
 
-[scheduler]
-dag_dir_list_interval = 30    # DAG 파일 스캔 주기 (초)
+[dag_processor]
+# DAG 파일 스캔 주기 (초, Airflow 2.x의 [scheduler] dag_dir_list_interval)
+refresh_interval = 30
 min_file_process_interval = 30
 
-[webserver]
-expose_config = False         # 운영 환경에서 False 필수
+[api]
+# 운영 환경에서 False 필수
+expose_config = False
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -381,7 +385,7 @@ task = PythonOperator(
 )
 ```
 
-- SLA Miss 알림 설정:
+- SLA Miss 알림 설정 (Airflow 2.x 전용):
 
 ```python
 with DAG(
@@ -401,8 +405,8 @@ python /opt/airflow/dags/my_dag.py
 # Task 단독 테스트 (DB 기록 없음)
 airflow tasks test my_dag my_task 2026-04-27
 
-# 의존성 확인
-airflow tasks list my_dag --tree
+# 의존성 확인 (tasks list --tree는 Airflow 3.0에서 제거)
+airflow dags show my_dag
 ```
 
 🟡 `airflow tasks test`는 실제 외부 시스템(DB, S3 등)에 영향을 줍니다. 테스트 환경에서 실행 권장.
@@ -418,14 +422,14 @@ airflow tasks list my_dag --tree
 DAG 또는 Task 단위로 실패/재시도/성공 시 콜백을 등록합니다.
 
 ```python
-from airflow import DAG
-from airflow.operators.python import PythonOperator
+from airflow.sdk import DAG
+from airflow.providers.standard.operators.python import PythonOperator
 from datetime import datetime
 
 def on_failure(context):
     dag_id = context['dag'].dag_id
     task_id = context['task_instance'].task_id
-    execution_date = context['data_interval_start']  # execution_date는 Airflow 2.2+에서 deprecated
+    execution_date = context['data_interval_start']  # execution_date 키는 2.2+에서 deprecated, 3.0에서 제거
     log_url = context['task_instance'].log_url
     print(f"FAILED: {dag_id}.{task_id} at {execution_date}")
     print(f"Log: {log_url}")
@@ -459,10 +463,8 @@ def slack_alert(context):
     SlackWebhookOperator(
         task_id='slack_alert',
         slack_webhook_conn_id='slack_webhook',
-        message=f":red_circle: *{ti.dag_id}.{ti.task_id}* failed
-"
-                f"Execution: `{context['execution_date']}`
-"
+        message=f":red_circle: *{ti.dag_id}.{ti.task_id}* failed\n"
+                f"Execution: `{context['logical_date']}`\n"
                 f"<{ti.log_url}|Log>",
     ).execute(context)
 
@@ -473,6 +475,8 @@ default_args = {
 ```
 
 ### SLA Miss 알림
+
+🟡 SLA 기능(`sla`, `sla_miss_callback`)은 Airflow 3.0에서 제거되었습니다. 아래 예시는 Airflow 2.x 전용이며, Airflow 3.1부터는 Deadline Alerts로 대체합니다.
 
 ```python
 from datetime import timedelta
@@ -497,7 +501,7 @@ with DAG(
 | `on_retry_callback`   | Task 재시도    | Task, default_args      |
 | `on_success_callback` | Task 성공      | Task, default_args      |
 | `on_execute_callback` | Task 실행 시작 | Task                    |
-| `sla_miss_callback`   | SLA 초과       | DAG                     |
+| `sla_miss_callback`   | SLA 초과 (2.x) | DAG                     |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -510,7 +514,7 @@ Task 간 소량 데이터를 공유하는 메커니즘. Metadata DB에 저장됩
 ### 기본 사용 (전통 방식)
 
 ```python
-from airflow.operators.python import PythonOperator
+from airflow.providers.standard.operators.python import PythonOperator
 
 def push_fn(**context):
     context['ti'].xcom_push(key='order_id', value='ORD-001')
@@ -527,9 +531,9 @@ push_task >> pull_task
 ### TaskFlow API (자동 XCom, 권장)
 
 ```python
-from airflow.decorators import dag, task
+from airflow.sdk import dag, task
 
-@dag(schedule_interval='@daily', start_date=datetime(2026, 1, 1), catchup=False)
+@dag(schedule='@daily', start_date=datetime(2026, 1, 1), catchup=False)
 def pipeline():
 
     @task
@@ -551,7 +555,7 @@ pipeline()
 
 ### 대용량 데이터 처리 패턴
 
-XCom은 기본 48KB(SQLite), PostgreSQL은 1GB 제한이지만 **대용량은 S3 경로만 전달**하는 것이 원칙입니다.
+XCom 크기 제한은 메타데이터 DB마다 다르지만(아래 표) **대용량은 S3 경로만 전달**하는 것이 원칙입니다.
 
 ```python
 @task
@@ -695,12 +699,18 @@ OAUTH_PROVIDERS = [
 ```
 
 ```ini
-# airflow.cfg
-[webserver]
-expose_config = False          # 운영 환경 필수
+# airflow.cfg (Airflow 3.x 기준 섹션)
+[api]
+# 운영 환경 필수
+expose_config = False
+# 반드시 변경
+secret_key = your-random-secret-key
+
+[core]
+hide_sensitive_var_conn_fields = True
+
+[fab]
 expose_hostname = False
-hide_sensitive_variable_fields = True
-secret_key = your-random-secret-key   # 반드시 변경
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -717,9 +727,13 @@ parallelism = 32                  # 전체 동시 실행 Task 수 (Airflow 전�
 max_active_tasks_per_dag = 16     # DAG당 동시 실행 Task 수
 max_active_runs_per_dag = 1       # DAG당 동시 실행 DAG Run 수
 
+# [dag_processor]
+# DAG 파일 스캔 주기 (초) — 줄이면 CPU 증가
+refresh_interval = 30
+# DAG 파일 재파싱 최소 간격
+min_file_process_interval = 30
+
 # [scheduler]
-dag_dir_list_interval = 30        # DAG 파일 스캔 주기 (초) — 줄이면 CPU 증가
-min_file_process_interval = 30    # DAG 파일 재파싱 최소 간격
 max_dagruns_to_create_per_loop = 10
 ```
 
@@ -807,6 +821,8 @@ airflow tasks states-for-dag-run my_dag manual__2026-04-27T00:00:00+00:00
 
 - Apache Airflow Documentation: [airflow.apache.org](https://airflow.apache.org/docs/) — ★★★☆☆
 - Airflow Concepts: [Concepts](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/index.html) — ★★★☆☆
+- Airflow 3 업그레이드 안내: [Upgrading to Airflow 3](https://airflow.apache.org/docs/apache-airflow/stable/installation/upgrading_to_airflow3.html) — ★★★☆☆
+- Airflow Release Notes: [Release Notes](https://airflow.apache.org/docs/apache-airflow/stable/release_notes.html) — ★★★☆☆
 
 ---
 
@@ -823,6 +839,6 @@ airflow tasks states-for-dag-run my_dag manual__2026-04-27T00:00:00+00:00
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-08-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

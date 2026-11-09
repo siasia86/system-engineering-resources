@@ -85,9 +85,9 @@ Jenkins              │
 | K8s 패키지 관리   | Helm                     | v4.3.1    | The package manager for Kubernetes                  |
 | GitOps CD         | ArgoCD                   | v3.6.1    | Declarative GitOps CD tool for Kubernetes           |
 | CI/CD             | GitHub Actions / Jenkins | —         | Automate any workflow / Build great things          |
-| 메트릭 수집       | Prometheus               | v3.15.1   | Open source monitoring and alerting toolkit         |
+| 메트릭 수집       | Prometheus               | v3.16.0   | Open source monitoring and alerting toolkit         |
 | 시각화            | Grafana                  | v13.3.0   | Full-stack observability platform                   |
-| 인프라 모니터링   | Zabbix                   | 7.4       | Enterprise-class monitoring solution                |
+| 인프라 모니터링   | Zabbix                   | 8.0 LTS   | Enterprise-class monitoring solution                |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -190,7 +190,7 @@ docker run -d -p 8080:8080 myapp:1.0
 | Auto-scaling      | 부하에 따라 Pod 수 자동 조정 (HPA) |
 | Rolling update    | 무중단 배포                        |
 | Service discovery | 내부 DNS로 서비스 간 통신          |
-| Secret 관리       | 민감 정보 암호화 저장              |
+| Secret 관리       | base64 인코딩 저장 (암호화 별도)   |
 
 - 공식: [kubernetes.io](https://kubernetes.io)
 
@@ -300,11 +300,14 @@ AlertManager (Slack/Email 알림)
 - ArgoCD: [argo-cd.readthedocs.io](https://argo-cd.readthedocs.io/) — ★★★☆☆
 - Prometheus: [prometheus.io/docs](https://prometheus.io/docs/introduction/overview/) — ★★★☆☆
 - Grafana: [grafana.com/docs](https://grafana.com/docs/) — ★★★☆☆
+- Prometheus 릴리스: [github.com/prometheus/prometheus/releases](https://github.com/prometheus/prometheus/releases) — ★★★☆☆
+- Zabbix 수명 주기: [zabbix.com/life_cycle_and_release_policy](https://www.zabbix.com/life_cycle_and_release_policy) — ★★★☆☆
+- Kubernetes Secret: [kubernetes.io/docs/concepts/configuration/secret](https://kubernetes.io/docs/concepts/configuration/secret/) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-05-26
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -60,11 +60,11 @@ docker compose down
 docker volume rm $(docker volume ls -q | grep -E '(_data_n8n_|_data_mysql_)')
 docker compose up -d
 
-# 특정 서비스 볼륨 삭제 (중단 후)
+# 특정 서비스 컨테이너 + 익명 볼륨 삭제 (-s: 먼저 중지, 이름 있는 볼륨은 유지)
 docker compose rm -s -v n8n
 docker compose rm -s -v mysql
 
-# 사용하지 않는 dangling volume 모두 삭제
+# 사용하지 않는 익명 볼륨 삭제 (-a: 이름 있는 볼륨 포함)
 docker volume prune -f
 ```
 
@@ -88,7 +88,7 @@ docker compose exec n8n n8n import:credentials --input=/home/node/.n8n/credentia
 ## 6. n8n 환경 변수 관련 (HTTP / HTTPS)
 ```yaml
 environment:
-  DB_TYPE: mysqldb
+  DB_TYPE: mysqldb             # n8n 1.x 전용: 2.0부터 MySQL/MariaDB 저장소 미지원 (postgresdb 권장)
   DB_MYSQLDB_HOST: mysql
   DB_MYSQLDB_PORT: 3306
   DB_MYSQLDB_DATABASE: n8n
@@ -97,7 +97,7 @@ environment:
   N8N_HOST: example.com
   N8N_PORT: 5678
   N8N_PROTOCOL: http           # http / https
-  N8N_BASIC_AUTH_ACTIVE: "true"   # deprecated: n8n v1.0+ 이후 User Management로 대체
+  N8N_BASIC_AUTH_ACTIVE: "true"   # removed: n8n 1.0부터 미지원, User Management로 대체
   N8N_BASIC_AUTH_USER: Secureuser123
   N8N_BASIC_AUTH_PASSWORD: SecurePassword123
   N8N_SECURE_COOKIE: "false"   # HTTP 환경에서는 false, HTTPS 환경에서는 true
@@ -129,8 +129,10 @@ docker compose up -d
 
 ## 참고 자료
 
-- n8n Documentation: [docs.n8n.io](https://docs.n8n.io/) — ★★☆☆☆
-- n8n Docker Installation: [docs.n8n.io/hosting/installation/docker](https://docs.n8n.io/hosting/installation/docker/) — ★★☆☆☆
+- n8n Documentation: [docs.n8n.io](https://docs.n8n.io/) — ★★★☆☆
+- n8n Docker Installation: [docs.n8n.io/hosting/installation/docker](https://docs.n8n.io/hosting/installation/docker/) — ★★★☆☆
+- n8n 2.0 Breaking Changes: [docs.n8n.io/2-0-breaking-changes](https://docs.n8n.io/2-0-breaking-changes/) — ★★★☆☆
+- n8n 1.0 Migration Checklist: [docs.n8n.io/1-0-migration-checklist](https://docs.n8n.io/1-0-migration-checklist/) — ★★★☆☆
 
 ---
 
@@ -147,6 +149,6 @@ docker compose up -d
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-08-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

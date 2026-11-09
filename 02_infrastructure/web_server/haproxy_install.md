@@ -206,12 +206,13 @@ backend static_back
 
 ### 분산 알고리즘
 
-| 알고리즘    | 설정         | 설명                    |
-|-------------|--------------|-------------------------|
-| Round Robin | `roundrobin` | 순서대로 분산 (기본)    |
-| Least Conn  | `leastconn`  | 연결 수 적은 서버 우선  |
-| Source IP   | `source`     | 클라이언트 IP 기반 고정 |
-| URI         | `uri`        | 요청 URI 기반 고정      |
+| 알고리즘    | 설정         | 설명                                      |
+|-------------|--------------|-------------------------------------------|
+| Round Robin | `roundrobin` | 순서대로 분산 (3.2 이하 기본)             |
+| Random      | `random`     | 2개를 뽑아 부하가 적은 쪽 (3.3 이상 기본) |
+| Least Conn  | `leastconn`  | 연결 수 적은 서버 우선                    |
+| Source IP   | `source`     | 클라이언트 IP 기반 고정                   |
+| URI         | `uri`        | 요청 URI 기반 고정                        |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -223,7 +224,7 @@ backend static_back
 # 인증서 + 키를 하나의 PEM 파일로 합치기
 sudo cat /etc/letsencrypt/live/example.com/fullchain.pem \
          /etc/letsencrypt/live/example.com/privkey.pem \
-    | sudo tee /etc/haproxy/certs/example.com.pem
+    | sudo tee /etc/haproxy/certs/example.com.pem > /dev/null
 sudo chmod 600 /etc/haproxy/certs/example.com.pem
 ```
 
@@ -268,7 +269,8 @@ listen stats
 
 ```
 backend web_back
-    option httpchk GET /health HTTP/1.1\r\nHost:\ example.com
+    option httpchk
+    http-check send meth GET uri /health ver HTTP/1.1 hdr Host example.com
     http-check expect status 200
     server web1 10.0.1.11:8080 check inter 5s rise 2 fall 3
     # inter: 체크 간격, rise: 복구 판정 횟수, fall: 장애 판정 횟수
@@ -314,7 +316,8 @@ sudo tail -50 /var/log/haproxy.log
 ## 참고 자료
 
 - HAProxy Documentation: [docs.haproxy.org](https://docs.haproxy.org/) — ★★★☆☆
-- HAProxy 3.4 Configuration Manual: [docs.haproxy.org/3.4/configuration.html](https://docs.haproxy.org/3.4/configuration.html) — ★★★★★
+- HAProxy 3.4 Configuration Manual: [docs.haproxy.org/3.4/configuration.html](https://docs.haproxy.org/3.4/configuration.html) — ★★★☆☆
+- `option httpchk` 버전 문자열의 헤더 삽입 거부(2.8 이상): [git.haproxy.org src/tcpcheck.c](https://git.haproxy.org/?p=haproxy-3.4.git;a=blob;f=src/tcpcheck.c) — ★★★☆☆
 - 관련 문서: [HAProxy 핵심 개념](./haproxy_concepts.md), [HAProxy 운영 가이드](./haproxy_operations_guide.md)
 
 ---
@@ -332,6 +335,6 @@ sudo tail -50 /var/log/haproxy.log
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-06
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

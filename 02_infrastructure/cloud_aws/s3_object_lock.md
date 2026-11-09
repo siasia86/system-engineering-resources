@@ -82,14 +82,14 @@ Case 3: Retention 없음 + Legal Hold ON
 
 ### 제약사항
 
-| 항목                     | 내용                                               |
-|--------------------------|----------------------------------------------------|
-| 활성화 시점              | 버킷 생성 시에만 가능 (기존 버킷에 추가 불가)      |
-| 버전 관리                | 필수 (Object Lock 활성화 시 자동 활성화)           |
-| 비활성화                 | 불가 (한번 켜면 끌 수 없음)                        |
-| 기존 데이터 마이그레이션 | 새 버킷 생성 → 데이터 복사 필요                    |
-| S3 Replication           | 대상 버킷도 Object Lock 활성화 필요                |
-| Lifecycle 삭제           | Retention 기간 내 삭제 안 됨 (Lifecycle Rule 무시) |
+| 항목           | 내용                                                |
+|----------------|-----------------------------------------------------|
+| 활성화 시점    | 버킷 생성 시 또는 기존 버킷 (버전 관리 활성화 후)   |
+| 버전 관리      | 필수 (생성 시 자동 활성화, 기존 버킷은 먼저 활성화) |
+| 비활성화       | 불가 (한번 켜면 끌 수 없음)                         |
+| 기존 객체      | 기본 보존 미적용 → 객체별 보존 설정 필요            |
+| S3 Replication | 대상 버킷도 Object Lock 활성화 필요                 |
+| Lifecycle 삭제 | Retention 기간 내 삭제 안 됨 (Lifecycle Rule 무시)  |
 
 ### 버전 관리와의 관계
 
@@ -351,15 +351,15 @@ Defense in depth:
 
 ## 7. 트러블슈팅
 
-| 에러                                                  | 원인                              | 해결                                     |
-|-------------------------------------------------------|-----------------------------------|------------------------------------------|
-| `AccessDenied` on DeleteObject                        | Retention 기간 내 삭제 시도       | 보존 기간 만료 대기 또는 Governance 우회 |
-| `InvalidRequest: Object Lock not enabled`             | 기존 버킷에 Object Lock 적용 시도 | 새 버킷 생성 후 데이터 복사              |
-| `ObjectLockConfigurationNotFound`                     | 설정 조회 실패                    | Object Lock 미활성화 버킷                |
-| Lifecycle 삭제 안 됨                                  | Retention 기간 > Lifecycle Days   | Lifecycle은 Retention 이후에만 동작      |
-| 버전 용량 계속 증가                                   | `s3 cp` 반복 실행                 | `s3 sync` 또는 사전 비교 로직 추가       |
-| Compliance 모드 해제 불가                             | 설계상 의도된 동작                | 보존 기간 만료까지 대기 (방법 없음)      |
-| `OperationAborted: conflicting conditional operation` | 동시 Retention 변경               | 재시도 (경합 상태)                       |
+| 에러                                                  | 원인                                  | 해결                                                |
+|-------------------------------------------------------|---------------------------------------|-----------------------------------------------------|
+| `AccessDenied` on DeleteObject                        | Retention 기간 내 삭제 시도           | 보존 기간 만료 대기 또는 Governance 우회            |
+| `InvalidRequest: Object Lock not enabled`             | Object Lock 미활성화 버킷에 보존 설정 | 버전 관리 활성화 후 `put-object-lock-configuration` |
+| `ObjectLockConfigurationNotFound`                     | 설정 조회 실패                        | Object Lock 미활성화 버킷                           |
+| Lifecycle 삭제 안 됨                                  | Retention 기간 > Lifecycle Days       | Lifecycle은 Retention 이후에만 동작                 |
+| 버전 용량 계속 증가                                   | `s3 cp` 반복 실행                     | `s3 sync` 또는 사전 비교 로직 추가                  |
+| Compliance 모드 해제 불가                             | 설계상 의도된 동작                    | 보존 기간 만료까지 대기 (방법 없음)                 |
+| `OperationAborted: conflicting conditional operation` | 동시 Retention 변경                   | 재시도 (경합 상태)                                  |
 
 ### Compliance 모드 설정 전 체크리스트
 
@@ -383,6 +383,6 @@ Defense in depth:
 
 **작성일**: 2026-07-01
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

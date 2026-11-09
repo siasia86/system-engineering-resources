@@ -157,7 +157,8 @@ ansible_winrm_server_cert_validation=ignore
 ## 3. Ad-hoc 명령
 
 > 🟡 `ansible -a` (command 모듈)는 Windows에서 동작하지 않습니다.
-> 반드시 `-m ansible.windows.win_shell`을 명시해야 합니다.
+> `-m ansible.windows.win_shell`(또는 `win_command`)처럼 Windows 모듈을 명시해야 합니다.
+> `$_` 같은 PowerShell 변수가 들어간 인자는 bash가 확장하지 않도록 작은따옴표로 감쌉니다.
 
 ```bash
 # 연결 테스트
@@ -168,7 +169,7 @@ ansible windows -m ansible.windows.win_shell -a "whoami"
 ansible windows -m ansible.windows.win_shell -a "chcp 65001 | Out-Null; hostname"
 
 # 실행 중인 서비스 목록
-ansible windows -m ansible.windows.win_shell -a "Get-Service | Where-Object {$_.Status -eq 'Running'} | Select-Object Name"
+ansible windows -m ansible.windows.win_shell -a 'Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object Name'
 
 # 보안 업데이트 확인 (ad-hoc은 탐지만 가능, 설치는 playbook 권장)
 ansible windows -m ansible.windows.win_updates -a "state=searched"
@@ -285,7 +286,7 @@ C:\ProgramData\ssh\administrators_authorized_keys
 | 패키지      | `ansible.builtin.package` | `ansible.windows.win_package` |
 | 서비스      | `ansible.builtin.service` | `ansible.windows.win_service` |
 | 연결 테스트 | `ansible.builtin.ping`    | `ansible.windows.win_ping`    |
-| 업데이트    | `ansible.builtin.apt/yum` | `ansible.windows.win_updates` |
+| 업데이트    | `ansible.builtin.apt/dnf` | `ansible.windows.win_updates` |
 
 ---
 
@@ -303,6 +304,6 @@ C:\ProgramData\ssh\administrators_authorized_keys
 
 **작성일**: 2026-05-19
 
-**마지막 업데이트**: 2026-05-19
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -55,7 +55,7 @@ MinIO는 다음과 구분합니다.
 
 ### 오픈소스와 상용 제품
 
-공식 GitHub 저장소의 MinIO Server는 AGPLv3 라이선스로 공개되어 있습니다. MinIO의 상용 Enterprise 제품과 기능·지원·라이선스 범위는 별도로 확인합니다.
+공식 GitHub 저장소의 MinIO Server는 AGPLv3 라이선스로 공개되어 있습니다. 다만 2026-11-09 확인 기준 이 저장소(`minio/minio`)와 MinIO Client 저장소(`minio/mc`)는 GitHub에서 archived 상태이며, `minio/minio` README에는 더 이상 유지보수하지 않는다고 명시되어 있습니다. 커뮤니티판은 미리 빌드한 바이너리 없이 소스 코드로만 배포되며(마지막 공식 바이너리 릴리스는 `RELEASE.2025-10-15T17-29-55Z`), README는 대안으로 단독 배포용 무료 라이선스인 AIStor Free와 상용 AIStor Enterprise를 안내합니다. MinIO의 상용 제품과 기능·지원·라이선스 범위는 별도로 확인합니다.
 
 | 구분          | MinIO Server                          | 상용 Enterprise 제품      |
 |---------------|---------------------------------------|---------------------------|
@@ -63,7 +63,7 @@ MinIO는 다음과 구분합니다.
 | 라이선스      | AGPLv3                                | 상용 계약·조건 확인       |
 | 자체 구축     | 가능                                  | 가능                      |
 | 커뮤니티 사용 | 가능                                  | 제품별 지원 범위 확인     |
-| 기술지원      | 커뮤니티·공식 문서                    | 공식 지원·구독 범위       |
+| 기술지원      | 유지보수 종료 (저장소 archived)       | 공식 지원·구독 범위       |
 
 AGPLv3 의무는 내부 사용, 수정 배포, 네트워크를 통한 서비스 제공 방식에 따라 검토 범위가 달라질 수 있습니다. 외부 고객에게 서비스로 제공하거나 코드를 수정해 배포할 때는 라이선스 원문과 법률 자문을 확인합니다.
 
@@ -411,7 +411,7 @@ Application
 
 ### 기본 확인
 
-MinIO Client(`mc`)를 사용하는 예시입니다.
+MinIO Client(`mc`)를 사용하는 예시입니다. `minio/mc` 저장소도 archived 상태이므로 사용하는 `mc` 버전과 지원 여부를 함께 확인합니다.
 
 ```bash
 mc alias set minio https://minio.example.com \
@@ -510,8 +510,9 @@ mc retention info minio/backup
 ## 참고 자료
 
 - MinIO Server: [github.com/minio/minio](https://github.com/minio/minio) — ★★★☆☆
-- MinIO Documentation: [docs.min.io/community/minio-object-store](https://docs.min.io/community/minio-object-store/) — ★★★☆☆
+- MinIO Documentation 소스 (커뮤니티 문서 주소는 AIStor 문서로 이동): [github.com/minio/docs](https://github.com/minio/docs) — ★★★☆☆
 - MinIO Official Site: [min.io](https://min.io/) — ★★★☆☆
+- MinIO 다운로드 (AIStor Free·Enterprise): [min.io/download](https://www.min.io/download) — ★★★☆☆
 - [MinIO 공식 참조 노트](../../_reference/minio_official_notes.md)
 - [Restic 범용 백업·복구 가이드](./restic_backup.md)
 - [범용 백업 솔루션·도구 비교](./backup_tools_comparison.md)
@@ -532,6 +533,6 @@ mc retention info minio/backup
 
 **작성일**: 2026-09-21
 
-**마지막 업데이트**: 2026-09-21
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

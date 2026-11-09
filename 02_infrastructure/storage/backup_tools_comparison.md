@@ -558,7 +558,7 @@ S3 Versioning·IAM·Immutable 보존
 - rsnapshot: [rsnapshot.org](https://rsnapshot.org/) — ★★★☆☆
 - lsyncd: [github.com/lsyncd/lsyncd](https://github.com/lsyncd/lsyncd) — ★★★☆☆
 - Bacula: [bacula.org](https://www.bacula.org/) — ★★★☆☆
-- BorgBackup: [borgbackup.org](https://www.borgbackup.org/) — ★★★★☆
+- BorgBackup: [borgbackup.org](https://www.borgbackup.org/) — ★★★☆☆
 - Duplicity: [duplicity.us](https://duplicity.us/) — ★★★☆☆
 - Amanda: [amanda.org](https://www.amanda.org/) — ★★★☆☆
 - Bareos: [bareos.com](https://www.bareos.com/) — ★★★☆☆
@@ -583,6 +583,6 @@ S3 Versioning·IAM·Immutable 보존
 
 **작성일**: 2026-09-21
 
-**마지막 업데이트**: 2026-09-21
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

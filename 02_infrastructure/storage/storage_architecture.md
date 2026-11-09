@@ -171,7 +171,7 @@ SAN(Storage Area Network)은 서버와 스토리지를 전용 네트워크로 �
 ### 사용 환경
 
 - 엔터프라이즈 DB (Oracle RAC, MSSQL Cluster)
-- VMware vSAN, Hyper-V Cluster (공유 스토리지)
+- VMware vSphere (VMFS 데이터스토어), Hyper-V Cluster (공유 스토리지)
 - 고성능 OLTP 워크로드
 - DR/복제가 필요한 미션 크리티컬 시스템
 
@@ -276,7 +276,7 @@ Object Storage는 데이터를 객체(Object) 단위로 저장하며, 각 객체
 | 솔루션     | 유형            | 비고                           |
 |------------|-----------------|--------------------------------|
 | AWS S3     | 퍼블릭 클라우드 | 사실상 Object Storage API 표준 |
-| MinIO      | 오픈소스        | S3 호환, K8s 네이티브          |
+| MinIO      | 오픈소스·상용   | S3 호환, 커뮤니티판 archived   |
 | Ceph RGW   | 오픈소스        | S3/Swift 호환, 분산 스토리지   |
 | Azure Blob | 퍼블릭 클라우드 | Hot/Cool/Archive 티어          |
 | GCS        | 퍼블릭 클라우드 | Multi-regional 자동 복제       |
@@ -331,13 +331,13 @@ SDS는 스토리지 관리를 하드웨어에서 분리하여 소프트웨어로
 
 HCI는 Compute + Storage + Network를 단일 노드에 통합하여 SW로 관리하는 아키텍처입니다. 전통적인 3-tier(서버 + SAN + 스위치) 구조를 대체합니다.
 
-| 항목        | 내용                                           |
-|-------------|------------------------------------------------|
-| 정의        | Compute + Storage + Network 통합 어플라이언스  |
-| 장점        | 단순 관리, 빠른 배포, 노드 추가로 선형 확장    |
-| 단점        | Compute/Storage 독립 확장 어려움               |
-| 주요 솔루션 | Nutanix, VMware vSAN, Azure Stack HCI, Proxmox |
-| 용도        | VDI, 지사/원격 사이트, 중소기업 인프라 통합    |
+| 항목        | 내용                                                            |
+|-------------|-----------------------------------------------------------------|
+| 정의        | Compute + Storage + Network 통합 어플라이언스                   |
+| 장점        | 단순 관리, 빠른 배포, 노드 추가로 선형 확장                     |
+| 단점        | Compute/Storage 독립 확장 어려움                                |
+| 주요 솔루션 | Nutanix, VMware vSAN, Azure Local (구 Azure Stack HCI), Proxmox |
+| 용도        | VDI, 지사/원격 사이트, 중소기업 인프라 통합                     |
 
 #### 3-Tier vs HCI 비교
 
@@ -527,7 +527,7 @@ sudo iscsiadm -m node -T iqn.2026-01.com.storage:lun0 -p 192.0.2.1 --login
 # NFS 마운트
 sudo mount -t nfs -o vers=4,noatime 192.0.2.1:/share/data /mnt/nfs
 
-# NFS 마운트 확인
+# NFS 서버 export 확인
 showmount -e 192.0.2.1
 
 # FC HBA 정보 (Linux)
@@ -554,14 +554,14 @@ cat /sys/class/fc_host/host*/port_name
 
 ### 클라우드 스토리지 선택
 
-| 시나리오              | AWS             | 이유                        |
-|-----------------------|-----------------|-----------------------------|
-| EC2 OS/DB 디스크      | EBS gp3         | 범용, IOPS/처리량 독립 설정 |
-| 고성능 DB (IOPS 보장) | EBS io2         | 64,000 IOPS, 99.999% SLA    |
-| 여러 EC2 파일 공유    | EFS             | NFS v4, Auto scaling        |
-| K8s PV (EKS)          | EBS CSI/EFS CSI | Pod 단위 또는 공유          |
-| 백업/아카이브         | S3 + Glacier    | 저비용, 내구성 11 nines     |
-| Windows 파일 서버     | FSx for Windows | AD 통합, SMB                |
+| 시나리오              | AWS             | 이유                              |
+|-----------------------|-----------------|-----------------------------------|
+| EC2 OS/DB 디스크      | EBS gp3         | 범용, IOPS/처리량 독립 설정       |
+| 고성능 DB (IOPS 보장) | EBS io2         | 최대 256,000 IOPS, 내구성 99.999% |
+| 여러 EC2 파일 공유    | EFS             | NFS v4, Auto scaling              |
+| K8s PV (EKS)          | EBS CSI/EFS CSI | Pod 단위 또는 공유                |
+| 백업/아카이브         | S3 + Glacier    | 저비용, 내구성 11 nines           |
+| Windows 파일 서버     | FSx for Windows | AD 통합, SMB                      |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -575,8 +575,8 @@ cat /sys/class/fc_host/host*/port_name
 # I/O 지연 확인
 sudo iostat -xdm 1 5
 
-# 디스크별 latency (await > 10ms 주의)
-sudo iostat -x | awk 'NR>3 && $NF>0 {print $1, "await="$10"ms", "util="$NF"%"}'
+# 디스크별 latency (r_await·w_await > 10ms 주의, 열 위치는 sysstat 버전마다 달라 헤더 이름으로 찾음)
+sudo iostat -dx | awk '/^Device/{for(i=1;i<=NF;i++) c[$i]=i; next} NF && c["r_await"] {print $1, "r_await="$c["r_await"]"ms", "w_await="$c["w_await"]"ms", "util="$NF"%"}'
 
 # I/O 대기 프로세스
 sudo iotop -oP
@@ -636,10 +636,12 @@ time dd if=/mnt/nfs/testfile of=/dev/null bs=1M count=100
 
 ## 참고 자료
 
-- SNIA Storage Architecture: [snia.org](https://www.snia.org/) — ★★☆☆☆
+- SNIA Storage Architecture: [snia.org](https://www.snia.org/) — ★★★☆☆
 - Linux SCSI/Multipath: [docs.kernel.org/scsi](https://docs.kernel.org/scsi/) — ★★★☆☆
 - NetApp ONTAP Documentation: [docs.netapp.com](https://docs.netapp.com/) — ★★★☆☆
 - AWS Storage Services: [docs.aws.amazon.com](https://docs.aws.amazon.com/whitepapers/latest/aws-storage-services-overview/aws-storage-services-overview.html) — ★★★☆☆
+- Amazon EBS io2 Block Express (IOPS·내구성): [docs.aws.amazon.com/ebs](https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html) — ★★★☆☆
+- Azure Local (구 Azure Stack HCI): [learn.microsoft.com/azure/azure-local](https://learn.microsoft.com/en-us/azure/azure-local/overview) — ★★★☆☆
 - Patterson, David. "A Case for Redundant Arrays of Inexpensive Disks (RAID)" (1988)
 - [linux_filesystem.md](../../01_fundamentals/linux/linux_filesystem.md)
 
@@ -658,6 +660,6 @@ time dd if=/mnt/nfs/testfile of=/dev/null bs=1M count=100
 
 **작성일**: 2026-07-24
 
-**마지막 업데이트**: 2026-07-24
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

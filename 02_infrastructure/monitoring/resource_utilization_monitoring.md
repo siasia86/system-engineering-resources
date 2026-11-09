@@ -44,7 +44,7 @@ bashtop
 ![bashtop](../../98_image/resource-utilization-monitoring/bashtop.png)
 
 ### 단축키
-- top, htop 은  P (process 순서 정렬) M (memory 순서 정렬) 단축키가 있습니다.
+- top, htop 은  P (CPU 사용률 순서 정렬) M (memory 순서 정렬) 단축키가 있습니다.
 
 ```bash
 # 응용 명령 방법
@@ -286,7 +286,7 @@ echo -1000 | sudo tee /proc/$(pgrep game_server)/oom_score_adj
 - 게임 서버는 동시 접속자 수만큼 소켓 FD를 사용하므로 고갈에 주의해야 합니다.
 ```bash
 # 게임 서버 프로세스의 FD 사용 현황
-ls -la /proc/$(pgrep game_server)/fd | wc -l
+ls /proc/$(pgrep game_server)/fd | wc -l
 
 # 프로세스별 FD 제한 확인
 cat /proc/$(pgrep game_server)/limits | grep "open files"
@@ -361,7 +361,7 @@ zabbix → 30% (10:00에 수집했다면) 또는 95% (10:03에 수집했다면)
 - 둘 다 병행하는 것이 가장 효과적입니다.
 
 ### 참고
-- zabbix의 `system.cpu.util` 아이템은 내부적으로 `/proc/stat` 델타 계산을 사용하므로, 직전 수집~현재 수집 사이의 구간 평균에 가까운 값을 반환합니다. 이 경우 sar와 정확도 차이가 거의 없습니다.
+- zabbix agent의 `system.cpu.util` 아이템은 `/proc/stat` 델타로 계산한 평균을 반환하며, 기본 mode는 최근 1분 평균(`avg1`, 그 밖에 `avg5`·`avg15`)입니다. 수집 간격이 1분보다 길면 직전 수집~현재 수집 구간 전체가 아니라 마지막 1분(또는 지정한 5분·15분)만 반영되므로, 구간 전체 평균이 필요하면 mode와 수집 간격을 맞춥니다.
 - sar에서 높은 수치가 기록되었다면 해당 구간 동안 지속적으로 부하가 높았다는 의미이므로, 스냅샷 대비 더 심각한 상황일 수 있습니다.
 
 
@@ -369,7 +369,8 @@ zabbix → 30% (10:00에 수집했다면) 또는 95% (10:03에 수집했다면)
 
 ## 참고 자료
 
-- Linux man pages: [man7.org](https://man7.org/linux/man-pages/) — ★★☆☆☆
+- Linux man pages: [man7.org](https://man7.org/linux/man-pages/) — ★★★☆☆
+- Zabbix agent item keys (`system.cpu.util`): [zabbix.com/documentation](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/zabbix_agent) — ★★★☆☆
 - Brendan Gregg - Linux Performance: [brendangregg.com](https://www.brendangregg.com/linuxperf.html) — ★★★☆☆
 
 ---
@@ -387,6 +388,6 @@ zabbix → 30% (10:00에 수집했다면) 또는 95% (10:03에 수집했다면)
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-04-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

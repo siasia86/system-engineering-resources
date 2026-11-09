@@ -21,7 +21,8 @@ ubuntu22 ansible_host=10.200.101.151
 rocky9   ansible_host=10.200.101.154
 
 [linux:vars]
-ansible_user=ansible    # 전용 계정 권장 (root 직접 사용 지양)
+# 전용 계정 권장 (root 직접 사용 지양) — :vars 줄 끝 주석은 값에 포함되므로 별도 줄에 작성
+ansible_user=ansible
 ansible_ssh_private_key_file=~/.ssh/id_ed25519
 ansible_connection=ssh
 ```
@@ -60,7 +61,8 @@ ansible_remote_tmp=/tmp/.ansible/tmp
     state: present
     update_cache: true
 
-# RedHat 계열 전용 (RHEL 7 / CentOS 7)
+# yum 모듈은 ansible-core 2.17에서 제거되어 ansible.builtin.dnf로 재지정됨
+# (Python 2.7·3.6 대상 지원도 종료되어 RHEL 7 / CentOS 7은 관리 불가)
 - ansible.builtin.yum:
     name: nginx
     state: present
@@ -111,9 +113,9 @@ ansible_remote_tmp=/tmp/.ansible/tmp
     groups: sudo
     append: true
 
-# ansible.posix.authorized_key는 Ansible 2.15+에서 deprecated
-# ansible.builtin.authorized_key 사용 권장
-- ansible.builtin.authorized_key:
+# authorized_key는 ansible.posix 컬렉션 모듈 (ansible.builtin.authorized_key는 이 모듈로 재지정되는 이름)
+# ansible-core만 설치했다면: ansible-galaxy collection install ansible.posix
+- ansible.posix.authorized_key:
     user: ansible
     key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
 ```
@@ -195,7 +197,7 @@ ansible all -m ansible.builtin.copy -a "src=/tmp/test.txt dest=/tmp/test.txt"
       when: ansible_os_family == "Debian"
 
     - name: RedHat 계열
-      ansible.builtin.yum:
+      ansible.builtin.dnf:
         name: nginx
         state: present
       when: ansible_os_family == "RedHat"
@@ -266,12 +268,15 @@ ansible all -m ansible.builtin.copy -a "src=/tmp/test.txt dest=/tmp/test.txt"
 ## 참고 자료
 
 - Ansible Docs — Module Index: [docs.ansible.com](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/) — ★★★☆☆
-- Ansible Docs — Linux Guide: [docs.ansible.com](https://docs.ansible.com/ansible/latest/playbook_guide/) — ★★★☆☆
+- Ansible Docs — Playbook Guide: [docs.ansible.com](https://docs.ansible.com/ansible/latest/playbook_guide/) — ★★★☆☆
+- ansible-core 2.17 Changelog (yum 제거): [github.com/ansible/ansible](https://github.com/ansible/ansible/blob/stable-2.17/changelogs/CHANGELOG-v2.17.rst) — ★★★☆☆
+- ansible.posix.authorized_key: [docs.ansible.com](https://docs.ansible.com/ansible/latest/collections/ansible/posix/authorized_key_module.html) — ★★★☆☆
+- Ansible Inventory (INI `:vars` 값 해석): [docs.ansible.com](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-05-19
 
-**마지막 업데이트**: 2026-05-19
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

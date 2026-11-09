@@ -182,7 +182,7 @@ sudo vi /etc/docker/daemon.json
 
 ```json
 {
-  "log-driver": "local",   // json-file 대신 local 권장 (자동 로테이션 지원, 공식 문서 권장)
+  "log-driver": "local",
   "log-opts": {
     "max-size": "100m",
     "max-file": "3"
@@ -202,7 +202,8 @@ sudo systemctl restart docker
 sudo docker info --format '{{.LoggingDriver}}'
 ```
 
-> `local` 드라이버는 자동 로테이션을 지원하며 `json-file`보다 효율적입니다.
+> `local` 드라이버는 자동 로테이션을 지원하며 `json-file`보다 효율적입니다(공식 문서 권장).
+> daemon.json은 JSON 형식이라 `//` 주석을 넣으면 dockerd가 설정을 읽지 못합니다.
 > `json-file`은 기본값이지만 로테이션이 없어 디스크 고갈 위험이 있습니다.
 
 ### 4-3. 방화벽 설정
@@ -275,7 +276,7 @@ docker rm -f web
 ### 시스템 정리
 
 ```bash
-# 중지된 컨테이너, 미사용 네트워크/이미지/볼륨 일괄 삭제
+# 중지된 컨테이너, 미사용 네트워크/이미지/익명 볼륨 일괄 삭제
 docker system prune -a --volumes
 
 # 디스크 사용량 확인
@@ -461,7 +462,7 @@ services:
 # 나쁜 예: 예기치 않은 업데이트로 장애 유발 가능
 image: mysql:latest
 
-# 좋은 예: 마이너 버전까지 고정
+# 좋은 예: 패치 버전까지 고정
 image: mysql:8.4.5
 ```
 
@@ -612,9 +613,9 @@ networks:
 
 | 원하는 범위        | ip_range          |
 |--------------------|-------------------|
-| .151 ~ .158 (8개)  | 10.200.101.144/29 |
-| .161 ~ .174 (16개) | 10.200.101.160/28 |
-| .151 ~ .166 (16개) | 10.200.101.144/28 |
+| .144 ~ .151 (8개)  | 10.200.101.144/29 |
+| .160 ~ .175 (16개) | 10.200.101.160/28 |
+| .144 ~ .159 (16개) | 10.200.101.144/28 |
 
 ### 호스트 → 컨테이너 통신 (선택)
 
@@ -649,6 +650,7 @@ sudo ip link set macvlan0 up
 - Docker Documentation: [Install Docker Engine](https://docs.docker.com/engine/install/) — ★★★☆☆
 - Docker Documentation: [Docker Compose](https://docs.docker.com/compose/) — ★★★☆☆
 - Docker Documentation: [Compose file reference](https://docs.docker.com/reference/compose-file/) — ★★★☆☆
+- Docker Documentation: [Configure logging drivers](https://docs.docker.com/engine/logging/configure/) — ★★★☆☆
 
 ---
 
@@ -665,6 +667,6 @@ sudo ip link set macvlan0 up
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

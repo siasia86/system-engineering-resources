@@ -40,7 +40,7 @@ Grafana OSS(무료)와 Infinity Datasource 플러그인을 사용하여 GitLab �
 ### Infinity 플러그인 설치
 
 ```bash
-grafana-cli plugins install yesoreyeram-infinity-datasource
+grafana cli plugins install yesoreyeram-infinity-datasource
 sudo systemctl restart grafana-server
 ```
 
@@ -51,11 +51,12 @@ sudo systemctl restart grafana-server
 **웹 UI에서 발급:**
 ```
 GitLab admin 계정으로 로그인
-→ 우측 상단 프로필 아이콘 → Edit profile
-→ Access Tokens → Add new token
+→ 우측 상단 아바타 → Edit profile
+→ 왼쪽 사이드바 Access → Personal access tokens
+→ Generate token → Legacy token
   - Token name: grafana-readonly
   - Scopes: read_api
-→ Create personal access token
+→ Generate token
 → 토큰 값 복사 (페이지 벗어나면 재확인 불가)
 ```
 
@@ -68,7 +69,7 @@ user = User.find_by_username('root')
 token = user.personal_access_tokens.create(
   name: 'grafana-readonly',
   scopes: ['read_api'],
-  expires_at: 1.year.from_now
+  expires_at: 365.days.from_now
 )
 puts token.token
 ```
@@ -95,7 +96,7 @@ curl -s --header "PRIVATE-TOKEN: <token>" \
 
 ## 3. Infinity Datasource 설정
 
-`Configuration` → `Data Sources` → `Add` → `Infinity`
+`Connections` → `Data sources` → `Add new data source` → `Infinity`
 
 | 항목      | 값                                  |
 |-----------|-------------------------------------|
@@ -301,6 +302,8 @@ Dashboard → Add → Row
 - Infinity Datasource: [grafana.com/plugins/yesoreyeram-infinity-datasource](https://grafana.com/grafana/plugins/yesoreyeram-infinity-datasource/) — ★★★☆☆
 - GitLab Events API: [docs.gitlab.com/ee/api/events](https://docs.gitlab.com/ee/api/events.html) — ★★★☆☆
 - GitLab Commits API: [docs.gitlab.com/ee/api/commits](https://docs.gitlab.com/ee/api/commits.html) — ★★★☆☆
+- GitLab Personal access tokens: [docs.gitlab.com/user/profile/personal_access_tokens](https://docs.gitlab.com/user/profile/personal_access_tokens/) — ★★★☆☆
+- Grafana CLI: [grafana.com/docs/grafana/latest/administration/cli](https://grafana.com/docs/grafana/latest/administration/cli/) — ★★★☆☆
 - [prometheus_grafana.md](./prometheus_grafana.md)
 
 ---
@@ -318,6 +321,6 @@ Dashboard → Add → Row
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-05-13
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

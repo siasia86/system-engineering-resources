@@ -207,13 +207,13 @@ Restic Repository에는 Snapshot·Index·Pack·Key 등 Restic이 관리하는 �
 Restic 공식 문서의 S3 Backend 형식은 다음과 같습니다.
 
 ```text
-s3:s3.amazonaws.com/<bucket>/<prefix>
+s3:s3.<region>.amazonaws.com/<bucket>/<prefix>
 ```
 
 예시에서는 표준 예시 버킷을 사용합니다.
 
 ```bash
-export RESTIC_REPOSITORY='s3:s3.amazonaws.com/my-bucket/restic/server-a'
+export RESTIC_REPOSITORY='s3:s3.us-east-1.amazonaws.com/my-bucket/restic/server-a'
 ```
 
 S3 Bucket 이름과 Prefix는 환경별로 분리합니다.
@@ -229,7 +229,7 @@ s3://my-bucket/restic/test/
 ### 환경 변수와 비밀번호 파일
 
 ```bash
-export RESTIC_REPOSITORY='s3:s3.amazonaws.com/my-bucket/restic/server-a'
+export RESTIC_REPOSITORY='s3:s3.us-east-1.amazonaws.com/my-bucket/restic/server-a'
 export RESTIC_PASSWORD_FILE='/etc/restic/server-a.password'
 export AWS_PROFILE='backup-profile'
 ```
@@ -667,10 +667,10 @@ Restic은 파일 동기화나 데이터베이스 전용 백업을 단순히 대�
 
 ## 참고 자료
 
-- Restic Documentation: [restic.readthedocs.io](https://restic.readthedocs.io/en/stable/) — ★★★★☆
-- Restic S3 Backend: [030_preparing_a_new_repo.html](https://restic.readthedocs.io/en/stable/030_preparing_a_new_repo.html) — ★★★★☆
-- Restic Backup and Change Detection: [040_backup.html](https://restic.readthedocs.io/en/stable/040_backup.html) — ★★★★☆
-- Restic Retention and Prune: [060_forget.html](https://restic.readthedocs.io/en/stable/060_forget.html) — ★★★★☆
+- Restic Documentation: [restic.readthedocs.io](https://restic.readthedocs.io/en/stable/) — ★★★☆☆
+- Restic S3 Backend: [030_preparing_a_new_repo.html](https://restic.readthedocs.io/en/stable/030_preparing_a_new_repo.html) — ★★★☆☆
+- Restic Backup and Change Detection: [040_backup.html](https://restic.readthedocs.io/en/stable/040_backup.html) — ★★★☆☆
+- Restic Retention and Prune: [060_forget.html](https://restic.readthedocs.io/en/stable/060_forget.html) — ★★★☆☆
 - Restic Releases: [github.com/restic/restic/releases](https://github.com/restic/restic/releases) — ★★★☆☆
 - [Restic 공식 참조 노트](../../_reference/restic_official_notes.md)
 - [S3·IAM·KMS 참조 노트](../../_reference/aws_sts_iam_s3_kms_official_notes.md)
@@ -690,6 +690,6 @@ Restic은 파일 동기화나 데이터베이스 전용 백업을 단순히 대�
 
 **작성일**: 2026-09-21
 
-**마지막 업데이트**: 2026-09-21
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

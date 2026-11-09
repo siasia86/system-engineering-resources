@@ -30,11 +30,11 @@
 가용성(%) = (총 운영 시간 - 장애 시간) / 총 운영 시간 × 100
 ```
 
-| 등급                | 가용성     | 연간 허용 다운타임 |
-|---------------------|------------|--------------------|
-| 99.9% (Three Nines) | 8시간 45분 | 일반 게임 서비스   |
-| 99.95%              | 4시간 22분 | 대형 온라인 게임   |
-| 99.99% (Four Nines) | 52분       | 결제/인증 시스템   |
+| 가용성              | 연간 허용 다운타임 | 적용 예          |
+|---------------------|--------------------|------------------|
+| 99.9% (Three Nines) | 8시간 45분         | 일반 게임 서비스 |
+| 99.95%              | 4시간 22분         | 대형 온라인 게임 |
+| 99.99% (Four Nines) | 52분               | 결제/인증 시스템 |
 
 ### 1-3. 게임 서비스의 특수성
 
@@ -185,7 +185,7 @@ systeminfo | findstr "부팅 시간"
 - [99.9%와 99.99% SLA 차이점 상세 설명](https://medium.com/axel-springer-tech/whats-the-difference-between-99-9-and-99-99-sla-uptime-489e201a3c7b) — ★★☆☆☆
 - [Uptime 비율별 허용 다운타임 계산](https://onlineornot.com/uptime-calculator) — ★☆☆☆☆
 - [SLA Uptime 계산기 및 등급별 다운타임 산출](https://devopsprojectshq.com/tools/sla-tool/) — ★☆☆☆☆
-- [SLA Uptime 산출 공식 및 활용 방법](https://deadly.hostingpost.com/) — ★☆☆☆☆
+- [가용성 산출 공식과 오류 예산 (Google SRE Book: Embracing Risk)](https://sre.google/sre-book/embracing-risk/) — ★★★★☆
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -230,8 +230,11 @@ ping -c 10 game-server.example.com
 ```bash
 # TCP 연결의 각 단계별 소요 시간을 측정합니다.
 curl -s -o /dev/null -w "DNS: %{time_namelookup}s\nConnect: %{time_connect}s\nTTFB: %{time_starttransfer}s\nTotal: %{time_total}s\n" https://google.com
+```
 
-**출력 예시 및 항목 설명: **
+**출력 예시 및 항목 설명:**
+
+```
 DNS: 0.000522s
 Connect: 0.028811s
 TTFB: 0.211920s
@@ -262,7 +265,7 @@ sudo mtr --report --report-cycles 20 --tcp --port 443 google.com
 
 **출력 예시 및 항목 설명:**
 ```bash
-HOST: sjyun                       Loss%   Snt   Last   Avg  Best  Wrst StDev
+HOST: server01                    Loss%   Snt   Last   Avg  Best  Wrst StDev
   1.├── _gateway                   0.0%    20    0.6   0.6   0.3   4.8   1.0
   2.├── ???                       100.0    20    0.0   0.0   0.0   0.0   0.0
   3.├── ???                       100.0    20    0.0   0.0   0.0   0.0   0.0
@@ -467,7 +470,7 @@ sudo mtr --report --report-cycles 10 --tcp --port 443 google.com
 
 - [P50, P95, P99 Latency 백분위 개념 및 활용](https://oneuptime.com/blog/post/2025-09-15-p50-vs-p95-vs-p99-latency-percentiles/view) — ★☆☆☆☆
 - [Latency 지표의 실무 해석 방법](https://www.sebastianduerr.com/blog/latency-metrics-that-tell-the-truth) — ★★☆☆☆
-- [RTT 최적화를 통한 네트워크 성능 개선 전략](https://www.softwebsolutions.com/resources/reduce-rtt-optimize-network-performance/) — ★★★☆☆
+- [RTT 최적화를 통한 네트워크 성능 개선 전략](https://www.softwebsolutions.com/resources/reduce-rtt-optimize-network-performance/) — ★★☆☆☆
 
 ### 2.9. 추가 자료
 - [[개인자료]ASN 운영 및 IDC DDoS 대응 가이드](../../01_fundamentals/networking/asn_and_cloudflare_ddos.md) — ★★★☆☆
@@ -528,7 +531,7 @@ netstat -anotp  | awk '{print $6}' | sort | uniq -c | sort -rn
 # 게임 서버 프로세스의 연결 수를 확인합니다.
 ss -ntp | grep -i "game-server" | wc -l
 
-netstat -nltp | grep -i  "game-server" | wc -l
+netstat -ntp | grep -i  "game-server" | wc -l
 
 # 시스템의 최대 연결 수 설정값을 확인합니다.
 cat /proc/sys/net/core/somaxconn
@@ -630,11 +633,8 @@ TimeoutSec=infinity
 Restart=on-failure
 RuntimeDirectory=mysqld
 RuntimeDirectoryMode=755
-[⬆ 목차로 돌아가기](#목차)
 
----
-
-## 아래 부분 수정 후 systemd restart 또는 systemd daemon-reload
+## 아래 부분 수정 후 systemctl daemon-reload 실행 뒤 systemctl restart mysql
 LimitNOFILE=10000
 
 ```
@@ -719,11 +719,11 @@ CloudWatch에 커스텀 메트릭을 게시하면 어떤 값이든 스케일링 
 
 ### 3-9. 참고 자료
 
-- [게임 서버 스케일링 실무 사례 및 CCU 기반 용량 산정](https://cloudpap.com/blog/game-server-scaling-lessons/)
-- [Amazon GameLift 1억 CCU 벤치마크 테스트](https://aws.amazon.com/blogs/gametech/amazon-gamelift-achieves-100-million-concurrently-connected-users-per-game/)
-- [200만 CCU 스케일 테스트 사례](https://codewizards.io/case-study/2m-ccu-scale-test/)
-- [Linux 커널 TCP 튜닝 (대규모 동시 접속 처리)](https://cubepath.com/docs/advanced-topics/advanced-tcp-ip-tuning-with-sysctl)
-- [고성능 네트워킹을 위한 Linux 커널 튜닝](https://levelup.gitconnected.com/linux-kernel-tuning-for-high-performance-networking-high-volume-incoming-connections-196e863d458a)
+- [게임 서버 스케일링 실무 사례 및 CCU 기반 용량 산정](https://cloudpap.com/blog/game-server-scaling-lessons/) — ★★☆☆☆
+- [Amazon GameLift 1억 CCU 벤치마크 테스트](https://aws.amazon.com/blogs/gametech/amazon-gamelift-achieves-100-million-concurrently-connected-users-per-game/) — ★★★☆☆
+- [200만 CCU 스케일 테스트 사례](https://codewizards.io/case-study/2m-ccu-scale-test/) — ★★☆☆☆
+- [Linux 커널 TCP 튜닝 (대규모 동시 접속 처리)](https://cubepath.com/docs/advanced-topics/advanced-tcp-ip-tuning-with-sysctl) — ★★☆☆☆
+- [고성능 네트워킹을 위한 Linux 커널 튜닝](https://levelup.gitconnected.com/linux-kernel-tuning-for-high-performance-networking-high-volume-incoming-connections-196e863d458a) — ★★☆☆☆
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -835,12 +835,12 @@ du -ah /var/log/ | sort -rh | head -10
 
 ### 4-7. 참고 자료
 
-- [리소스 사용률 핵심 지표 10가지 및 임계치 기준](https://www.eyer.ai/blog/10-resource-utilization-metrics-to-measure-and-improve/)
-- [서버 모니터링 커스텀 임계치 설정 가이드](https://hosting.international/blog/server-monitoring-deep-dive-setting-up-custom-thresholds-for-alerts/)
-- [서버 리소스 모니터링 및 성능 튜닝](https://www.inmotionhosting.com/blog/server-resource-monitoring-performance-tuning/)
-- [서버 성능 모니터링 모범 사례](https://zuzia.app/guides/server-performance-monitoring-best-practices/)
-- [Linux 리소스 모니터링 모범 사례](https://zuzia.app/guides/linux-resource-monitoring-best-practices/)
-- [서버 리소스 모니터링 가이드라인](https://help.orangehrm.com/hc/en-us/articles/10204491113113-Server-Resource-Monitoring-Guidelines)
+- [리소스 사용률 핵심 지표 10가지 및 임계치 기준 (원문 삭제, Internet Archive 보존본)](https://web.archive.org/web/20260616061929/https://www.eyer.ai/blog/10-resource-utilization-metrics-to-measure-and-improve/) — ★★☆☆☆
+- [서버 모니터링 커스텀 임계치 설정 가이드](https://hosting.international/blog/server-monitoring-deep-dive-setting-up-custom-thresholds-for-alerts/) — ★★☆☆☆
+- [서버 리소스 모니터링 및 성능 튜닝](https://www.inmotionhosting.com/blog/server-resource-monitoring-performance-tuning/) — ★★☆☆☆
+- [서버 성능 모니터링 모범 사례](https://zuzia.app/guides/server-performance-monitoring-best-practices/) — ★★☆☆☆
+- [Linux 리소스 모니터링 모범 사례](https://zuzia.app/guides/linux-resource-monitoring-best-practices/) — ★★☆☆☆
+- [서버 리소스 모니터링 가이드라인](https://help.orangehrm.com/hc/en-us/articles/10204491113113-Server-Resource-Monitoring-Guidelines) — ★★☆☆☆
 
 ### 4-8. 추가 자료
 - [[개인자료]resource utilization monitoring.md](./resource_utilization_monitoring.md) — ★★★☆☆
@@ -952,7 +952,7 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 └──────────────────┘        └──────────────────┘
 ```
 - 실제 zabbix, ELK 등 시스템 모니터링 툴로 일간/주간 점검을 진행 하고 있습니다.
-- 매월 하진 못하더라도 최소 6개월에 한번씩 월감 점검을 진행 하고 있습니다. 
+- 매월 하진 못하더라도 최소 6개월에 한번씩 월간 점검을 진행 하고 있습니다.
 
 ### 5-6. 실무 권장 사항
 
@@ -963,12 +963,12 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 
 ### 5-7. 참고 자료
 
-- [DDoS 공격 탐지 기법 및 대응 방안](https://www.labellerr.com/blog/ddos-attack-detection/)
-- [Linux 서버 DDoS 공격 확인 방법](https://medium.com/@redswitches/how-to-check-ddos-attack-on-a-linux-server-7a2c2c80a8db)
-- [DDoS 모니터링 및 조기 탐지 전략](https://www.paessler.com/monitoring/security/ddos-monitoring)
-- [서버 공격 탐지 종합 가이드 (DDoS, Brute Force, Malware)](https://cubepath.com/docs/troubleshooting-guide/detecting-server-under-attack)
-- [fail2ban을 활용한 SSH Brute Force 방어](https://linuxiac.com/how-to-protect-ssh-with-fail2ban/)
-- [fail2ban 설치 및 설정 가이드](https://www.veeble.com/kb/mastering-fail2ban-defense-for-linux-server/)
+- [DDoS 공격 탐지 기법 및 대응 방안](https://www.labellerr.com/blog/ddos-attack-detection/) — ★★☆☆☆
+- [Linux 서버 DDoS 공격 확인 방법](https://medium.com/@redswitches/how-to-check-ddos-attack-on-a-linux-server-7a2c2c80a8db) — ★★☆☆☆
+- [DDoS 모니터링 및 조기 탐지 전략](https://www.paessler.com/monitoring/security/ddos-monitoring) — ★★☆☆☆
+- [서버 공격 탐지 종합 가이드 (DDoS, Brute Force, Malware)](https://cubepath.com/docs/troubleshooting-guide/detecting-server-under-attack) — ★★☆☆☆
+- [fail2ban을 활용한 SSH Brute Force 방어](https://linuxiac.com/how-to-protect-ssh-with-fail2ban/) — ★★☆☆☆
+- [fail2ban 설치 및 설정 가이드](https://www.veeble.com/kb/mastering-fail2ban-defense-for-linux-server/) — ★★☆☆☆
 
 ### 5-8. DDoS 관련 추가 자료
 - [[개인자료]ASN 운영 및 IDC DDoS 대응 가이드](../../01_fundamentals/networking/asn_and_cloudflare_ddos.md) — ★★★☆☆
@@ -1013,7 +1013,7 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 
 ## 참고 자료
 
-- Prometheus Documentation: [prometheus.io](https://prometheus.io/docs/introduction/overview/) — ★★☆☆☆
+- Prometheus Documentation: [prometheus.io](https://prometheus.io/docs/introduction/overview/) — ★★★☆☆
 
 ---
 
@@ -1030,6 +1030,6 @@ cat /proc/sys/net/netfilter/nf_conntrack_max
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-10-15
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

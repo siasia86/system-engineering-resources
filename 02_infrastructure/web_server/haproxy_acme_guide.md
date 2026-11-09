@@ -142,6 +142,7 @@ frontend fe_web
 | `http-request return ...`      | CA의 http-01 요청에 HAProxy가 직접 응답                               |
 | `ssl-f-use crt`                | 443 bind들이 쓸 인증서                                                |
 
+- `global`에 `crt-base`가 있으면 HAProxy 안의 인증서 이름은 `/etc/haproxy/certs/example.com.pem`처럼 `crt-base`를 붙인 경로가 됩니다(3.4 소스 `src/ssl_ckch.c`의 `crtstore_parse_load`). 아래 CLI 명령에는 `acme status`·`show ssl cert`에 나오는 이름을 그대로 씁니다.
 - challenge 응답 줄은 HTTPS 리다이렉트 **앞**에 둡니다. 뒤에 두면 CA 요청이 443으로 넘어가 실패할 수 있습니다.
 - 시험이 끝나면 `directory`를 운영 주소 `https://acme-v02.api.letsencrypt.org/directory`로 바꿉니다. staging과 운영의 계정은 CA마다 따로 만들어지므로 `account-key`로 키 파일 이름을 나누어 두면 구분하기 쉽습니다.
 - `contact`의 주소는 CA 계정에 연결됩니다. 개인 주소 대신 팀 공용 주소를 씁니다.
@@ -158,7 +159,7 @@ sudo haproxy -c -f /etc/haproxy/haproxy.cfg -f /etc/haproxy/conf.d
 sudo systemctl reload haproxy
 
 # 즉시 발급(스케줄을 기다리지 않음). @1 = 현재 worker
-echo "@1 acme renew example.com.pem" | sudo socat /run/haproxy-master.sock -
+echo "@1 acme renew /etc/haproxy/certs/example.com.pem" | sudo socat /run/haproxy-master.sock -
 
 # 상태
 echo "@1 acme status" | sudo socat /run/haproxy-master.sock - | column -t -s $'\t'
@@ -178,7 +179,7 @@ echo "@1 acme status" | sudo socat /run/haproxy-master.sock - | column -t -s $'\
 
 ```bash
 # 메모리의 인증서 내용 확인
-echo "@1 dump ssl cert example.com.pem" | sudo socat /run/haproxy-master.sock - \
+echo "@1 dump ssl cert /etc/haproxy/certs/example.com.pem" | sudo socat /run/haproxy-master.sock - \
   | openssl storeutl -noout -text /dev/stdin | grep -E 'Issuer|Not After|DNS:'
 ```
 
@@ -205,7 +206,7 @@ HAProxy 소스에는 메모리의 인증서를 파일로 저장하는 `admin/cli
 sudo haproxy-dump-certs -n -v -p /etc/haproxy/certs -S /run/haproxy-master.sock
 
 # 저장
-sudo haproxy-dump-certs -v -p /etc/haproxy/certs -S /run/haproxy-master.sock example.com.pem
+sudo haproxy-dump-certs -v -p /etc/haproxy/certs -S /run/haproxy-master.sock /etc/haproxy/certs/example.com.pem
 ```
 
 공식 wiki는 정지·reload 때마다 저장하도록 systemd unit에 넣는 방법을 안내합니다. 패키지 unit을 직접 고치지 않고 drop-in으로 더합니다.
@@ -259,12 +260,12 @@ ExecReload=/bin/kill -USR2 $MAINPID
 
 HAProxy는 유효 기간의 **마지막 1/12**이 남았을 때 갱신을 시작합니다. Let's Encrypt는 ARI를 쓰거나, ARI가 없으면 수명의 약 2/3 시점(남은 기간 1/3)에 갱신하라고 권장합니다([인증서 수명 노트](../../_reference/tls_cert_lifecycle_official_notes.md)).
 
-| 인증서 수명       | HAProxy 갱신 시작(만료 전) | 수명 2/3 시점 갱신(만료 전) |
-|-------------------|----------------------------|-----------------------------|
-| 90일              | 약 7.5일                   | 30일                        |
-| 64일              | 약 5.3일                   | 약 21일                     |
-| 45일              | 약 3.75일                  | 15일                        |
-| 6일(`shortlived`) | 약 12시간                  | 2일                         |
+| 인증서 수명           | HAProxy 갱신 시작(만료 전) | 수명 2/3 시점 갱신(만료 전) |
+|-----------------------|----------------------------|-----------------------------|
+| 90일                  | 약 7.5일                   | 30일                        |
+| 64일                  | 약 5.3일                   | 약 21일                     |
+| 45일                  | 약 3.75일                  | 15일                        |
+| 160시간(`shortlived`) | 약 13시간                  | 약 2.2일                    |
 
 - 🟡 HAProxy 3.4 설정·관리 문서에는 ARI(renewalInfo) 지원이나 갱신 시점 조정 설정이 없습니다. 수명이 짧아질수록 갱신 실패를 고칠 여유가 줄어듭니다. Let's Encrypt 수명 단축 일정은 인증서 수명 노트에 정리되어 있습니다.
 - 그래서 HAProxy 내장 ACME를 쓰면 **만료 감시를 따로** 둡니다. 경보 기준은 "HAProxy 갱신 시작 시점이 지났는데 만료일이 그대로"입니다.
@@ -314,11 +315,12 @@ echo "@1 acme status" | sudo socat /run/haproxy-master.sock - | column -t -s $'\
 
 ## 참고 자료
 
-- HAProxy 3.4 Configuration Manual 12.7 Certificate Storage, 12.8 ACME: [docs.haproxy.org/3.4/configuration.html](https://docs.haproxy.org/3.4/configuration.html) — ★★★★★
-- HAProxy 3.4 Management Guide(`acme renew`, `acme status`, `dump ssl cert`): [docs.haproxy.org/3.4/management.html](https://docs.haproxy.org/3.4/management.html) — ★★★★☆
-- HAProxy wiki ACME 안내: [github.com/haproxy/wiki/wiki/ACME:--native-haproxy](https://github.com/haproxy/wiki/wiki/ACME:--native-haproxy) — ★★★★☆
+- HAProxy 3.4 Configuration Manual 12.7 Certificate Storage, 12.8 ACME: [docs.haproxy.org/3.4/configuration.html](https://docs.haproxy.org/3.4/configuration.html) — ★★★☆☆
+- HAProxy 3.4 Management Guide(`acme renew`, `acme status`, `dump ssl cert`): [docs.haproxy.org/3.4/management.html](https://docs.haproxy.org/3.4/management.html) — ★★★☆☆
+- HAProxy wiki ACME 안내: [github.com/haproxy/wiki/wiki/ACME:--native-haproxy](https://github.com/haproxy/wiki/wiki/ACME:--native-haproxy) — ★★★☆☆
 - haproxy-dump-certs 스크립트: [git.haproxy.org](https://git.haproxy.org/?p=haproxy-3.4.git;a=blob;f=admin/cli/haproxy-dump-certs) — ★★★☆☆
-- Let's Encrypt 프로필: [letsencrypt.org/docs/profiles](https://letsencrypt.org/docs/profiles/) — ★★★★☆
+- 인증서 이름과 `crt-base`(`crtstore_parse_load`): [git.haproxy.org src/ssl_ckch.c](https://git.haproxy.org/?p=haproxy-3.4.git;a=blob;f=src/ssl_ckch.c) — ★★★☆☆
+- Let's Encrypt 프로필(`shortlived` 160시간): [letsencrypt.org/docs/profiles](https://letsencrypt.org/docs/profiles/) — ★★★☆☆
 - 확인 기록: [웹 서버 참조 노트 3절](../../_reference/web_server_official_notes.md#3-haproxy), [인증서 수명 노트](../../_reference/tls_cert_lifecycle_official_notes.md)
 - 관련 문서: [HAProxy 운영 가이드](./haproxy_operations_guide.md), [HAProxy + Keepalived 이중화](./haproxy_keepalived_ha.md), [TLS 인증서 만료 감시](../../04_security/hardening/tls_certificate_expiry_monitoring.md)
 
@@ -337,6 +339,6 @@ echo "@1 acme status" | sudo socat /run/haproxy-master.sock - | column -t -s $'\
 
 **작성일**: 2026-11-06
 
-**마지막 업데이트**: 2026-11-06
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

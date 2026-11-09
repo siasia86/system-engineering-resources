@@ -82,7 +82,7 @@ Helm은 Kubernetes 패키지 매니저. 복잡한 K8s 매니페스트를 Chart�
 
 ```bash
 # 저장소 추가
-helm repo add stable https://charts.helm.sh/stable
+helm repo add stable https://charts.helm.sh/stable   # 2020-11 아카이브, 갱신 없음
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo add argo https://argoproj.github.io/argo-helm
 
@@ -449,15 +449,16 @@ redis:
 
 ```bash
 # GitHub Actions / Jenkins에서 사용
+# --wait: 배포 완료까지 대기, --rollback-on-failure: 실패 시 자동 롤백 (Helm 3: --atomic)
 helm upgrade --install my-app ./charts/my-app \
   --namespace production \
   --create-namespace \
   --set image.tag=${IMAGE_TAG} \
   --set env.APP_ENV=production \
   -f ./charts/my-app/values-prod.yaml \
-  --wait \          # 배포 완료까지 대기
+  --wait \
   --timeout 5m \
-  --atomic                    # 실패 시 자동 롤백
+  --rollback-on-failure
 ```
 
 ### Chart 생성 & 패키징
@@ -507,7 +508,7 @@ helm diff upgrade my-app ./my-app -f values-prod.yaml
 
 ### 주의사항
 
-🟡 `--atomic` 플래그는 배포 실패 시 자동 롤백하지만, 롤백도 실패할 수 있습니다. 프로덕션에서는 `helm history`로 이력을 확인하고 수동 롤백을 병행합니다.
+🟡 `--rollback-on-failure`(Helm 3의 `--atomic`, v4에서는 폐기 경고) 플래그는 배포 실패 시 자동 롤백하지만, 롤백도 실패할 수 있습니다. 프로덕션에서는 `helm history`로 이력을 확인하고 수동 롤백을 병행합니다.
 
 🟡 Secret 값을 values.yaml에 평문으로 저장하지 않습니다. `helm-secrets` 플러그인 또는 외부 시크릿 관리자를 사용합니다.
 
@@ -522,6 +523,8 @@ helm diff upgrade my-app ./my-app -f values-prod.yaml
 - Helm Documentation: [helm.sh/docs](https://helm.sh/docs/) — ★★★☆☆
 - Artifact Hub: [artifacthub.io](https://artifacthub.io/) — ★★☆☆☆
 - Helm Best Practices: [helm.sh/docs/chart_best_practices](https://helm.sh/docs/chart_best_practices/) — ★★★☆☆
+- Helm 4 Overview (플래그 이름 변경): [helm.sh/docs/overview](https://helm.sh/docs/overview/) — ★★★☆☆
+- Charts Repo Deprecation: [helm.sh/blog/charts-repo-deprecation](https://helm.sh/blog/charts-repo-deprecation/) — ★★★☆☆
 
 ---
 
@@ -538,6 +541,6 @@ helm diff upgrade my-app ./my-app -f values-prod.yaml
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

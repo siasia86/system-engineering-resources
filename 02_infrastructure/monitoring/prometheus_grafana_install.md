@@ -52,7 +52,7 @@ sudo systemctl enable --now prometheus
 
 ```bash
 # 최신 버전 확인: https://github.com/prometheus/prometheus/releases
-PROM_VERSION="2.53.0"
+PROM_VERSION="3.16.0"
 wget https://github.com/prometheus/prometheus/releases/download/v${PROM_VERSION}/prometheus-${PROM_VERSION}.linux-amd64.tar.gz
 tar xzf prometheus-${PROM_VERSION}.linux-amd64.tar.gz
 sudo mv prometheus-${PROM_VERSION}.linux-amd64/prometheus /usr/local/bin/
@@ -133,7 +133,7 @@ sudo kill -HUP $(pidof prometheus)
 모니터링 대상 서버마다 설치합니다.
 
 ```bash
-NODE_EXP_VERSION="1.8.2"
+NODE_EXP_VERSION="1.12.1"
 wget https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXP_VERSION}/node_exporter-${NODE_EXP_VERSION}.linux-amd64.tar.gz
 tar xzf node_exporter-${NODE_EXP_VERSION}.linux-amd64.tar.gz
 sudo mv node_exporter-${NODE_EXP_VERSION}.linux-amd64/node_exporter /usr/local/bin/
@@ -306,7 +306,7 @@ receivers:
 # compose.yaml
 services:
   prometheus:
-    image: prom/prometheus:v2.53.0
+    image: prom/prometheus:v3.16.0
     ports:
       - "127.0.0.1:9090:9090"
     volumes:
@@ -319,7 +319,7 @@ services:
     restart: unless-stopped
 
   grafana:
-    image: grafana/grafana:11.0.0
+    image: grafana/grafana:13.3.0
     ports:
       - "3000:3000"
     volumes:
@@ -330,7 +330,7 @@ services:
     restart: unless-stopped
 
   node_exporter:
-    image: prom/node-exporter:v1.8.2
+    image: prom/node-exporter:v1.12.1
     ports:
       - "127.0.0.1:9100:9100"
     volumes:
@@ -340,6 +340,7 @@ services:
     command:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     restart: unless-stopped
 
@@ -394,9 +395,9 @@ scrape_configs:
 ### Tip 3: Grafana 대시보드 백업
 
 ```bash
-# 대시보드 JSON 내보내기
+# 대시보드 JSON 내보내기 (UID는 대시보드 URL의 /d/<UID>/ 부분)
 curl -s -u admin:SecurePassword123 \
-    http://localhost:3000/api/dashboards/home \
+    http://localhost:3000/api/dashboards/uid/<DASHBOARD_UID> \
     | jq '.dashboard' > dashboard_backup.json
 ```
 
@@ -416,7 +417,7 @@ curl -s -u admin:SecurePassword123 \
 
 ```bash
 # Prometheus 타겟 상태 확인
-curl -s http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | {job, health, lastError}'
+curl -s http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | {job: .labels.job, health, lastError}'
 
 # 설정 검증
 promtool check config /etc/prometheus/prometheus.yml
@@ -431,7 +432,10 @@ promtool check rules /etc/prometheus/rules/node.yml
 
 - Prometheus Documentation: [prometheus.io/docs](https://prometheus.io/docs/) — ★★★☆☆
 - Grafana Documentation: [grafana.com/docs](https://grafana.com/docs/) — ★★★☆☆
-- Node Exporter: [github.com/prometheus/node_exporter](https://github.com/prometheus/node_exporter) — ★★☆☆☆
+- Node Exporter: [github.com/prometheus/node_exporter](https://github.com/prometheus/node_exporter) — ★★★☆☆
+- Prometheus Download (버전 확인): [prometheus.io/download](https://prometheus.io/download/) — ★★★☆☆
+- Prometheus HTTP API: [prometheus.io/docs/prometheus/latest/querying/api](https://prometheus.io/docs/prometheus/latest/querying/api/) — ★★★☆☆
+- Grafana Dashboard HTTP API: [grafana.com/docs/.../http-api/dashboard](https://grafana.com/docs/grafana/latest/developer-resources/api-reference/http-api/dashboard/) — ★★★☆☆
 
 ---
 
@@ -448,6 +452,6 @@ promtool check rules /etc/prometheus/rules/node.yml
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-05-04
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

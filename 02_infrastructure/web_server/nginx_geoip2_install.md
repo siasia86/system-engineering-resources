@@ -43,7 +43,7 @@ MaxMind GeoLite2/GeoIP2 DB를 사용합니다.
 
 ## 2. 환경별 설치 방법
 
-### Ubuntu 22.04 — nginx 1.18 (패키지) // 1.30.x 로 진행 할것 
+### Ubuntu 22.04 — nginx 1.18 (패키지)
 
 ```bash
 apt-get update
@@ -179,6 +179,6 @@ nginx -t
 
 **작성일**: 2026-05-20
 
-**마지막 업데이트**: 2026-05-20
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

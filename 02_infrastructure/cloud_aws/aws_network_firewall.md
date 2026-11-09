@@ -97,6 +97,28 @@ aws network-firewall describe-firewall \
 ### 로깅 설정
 
 ```bash
+# FLOW 추가
+aws network-firewall update-logging-configuration \
+  --firewall-name anf-fw \
+  --logging-configuration '{
+    "LogDestinationConfigs": [
+      {"LogType": "FLOW",  "LogDestinationType": "CloudWatchLogs", "LogDestination": {"logGroup": "nfw-log"}}
+    ]
+  }' \
+  --region ap-northeast-3
+
+# ALERT 추가 (기존 FLOW 유지)
+aws network-firewall update-logging-configuration \
+  --firewall-name anf-fw \
+  --logging-configuration '{
+    "LogDestinationConfigs": [
+      {"LogType": "FLOW",  "LogDestinationType": "CloudWatchLogs", "LogDestination": {"logGroup": "nfw-log"}},
+      {"LogType": "ALERT", "LogDestinationType": "CloudWatchLogs", "LogDestination": {"logGroup": "nfw-log"}}
+    ]
+  }' \
+  --region ap-northeast-3
+
+# TLS 추가 (기존 FLOW, ALERT 유지)
 aws network-firewall update-logging-configuration \
   --firewall-name anf-fw \
   --logging-configuration '{
@@ -109,7 +131,7 @@ aws network-firewall update-logging-configuration \
   --region ap-northeast-3
 ```
 
-🟡 여러 로그 타입은 단일 API 호출에 모두 포함해야 합니다. 개별 호출로 추가하면 `InvalidRequestException`이 발생합니다.
+🟡 `UpdateLoggingConfiguration`은 호출 한 번에 로그 대상(`LogDestinationConfig`) 하나만 추가·삭제·변경할 수 있습니다. 여러 로그 타입을 한 번에 넣으면 `InvalidRequestException`이 발생하므로 하나씩 순차 호출합니다.
 
 ### 라우팅 테이블 연결
 
@@ -296,7 +318,7 @@ DependencyViolation: The vpc 'vpc-xxx' has dependencies and cannot be deleted.
 
 **원인:** Firewall(`anf-fw`)과 NAT Gateway는 **비동기 삭제**입니다. 삭제 요청 후 내부 리소스(VPC Endpoint 등)가 완전히 정리되기 전에 VPC 삭제를 시도하면 실패합니다.
 
-**해결:** 삭제 상태가 `DELETED`/`deleted`로 바뀐 것을 확인 후 다음 단계로 진행합니다.
+**해결:** Firewall은 목록에서 사라진 것(상태 값에 `DELETED` 없음), NAT Gateway는 상태가 `deleted`로 바뀐 것을 확인한 후 다음 단계로 진행합니다.
 
 ```bash
 # Firewall 삭제 완료 확인
@@ -313,7 +335,7 @@ aws ec2 describe-nat-gateways   --nat-gateway-ids nat-xxx   --query "NatGateways
 ```
 1.  라우팅 테이블 vpce 라우트 제거
 2.  로깅 설정 순차 제거 (이슈 1)
-3.  Firewall 삭제 → DELETED 확인 대기
+3.  Firewall 삭제 → 목록에서 사라질 때까지 대기
 4.  NAT GW 삭제 → deleted 확인 대기
 5.  EIP 해제
 6.  서브넷 삭제
@@ -348,11 +370,13 @@ aws ec2 describe-nat-gateways   --nat-gateway-ids nat-xxx   --query "NatGateways
 
 - AWS Documentation: [docs.aws.amazon.com/network-firewall](https://docs.aws.amazon.com/network-firewall/latest/developerguide/) — ★★★☆☆
 - AWS CLI Reference: [awscli.amazonaws.com](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/network-firewall/index.html) — ★★★☆☆
+- AWS API Reference: [UpdateLoggingConfiguration](https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_UpdateLoggingConfiguration.html) — ★★★☆☆
+- AWS API Reference: [FirewallStatus](https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_FirewallStatus.html) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-06-17
 
-**마지막 업데이트**: 2026-06-17
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

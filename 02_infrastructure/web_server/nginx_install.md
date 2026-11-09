@@ -57,7 +57,7 @@ curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
     | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg > /dev/null
 
 echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
-    http://nginx.org/packages/ubuntu $(lsb_release -cs) nginx" \
+    https://nginx.org/packages/ubuntu $(lsb_release -cs) nginx" \
     | sudo tee /etc/apt/sources.list.d/nginx.list
 
 sudo apt update
@@ -99,10 +99,11 @@ sudo systemctl enable --now nginx
 sudo tee /etc/yum.repos.d/nginx.repo << 'EOF'
 [nginx-stable]
 name=nginx stable repo
-baseurl=http://nginx.org/packages/rhel/$releasever/$basearch/
+baseurl=https://nginx.org/packages/rhel/$releasever/$basearch/
 gpgcheck=1
 enabled=1
 gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true
 EOF
 
 sudo dnf install nginx -y
@@ -411,14 +412,14 @@ sudo tail -f /var/log/nginx/access.log
 
 ## 9. 트러블슈팅
 
-| 증상                          | 원인                     | 해결 방법                                                       |
-|-------------------------------|--------------------------|-----------------------------------------------------------------|
-| `nginx -t` 실패               | 설정 문법 오류           | 오류 메시지 라인 확인 후 수정                                   |
-| 502 Bad Gateway               | 백엔드 서버 다운         | 백엔드 프로세스 상태 확인                                       |
-| 504 Gateway Timeout           | 백엔드 응답 지연         | `proxy_read_timeout` 값 증가                                    |
-| 403 Forbidden                 | 파일 권한 또는 SELinux   | `chmod`, `chown` 확인 / `setsebool httpd_can_network_connect 1` |
-| `bind() to 0.0.0.0:80 failed` | 포트 충돌 또는 권한 부족 | `ss -tlnp \| grep 80` 확인                                      |
-| 설정 반영 안 됨               | reload 미실행            | `sudo nginx -s reload`                                          |
+| 증상                          | 원인                          | 해결 방법                                                                         |
+|-------------------------------|-------------------------------|-----------------------------------------------------------------------------------|
+| `nginx -t` 실패               | 설정 문법 오류                | 오류 메시지 라인 확인 후 수정                                                     |
+| 502 Bad Gateway               | 백엔드 서버 다운 또는 SELinux | 백엔드 프로세스 상태 확인 / `setsebool -P httpd_can_network_connect 1`            |
+| 504 Gateway Timeout           | 백엔드 응답 지연              | `proxy_read_timeout` 값 증가                                                      |
+| 403 Forbidden                 | 파일 권한 또는 SELinux        | `chmod`, `chown` 확인 / SELinux 파일 컨텍스트(`semanage fcontext` + `restorecon`) |
+| `bind() to 0.0.0.0:80 failed` | 포트 충돌 또는 권한 부족      | `ss -tlnp \| grep 80` 확인                                                        |
+| 설정 반영 안 됨               | reload 미실행                 | `sudo nginx -s reload`                                                            |
 
 ```bash
 # 에러 로그 확인
@@ -435,7 +436,9 @@ ps aux | grep nginx
 ## 참고 자료
 
 - Nginx Documentation: [nginx.org/en/docs](https://nginx.org/en/docs/) — ★★★☆☆
-- Nginx Beginner's Guide: [nginx.org/en/docs/beginners_guide](https://nginx.org/en/docs/beginners_guide.html) — ★★☆☆☆
+- Nginx Beginner's Guide: [nginx.org/en/docs/beginners_guide](https://nginx.org/en/docs/beginners_guide.html) — ★★★☆☆
+- nginx Linux 패키지 저장소(https, `module_hotfixes`): [nginx.org/en/linux_packages.html](https://nginx.org/en/linux_packages.html) — ★★★☆☆
+- NGINX와 SELinux(프록시 연결 boolean, 파일 레이블): [f5.com/company/blog/nginx/using-nginx-plus-with-selinux](https://www.f5.com/company/blog/nginx/using-nginx-plus-with-selinux) — ★★☆☆☆
 
 ---
 
@@ -452,6 +455,6 @@ ps aux | grep nginx
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

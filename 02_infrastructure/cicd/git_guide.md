@@ -199,7 +199,7 @@ git log --oneline -- src/app.py
 git log --since="2026-01-01" --until="2026-04-30"
 
 # 특정 작성자
-git log --author="sjyun"
+git log --author="alice"
 
 # 커밋 메시지 검색
 git log --grep="fix"
@@ -212,8 +212,8 @@ git log --pretty=format:"%h %ad %s [%an]" --date=short
 ```
 
 ```
-a1b2c3d 2026-04-30 feat: add user login [sjyun]
-d4e5f6g 2026-04-29 fix: correct null check [sjyun]
+a1b2c3d 2026-04-30 feat: add user login [alice]
+d4e5f6a 2026-04-29 fix: correct null check [alice]
 ```
 
 ### 로컬에만 있는 커밋 확인
@@ -328,7 +328,7 @@ git stash list
 ```
 
 ```
-stash@{0}: WIP: login feature
+stash@{0}: On main: WIP: login feature
 stash@{1}: On main: hotfix 전 임시 저장
 ```
 
@@ -563,7 +563,7 @@ To add an exception for this directory, call:
 
 ```bash
 # 특정 경로만 허용 (권장)
-git config --global --add safe.directory /root/32_system-engineering-resources
+git config --global --add safe.directory /path/to/repo
 
 # 모든 경로 허용 (보안 주의, CI 환경에서만 사용)
 git config --global --add safe.directory '*'
@@ -607,6 +607,6 @@ sudo chown -R $(whoami):$(whoami) /path/to/repo
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-08-26
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

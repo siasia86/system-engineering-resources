@@ -59,6 +59,7 @@ GitHub Stars나 저장소 규모는 품질을 보장하지 않습니다. 공개 
 
 - 일부 후보는 HashiCorp Vault 대신 OpenBao 또는 Kubernetes Secret을 사용합니다.
 - 일부 후보는 로컬 환경보다 AWS, GCP, Proxmox 등 특정 플랫폼을 대상으로 합니다.
+
 Kubernetes는 CRI 호환 컨테이너 런타임을 사용하므로 Docker Engine을 클러스터 런타임으로 직접 설치할 필요가 없습니다. Docker는 이미지 빌드와 Compose 기반 로컬 실습에 사용할 수 있으며, Kubernetes 노드는 `containerd` 또는 CRI-O 같은 CRI 구현체를 사용할 수 있습니다.
 
 일반적인 IaC 학습 목적에는 다음 조합이 가장 적합합니다.
@@ -351,6 +352,7 @@ Lab 5~6   → Ansible와 Compose
 Lab 7~8   → 로그·메트릭
 Lab 9~10  → Kubernetes와 Helm
 Lab 11    → OpenBao와 External Secrets
+Lab 12    → ConfigMap과 스토리지
 Lab 13~16 → Argo CD·Progressive Delivery·운영
 ```
 
@@ -461,7 +463,7 @@ iac-learning-lab/
 |------|---------------------------------------------------------|---------------------------------------------|
 | 1    | Docker Compose로 샘플 애플리케이션과 Vault/OpenBao 실행 | `docker compose config`                     |
 | 2    | Terraform Provider로 로컬 또는 테스트 인프라 계획 생성  | `terraform validate`, `terraform plan`      |
-| 3    | Ansible로 생성된 호스트의 OS와 서비스를 구성            | `ansible --syntax-check`, `ansible --check` |
+| 3    | Ansible로 생성된 호스트의 OS와 서비스를 구성            | `ansible-playbook --syntax-check`·`--check` |
 | 4    | Kubernetes 클러스터에 샘플 애플리케이션 배포            | `kubectl get nodes`, `kubectl get pods -A`  |
 | 5    | Vault/OpenBao와 Kubernetes 인증 연동                    | Secret 조회·회전 테스트                     |
 | 6    | Argo CD로 GitOps 배포 구성                              | 동기화·롤백 테스트                          |
@@ -605,14 +607,14 @@ kubectl get nodes \
 
 ### GitHub 저장소
 
-아래 별점은 GitHub Stars가 아니라 공식성·학습 직접성·재현성을 기준으로 한 편집 평가입니다.
+아래 별점은 GitHub Stars가 아니라 저장소 규칙의 자료 유형 기준이며, 제3자 GitHub 예제 저장소는 모두 `★★☆☆☆`입니다. 학습 우선순위는 2절 표를 따릅니다.
 
-- DevOps Core Course: [github.com/inno-devops-labs/DevOps-Core-Course](https://github.com/inno-devops-labs/DevOps-Core-Course) — ★★★☆☆
-- Khue's Homelab: [github.com/khuedoan/homelab](https://github.com/khuedoan/homelab) — ★★★☆☆
+- DevOps Core Course: [github.com/inno-devops-labs/DevOps-Core-Course](https://github.com/inno-devops-labs/DevOps-Core-Course) — ★★☆☆☆
+- Khue's Homelab: [github.com/khuedoan/homelab](https://github.com/khuedoan/homelab) — ★★☆☆☆
 - Infrastructure Automation Lab: [github.com/m-aboud/infra-automation-lab](https://github.com/m-aboud/infra-automation-lab) — ★★☆☆☆
-- Vault on GKE: [github.com/sethvargo/vault-on-gke](https://github.com/sethvargo/vault-on-gke) — ★★★☆☆
+- Vault on GKE: [github.com/sethvargo/vault-on-gke](https://github.com/sethvargo/vault-on-gke) — ★★☆☆☆
 - Infrastructure as Code Tutorial: [github.com/Artemmkin/infrastructure-as-code-tutorial](https://github.com/Artemmkin/infrastructure-as-code-tutorial) — ★★☆☆☆
-- Kubernetes Homelab: [github.com/lisenet/kubernetes-homelab](https://github.com/lisenet/kubernetes-homelab) — ★★★☆☆
+- Kubernetes Homelab: [github.com/lisenet/kubernetes-homelab](https://github.com/lisenet/kubernetes-homelab) — ★★☆☆☆
 
 ### 공식 문서와 내부 문서
 
@@ -641,6 +643,6 @@ kubectl get nodes \
 
 **작성일**: 2026-09-17
 
-**마지막 업데이트**: 2026-09-17
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

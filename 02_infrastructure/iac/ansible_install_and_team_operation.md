@@ -41,7 +41,7 @@
 
 | 항목     | Control Node (메인)     | Managed Node (대상)   |
 |----------|-------------------------|-----------------------|
-| Python   | 3.9 이상                | 3.5 이상 (3.9+ 권장)  |
+| Python   | 3.12~3.14 (core 2.21)   | 3.9~3.14 (core 2.21)  |
 | OS       | Linux / macOS           | Linux / Windows       |
 | 디스크   | 약 300MB 이상           | 최소 설치             |
 | 네트워크 | SSH (22/tcp) 아웃바운드 | SSH (22/tcp) 인바운드 |
@@ -109,11 +109,10 @@ sudo dnf update -y
 ### 3-2. 설치 방법 A: DNF (AppStream)
 
 ```bash
-# Rocky Linux 10 은 AppStream 저장소에 Ansible 포함
-sudo dnf install ansible -y
+# Rocky Linux 10 AppStream 저장소에는 ansible-core 만 포함 (전체 ansible 패키지 없음)
+sudo dnf install ansible-core -y
 
-# 최소 설치 (core 만)
-# sudo dnf install ansible-core -y
+# 컬렉션까지 포함한 전체 ansible 패키지가 필요하면 아래 pip 방식 사용
 ```
 
 ### 3-3. 설치 방법 B: pip
@@ -239,7 +238,7 @@ ssh_args = -o ControlMaster=auto -o ControlPersist=600s
 
 | 항목                  | 값     | 설명                                                                                                |
 |-----------------------|--------|-----------------------------------------------------------------------------------------------------|
-| `pipelining`          | `True` | 여러 SSH 명령을 하나의 연결로 처리. 속도가 향상되나 `requiretty` sudoers 설정과 충돌할 수 있습니다. |
+| `pipelining`          | `True` | 모듈 파일 전송 없이 실행해 SSH 작업 수 감소. 속도가 향상되나 `requiretty` sudoers 설정과 충돌 가능. |
 | `ControlMaster=auto`  | -      | SSH 연결 다중화. 동일 호스트 재접속 시 기존 연결 재사용합니다.                                      |
 | `ControlPersist=600s` | -      | 마지막 접속 후 10분간 연결 유지. 연속 playbook 실행 시 SSH 재연결 없이 속도가 향상됩니다.           |
 
@@ -396,7 +395,7 @@ prd-app-web-01 | SUCCESS => {
 | `roles/`                      | 재사용 가능한 task 묶음    |
 | `playbooks/site.yml`          | 전체 인프라 적용 진입점    |
 
-🟡 `group_vars/`, `host_vars/`는 inventory 파일과 **같은 디렉토리**에 있어야 자동으로 로드됩니다.
+🟡 `group_vars/`, `host_vars/`는 inventory 파일 또는 playbook 파일과 **같은 디렉토리**에 있어야 자동으로 로드됩니다. 위 구조를 `-i inventory/dev playbooks/site.yml`로 실행하면 루트의 `group_vars/`는 로드되지 않으므로 `inventory/` 아래로 옮겨야 합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -728,12 +727,18 @@ git push -u origin main
 | 스케줄링      | cron                      | 내장 스케줄러                  |
 | 도입 시점     | 즉시                      | 팀 10명 이상 또는 ISMS 요구 시 |
 
+🟡 AWX 저장소는 2024-07-02 릴리스 이후 대규모 리팩터링으로 새 릴리스를 중단한 상태입니다. 도입 전 AWX README에서 현재 상태를 확인합니다.
+
 ---
 
 ## 참고 자료
 
 - Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/) — ★★★☆☆
 - Ansible Installation Guide: [Installing Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html) — ★★★☆☆
+- ansible-core Support Matrix: [Releases and maintenance](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html) — ★★★☆☆
+- Ansible Inventory (group_vars 위치): [How to build your inventory](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html) — ★★★☆☆
+- Rocky Linux 10 AppStream 패키지 목록: [dl.rockylinux.org](https://dl.rockylinux.org/pub/rocky/10/AppStream/x86_64/os/Packages/a/) — ★★★☆☆
+- AWX README: [github.com/ansible/awx](https://github.com/ansible/awx) — ★★★☆☆
 
 ---
 
@@ -750,6 +755,6 @@ git push -u origin main
 
 **작성일**: 2026-03-24
 
-**마지막 업데이트**: 2026-08-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -137,7 +137,7 @@ scrape_configs:
 
 services:
   prometheus:
-    image: prom/prometheus:v3.13.2
+    image: prom/prometheus:v3.16.0
     ports:
       - "9090:9090"
     volumes:
@@ -150,14 +150,14 @@ services:
       - '--web.enable-lifecycle'
 
   alertmanager:
-    image: prom/alertmanager:v0.33.1
+    image: prom/alertmanager:v0.34.2
     ports:
       - "9093:9093"
     volumes:
       - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
   grafana:
-    image: grafana/grafana:13.1.2
+    image: grafana/grafana:13.3.0
     ports:
       - "3000:3000"
     environment:
@@ -178,6 +178,7 @@ services:
     command:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
 
 volumes:
   prometheus_data:
@@ -193,7 +194,7 @@ helm repo update
 helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
   --namespace monitoring \
   --create-namespace \
-  --version 85.2.1 \
+  --version 93.1.0 \
   -f values-monitoring.yaml
 ```
 
@@ -272,7 +273,7 @@ max(node_memory_MemAvailable_bytes)
 # 분위수 (Histogram)
 histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))
 
-# 예측 (4시간 후 디스크 사용량)
+# 예측 (4시간 후 디스크 여유 공간)
 predict_linear(node_filesystem_free_bytes[1h], 4 * 3600)
 ```
 
@@ -369,8 +370,8 @@ route:
   receiver: 'slack-default'
 
   routes:
-    - match:
-        severity: critical
+    - matchers:
+        - severity="critical"
       receiver: 'slack-critical'
       repeat_interval: 1h
 
@@ -390,10 +391,10 @@ receivers:
         send_resolved: true
 
 inhibit_rules:
-  - source_match:
-      severity: critical
-    target_match:
-      severity: warning
+  - source_matchers:
+      - severity="critical"
+    target_matchers:
+      - severity="warning"
     equal: ['alertname', 'instance']
 ```
 
@@ -446,9 +447,9 @@ providers:
 | Redis Dashboard          | 11835 | Redis 모니터링          |
 | NGINX Ingress Controller | 9614  | Ingress 트래픽 모니터링 |
 
-```bash
-# Grafana CLI로 대시보드 가져오기
-grafana-cli dashboards import 1860
+```text
+# grafana cli에는 대시보드 가져오기 명령이 없으므로 UI(또는 HTTP API)로 가져옵니다
+Dashboards → New → Import → ID 입력(예: 1860) → Load → 데이터 소스 선택 → Import
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -614,6 +615,11 @@ curl -s http://localhost:9090/api/v1/status/tsdb | jq '.data.headStats'
 - Grafana Documentation: [grafana.com/docs](https://grafana.com/docs/grafana/latest/) — ★★★☆☆
 - PromQL Cheat Sheet: [promlabs.com/promql-cheat-sheet](https://promlabs.com/promql-cheat-sheet/) — ★★☆☆☆
 - Grafana Dashboard Gallery: [grafana.com/grafana/dashboards](https://grafana.com/grafana/dashboards/) — ★★☆☆☆
+- Prometheus Download (버전 확인): [prometheus.io/download](https://prometheus.io/download/) — ★★★☆☆
+- Alertmanager Configuration: [prometheus.io/docs/alerting/latest/configuration](https://prometheus.io/docs/alerting/latest/configuration/) — ★★★☆☆
+- Grafana CLI: [grafana.com/docs/grafana/latest/administration/cli](https://grafana.com/docs/grafana/latest/administration/cli/) — ★★★☆☆
+- Node Exporter Docker 실행: [github.com/prometheus/node_exporter](https://github.com/prometheus/node_exporter#docker) — ★★★☆☆
+- kube-prometheus-stack Releases: [github.com/prometheus-community/helm-charts/releases](https://github.com/prometheus-community/helm-charts/releases) — ★★★☆☆
 
 ---
 
@@ -630,6 +636,6 @@ curl -s http://localhost:9090/api/v1/status/tsdb | jq '.data.headStats'
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-08-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

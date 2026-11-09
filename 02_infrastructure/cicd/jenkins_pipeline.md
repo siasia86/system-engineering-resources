@@ -295,7 +295,7 @@ agent { label 'linux && docker' }
 // Docker 컨테이너
 agent {
     docker {
-        image 'node:20-alpine'
+        image 'node:24-alpine'
         args '-v /tmp:/tmp'
     }
 }
@@ -351,7 +351,7 @@ pipeline {
 | Pipeline            | 파이프라인 기본 기능   |
 | Git                 | Git 연동               |
 | Credentials Binding | 자격증명 주입          |
-| Blue Ocean          | 파이프라인 시각화 UI   |
+| Pipeline Graph View | 파이프라인 시각화 UI   |
 | Slack Notification  | Slack 알림             |
 | Docker Pipeline     | Docker 빌드/실행       |
 | Kubernetes          | K8s 동적 에이전트      |
@@ -359,6 +359,8 @@ pipeline {
 | JUnit               | 테스트 결과 리포트     |
 | HTML Publisher      | HTML 리포트 게시       |
 | Timestamper         | 로그에 타임스탬프 추가 |
+
+🟡 Blue Ocean은 2026년 7월부터 폐기(deprecated)되어 보안 수정과 기능 업데이트를 받지 않습니다. 파이프라인 시각화에는 Pipeline Graph View 플러그인을 사용합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -416,13 +418,13 @@ curl -s "http://localhost:8080/job/my-job/lastBuild/api/json" \
 
 ### 주요 모니터링 지표
 
-| 지표           | 확인 방법                         |
-|----------------|-----------------------------------|
-| 빌드 성공률    | Build History, Blue Ocean         |
-| 빌드 시간 추이 | Build Time Trend 플러그인         |
-| 큐 대기 시간   | Manage Jenkins -> Load Statistics |
-| 에이전트 상태  | Manage Jenkins -> Nodes           |
-| 디스크 사용량  | JENKINS_HOME 모니터링 필수        |
+| 지표           | 확인 방법                          |
+|----------------|------------------------------------|
+| 빌드 성공률    | Build History, Pipeline Graph View |
+| 빌드 시간 추이 | Build Time Trend 플러그인          |
+| 큐 대기 시간   | Manage Jenkins -> Load Statistics  |
+| 에이전트 상태  | Manage Jenkins -> Nodes            |
+| 디스크 사용량  | JENKINS_HOME 모니터링 필수         |
 
 ### Prometheus 연동
 
@@ -733,13 +735,16 @@ stage('Test') {
 
 ### 코드 커버리지 (Cobertura)
 
+Cobertura 플러그인은 지원이 끝나(deprecated) 기능이 Coverage 플러그인으로 통합되었습니다. Cobertura 형식 보고서는 Coverage 플러그인의 `recordCoverage`로 기록합니다.
+
 ```groovy
 post {
     always {
-        cobertura(
-            coberturaReportFile: 'coverage.xml',
-            failUnhealthy: true,
-            lineCoverageTargets: '80, 70, 60'   // healthy, unhealthy, failing
+        recordCoverage(
+            tools: [[parser: 'COBERTURA', pattern: 'coverage.xml']],
+            qualityGates: [
+                [threshold: 80.0, metric: 'LINE', baseline: 'PROJECT', criticality: 'UNSTABLE']
+            ]
         )
     }
 }
@@ -810,6 +815,8 @@ stage('Integration Test') {
 
 - Jenkins Pipeline Documentation: [jenkins.io](https://www.jenkins.io/doc/book/pipeline/) — ★★★☆☆
 - Jenkins Pipeline Syntax: [Pipeline Syntax](https://www.jenkins.io/doc/book/pipeline/syntax/) — ★★★☆☆
+- Blue Ocean 상태 안내: [jenkins.io/doc/book/blueocean](https://www.jenkins.io/doc/book/blueocean/) — ★★★☆☆
+- Coverage 플러그인: [plugins.jenkins.io/coverage](https://plugins.jenkins.io/coverage/) — ★★★☆☆
 
 ---
 
@@ -826,6 +833,6 @@ stage('Integration Test') {
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-04-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

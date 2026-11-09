@@ -281,7 +281,7 @@ aws s3 cp test.txt s3://b-account-bucket/test.txt --region us-east-1
 
 - 양쪽 모두 정책이 필요합니다 (A계정 IAM + B계정 버킷 정책)
 - Gateway Endpoint는 무료이며, 같은 리전 S3 트래픽이 인터넷을 거치지 않습니다
-- EC2가 Private 서브넷이면 Gateway Endpoint가 필수, Public 서브넷이면 선택사항 (비용 절감 목적)
+- EC2가 NAT Gateway 없는 Private 서브넷이면 Gateway Endpoint가 필수, NAT Gateway나 Public 서브넷 경로가 있으면 선택사항 (NAT 처리 비용 절감 목적)
 
 ---
 
@@ -305,6 +305,6 @@ aws s3 cp test.txt s3://b-account-bucket/test.txt --region us-east-1
 
 **작성일**: 2026-04-08
 
-**마지막 업데이트**: 2026-08-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

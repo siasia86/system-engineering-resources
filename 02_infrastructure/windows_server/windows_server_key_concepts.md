@@ -88,7 +88,7 @@ Windows Server 운영에 필요한 핵심 기술 개념을 정리합니다.
 |------------------|-------------|-------------------------------------|-----------|
 | Simple           | 1개         | 스트라이핑 (장애 보호 없음)         | 100%      |
 | Two-way Mirror   | 2개         | 양방향 미러링, 1개 디스크 장애 허용 | ~50%      |
-| Three-way Mirror | 3개         | 삼방향 미러링, 2개 디스크 장애 허용 | ~33%      |
+| Three-way Mirror | 5개         | 삼방향 미러링, 2개 디스크 장애 허용 | ~33%      |
 | Single Parity    | 3개         | RAID 5 유사, 1개 디스크 장애 허용   | ~67%      |
 | Dual Parity      | 4개 이상    | RAID 6 유사, 2개 디스크 장애 허용   | 50~80%    |
 
@@ -114,15 +114,15 @@ Storage Spaces를 **클러스터 전체**로 확장한 기능입니다. 각 서�
 └──────────────────────────────────────────────────────────┘
 ```
 
-| 항목          | 내용                                                   |
-|---------------|--------------------------------------------------------|
-| 에디션        | **Datacenter만** (Standard 불가)                       |
-| 최소 노드     | 2대 (권장 4대 이상)                                    |
-| 캐시 계층     | NVMe/SSD → 캐시, HDD → 용량 계층 (자동 티어링)         |
-| 네트워크      | RDMA 지원 NIC 권장 (iWARP 또는 RoCE)                   |
-| 외장 스토리지 | 불필요 (내장 디스크만 사용)                            |
-| 관리          | Windows Admin Center, PowerShell (`Enable-ClusterS2D`) |
-| 사용 예       | Azure Stack HCI, 프라이빗 클라우드, VDI 환경           |
+| 항목          | 내용                                                         |
+|---------------|--------------------------------------------------------------|
+| 에디션        | **Datacenter만** (Standard 불가)                             |
+| 최소 노드     | 2대 (권장 4대 이상)                                          |
+| 캐시 계층     | NVMe/SSD → 캐시, HDD → 용량 계층 (자동 티어링)               |
+| 네트워크      | RDMA 지원 NIC 권장 (iWARP 또는 RoCE)                         |
+| 외장 스토리지 | 불필요 (내장 디스크만 사용)                                  |
+| 관리          | Windows Admin Center, PowerShell (`Enable-ClusterS2D`)       |
+| 사용 예       | Azure Local(구 Azure Stack HCI), 프라이빗 클라우드, VDI 환경 |
 
 #### S2D 캐시 동작 방식
 
@@ -208,7 +208,8 @@ Node A 장애 발생
 
 4노드 클러스터:
   Node A + B + C + D = 4표
-  → 2개 노드 동시 장애 시에도 2표 남음 (과반수 확보 → 클러스터 유지)
+  → 1개 노드 장애 시 3표 남음 (과반수 확보 → 클러스터 유지)
+  → 2개 노드 동시 장애 시 2표 남음 (4표 중 2표는 과반수 미달 → 감시 추가 시 5표 중 3표 확보)
 ```
 
 🟡 2노드 클러스터는 반드시 **쿼럼 감시(Witness)** 를 설정해야 합니다.
@@ -754,7 +755,7 @@ Server Core                      Desktop Experience
 | 공격 표면   | 작음 (설치 구성 요소 적음)             | 큼                    |
 | 관리 방법   | PowerShell, SSH, WAC 원격              | 로컬 GUI + PowerShell |
 | MS 권장     | **권장** (보안·경량화)                 | 필요한 경우에만       |
-| 전환        | 재설치 없이 DISM으로 전환 가능 (2019+) | 동일                  |
+| 전환        | 설치 후 전환 불가 (2016+, 재설치 필요) | 동일                  |
 
 ```powershell
 # Server Core에서 역할 설치 예시
@@ -783,11 +784,11 @@ Install-WindowsFeature -Name Web-Server -IncludeManagementTools
 | **EAS (EA Subscription)**     | EA와 동일              | 3년       | 구독형 EA, 계약 종료 시 사용권 없음      |
 | **Open Value**                | 중소기업               | 3년       | Software Assurance 포함, 최소 5개 제품   |
 | **Open Value Subscription**   | 중소기업               | 3년       | 구독형 Open Value                        |
-| **Open License**              | 소규모                 | 2년       | SA 선택, 최소 5개 라이선스               |
+| **Open License**              | 소규모                 | 2년       | 2021-12-31 판매 종료 (CSP로 이전)        |
 | **Select Plus**               | 대기업 (부서별)        | 없음      | 사용량 기반, 부서별 유연 구매            |
 | **MPSA**                      | 중대기업               | 1년       | 단일 계약으로 여러 MS 제품 통합          |
 
-🟡 ESU 구매는 **EA 또는 Open Value** 계약이 있어야 Volume License 경로로 구매 가능합니다.
+🟡 Volume License 경로의 ESU 구매는 **활성 Software Assurance(EA·EAS·SCE·EES 등) 또는 CSP 구독**이 있어야 합니다.
 
 ---
 
@@ -943,12 +944,12 @@ Kerberos 인증 흐름
 
 도메인·OU에 적용하는 정책 설정 모음입니다. 보안 설정, 소프트웨어 배포, 스크립트 실행 등을 중앙에서 제어합니다.
 
-| 항목      | 내용                                                           |
-|-----------|----------------------------------------------------------------|
-| 적용 순서 | Local → Site → Domain → OU (하위 OU가 상위 덮어씀)             |
-| 적용 대상 | 사용자 계정 또는 컴퓨터 계정                                   |
-| 갱신 주기 | 기본 90분 ±30분 랜덤 오프셋 (DC: 5분), 수동: `gpupdate /force` |
-| 우선순위  | Block Inheritance, Enforced(No Override) 설정으로 조정         |
+| 항목      | 내용                                                              |
+|-----------|-------------------------------------------------------------------|
+| 적용 순서 | Local → Site → Domain → OU (하위 OU가 상위 덮어씀)                |
+| 적용 대상 | 사용자 계정 또는 컴퓨터 계정                                      |
+| 갱신 주기 | 기본 90분 + 0~30분 랜덤 오프셋 (DC: 5분), 수동: `gpupdate /force` |
+| 우선순위  | Block Inheritance, Enforced(No Override) 설정으로 조정            |
 
 ---
 
@@ -991,7 +992,11 @@ Get-ADComputer -Filter * | Select-Object Name, OperatingSystem
 - Microsoft: [Hotpatch for Windows Server](https://learn.microsoft.com/en-us/windows-server/get-started/hotpatch) — ★★★☆☆
 - Microsoft: [Automatic VM Activation](https://learn.microsoft.com/en-us/windows-server/get-started/automatic-vm-activation) — ★★★☆☆
 - Microsoft: [Client Access Licenses](https://www.microsoft.com/en-us/licensing/product-licensing/client-access-license) — ★★★☆☆
-- Microsoft: [Volume Licensing overview](https://www.microsoft.com/en-us/licensing/how-to-buy/volume-licensing) — ★★★☆☆
+- Microsoft: [Volume Licensing overview](https://www.microsoft.com/en-us/licensing/how-to-buy/how-to-buy) — ★★★☆☆
+- Microsoft: [Deploy Storage Spaces on a stand-alone server](https://learn.microsoft.com/en-us/windows-server/storage/storage-spaces/deploy-standalone-storage-spaces) — ★★★☆☆
+- Microsoft: [Server Core vs Desktop Experience](https://learn.microsoft.com/en-us/windows-server/get-started/install-options-server-core-desktop-experience) — ★★★☆☆
+- Microsoft: [ESU FAQ](https://learn.microsoft.com/en-us/lifecycle/faq/extended-security-updates) — ★★★☆☆
+- Microsoft: [Group Policy processing](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-processing) — ★★★☆☆
 - Microsoft: [AD DS Overview](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview) — ★★★☆☆
 - Microsoft: [FSMO Role Placement](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/planning-operations-master-role-placement) — ★★★☆☆
 - [windows_server_editions_licensing.md](./windows_server_editions_licensing.md)
@@ -1011,6 +1016,6 @@ Get-ADComputer -Filter * | Select-Object Name, OperatingSystem
 
 **작성일**: 2026-07-29
 
-**마지막 업데이트**: 2026-07-31
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -14,7 +14,7 @@
 
 ## 1. 개요
 
-Terraform은 HashiCorp의 오픈소스 IaC(Infrastructure as Code) 도구. HCL(HashiCorp Configuration Language)로 인프라를 선언적으로 정의하고, 클라우드/온프레미스 리소스를 코드로 관리합니다.
+Terraform은 HashiCorp의 IaC(Infrastructure as Code) 도구. 1.5.x까지는 MPL 2.0 오픈소스였고 1.6.0부터 BSL 1.1(Business Source License)이 적용되며, MPL 2.0 기반 오픈소스 포크로 OpenTofu가 있습니다. HCL(HashiCorp Configuration Language)로 인프라를 선언적으로 정의하고, 클라우드/온프레미스 리소스를 코드로 관리합니다.
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -88,7 +88,7 @@ Terraform은 HashiCorp의 오픈소스 IaC(Infrastructure as Code) 도구. HCL(H
 ```hcl
 # Provider 설정
 terraform {
-  required_version = ">= 1.9.0"
+  required_version = ">= 1.10.0"  # 아래 use_lockfile·ephemeral 변수는 1.10+ 필요
 
   required_providers {
     aws = {
@@ -314,7 +314,7 @@ terraform state rm aws_instance.web
 # 리소스 이름 변경
 terraform state mv aws_instance.web aws_instance.app
 
-# State 새로고침 (v1.5+ deprecated → terraform apply -refresh-only 권장)
+# State 새로고침 (deprecated → v0.15.4+의 terraform apply -refresh-only 권장)
 terraform refresh
 ```
 
@@ -570,7 +570,7 @@ resource "aws_security_group" "web" {
 resource "aws_db_instance" "main" {
   identifier        = "${local.name_prefix}-db"
   engine            = "mysql"
-  engine_version    = "8.0"
+  engine_version    = "8.4"  # 8.0은 2026-07-31 표준 지원 종료 (유료 Extended Support)
   instance_class    = "db.t3.micro"
   allocated_storage = 20
 
@@ -616,7 +616,8 @@ variable "db_password" {
 }
 
 # 방법 4: ephemeral 변수 (Terraform 1.10+, state·plan 파일에 저장하지 않음)
-#   write-only 인수(1.11+, provider가 지원하는 *_wo 인수)에만 넘길 수 있음
+#   write-only 인수(1.11+, provider가 지원하는 *_wo 인수), provider 블록, ephemeral 리소스,
+#   provisioner·connection, ephemeral output·변수에서만 참조 가능
 variable "db_password_once" {
   type      = string
   ephemeral = true
@@ -716,6 +717,11 @@ terraform show -json
 - Terraform Documentation: [developer.hashicorp.com/terraform](https://developer.hashicorp.com/terraform/docs) — ★★★☆☆
 - Terraform AWS Provider: [registry.terraform.io/providers/hashicorp/aws](https://registry.terraform.io/providers/hashicorp/aws/latest/docs) — ★★★☆☆
 - Terraform AWS Modules: [registry.terraform.io/namespaces/terraform-aws-modules](https://registry.terraform.io/namespaces/terraform-aws-modules) — ★★☆☆☆
+- Terraform License (BSL 1.1, 1.6.0+): [github.com/hashicorp/terraform/blob/main/LICENSE](https://github.com/hashicorp/terraform/blob/main/LICENSE) — ★★★☆☆
+- OpenTofu: [opentofu.org](https://opentofu.org/) — ★★★☆☆
+- terraform refresh (deprecated): [developer.hashicorp.com/terraform/cli/commands/refresh](https://developer.hashicorp.com/terraform/cli/commands/refresh) — ★★★☆☆
+- variable 블록 (ephemeral 참조 범위): [developer.hashicorp.com/terraform/language/block/variable](https://developer.hashicorp.com/terraform/language/block/variable) — ★★★☆☆
+- Amazon RDS for MySQL 버전 일정: [docs.aws.amazon.com](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MySQL.Concepts.VersionMgmt.html) — ★★★☆☆
 
 ---
 
@@ -732,6 +738,6 @@ terraform show -json
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

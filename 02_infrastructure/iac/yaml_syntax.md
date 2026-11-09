@@ -47,7 +47,8 @@ path: '/etc/nginx/nginx.conf'
 # 큰따옴표 (이스케이프 처리: \n, \t 등)
 msg: "줄바꿈은\n여기서"
 
-# 콜론/특수문자 포함 시 따옴표 필수
+# ": "(콜론+공백)·" #"이 들어가거나 특수문자로 시작하면 따옴표 필수
+# (http://example.com:8080 처럼 콜론 뒤 공백이 없으면 따옴표 없이도 문자열이지만 권장)
 url: "http://example.com:8080"
 ```
 
@@ -185,20 +186,18 @@ text: >
 
 ### 들여쓰기 지시자
 
-첫 줄이 공백으로 시작하면 YAML 파서가 들여쓰기를 판단하지 못합니다. 숫자로 명시합니다.
+내용의 첫 줄이 다음 줄보다 깊게 들여쓰여 있으면(내용 자체가 공백으로 시작하면) YAML 파서가 첫 줄을 기준으로 들여쓰기를 잘못 판단합니다. 숫자로 명시합니다.
 
 ```yaml
-# ❌ 오류 — 첫 줄이 공백으로 시작
+# ❌ 오류 — 첫 줄(6칸)을 들여쓰기로 감지해 둘째 줄(4칸)에서 파싱 실패
 script: |
-    if [ -f /tmp/test ]; then
-      echo "exists"
-    fi
+      echo "indented"
+    echo "normal"
 
-# ✅ 정상 — |4로 들여쓰기 4칸 명시
+# ✅ 정상 — |4로 들여쓰기 4칸 명시 (첫 줄 앞 공백 2칸은 내용으로 유지)
 script: |4
-    if [ -f /tmp/test ]; then
-      echo "exists"
-    fi
+      echo "indented"
+    echo "normal"
 ```
 
 - `|2`: literal, 들여쓰기 2칸
@@ -399,7 +398,7 @@ countries:
 ```yaml
 # ❌ 위험
 version: 3.10    # float 3.1로 해석
-zipcode: 01onal  # 문자열이지만 01234는 8진수로 해석 가능
+zipcode: 01234   # YAML 1.1에서 8진수로 해석 (668)
 
 # ✅ 안전
 version: "3.10"
@@ -476,9 +475,9 @@ msg: "DB host is {{ db_host }}"
 
 ```yaml
 vars:
-  zabbix_repo_url: >-
-    https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/
-    zabbix-release/zabbix-release_latest+ubuntu22.04_all.deb
+  # >- 는 줄바꿈을 공백으로 바꿔 URL이 깨지므로, 큰따옴표 안 줄 끝 \ 로 공백 없이 잇기
+  zabbix_repo_url: "https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/\
+    zabbix-release/zabbix-release_latest+ubuntu22.04_all.deb"
 
 tasks:
   - name: Zabbix repo 설치
@@ -494,10 +493,10 @@ services:
     environment:
       - DB_HOST=192.0.2.1
       - DB_PORT=5432
-    # 또는 맵 형태
-    environment:
-      DB_HOST: 192.0.2.1
-      DB_PORT: 5432
+    # 또는 맵 형태 (같은 서비스에 environment 키는 한 번만 사용)
+    # environment:
+    #   DB_HOST: 192.0.2.1
+    #   DB_PORT: 5432
 ```
 
 ### Kubernetes — 멀티라인 ConfigMap
@@ -578,7 +577,7 @@ volumes:
   nginx_data:
 ```
 
-🟡 포트 매핑에서 `80:80`은 따옴표 없으면 base-60 숫자로 해석될 수 있습니다. 항상 따옴표를 사용합니다.
+🟡 포트 매핑에서 `22:22`처럼 콜론 뒤 숫자가 60 미만이면 따옴표 없을 때 YAML 1.1 파서가 base-60 숫자로 해석할 수 있습니다(`22:22` → 1342). 항상 따옴표를 사용합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -587,6 +586,7 @@ volumes:
 ## 참고 자료
 
 - YAML Specification 1.2: [yaml.org/spec](https://yaml.org/spec/1.2.2/) — ★★★☆☆
+- YAML 1.1 int 타입 (8진수·60진수): [yaml.org/type/int.html](https://yaml.org/type/int.html) — ★★★☆☆
 - YAML Multiline: [yaml-multiline.info](https://yaml-multiline.info/) — ★★☆☆☆
 - Ansible YAML Syntax: [docs.ansible.com/yaml_syntax](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html) — ★★★☆☆
 
@@ -605,6 +605,6 @@ volumes:
 
 **작성일**: 2026-05-26
 
-**마지막 업데이트**: 2026-05-26
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

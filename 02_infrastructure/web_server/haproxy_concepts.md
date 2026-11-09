@@ -314,7 +314,7 @@ client --> [frontend maxconn] --> [backend] --> [server maxconn] --> server
 
 - 설정 문법이 틀리면 새 worker를 띄우지 않고 이전 worker가 계속 동작합니다. reload 실패가 곧 중단은 아니지만, 바뀐 설정이 적용되지 않은 상태가 남습니다.
 - 연결이 오래 유지되는 서비스(WebSocket, DB 프록시)는 이전 worker가 오래 남습니다. 메모리 사용이 reload 횟수만큼 늘 수 있으므로 `hard-stop-after`로 상한을 둡니다.
-- 3.3부터 통계 카운터를 reload 뒤에도 이어서 유지할 수 있습니다(stats-file).
+- 3.0부터 `stats-file`로 저장해 둔 통계 카운터를 시작 시 다시 읽을 수 있고, 3.3부터는 `shm-stats-file`(공유 메모리, GUID가 있는 객체)로 reload 뒤에도 카운터를 이어서 유지할 수 있습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -334,7 +334,7 @@ client --> [frontend maxconn] --> [backend] --> [server maxconn] --> server
 | 2.6  | 2.6.35 | critical fixes only | 2027-Q2   |
 
 - 운영에는 LTS 분기를 쓰고, 같은 분기 안의 최신 수정판으로 올립니다.
-- 3.1·2.9·2.4 이하는 지원이 끝났습니다.
+- 3.1·2.9·2.7과 2.5 이하는 지원이 끝났습니다.
 - Ubuntu 24.04 기본 저장소는 2.8 분기를 제공합니다. 새 기능(3.3 기본 알고리즘, 3.4 동적 backend 등)이 필요하면 [운영 가이드 2절](./haproxy_operations_guide.md#2-버전-선택과-설치-소스)의 설치 소스를 봅니다.
 
 [⬆ 목차로 돌아가기](#목차)
@@ -343,10 +343,11 @@ client --> [frontend maxconn] --> [backend] --> [server maxconn] --> server
 
 ## 참고 자료
 
-- HAProxy 공식 사이트(버전 표): [haproxy.org](https://www.haproxy.org/) — ★★★★☆
-- HAProxy 3.4 Starter Guide: [docs.haproxy.org/3.4/intro.html](https://docs.haproxy.org/3.4/intro.html) — ★★★★☆
-- HAProxy 3.4 Configuration Manual: [docs.haproxy.org/3.4/configuration.html](https://docs.haproxy.org/3.4/configuration.html) — ★★★★★
-- HAProxy 3.4 Management Guide: [docs.haproxy.org/3.4/management.html](https://docs.haproxy.org/3.4/management.html) — ★★★★☆
+- HAProxy 공식 사이트(버전 표): [haproxy.org](https://www.haproxy.org/) — ★★★☆☆
+- HAProxy 3.4 Starter Guide: [docs.haproxy.org/3.4/intro.html](https://docs.haproxy.org/3.4/intro.html) — ★★★☆☆
+- HAProxy 3.4 Configuration Manual: [docs.haproxy.org/3.4/configuration.html](https://docs.haproxy.org/3.4/configuration.html) — ★★★☆☆
+- HAProxy 3.4 Management Guide: [docs.haproxy.org/3.4/management.html](https://docs.haproxy.org/3.4/management.html) — ★★★☆☆
+- HAProxy 3.0 Configuration Manual(`stats-file` 도입 확인): [docs.haproxy.org/3.0/configuration.html](https://docs.haproxy.org/3.0/configuration.html) — ★★★☆☆
 - 확인 기록: [웹 서버 참조 노트 3절](../../_reference/web_server_official_notes.md#3-haproxy)
 - 관련 문서: [HAProxy 설치 가이드](./haproxy_install.md), [HAProxy 운영 가이드](./haproxy_operations_guide.md), [HAProxy + Keepalived 이중화](./haproxy_keepalived_ha.md), [로드 밸런서 테스트](../../01_fundamentals/cs/web_testing/load_balancer_testing.md)
 
@@ -365,6 +366,6 @@ client --> [frontend maxconn] --> [backend] --> [server maxconn] --> server
 
 **작성일**: 2026-11-06
 
-**마지막 업데이트**: 2026-11-06
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

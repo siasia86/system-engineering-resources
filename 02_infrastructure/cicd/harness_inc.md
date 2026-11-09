@@ -81,7 +81,7 @@ Delegate (K8s Pod / Docker / VM)
 ### Canary 배포
 
 ```yaml
-# Harness Pipeline YAML 예시
+# Harness Pipeline YAML 예시 (identifier 등 필수 필드는 생략한 개념 예시)
 stages:
   - stage:
       name: Canary
@@ -89,17 +89,19 @@ stages:
         execution:
           steps:
             - step:
-                type: CanaryDeploy
+                type: K8sCanaryDeploy
                 spec:
-                  instanceCount: 1  # 1대만 먼저 배포
+                  instanceSelection:
+                    type: Count
+                    spec:
+                      count: 1       # 1대만 먼저 배포
             - step:
                 type: Verify
                 spec:
                   duration: 5m       # 5분간 메트릭 검증
+            # Canary Delete step으로 canary workload 정리 후 전체 배포
             - step:
-                type: CanaryDeploy
-                spec:
-                  instanceCount: 100%  # 전체 배포
+                type: K8sRollingDeploy
 ```
 
 ### Blue-Green 배포
@@ -214,12 +216,13 @@ pipeline:
 
 - Harness Documentation: [developer.harness.io/docs](https://developer.harness.io/docs/) — ★★★☆☆
 - Harness CD Concepts: [developer.harness.io/docs/continuous-delivery](https://developer.harness.io/docs/continuous-delivery/) — ★★★☆☆
-- Harness vs Jenkins: [harness.io/blog/harness-vs-jenkins](https://www.harness.io/blog/harness-vs-jenkins) — ★★☆☆☆
+- Harness K8s Canary 배포: [developer.harness.io](https://developer.harness.io/docs/continuous-delivery/deploy-srv-diff-platforms/kubernetes/kubernetes-executions/create-a-kubernetes-canary-deployment) — ★★★☆☆
+- Jenkins vs Harness 비교(Harness 제공): [harness.io/comparison-guide/jenkins-vs-harness](https://www.harness.io/comparison-guide/jenkins-vs-harness) — ★★☆☆☆
 
 ---
 
 **작성일**: 2026-06-18
 
-**마지막 업데이트**: 2026-06-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

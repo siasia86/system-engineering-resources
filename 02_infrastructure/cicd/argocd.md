@@ -375,7 +375,7 @@ spec:
     - group: ''
       kind: Service
 
-  # 배포 전 수동 승인
+  # Sync 허용 시간대 (매일 01:10부터 1시간)
   syncWindows:
     - kind: allow
       schedule: '10 1 * * *'
@@ -475,6 +475,8 @@ gitops-repo/
 
 ### 이미지 업데이트 자동화 (Argo CD Image Updater)
 
+🟡 Argo CD Image Updater v1.0부터 설정 방식이 Application 어노테이션에서 `ImageUpdater` CRD로 바뀌었습니다. 아래 어노테이션 예시는 v0.x 방식입니다.
+
 ```yaml
 metadata:
   annotations:
@@ -497,7 +499,7 @@ metadata:
 
 - ArgoCD Documentation: [argo-cd.readthedocs.io](https://argo-cd.readthedocs.io/) — ★★★☆☆
 - ArgoCD Best Practices: [argo-cd.readthedocs.io/best_practices](https://argo-cd.readthedocs.io/en/stable/user-guide/best_practices/) — ★★★☆☆
-- Argo CD Image Updater: [argocd-image-updater.readthedocs.io](https://argocd-image-updater.readthedocs.io/) — ★★☆☆☆
+- Argo CD Image Updater: [argocd-image-updater.readthedocs.io](https://argocd-image-updater.readthedocs.io/) — ★★★☆☆
 
 ---
 
@@ -514,6 +516,6 @@ metadata:
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

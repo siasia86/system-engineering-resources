@@ -180,7 +180,7 @@ services:
       - db
 
   db:
-    image: mysql:8.0
+    image: mysql:8.4
     environment:
       MYSQL_ROOT_PASSWORD: SecurePassword123
       MYSQL_DATABASE: SecureDbName123
@@ -279,12 +279,14 @@ docker commit web myapp:snapshot
 멀티스테이지 빌드로 이미지 크기를 최소화합니다.
 
 ```dockerfile
-FROM golang:1.21 AS builder
-RUN go build -o app .
+FROM golang:1.27 AS builder
+WORKDIR /src
+COPY . .
+RUN CGO_ENABLED=0 go build -o /app .
 
-FROM alpine:3.19
-COPY --from=builder /app .
-CMD ["./app"]
+FROM alpine:3.24
+COPY --from=builder /app /app
+CMD ["/app"]
 ```
 
 🟡 `docker system prune -a`는 중지된 컨테이너와 미사용 이미지를 모두 삭제합니다. 운영 환경에서 주의가 필요합니다.
@@ -315,10 +317,10 @@ stat -fc %T /sys/fs/cgroup
 
 ### cgroup 네임스페이스 모드
 
-| 모드      | 설명                                                       |
-|-----------|------------------------------------------------------------|
-| `host`    | 컨테이너 런타임의 cgroup 네임스페이스 사용 (런타임 기본값) |
-| `private` | 컨테이너 전용 독립 cgroup 네임스페이스                     |
+| 모드      | 설명                                                    |
+|-----------|---------------------------------------------------------|
+| `host`    | 컨테이너 런타임의 cgroup 네임스페이스 사용              |
+| `private` | 컨테이너 전용 독립 cgroup 네임스페이스 (dockerd 기본값) |
 
 ```
 host 모드:
@@ -410,8 +412,9 @@ COPY app/ /app/                               # 자주 바뀜 → 뒤에
 
 ```bash
 docker exec mycontainer rm -rf /var/log/nginx
-docker stop mycontainer && docker start mycontainer
-# → /var/log/nginx 다시 살아있음 (read-only 레이어에 있으므로)
+docker rm -f mycontainer && docker run -d --name mycontainer nginx
+# → /var/log/nginx 다시 존재 (새 컨테이너는 이미지 레이어에서 시작)
+# stop/start는 read-write 레이어를 유지하므로 삭제 상태가 그대로 남음
 ```
 
 컨테이너 삭제 시 read-write 레이어만 삭제됩니다. 데이터 유지가 필요하면 volume을 사용합니다.
@@ -458,10 +461,10 @@ docker image history nginx  # 레이어별 크기 확인
 ```bash
 docker image prune       # 미사용 이미지
 docker container prune   # 중지된 컨테이너
-docker volume prune      # 미사용 볼륨
+docker volume prune      # 미사용 익명 볼륨 (-a: 이름 있는 볼륨 포함)
 docker builder prune     # 빌드 캐시
 
-docker system prune -a   # 위 4가지 전부 (실행 중 컨테이너 제외) — 🟡 운영 환경 주의
+docker system prune -a   # 볼륨 제외 3가지 + 미사용 네트워크 (볼륨은 --volumes 추가) — 🟡 운영 환경 주의
 ```
 
 ---
@@ -472,7 +475,10 @@ docker system prune -a   # 위 4가지 전부 (실행 중 컨테이너 제외) �
 
 - Docker Documentation: [docs.docker.com](https://docs.docker.com/) — ★★★☆☆
 - Docker Hub: [hub.docker.com](https://hub.docker.com/) — ★★☆☆☆
-- Dockerfile Best Practices: [docs.docker.com/develop/develop-images/dockerfile_best-practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) — ★★★☆☆
+- Dockerfile Best Practices: [docs.docker.com/build/building/best-practices](https://docs.docker.com/build/building/best-practices/) — ★★★☆☆
+- docker system prune: [docs.docker.com/reference/cli/docker/system/prune](https://docs.docker.com/reference/cli/docker/system/prune/) — ★★★☆☆
+- dockerd `--default-cgroupns-mode`: [docs.docker.com/reference/cli/dockerd](https://docs.docker.com/reference/cli/dockerd/) — ★★★☆☆
+- MySQL EOL Notice (8.0 지원 종료 2026-04): [mysql.com/support/eol-notice.html](https://www.mysql.com/support/eol-notice.html) — ★★★☆☆
 
 ---
 
@@ -489,6 +495,6 @@ docker system prune -a   # 위 4가지 전부 (실행 중 컨테이너 제외) �
 
 **작성일**: 2026-05-15
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

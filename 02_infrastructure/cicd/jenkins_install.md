@@ -17,8 +17,8 @@
 | 항목   | 최소     | 권장           |
 |--------|----------|----------------|
 | CPU    | 1 core   | 4 core 이상    |
-| RAM    | 1 GB     | 4 GB 이상      |
-| 디스크 | 10 GB    | SSD 50 GB 이상 |
+| RAM    | 256 MB   | 4 GB 이상      |
+| 디스크 | 1 GB     | SSD 50 GB 이상 |
 | JDK    | JDK 21+  | JDK 21/25      |
 | 포트   | 8080/tcp | 8080/tcp       |
 
@@ -49,10 +49,10 @@ java -version
 ### 2-2. Jenkins 공식 저장소 추가
 
 ```bash
-sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
-    https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
+    https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
 
-echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] \
     https://pkg.jenkins.io/debian-stable binary/" \
     | sudo tee /etc/apt/sources.list.d/jenkins.list
 
@@ -84,9 +84,9 @@ java -version
 ### 3-2. Jenkins 공식 저장소 추가
 
 ```bash
+# 저장소 파일의 gpgkey 항목으로 서명 키를 가져오므로 별도 rpm --import가 필요 없음
 sudo wget -O /etc/yum.repos.d/jenkins.repo \
-    https://pkg.jenkins.io/redhat-stable/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+    https://pkg.jenkins.io/rpm-stable/jenkins.repo
 
 sudo dnf install jenkins -y
 sudo systemctl enable --now jenkins
@@ -216,7 +216,7 @@ pipeline {
                     passwordVariable: 'REGISTRY_PASS'
                 )]) {
                     sh '''
-                        docker login -u $REGISTRY_USER -p $REGISTRY_PASS myregistry
+                        printf '%s' "$REGISTRY_PASS" | docker login -u "$REGISTRY_USER" --password-stdin myregistry
                         docker push ${DOCKER_IMAGE}
                     '''
                 }
@@ -249,9 +249,7 @@ services:
       - "50000:50000"   # Agent 연결 포트
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock  # Docker in Docker
-    environment:
-      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - /var/run/docker.sock:/var/run/docker.sock  # 호스트 Docker 소켓 공유 (docker CLI는 별도 설치)
     restart: unless-stopped
 
 volumes:
@@ -320,7 +318,7 @@ Jenkins → Manage Jenkins → Nodes → New Node
 | 웹 UI 접속 불가          | 서비스 미실행 또는 포트 차단 | `systemctl status jenkins`, 방화벽 확인                  |
 | 플러그인 설치 실패       | 네트워크 또는 프록시 문제    | Manage Jenkins → Plugin Manager → Advanced → 프록시 설정 |
 | 빌드 `Permission denied` | jenkins 사용자 권한 부족     | `usermod -aG docker jenkins` 후 재시작                   |
-| `OutOfMemoryError`       | JVM 힙 부족                  | `/etc/default/jenkins` 에서 `JAVA_ARGS` 조정             |
+| `OutOfMemoryError`       | JVM 힙 부족                  | `systemctl edit jenkins`로 `JAVA_OPTS` 조정              |
 | Git checkout 실패        | Credential 오류              | Credential ID 확인, 토큰 만료 여부 확인                  |
 
 ```bash
@@ -337,6 +335,8 @@ sudo tail -100 /var/log/jenkins/jenkins.log
 
 - Jenkins Documentation: [jenkins.io/doc](https://www.jenkins.io/doc/) — ★★★☆☆
 - Jenkins Pipeline: [jenkins.io/doc/book/pipeline](https://www.jenkins.io/doc/book/pipeline/) — ★★★☆☆
+- Jenkins Linux 설치: [jenkins.io/doc/book/installing/linux](https://www.jenkins.io/doc/book/installing/linux/) — ★★★☆☆
+- Jenkins systemd 서비스 관리: [jenkins.io/doc/book/system-administration/systemd-services](https://www.jenkins.io/doc/book/system-administration/systemd-services/) — ★★★☆☆
 - [jenkins_pipeline.md](./jenkins_pipeline.md)
 
 ---
@@ -354,6 +354,6 @@ sudo tail -100 /var/log/jenkins/jenkins.log
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-05-04
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

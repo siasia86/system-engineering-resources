@@ -22,7 +22,7 @@ Apache Kafka는 분산 이벤트 스트리밍 플랫폼. 대용량 실시간 데
 │  Producers ──> Topics (Partitions) ──> Consumers             │
 │                      │                                       │
 │                  Brokers (Cluster)                           │
-│                  ZooKeeper / KRaft                           │
+│                  KRaft controllers                           │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -51,7 +51,7 @@ Apache Kafka는 분산 이벤트 스트리밍 플랫폼. 대용량 실시간 데
 │  │  (Follower)  │  │  (Follower)  │  │  (Follower)  │           │
 │  └──────────────┘  └──────────────┘  └──────────────┘           │
 │                              │                                  │
-│                    ZooKeeper / KRaft                            │
+│                    KRaft controllers                            │
 │                    (metadata management)                        │
 └─────────────────────────────────────────────────────────────────┘
          ^                                        |
@@ -69,20 +69,20 @@ Apache Kafka는 분산 이벤트 스트리밍 플랫폼. 대용량 실시간 데
 
 ## 3. 핵심 개념
 
-| 개념            | 설명                                                   |
-|-----------------|--------------------------------------------------------|
-| Topic           | 메시지를 분류하는 논리적 채널 (DB 테이블과 유사)       |
-| Partition       | Topic의 물리적 분할 단위. 병렬 처리와 확장성 제공      |
-| Offset          | 파티션 내 메시지의 순서 번호 (0부터 시작, 단조 증가)   |
-| Broker          | Kafka 서버 인스턴스. 파티션 데이터 저장 및 서빙        |
-| Leader          | 파티션의 읽기/쓰기를 담당하는 브로커                   |
-| Follower        | Leader 파티션을 복제하는 브로커 (ISR)                  |
-| ISR             | In-Sync Replicas. Leader와 동기화된 복제본 집합        |
-| Producer        | Topic에 메시지를 발행하는 클라이언트                   |
-| Consumer        | Topic에서 메시지를 구독하는 클라이언트                 |
-| Consumer Group  | 동일 Topic을 분산 처리하는 Consumer 집합               |
-| Retention       | 메시지 보존 기간/크기 (기본 7일)                       |
-| ZooKeeper/KRaft | 클러스터 메타데이터 관리 (KRaft는 ZooKeeper 없이 동작) |
+| 개념            | 설명                                                  |
+|-----------------|-------------------------------------------------------|
+| Topic           | 메시지를 분류하는 논리적 채널 (DB 테이블과 유사)      |
+| Partition       | Topic의 물리적 분할 단위. 병렬 처리와 확장성 제공     |
+| Offset          | 파티션 내 메시지의 순서 번호 (0부터 시작, 단조 증가)  |
+| Broker          | Kafka 서버 인스턴스. 파티션 데이터 저장 및 서빙       |
+| Leader          | 파티션의 읽기/쓰기를 담당하는 브로커                  |
+| Follower        | Leader 파티션을 복제하는 브로커 (ISR)                 |
+| ISR             | In-Sync Replicas. Leader와 동기화된 복제본 집합       |
+| Producer        | Topic에 메시지를 발행하는 클라이언트                  |
+| Consumer        | Topic에서 메시지를 구독하는 클라이언트                |
+| Consumer Group  | 동일 Topic을 분산 처리하는 Consumer 집합              |
+| Retention       | 메시지 보존 기간/크기 (기본 7일)                      |
+| ZooKeeper/KRaft | 클러스터 메타데이터 관리 (Kafka 4.0부터 KRaft만 지원) |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -129,18 +129,18 @@ services:
 ### 주요 Broker 설정 (server.properties)
 
 ```properties
-# 기본 설정
-broker.id=1
+# 기본 설정 (KRaft: broker.id는 폐기 예정, node.id 사용)
+node.id=1
 listeners=PLAINTEXT://0.0.0.0:9092
 advertised.listeners=PLAINTEXT://192.0.2.1:9092
 log.dirs=/var/lib/kafka/data
 num.partitions=3
 default.replication.factor=3
 
-# 메시지 보존
-log.retention.hours=168          # 7일
-log.retention.bytes=107374182400 # 100GB
-log.segment.bytes=1073741824     # 1GB (세그먼트 크기)
+# 메시지 보존: 7일 / 100GB / 세그먼트 1GB (properties는 줄 끝 주석을 값으로 읽음)
+log.retention.hours=168
+log.retention.bytes=107374182400
+log.segment.bytes=1073741824
 
 # 성능
 num.network.threads=8
@@ -149,9 +149,9 @@ socket.send.buffer.bytes=102400
 socket.receive.buffer.bytes=102400
 socket.request.max.bytes=104857600
 
-# 복제
+# 복제 (unclean.leader.election.enable=false: 데이터 손실 방지)
 min.insync.replicas=2
-unclean.leader.election.enable=false   # 데이터 손실 방지
+unclean.leader.election.enable=false
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -371,7 +371,7 @@ acks=all + min.insync.replicas=2 + replication.factor=3
 ### 파티션 키 전략
 
 ```python
-# 키 없음: 라운드 로빈 (순서 보장 없음)
+# 키 없음: 스티키 파티셔닝 (한 파티션에 묶어 보낸 뒤 전환, 순서 보장 없음)
 producer.produce(topic='events', value=message)
 
 # 키 있음: 동일 키 → 동일 파티션 (키 단위 순서 보장)
@@ -552,6 +552,10 @@ except Exception as e:
 
 - Apache Kafka Documentation: [kafka.apache.org/documentation](https://kafka.apache.org/documentation/) — ★★★☆☆
 - Confluent Developer: [developer.confluent.io](https://developer.confluent.io/) — ★★★☆☆
+- Apache Kafka 4.0 Release (ZooKeeper 제거): [kafka.apache.org/blog](https://kafka.apache.org/blog/2025/03/18/apache-kafka-4.0.0-release-announcement/) — ★★★☆☆
+- Kafka Broker Configs (node.id, broker.id 폐기 예정): [kafka.apache.org/44/configuration/broker-configs](https://kafka.apache.org/44/configuration/broker-configs/) — ★★★☆☆
+- librdkafka Configuration (partitioner, sticky.partitioning.linger.ms): [github.com/confluentinc/librdkafka](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md) — ★★★☆☆
+- Java Properties 형식 (주석은 줄 첫 글자 `#`·`!`만): [docs.oracle.com](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Properties.html) — ★★★☆☆
 - Kafka: The Definitive Guide: Narkhede, Shapira, Palino. "Kafka: The Definitive Guide" — ★★★★☆
 
 ---
@@ -569,6 +573,6 @@ except Exception as e:
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

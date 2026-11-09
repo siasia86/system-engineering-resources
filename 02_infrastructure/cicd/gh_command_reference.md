@@ -2,7 +2,7 @@
 
 GitHub 작업을 터미널에서 수행하는 공식 CLI 도구입니다. PR, Issue, Repo, Release, Workflow 등을 브라우저 없이 관리합니다. 로컬 Git 명령은 [Git 명령어 실무 참조](git_command_reference.md)에서 다루고, 이 문서는 GitHub 서버 쪽 작업을 다룹니다.
 
-🟡 2026-10-13 기준 GitHub 최신 릴리스는 v2.102.0(2026-09-30)입니다. 명령 옵션은 로컬 gh 2.45.0의 `--help`로 대조했으며, 이후 버전에서 추가된 옵션에는 필요한 버전을 표시합니다.
+🟡 2026-11-09 기준 GitHub 최신 릴리스는 v2.103.3(2026-10-26)입니다. 명령 옵션은 로컬 gh 2.45.0의 `--help`로 대조했으며, 이후 버전에서 추가된 옵션에는 필요한 버전을 표시합니다.
 
 ## 목차
 
@@ -131,7 +131,7 @@ scope: repo               → 코드 저장소 전체 접근 (읽기+쓰기)
 scope: workflow           → GitHub Actions 실행/관리
 scope: write:packages     → 패키지 업로드
 scope: read:org           → 조직 멤버 목록 확인
-scope: admin:public_key    → SSH 인증 키 등록/삭제
+scope: admin:public_key   → SSH 인증 키 등록/삭제
 ```
 
 ### Scope 계층 구조
@@ -172,8 +172,8 @@ admin:ssh_signing_key (커밋 서명 키)
 | 패키지 업로드      | `write:packages`        | GHCR, npm 등 패키지 레지스트리      |
 | SSH 인증 키 등록   | `admin:public_key`      | 계정에 SSH 인증 키 추가/삭제        |
 | org 멤버 확인      | `read:org`              | 조직 멤버 목록 읽기                 |
-| 커밋 서명 키 등록  | `admin:ssh_signing_key` | GPG/SSH 커밋 서명 키 관리           |
-| Secret 설정        | `repo` + `workflow`     | Actions secrets 관리                |
+| 커밋 서명 키 등록  | `admin:ssh_signing_key` | SSH 커밋 서명 키 관리               |
+| Secret 설정        | `repo`                  | Actions secrets 관리                |
 | Gist 생성          | `gist`                  | Gist 생성/수정                      |
 | 알림 관리          | `notifications`         | 알림 읽기/구독 관리                 |
 
@@ -187,7 +187,7 @@ gh auth status
 # scope 부족 시 에러 예시
 gh secret set MY_KEY --body "value"
 # error: HTTP 403: Resource not accessible by personal access token
-# → workflow scope 추가 필요
+# → repo scope 필요 (classic PAT 기준)
 
 # scope 추가 (재인증)
 gh auth refresh --scopes repo,workflow,write:packages
@@ -331,8 +331,8 @@ gh pr checkout 42
 gh pr view 42
 gh pr checkout 42
 
-# 별도 worktree에 체크아웃 (v2.98.0+)
-gh pr checkout 42 --worktree
+# 별도 worktree에 체크아웃 (v2.98.0+, 경로 지정 필요)
+gh pr checkout 42 --worktree ../wt-pr-42
 ```
 
 ### 리뷰
@@ -805,7 +805,7 @@ GitHub은 2023년부터 Classic PAT 대신 **Fine-grained PAT**을 권장합니�
 |-------------|--------------------------------------------------|-----------------------------------------------------|
 | 권한 단위   | Scope (broad)                                    | Permission (granular)                               |
 | 저장소 범위 | 모든 repo 또는 전체                              | 특정 repo 선택 가능                                 |
-| 만료        | 무기한 가능                                      | 최대 1년 (필수 만료)                                |
+| 만료        | 무기한 가능                                      | 무기한 가능 (org·enterprise 수명 정책으로 제한)     |
 | org 승인    | 불필요                                           | org 관리자 승인 필요 (설정 가능)                    |
 | 감사        | 제한적                                           | 세부 권한별 감사 로그                               |
 | 생성 위치   | Settings → Developer settings → Tokens (classic) | Settings → Developer settings → Fine-grained tokens |
@@ -848,9 +848,9 @@ gh pr create
 |---------------|------------------------------------------------------|
 | 일상 작업     | `repo` scope → Contents + PRs + Issues (특정 repo만) |
 | Actions 연동  | `repo, workflow` → Contents + Actions (특정 repo만)  |
-| org 전체 접근 | 불가 → repo 단위로 분리 필요                         |
+| org 전체 접근 | resource owner를 org로 지정 (토큰당 owner 1개)       |
 
-🟡 Fine-grained PAT은 repo 단위 접근이므로, 여러 repo에 접근하려면 모든 repo를 선택하거나 여러 토큰을 사용해야 합니다.
+🟡 Fine-grained PAT 하나는 resource owner(사용자 또는 org) 1개의 저장소에만 접근합니다. 여러 owner에 접근하려면 토큰을 나눠 발급합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -986,8 +986,10 @@ gh auth login
 ## 참고 자료
 
 - GitHub CLI Manual: [cli.github.com/manual](https://cli.github.com/manual/) — ★★★☆☆
-- GitHub CLI Releases: [github.com/cli/cli/releases](https://github.com/cli/cli/releases) — ★★☆☆☆
-- GitHub CLI Telemetry: [cli.github.com/telemetry](https://cli.github.com/telemetry) — ★★☆☆☆
+- GitHub CLI Releases: [github.com/cli/cli/releases](https://github.com/cli/cli/releases) — ★★★☆☆
+- GitHub CLI Telemetry: [cli.github.com/telemetry](https://cli.github.com/telemetry) — ★★★☆☆
+- GitHub REST API Actions secrets: [docs.github.com/rest/actions/secrets](https://docs.github.com/en/rest/actions/secrets) — ★★★☆☆
+- GitHub 개인 액세스 토큰 관리: [docs.github.com](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) — ★★★☆☆
 - [git_command_reference.md](./git_command_reference.md)
 - [git_guide.md](./git_guide.md)
 - [github_actions.md](./github_actions.md)
@@ -1007,6 +1009,6 @@ gh auth login
 
 **작성일**: 2026-07-06
 
-**마지막 업데이트**: 2026-10-13
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

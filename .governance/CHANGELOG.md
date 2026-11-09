@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261109-01 / DOCS-32 (2026-11-09): 전체 문서 일회성 검증 2단계로 `02_infrastructure` 76개 문서를 6개 묶음으로 나눠 확인하고 71개 문서를 정정했습니다. ansible-core·molecule·PyYAML·promtool·amtool·git·`docker compose config` 등으로 설정과 명령을 재현했고, Airflow 3.0·Helm 4·Kafka 4(KRaft 전용)·Kubernetes 1.37·Prometheus 3.16 기준으로 제거·폐기된 문법과 버전을 갱신했습니다. MinIO 커뮤니티판 보관(archived), Terraform BSL, Zabbix AGPLv3처럼 상태가 바뀐 사실을 반영했고, HAProxy 문서의 ACME 인증서 이름·통계 유지 버전·Prometheus 접근 제한 순서 오류를 바로잡았습니다. 출처 별점을 GOVERNANCE 5절 기준으로 맞추고, 예시의 실제 계정 이름과 개인 경로를 자리표시자로 바꿨으며, root README Web Server 표에 누락 문서 1개를 연결했습니다. 재작성이 필요한 문서(100TB 로그 집계 비용, n8n MySQL 전제, ingress-nginx 예시 등)는 고치지 않았습니다.
+
 - MAIN-20261109-01 / DOCS-32 (2026-11-09): 전체 문서 일회성 검증 1단계로 `01_fundamentals` 183개 문서를 9개 묶음으로 나눠 사실·최신성·일관성·출처·별점·보안을 확인하고 120개 문서를 정정했습니다. 명령·코드 예시는 python3 3.14·gcc·go·bash와 서버의 ltrace·strace·perf·tcpdump 등으로 실행해 대조했고, 폐기된 RFC(793·7231·7540·8446·5575 등)를 현행 번호로 바꿨습니다. 출처 별점은 [GOVERNANCE](GOVERNANCE.md) 5절 기준(공식 문서 3, RFC·PEP·주요 도서 4, 블로그·제3자 2)으로 맞췄습니다. 깨진 외부 링크 5건을 고치고, 예시의 실제 계정 이름을 자리표시자로 바꿨으며, root README Programming 표에 누락 문서 5개, linux·python README에 누락 문서 6개를 연결했습니다. Rust·C#은 컴파일 환경이 없어 공식 문서·소스 대조만 했고, 재작성이 필요한 예제 등 판단 항목은 고치지 않았습니다.
 
 - MAIN-20261027-06 / DOCS-32 (2026-11-01): ISS-06을 종료했습니다. POLICY-31 CL2CX-20261027-04에 대한 Codex 반환 CX2CL-20261027-03(권장안 1~2)이 31 `8558b03`에서 수용 판정되어, 적용 계층을 common 단독으로 유지하기로 확정했습니다. 근거는 AGENTS 2절이 common만 선택한 경우 Codex 안내를 필수로 요구하지 않는다는 점과, 중앙 Codex 안내가 skill 선택표·개인 skill 수정 경로 중심이라 개인 지침과 겹친다는 점입니다. 확정 문장을 [적용 기록](APPLICATION.md) 4절에 원문 그대로 넣었습니다. `.codex/repository-guidance.md`·설정 4개·개인 skill은 변경하지 않았습니다.

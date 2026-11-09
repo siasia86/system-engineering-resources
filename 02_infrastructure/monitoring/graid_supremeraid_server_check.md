@@ -470,8 +470,8 @@ CC는 DG가 OPTIMAL 또는 PARTIALLY_DEGRADED 상태일 때 실행 가능하며,
 > — SupremeRAID Linux User Guide v1.7.2 (p.122)
 
 ```bash
-# 각 DG에 대해 실행
-graidctl start consistency_check <dg_id>
+# 수동 실행 (excluded_dgs로 제외하지 않은 모든 DG 대상)
+graidctl start consistency_check manual_task
 
 # 진행 상태 확인
 graidctl describe consistency_check
@@ -599,16 +599,16 @@ CC 실행 시 시스템은 DG 내 각 디스크의 데이터를 비교하여 불
 # 1. 현재 설정 확인
 graidctl describe consistency_check
 
-# 2. 먼저 stop_on_error 상태에서 수동 1회 실행 (현황 파악)
-graidctl start consistency_check <dg_id>
+# 2. 먼저 stop_on_error 정책으로 수동 1회 실행 (현황 파악)
+graidctl start consistency_check manual_task --policy stop_on_error
 graidctl describe consistency_check
 # 결과 확인: 에러 0건이면 auto_fix 전환 안전
 
 # 3. auto_fix로 전환
-graidctl set consistency_check --policy auto_fix
+graidctl set consistency_check policy auto_fix
 
-# 4. 스케줄 활성화 (월 1회)
-graidctl set consistency_check --schedule-mode on
+# 4. 스케줄 활성화 (월 1회, 시작 날짜와 시각 지정)
+graidctl set consistency_check schedule_mode monthly <yyyy/mm/dd> <hh>
 ```
 
 🟡 처음부터 `auto_fix`로 전환하지 않는 이유: 기존 불일치가 있을 경우 원인 파악 없이 자동 수정되므로, 최초 1회는 `stop_on_error`로 실행하여 불일치 건수를 먼저 확인합니다.
@@ -617,7 +617,7 @@ graidctl set consistency_check --schedule-mode on
 
 ```bash
 # 정책 변경
-graidctl set consistency_check --policy auto_fix
+graidctl set consistency_check policy auto_fix
 
 # 스케줄 옵션 확인
 graidctl set consistency_check --help
@@ -626,14 +626,14 @@ graidctl set consistency_check --help
 ### CC 수동 실행
 
 ```bash
-# 특정 DG에 대해 실행
-graidctl start consistency_check <dg_id>
+# 수동 실행 (특정 DG 제외는 graidctl set consistency_check excluded_dgs <DG_IDs>)
+graidctl start consistency_check manual_task
 
 # 진행 상태 확인 (progress %)
 graidctl describe consistency_check
 
 # 중지 (필요 시 — 재시작하면 처음부터)
-graidctl stop consistency_check <dg_id>
+graidctl stop consistency_check current_task
 ```
 
 ### CC 결과 해석
@@ -674,12 +674,12 @@ graidctl stop consistency_check <dg_id>
 
 #### 드라이버 업그레이드
 
-| 현재 버전 | 대상 버전       | 경로                                    |
-|-----------|-----------------|-----------------------------------------|
-| 1.x       | 2.0.0 Update 93 | 1.x → 1.7.2 Update 67 → 2.0.0 Update 93 |
-| 1.7.2+    | 2.0.0 Update 93 | 직접 업그레이드 가능                    |
+| 현재 버전         | 대상 버전        | 경로                                       |
+|-------------------|------------------|--------------------------------------------|
+| 1.x               | 2.0.1 Update 262 | 1.x → 최신 1.7.2 Update → 2.0.1 Update 262 |
+| 최신 1.7.2 Update | 2.0.1 Update 262 | 직접 업그레이드 가능                       |
 
-- 1.x에서 2.0.0으로 **직접 업그레이드 불가** — 반드시 1.7.2 Update 67 경유합니다.
+- 1.x에서 2.x로 **직접 업그레이드 불가** — 반드시 최신 1.7.2 Update를 먼저 적용합니다 (2.0.1 Update 262 릴리스 노트 기준. 이전 2.0.0 Update 93 안내는 1.7.2 Update 67 경유).
 - 업그레이드 중 DG가 일시적으로 `TRANSFORMING` 상태 진입 가능 → `OPTIMAL` 복귀 확인 후 서비스 재개합니다.
 - 2.0.0부터 V2 라이선스 필요 — 업그레이드 전 사전 확보합니다.
 
@@ -688,7 +688,7 @@ graidctl stop consistency_check <dg_id>
 - SupremeRAID GPU는 `nvidia-smi`에서 항상 100% utilization 표시 → 정상 (polling mechanism)
 - GPU를 일반 CUDA/AI 워크로드와 공유할 수 없습니다.
 - GPU 물리 교체 시 새 라이선스 키가 필요합니다 (시리얼 넘버 종속)
-- GPU 온도는 `nvidia-smi` 또는 `graidctl show controller` (v1.5) / `graidctl describe controller` (v2.0+)로 확인합니다.
+- GPU 온도는 `nvidia-smi` 또는 `graidctl show controller` (v1.5) / `graidctl describe controller` (v1.7.2·v2.0 안내서)로 확인합니다.
 
 #### 리빌드 중 운영
 
@@ -709,10 +709,19 @@ graidctl stop consistency_check <dg_id>
 #### 알림 설정 (권장)
 
 ```bash
-# SMTP 알림 설정 (이벤트 발생 시 이메일 발송)
-graidctl set alert --smtp-server <smtp_host> --smtp-port 587 \
-  --sender <sender@example.com> --recipient <admin@example.com>
+# 메일 알림 설정 (graid-mgr, 이벤트 발생 시 이메일 발송)
+# 하위 명령: on / off / smtp_host / smtp_port / smtp_user / smtp_password / sender_mail
+graid-mgr set notification smtp_host <smtp_host>
+graid-mgr set notification smtp_port 587
+graid-mgr set notification sender_mail <sender@example.com>
+graid-mgr set notification on
+graid-mgr set admin email <admin@example.com>
+
+# 설정 확인
+graid-mgr show notification
 ```
+
+값을 넘기는 형식은 설치 버전의 `graid-mgr set notification --help`로 확인합니다.
 
 - severity 필터로 Warning, Error, Info를 선택할 수 있습니다.
 - PD/DG/VD 상태 변경 시 즉시 알림을 발송합니다.
@@ -739,7 +748,7 @@ graidctl set alert --smtp-server <smtp_host> --smtp-port 587 \
 
 ```bash
 nvme smart-log /dev/gpd<id> | grep "data_units_written"
-# 값 × 512 × 1000 / 1024^4 = TB
+# 값 × 512 × 1000 / 10^12 = TB (1024^4로 나누면 TiB)
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -762,19 +771,16 @@ graidctl list drive_group
 # 2. 장애 PD 식별
 graidctl describe physical_drive <failed_pd_id>
 
-# 3. 장애 PD 삭제
-graidctl delete physical_drive <failed_pd_id>
+# 3. PD가 아직 online이면 BAD로 표시 (MISSING 등 비정상 상태면 생략)
+graidctl edit pd <failed_pd_id> marker bad
 
-# 4. 새 SSD 장착 후 인식 확인
+# 4. 새 SSD 장착 후 장치 경로·NQN 확인
 graidctl list nvme_drive
 
-# 5. 새 PD 생성
-graidctl create physical_drive --nvme-drive <new_drive_path>
+# 5. 기존 PD ID를 새 SSD로 교체 (리빌드 자동 시작)
+graidctl replace physical_drive <failed_pd_id> <DEVICE_PATH|NQN|WWID>
 
-# 6. DG에 교체 (리빌드 자동 시작)
-graidctl replace physical_drive <dg_id> <old_pd_id> <new_pd_id>
-
-# 7. 리빌드 확인
+# 6. 리빌드 확인
 graidctl list drive_group
 graidctl list event
 ```
@@ -894,7 +900,9 @@ graidctl list drive_group
 ## 참고 자료
 
 - GRAID SupremeRAID Documentation: [docs.graidtech.com/sr/](https://docs.graidtech.com/sr/) — ★★★☆☆
-- GRAID SupremeRAID FAQ: [graidtech.com/faq/](https://www.graidtech.com/faq/) — ★★☆☆☆
+- GRAID SupremeRAID FAQ: [graidtech.com/faq/](https://www.graidtech.com/faq/) — ★★★☆☆
+- SupremeRAID User Guide for Linux 2.0.0: [docs.graidtech.com/sr/user-guide/linux/2.0.0/](https://docs.graidtech.com/sr/user-guide/linux/2.0.0/) — ★★★☆☆
+- SupremeRAID Linux 2.0.1 Update 262 Release Notes: [docs.graidtech.com/sr/release-notes/linux/2.0/2.0.1-262/](https://docs.graidtech.com/sr/release-notes/linux/2.0/2.0.1-262/) — ★★★☆☆
 - [_reference/graid_supremeraid_official_notes.md](../../_reference/graid_supremeraid_official_notes.md)
 
 ---
@@ -912,6 +920,6 @@ graidctl list drive_group
 
 **작성일**: 2026-07-10
 
-**마지막 업데이트**: 2026-07-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

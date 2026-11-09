@@ -319,7 +319,7 @@ slmgr /dli
 | Evaluation → Datacenter   | ✅        | `slmgr /ipk` 정품 키 입력 |
 | Standard → Datacenter     | ✅        | `DISM /Set-Edition`       |
 | **Datacenter → Standard** | ❌        | **재설치 필요**           |
-| Standard Core ↔ Desktop   | ✅        | `DISM /Set-Edition`       |
+| Standard Core ↔ Desktop   | ❌        | 재설치 필요 (2016부터)    |
 
 ### Standard → Datacenter 업그레이드
 
@@ -353,7 +353,7 @@ Windows Server는 두 가지 설치 방식을 제공합니다.
 | 관리           | PowerShell/원격                       | GUI 직접 관리 가능 |
 | Microsoft 권장 | ✅ 권장                               | 필요 시만          |
 
-🟡 설치 후 Core ↔ Desktop Experience 전환은 `DISM /Set-Edition`으로 가능하나, 재부팅이 필요합니다.
+🟡 Windows Server 2016부터는 설치 후 Core ↔ Desktop Experience 전환을 지원하지 않습니다. 다른 설치 옵션이 필요하면 재설치합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -361,11 +361,11 @@ Windows Server는 두 가지 설치 방식을 제공합니다.
 
 ## 8. 수명주기
 
-| 버전                | GA         | Mainstream 종료 | Extended 종료 | 현황 (2026-07)       |
-|---------------------|------------|-----------------|---------------|----------------------|
-| Windows Server 2019 | 2018-11-13 | 2024-01-09      | 2029-01-09    | Extended 지원 중     |
-| Windows Server 2022 | 2021-08-18 | 2026-10-13      | 2031-10-14    | Mainstream 종료 임박 |
-| Windows Server 2025 | 2024-11-01 | 2029-11-13      | 2034-11-14    | Mainstream 지원 중   |
+| 버전                | GA         | Mainstream 종료 | Extended 종료 | 현황 (2026-11)     |
+|---------------------|------------|-----------------|---------------|--------------------|
+| Windows Server 2019 | 2018-11-13 | 2024-01-09      | 2029-01-09    | Extended 지원 중   |
+| Windows Server 2022 | 2021-08-18 | 2026-10-13      | 2031-10-14    | Extended 지원 중   |
+| Windows Server 2025 | 2024-11-01 | 2029-11-13      | 2034-11-14    | Mainstream 지원 중 |
 
 🟡 Windows Server 2022는 2026-10-13 Mainstream 지원 종료. 신규 구축은 2025 권장.
 
@@ -456,11 +456,13 @@ Extended Security Updates는 Extended 지원 종료 후에도 보안 패치를 �
 |------------------------|---------------|------------|------------|------------|
 | Windows Server 2012    | 2023-10-10    | 2024-10-08 | 2025-10-14 | 2026-10-13 |
 | Windows Server 2012 R2 | 2023-10-10    | 2024-10-08 | 2025-10-14 | 2026-10-13 |
-| Windows Server 2016    | 2027-01-12    | 2028-01-11 | 2029-01-09 | 2030-01-08 |
-| Windows Server 2019    | 2029-01-09    | 2030-01-08 | 2031-01-14 | 2032-01-13 |
+| Windows Server 2016    | 2027-01-12    | 미발표     | 미발표     | 미발표     |
+| Windows Server 2019    | 2029-01-09    | 미발표     | 미발표     | 미발표     |
+
+🟡 2016·2019 ESU는 Microsoft ESU FAQ 표에 아직 없습니다(2026-11 확인). 표에 있는 Windows Server ESU는 2012/2012 R2뿐입니다.
 
 🟡 2022는 Extended 지원 중 (종료: 2031-10-14), 2025는 Mainstream 지원 중 → 현재 ESU 불필요.
-2022는 Mainstream 지원이 2026-10-13 종료 예정이나, Extended 지원 종료(2031)까지는 보안 패치가 계속 제공됩니다.
+2022는 Mainstream 지원이 2026-10-13에 종료됐으나, Extended 지원 종료(2031)까지는 보안 패치가 계속 제공됩니다.
 
 ### ESU 비용 구조 (On-premises)
 
@@ -477,11 +479,11 @@ Extended Security Updates는 Extended 지원 종료 후에도 보안 패치를 �
 
 ### ESU 획득 방법
 
-| 방법                      | 비용 | 조건                         |
-|---------------------------|------|------------------------------|
-| Azure VM으로 마이그레이션 | 무료 | Azure VM에서 자동 적용       |
-| Azure Arc 연동 (on-prem)  | 유료 | Azure Arc 에이전트 설치 필요 |
-| Volume License (연간)     | 유료 | EA/Open Value 계약 필요      |
+| 방법                      | 비용 | 조건                                          |
+|---------------------------|------|-----------------------------------------------|
+| Azure VM으로 마이그레이션 | 무료 | Azure VM에서 자동 적용                        |
+| Azure Arc 연동 (on-prem)  | 유료 | Azure Arc 에이전트 설치 필요                  |
+| Volume License (연간)     | 유료 | 활성 SA(EA·EAS·SCE·EES 등) 또는 CSP 구독 필요 |
 
 ### SE 판단 기준
 
@@ -511,6 +513,8 @@ Extended 지원 종료 임박?
 - AVMA: [learn.microsoft.com](https://learn.microsoft.com/en-us/windows-server/get-started/automatic-vm-activation) — ★★★☆☆
 - Lifecycle: [learn.microsoft.com/en-us/lifecycle/products/windows-server-2022](https://learn.microsoft.com/en-us/lifecycle/products/windows-server-2022) — ★★★☆☆
 - ESU FAQ: [learn.microsoft.com/en-us/lifecycle/faq/extended-security-updates](https://learn.microsoft.com/en-us/lifecycle/faq/extended-security-updates) — ★★★☆☆
+- Server Core vs Desktop Experience: [learn.microsoft.com](https://learn.microsoft.com/en-us/windows-server/get-started/install-options-server-core-desktop-experience) — ★★★☆☆
+- Lifecycle: [learn.microsoft.com/en-us/lifecycle/products/windows-server-2016](https://learn.microsoft.com/en-us/lifecycle/products/windows-server-2016) — ★★★☆☆
 
 ---
 
@@ -527,6 +531,6 @@ Extended 지원 종료 임박?
 
 **작성일**: 2026-07-29
 
-**마지막 업데이트**: 2026-07-31
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -80,14 +80,15 @@ UTS Namespace:    호스트명 격리
 IPC Namespace:    프로세스 간 통신 격리
 USER Namespace:   사용자/그룹 ID 격리
 CGROUP Namespace: Cgroup 격리
+TIME Namespace:   시계(monotonic·boottime) 격리
 ```
 
 #### Cgroups (리소스 제한)
 ```
 cpu:     CPU 사용량 제한
 memory:  메모리 사용량 제한
-blkio:   디스크 I/O 제한
-net:     네트워크 대역폭 제한
+blkio:   디스크 I/O 제한 (v2: io)
+net_cls: 네트워크 패킷 분류 (v1 전용, tc와 함께 대역폭 제어)
 pids:    프로세스 수 제한
 ```
 
@@ -337,7 +338,7 @@ docker run -d --name test --cpus=0.5 --memory=512m nginx
 
 # Cgroup 경로 확인
 docker inspect test | grep CgroupParent
-# "CgroupParent": "/docker"
+# "CgroupParent": ""  (기본값: 비어 있음, systemd 드라이버는 system.slice 아래 생성)
 
 # Cgroup 파일 확인 (cgroup v2)
 CONTAINER_ID=$(docker inspect test -f '{{.Id}}')
@@ -435,7 +436,7 @@ mkdir -p /tmp/mycontainer/rootfs
 cd /tmp/mycontainer
 
 # Alpine 루트 파일시스템 다운로드
-curl -o alpine.tar.gz http://dl-cdn.alpinelinux.org/alpine/v3.19/releases/x86_64/alpine-minirootfs-3.19.0-x86_64.tar.gz
+curl -o alpine.tar.gz https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/x86_64/alpine-minirootfs-3.24.4-x86_64.tar.gz
 tar -xzf alpine.tar.gz -C rootfs/
 
 # 2. OCI 스펙 생성
@@ -818,7 +819,7 @@ runc run container-id
 # Namespace 생성 (시스템 콜)
 unshare --pid --net --mount /bin/bash
 
-# Cgroup 설정 (파일시스템)
+# Cgroup 설정 (파일시스템, cgroup v1 예시)
 echo 1000000 > /sys/fs/cgroup/cpu/mygroup/cpu.cfs_quota_us
 ```
 
@@ -1064,10 +1065,11 @@ Kernel:      Linux Kernel (기반)
 ## 참고 자료
 
 - OCI Runtime Specification: [opencontainers.org](https://opencontainers.org/) — ★★★☆☆
-- Linux Namespaces: [man7.org](https://man7.org/linux/man-pages/man7/namespaces.7.html) — ★★☆☆☆
+- Linux Namespaces: [man7.org](https://man7.org/linux/man-pages/man7/namespaces.7.html) — ★★★☆☆
 - Linux Cgroups: [kernel.org](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html) — ★★★☆☆
 - Docker Documentation: [docs.docker.com](https://docs.docker.com/) — ★★★☆☆
-- LXD Documentation: [linuxcontainers.org](https://linuxcontainers.org/lxd/) — ★★★☆☆
+- Linux net_cls (cgroup v1): [docs.kernel.org](https://docs.kernel.org/admin-guide/cgroup-v1/net_cls.html) — ★★★☆☆
+- LXD Documentation: [canonical.com/lxd/docs](https://canonical.com/lxd/docs/) — ★★★☆☆
 
 ---
 
@@ -1084,6 +1086,6 @@ Kernel:      Linux Kernel (기반)
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-03-25
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -18,17 +18,17 @@
 | 항목        | k3s                         | kubeadm                   |
 |-------------|-----------------------------|---------------------------|
 | 설치 난이도 | 매우 쉬움 (단일 명령)       | 복잡 (단계별 설정 필요)   |
-| 리소스 사용 | 적음 (512 MB RAM)           | 많음 (2 GB+ RAM)          |
+| 리소스 사용 | 적음 (에이전트 512 MB)      | 많음 (2 GB+ RAM)          |
 | 대상 환경   | 개발, 엣지, 소규모 프로덕션 | 엔터프라이즈 프로덕션     |
-| HA 구성     | 가능 (임베디드 etcd)        | 가능 (외부 etcd 권장)     |
+| HA 구성     | 가능 (임베디드 etcd)        | 가능 (stacked/외부 etcd)  |
 | 권장 상황   | 빠른 시작, 단일 노드        | 대규모 멀티 노드 클러스터 |
 
 ### 시스템 요구사항
 
 | 항목   | k3s (단일 노드) | kubeadm (노드당)         |
 |--------|-----------------|--------------------------|
-| CPU    | 1 core          | 2 core 이상              |
-| RAM    | 512 MB          | 2 GB 이상                |
+| CPU    | 2 core          | 2 core 이상              |
+| RAM    | 2 GB            | 2 GB 이상                |
 | 디스크 | 5 GB            | 20 GB 이상               |
 | OS     | Ubuntu 22.04+   | Ubuntu 24.04+ / Rocky 9+ |
 
@@ -45,7 +45,7 @@
 curl -sfL https://get.k3s.io | sh -
 
 # 특정 버전 지정
-curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.31.4+k3s1" sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.37.2+k3s1" sh -
 
 sudo systemctl status k3s --no-pager | head -5
 ```
@@ -130,11 +130,10 @@ sudo systemctl restart containerd
 
 ```bash
 sudo apt install -y apt-transport-https ca-certificates curl gpg
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key \
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.37/deb/Release.key \
     | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] \
-    https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /' \
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.37/deb/ /' \
     | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 sudo apt update
@@ -342,7 +341,7 @@ kubectl top pods -n myapp
 | Pod `Pending`                    | 리소스 부족 또는 스케줄링 불가 | `kubectl describe pod` → Events 확인             |
 | Pod `CrashLoopBackOff`           | 컨테이너 시작 실패             | `kubectl logs <pod>` 확인                        |
 | Pod `ImagePullBackOff`           | 이미지 없음 또는 인증 실패     | 이미지 태그 확인, imagePullSecrets 설정          |
-| `connection refused` (apiserver) | Control Plane 다운             | `sudo systemctl status kube-apiserver`           |
+| `connection refused` (apiserver) | Control Plane 다운             | `sudo crictl ps -a \| grep kube-apiserver`       |
 | kubeadm init 실패 (swap)         | swap 활성화 상태               | `sudo swapoff -a`                                |
 
 ```bash
@@ -365,6 +364,9 @@ sudo journalctl -u kubelet -f
 - Kubernetes Documentation: [kubernetes.io/docs](https://kubernetes.io/docs/) — ★★★☆☆
 - k3s Documentation: [docs.k3s.io](https://docs.k3s.io/) — ★★★☆☆
 - kubeadm: [Creating a cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/) — ★★★☆☆
+- kubeadm: [Options for Highly Available Topology](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/) — ★★★☆☆
+- k3s Requirements: [docs.k3s.io/installation/requirements](https://docs.k3s.io/installation/requirements) — ★★★☆☆
+- Kubernetes Releases (지원 버전): [kubernetes.io/releases](https://kubernetes.io/releases/) — ★★★☆☆
 
 ---
 
@@ -381,6 +383,6 @@ sudo journalctl -u kubelet -f
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

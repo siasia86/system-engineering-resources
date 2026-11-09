@@ -13,17 +13,17 @@
 
 ## 1. 개요
 
-| 항목        | Zabbix                   | Prometheus                      |
-|-------------|--------------------------|---------------------------------|
-| 유형        | 올인원 모니터링 플랫폼   | 메트릭 수집 + 알림 툴킷         |
-| 라이선스    | GPLv2                    | Apache 2.0                      |
-| 개발        | Zabbix SIA (라트비아)    | CNCF Graduated Project          |
-| 초기 릴리즈 | 2001                     | 2012 (SoundCloud)               |
-| 최신 버전   | 7.4 (LTS: 7.0)           | v3.13.2                         |
-| 주 언어     | C, PHP, Go (Agent 2)     | Go                              |
-| 데이터 모델 | 호스트 → 아이템 → 트리거 | 시계열 (metric + labels)        |
-| 수집 방식   | Push (Agent → Server)    | Pull (Server → Target /metrics) |
-| 쿼리 언어   | 없음 (GUI 기반 표현식)   | PromQL                          |
+| 항목        | Zabbix                           | Prometheus                      |
+|-------------|----------------------------------|---------------------------------|
+| 유형        | 올인원 모니터링 플랫폼           | 메트릭 수집 + 알림 툴킷         |
+| 라이선스    | AGPLv3 (7.0+, 6.4까지 GPLv2)     | Apache 2.0                      |
+| 개발        | Zabbix SIA (라트비아)            | CNCF Graduated Project          |
+| 초기 릴리즈 | 2001                             | 2012 (SoundCloud)               |
+| 최신 버전   | 7.4 (LTS: 7.0)                   | v3.16.0 (LTS: 3.13)             |
+| 주 언어     | C, PHP, Go (Agent 2)             | Go                              |
+| 데이터 모델 | 호스트 → 아이템 → 트리거         | 시계열 (metric + labels)        |
+| 수집 방식   | Pull(Passive)·Push(Active) Agent | Pull (Server → Target /metrics) |
+| 쿼리 언어   | 없음 (GUI 기반 표현식)           | PromQL                          |
 
 ## 2. 아키텍처
 
@@ -80,21 +80,21 @@
 
 ## 3. 데이터 수집
 
-| 항목              | Zabbix                      | Prometheus                        |
-|-------------------|-----------------------------|-----------------------------------|
-| 기본 방식         | Push (Agent → Server)       | Pull (Server → Target)            |
-| 에이전트          | Zabbix Agent / Agent 2 (Go) | Exporter (node, mysqld, etc.)     |
-| 에이전트리스      | SNMP, IPMI, SSH, HTTP Agent | Blackbox Exporter (probe)         |
-| 서비스 디스커버리 | LLD (Low-Level Discovery)   | kubernetes_sd, consul_sd, file_sd |
-| 수집 주기         | 최소 1초 (기본 60초)        | 최소 1초 (기본 15초)              |
-| 커스텀 메트릭     | UserParameter, Trapper item | Custom Exporter, /metrics 노출    |
-| 로그 수집         | ✅ (Log item, Logrt)        | ❌ (Loki 별도 사용)               |
-| SNMP              | ✅ 내장 (SNMPv1/v2c/v3)     | ❌ (snmp_exporter 별도)           |
-| Windows           | ✅ (Native Agent)           | 🟡 (windows_exporter 커뮤니티)    |
+| 항목              | Zabbix                           | Prometheus                        |
+|-------------------|----------------------------------|-----------------------------------|
+| 기본 방식         | Pull(Passive)·Push(Active) Agent | Pull (Server → Target)            |
+| 에이전트          | Zabbix Agent / Agent 2 (Go)      | Exporter (node, mysqld, etc.)     |
+| 에이전트리스      | SNMP, IPMI, SSH, HTTP Agent      | Blackbox Exporter (probe)         |
+| 서비스 디스커버리 | LLD (Low-Level Discovery)        | kubernetes_sd, consul_sd, file_sd |
+| 수집 주기         | 최소 1초 (기본 60초)             | 최소 1초 (기본 15초)              |
+| 커스텀 메트릭     | UserParameter, Trapper item      | Custom Exporter, /metrics 노출    |
+| 로그 수집         | ✅ (Log item, Logrt)             | ❌ (Loki 별도 사용)               |
+| SNMP              | ✅ 내장 (SNMPv1/v2c/v3)          | ❌ (snmp_exporter 별도)           |
+| Windows           | ✅ (Native Agent)                | 🟡 (windows_exporter 커뮤니티)    |
 
 ### Push vs Pull 차이
 
-| 관점      | Push (Zabbix)                    | Pull (Prometheus)              |
+| 관점      | Push (Zabbix Active Agent)       | Pull (Prometheus)              |
 |-----------|----------------------------------|--------------------------------|
 | 방화벽    | Agent → Server (outbound만 필요) | Server → Target (inbound 필요) |
 | NAT 환경  | ✅ 유리 (Agent가 나가면 됨)      | 🟡 불리 (Server가 접근해야 함) |
@@ -219,11 +219,14 @@
 - Zabbix Documentation: [zabbix.com/documentation](https://www.zabbix.com/documentation/current/) — ★★★☆☆
 - Prometheus Documentation: [prometheus.io/docs](https://prometheus.io/docs/introduction/overview/) — ★★★☆☆
 - CNCF Landscape: [landscape.cncf.io](https://landscape.cncf.io/) — ★★☆☆☆
+- Zabbix License: [zabbix.com/license](https://www.zabbix.com/license) — ★★★☆☆
+- Zabbix agent (passive·active checks): [zabbix.com/documentation](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/zabbix_agent) — ★★★☆☆
+- Prometheus Download (버전 확인): [prometheus.io/download](https://prometheus.io/download/) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-07-03
 
-**마지막 업데이트**: 2026-08-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

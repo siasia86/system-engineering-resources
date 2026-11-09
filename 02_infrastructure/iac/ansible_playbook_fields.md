@@ -284,7 +284,7 @@ ansible all -m shell -a "ps aux | grep nginx"
 
 # Windows — win_shell 모듈 필수 (Python 불필요)
 ansible all -m ansible.windows.win_shell -a "whoami"
-ansible all -m ansible.windows.win_shell -a "Get-Service | Where-Object {$_.Status -eq 'Running'}"
+ansible all -m ansible.windows.win_shell -a 'Get-Service | Where-Object {$_.Status -eq "Running"}'
 
 # 파일 전송
 ansible all -m ansible.builtin.copy -a "src=/tmp/test dest=/tmp/test"
@@ -304,7 +304,8 @@ ansible all -m ansible.builtin.service -a "name=nginx state=restarted"
 | 연결 테스트 | `ansible.builtin.ping`    | `ansible.windows.win_ping`    |
 
 > 🟡 `ansible -a` (command 모듈)는 Windows에서 동작하지 않습니다.
-> Windows ad-hoc은 반드시 `-m ansible.windows.win_shell`을 명시해야 합니다.
+> Windows ad-hoc은 `-m ansible.windows.win_shell`(또는 `win_command`)처럼 Windows 모듈을 명시해야 합니다.
+> `$_` 같은 PowerShell 변수가 들어간 인자는 bash가 확장하지 않도록 작은따옴표로 감쌉니다.
 
 ---
 
@@ -321,6 +322,6 @@ ansible all -m ansible.builtin.service -a "name=nginx state=restarted"
 
 **작성일**: 2026-05-19
 
-**마지막 업데이트**: 2026-05-19
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

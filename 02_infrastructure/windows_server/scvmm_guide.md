@@ -65,7 +65,7 @@ SCVMM 있음 — 중앙 콘솔에서 통합 관리
 |------------------------|-------------------------------|
 | Hyper-V 호스트         | ✅ 완전 지원                  |
 | VMware ESXi            | 🟡 제한적 (조회/마이그레이션) |
-| Citrix XenServer       | 🟡 제한적                     |
+| Citrix XenServer       | ❌ 미지원                     |
 | 물리 서버 (Bare Metal) | ✅ OS 배포까지                |
 | SAN/NAS 스토리지       | ✅ 완전 지원                  |
 | 가상 네트워크/SDN      | ✅ 완전 지원                  |
@@ -136,15 +136,15 @@ Microsoft Learn 공식 문서(Identify VMM ports and protocols) 기준입니다.
 
 | 항목        | 요구사항                                                                   |
 |-------------|----------------------------------------------------------------------------|
-| OS          | Windows Server 2019 / 2022                                                 |
-| CPU         | 4코어 이상                                                                 |
+| OS          | VMM 2022: Windows Server 2022 / VMM 2025: Windows Server 2025              |
+| CPU         | VMM 서버 최소 8코어 2GHz, 권장 16코어 2.66GHz                              |
 | RAM         | VMM 서버 최소 4GB, 권장 16GB / SQL Server 별도 서버 시 최소 8GB, 권장 16GB |
-| 디스크      | 최소 80GB                                                                  |
+| 디스크      | VMM 서버 최소 4GB, 권장 10GB / VMM DB 최소 50GB, 권장 200GB                |
 | 컴퓨터 이름 | 15자 이하 (NetBIOS 제한, 초과 시 설치 실패)                                |
 | SQL Server  | VMM 2022: 2016/2017/2019/2022 지원 / VMM 2025: 2019/2022/2025 지원         |
-| Windows ADK | 베어메탈 배포 기능 사용 시 필요                                            |
+| Windows ADK | VMM 설치 전 설치 (Windows PE Add-on 별도 설치)                             |
 | 도메인      | Active Directory 도메인 가입 필수                                          |
-| 서비스 계정 | 도메인 계정 필요 (로컬 계정 불가)                                          |
+| 서비스 계정 | 도메인 계정 또는 gMSA 권장 (로컬 계정은 고가용성 구성 불가)                |
 
 ### 설치 순서
 
@@ -190,10 +190,11 @@ New-NetFirewallRule `
 ### 2단계: Windows ADK 설치
 
 ```powershell
-# ADK 다운로드 후 무인 설치
-.\adksetup.exe /features OptionId.DeploymentTools `
-               OptionId.WindowsPreinstallationEnvironment `
-               /quiet /norestart
+# ADK 다운로드 후 무인 설치 (Deployment Tools)
+.\adksetup.exe /quiet /norestart /features OptionId.DeploymentTools
+
+# Windows PE는 ADK와 별도인 Add-on 설치 파일로 설치
+.\adkwinpesetup.exe /quiet /norestart /features OptionId.WindowsPreinstallationEnvironment
 ```
 
 ### 3단계: 서비스 계정 생성
@@ -215,14 +216,14 @@ Add-LocalGroupMember -Group "Administrators" -Member "DOMAIN\svc-scvmm"
 
 ### 4단계: SCVMM 서버 무인 설치
 
-응답 파일 `VMMConfig.ini` 생성 후 설치합니다.
+설치 미디어의 응답 파일 `VMServer.ini`를 편집한 후 설치합니다. 서비스 계정 암호는 INI가 아니라 setup.exe 인자로 전달합니다.
 
 ```ini
 [OPTIONS]
 CompanyName=MyCompany
 CreateNewSqlDatabase=1
 SqlInstanceName=MSSQLSERVER
-SqlServerName=sql-server.example.com
+SqlMachineName=sql-server.example.com
 SqlDatabaseName=VirtualManagerDB
 IndigoTcpPort=8100
 IndigoHTTPSPort=8101
@@ -231,25 +232,23 @@ IndigoHTTPPort=8103
 WSManTcpPort=5985
 BitsTcpPort=443
 VmmServiceLocalAccount=0
-UserName=DOMAIN\svc-scvmm
-Password=SecurePassword123
-VmmServerName=scvmm-server.example.com
 ProgramFiles=C:\Program Files\Microsoft System Center\Virtual Machine Manager
 ```
 
 ```powershell
 # 무인 설치 실행
-.\setup.exe /server /i /f VMMConfig.ini `
-    /IACCEPTSCEULA `
-    /VmmServiceAccount DOMAIN\svc-scvmm `
-    /VmmServiceAccountPassword SecurePassword123
+.\setup.exe /server /i /f C:\Temp\VMServer.ini `
+    /VmmServiceDomain DOMAIN `
+    /VmmServiceUserName svc-scvmm `
+    /VmmServiceUserPassword SecurePassword123 `
+    /IACCEPTSCEULA
 ```
 
 ### 5단계: 콘솔 설치 (관리자 PC)
 
 ```powershell
 # 콘솔만 설치
-.\setup.exe /console /i /IACCEPTSCEULA
+.\setup.exe /client /i /IACCEPTSCEULA /f C:\Temp\VMClient.ini
 ```
 
 ### 6단계: 방화벽 규칙 일괄 등록
@@ -392,9 +391,10 @@ Restore-SCVMCheckpoint -VMCheckpoint (
 
 ```powershell
 # VMware vCenter 연결
-Add-SCVMHost `
+$vcenterAccount = Get-SCRunAsAccount -Name "vCenter-Admin"
+Add-SCVirtualizationManager `
     -ComputerName "vcenter.example.com" `
-    -VirtualizationManager `
+    -Credential $vcenterAccount `
     -TCPPort 443
 
 # VMware VM 조회
@@ -468,14 +468,15 @@ $vmmServer = Get-SCVMMServer -ComputerName "scvmm-server.example.com"
 $hosts    = Get-SCVMHost | Where-Object { $_.MemoryAvailableMB -gt 4096 }
 $template = Get-SCVMTemplate -Name "WS2022-Template"
 
-foreach ($host in $hosts) {
-    $vmName = "auto-vm-$($host.Name)"
+# $Host는 PowerShell 상수 자동 변수이므로 반복 변수 이름으로 쓰지 않음
+foreach ($targetHost in $hosts) {
+    $vmName = "auto-vm-$($targetHost.Name)"
     New-SCVirtualMachine `
         -Name $vmName `
         -VMTemplate $template `
-        -VMHost $host `
+        -VMHost $targetHost `
         -Path "C:\VMs"
-    Write-Output "Created: $vmName on $($host.Name)"
+    Write-Output "Created: $vmName on $($targetHost.Name)"
 }
 ```
 
@@ -500,12 +501,14 @@ ansible_port=5985
 - name: Hyper-V VM 생성
   hosts: hyperv_hosts
   tasks:
+    # community.windows에는 Hyper-V VM 모듈이 없어 Hyper-V cmdlet을 실행
     - name: VM 생성
-      community.windows.win_hyperv_vm:
-        name: web-server-01
-        memory_mb: 2048
-        cpu_count: 2
-        state: present
+      ansible.windows.win_powershell:
+        script: |
+          if (-not (Get-VM -Name web-server-01 -ErrorAction SilentlyContinue)) {
+            New-VM -Name web-server-01 -MemoryStartupBytes 2GB -Generation 2
+            Set-VMProcessor -VMName web-server-01 -Count 2
+          }
 ```
 
 ### Terraform Hyper-V provider
@@ -515,18 +518,18 @@ terraform {
   required_providers {
     hyperv = {
       source  = "taliesins/hyperv"
-      version = "1.0.4"
+      version = "1.2.1"
     }
   }
 }
 
 resource "hyperv_machine_instance" "web_server" {
-  name               = "web-server-01"
-  generation         = 2
-  processor_count    = 2
-  dynamic_memory     = true
-  memory_startup_mb  = 2048
-  memory_maximum_mb  = 4096
+  name                 = "web-server-01"
+  generation           = 2
+  processor_count      = 2
+  dynamic_memory       = true
+  memory_startup_bytes = 2147483648 # 2GB
+  memory_maximum_bytes = 4294967296 # 4GB
 
   network_adaptors {
     name        = "eth0"
@@ -577,9 +580,12 @@ SCVMM + SCOM 조합
 ```
 
 ```powershell
-# SCOM 연결 구성
-Set-SCOMManagementServer `
-    -ManagementServerName "scom-server.example.com"
+# SCOM 연결 구성 (VMM 관리 서버에 Operations Manager 콘솔 설치 필요)
+$vmmCredential = Get-Credential
+New-SCOpsMgrConnection `
+    -OpsMgrServer "scom-server.example.com" `
+    -UseVMMServerServiceAccount `
+    -VMMServerCredential $vmmCredential
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -631,7 +637,14 @@ SCVMM + Azure Arc
 ## 참고 자료
 
 - Microsoft Docs: [docs.microsoft.com/system-center/vmm](https://docs.microsoft.com/en-us/system-center/vmm/) — ★★★☆☆
-- Microsoft Evaluation Center: [microsoft.com/evalcenter](https://www.microsoft.com/en-us/evalcenter/evaluate-system-center) — ★★☆☆☆
+- Microsoft Evaluation Center: [microsoft.com/evalcenter](https://www.microsoft.com/en-us/evalcenter/download-system-center-2025) — ★★★☆☆
+- Microsoft Learn: [VMM system requirements](https://learn.microsoft.com/en-us/system-center/vmm/system-requirements?view=sc-vmm-2025) — ★★★☆☆
+- Microsoft Learn: [Install VMM (command line)](https://learn.microsoft.com/en-us/system-center/vmm/install?view=sc-vmm-2025) — ★★★☆☆
+- Microsoft Learn: [Install the VMM console](https://learn.microsoft.com/en-us/system-center/vmm/install-console?view=sc-vmm-2025) — ★★★☆☆
+- Microsoft Learn: [Identify VMM ports and protocols](https://learn.microsoft.com/en-us/system-center/vmm/plan-ports-protocols?view=sc-vmm-2025) — ★★★☆☆
+- Microsoft Learn: [New-SCOpsMgrConnection](https://learn.microsoft.com/en-us/powershell/module/virtualmachinemanager/new-scopsmgrconnection?view=systemcenter-ps-2025) — ★★★☆☆
+- Microsoft Learn: [Add-SCVirtualizationManager](https://learn.microsoft.com/en-us/powershell/module/virtualmachinemanager/add-scvirtualizationmanager?view=systemcenter-ps-2025) — ★★★☆☆
+- Terraform Registry: [taliesins/hyperv](https://registry.terraform.io/providers/taliesins/hyperv/latest/docs/resources/machine_instance) — ★★★☆☆
 - [windows_server_key_concepts.md](./windows_server_key_concepts.md)
 
 ---
@@ -649,6 +662,6 @@ SCVMM + Azure Arc
 
 **작성일**: 2026-08-21
 
-**마지막 업데이트**: 2026-08-21
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

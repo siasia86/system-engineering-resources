@@ -26,7 +26,7 @@ GitHub Actions는 GitHub에 내장된 CI/CD 플랫폼. 저장소 이벤트(push,
 ```
 
 - Jenkins 대비 별도 서버 불필요, GitHub 저장소와 네이티브 통합
-- Public 저장소: 무료 / Private 저장소: 월 2,000분 무료 (GitHub Free 기준)
+- Public 저장소: 표준 GitHub-hosted runner 무료 / Private 저장소: 월 $12 상당 사용량 포함 (표준 Linux runner 약 2,000분, GitHub Free 기준)
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -103,7 +103,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
@@ -136,7 +136,7 @@ on:
     branches: [main, 'release/**']
     paths:
       - 'src/**'
-      - '!docs/**'   # 제외
+      - '!src/docs/**'   # 앞에서 포함한 src/** 중 제외
 
   # PR
   pull_request:
@@ -215,10 +215,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node: ['18', '20']
+        node: ['22', '24']
         exclude:
           - os: windows-latest
-            node: '18'
+            node: '22'
       fail-fast: false   # 하나 실패해도 나머지 계속 실행
 
     steps:
@@ -368,7 +368,9 @@ jobs:
 ```yaml
 # .github/workflows/cd.yml
 jobs:
+  # build job(outputs.image_tag 제공) 정의는 생략
   deploy-stg:
+    needs: build
     uses: ./.github/workflows/reusable-deploy.yml
     with:
       environment: stg
@@ -377,7 +379,7 @@ jobs:
       AWS_ROLE_ARN: ${{ secrets.STG_AWS_ROLE_ARN }}
 
   deploy-prod:
-    needs: deploy-stg
+    needs: [build, deploy-stg]
     uses: ./.github/workflows/reusable-deploy.yml
     with:
       environment: prod
@@ -396,7 +398,7 @@ description: 'Install dependencies and cache'
 inputs:
   node-version:
     description: 'Node.js version'
-    default: '20'
+    default: '24'
 
 runs:
   using: 'composite'
@@ -533,7 +535,7 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - run: npm ci
@@ -577,10 +579,14 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
 
+      # ECR 로그인 step(9절 configure-aws-credentials, amazon-ecr-login)은 생략
       - name: Build and push
-        run: |
-          docker build -t ${{ steps.meta.outputs.tags }} .
-          docker push ${{ steps.meta.outputs.tags }}
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -611,10 +617,12 @@ jobs:
 
 steps:
   - name: Debug context
+    env:
+      GITHUB_CONTEXT: ${{ toJSON(github) }}
+      JOB_CONTEXT: ${{ toJSON(job) }}
     run: |
-      echo '${{ toJSON(github) }}'
-      echo '${{ toJSON(env) }}'
-      echo '${{ toJSON(job) }}'
+      echo "$GITHUB_CONTEXT"
+      echo "$JOB_CONTEXT"
 ```
 
 ### 주의사항
@@ -634,6 +642,8 @@ steps:
 - GitHub Actions Documentation: [docs.github.com/actions](https://docs.github.com/en/actions) — ★★★☆☆
 - GitHub Actions Marketplace: [github.com/marketplace](https://github.com/marketplace?type=actions) — ★★☆☆☆
 - AWS GitHub Actions: [github.com/aws-actions](https://github.com/aws-actions) — ★★★☆☆
+- GitHub Actions 요금: [docs.github.com/billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions) — ★★★☆☆
+- Node.js 릴리스 일정: [nodejs.org/en/about/previous-releases](https://nodejs.org/en/about/previous-releases) — ★★★☆☆
 
 ---
 
@@ -650,6 +660,6 @@ steps:
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

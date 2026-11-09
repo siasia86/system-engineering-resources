@@ -26,7 +26,7 @@ S3 버킷 생성 시 선택하는 주요 옵션을 Web Console 기준으로 정�
 | 내구성          | 99.999999999% (11 nine)            | 명시되지 않음 (단일 AZ)               |
 | 가격            | 낮음                               | 높음 (성능 프리미엄)                  |
 | Object Lock     | ✅ 지원                            | ❌ 미지원                             |
-| Lifecycle       | ✅ 지원                            | ❌ 미지원                             |
+| Lifecycle       | ✅ 지원                            | 🟡 만료만 지원 (전환 미지원)          |
 | S3 Replication  | ✅ 지원                            | ❌ 미지원                             |
 | 버전 관리       | ✅ 지원                            | ❌ 미지원                             |
 | 용도            | 일반 백업, 로그, 정적 웹, 아카이브 | ML 학습 데이터, 고빈도 트랜잭션, 캐시 |
@@ -90,13 +90,13 @@ bucket = "${var.purpose}-${data.aws_caller_identity.current.account_id}-${var.re
 
 ### 이름 규칙 제약
 
-| 규칙              | 내용                                |
-|-------------------|-------------------------------------|
-| 길이              | 3~63자                              |
-| 허용 문자         | 소문자, 숫자, 하이픈(`-`)           |
-| 시작/끝 문자      | 소문자 또는 숫자만 가능             |
-| IP 주소 형식 금지 | `192.168.1.1` 형태 불가             |
-| 전역 유일성       | 전 세계 모든 AWS 계정에서 중복 불가 |
+| 규칙              | 내용                                           |
+|-------------------|------------------------------------------------|
+| 길이              | 3~63자                                         |
+| 허용 문자         | 소문자, 숫자, 하이픈(`-`), 마침표(`.`, 비권장) |
+| 시작/끝 문자      | 소문자 또는 숫자만 가능                        |
+| IP 주소 형식 금지 | `192.168.1.1` 형태 불가                        |
+| 전역 유일성       | 전 세계 모든 AWS 계정에서 중복 불가            |
 
 ---
 
@@ -199,7 +199,7 @@ S3 서버 측 암호화(SSE)는 저장 데이터의 **기밀성**을 보장합�
 | 키 권한 제어 | ❌ 불가       | ✅ KMS Key Policy로 세분화           | ✅ KMS Key Policy로 세분화 |
 | 추가 비용    | 없음          | 🟡 KMS API 호출 비용 발생            | 🟡 SSE-KMS보다 높음        |
 | 규제 준수    | 일반          | 금융, 의료, 공공 기관 요건 충족 가능 | 상위 규제 요건             |
-| Bucket Key   | 해당 없음     | ✅ 활성화 권장 (비용 절감)           | ✅ 활성화 권장             |
+| Bucket Key   | 해당 없음     | ✅ 활성화 권장 (비용 절감)           | ❌ 미지원                  |
 
 ### 8.1 SSE-S3 — AWS 자동 관리
 
@@ -276,16 +276,16 @@ SSE-KMS의 암호화를 2단계로 적용합니다. 단일 암호화 레이어 �
 ```
 업로드 흐름:
   평문 객체
-    → KMS에서 DEK1 생성 → 객체를 AES-256-GCM으로 1차 암호화
-    → KMS에서 DEK2 생성 → DEK1을 AES-256-GCM으로 2차 암호화
-    → CMK로 DEK2 암호화하여 메타데이터에 저장
+    → KMS에서 DEK 생성 → 객체를 AES-256으로 1차 암호화
+    → S3 관리 키로 1차 암호문을 AES-256으로 2차 암호화
+    → CMK로 암호화한 DEK를 메타데이터에 저장
 ```
 
-| 계층 | 키 이름           | 관리 주체   | 설명                               |
-|------|-------------------|-------------|------------------------------------|
-| 1    | DEK1 (1차 암호화) | KMS 생성    | 객체를 AES-256-GCM으로 1차 암호화  |
-| 2    | DEK2 (2차 암호화) | KMS 생성    | DEK1을 다시 AES-256-GCM으로 암호화 |
-| 3    | CMK               | 사용자 제어 | DEK2를 암호화, KMS에 저장          |
+| 계층 | 키 이름          | 관리 주체   | 설명                                 |
+|------|------------------|-------------|--------------------------------------|
+| 1    | DEK (1차 암호화) | KMS 생성    | 객체를 AES-256으로 1차 암호화        |
+| 2    | S3 관리 키 (2차) | AWS S3      | 1차 암호문을 다시 AES-256으로 암호화 |
+| 3    | CMK              | 사용자 제어 | DEK를 암호화, KMS에 저장             |
 
 **적합한 경우**: 공공기관, 금융 규제 최상위 등급, DoD 요건
 
@@ -302,7 +302,7 @@ Bucket Key ON:
   → KMS API 호출 비용 최대 99% 절감
 ```
 
-🟡 Bucket Key는 SSE-KMS, DSSE-KMS에서만 동작합니다. SSE-S3는 해당 없습니다.
+🟡 Bucket Key는 SSE-KMS에서만 동작합니다. SSE-S3는 해당 없고 DSSE-KMS는 지원하지 않습니다.
 
 ```bash
 # SSE-KMS + Bucket Key 활성화
@@ -325,12 +325,12 @@ aws s3api put-bucket-encryption \
 
 ### 활성화 조건 및 주의사항
 
-| 항목        | 내용                                   |
-|-------------|----------------------------------------|
-| 활성화 시점 | 버킷 생성 시에만 가능 (이후 추가 불가) |
-| 버전 관리   | 자동 활성화 (비활성화 불가)            |
-| 비활성화    | 불가 (한번 켜면 영구 적용)             |
-| 버킷 유형   | 범용 버킷만 지원 (디렉터리 버킷 불가)  |
+| 항목        | 내용                                  |
+|-------------|---------------------------------------|
+| 활성화 시점 | 버킷 생성 시 또는 기존 버킷에도 가능  |
+| 버전 관리   | 필수 (생성 시 자동 활성화, 중단 불가) |
+| 비활성화    | 불가 (한번 켜면 영구 적용)            |
+| 버킷 유형   | 범용 버킷만 지원 (디렉터리 버킷 불가) |
 
 ### 모드 선택
 
@@ -427,8 +427,12 @@ SSE-KMS 버킷에 Cross-account로 접근할 때 권한이 누락되기 쉬운 �
 
 ## 참고 자료
 
-- AWS Documentation: [docs.aws.amazon.com/s3](https://docs.aws.amazon.com/s3/latest/userguide/creating-bucket.html) — ★★★☆☆
+- AWS Documentation: [docs.aws.amazon.com/AmazonS3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) — ★★★☆☆
 - AWS Documentation: [S3 Express One Zone](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-express-one-zone.html) — ★★★☆☆
+- AWS Documentation: [Differences for directory buckets](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-express-differences.html) — ★★★☆☆
+- AWS Documentation: [General purpose bucket naming rules](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) — ★★★☆☆
+- AWS Documentation: [DSSE-KMS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingDSSEncryption.html) — ★★★☆☆
+- AWS Documentation: [Configuring S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-configure.html) — ★★★☆☆
 - [s3_object_lock.md](s3_object_lock.md)
 - [sts_assume_role.md](sts_assume_role.md)
 
@@ -447,6 +451,6 @@ SSE-KMS 버킷에 Cross-account로 접근할 때 권한이 누락되기 쉬운 �
 
 **작성일**: 2026-08-12
 
-**마지막 업데이트**: 2026-08-12
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

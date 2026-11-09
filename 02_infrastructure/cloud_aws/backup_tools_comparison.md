@@ -73,7 +73,7 @@
 | **Restic**         | ✅        | 제한적 | 200GB       | $5.00   |
 | **BorgBackup**     | ✅        | ✅     | 150GB       | $3.75   |
 | **Rclone**         | ❌        | ❌     | 1,500GB     | $37.50  |
-| **Duplicity**      | ✅        | ✅     | 180GB       | $4.50   |
+| **Duplicity**      | ❌        | ✅     | 180GB       | $4.50   |
 | **rsync + tar.gz** | ❌        | ✅     | 500GB       | $12.50  |
 
 *S3 Standard 기준 $0.025/GB*
@@ -157,7 +157,7 @@ CPU: ████░░░░░░ 5%
 #### 적합한 경우
 ```bash
 # 클라우드 백업
-restic -r s3:bucket backup /data
+restic -r s3:s3.ap-northeast-2.amazonaws.com/bucket backup /data
 
 # 멀티 클라우드
 restic -r b2:backup backup /data
@@ -444,7 +444,7 @@ borg create /mnt/s3::backup-{now} /data
 #### 중소 규모 (GB 단위)
 ```bash
 # Restic (간편함)
-restic -r s3:bucket backup /data
+restic -r s3:s3.ap-northeast-2.amazonaws.com/bucket backup /data
 
 # 설정 간단 + 충분한 기능
 ```
@@ -487,7 +487,7 @@ rclone sync s3:primary gdrive:backup
 #### 백업
 ```bash
 # Restic (여러 백엔드)
-restic -r s3:primary backup /data
+restic -r s3:s3.ap-northeast-2.amazonaws.com/primary backup /data
 restic -r b2:secondary backup /data
 
 # 스냅샷 + 암호화
@@ -500,7 +500,7 @@ restic -r b2:secondary backup /data
 #### 강력한 암호화
 ```bash
 # Restic (클라이언트 암호화)
-restic -r s3:bucket backup /sensitive-data
+restic -r s3:s3.ap-northeast-2.amazonaws.com/bucket backup /sensitive-data
 
 # 또는 Duplicity (GPG)
 duplicity /sensitive-data s3://bucket
@@ -558,12 +558,12 @@ BorgBackup (lz4): 20GB/일
 ### 3. Lifecycle 정책
 ```bash
 # S3 Lifecycle
-# 30일 후 Glacier ($0.004/GB)
+# 30일 후 Glacier ($0.0045/GB)
 # 90일 후 Deep Archive ($0.00099/GB)
 
 # 1.5TB 기준:
 # Standard: $37.5/월
-# Glacier: $6/월
+# Glacier: $6.75/월
 # Deep Archive: $1.5/월
 ```
 
@@ -610,13 +610,13 @@ restic backup /data --limit-upload 10240  # 10MB/s
 rclone sync /data remote: --bwlimit 10M
 
 # BorgBackup (SSH)
-borg create --remote-ratelimit 10240 /backup::data /data
+borg create --upload-ratelimit 10240 /backup::data /data
 ```
 
 ### 4. 시간대 분리
 ```bash
 # 업무 시간: 경량 도구
-0-23 * * * aws s3 sync /data s3://bucket
+0 9-18 * * * aws s3 sync /data s3://bucket
 
 # 새벽: 무거운 백업
 0 4 * * * borg create /backup::daily /data
@@ -644,7 +644,7 @@ fi
 ### BorgBackup
 ```bash
 # 상태
-borg info /backup::latest
+borg info --last 1 /backup
 borg list /backup
 
 # 검증
@@ -710,7 +710,7 @@ aws cloudwatch put-metric-data \
 ### 소규모 (개인/스타트업)
 ```bash
 # Restic으로 통합
-restic -r s3:bucket backup /data
+restic -r s3:s3.ap-northeast-2.amazonaws.com/bucket backup /data
 restic forget --keep-daily 7 --prune
 ```
 
@@ -720,7 +720,7 @@ restic forget --keep-daily 7 --prune
 rclone sync /data s3:realtime
 
 # 백업: Restic
-restic -r s3:backup backup /data
+restic -r s3:s3.ap-northeast-2.amazonaws.com/backup backup /data
 ```
 
 ### 대규모 (엔터프라이즈)
@@ -774,7 +774,7 @@ restic key add  # 추가 키 생성
 ```bash
 # 재시도 설정
 restic backup /data \
-  --option s3.max-retries=10
+  --option s3.retries=10
 
 # 타임아웃 설정
 rclone sync /data remote: \
@@ -908,9 +908,9 @@ aws configure set s3.multipart_threshold 64MB
 
 #### 문제: 대용량 파일 업로드 실패
 ```bash
-# 해결: 멀티파트 업로드 크기 조정
-aws s3 cp large-file.zip s3://bucket/ \
-  --multipart-chunk-size-mb 100
+# 해결: 멀티파트 업로드 크기 조정 (aws s3 cp에는 파트 크기 옵션이 없어 설정으로 지정)
+aws configure set default.s3.multipart_chunksize 100MB
+aws s3 cp large-file.zip s3://bucket/
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -936,7 +936,7 @@ borg create --compression zstd,3 /backup::data /data   # 균형
 borg create --compression lzma,6 /backup::data /data   # 높은 압축률
 
 # SSH 압축 비활성화 (이미 압축된 경우)
-borg create -e ssh user@server:/backup::data /data
+BORG_RSH="ssh -o Compression=no" borg create user@server:/backup::data /data
 ```
 
 ### Rclone
@@ -944,8 +944,8 @@ borg create -e ssh user@server:/backup::data /data
 # 전송 수 증가
 rclone sync /data remote: --transfers 16
 
-# 체크섬 스킵 (속도 우선)
-rclone sync /data remote: --checksum=false
+# 크기만 비교 (수정 시각·체크섬 비교 생략, 속도 우선)
+rclone sync /data remote: --size-only
 
 # 버퍼 크기 증가
 rclone sync /data remote: --buffer-size 256M
@@ -973,19 +973,21 @@ rclone sync /data remote: --buffer-size 256M
 ## 참고 자료
 
 ### 공식 문서
-- [Restic 공식 문서](https://restic.readthedocs.io/) — ★★☆☆☆
-- [BorgBackup 공식 문서](https://borgbackup.readthedocs.io/) — ★★☆☆☆
-- [Rclone 공식 문서](https://rclone.org/docs/) — ★★☆☆☆
+- [Restic 공식 문서](https://restic.readthedocs.io/) — ★★★☆☆
+- [BorgBackup 공식 문서](https://borgbackup.readthedocs.io/) — ★★★☆☆
+- [Rclone 공식 문서](https://rclone.org/docs/) — ★★★☆☆
 - [AWS CLI S3 명령어](https://docs.aws.amazon.com/cli/latest/reference/s3/) — ★★★☆☆
+- [AWS CLI S3 설정](https://docs.aws.amazon.com/cli/latest/topic/s3-config.html) — ★★★☆☆
+- [Duplicity 공식 사이트](https://duplicity.us/) — ★★★☆☆
 
 ### 커뮤니티
 - [Restic Forum](https://forum.restic.net/) — ★★☆☆☆
-- [BorgBackup GitHub](https://github.com/borgbackup/borg) — ★★☆☆☆
+- [BorgBackup GitHub](https://github.com/borgbackup/borg) — ★★★☆☆
 - [Rclone Forum](https://forum.rclone.org/) — ★★☆☆☆
 
 ### 관련 도구
-- [Fluent Bit](https://fluentbit.io/) - 로그 수집기 — ★★☆☆☆
-- [Autorestic](https://autorestic.vercel.app/) - Restic 래퍼 — ★★☆☆☆
+- [Fluent Bit](https://fluentbit.io/) - 로그 수집기 — ★★★☆☆
+- [Autorestic](https://autorestic.vercel.app/) - Restic 래퍼 — ★★★☆☆
 - [Borgmatic](https://torsion.org/borgmatic/) - BorgBackup 래퍼 — ★★☆☆☆
 
 ---
@@ -1003,6 +1005,6 @@ rclone sync /data remote: --buffer-size 256M
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-04-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

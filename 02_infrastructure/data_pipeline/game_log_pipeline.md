@@ -86,8 +86,8 @@ Flink와 Spark는 용도가 다르며 병행 운영이 일반적입니다.
 
 | 기준        | Flink                         | Spark (Structured Streaming) |
 |-------------|-------------------------------|------------------------------|
-| 처리 방식   | 진정한 스트리밍 (이벤트 단위) | 마이크로 배치 (시간 단위)    |
-| 지연        | 밀리초~초                     | 수십초~분                    |
+| 처리 방식   | 진정한 스트리밍 (이벤트 단위) | 마이크로 배치 (트리거 간격)  |
+| 지연        | 밀리초~초                     | 최소 100밀리초 (기본 모드)   |
 | 주 용도     | 실시간 알람, 세션 추적        | 배치 ETL, 복잡한 집계        |
 | 상태 관리   | RocksDB 기반 강력한 상태 관리 | 제한적                       |
 | SQL 친화도  | 낮음                          | 높음 (Spark SQL)             |
@@ -172,6 +172,7 @@ Parquet:     Standard 90일 → Standard-IA → Glacier Instant (5년)
 
 - Apache Flink: [flink.apache.org/docs](https://flink.apache.org/docs/) — ★★★☆☆
 - Apache Spark: [spark.apache.org/docs](https://spark.apache.org/docs/latest/) — ★★★☆☆
+- Spark Structured Streaming: [spark.apache.org/docs/latest/streaming](https://spark.apache.org/docs/latest/streaming/index.html) — ★★★☆☆
 - Amazon MSK: [docs.aws.amazon.com/msk](https://docs.aws.amazon.com/msk/latest/developerguide/) — ★★★☆☆
 - Snowflake Architecture: [docs.snowflake.com/en/user-guide/intro-key-concepts](https://docs.snowflake.com/en/user-guide/intro-key-concepts) — ★★★☆☆
 - [100GB/일 설계](./log_aggregation_100gb.md)
@@ -181,6 +182,6 @@ Parquet:     Standard 90일 → Standard-IA → Glacier Instant (5년)
 
 **작성일**: 2026-06-18
 
-**마지막 업데이트**: 2026-06-18
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

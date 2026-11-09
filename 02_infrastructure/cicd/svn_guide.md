@@ -39,7 +39,7 @@ Repository (중앙 서버)
 |-------------|--------------------------------|
 | `HEAD`      | 저장소 최신 리비전             |
 | `BASE`      | 현재 Working Copy 기준 리비전  |
-| `PREV`      | BASE - 1                       |
+| `PREV`      | COMMITTED - 1                  |
 | `COMMITTED` | 해당 파일의 마지막 커밋 리비전 |
 | `r42`       | 리비전 번호 직접 지정          |
 
@@ -116,9 +116,6 @@ svn up -r 120
 
 # 특정 파일만 업데이트
 svn up src/main.py
-
-# 업데이트 없이 Working Copy 리비전만 변경 (pegrev)
-svn up -r BASE        # 로컬 변경 유지하며 서버 정보만 갱신
 ```
 
 ### `svn info` — 현재 상태 확인
@@ -128,7 +125,7 @@ svn info
 # URL: https://svn.example.com/repos/myrepo/trunk
 # Revision: 203
 # Last Changed Rev: 201
-# Last Changed Author: sjyun
+# Last Changed Author: alice
 
 svn info --show-item revision   # 리비전 번호만 출력
 ```
@@ -319,7 +316,7 @@ svn copy https://svn.example.com/repos/myrepo/trunk \
          -m "태그: v1.0.0 릴리스"
 ```
 
-🟡 태그 디렉토리는 관례상 수정하지 않습니다. SVN은 강제 방지 기능이 없으므로 운영 규칙으로 관리합니다.
+🟡 태그 디렉토리는 관례상 수정하지 않습니다. SVN에는 태그 전용 보호 기능이 없으므로 authz 권한(12절 예시)이나 pre-commit hook으로 쓰기를 제한합니다.
 
 ### 브랜치 전환 (switch)
 
@@ -371,8 +368,8 @@ svn ci -m "merge: feature-login 병합"
 ### 특정 리비전 cherry-pick
 
 ```bash
-# 리비전 r205 하나만 trunk로 병합
-svn merge -c 205 https://svn.example.com/repos/myrepo/trunk
+# 리비전 r205 하나만 trunk로 병합 (trunk Working Copy에서 실행)
+svn merge -c 205 https://svn.example.com/repos/myrepo/branches/feature-login
 
 # 리비전 범위 병합
 svn merge -r 200:210 https://svn.example.com/repos/myrepo/branches/feature-login
@@ -452,8 +449,8 @@ svn resolve --accept base main.py
 ### 트리 충돌 (tree conflict)
 
 ```bash
-# 트리 충돌 확인
-svn status | grep "^C"
+# 트리 충돌 확인 (7번째 열의 C)
+svn status | grep '^......C'
 
 # 상세 확인
 svn info main.py | grep -i conflict
@@ -526,7 +523,7 @@ svn propset svn:keywords "Rev Date Author" main.py
 ```python
 # $Rev: 205 $
 # $Date: 2026-07-29 14:30:00 +0900 $
-# $Author: sjyun $
+# $Author: alice $
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -771,6 +768,6 @@ echo "Build revision: ${REVISION}"
 
 **작성일**: 2026-07-29
 
-**마지막 업데이트**: 2026-07-29
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

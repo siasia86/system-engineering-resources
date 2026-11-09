@@ -71,16 +71,16 @@ AWS Step Functions는 AWS 서비스와 Lambda 등을 **시각적 워크플로우
 
 ## 3. 상태 유형
 
-| 상태 유형  | 설명                                   | 주요 필드                    |
-|------------|----------------------------------------|------------------------------|
-| `Task`     | Lambda, ECS, SNS 등 작업 실행          | `Resource`, `TimeoutSeconds` |
-| `Choice`   | 조건 분기                              | `Choices`, `Default`         |
-| `Parallel` | 여러 브랜치 병렬 실행                  | `Branches`                   |
-| `Map`      | 배열 항목별 반복 실행                  | `Iterator`, `MaxConcurrency` |
-| `Wait`     | 지정 시간 또는 타임스탬프까지 대기     | `Seconds`, `Timestamp`       |
-| `Pass`     | 입력을 출력으로 그대로 전달 (디버깅용) | `Result`, `ResultPath`       |
-| `Succeed`  | 성공 종료                              | -                            |
-| `Fail`     | 실패 종료                              | `Error`, `Cause`             |
+| 상태 유형  | 설명                                   | 주요 필드                         |
+|------------|----------------------------------------|-----------------------------------|
+| `Task`     | Lambda, ECS, SNS 등 작업 실행          | `Resource`, `TimeoutSeconds`      |
+| `Choice`   | 조건 분기                              | `Choices`, `Default`              |
+| `Parallel` | 여러 브랜치 병렬 실행                  | `Branches`                        |
+| `Map`      | 배열 항목별 반복 실행                  | `ItemProcessor`, `MaxConcurrency` |
+| `Wait`     | 지정 시간 또는 타임스탬프까지 대기     | `Seconds`, `Timestamp`            |
+| `Pass`     | 입력을 출력으로 그대로 전달 (디버깅용) | `Result`, `ResultPath`            |
+| `Succeed`  | 성공 종료                              | -                                 |
+| `Fail`     | 실패 종료                              | `Error`, `Cause`                  |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -135,7 +135,7 @@ AWS Step Functions는 AWS 서비스와 Lambda 등을 **시각적 워크플로우
   "Type": "Map",
   "ItemsPath": "$.items",
   "MaxConcurrency": 5,
-  "Iterator": {
+  "ItemProcessor": {
     "StartAt": "ProcessItem",
     "States": {
       "ProcessItem": {
@@ -257,10 +257,12 @@ aws stepfunctions describe-execution \
 
 ## 8. 비용
 
-| 항목      | Standard                  | Express                               |
-|-----------|---------------------------|---------------------------------------|
-| 무료 티어 | 월 4,000회 상태 전환      | 월 1,000회 실행, 100초                |
-| 과금 단위 | 상태 전환 1만 회당 $0.025 | 실행 100만 회당 $1 + GB-초당 $0.00001 |
+| 항목      | Standard                   | Express                                                |
+|-----------|----------------------------|--------------------------------------------------------|
+| 무료 티어 | 월 4,000회 상태 전환       | 없음                                                   |
+| 과금 단위 | 상태 전환 1,000회당 $0.025 | 요청 100만 회당 $1 + GB-시간당 $0.06(첫 1,000 GB-시간) |
+
+> 미국 동부(버지니아 북부) 기준 요금입니다. 리전별 요금은 공식 요금 페이지에서 확인합니다.
 
 > Express는 고빈도 단기 워크플로우에서 Standard 대비 90% 이상 비용 절감 가능.
 
@@ -295,7 +297,7 @@ Pass 상태로 중간 데이터 확인:
 }
 ```
 
-`$.Execution.Name`, `$.Execution.StartTime` 등 컨텍스트 객체 활용 가능.
+`$$.Execution.Name`, `$$.Execution.StartTime` 등 컨텍스트 객체(`$$.`로 접근) 활용 가능.
 
 ---
 
@@ -328,7 +330,7 @@ Pass 상태로 중간 데이터 확인:
       "Type": "Map",
       "ItemsPath": "$.files",
       "MaxConcurrency": 10,
-      "Iterator": {
+      "ItemProcessor": {
         "StartAt": "ProcessSingleFile",
         "States": {
           "ProcessSingleFile": {
@@ -464,10 +466,12 @@ def send_callback(task_token: str, approved: bool):
 ### AWS CDK (TypeScript)
 
 ```bash
-npm install @aws-cdk/aws-stepfunctions @aws-cdk/aws-stepfunctions-tasks
+npm install aws-cdk-lib constructs
 ```
 
 ```typescript
+import * as cdk from 'aws-cdk-lib';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -499,7 +503,7 @@ processTask.addCatch(errorHandler, {
 
 // State Machine 정의
 const stateMachine = new sfn.StateMachine(this, 'MyStateMachine', {
-  definition: processTask.next(choice),
+  definitionBody: sfn.DefinitionBody.fromChainable(processTask.next(choice)),
   timeout: cdk.Duration.hours(1),
   tracingEnabled: true,   // X-Ray
   logs: {
@@ -572,6 +576,8 @@ resource "aws_iam_role" "sfn_role" {
 
 AWS 비용 없이 로컬에서 State Machine을 실행합니다.
 
+🟡 AWS 문서 기준 Step Functions Local은 기능 동등성을 제공하지 않으며 지원되지 않습니다(unsupported). 배포 전 단위 시험에는 TestState API를 우선 검토합니다. Step Functions Local은 Map의 `ItemProcessor`를 지원하지 않아 `Iterator`를 사용해야 합니다.
+
 ```bash
 # Docker로 실행
 docker run -p 8083:8083   -e AWS_DEFAULT_REGION=ap-northeast-1   -e AWS_ACCESS_KEY_ID=local   -e AWS_SECRET_ACCESS_KEY=local   amazon/aws-stepfunctions-local
@@ -598,21 +604,25 @@ Step Functions Local에서 Lambda를 Mock으로 대체합니다.
   "StateMachines": {
     "TestMachine": {
       "TestCases": {
-        "HappyPath": {
-          "ProcessTask": {
-            "Return": {
-              "StatusCode": 200,
-              "Payload": { "result": "success" }
-            }
-          }
-        },
-        "ErrorPath": {
-          "ProcessTask": {
-            "Throw": {
-              "Error": "Lambda.ServiceException",
-              "Cause": "Service unavailable"
-            }
-          }
+        "HappyPath": { "ProcessTask": "MockedProcessSuccess" },
+        "ErrorPath": { "ProcessTask": "MockedProcessError" }
+      }
+    }
+  },
+  "MockedResponses": {
+    "MockedProcessSuccess": {
+      "0": {
+        "Return": {
+          "StatusCode": 200,
+          "Payload": { "result": "success" }
+        }
+      }
+    },
+    "MockedProcessError": {
+      "0": {
+        "Throw": {
+          "Error": "Lambda.ServiceException",
+          "Cause": "Service unavailable"
         }
       }
     }
@@ -628,7 +638,7 @@ docker run -p 8083:8083   -e SFN_MOCK_CONFIG=/MockConfigFile.json   -v $(pwd)/Mo
 aws stepfunctions start-execution   --endpoint-url http://localhost:8083   --state-machine-arn "arn:aws:states:ap-northeast-1:123456789:stateMachine:TestMachine#HappyPath"   --input '{}'
 ```
 
-### ASL 문법 검증 (AWS Toolkit)
+### ASL 문법 검증 (AWS CLI)
 
 ```bash
 # AWS CLI로 정의 유효성 검사 (실제 배포 없이)
@@ -643,6 +653,9 @@ aws stepfunctions validate-state-machine-definition   --definition file://my_sta
 
 - AWS Step Functions Documentation: [docs.aws.amazon.com](https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html) — ★★★☆☆
 - AWS Step Functions Developer Guide: [State Machine Concepts](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html) — ★★★☆☆
+- AWS Step Functions 요금: [aws.amazon.com/step-functions/pricing](https://aws.amazon.com/step-functions/pricing/) — ★★★☆☆
+- Inline Map 상태: [Using Map state in Inline mode](https://docs.aws.amazon.com/step-functions/latest/dg/state-map-inline.html) — ★★★☆☆
+- Step Functions Local mock 설정: [Using mocked service integrations](https://docs.aws.amazon.com/step-functions/latest/dg/sfn-local-test-sm-exec.html) — ★★★☆☆
 
 ---
 
@@ -659,6 +672,6 @@ aws stepfunctions validate-state-machine-definition   --definition file://my_sta
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-04-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

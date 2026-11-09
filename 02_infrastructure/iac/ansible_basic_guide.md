@@ -69,7 +69,7 @@ forks = 10
 roles_path = /opt/ansible/roles
 interpreter_python = /usr/bin/python3
 display_args_to_stdout = True
-callback_whitelist = timer
+callbacks_enabled = timer
 
 [privilege_escalation]
 become = True
@@ -85,9 +85,9 @@ ssh_args = -o ControlMaster=auto -o ControlPersist=60s
 | 설정                   | 설명                                     |
 |------------------------|------------------------------------------|
 | forks                  | 동시 접속 수 (기본 5, 서버 많으면 20~50) |
-| pipelining             | SSH 연결 재사용으로 속도 향상            |
+| pipelining             | 모듈 파일 전송 생략으로 SSH 작업 감소    |
 | host_key_checking      | 최초 접속 시 fingerprint 확인 비활성화   |
-| callback_whitelist     | timer 추가 시 실행 시간 표시             |
+| callbacks_enabled      | timer 추가 시 실행 시간 표시             |
 | display_args_to_stdout | 실행 인자를 로그에 기록                  |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -1103,7 +1103,7 @@ ansible-playbook -i inventory/aws_ec2.yml site.yml --limit role_webserver
 
 ```ini
 [defaults]
-inventory = inventory/aws_ec2.yml   # 기본 인벤토리로 지정
+inventory = inventory/aws_ec2.yml   ; 기본 인벤토리로 지정 (줄 안 주석은 ; 만 허용)
 ```
 
 ### 정적 + 동적 혼합
@@ -1213,12 +1213,12 @@ ansible-lint --profile production playbook.yml
 
 엄격도 순서: `min` → `basic` → `moderate` → `safety` → `shared` → `production`
 
-| Profile    | 주요 검사 항목                           |
-|------------|------------------------------------------|
-| min        | 문법 오류, FQCN                          |
-| basic      | name[casing], no-changed-when, yaml 형식 |
-| moderate   | 변수명 규칙, task 구조                   |
-| production | 전체 규칙 (CI/CD 권장)                   |
+| Profile    | 주요 검사 항목                         |
+|------------|----------------------------------------|
+| min        | 문법 오류 (syntax-check, parser-error) |
+| basic      | yaml 형식, var-naming, key-order       |
+| moderate   | name[casing], name[template]           |
+| production | 전체 규칙, fqcn 포함 (CI/CD 권장)      |
 
 ```bash
 # 현재 파일이 어느 profile까지 통과하는지 확인
@@ -1281,6 +1281,8 @@ skip_list:
 
 - Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/) — ★★★☆☆
 - Ansible Best Practices: [docs.ansible.com/tips_tricks](https://docs.ansible.com/ansible/latest/tips_tricks/ansible_tips_tricks.html) — ★★★☆☆
+- Ansible Configuration Settings: [docs.ansible.com/config](https://docs.ansible.com/ansible/latest/reference_appendices/config.html) — ★★★☆☆
+- ansible-lint Profiles: [docs.ansible.com/projects/lint/profiles](https://docs.ansible.com/projects/lint/profiles/) — ★★★☆☆
 
 ---
 
@@ -1297,6 +1299,6 @@ skip_list:
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-05-22
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

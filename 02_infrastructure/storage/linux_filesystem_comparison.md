@@ -67,19 +67,19 @@ Filesystem
 
 ### 기능 비교
 
-| 항목                | ext4                 | XFS                   | Btrfs              | ZFS/OpenZFS                |
-|---------------------|----------------------|-----------------------|--------------------|----------------------------|
-| 기본 설계           | 저널링               | 저널링                | COW                | COW + Storage Pool         |
-| 데이터 checksum     | 파일시스템 범위 제한 | 기본 설계의 핵심 아님 | 지원               | 지원                       |
-| 메타데이터 checksum | 지원                 | 지원 범위 확인        | 지원               | 지원                       |
-| Native Snapshot     | 외부 계층 필요       | 외부 계층 필요        | Subvolume Snapshot | Dataset Snapshot           |
-| 압축                | 외부 계층            | 외부 계층             | 지원               | 지원                       |
-| 암호화              | 계층별 구성          | 계층별 구성           | 구성 방식 확인     | 지원                       |
-| 다중 디스크         | RAID/LVM 별도        | RAID/LVM 별도         | Multi-device       | Pool·Mirror·RAIDZ          |
-| 온라인 확장         | 지원                 | 지원                  | 지원               | Pool·vdev 설계에 따라 다름 |
-| 온라인 축소         | 제한적·도구별 확인   | 미지원                | 지원               | 구성별 확인                |
-| 운영 생태계         | 매우 넓음            | 매우 넓음             | 넓음               | OpenZFS 생태계             |
-| 보수적 기본 선택    | ✅                   | ✅                    | 조건부             | 조건부                     |
+| 항목                | ext4                | XFS                | Btrfs              | ZFS/OpenZFS                |
+|---------------------|---------------------|--------------------|--------------------|----------------------------|
+| 기본 설계           | 저널링              | 저널링             | COW                | COW + Storage Pool         |
+| 데이터 checksum     | 미지원              | 미지원             | 지원               | 지원                       |
+| 메타데이터 checksum | 지원                | 지원 (v5 형식 CRC) | 지원               | 지원                       |
+| Native Snapshot     | 외부 계층 필요      | 외부 계층 필요     | Subvolume Snapshot | Dataset Snapshot           |
+| 압축                | 외부 계층           | 외부 계층          | 지원               | 지원                       |
+| 암호화              | 계층별 구성         | 계층별 구성        | 구성 방식 확인     | 지원                       |
+| 다중 디스크         | RAID/LVM 별도       | RAID/LVM 별도      | Multi-device       | Pool·Mirror·RAIDZ          |
+| 온라인 확장         | 지원                | 지원               | 지원               | Pool·vdev 설계에 따라 다름 |
+| 온라인 축소         | 미지원 (오프라인만) | 미지원             | 지원               | 구성별 확인                |
+| 운영 생태계         | 매우 넓음           | 매우 넓음          | 넓음               | OpenZFS 생태계             |
+| 보수적 기본 선택    | ✅                  | ✅                 | 조건부             | 조건부                     |
 
 `ZFS` 항목은 Linux의 OpenZFS를 포함한 범주입니다. 배포판·커널·OpenZFS 모듈 버전에 따라 설치와 운영 방식이 달라질 수 있습니다.
 
@@ -270,7 +270,7 @@ blkid
 findmnt
 ```
 
-다음 작업은 대상 디스크의 기존 데이터를 파괴할 수 있습니다.
+다음 작업은 대상 디스크의 기존 데이터를 파괴하거나 되돌리기 어려운 변경을 만들 수 있습니다(`xfs_growfs`는 데이터를 지우지 않지만 XFS는 축소를 지원하지 않으므로 확장 후 되돌릴 수 없습니다).
 
 ```text
 mkfs.*
@@ -415,8 +415,10 @@ RPO(Recovery Point Objective)는 허용 가능한 데이터 손실 시점이고,
 
 ## 참고 자료
 
-- Linux Filesystem Kernel Documentation: [docs.kernel.org/filesystems](https://docs.kernel.org/filesystems/) — ★★★★☆
-- OpenZFS Project: [openzfs.org](https://openzfs.org/) — ★★★★☆
+- Linux Filesystem Kernel Documentation: [docs.kernel.org/filesystems](https://docs.kernel.org/filesystems/) — ★★★☆☆
+- XFS Self Describing Metadata (CRC): [docs.kernel.org/filesystems/xfs](https://docs.kernel.org/filesystems/xfs/xfs-self-describing-metadata.html) — ★★★☆☆
+- resize2fs(8) (마운트 상태에서는 확장만 지원): [man7.org](https://man7.org/linux/man-pages/man8/resize2fs.8.html) — ★★★☆☆
+- OpenZFS Project: [openzfs.org](https://openzfs.org/) — ★★★☆☆
 - OpenZFS on GitHub: [github.com/openzfs/zfs](https://github.com/openzfs/zfs) — ★★★☆☆
 - [Linux Filesystem 공식 참조 노트](../../_reference/linux_filesystem_official_notes.md)
 - [OpenZFS 공식 참조 노트](../../_reference/openzfs_official_notes.md)
@@ -437,6 +439,6 @@ RPO(Recovery Point Objective)는 허용 가능한 데이터 손실 시점이고,
 
 **작성일**: 2026-09-21
 
-**마지막 업데이트**: 2026-09-21
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

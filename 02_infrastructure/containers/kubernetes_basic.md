@@ -696,7 +696,7 @@ kubectl debug -it my-pod --image=busybox --target=my-app
 
 - Kubernetes Documentation: [kubernetes.io/docs](https://kubernetes.io/docs/home/) — ★★★☆☆
 - kubectl Cheat Sheet: [kubernetes.io/docs/reference/kubectl/cheatsheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/) — ★★★☆☆
-- Kubernetes Patterns: [k8spatterns.io](https://k8spatterns.io/) — ★★☆☆☆
+- Kubernetes Patterns: [k8spatterns.com](https://k8spatterns.com/) — ★★★★☆
 
 ---
 
@@ -713,6 +713,6 @@ kubectl debug -it my-pod --image=busybox --target=my-app
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-05-10
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

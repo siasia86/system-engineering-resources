@@ -217,11 +217,16 @@ sudo systemctl restart httpd
 # /etc/apache2/mods-available/mpm_prefork.conf (Ubuntu)
 # /etc/httpd/conf.modules.d/00-mpm.conf (RHEL)
 <IfModule mpm_prefork_module>
-    StartServers          5       # 시작 시 생성할 프로세스 수
-    MinSpareServers       5       # 최소 유휴 프로세스 수
-    MaxSpareServers       10      # 최대 유휴 프로세스 수
-    MaxRequestWorkers     150     # 최대 동시 요청 수 (= 최대 프로세스 수)
-    MaxConnectionsPerChild 0      # 프로세스당 최대 처리 요청 수 (0=무제한)
+    # 시작 시 생성할 프로세스 수
+    StartServers          5
+    # 최소 유휴 프로세스 수
+    MinSpareServers       5
+    # 최대 유휴 프로세스 수
+    MaxSpareServers       10
+    # 최대 동시 요청 수 (= 최대 프로세스 수)
+    MaxRequestWorkers     150
+    # 프로세스당 최대 처리 연결 수 (0=무제한)
+    MaxConnectionsPerChild 0
 </IfModule>
 ```
 
@@ -229,12 +234,18 @@ sudo systemctl restart httpd
 
 ```apache
 <IfModule mpm_worker_module>
-    StartServers          2       # 시작 시 생성할 프로세스 수
-    MinSpareThreads       25      # 최소 유휴 스레드 수
-    MaxSpareThreads       75      # 최대 유휴 스레드 수
-    ThreadLimit           64      # 프로세스당 최대 스레드 수 (재시작 없이 변경 불가)
-    ThreadsPerChild       25      # 프로세스당 스레드 수
-    MaxRequestWorkers     150     # 최대 동시 요청 수 (= 프로세스 수 × ThreadsPerChild)
+    # 시작 시 생성할 프로세스 수
+    StartServers          2
+    # 최소 유휴 스레드 수
+    MinSpareThreads       25
+    # 최대 유휴 스레드 수
+    MaxSpareThreads       75
+    # 프로세스당 최대 스레드 수 (재시작 없이 변경 불가)
+    ThreadLimit           64
+    # 프로세스당 스레드 수
+    ThreadsPerChild       25
+    # 최대 동시 요청 수 (= 프로세스 수 × ThreadsPerChild)
+    MaxRequestWorkers     150
     MaxConnectionsPerChild 0
 </IfModule>
 ```
@@ -248,7 +259,8 @@ sudo systemctl restart httpd
     MaxSpareThreads       75
     ThreadLimit           64
     ThreadsPerChild       25
-    MaxRequestWorkers     150     # 최대 동시 요청 수
+    # 최대 동시 요청 수
+    MaxRequestWorkers     150
     MaxConnectionsPerChild 0
     # event MPM 전용: Keep-Alive 연결을 리스너 스레드가 처리
     # AsyncRequestWorkerFactor 2  # 비동기 연결 배수 (기본 2)
@@ -264,7 +276,7 @@ prefork:
 
 worker / event:
   MaxRequestWorkers = 프로세스 수 × ThreadsPerChild
-  예) StartServers=4, ThreadsPerChild=25 → 100
+  예) ServerLimit=4, ThreadsPerChild=25 → 100
 ```
 
 ```bash
@@ -312,15 +324,18 @@ sudo systemctl restart apache2
 
 ```apache
 # /etc/apache2/apache2.conf
-ServerName localhost          # FQDN 경고 제거
+# FQDN 경고 제거
+ServerName localhost
 Timeout 300
 KeepAlive On
 MaxKeepAliveRequests 100
 KeepAliveTimeout 5
 
 # 보안: 서버 정보 노출 최소화
-ServerTokens Prod             # "Apache" 만 표시
-ServerSignature Off           # 에러 페이지 서버 정보 제거
+# "Apache" 만 표시
+ServerTokens Prod
+# 에러 페이지 서버 정보 제거
+ServerSignature Off
 
 # 디렉토리 기본 설정
 <Directory /var/www/>
@@ -364,7 +379,8 @@ sudo vi /etc/apache2/sites-available/example.com.conf
 
     <Directory /var/www/example.com>
         Options -Indexes +FollowSymLinks
-        AllowOverride All          # .htaccess 허용
+        # .htaccess 허용
+        AllowOverride All
         Require all granted
     </Directory>
 
@@ -444,9 +460,10 @@ sudo certbot renew --dry-run
     SSLCertificateFile    /etc/letsencrypt/live/example.com/fullchain.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem
 
+    # Mozilla Intermediate 6.0 (ssl-config.mozilla.org)
     SSLProtocol           all -SSLv3 -TLSv1 -TLSv1.1
-    SSLCipherSuite        HIGH:!aNULL:!MD5
-    SSLHonorCipherOrder   on
+    SSLCipherSuite        ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305
+    SSLHonorCipherOrder   off
 
     Header always set Strict-Transport-Security "max-age=31536000"
 
@@ -470,7 +487,8 @@ sudo a2enmod status
 # /etc/apache2/conf-available/server-status.conf
 <Location /server-status>
     SetHandler server-status
-    Require ip 127.0.0.1 10.0.1.0/24   # 내부 IP만 허용
+    # 내부 IP만 허용
+    Require ip 127.0.0.1 10.0.1.0/24
 </Location>
 ```
 
@@ -505,7 +523,7 @@ sudo a2enmod headers
 # /etc/apache2/conf-available/security-headers.conf
 Header always set X-Content-Type-Options "nosniff"
 Header always set X-Frame-Options "SAMEORIGIN"
-Header always set X-XSS-Protection "1; mode=block"
+Header always set X-XSS-Protection "0"
 Header always set Referrer-Policy "strict-origin-when-cross-origin"
 ```
 
@@ -560,6 +578,10 @@ apache2ctl status 2>/dev/null || curl -s http://localhost/server-status?auto
 - Apache Documentation: [httpd.apache.org/docs](https://httpd.apache.org/docs/2.4/) — ★★★☆☆
 - Apache MPM: [httpd.apache.org/docs/2.4/mpm](https://httpd.apache.org/docs/2.4/mpm.html) — ★★★☆☆
 - Apache SSL/TLS: [httpd.apache.org/docs/2.4/ssl](https://httpd.apache.org/docs/2.4/ssl/ssl_howto.html) — ★★★☆☆
+- Apache 설정 파일 문법(지시어 줄에 주석 불가): [httpd.apache.org/docs/2.4/configuring.html](https://httpd.apache.org/docs/2.4/configuring.html) — ★★★☆☆
+- Apache MaxRequestWorkers(ServerLimit × ThreadsPerChild): [httpd.apache.org/docs/2.4/mod/mpm_common.html](https://httpd.apache.org/docs/2.4/mod/mpm_common.html) — ★★★☆☆
+- Mozilla 서버 TLS 권장 6.0(intermediate): [ssl-config.mozilla.org/guidelines/6.0.json](https://ssl-config.mozilla.org/guidelines/6.0.json) — ★★★☆☆
+- X-XSS-Protection 보안 고려: [developer.mozilla.org](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-XSS-Protection) — ★★★☆☆
 
 ---
 
@@ -576,6 +598,6 @@ apache2ctl status 2>/dev/null || curl -s http://localhost/server-status?auto
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

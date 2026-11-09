@@ -141,9 +141,9 @@ end
 | OS                  | Box 이름                                      |
 |---------------------|-----------------------------------------------|
 | Ubuntu 22.04        | `ubuntu/jammy64`                              |
-| Ubuntu 24.04        | `ubuntu/noble64`                              |
+| Ubuntu 24.04        | `bento/ubuntu-24.04`                          |
 | Rocky Linux 9       | `rockylinux/9`                                |
-| Amazon Linux 2      | `bento/amazonlinux-2`                         |
+| Amazon Linux 2023   | `bento/amazonlinux-2023`                      |
 | Windows Server 2022 | `gusztavvargadr/windows-server-2022-standard` |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -191,10 +191,10 @@ Ansible 멀티 OS 테스트 환경 예시입니다.
 Vagrant.configure("2") do |config|
 
   {
-    "ubuntu22"  => { box: "ubuntu/jammy64",                              ip: "192.168.56.11" },
-    "ubuntu24"  => { box: "ubuntu/noble64",                              ip: "192.168.56.12" },
+    "ubuntu24"  => { box: "bento/ubuntu-24.04",                          ip: "192.168.56.12" },
     "rocky9"    => { box: "rockylinux/9",                                ip: "192.168.56.13" },
     "win2022"   => { box: "gusztavvargadr/windows-server-2022-standard", ip: "192.168.56.20" },
+    "ubuntu22"  => { box: "ubuntu/jammy64",                              ip: "192.168.56.11" },  # 마지막에 정의
   }.each do |name, cfg|
     config.vm.define name do |node|
       node.vm.box      = cfg[:box]
@@ -238,7 +238,7 @@ vagrant destroy -f          # 전체 삭제
 ## 9. Tips
 
 ```bash
-# VM 스냅샷 (VirtualBox 한정)
+# VM 스냅샷 (provider 지원 필요 — VirtualBox, Hyper-V 등)
 vagrant snapshot save   baseline
 vagrant snapshot restore baseline
 vagrant snapshot list
@@ -351,6 +351,9 @@ ansible_winrm_scheme=http
 
 - Vagrant Documentation: [developer.hashicorp.com/vagrant/docs](https://developer.hashicorp.com/vagrant/docs) — ★★★☆☆
 - Vagrant Cloud (Box 검색): [portal.cloud.hashicorp.com/vagrant/discover](https://portal.cloud.hashicorp.com/vagrant/discover) — ★★★☆☆
+- Vagrant snapshot 명령: [developer.hashicorp.com/vagrant/docs/cli/snapshot](https://developer.hashicorp.com/vagrant/docs/cli/snapshot) — ★★★☆☆
+- Vagrant Ansible Provisioner (병렬 실행 예시): [developer.hashicorp.com/vagrant/docs/provisioning/ansible](https://developer.hashicorp.com/vagrant/docs/provisioning/ansible) — ★★★☆☆
+- Amazon Linux 2 FAQ (2026-06-30 지원 종료): [aws.amazon.com/amazon-linux-2/faqs](https://aws.amazon.com/amazon-linux-2/faqs/) — ★★★☆☆
 
 ---
 
@@ -367,6 +370,6 @@ ansible_winrm_scheme=http
 
 **작성일**: 2026-05-15
 
-**마지막 업데이트**: 2026-05-15
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

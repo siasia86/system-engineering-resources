@@ -178,7 +178,7 @@ echo '.vault_pass' >> .gitignore
 echo '*.vault_pass' >> .gitignore
 ```
 
-🟡 `vault_password_file` 경로는 절대경로 또는 `~` 사용. 상대경로는 실행 위치에 따라 달라집니다.
+🟡 `vault_password_file` 경로는 절대경로 또는 `~` 사용. `ansible.cfg`의 상대경로는 그 `ansible.cfg` 파일 위치 기준이고, `--vault-password-file`·환경변수의 상대경로는 실행 위치 기준이라 혼동하기 쉽습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -302,7 +302,7 @@ ansible-playbook site.yml --syntax-check
 # (vault 변수 참조 시 복호화 필요 → --ask-vault-pass 추가)
 
 # 특정 변수값 확인
-ansible localhost -m debug -a "var=db_password" \
+ansible localhost -m debug -a "var=vault_db_password" \
   --vault-password-file ~/.vault_pass \
   -e "@group_vars/all/vault.yml"
 ```
@@ -314,6 +314,7 @@ ansible localhost -m debug -a "var=db_password" \
 ## 참고 자료
 
 - Ansible Vault Documentation: [Ansible Vault](https://docs.ansible.com/ansible/latest/vault_guide/index.html) — ★★★☆☆
+- Ansible Configuration Settings (상대경로 기준): [docs.ansible.com](https://docs.ansible.com/ansible/latest/reference_appendices/config.html) — ★★★☆☆
 
 ---
 
@@ -330,6 +331,6 @@ ansible localhost -m debug -a "var=db_password" \
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-04-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

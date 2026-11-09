@@ -94,8 +94,9 @@ molecule init scenario
 ### 기존 role에 시나리오 추가
 
 ```bash
-molecule init scenario --driver-name docker
-molecule init scenario vagrant --driver-name vagrant
+# Molecule 26.x에는 --driver-name 옵션이 없음 — 생성 후 molecule.yml에서 driver 지정
+molecule init scenario
+molecule init scenario vagrant
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -111,7 +112,7 @@ molecule converge       # role 적용 (인스턴스 유지)
 molecule verify         # 검증만 실행
 molecule destroy        # 인스턴스 삭제
 molecule login          # 인스턴스 접속 (디버깅)
-molecule lint           # 린트 검사
+molecule syntax         # playbook 문법 검사 (lint 명령은 현재 없음)
 molecule list           # 인스턴스 상태 목록
 ```
 
@@ -275,13 +276,13 @@ molecule login -h ubuntu22
 molecule destroy
 
 # 멱등성 검사만
-molecule idempotency
+molecule idempotence
 
-# 특정 태그만 실행
-MOLECULE_ANSIBLE_ARGS="--tags install" molecule converge
+# 특정 태그만 실행 (-- 뒤 인자는 ansible-playbook에 전달)
+molecule converge -- --tags install
 ```
 
-🟡 `molecule test`는 실패 시 `destroy`를 건너뜁니다. 인스턴스가 남아있으면 `molecule destroy`로 수동 삭제합니다.
+🟡 `molecule test`는 기본값(`--destroy=always`)에서 실패해도 `cleanup`·`destroy`를 실행합니다. 실패한 인스턴스를 남겨 디버깅하려면 `molecule test --destroy=never`를 사용하고, 끝나면 `molecule destroy`로 삭제합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -382,6 +383,7 @@ jobs:
 ## 참고 자료
 
 - Molecule Documentation: [ansible.readthedocs.io/projects/molecule](https://ansible.readthedocs.io/projects/molecule/) — ★★★☆☆
+- Molecule Usage (명령·인자 전달): [docs.ansible.com/projects/molecule/usage](https://docs.ansible.com/projects/molecule/usage/) — ★★★☆☆
 - geerlingguy Docker images: [github.com/geerlingguy/docker-*-ansible](https://github.com/geerlingguy) — ★★☆☆☆
 - [vagrant.md](./vagrant.md)
 - [docker.md](../../02_infrastructure/containers/docker.md)
@@ -401,6 +403,6 @@ jobs:
 
 **작성일**: 2026-05-15
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

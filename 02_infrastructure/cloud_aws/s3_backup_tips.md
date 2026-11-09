@@ -58,7 +58,7 @@ aws s3api put-bucket-lifecycle-configuration \
 ### Multipart Upload
 
 ```bash
-# 100MB+ 파일은 자동 분할 (기본값)
+# 기본값: 8MB 이상 파일을 8MB 파트로 자동 분할
 # 파트 크기 조정: 대용량 파일 시 파트 수 제한(10,000) 대비
 aws configure set s3.multipart_threshold 100MB
 aws configure set s3.multipart_chunksize 64MB
@@ -80,18 +80,15 @@ aws ec2 create-vpc-endpoint \
   --route-table-ids <RTB-ID>
 
 # 비용 비교 (1TB 전송/월)
-# NAT Gateway: $45 (처리 비용) + $45 (데이터 비용) = $90
+# NAT Gateway: 약 $59 (서울 처리 비용 $0.059/GB, 시간당 요금 별도, 같은 리전 S3 전송 요금은 없음)
 # Gateway Endpoint: $0
 ```
 
 ### 병렬 전송 설정
 
 ```bash
-# 동시 업로드 수 (기본 10)
+# 동시 요청 수 (업로드·다운로드 공통 설정, 기본 10)
 aws configure set s3.max_concurrent_requests 20
-
-# 동시 다운로드 수
-aws configure set s3.max_concurrent_requests 30
 
 # sync 시 스레드 수 증가 효과
 # 파일 수 많고 개별 크기 작을 때 효과적
@@ -268,10 +265,10 @@ aws cloudwatch get-metric-statistics \
   --output table
 ```
 
-### EventBridge 알림 (업로드 실패 감지)
+### EventBridge 알림 (업로드 이벤트 감지)
 
 ```bash
-# S3 이벤트 → SNS 알림 (PutObject 실패 등)
+# S3 이벤트를 EventBridge로 전송 → 규칙에서 SNS 알림 (객체 생성 등 성공 이벤트만 발생, 실패한 업로드는 이벤트 없음)
 aws s3api put-bucket-notification-configuration \
   --bucket my-backup-bucket \
   --notification-configuration '{
@@ -409,7 +406,7 @@ UPLOAD_EXTENSIONS = [".tar.zst"]
 |---------------------|--------------------------------------------------|
 | 백업 중 업로드 금지 | .bak/.sql 작성 완료 후 업로드 (stability wait)   |
 | 파일 잠금 체크      | 프로세스가 사용 중인 파일 skip                   |
-| 대용량 단일 파일    | 5TB S3 제한, Multipart 필수                      |
+| 대용량 단일 파일    | 단일 PUT 5GB, 객체 최대 50TB, Multipart 필수     |
 | 복원 테스트         | 월 1회 다운로드 → 실제 복원 → 데이터 정합성 확인 |
 
 ### 무결성 검증 방법 (DB별)
@@ -519,6 +516,10 @@ aws ec2 stop-instances --instance-ids i-verify-server
 
 - AWS S3 User Guide: [docs.aws.amazon.com/AmazonS3/latest/userguide](https://docs.aws.amazon.com/AmazonS3/latest/userguide/) — ★★★☆☆
 - AWS S3 Pricing: [aws.amazon.com/s3/pricing](https://aws.amazon.com/s3/pricing/) — ★★★☆☆
+- AWS CLI S3 설정: [s3-config](https://docs.aws.amazon.com/cli/latest/topic/s3-config.html) — ★★★☆☆
+- AWS S3 객체 업로드 한도: [upload-objects](https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html) — ★★★☆☆
+- AWS S3 EventBridge 이벤트 유형: [EventBridge](https://docs.aws.amazon.com/AmazonS3/latest/userguide/EventBridge.html) — ★★★☆☆
+- Amazon VPC 요금(NAT Gateway): [aws.amazon.com/vpc/pricing](https://aws.amazon.com/vpc/pricing/) — ★★★☆☆
 - [s3_object_lock.md](s3_object_lock.md)
 - s3_cross_account_backup.md (private repo: system-engineering-resources_private, `99_archive/03_aws_jobs/01_AWS_jobs/`)
 
@@ -537,6 +538,6 @@ aws ec2 stop-instances --instance-ids i-verify-server
 
 **작성일**: 2026-07-01
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

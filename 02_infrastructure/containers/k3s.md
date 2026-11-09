@@ -27,7 +27,7 @@ k3s는 Rancher Labs(SUSE)가 개발한 경량 Kubernetes 배포판. 단일 바�
 ```
 
 - 표준 Kubernetes API 100% 호환
-- 메모리 요구사항: 512MB RAM (k8s 대비 약 50%)
+- 최소 사양: 서버 2코어·2GB RAM, 에이전트 1코어·512MB RAM
 - 제거된 컴포넌트: 클라우드 프로바이더 드라이버, 레거시 API, alpha 기능
 
 [⬆ 목차로 돌아가기](#목차)
@@ -352,8 +352,8 @@ sudo k3s etcd-snapshot save --name k3s-snapshot
 ## 참고 자료
 
 - k3s Documentation: [docs.k3s.io](https://docs.k3s.io/) — ★★★☆☆
-- k3s GitHub: [github.com/k3s-io/k3s](https://github.com/k3s-io/k3s) — ★★☆☆☆
-- Rancher k3s: [rancher.com/docs/k3s](https://www.rancher.com/docs/k3s/latest/en/) — ★★☆☆☆
+- k3s GitHub: [github.com/k3s-io/k3s](https://github.com/k3s-io/k3s) — ★★★☆☆
+- k3s Requirements: [docs.k3s.io/installation/requirements](https://docs.k3s.io/installation/requirements) — ★★★☆☆
 - [kubernetes_basic.md](./kubernetes_basic.md)
 
 ---
@@ -371,6 +371,6 @@ sudo k3s etcd-snapshot save --name k3s-snapshot
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

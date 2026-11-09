@@ -309,15 +309,15 @@ echo "show table fe_web" | sudo socat stdio /run/haproxy/admin.sock | head -20
 ```
 frontend fe_stats
     bind 10.0.0.5:8404
+    http-request deny unless { src 10.0.0.0/8 }
     http-request use-service prometheus-exporter if { path /metrics }
     stats enable
     stats uri /stats
     stats refresh 10s
     stats hide-version
-    http-request deny unless { src 10.0.0.0/8 }
 ```
 
-- 통계 화면과 지표는 내부 주소에만 bind하고 접근 대역을 제한합니다. `stats auth`의 비밀번호는 설정 파일에 평문으로 남으므로 공개 저장소에 올리지 않습니다.
+- 통계 화면과 지표는 내부 주소에만 bind하고 접근 대역을 제한합니다. `use-service`는 처리를 끝내는 규칙이라 뒤에 둔 `deny`는 `/metrics`에 적용되지 않으므로 `deny`를 먼저 둡니다. `stats auth`의 비밀번호는 설정 파일에 평문으로 남으므로 공개 저장소에 올리지 않습니다.
 - 🟡 Prometheus exporter(PROMEX)는 기본 빌드에 포함되지 않습니다. `haproxy -vv`에 `Built with the Prometheus exporter as a service`가 있는지 먼저 확인합니다. 없으면 `use-service prometheus-exporter` 줄이 설정 오류가 됩니다.
 - 지표 수집 구성은 [Prometheus·Grafana](../monitoring/prometheus_grafana.md) 문서를 봅니다.
 
@@ -394,11 +394,11 @@ api "show sess"          # 현재 세션 목록 (많으면 주의)
 
 ## 참고 자료
 
-- HAProxy 3.4 Configuration Manual: [docs.haproxy.org/3.4/configuration.html](https://docs.haproxy.org/3.4/configuration.html) — ★★★★★
-- HAProxy 3.4 Management Guide: [docs.haproxy.org/3.4/management.html](https://docs.haproxy.org/3.4/management.html) — ★★★★☆
-- HAProxy 공식 사이트(버전·공지): [haproxy.org](https://www.haproxy.org/) — ★★★★☆
-- Debian/Ubuntu HAProxy 패키지: [haproxy.debian.net](https://haproxy.debian.net/) — ★★★★☆
-- Mozilla SSL Configuration Generator: [ssl-config.mozilla.org](https://ssl-config.mozilla.org/) — ★★★★☆
+- HAProxy 3.4 Configuration Manual: [docs.haproxy.org/3.4/configuration.html](https://docs.haproxy.org/3.4/configuration.html) — ★★★☆☆
+- HAProxy 3.4 Management Guide: [docs.haproxy.org/3.4/management.html](https://docs.haproxy.org/3.4/management.html) — ★★★☆☆
+- HAProxy 공식 사이트(버전·공지): [haproxy.org](https://www.haproxy.org/) — ★★★☆☆
+- Debian/Ubuntu HAProxy 패키지: [haproxy.debian.net](https://haproxy.debian.net/) — ★★★☆☆
+- Mozilla SSL Configuration Generator: [ssl-config.mozilla.org](https://ssl-config.mozilla.org/) — ★★★☆☆
 - 확인 기록: [웹 서버 참조 노트 3절](../../_reference/web_server_official_notes.md#3-haproxy)
 - 관련 문서: [HAProxy 핵심 개념](./haproxy_concepts.md), [HAProxy 설치 가이드](./haproxy_install.md), [HAProxy + Keepalived 이중화](./haproxy_keepalived_ha.md), [HAProxy ACME 가이드](./haproxy_acme_guide.md), [로드 밸런서 테스트](../../01_fundamentals/cs/web_testing/load_balancer_testing.md), [graceful reload 테스트](../../01_fundamentals/cs/web_testing/graceful_reload_testing.md)
 
@@ -417,6 +417,6 @@ api "show sess"          # 현재 세션 목록 (많으면 주의)
 
 **작성일**: 2026-11-06
 
-**마지막 업데이트**: 2026-11-06
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

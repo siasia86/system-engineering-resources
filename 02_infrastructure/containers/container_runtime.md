@@ -149,8 +149,8 @@ sudo systemctl restart containerd
 
 ```toml
 # containerd 2.x
-[plugins.'io.containerd.cri.v1.runtime']
-  sandbox_image = "registry.k8s.io/pause:3.10"
+[plugins.'io.containerd.cri.v1.images'.pinned_images]
+  sandbox = "registry.k8s.io/pause:3.10"
 
 # containerd 1.x
 [plugins."io.containerd.grpc.v1.cri"]
@@ -243,7 +243,7 @@ sysctl net.ipv4.ip_forward
 | 주요 사용처     | 범용 (EKS, GKE, AKS)              | OpenShift, RHEL 계열      | 레거시 환경 마이그레이션 |
 | 경량성          | ★★★★☆                             | ★★★★★                     | ★★★☆☆                    |
 | Kubernetes 전용 | 아니오 (Docker 내장)              | 예                        | 아니오                   |
-| cgroup 기본값   | cgroupfs (설정 필요)              | systemd                   | cgroupfs (설정 필요)     |
+| cgroup 기본값   | cgroupfs (설정 필요)              | systemd                   | v1 cgroupfs / v2 systemd |
 | CRI 소켓        | `/run/containerd/containerd.sock` | `/var/run/crio/crio.sock` | `/run/cri-dockerd.sock`  |
 | 공식 권장       | ✅                                | ✅                        | 🟡 어댑터 필요           |
 
@@ -256,12 +256,14 @@ sysctl net.ipv4.ip_forward
 - Kubernetes Docs: [kubernetes.io/docs/setup/production-environment/container-runtimes](https://kubernetes.io/docs/setup/production-environment/container-runtimes/) — ★★★☆☆
 - containerd: [containerd.io/docs/getting-started](https://containerd.io/docs/getting-started/) — ★★★☆☆
 - CRI-O: [cri-o.io](https://cri-o.io/) — ★★★☆☆
-- cri-dockerd: [github.com/Mirantis/cri-dockerd](https://github.com/Mirantis/cri-dockerd) — ★★☆☆☆
+- cri-dockerd: [github.com/Mirantis/cri-dockerd](https://github.com/Mirantis/cri-dockerd) — ★★★☆☆
+- containerd CRI 설정: [github.com/containerd/containerd/docs/cri/config.md](https://github.com/containerd/containerd/blob/main/docs/cri/config.md) — ★★★☆☆
+- dockerd 기본 cgroup 드라이버: [docs.docker.com/reference/cli/dockerd](https://docs.docker.com/reference/cli/dockerd/) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-05-26
 
-**마지막 업데이트**: 2026-08-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.
