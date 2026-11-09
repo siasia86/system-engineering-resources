@@ -393,7 +393,7 @@ PUT /_ilm/policy/logs_policy
 {
   "policy": {
     "phases": {
-      "hot":    { "actions": { "rollover": { "max_size": "50gb" } } },
+      "hot":    { "actions": { "rollover": { "max_primary_shard_size": "50gb" } } },
       "warm":   { "min_age": "7d",  "actions": { "shrink": { "number_of_shards": 1 } } },
       "delete": { "min_age": "30d", "actions": { "delete": {} } }
     }
@@ -425,8 +425,9 @@ PUT /korean_index
 
 ## 참고 자료
 
-- Elasticsearch Documentation: [elastic.co/docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html) — ★★★☆☆
-- Elasticsearch Query DSL: [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) — ★★★☆☆
+- Elasticsearch Documentation: [elastic.co/docs](https://www.elastic.co/docs/reference/elasticsearch) — ★★★☆☆
+- Elasticsearch Query DSL: [Query DSL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/querydsl) — ★★★☆☆
+- ILM rollover (`max_size`는 9.3부터 deprecated): [Rollover](https://www.elastic.co/docs/reference/elasticsearch/index-lifecycle-actions/ilm-rollover) — ★★★☆☆
 - Elastic Stack (ELK): [elastic.co/elastic-stack](https://www.elastic.co/elastic-stack) — ★★★☆☆
 
 ---
@@ -444,6 +445,6 @@ PUT /korean_index
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

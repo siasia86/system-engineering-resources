@@ -23,13 +23,13 @@
    bintrail status → gaps: 0 ✓
 
 3. 삭제 범위 파악
-   bintrail query --table orders --type DELETE --since '2026-07-06 14:00'
+   bintrail query --schema shop --table orders --event-type DELETE --since '2026-07-06 14:00'
 
 4. 복구 SQL 생성
-   bintrail recover --table orders --pk 100,101,102
+   bintrail recover --schema shop --table orders --pks 100,101,102
 
 5. 검증
-   bintrail verify --table orders
+   bintrail verify --tables shop.orders
 
 6. 적용
    mysql -h prod < recover.sql
@@ -42,7 +42,7 @@
 | 스트리밍 갭 없음      | `bintrail status` → gaps: 0         |
 | 해당 시점 인덱싱 완료 | `bintrail status` → index 시간 확인 |
 | binlog_row_image=FULL | `bintrail doctor`                   |
-| 스키마 스냅샷 존재    | `bintrail baseline list`            |
+| 스키마 스냅샷 존재    | `bintrail status --baseline-dir`    |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -69,8 +69,8 @@ bintrail recover --schema shop --table orders --pk 123
 # 변경 이력 확인
 bintrail query --schema shop --table orders --pk 123 --event-type UPDATE
 
-# 특정 시점 이전 값으로 되돌리기
-bintrail recover --schema shop --table orders --pk 123 --before '2026-07-06 14:00'
+# 특정 시점 이후의 변경을 되돌려 그 이전 값으로 복원
+bintrail recover --schema shop --table orders --pk 123 --since '2026-07-06 14:00'
 # 출력:
 # UPDATE `shop`.`orders` SET `amount` = 50000, `status` = 'active'
 # WHERE `id` = 123;
@@ -79,8 +79,8 @@ bintrail recover --schema shop --table orders --pk 123 --before '2026-07-06 14:0
 ### 여러 행 일괄 복구
 
 ```bash
-# PK 여러 개 지정
-bintrail recover --schema shop --table orders --pk 123,124,125,126
+# PK 여러 개 지정 (--pks, 쉼표 구분)
+bintrail recover --schema shop --table orders --pks 123,124,125,126
 
 # 시간 범위 내 모든 DELETE 복구
 bintrail recover --schema shop --table orders \
@@ -88,7 +88,7 @@ bintrail recover --schema shop --table orders \
   --since '2026-07-06 14:00' --until '2026-07-06 14:05'
 
 # 파일로 출력
-bintrail recover --schema shop --table orders --pk 123,124,125 > recover.sql
+bintrail recover --schema shop --table orders --pks 123,124,125 > recover.sql
 ```
 
 ### 출력 형식
@@ -147,7 +147,7 @@ bintrail recover-cascade --schema shop --table customers --pk 456
 ```bash
 bintrail recover-cascade --schema shop --table customers --pk 456
 # → SET NULL된 컬럼도 원래 값으로 복원하는 UPDATE 생성
-# UPDATE `shop`.`orders` SET `customer_id` = 456 WHERE `id` = 1001;
+# UPDATE `shop`.`orders` SET `customer_id` = 456 WHERE `id` = 1001 AND `customer_id` IS NULL;
 ```
 
 ### 주의사항
@@ -176,7 +176,7 @@ bintrail reconstruct --schema shop --table orders --at '2026-07-06 14:00'
 bintrail reconstruct --schema shop --table orders --pk 123 --at '2026-07-06 14:00'
 
 # mydumper 호환 형식으로 출력
-bintrail reconstruct --schema shop --table orders --at '2026-07-06 14:00' --format mydumper
+bintrail reconstruct --schema shop --table orders --at '2026-07-06 14:00' --output-format mydumper
 ```
 
 ### 동작 원리
@@ -195,11 +195,12 @@ baseline (2026-07-05 02:00 스냅샷)
 ### baseline 관리
 
 ```bash
-# baseline 생성 (현재 시점 스냅샷)
-bintrail baseline --schema shop --table orders
+# baseline 생성 (현재 시점 스냅샷: mydumper 덤프 → Parquet 변환)
+bintrail dump --source-dsn "..." --schemas shop --output /tmp/mydumper-output
+bintrail baseline --input /tmp/mydumper-output --output /data/baselines
 
 # baseline 목록
-bintrail baseline list
+bintrail status --index-dsn "..." --baseline-dir /data/baselines
 
 # baseline 없으면? → 인덱스 시작 시점부터의 모든 이벤트를 합산 (느림)
 ```
@@ -215,9 +216,9 @@ ProxySQL을 경유하면 일반 SQL 문법으로 과거 시점 데이터를 조�
 ### 구성
 
 ```
-Application → ProxySQL (6033) → dbtrail shim → MySQL (3306)
-                                     │
-                                     └─ AS OF 감지 → DuckDB index 조회
+Application → ProxySQL (6033) ─┬─ normal SQL ───────────> MySQL (3306)
+                               └─ AS OF / _flashback ───> bintrail shim (3308)
+                                                              └─ index + archives
 ```
 
 ### 사용
@@ -226,20 +227,15 @@ Application → ProxySQL (6033) → dbtrail shim → MySQL (3306)
 -- 과거 시점 조회
 SELECT * FROM orders WHERE id = 123 AS OF '2026-07-06 14:00:00';
 
--- 현재 vs 과거 비교
-SELECT
-  curr.amount AS current_amount,
-  past.amount AS past_amount
-FROM orders curr
-JOIN orders AS OF '2026-07-01' past ON curr.id = past.id
-WHERE curr.id = 123;
+-- 기간 내 한 행의 변경 이력 (_diff, AS OF는 JOIN 형태를 지원하지 않음)
+SELECT * FROM _diff.orders BETWEEN '2026-07-01' AND '2026-07-06' WHERE id = 123;
 ```
 
 ### 제약
 
 | 제약             | 설명                                 |
 |------------------|--------------------------------------|
-| ProxySQL 필수    | AS OF 구문을 dbtrail shim이 인터셉트 |
+| 접속 경로        | ProxySQL, shim 직접, 콘솔 포트(3309) |
 | 읽기 전용        | AS OF 쿼리는 SELECT만 가능           |
 | 인덱싱 완료 필요 | 아직 인덱싱 안 된 시점은 조회 불가   |
 
@@ -252,12 +248,12 @@ WHERE curr.id = 123;
 ### verify (복구 무결성)
 
 ```bash
-# baseline + 이벤트 적용 결과가 현재 DB와 일치하는지 확인
-bintrail verify --schema shop --table orders
+# 이전 baseline + 이벤트로 재구성한 결과가 마지막 baseline(DB를 읽은 시점)과 일치하는지 확인
+bintrail verify --index-dsn "..." --baseline-dir /data/baselines --tables shop.orders
 # ✓ 1,234,567 rows verified, 0 mismatches, 0 gaps
 
-# 특정 시점까지만 검증
-bintrail verify --schema shop --table orders --at '2026-07-06 14:00'
+# 실제 원본 DB와 직접 비교 (live-source)
+bintrail verify --source-dsn "..." --index-dsn "..." --tables shop.orders
 ```
 
 ### 검증 대상
@@ -295,12 +291,12 @@ UPDATE orders SET amount = 0;  -- WHERE 빠뜨림
 
 ```bash
 # 1. 변경 범위 확인
-bintrail query --table orders --event-type UPDATE --since '2026-07-06 14:30' \
+bintrail query --schema shop --table orders --event-type UPDATE --since '2026-07-06 14:30' \
   --changed-column amount | wc -l
 # 50,000건
 
 # 2. 복구 SQL 생성 (원래 amount로 되돌리기)
-bintrail recover --table orders --event-type UPDATE \
+bintrail recover --schema shop --table orders --event-type UPDATE \
   --since '2026-07-06 14:30' --until '2026-07-06 14:31' > recover_amount.sql
 
 # 3. 확인
@@ -316,10 +312,10 @@ mysql -h prod shop < recover_amount.sql
 
 ```bash
 # 1. 삭제된 부모 행 확인
-bintrail query --table customers --pk 456 --event-type DELETE
+bintrail query --schema shop --table customers --pk 456 --event-type DELETE
 
 # 2. CASCADE 포함 전체 복구
-bintrail recover-cascade --table customers --pk 456 > recover_customer.sql
+bintrail recover-cascade --schema shop --table customers --pk 456 > recover_customer.sql
 
 # 3. FK 순서 확인 (부모 먼저)
 head -3 recover_customer.sql
@@ -335,7 +331,7 @@ mysql -h prod shop < recover_customer.sql
 
 ```bash
 # CLI
-bintrail reconstruct --table orders --pk 123 --at '2026-07-05 09:00'
+bintrail reconstruct --schema shop --table orders --pk 123 --at '2026-07-05 09:00'
 
 # SQL (ProxySQL 경유)
 mysql -h proxy -P 6033 -e "SELECT * FROM orders WHERE id=123 AS OF '2026-07-05 09:00'"
@@ -344,7 +340,8 @@ mysql -h proxy -P 6033 -e "SELECT * FROM orders WHERE id=123 AS OF '2026-07-05 0
 ### 시나리오 D: "이 행을 누가 변경했어?"
 
 ```bash
-bintrail whochanged --table orders --pk 123
+# who-changed는 2026-07-16 dbtrail 코어에서 제거됨 (forensics.md 참고, 제거 전 동작 예시)
+bintrail who-changed --schema shop --table orders --pk 123
 # event_timestamp: 2026-07-06 14:32:11
 # event_type: UPDATE
 # user: admin@10.200.90.155
@@ -360,7 +357,10 @@ bintrail whochanged --table orders --pk 123
 ## 참고 자료
 
 - [architecture.md](./architecture.md)
-- dbtrail Query & Recovery: [github.com/dbtrail/dbtrail/blob/main/docs/query-and-recovery.md](https://github.com/dbtrail/dbtrail/blob/main/docs/query-and-recovery.md) — ★★☆☆☆
+- dbtrail Query & Recovery: [github.com/dbtrail/dbtrail/blob/main/docs/query-and-recovery.md](https://github.com/dbtrail/dbtrail/blob/main/docs/query-and-recovery.md) — ★★★☆☆
+- dbtrail Time-Travel SQL (6가지 구문, 접속 방법 3가지): [docs/time-travel-sql.md](https://github.com/dbtrail/dbtrail/blob/main/docs/time-travel-sql.md) — ★★★☆☆
+- dbtrail Dump & Baseline: [docs/dump-and-baseline.md](https://github.com/dbtrail/dbtrail/blob/main/docs/dump-and-baseline.md) — ★★★☆☆
+- dbtrail Verify: [docs/verify.md](https://github.com/dbtrail/dbtrail/blob/main/docs/verify.md) — ★★★☆☆
 
 ---
 
@@ -377,6 +377,6 @@ bintrail whochanged --table orders --pk 123
 
 **작성일**: 2026-07-06
 
-**마지막 업데이트**: 2026-07-06
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

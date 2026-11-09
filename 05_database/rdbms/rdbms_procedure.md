@@ -392,7 +392,7 @@ END;
 
 ## 참고 자료
 
-- MySQL Documentation: [Stored Procedures](https://dev.mysql.com/doc/refman/8.0/en/stored-programs-defining.html) — ★★★☆☆
+- MySQL Documentation: [Defining Stored Programs](https://dev.mysql.com/doc/refman/8.4/en/stored-programs-defining.html) — ★★★☆☆
 - PostgreSQL Documentation: [PL/pgSQL](https://www.postgresql.org/docs/current/plpgsql.html) — ★★★☆☆
 - Oracle Documentation: [PL/SQL Subprograms](https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/plsql-subprograms.html) — ★★★☆☆
 
@@ -411,6 +411,6 @@ END;
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

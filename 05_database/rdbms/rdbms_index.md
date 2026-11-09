@@ -67,7 +67,7 @@ UPDATE는 인덱스된 컬럼 변경 시 DELETE + INSERT(2배 비용), DELETE는
 | **Hash**             | 등치(=) 검색에 최적화. 범위 검색 불가         | MySQL(Memory), PostgreSQL |
 | **Full-Text**        | 텍스트 전문 검색 (LIKE '%word%' 대체)         | MySQL, PostgreSQL         |
 | **Spatial (R-Tree)** | 공간 데이터(좌표, 지리) 검색                  | MySQL, PostgreSQL         |
-| **Bitmap**           | 카디널리티 낮은 컬럼에 효과적 (성별, 상태 등) | Oracle, PostgreSQL        |
+| **Bitmap**           | 카디널리티 낮은 컬럼에 효과적 (성별, 상태 등) | Oracle                    |
 
 ### 특성에 따른 분류
 
@@ -159,12 +159,12 @@ CREATE INDEX idx_users_email ON users (email);
 
 생성 시 주의사항:
 
-| 항목      | 내용                                                                              |
-|-----------|-----------------------------------------------------------------------------------|
-| 잠금      | MySQL 기본: 읽기 허용, 쓰기 차단 (`ALGORITHM=INPLACE, LOCK=NONE`으로 온라인 가능) |
-| 시간      | 데이터 양에 비례 (100만 행 ≈ 수 초, 1억 행 ≈ 수 분)                               |
-| 공간      | email 평균 30바이트 × 100만 행 ≈ 인덱스 ~50MB 추가                                |
-| 중복 허용 | `CREATE INDEX`는 중복값 허용. 유니크 강제는 `CREATE UNIQUE INDEX`                 |
+| 항목      | 내용                                                                  |
+|-----------|-----------------------------------------------------------------------|
+| 잠금      | MySQL(InnoDB) 기본: INPLACE로 읽기·쓰기 허용 (짧은 메타데이터 잠금만) |
+| 시간      | 데이터 양에 비례 (100만 행 ≈ 수 초, 1억 행 ≈ 수 분)                   |
+| 공간      | email 평균 30바이트 × 100만 행 ≈ 인덱스 ~50MB 추가                    |
+| 중복 허용 | `CREATE INDEX`는 중복값 허용. 유니크 강제는 `CREATE UNIQUE INDEX`     |
 
 ### Partial Index (PostgreSQL)
 
@@ -290,7 +290,7 @@ EXPLAIN SELECT * FROM orders WHERE user_id = 1 AND created_at >= '2026-01-01';
 +----+-------------+--------+------+------------------+------------------+---------+-------+------+-------------+
 | id | select_type | table | type | possible_keys | key | key_len | ref | rows | Extra |
 +----+-------------+--------+------+------------------+------------------+---------+-------+------+-------------+
-| 1 | SIMPLE | orders | ref | idx_user_date | idx_user_date | 4 | const | 150 | Using index |
+| 1 | SIMPLE | orders | ref | idx_user_date | idx_user_date | 4 | const | 150 | Using index condition |
 +----+-------------+--------+------+------------------+------------------+---------+-------+------+-------------+
 ```
 
@@ -329,7 +329,7 @@ Execution Time: 0.05 ms
 
 ### 선두 컬럼 원칙 (Leftmost Prefix Rule)
 
-복합 인덱스 `(A, B, C)`는 아래 조건에서만 사용됩니다.
+복합 인덱스 `(A, B, C)`는 기본적으로 아래 조건에서 사용됩니다.
 
 | WHERE 조건                  | 인덱스 사용 여부 | 사용 컬럼 |
 |-----------------------------|------------------|-----------|
@@ -339,6 +339,8 @@ Execution Time: 0.05 ms
 | `B = ?`                     | ❌               | -         |
 | `B = ? AND C = ?`           | ❌               | -         |
 | `A = ? AND C = ?`           | ✅ (부분)        | A만 사용  |
+
+MySQL 8.0.13+와 PostgreSQL 18+는 선두 컬럼 값의 종류가 적으면 Skip Scan으로 `B = ?` 조건에도 인덱스를 쓸 수 있습니다. MySQL은 인덱스 컬럼만 읽는 단일 테이블 쿼리 등 조건을 만족할 때만 적용합니다.
 
 ### 컬럼 순서 결정 원칙
 
@@ -370,10 +372,10 @@ SELECT * FROM users WHERE YEAR(created_at) = 2026;
 -- 개선: 범위 조건으로 변환
 SELECT * FROM users WHERE created_at >= '2026-01-01' AND created_at < '2027-01-01';
 
--- 묵시적 형변환 → 인덱스 미사용
-SELECT * FROM users WHERE user_id = '123';  -- user_id가 INT인 경우
+-- 묵시적 형변환 → 인덱스 미사용 (MySQL: 문자열 컬럼을 숫자와 비교)
+SELECT * FROM users WHERE user_id = 123;  -- user_id가 VARCHAR인 경우
 -- 개선: 타입 일치
-SELECT * FROM users WHERE user_id = 123;
+SELECT * FROM users WHERE user_id = '123';
 
 -- LIKE 앞 와일드카드 → 인덱스 미사용
 SELECT * FROM users WHERE username LIKE '%alice%';
@@ -387,7 +389,7 @@ SELECT * FROM users WHERE username LIKE 'alice%';
 -- Non-Clustered Index 조회 후 PK로 재탐색 발생
 CREATE INDEX idx_user_id ON orders (user_id);
 SELECT user_id, order_date, amount FROM orders WHERE user_id = 1;
--- Extra: Using index condition (테이블 재탐색 발생)
+-- Extra에 Using index 없음 (테이블 재탐색 발생)
 
 -- Covering Index: 필요한 컬럼을 모두 포함
 CREATE INDEX idx_user_covering ON orders (user_id, order_date, amount);
@@ -416,7 +418,7 @@ SELECT * FROM sys.schema_unused_indexes
 WHERE object_schema = 'mydb';
 
 -- PostgreSQL: 사용되지 않는 인덱스 확인
-SELECT schemaname, tablename, indexname, idx_scan
+SELECT schemaname, relname, indexrelname, idx_scan
 FROM pg_stat_user_indexes
 WHERE idx_scan = 0
 ORDER BY pg_relation_size(indexrelid) DESC;
@@ -428,7 +430,7 @@ ORDER BY pg_relation_size(indexrelid) DESC;
 
 ```sql
 -- MySQL: 인덱스 강제 사용
-SELECT * FROM orders USE INDEX (idx_user_date)
+SELECT * FROM orders FORCE INDEX (idx_user_date)
 WHERE user_id = 1 AND created_at >= '2026-01-01';
 
 -- MySQL: 인덱스 제외
@@ -451,7 +453,7 @@ INSERT/UPDATE/DELETE가 반복되면 인덱스 페이지가 단편화되어 성�
 
 ```sql
 -- MySQL: 인덱스 재구성
-ALTER TABLE orders ENGINE=InnoDB;  -- 테이블 재구성 (잠금 발생)
+ALTER TABLE orders ENGINE=InnoDB;  -- 테이블 재구성 (Online DDL, 짧은 메타데이터 잠금)
 OPTIMIZE TABLE orders;             -- 단편화 해소
 
 -- MySQL 8.0+: 온라인 인덱스 재구성
@@ -496,7 +498,7 @@ WHERE table_name = 'orders' AND stat_name = 'size';
 
 -- PostgreSQL: 인덱스 크기 및 사용 통계
 SELECT
-    indexname,
+    indexrelname,
     pg_size_pretty(pg_relation_size(indexrelid)) AS index_size,
     idx_scan,
     idx_tup_read,
@@ -512,7 +514,11 @@ ORDER BY pg_relation_size(indexrelid) DESC;
 
 ## 참고 자료
 
-- MySQL Documentation: [Optimization and Indexes](https://dev.mysql.com/doc/refman/8.0/en/optimization-indexes.html) — ★★★☆☆
+- MySQL Documentation: [Optimization and Indexes](https://dev.mysql.com/doc/refman/8.4/en/optimization-indexes.html) — ★★★☆☆
+- MySQL Documentation: [Online DDL Operations](https://dev.mysql.com/doc/refman/8.4/en/innodb-online-ddl-operations.html) — ★★★☆☆
+- MySQL Documentation: [Type Conversion in Expression Evaluation](https://dev.mysql.com/doc/refman/8.4/en/type-conversion.html) — ★★★☆☆
+- MySQL Documentation: [Range Optimization (Skip Scan)](https://dev.mysql.com/doc/refman/8.4/en/range-optimization.html) — ★★★☆☆
+- PostgreSQL Documentation: [Multicolumn Indexes](https://www.postgresql.org/docs/current/indexes-multicolumn.html) — ★★★☆☆
 - PostgreSQL Documentation: [Indexes](https://www.postgresql.org/docs/current/indexes.html) — ★★★☆☆
 - Use The Index, Luke: [use-the-index-luke.com](https://use-the-index-luke.com/) — ★★☆☆☆
 
@@ -531,6 +537,6 @@ ORDER BY pg_relation_size(indexrelid) DESC;
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-08-27
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

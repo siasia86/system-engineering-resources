@@ -15,7 +15,7 @@ RDBMS와 NoSQL 운영. 쿼리 최적화, 복제, 백업, 장애 복구를 다룹
 
 - [mysql_storage_engine.md](./rdbms/mysql_storage_engine.md) — InnoDB, MyISAM, Storage Engine 비교
 - [rdbms_index.md](./rdbms/rdbms_index.md) — B-Tree, 커버링 인덱스, 실행 계획
-- [rdbms_replication.md](./operations/rdbms_replication.md) — Master-Slave, GTID, 지연 감시
+- [rdbms_replication.md](./operations/rdbms_replication.md) — Primary-Replica, GTID, 지연 감시
 - [percona_xtrabackup_guide.md](./operations/percona_xtrabackup_guide.md) — 무중단 물리 백업
 - [nosql_redis.md](./nosql/nosql_redis.md) — Redis 자료구조, Cluster, Sentinel
 - [recovery_guide.md](./forensics/recovery_guide.md) — 장애 유형별 복구 절차
@@ -39,6 +39,6 @@ SQL 기본 문법. [01_fundamentals/linux/](../01_fundamentals/linux/) 파일시
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-14
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -23,11 +23,12 @@
 
 ### 버전 선택
 
-| 버전        | 상태          | 권장 여부         |
-|-------------|---------------|-------------------|
-| MongoDB 6.0 | EOL 2025-07   | 🟡 비권장         |
-| MongoDB 7.0 | LTS (2027-10) | ✅ 권장           |
-| MongoDB 8.0 | Latest        | ✅ 신규 구축 권장 |
+| 버전        | 상태        | 권장 여부         |
+|-------------|-------------|-------------------|
+| MongoDB 6.0 | EOL 2025-07 | 🟡 비권장         |
+| MongoDB 7.0 | EOL 2027-08 | ✅ 권장           |
+| MongoDB 8.0 | EOL 2029-10 | ✅ 신규 구축 권장 |
+| MongoDB 9.0 | EOL 2031-10 | 최신 (2026-09)    |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -45,7 +46,7 @@ sudo apt update && sudo apt upgrade -y
 
 ```bash
 sudo apt install gnupg curl -y
-curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc \
+curl -fsSL https://pgp.mongodb.com/server-8.0.asc \
     | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-8.0.gpg
 
 echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] \
@@ -86,7 +87,7 @@ name=MongoDB Repository
 baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/8.0/x86_64/
 gpgcheck=1
 enabled=1
-gpgkey=https://www.mongodb.org/static/pgp/server-8.0.asc
+gpgkey=https://pgp.mongodb.com/server-8.0.asc
 EOF
 
 sudo dnf install mongodb-org -y
@@ -96,8 +97,12 @@ sudo systemctl enable --now mongod
 ### 3-3. SELinux 설정
 
 ```bash
-# SELinux 정책 설치
-sudo dnf install mongodb-org-selinux -y
+# SELinux 정책 설치 (공식 정책 저장소를 빌드, 기본 경로·포트 설정 전제)
+sudo dnf install git make checkpolicy policycoreutils selinux-policy-devel -y
+git clone https://github.com/mongodb/mongodb-selinux
+cd mongodb-selinux
+make
+sudo make install
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -170,11 +175,10 @@ net:
 # 스토리지
 storage:
   dbPath: /var/lib/mongodb
-  journal:
-    enabled: true
+  # storage.journal.enabled는 6.1에서 제거됨 (저널링 항상 사용)
   wiredTiger:
     engineConfig:
-      cacheSizeGB: 2    # RAM의 50% 권장
+      cacheSizeGB: 2    # 기본값: (RAM - 1GB)의 50% 또는 256MB 중 큰 값
 
 # 로그
 systemLog:
@@ -263,8 +267,8 @@ mongodump -u Secureuser123 -p SecurePassword123 \
 # 복원
 mongorestore -u Secureuser123 -p SecurePassword123 \
     --authenticationDatabase admin \
-    --db mydb \
-    /backup/20260504/mydb
+    --nsInclude 'mydb.*' \
+    /backup/20260504
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -316,8 +320,8 @@ db.serverStatus().wiredTiger.cache
 |-------------------------|--------------------------------|---------------------------------------------|
 | `Authentication failed` | 계정/패스워드 오류             | `--authenticationDatabase admin` 확인       |
 | `connection refused`    | mongod 미실행 또는 bindIp      | `systemctl status mongod`, bindIp 설정 확인 |
-| `not master` 오류       | Replica Set에서 Secondary 쓰기 | Primary 노드에 연결                         |
-| 디스크 사용량 급증      | 저널 + 데이터 파일             | `db.repairDatabase()` 또는 compact          |
+| `not primary` 오류      | Replica Set에서 Secondary 쓰기 | Primary 노드에 연결                         |
+| 디스크 사용량 급증      | 저널 + 데이터 파일             | `compact` 명령 (repairDatabase는 4.2 제거)  |
 | 메모리 사용량 과다      | WiredTiger 캐시 과다           | `cacheSizeGB` 조정                          |
 
 ```bash
@@ -336,6 +340,11 @@ mongosh --eval "db.currentOp()" -u Secureuser123 -p SecurePassword123 --authenti
 
 - MongoDB Documentation: [mongodb.com/docs](https://www.mongodb.com/docs/) — ★★★☆☆
 - MongoDB CRUD: [mongodb.com/docs/manual/crud](https://www.mongodb.com/docs/manual/crud/) — ★★★☆☆
+- MongoDB 지원 기간: [MongoDB Software Lifecycle Schedules](https://www.mongodb.com/legal/support-policy/lifecycles) — ★★★☆☆
+- 설정 옵션 (storage.journal.enabled 제거, cacheSizeGB 기본값): [Configuration File Options](https://www.mongodb.com/docs/manual/reference/configuration-options/) — ★★★☆☆
+- RHEL 설치·SELinux 정책: [Install MongoDB on Red Hat](https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-red-hat/) — ★★★☆☆
+- mongorestore `--nsInclude`: [mongorestore](https://www.mongodb.com/docs/database-tools/mongorestore/) — ★★★☆☆
+- compact 명령: [compact](https://www.mongodb.com/docs/manual/reference/command/compact/) — ★★★☆☆
 - [nosql_mongodb.md](./nosql_mongodb.md)
 
 ---
@@ -353,6 +362,6 @@ mongosh --eval "db.currentOp()" -u Secureuser123 -p SecurePassword123 --authenti
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-05-04
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

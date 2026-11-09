@@ -60,21 +60,21 @@ SHOW ENGINES;
 
 ### 개요
 
-MySQL 8.4 기본 Storage Engine. ACID 트랜잭션을 완벽히 지원하며, 범용 OLTP 워크로드에 최적화되어 있습니다.
+MySQL 8.4 기본 Storage Engine. ACID 트랜잭션을 지원하며, 범용 OLTP 워크로드에 최적화되어 있습니다.
 
 ### 핵심 특성
 
-| 항목             | 내용                                              |
-|------------------|---------------------------------------------------|
-| 트랜잭션         | ACID 완전 지원 (commit, rollback, crash-recovery) |
-| 잠금 수준        | Row-level locking (escalation 없음)               |
-| 동시성 제어      | MVCC (Multi-Version Concurrency Control)          |
-| 인덱스 구조      | Clustered Index (PK 기준 B+Tree)                  |
-| FK 제약          | 지원                                              |
-| Fulltext         | 지원 (MySQL 5.6+)                                 |
-| 최대 테이블 크기 | 64 TB                                             |
-| Online DDL       | 지원                                              |
-| 데이터 암호화    | Data-at-rest encryption 지원                      |
+| 항목             | 내용                                         |
+|------------------|----------------------------------------------|
+| 트랜잭션         | ACID 지원 (commit, rollback, crash-recovery) |
+| 잠금 수준        | Row-level locking (escalation 없음)          |
+| 동시성 제어      | MVCC (Multi-Version Concurrency Control)     |
+| 인덱스 구조      | Clustered Index (PK 기준 B+Tree)             |
+| FK 제약          | 지원                                         |
+| Fulltext         | 지원 (MySQL 5.6+)                            |
+| 최대 테이블 크기 | 64 TB                                        |
+| Online DDL       | 지원                                         |
+| 데이터 암호화    | Data-at-rest encryption 지원                 |
 
 ### 내부 구조
 
@@ -97,7 +97,7 @@ MySQL 8.4 기본 Storage Engine. ACID 트랜잭션을 완벽히 지원하며, �
 │  │            Disk (Storage)            │        │ 
 │  │  ┌────────────┐  ┌────────────────┐  │        │ 
 │  │  │ Tablespace │  │ Redo Log       │  │        │ 
-│  │  │(.ibd files)│  │(ib_logfile0/1) │  │        │ 
+│  │  │(.ibd files)│  │(#innodb_redo/) │  │        │
 │  │  └────────────┘  └────────────────┘  │        │ 
 │  │  ┌────────────┐  ┌────────────────┐  │        │ 
 │  │  │ Undo Log   │  │ Doublewrite    │  │        │ 
@@ -153,7 +153,7 @@ Transaction A (READ):          Transaction B (WRITE):
 
 - 각 행에 트랜잭션 ID (DB_TRX_ID) + roll pointer 저장
 - READ COMMITTED: 매 쿼리마다 최신 스냅샷
-- REPEATABLE READ: 트랜잭션 시작 시점 스냅샷 유지 (기본)
+- REPEATABLE READ: 트랜잭션의 첫 읽기 시점 스냅샷 유지 (기본)
 
 ### Redo Log와 Crash Recovery
 
@@ -172,14 +172,14 @@ Transaction A (READ):          Transaction B (WRITE):
 
 ### 주요 설정 파라미터
 
-| 파라미터                         | 기본값   | 설명                                                         |
-|----------------------------------|----------|--------------------------------------------------------------|
-| `innodb_buffer_pool_size`        | 128MB    | 버퍼 풀 크기 (총 RAM의 70~80% 권장)                          |
-| `innodb_log_file_size`           | 48MB     | Redo Log 파일 크기 (8.4+: `innodb_redo_log_capacity`로 대체) |
-| `innodb_flush_log_at_trx_commit` | 1        | 1=ACID 보장, 2=1초 지연, 0=OS 의존                           |
-| `innodb_file_per_table`          | ON       | 테이블별 .ibd 파일 분리                                      |
-| `innodb_io_capacity`             | 10000    | 백그라운드 I/O 처리량 (IOPS 기준)                            |
-| `innodb_flush_method`            | O_DIRECT | Linux 기본값 (8.4+), 이중 버퍼링 방지                        |
+| 파라미터                         | 기본값   | 설명                                                                                 |
+|----------------------------------|----------|--------------------------------------------------------------------------------------|
+| `innodb_buffer_pool_size`        | 128MB    | 버퍼 풀 크기 (총 RAM의 70~80% 권장)                                                  |
+| `innodb_log_file_size`           | 48MB     | Redo Log 파일 크기 (8.0.30+: `innodb_redo_log_capacity`로 대체, 기본 100MB)          |
+| `innodb_flush_log_at_trx_commit` | 1        | 1=commit마다 기록·flush (ACID), 2=commit 시 기록·1초마다 flush, 0=1초마다 기록·flush |
+| `innodb_file_per_table`          | ON       | 테이블별 .ibd 파일 분리                                                              |
+| `innodb_io_capacity`             | 10000    | 백그라운드 I/O 처리량 (IOPS 기준)                                                    |
+| `innodb_flush_method`            | O_DIRECT | Linux 기본값 (8.4+), 이중 버퍼링 방지                                                |
 
 ### 적합한 워크로드
 
@@ -263,7 +263,7 @@ concurrent_insert 설정:
 
 - Table Lock으로 인한 동시성 병목
 - crash-safe 미보장 (crash 시 데이터 손실 가능)
-- MySQL 8.4에서 시스템 테이블 MyISAM 제거
+- MySQL 8.0부터 시스템 테이블에서 MyISAM 제거 (InnoDB로 전환)
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -518,14 +518,14 @@ SELECT * FROM log_all WHERE ts >= '2025-01-01';
 
 ### 대안: 파티셔닝
 
-MySQL 공식 문서는 MERGE 대신 파티셔닝 사용을 권장합니다.
+MySQL 공식 문서는 MERGE의 대안으로 파티셔닝을 안내합니다.
 
 | 비교 항목   | MERGE                 | 파티셔닝 (InnoDB)        |
 |-------------|-----------------------|--------------------------|
 | 하위 엔진   | MyISAM만              | InnoDB 등 다양           |
 | 트랜잭션    | 미지원                | 지원                     |
 | 파티션 제거 | 불가                  | 가능 (partition pruning) |
-| 관리        | 수동 테이블 추가/제거 | 자동                     |
+| 관리        | 수동 테이블 추가/제거 | DDL로 파티션 추가/제거   |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -691,7 +691,7 @@ MySQL NDB Cluster의 Storage Engine. 99.999% 가용성을 목표로 하며, shar
 
 | 상황                            | 권장                       |
 |---------------------------------|----------------------------|
-| 신규 프로젝트                   | InnoDB (무조건)            |
+| 신규 프로젝트                   | InnoDB (기본)              |
 | 레거시 MyISAM 테이블 존재       | InnoDB로 전환 계획 수립    |
 | 감사 로그 (INSERT only, 대용량) | ARCHIVE                    |
 | 외부 시스템 데이터 교환         | CSV (임시) → InnoDB (운영) |
@@ -723,14 +723,14 @@ WHERE engine = 'MyISAM'
 
 ### 변환 시 체크리스트
 
-| 항목                | 확인 내용                              |
-|---------------------|----------------------------------------|
-| Fulltext Index      | InnoDB도 지원 (5.6+), 구문 동일        |
-| 공간 인덱스         | InnoDB도 지원 (5.7+)                   |
-| COUNT(*) 성능       | MyISAM: O(1), InnoDB: full scan 필요   |
-| AUTO_INCREMENT 동작 | InnoDB는 서버 재시작 시 MAX+1로 재계산 |
-| 디스크 공간         | InnoDB는 일반적으로 더 많은 공간 사용  |
-| key_buffer_size     | MyISAM 전용, 전환 후 축소 가능         |
+| 항목                | 확인 내용                             |
+|---------------------|---------------------------------------|
+| Fulltext Index      | InnoDB도 지원 (5.6+), 구문 동일       |
+| 공간 인덱스         | InnoDB도 지원 (5.7+)                  |
+| COUNT(*) 성능       | MyISAM: O(1), InnoDB: full scan 필요  |
+| AUTO_INCREMENT 동작 | 8.0+ InnoDB는 카운터 영구 저장        |
+| 디스크 공간         | InnoDB는 일반적으로 더 많은 공간 사용 |
+| key_buffer_size     | MyISAM 전용, 전환 후 축소 가능        |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -756,10 +756,10 @@ SHOW GLOBAL STATUS LIKE 'Innodb_buffer_pool_%';
 
 -- 적중률 계산
 SELECT
-    (1 - (reads / read_requests)) * 100 AS hit_ratio_pct
+    (1 - (disk_reads / read_requests)) * 100 AS hit_ratio_pct
 FROM (
     SELECT
-        VARIABLE_VALUE AS reads
+        VARIABLE_VALUE AS disk_reads  -- READS는 예약어라 별칭으로 쓰지 않음
     FROM performance_schema.global_status
     WHERE VARIABLE_NAME = 'Innodb_buffer_pool_reads'
 ) r,
@@ -819,6 +819,8 @@ SET GLOBAL innodb_io_capacity_max = 20000;
 
 - MySQL 8.4 Reference Manual — Storage Engines: [dev.mysql.com/doc/refman/8.4/en/storage-engines.html](https://dev.mysql.com/doc/refman/8.4/en/storage-engines.html) — ★★★☆☆
 - MySQL 8.4 Reference Manual — InnoDB: [dev.mysql.com/doc/refman/8.4/en/innodb-storage-engine.html](https://dev.mysql.com/doc/refman/8.4/en/innodb-storage-engine.html) — ★★★☆☆
+- MySQL 8.4 Reference Manual — InnoDB 시스템 변수 기본값: [InnoDB Startup Options and System Variables](https://dev.mysql.com/doc/refman/8.4/en/innodb-parameters.html) — ★★★☆☆
+- MySQL 8.4 Reference Manual — AUTO_INCREMENT 카운터 영구 저장: [AUTO_INCREMENT Handling in InnoDB](https://dev.mysql.com/doc/refman/8.4/en/innodb-auto-increment-handling.html) — ★★★☆☆
 - Schwartz, Baron et al. "High Performance MySQL, 4th Edition"
 
 ---
@@ -836,6 +838,6 @@ SET GLOBAL innodb_io_capacity_max = 20000;
 
 **작성일**: 2026-07-10
 
-**마지막 업데이트**: 2026-07-10
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

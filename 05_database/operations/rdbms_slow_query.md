@@ -59,7 +59,7 @@ SHOW GLOBAL STATUS LIKE 'Slow_queries';
 # Time: 2026-07-06T14:32:11.123456Z
 # User@Host: app_user[app_user] @ [10.200.101.50]  Id: 12345
 # Query_time: 3.456789  Lock_time: 0.000123  Rows_sent: 1  Rows_examined: 5000000
-SET timestamp=1720274331;
+SET timestamp=1783348327;
 SELECT * FROM orders WHERE customer_id = 456 AND status = 'active';
 ```
 
@@ -99,7 +99,7 @@ mysqldumpslow -s t /var/log/mysql/slow.log | head -40
 # 호출 횟수순
 mysqldumpslow -s c /var/log/mysql/slow.log | head -20
 
-# 스캔 행 수순
+# 반환 행 수순 (rows sent)
 mysqldumpslow -s r /var/log/mysql/slow.log | head -20
 
 # 특정 테이블만
@@ -150,7 +150,7 @@ pt-query-digest --filter '$event->{user} eq "app_user"' /var/log/mysql/slow.log
 ```
 1. pt-query-digest → 상위 3개 쿼리 식별
       │
-2. EXPLAIN ANALYZE → 실행 계획 확인
+2. EXPLAIN → 실행 계획 확인
       │
       ├── type: ALL → 인덱스 추가
       ├── Using filesort → ORDER BY 인덱스 포함
@@ -178,7 +178,7 @@ ORDER BY created_at DESC LIMIT 10;
 CREATE INDEX idx_cust_status_date ON orders(customer_id, status, created_at DESC);
 
 -- 개선 후 EXPLAIN
--- type: ref, rows: 12, Extra: Using index
+-- type: ref, rows: 12, Extra: Using filesort 없음 (amount는 인덱스에 없어 커버링 아님)
 
 -- 결과: 3.4초 → 2ms
 ```
@@ -261,7 +261,7 @@ CONF
 
 ```bash
 # Slow_queries 카운터 증가율 모니터링
-# Prometheus: rate(mysql_global_status_slow_queries[5m]) > 10
+# Prometheus: increase(mysql_global_status_slow_queries[5m]) > 10
 # → 5분간 슬로우 쿼리 10개 이상이면 알림
 ```
 
@@ -291,7 +291,10 @@ CONF
 - [rdbms_tuning.md](./rdbms_tuning.md) — 튜닝 종합
 - [rdbms_explain.md](../rdbms/rdbms_explain.md) — 실행 계획 분석
 - [rdbms_index.md](../rdbms/rdbms_index.md) — 인덱스 설계
-- MySQL Slow Query Log: [dev.mysql.com/doc/refman/8.0/en/slow-query-log.html](https://dev.mysql.com/doc/refman/8.0/en/slow-query-log.html) — ★★★☆☆
+- MySQL Slow Query Log: [dev.mysql.com/doc/refman/8.4/en/slow-query-log.html](https://dev.mysql.com/doc/refman/8.4/en/slow-query-log.html) — ★★★☆☆
+- mysqldumpslow: [dev.mysql.com/doc/refman/8.4/en/mysqldumpslow.html](https://dev.mysql.com/doc/refman/8.4/en/mysqldumpslow.html) — ★★★☆☆
+- MySQL EXPLAIN Statement: [dev.mysql.com/doc/refman/8.4/en/explain.html](https://dev.mysql.com/doc/refman/8.4/en/explain.html) — ★★★☆☆
+- Prometheus Query Functions: [prometheus.io/docs](https://prometheus.io/docs/prometheus/latest/querying/functions/) — ★★★☆☆
 
 ---
 
@@ -308,6 +311,6 @@ CONF
 
 **작성일**: 2026-07-06
 
-**마지막 업데이트**: 2026-07-06
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

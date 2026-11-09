@@ -55,18 +55,20 @@ Primary                              Replica
 |-------------|-----------------------|-----------------------------|
 | `STATEMENT` | SQL 문 그대로 기록    | 비권장 (비결정적 함수 문제) |
 | `ROW`       | 변경된 행 데이터 기록 | ✅ 권장                     |
-| `MIXED`     | 상황에 따라 자동 선택 | 일반적                      |
+| `MIXED`     | 상황에 따라 자동 선택 | 비권장 (신규 구성은 ROW)    |
+
+🟡 `binlog_format` 변수는 8.0.34부터 deprecated이며, MySQL 8.4 문서는 새 복제 구성에 ROW 형식만 쓰도록 안내합니다(8.0 이후 기본값 ROW).
 
 ```sql
 -- binlog 형식 확인
 SHOW VARIABLES LIKE 'binlog_format';
 
 -- Primary 상태 확인
-SHOW MASTER STATUS\G
+SHOW BINARY LOG STATUS\G   -- MySQL 8.4 (8.0 이하: SHOW MASTER STATUS)
 
 -- Replica 상태 확인
-SHOW REPLICA STATUS\G   -- MySQL 8.0+
-SHOW SLAVE STATUS\G     -- 구버전
+SHOW REPLICA STATUS\G   -- MySQL 8.0.22+
+SHOW SLAVE STATUS\G     -- 8.0.22 이전 (8.4에서 제거)
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -95,17 +97,17 @@ FLUSH PRIVILEGES;
 
 -- 현재 binlog 위치 확인 (초기 데이터 덤프 전)
 FLUSH TABLES WITH READ LOCK;
-SHOW MASTER STATUS\G
+SHOW BINARY LOG STATUS\G   -- 8.0 이하: SHOW MASTER STATUS
 -- File: mysql-bin.000003, Position: 154
 ```
 
 ### 초기 데이터 동기화
 
 ```bash
-# Primary에서 덤프
+# Primary에서 덤프 (--source-data: 8.0.26+, 이전 판은 --master-data)
 mysqldump \
     --single-transaction \
-    --master-data=2 \
+    --source-data=2 \
     --all-databases \
     -u root -p > dump.sql
 
@@ -133,7 +135,8 @@ CHANGE REPLICATION SOURCE TO
     SOURCE_USER     = 'repl',
     SOURCE_PASSWORD = 'SecurePassword123',
     SOURCE_LOG_FILE = 'mysql-bin.000003',
-    SOURCE_LOG_POS  = 154;
+    SOURCE_LOG_POS  = 154,
+    GET_SOURCE_PUBLIC_KEY = 1;   -- caching_sha2_password(기본) + 비암호화 연결 시 필요
 
 START REPLICA;
 SHOW REPLICA STATUS\G
@@ -173,7 +176,8 @@ CHANGE REPLICATION SOURCE TO
     SOURCE_HOST         = '10.0.1.10',
     SOURCE_USER         = 'repl',
     SOURCE_PASSWORD     = 'SecurePassword123',
-    SOURCE_AUTO_POSITION = 1;   -- GTID 자동 위치
+    SOURCE_AUTO_POSITION = 1,   -- GTID 자동 위치
+    GET_SOURCE_PUBLIC_KEY = 1;  -- TLS 미사용 시 (Tip 4 참고)
 
 START REPLICA;
 ```
@@ -193,7 +197,7 @@ START REPLICA;
 
 ## 5. 반동기 복제
 
-Primary가 커밋 후 최소 1개 Replica의 수신 확인(ACK)을 받은 뒤 클라이언트에 응답합니다.
+Primary는 최소 1개 Replica의 수신 확인(ACK)을 받은 뒤 커밋을 마치고 클라이언트에 응답합니다.
 Replica 장애 시 `rpl_semi_sync_source_timeout` 초과 후 비동기로 자동 전환됩니다.
 
 ```
@@ -253,17 +257,19 @@ SELECT * FROM performance_schema.replication_applier_status_by_worker\G
 | Replica 서버 부하 | 읽기 쿼리 분산       |
 
 ```sql
--- 병렬 복제 활성화 (MySQL 5.7+)
-SET GLOBAL replica_parallel_workers = 4;
-SET GLOBAL replica_parallel_type    = 'LOGICAL_CLOCK';
+-- 병렬 복제 워커 수 조정 (8.0.27+ 기본값: workers=4, LOGICAL_CLOCK)
+-- replica_parallel_type은 8.4에서 deprecated, 워커 수 변경은 다음 START REPLICA부터 적용
+STOP REPLICA SQL_THREAD;
+SET GLOBAL replica_parallel_workers = 8;
+START REPLICA SQL_THREAD;
 ```
 
 ### 복제 지연 알림 (Prometheus)
 
 ```yaml
-# mysqld_exporter 알림 규칙
+# mysqld_exporter 알림 규칙 (8.4는 SHOW REPLICA STATUS 열 이름을 따라 ..._source로 수집)
 - alert: ReplicationLag
-  expr: mysql_slave_status_seconds_behind_master > 30
+  expr: (mysql_slave_status_seconds_behind_source or mysql_slave_status_seconds_behind_master) > 30
   for: 1m
   labels:
     severity: warning
@@ -291,10 +297,11 @@ STOP REPLICA;
 RESET REPLICA ALL;
 SET GLOBAL read_only = OFF;
 
--- 3. 다른 Replica들을 새 Primary로 재연결
+-- 3. 다른 Replica들을 새 Primary로 재연결 (새 Primary binlog의 대응 위치를 수동 계산)
 CHANGE REPLICATION SOURCE TO
-    SOURCE_HOST = '10.0.1.11',   -- 새 Primary IP
-    SOURCE_AUTO_POSITION = 1;
+    SOURCE_HOST     = '10.0.1.11',   -- 새 Primary IP
+    SOURCE_LOG_FILE = 'mysql-bin.000001',
+    SOURCE_LOG_POS  = 157;
 START REPLICA;
 ```
 
@@ -317,12 +324,12 @@ START REPLICA;
 
 ### 자동 Failover 도구
 
-| 도구                 | 설명                                   |
-|----------------------|----------------------------------------|
-| **MHA**              | MySQL Master HA. 30초 내 자동 Failover |
-| **Orchestrator**     | 토폴로지 시각화 + 자동 Failover        |
-| **MySQL Router**     | InnoDB Cluster 전용 라우팅 + Failover  |
-| **AWS RDS Multi-AZ** | 자동 Failover (60~120초)               |
+| 도구                 | 설명                                                                     |
+|----------------------|--------------------------------------------------------------------------|
+| **MHA**              | MySQL Master HA. 30초 내 자동 Failover (2018년 0.58 이후 릴리스 없음)    |
+| **Orchestrator**     | 토폴로지 시각화 + 자동 Failover (openark 저장소 보관, Percona 포크 유지) |
+| **MySQL Router**     | InnoDB Cluster·ReplicaSet 라우팅 + 전환 추종                             |
+| **AWS RDS Multi-AZ** | 자동 Failover (60~120초)                                                 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -352,7 +359,7 @@ replicate_wild_do_table    = mydb.order%
 replicate_wild_ignore_table = mydb.tmp%
 ```
 
-🟡 `binlog_do_db` / `replicate_do_db`는 기본 DB(`USE db`) 기준으로 동작합니다.
+🟡 STATEMENT 형식(DDL 포함)에서 `binlog_do_db` / `replicate_do_db`는 기본 DB(`USE db`) 기준으로 동작합니다.
 크로스 DB 쿼리(`INSERT INTO other_db.table`)는 필터링이 의도대로 동작하지 않을 수 있습니다.
 ROW 형식 binlog + Replica 측 필터 조합을 권장합니다.
 
@@ -432,7 +439,7 @@ Primary (WAL sender)              Standby (WAL receiver)
 wal_level           = replica
 max_wal_senders     = 5
 wal_keep_size       = 1GB
-synchronous_commit  = on        # 동기: remote_write / 비동기: off
+synchronous_commit  = on        # synchronous_standby_names가 비어 있으면 비동기 복제 (off는 로컬 WAL flush도 기다리지 않음)
 ```
 
 ```ini
@@ -484,7 +491,7 @@ SELECT now() - pg_last_xact_replay_timestamp() AS replication_lag;
 ```ini
 # postgresql.conf (Primary)
 synchronous_standby_names = 'FIRST 1 (standby1, standby2)'
-# FIRST 1: 최소 1개 Standby 확인 후 커밋
+# FIRST 1: 우선순위가 가장 높은 Standby 1개 확인 후 커밋 (ANY 1: 아무 Standby 1개)
 ```
 
 ### Failover (PostgreSQL)
@@ -492,8 +499,8 @@ synchronous_standby_names = 'FIRST 1 (standby1, standby2)'
 ```bash
 # Standby를 Primary로 승격
 pg_ctl promote -D /var/lib/postgresql/data
-# 또는
-touch /var/lib/postgresql/data/failover.signal
+# 또는 (PostgreSQL 12+)
+psql -c "SELECT pg_promote();"
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -524,7 +531,7 @@ aws rds create-db-instance-read-replica \
 | 항목            | MySQL RDS        | Aurora               |
 |-----------------|------------------|----------------------|
 | 복제 방식       | 비동기 (binlog)  | 공유 스토리지 (즉시) |
-| 최대 Replica 수 | 5개              | 15개                 |
+| 최대 Replica 수 | 15개             | 15개                 |
 | 복제 지연       | 수 초 가능       | 수십 ms              |
 | Failover 승격   | 수동             | 자동 (수십 초)       |
 | Cross-Region    | 지원 (추가 비용) | 지원                 |
@@ -614,10 +621,16 @@ CHANGE REPLICATION SOURCE TO
 
 ## 참고 자료
 
-- MySQL Documentation: [Replication](https://dev.mysql.com/doc/refman/8.0/en/replication.html) — ★★★☆☆
-- MySQL Documentation: [GTID-Based Replication](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html) — ★★★☆☆
+- MySQL Documentation: [Replication](https://dev.mysql.com/doc/refman/8.4/en/replication.html) — ★★★☆☆
+- MySQL Documentation: [GTID-Based Replication](https://dev.mysql.com/doc/refman/8.4/en/replication-gtids.html) — ★★★☆☆
+- MySQL Documentation: [What Is New in MySQL 8.4 since MySQL 8.0](https://dev.mysql.com/doc/refman/8.4/en/mysql-nutshell.html) — ★★★☆☆
+- MySQL Documentation: [Creating a User for Replication](https://dev.mysql.com/doc/refman/8.4/en/replication-howto-repuser.html) — ★★★☆☆
 - PostgreSQL Documentation: [Streaming Replication](https://www.postgresql.org/docs/current/warm-standby.html) — ★★★☆☆
+- PostgreSQL Documentation: [Failover](https://www.postgresql.org/docs/current/warm-standby-failover.html) — ★★★☆☆
 - AWS Documentation: [RDS Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html) — ★★★☆☆
+- AWS Documentation: [Working with MySQL read replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_MySQL.Replication.ReadReplicas.html) — ★★★☆☆
+- mysqld_exporter: [collector/slave_status.go](https://github.com/prometheus/mysqld_exporter/blob/main/collector/slave_status.go) — ★★★☆☆
+- Orchestrator: [openark/orchestrator](https://github.com/openark/orchestrator) — ★★★☆☆
 
 ---
 
@@ -634,6 +647,6 @@ CHANGE REPLICATION SOURCE TO
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-05-04
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

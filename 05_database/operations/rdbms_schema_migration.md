@@ -32,7 +32,7 @@
 | 컬럼 삭제          | ✅             | 없음                                            |
 | 컬럼 타입 변경     | ❌ (일부 예외) | 전체 잠금 (VARCHAR 확장 등 일부는 INPLACE 가능) |
 | 인덱스 추가        | ✅             | 없음                                            |
-| PK 변경            | ❌             | 전체 잠금                                       |
+| PK 변경            | ✅ (재구축)    | 없음 (PK만 삭제할 때는 COPY, DML 차단)          |
 | 컬럼명 변경        | ✅             | 없음                                            |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -103,8 +103,7 @@ pt-online-schema-change \
     --host=localhost \
     --user=root \
     --password=SecurePassword123 \
-    --database=mydb \
-    --table=orders \
+    D=mydb,t=orders \
     --execute
 
 # 인덱스 추가
@@ -123,7 +122,7 @@ pt-online-schema-change \
 ### 제약사항
 
 - 외래키 있는 테이블: `--alter-foreign-keys-method=rebuild_constraints`
-- 트리거 있는 테이블: MySQL 5.7 이하에서 불가
+- 기존 트리거 있는 테이블: `--preserve-triggers` 필요 (MySQL 5.7.2 미만은 불가)
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -135,19 +134,19 @@ GitHub이 개발한 트리거 없는 무중단 스키마 변경 도구.
 
 ### pt-osc vs gh-ost 비교
 
-| 항목        | pt-osc      | gh-ost      |
-|-------------|-------------|-------------|
-| 방식        | 트리거 기반 | binlog 기반 |
-| 트리거 부하 | 있음        | 없음        |
-| 기존 트리거 | 충돌 가능   | 무관        |
-| 일시 중지   | 불가        | 가능        |
-| 진행 상황   | 제한적      | 상세        |
-| 복잡도      | 낮음        | 높음        |
+| 항목        | pt-osc         | gh-ost                           |
+|-------------|----------------|----------------------------------|
+| 방식        | 트리거 기반    | binlog 기반                      |
+| 트리거 부하 | 있음           | 없음                             |
+| 기존 트리거 | 충돌 가능      | 1.1.8+ `--include-triggers` 필요 |
+| 일시 중지   | `--pause-file` | 가능                             |
+| 진행 상황   | 제한적         | 상세                             |
+| 복잡도      | 낮음           | 높음                             |
 
 ### 동작 원리
 
 ```
-1. Ghost 테이블(_ghc) 생성
+1. Ghost 테이블(_gho) 생성 (변경 기록용 _ghc 테이블도 생성)
 2. binlog 스트리밍으로 변경사항 실시간 반영
 3. 기존 데이터 청크 복사
 4. 완료 후 cutover (원자적 RENAME)
@@ -290,7 +289,7 @@ SHOW PROCESSLIST;
 | 상황                | 권장 도구                            |
 |---------------------|--------------------------------------|
 | 단순 컬럼 추가/삭제 | MySQL Online DDL                     |
-| 트리거 있는 테이블  | gh-ost                               |
+| 트리거 있는 테이블  | gh-ost 1.1.8+ (--include-triggers)   |
 | 외래키 있는 테이블  | pt-osc (--alter-foreign-keys-method) |
 | 대용량 + 안전 우선  | gh-ost                               |
 | 빠른 적용 필요      | pt-osc                               |
@@ -324,9 +323,11 @@ WHERE table_name = 'orders';
 
 ## 참고 자료
 
-- Percona pt-online-schema-change: [percona.com](https://docs.percona.com/percona-toolkit/pt-online-schema-change.html) — ★★☆☆☆
-- gh-ost GitHub: [gh-ost](https://github.com/github/gh-ost) — ★★☆☆☆
-- MySQL Documentation: [Online DDL Operations](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html) — ★★★☆☆
+- Percona pt-online-schema-change: [percona.com](https://docs.percona.com/percona-toolkit/pt-online-schema-change.html) — ★★★☆☆
+- gh-ost GitHub: [gh-ost](https://github.com/github/gh-ost) — ★★★☆☆
+- gh-ost: [Command line flags](https://github.com/github/gh-ost/blob/master/doc/command-line-flags.md) — ★★★☆☆
+- gh-ost: [v1.1.8 Release](https://github.com/github/gh-ost/releases/tag/v1.1.8) — ★★★☆☆
+- MySQL Documentation: [Online DDL Operations](https://dev.mysql.com/doc/refman/8.4/en/innodb-online-ddl-operations.html) — ★★★☆☆
 
 ---
 
@@ -343,6 +344,6 @@ WHERE table_name = 'orders';
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

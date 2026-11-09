@@ -43,16 +43,16 @@
 
 ### Ubuntu 버전별 차이
 
-| 항목                   | Ubuntu 22.04 (Jammy)            | Ubuntu 24.04 (Noble)                        |
-|------------------------|---------------------------------|---------------------------------------------|
-| 기본 저장소 PostgreSQL | 14.x                            | 16.x                                        |
-| PGDG 최신 버전         | 17                              | 17 (18 출시 시 자동 반영)                   |
-| DB 생성 로케일         | `LC_COLLATE 'en_US.UTF-8'` 가능 | `LOCALE 'C.UTF-8'` 권장 (ICU provider 기본) |
-| 설정 파일 경로         | `/etc/postgresql/14/main/`      | `/etc/postgresql/17/main/`                  |
-| 로그 경로              | `/var/log/postgresql/`          | `/var/log/postgresql/`                      |
+| 항목                   | Ubuntu 22.04 (Jammy)            | Ubuntu 24.04 (Noble)                       |
+|------------------------|---------------------------------|--------------------------------------------|
+| 기본 저장소 PostgreSQL | 14.x                            | 16.x                                       |
+| PGDG 최신 버전         | 18                              | 18                                         |
+| DB 생성 로케일         | `LC_COLLATE 'en_US.UTF-8'` 가능 | `LOCALE 'C.UTF-8'` 권장 (locale 미설치 시) |
+| 설정 파일 경로         | `/etc/postgresql/14/main/`      | `/etc/postgresql/16/main/`                 |
+| 로그 경로              | `/var/log/postgresql/`          | `/var/log/postgresql/`                     |
 
-🟡 Ubuntu 24.04 + PostgreSQL 17은 ICU provider가 기본입니다.
-`LC_COLLATE 'en_US.UTF-8'` 방식은 해당 locale이 설치돼 있으면 동작하지만, 기본 설치에서는 locale 미존재로 오류가 발생할 수 있습니다. `LOCALE 'C.UTF-8'` 사용을 권장합니다.
+🟡 PostgreSQL의 기본 locale provider는 `libc`입니다(initdb `--locale-provider` 기본값). ICU는 `LOCALE_PROVIDER 'icu'`로 지정할 때만 씁니다.
+`LC_COLLATE 'en_US.UTF-8'` 방식은 해당 locale이 OS에 설치돼 있으면 동작하지만, 최소 설치 이미지처럼 locale이 없으면 오류가 발생할 수 있습니다. `LOCALE 'C.UTF-8'` 사용을 권장합니다.
 
 #### ICU provider란
 
@@ -63,18 +63,18 @@ PostgreSQL에서 문자열을 **정렬(sort)하고 비교(compare)하는 엔진*
 | libc (기존) | OS의 glibc 라이브러리 사용                                | `/usr/lib/locale/` (OS locale) |
 | ICU (신규)  | ICU(International Components for Unicode) 라이브러리 사용 | ICU 내장 데이터                |
 
-**왜 ICU로 바뀌는가:**
+**ICU를 고려하는 이유:**
 
 ```
 libc 문제:
   - OS 업그레이드 시 glibc 버전 변경 → 정렬 순서 변경 가능
-  - 같은 'en_US.UTF-8'인데 Ubuntu 22 vs 24에서 정렬 결과 다름
+  - 같은 'en_US.UTF-8'이라도 OS·glibc 버전에 따라 정렬 결과가 다를 수 있음
   - 인덱스가 정렬 순서 기반 → 인덱스 손상 위험 (REINDEX 필요)
 
-ICU 장점:
-  - PostgreSQL 빌드에 포함 → OS 업그레이드와 무관
+ICU 장점과 주의:
+  - OS locale 설치 여부와 무관 (ICU 데이터 사용)
   - 동일 ICU 버전이면 어떤 OS에서든 동일 정렬 결과
-  - 인덱스 안정성 보장
+  - 단, ICU는 외부 라이브러리 → ICU 버전이 바뀌면 정렬 결과도 바뀔 수 있음 (REINDEX 필요)
 ```
 
 **실제 영향 (사용자 관점):**
@@ -155,7 +155,7 @@ CREATE DATABASE mydb
     LC_CTYPE 'en_US.UTF-8'
     TEMPLATE template0;
 
--- Ubuntu 24.04 (PostgreSQL 17 + ICU): LOCALE 사용 필수
+-- en_US.UTF-8 locale이 없는 환경 (최소 설치 이미지 등): C.UTF-8 사용
 CREATE DATABASE mydb
     ENCODING 'UTF8'
     LOCALE 'C.UTF-8'
@@ -179,11 +179,12 @@ Rocky Linux, AlmaLinux, RHEL, CentOS Stream에서 동일하게 적용됩니다.
 
 ### 배포판별 EL 버전 대응
 
-| 배포판                    | EL 버전 | PGDG RPM 경로 키워드 |
-|---------------------------|---------|----------------------|
-| RHEL 8 / Rocky 8 / Alma 8 | EL-8    | `EL-8`               |
-| RHEL 9 / Rocky 9 / Alma 9 | EL-9    | `EL-9`               |
-| CentOS Stream 9           | EL-9    | `EL-9`               |
+| 배포판                       | EL 버전 | PGDG RPM 경로 키워드 |
+|------------------------------|---------|----------------------|
+| RHEL 8 / Rocky 8 / Alma 8    | EL-8    | `EL-8`               |
+| RHEL 9 / Rocky 9 / Alma 9    | EL-9    | `EL-9`               |
+| CentOS Stream 9              | EL-9    | `EL-9`               |
+| RHEL 10 / Rocky 10 / Alma 10 | EL-10   | `EL-10`              |
 
 ### 3-1. 시스템 업데이트
 
@@ -194,16 +195,19 @@ sudo dnf update -y
 ### 3-2. PostgreSQL 공식 저장소 (PGDG)
 
 ```bash
+# EL10 (Rocky 10 / Alma 10 / RHEL 10)
+sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-10-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+
 # EL9 (Rocky 9 / Alma 9 / RHEL 9 / CentOS Stream 9)
 sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 
 # EL8 (Rocky 8 / Alma 8 / RHEL 8)
 sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 
-# AppStream 내장 PostgreSQL 모듈 비활성화 (충돌 방지)
+# EL8만: AppStream 내장 PostgreSQL 모듈 비활성화 (PGDG 공식 설치 스크립트 기준)
 sudo dnf -qy module disable postgresql
 
-# PostgreSQL 17 설치
+# PostgreSQL 18 설치
 sudo dnf install -y postgresql18-server postgresql18-contrib  # 또는 17
 
 # DB 클러스터 초기화
@@ -233,7 +237,7 @@ sudo restorecon -Rv /data/pgsql
 
 ```bash
 psql --version
-sudo systemctl status postgresql-17
+sudo systemctl status postgresql-18
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -261,7 +265,7 @@ ALTER USER postgres WITH ENCRYPTED PASSWORD 'SecurePassword123';
 
 ```sql
 -- DB 생성
--- PostgreSQL 17+: LOCALE 'C.UTF-8' 권장 (ICU 기본 환경에서 locale 미설치 시 LC_COLLATE 오류 가능)
+-- LOCALE 'C.UTF-8' 권장 (OS에 en_US.UTF-8 locale이 없으면 LC_COLLATE 오류 가능)
 CREATE DATABASE mydb
     ENCODING 'UTF8'
     LOCALE 'C.UTF-8'
@@ -287,10 +291,10 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public
 
 ```bash
 # Ubuntu (버전에 따라 경로 다름)
-sudo vi /etc/postgresql/17/main/postgresql.conf
+sudo vi /etc/postgresql/18/main/postgresql.conf
 
 # RHEL 계열 (Rocky / Alma / RHEL)
-sudo vi /var/lib/pgsql/17/data/postgresql.conf
+sudo vi /var/lib/pgsql/18/data/postgresql.conf
 ```
 
 ```ini
@@ -328,7 +332,7 @@ autovacuum              = on
 
 ```bash
 sudo systemctl restart postgresql      # Ubuntu
-sudo systemctl restart postgresql-17   # RHEL 계열
+sudo systemctl restart postgresql-18   # RHEL 계열
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -341,10 +345,10 @@ sudo systemctl restart postgresql-17   # RHEL 계열
 
 ```bash
 # Ubuntu
-sudo vi /etc/postgresql/17/main/pg_hba.conf
+sudo vi /etc/postgresql/18/main/pg_hba.conf
 
 # RHEL 계열 (Rocky / Alma / RHEL)
-sudo vi /var/lib/pgsql/17/data/pg_hba.conf
+sudo vi /var/lib/pgsql/18/data/pg_hba.conf
 ```
 
 ```
@@ -401,7 +405,7 @@ wal_keep_size       = 1GB
 pg_basebackup \
     -h 10.0.1.10 \
     -U repl \
-    -D /var/lib/postgresql/17/main \
+    -D /var/lib/postgresql/18/main \
     -P -Xs -R
 ```
 
@@ -445,7 +449,7 @@ ss -tlnp | grep 5432
 psql -h localhost -U secureuser123 -d mydb -c "SELECT version(), now();"
 
 # 슬로우 쿼리 로그 확인
-sudo tail -f /var/lib/postgresql/17/main/log/postgresql-$(date +%Y-%m-%d).log
+sudo tail -f /var/lib/postgresql/18/main/log/postgresql-$(date +%Y-%m-%d).log
 ```
 
 ```sql
@@ -467,22 +471,22 @@ WHERE state IS NOT NULL;
 
 ## 10. 트러블슈팅
 
-| 증상                                              | 원인                                         | 해결 방법                                           |
-|---------------------------------------------------|----------------------------------------------|-----------------------------------------------------|
-| `FATAL: role "user" does not exist`               | DB 계정 미생성                               | `CREATE USER` 실행                                  |
-| `FATAL: password authentication failed`           | 패스워드 불일치 또는 pg_hba 설정             | pg_hba.conf 인증 방식 확인, 패스워드 재설정         |
-| `could not connect to server: Connection refused` | 서비스 미실행 또는 포트 차단                 | `systemctl status postgresql`, 방화벽 확인          |
-| `FATAL: no pg_hba.conf entry for host`            | pg_hba.conf 허용 규칙 없음                   | 해당 IP/계정 규칙 추가 후 `pg_reload_conf()`        |
-| `FATAL: database "mydb" does not exist`           | DB 미생성                                    | `CREATE DATABASE mydb;`                             |
-| `out of shared memory`                            | `shared_buffers` 또는 `max_connections` 과다 | 값 조정 후 재시작                                   |
-| Rocky: `initdb` 미실행                            | 클러스터 초기화 누락                         | `sudo /usr/pgsql-17/bin/postgresql-17-setup initdb` |
+| 증상                                              | 원인                             | 해결 방법                                           |
+|---------------------------------------------------|----------------------------------|-----------------------------------------------------|
+| `FATAL: role "user" does not exist`               | DB 계정 미생성                   | `CREATE USER` 실행                                  |
+| `FATAL: password authentication failed`           | 패스워드 불일치 또는 pg_hba 설정 | pg_hba.conf 인증 방식 확인, 패스워드 재설정         |
+| `could not connect to server: Connection refused` | 서비스 미실행 또는 포트 차단     | `systemctl status postgresql`, 방화벽 확인          |
+| `FATAL: no pg_hba.conf entry for host`            | pg_hba.conf 허용 규칙 없음       | 해당 IP/계정 규칙 추가 후 `pg_reload_conf()`        |
+| `FATAL: database "mydb" does not exist`           | DB 미생성                        | `CREATE DATABASE mydb;`                             |
+| `out of shared memory`                            | lock 테이블 부족                 | `max_locks_per_transaction` 증가 후 재시작          |
+| Rocky: `initdb` 미실행                            | 클러스터 초기화 누락             | `sudo /usr/pgsql-18/bin/postgresql-18-setup initdb` |
 
 ### 디버깅 명령
 
 ```bash
 # 에러 로그 확인
-sudo tail -100 /var/log/postgresql/postgresql-17-main.log   # Ubuntu
-sudo tail -100 /var/lib/pgsql/17/data/log/postgresql-*.log  # RHEL 계열
+sudo tail -100 /var/log/postgresql/postgresql-18-main.log   # Ubuntu
+sudo tail -100 /var/lib/pgsql/18/data/log/postgresql-*.log  # RHEL 계열
 
 # 현재 Lock 대기 확인
 sudo -u postgres psql -c "
@@ -608,6 +612,11 @@ sudo -u postgres psql -c "SELECT pid, usename, datname, state, query FROM pg_sta
 - PostgreSQL Documentation: [Installation](https://www.postgresql.org/docs/current/installation.html) — ★★★☆☆
 - PostgreSQL Documentation: [Client Authentication](https://www.postgresql.org/docs/current/client-authentication.html) — ★★★☆☆
 - PostgreSQL Documentation: [Server Configuration](https://www.postgresql.org/docs/current/runtime-config.html) — ★★★☆☆
+- PostgreSQL: [Versioning Policy](https://www.postgresql.org/support/versioning/) (현재 마이너·지원 종료일) — ★★★☆☆
+- PostgreSQL Documentation: [initdb](https://www.postgresql.org/docs/current/app-initdb.html) (`--locale-provider` 기본값 `libc`) — ★★★☆☆
+- PostgreSQL Documentation: [Locale Support](https://www.postgresql.org/docs/current/locale.html) (libc·ICU·builtin provider) — ★★★☆☆
+- PostgreSQL Documentation: [Lock Management](https://www.postgresql.org/docs/current/runtime-config-locks.html) (`max_locks_per_transaction`) — ★★★☆☆
+- PostgreSQL: [Red Hat family Linux downloads](https://www.postgresql.org/download/linux/redhat/) (EL8만 모듈 비활성화) — ★★★☆☆
 - [rdbms_replication.md](./rdbms_replication.md)
 
 ---
@@ -625,6 +634,6 @@ sudo -u postgres psql -c "SELECT pid, usename, datname, state, query FROM pg_sta
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

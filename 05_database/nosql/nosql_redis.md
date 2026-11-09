@@ -143,7 +143,7 @@ ZADD leaderboard 2000 "bob"
 ZADD leaderboard 1800 "carol"
 
 ZRANGE leaderboard 0 -1 WITHSCORES    # 오름차순
-ZREVRANGE leaderboard 0 2 WITHSCORES  # 내림차순 상위 3
+ZRANGE leaderboard 0 2 REV WITHSCORES # 내림차순 상위 3 (ZREVRANGE는 6.2부터 deprecated)
 ZRANK leaderboard "alice"             # 순위 (0부터)
 ZSCORE leaderboard "alice"            # 점수
 ZINCRBY leaderboard 100 "alice"       # 점수 증가
@@ -185,12 +185,14 @@ PERSIST key            # 만료 제거
 | **RDB+AOF** | 두 방식 결합        | 안전             | 디스크 사용량 증가             |
 
 ```bash
-# redis.conf
-save 900 1      # 900초 내 1번 변경 시 RDB 저장
-save 300 10     # 300초 내 10번 변경 시 RDB 저장
+# redis.conf (줄 끝 주석은 설정 오류이므로 주석은 별도 줄에 둡니다)
+# 900초 내 1번, 300초 내 10번 변경 시 RDB 저장
+save 900 1
+save 300 10
 
-appendonly yes  # AOF 활성화
-appendfsync everysec  # 1초마다 fsync
+# AOF 활성화, 1초마다 fsync
+appendonly yes
+appendfsync everysec
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -360,7 +362,8 @@ rank = r.zrevrank("leaderboard:daily", user_id)
 
 - Redis Documentation: [redis.io/docs](https://redis.io/docs/) — ★★★☆☆
 - Redis Commands: [redis.io/commands](https://redis.io/commands/) — ★★★☆☆
-- Redis Patterns: [redis.io/docs/manual/patterns](https://redis.io/docs/manual/patterns/) — ★★★☆☆
+- Redis Patterns: [redis.io/docs/latest/develop/clients/patterns](https://redis.io/docs/latest/develop/clients/patterns/) — ★★★☆☆
+- ZREVRANGE (6.2부터 deprecated): [redis.io/docs/latest/commands/zrevrange](https://redis.io/docs/latest/commands/zrevrange/) — ★★★☆☆
 
 ---
 
@@ -377,6 +380,6 @@ rank = r.zrevrank("leaderboard:daily", user_id)
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

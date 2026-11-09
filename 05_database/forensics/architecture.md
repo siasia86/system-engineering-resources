@@ -50,11 +50,11 @@ MySQL                           bintrail
   │<── COM_BINLOG_DUMP_GTID ───────│  (start streaming)
   │                                │
   │─── ROTATE_EVENT ──────────────>│
+  │─── GTID_LOG_EVENT ────────────>│  (transaction ID, before the transaction)
   │─── TABLE_MAP_EVENT ───────────>│  (table ID mapping)
   │─── WRITE_ROWS_EVENT ──────────>│  (INSERT)
   │─── UPDATE_ROWS_EVENT ─────────>│  (UPDATE: before+after)
   │─── DELETE_ROWS_EVENT ─────────>│  (DELETE: before image)
-  │─── GTID_LOG_EVENT ────────────>│  (transaction ID)
   │─── XID_EVENT ─────────────────>│  (commit)
   │                                │
   │   (continuous stream, connection stays open)
@@ -79,7 +79,7 @@ GRANT REPLICATION SLAVE, REPLICATION CLIENT, SELECT ON *.* TO 'dbtrail'@'%';
 | `REPLICATION CLIENT` | 시작 위치 탐색 (`SHOW BINARY LOG STATUS`, `@@gtid_purged`) |
 | `SELECT`             | information_schema에서 스키마 스냅샷 (컬럼 타입, PK, FK)   |
 
-🟡 dbtrail은 소스 DB에 **쓰기를 하지 않으며 잠금도 걸지 않습니다.** `RELOAD`, `LOCK TABLES`, `PROCESS` 권한이 불필요합니다.
+🟡 dbtrail은 소스 DB에 **쓰기를 하지 않으며 캡처(stream) 경로는 잠금도 걸지 않습니다.** 캡처에는 `RELOAD`, `LOCK TABLES`, `PROCESS` 권한이 불필요합니다. 단, 첫 전체 복사본(baseline, mydumper)에는 `RELOAD`·`BACKUP_ADMIN`·`PROCESS`·`SHOW VIEW`(RDS·Aurora 등 관리형은 `LOCK TABLES`·`SHOW VIEW`)가 필요하며 짧은 잠금이 걸립니다.
 
 ### 최소 권한 (스키마 제한)
 
@@ -107,7 +107,7 @@ bintrail status
 |------------------|----------------------------------------------------------------|
 | Amazon RDS       | 파라미터 그룹에서 `binlog_format=ROW`, `binlog_row_image=FULL` |
 | Amazon Aurora    | 클러스터 파라미터 그룹 동일                                    |
-| Google Cloud SQL | `cloudsql.enable_bin_log=ON`, 플래그 설정                      |
+| Google Cloud SQL | `--enable-bin-log`(PITR) + `binlog_row_image=full` 플래그      |
 
 복제 프로토콜로 접속하므로 binlog 파일 직접 접근이 불필요합니다. 관리형 DB에서도 동작합니다.
 
@@ -141,9 +141,9 @@ s3://bucket/dbtrail/
 | event_id        | 고유 ID                                               |
 | event_timestamp | 변경 시각                                             |
 | event_type      | INSERT / UPDATE / DELETE                              |
-| schema          | 데이터베이스 이름                                     |
-| table           | 테이블 이름                                           |
-| pk_values       | 기본키 값 (JSON)                                      |
+| schema_name     | 데이터베이스 이름                                     |
+| table_name      | 테이블 이름                                           |
+| pk_values       | 기본키 값 (컬럼 순서대로 파이프 문자로 구분)          |
 | pk_hash         | PK의 SHA-256 해시 (빠른 조회용)                       |
 | row_before      | 변경 전 행 전체 (JSON)                                |
 | row_after       | 변경 후 행 전체 (JSON)                                |
@@ -190,7 +190,7 @@ bintrail index
 ### 쿼리 경로
 
 ```
-bintrail query --table orders --pk 123
+bintrail query --schema shop --table orders --pk 123
     │
     v
 DuckDB: pk_hash 기반 검색 → 해당 Parquet 파일만 스캔
@@ -201,7 +201,7 @@ DuckDB: pk_hash 기반 검색 → 해당 Parquet 파일만 스캔
 
 ### Live + Archive 병합
 
-최근 데이터는 Index MySQL(또는 DuckDB)에서, 오래된 데이터는 S3 Parquet에서 읽어 자동 병합합니다.
+최근 데이터는 Index MySQL에서, 오래된 데이터는 S3 Parquet에서 읽어 자동 병합합니다.
 
 ```
 query --since '30 days ago'
@@ -226,7 +226,7 @@ MySQL binlog는 행을 **위치 배열**(`[1, "Alice", 42]`)로 기록합니다.
 ### 생성
 
 ```bash
-bintrail snapshot --schema shop
+bintrail snapshot --schemas shop
 # → information_schema.COLUMNS + KEY_COLUMN_USAGE + REFERENTIAL_CONSTRAINTS 캡처
 ```
 
@@ -271,7 +271,7 @@ SET PERSIST binlog_row_metadata = 'FULL';
   DELETE:   500,000 × 1.2 KB = 0.6 GB
   합계: ~7.4 GB/일 → ~222 GB/월
 
-Parquet 압축 후 (S3): ~50~70% 절감 → ~66~111 GB/월
+Parquet+zstd 보관 후 (S3): 약 30~60배 축소 → ~4~7 GB/월
 ```
 
 ### 비용 요소
@@ -285,10 +285,9 @@ Parquet 압축 후 (S3): ~50~70% 절감 → ~66~111 GB/월
 ### 용량 모니터링
 
 ```bash
-bintrail doctor --capacity
-# index disk: 45.2 GB used / 100 GB total (45%)
-# estimated growth: 7.4 GB/day
-# days until full: 7.4 days ← 디스크 증설 필요
+bintrail doctor --index-dsn "..." --retain 30d
+# 최근 24시간 파티션 통계로 일일 이벤트 수·이벤트당 크기를 재고 보존 기간 기준 크기를 예측
+# 예측이 여유 공간을 넘으면 FAIL, 70%를 넘으면 WARN
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -298,7 +297,11 @@ bintrail doctor --capacity
 ## 참고 자료
 
 - [recovery_guide.md](./recovery_guide.md)
-- dbtrail Streaming docs: [github.com/dbtrail/dbtrail/blob/main/docs/streaming.md](https://github.com/dbtrail/dbtrail/blob/main/docs/streaming.md) — ★★☆☆☆
+- dbtrail Streaming docs: [github.com/dbtrail/dbtrail/blob/main/docs/streaming.md](https://github.com/dbtrail/dbtrail/blob/main/docs/streaming.md) — ★★★☆☆
+- dbtrail Capacity (Parquet 보관 30~60배 축소, `doctor --retain`): [docs/capacity.md](https://github.com/dbtrail/dbtrail/blob/main/docs/capacity.md) — ★★★☆☆
+- dbtrail Indexing (`pk_values`·`binlog_events`): [docs/indexing.md](https://github.com/dbtrail/dbtrail/blob/main/docs/indexing.md) — ★★★☆☆
+- MySQL GTID 수명 주기 (Gtid_log_event는 트랜잭션 앞): [GTID Life Cycle](https://dev.mysql.com/doc/refman/8.4/en/replication-gtids-lifecycle.html) — ★★★☆☆
+- Cloud SQL 바이너리 로그 (PITR): [Configure point-in-time recovery](https://docs.cloud.google.com/sql/docs/mysql/backup-recovery/configure-pitr) — ★★★☆☆
 
 ---
 
@@ -315,6 +318,6 @@ bintrail doctor --capacity
 
 **작성일**: 2026-07-06
 
-**마지막 업데이트**: 2026-07-06
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

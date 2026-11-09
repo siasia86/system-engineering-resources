@@ -223,7 +223,7 @@ CREATE INDEX ON orders (created_at);
 ```sql
 -- 파티션 프루닝 동작 확인 (MySQL)
 EXPLAIN SELECT * FROM orders WHERE created_at >= '2026-01-01';
--- partitions 컬럼에 p2026만 표시되면 프루닝 성공
+-- partitions 컬럼에 p2026,p_future만 표시되면 프루닝 성공 (상한이 없는 조건이라 MAXVALUE 파티션 포함)
 
 -- 파티션 프루닝 동작 확인 (PostgreSQL)
 EXPLAIN SELECT * FROM orders WHERE created_at >= '2026-01-01';
@@ -252,7 +252,8 @@ WHERE created_at >= '2026-01-01' AND created_at < '2027-01-01';
 ### 파티션 추가
 
 ```sql
--- MySQL
+-- MySQL (ADD PARTITION은 마지막 파티션 뒤에만 추가 가능,
+--        p_future처럼 MAXVALUE 파티션이 있으면 오류 → 아래 REORGANIZE 사용)
 ALTER TABLE orders ADD PARTITION (
     PARTITION p2027 VALUES LESS THAN (2028)
 );
@@ -302,6 +303,8 @@ ALTER TABLE orders REORGANIZE PARTITION p2023, p2024 INTO (
 ```sql
 -- 매월 새 파티션 추가 (이벤트 스케줄러)
 -- 파티션 이름을 동적으로 생성하려면 Stored Procedure 사용
+-- 전제: logs가 RANGE (UNIX_TIMESTAMP(created_at)) 파티션(TIMESTAMP 열)이고 MAXVALUE 파티션이 없음
+--       (3절의 HASH 파티션 logs와 다른 테이블)
 DELIMITER $$
 CREATE PROCEDURE add_next_partition()
 BEGIN
@@ -357,9 +360,10 @@ ON orders (order_id, created_at);  -- created_at(파티션 키) 포함
 
 ## 참고 자료
 
-- MySQL Documentation: [Partitioning](https://dev.mysql.com/doc/refman/8.0/en/partitioning.html) — ★★★☆☆
+- MySQL Documentation: [Partitioning](https://dev.mysql.com/doc/refman/8.4/en/partitioning.html) — ★★★☆☆
 - PostgreSQL Documentation: [Table Partitioning](https://www.postgresql.org/docs/current/ddl-partitioning.html) — ★★★☆☆
-- MySQL Documentation: [Partition Pruning](https://dev.mysql.com/doc/refman/8.0/en/partitioning-pruning.html) — ★★★☆☆
+- MySQL Documentation: [Partition Pruning](https://dev.mysql.com/doc/refman/8.4/en/partitioning-pruning.html) — ★★★☆☆
+- MySQL Documentation: [Management of RANGE and LIST Partitions](https://dev.mysql.com/doc/refman/8.4/en/partitioning-management-range-list.html) — ★★★☆☆
 
 ---
 
@@ -376,6 +380,6 @@ ON orders (order_id, created_at);  -- created_at(파티션 키) 포함
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-05-01
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -369,7 +369,7 @@ db.users.updateOne(
 ```javascript
 // 복제 상태 확인
 rs.status()
-rs.isMaster()
+db.hello()   // isMaster의 후속 (5.0+)
 
 // 읽기 선호도 설정
 db.users.find().readPref("secondaryPreferred")
@@ -378,16 +378,17 @@ db.users.find().readPref("secondaryPreferred")
 ### 트랜잭션 (4.0+)
 
 ```javascript
+// Node.js 드라이버 예시 (async 함수 안에서 실행, db = client.db("bank"))
 const session = client.startSession();
 session.startTransaction();
 try {
-  db.accounts.updateOne({ _id: 1 }, { $inc: { balance: -1000 } }, { session });
-  db.accounts.updateOne({ _id: 2 }, { $inc: { balance:  1000 } }, { session });
+  await db.collection("accounts").updateOne({ _id: 1 }, { $inc: { balance: -1000 } }, { session });
+  await db.collection("accounts").updateOne({ _id: 2 }, { $inc: { balance:  1000 } }, { session });
   await session.commitTransaction();
 } catch (e) {
   await session.abortTransaction();
 } finally {
-  session.endSession();
+  await session.endSession();
 }
 ```
 
@@ -411,7 +412,9 @@ db.orders.stats();
 
 ## 참고 자료
 
-- MongoDB Documentation: [docs.mongodb.com](https://www.mongodb.com/docs/) — ★★★☆☆
+- MongoDB Documentation: [mongodb.com/docs](https://www.mongodb.com/docs/) — ★★★☆☆
+- db.hello(): [db.hello()](https://www.mongodb.com/docs/manual/reference/method/db.hello/) — ★★★☆☆
+- Node.js 드라이버 트랜잭션: [Transactions — Node.js Driver](https://www.mongodb.com/docs/drivers/node/current/crud/transactions/) — ★★★☆☆
 - MongoDB Aggregation: [Aggregation Pipeline](https://www.mongodb.com/docs/manual/core/aggregation-pipeline/) — ★★★☆☆
 - MongoDB Schema Design: [Schema Design Patterns](https://www.mongodb.com/blog/post/building-with-patterns-a-summary) — ★★☆☆☆
 
@@ -430,6 +433,6 @@ db.orders.stats();
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

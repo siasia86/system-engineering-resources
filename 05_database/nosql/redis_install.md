@@ -87,6 +87,7 @@ sudo dnf update -y
 ### 3-2. 설치 방법 A: DNF (AppStream)
 
 ```bash
+# EL9 기준. RHEL/Rocky 10의 AppStream은 redis 대신 valkey를 제공합니다 (sudo dnf install valkey)
 sudo dnf install redis -y
 sudo systemctl enable --now redis
 ```
@@ -94,8 +95,17 @@ sudo systemctl enable --now redis
 ### 3-3. 설치 방법 B: Redis 공식 저장소
 
 ```bash
-# Redis 7.x (EL9)
-sudo dnf install -y https://packages.redis.io/rpm/rhel9/x86_64/redis-release-rhel9-1.0.0-1.noarch.rpm
+# Rocky Linux / AlmaLinux 9 (8은 rockylinux8)
+sudo tee /etc/yum.repos.d/redis.repo << 'EOF'
+[Redis]
+name=Redis
+baseurl=https://packages.redis.io/rpm/rockylinux9
+enabled=1
+gpgcheck=1
+EOF
+
+curl -fsSL https://packages.redis.io/gpg > /tmp/redis.key
+sudo rpm --import /tmp/redis.key
 sudo dnf install redis -y
 sudo systemctl enable --now redis
 ```
@@ -135,7 +145,7 @@ requirepass SecurePassword123
 # 외부 접속 허용 시 (기본: 127.0.0.1만 허용)
 bind 127.0.0.1 10.0.1.10
 
-# protected-mode (bind 설정 없을 때 외부 접속 차단)
+# protected-mode (default 사용자에 패스워드가 없으면 로컬 접속만 허용)
 protected-mode yes
 ```
 
@@ -151,11 +161,14 @@ redis-cli -a SecurePassword123 ping
 
 ```ini
 # redis.conf
+# rename-command는 DEPRECATED (redis.conf 안내): 가능하면 ACL로 default 사용자의 명령을 제한합니다
+# redis.conf는 줄 끝 주석을 지원하지 않으므로 주석은 별도 줄에 둡니다
 rename-command FLUSHALL ""
 rename-command FLUSHDB  ""
 rename-command CONFIG   "SecureKey123"
 rename-command DEBUG    ""
-rename-command KEYS     ""   # 프로덕션에서 KEYS * 사용 금지 (블로킹)
+# 프로덕션에서 KEYS * 사용 금지 (블로킹)
+rename-command KEYS     ""
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -180,14 +193,17 @@ protected-mode yes
 
 # 메모리
 maxmemory 2gb
-maxmemory-policy allkeys-lru   # 메모리 초과 시 LRU 방식으로 키 제거
+# 메모리 초과 시 LRU 방식으로 키 제거 (줄 끝 주석은 설정 오류이므로 별도 줄에 둡니다)
+maxmemory-policy allkeys-lru
 
 # 영속성
-save 900 1      # 900초 내 1개 이상 변경 시 RDB 저장
+# 900초 내 1개 이상 변경 시 RDB 저장
+save 900 1
 save 300 10
 save 60 10000
-appendonly yes                  # AOF 활성화 (더 강한 내구성)
-appendfsync everysec            # 1초마다 fsync
+# AOF 활성화 (더 강한 내구성), 1초마다 fsync
+appendonly yes
+appendfsync everysec
 
 # 로그
 loglevel notice
@@ -256,7 +272,7 @@ SISMEMBER tags:post:1 "redis"
 
 # Sorted Set (리더보드)
 ZADD leaderboard 1500 "alice" 2000 "bob"
-ZREVRANGE leaderboard 0 9 WITHSCORES   # 상위 10명
+ZRANGE leaderboard 0 9 REV WITHSCORES  # 상위 10명 (ZREVRANGE는 6.2부터 deprecated)
 
 # 키 관리
 EXISTS user:1:name
@@ -311,8 +327,8 @@ EOF
 ```bash
 redis-cli info memory | grep -E "used_memory_human|maxmemory_human|mem_fragmentation_ratio"
 
-# 키별 메모리 사용량 (상위 10개)
-redis-cli --memkeys | head -10
+# 메모리를 많이 쓰는 키 표본 조사 (자료형별 최대 키, Redis 7.4+는 --keystats로 상위 10개)
+redis-cli --memkeys
 ```
 
 ### Tip 4: Slow Log 확인
@@ -354,8 +370,12 @@ redis-cli info clients | grep connected_clients
 
 ## 참고 자료
 
-- Redis Documentation: [redis.io/docs](https://redis.io/docs/) — ★★★★☆
+- Redis Documentation: [redis.io/docs](https://redis.io/docs/) — ★★★☆☆
 - Redis Commands: [redis.io/commands](https://redis.io/commands/) — ★★★☆☆
+- Redis RPM 설치 (Rocky/Alma): [Install Redis Open Source using RPM](https://redis.io/docs/latest/operate/oss_and_stack/install/install-stack/rpm/) — ★★★☆☆
+- redis.conf 원본 (protected-mode, rename-command DEPRECATED): [redis/redis redis.conf](https://github.com/redis/redis/blob/unstable/redis.conf) — ★★★☆☆
+- ZREVRANGE (6.2부터 deprecated): [redis.io/docs/latest/commands/zrevrange](https://redis.io/docs/latest/commands/zrevrange/) — ★★★☆☆
+- RHEL 10 Valkey 전환: [Considerations in adopting RHEL 10 — Infrastructure services](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/considerations_in_adopting_rhel_10/infrastructure-services) — ★★★☆☆
 - [nosql_redis.md](./nosql_redis.md)
 
 ---
@@ -373,6 +393,6 @@ redis-cli info clients | grep connected_clients
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -129,11 +129,19 @@ UPDATE active_users SET status = 'inactive' WHERE user_id = 1;
 Oracle, PostgreSQL에서 Complex View에 DML을 허용하는 방법.
 
 ```sql
--- PostgreSQL 예시
-CREATE RULE view_insert AS ON INSERT TO order_summary_view
-DO INSTEAD
-INSERT INTO orders (user_id, product_id, amount)
-VALUES (NEW.user_id, NEW.product_id, NEW.amount);
+-- PostgreSQL 예시 (11+: EXECUTE FUNCTION)
+CREATE FUNCTION order_summary_view_insert() RETURNS trigger
+LANGUAGE plpgsql AS $$
+BEGIN
+    INSERT INTO orders (user_id, product_id, amount)
+    VALUES (NEW.user_id, NEW.product_id, NEW.amount);
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER view_insert
+INSTEAD OF INSERT ON order_summary_view
+FOR EACH ROW EXECUTE FUNCTION order_summary_view_insert();
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -168,25 +176,33 @@ SELECT
 FROM orders
 GROUP BY 1, 2;
 
--- 인덱스 생성 가능
-CREATE INDEX ON monthly_sales (month, product_id);
+-- 인덱스 생성 가능 (CONCURRENTLY 갱신에는 UNIQUE 인덱스 필요)
+CREATE UNIQUE INDEX ON monthly_sales (month, product_id);
 
 -- 수동 갱신
 REFRESH MATERIALIZED VIEW monthly_sales;
 
--- 갱신 중 조회 허용 (잠금 없이 갱신)
+-- 갱신 중 조회 허용 (UNIQUE 인덱스가 있어야 사용 가능)
 REFRESH MATERIALIZED VIEW CONCURRENTLY monthly_sales;
 ```
 
 ### Oracle 예시
 
 ```sql
--- 자동 갱신 설정
+-- FAST 갱신에는 기반 테이블의 Materialized View Log가 필요
+CREATE MATERIALIZED VIEW LOG ON orders
+WITH SEQUENCE, ROWID (product_id, amount)
+INCLUDING NEW VALUES;
+
+-- 자동 갱신 설정 (FAST 갱신 집계에는 COUNT(*)와 COUNT(컬럼) 필요)
 CREATE MATERIALIZED VIEW monthly_sales
 BUILD IMMEDIATE
 REFRESH FAST ON COMMIT
 AS
-SELECT product_id, SUM(amount) AS total_sales
+SELECT product_id,
+       SUM(amount)   AS total_sales,
+       COUNT(amount) AS amount_count,
+       COUNT(*)      AS row_count
 FROM orders
 GROUP BY product_id;
 ```
@@ -232,9 +248,10 @@ EXPLAIN SELECT * FROM active_users WHERE user_id = 1;
 | FAST REFRESH     | 변경분(delta)만 갱신        | 대용량 테이블, 빈번한 변경 |
 | COMPLETE REFRESH | 전체 재계산                 | 집계 구조 변경 후          |
 
-### Tip 4: View에 인덱스 힌트 적용 (MySQL)
+### Tip 4: View 병합 제어 힌트 (MySQL)
 
 ```sql
+-- NO_MERGE: View를 병합하지 않고 임시 테이블로 처리 (MERGE는 병합 강제)
 SELECT /*+ NO_MERGE(v) */ *
 FROM active_users v
 WHERE v.created_at >= '2026-01-01';
@@ -249,7 +266,7 @@ WHERE v.created_at >= '2026-01-01';
 ### 패턴 1: 권한 분리 (Row-Level Security 대체)
 
 ```sql
--- 부서별 데이터 접근 제한
+-- 부서별 데이터 접근 제한 (CURRENT_USER_ID()는 애플리케이션이 정의한 함수 예시)
 CREATE VIEW my_dept_employees AS
 SELECT e.*
 FROM employees e
@@ -286,6 +303,9 @@ FROM users
 JOIN orders USING (user_id)
 GROUP BY 1;
 
+-- CONCURRENTLY 갱신에 필요한 UNIQUE 인덱스
+CREATE UNIQUE INDEX ON dashboard_stats (date);
+
 -- cron으로 매일 새벽 2시 갱신
 -- 0 2 * * * psql -c "REFRESH MATERIALIZED VIEW CONCURRENTLY dashboard_stats;"
 ```
@@ -298,8 +318,11 @@ GROUP BY 1;
 
 - PostgreSQL Documentation: [CREATE VIEW](https://www.postgresql.org/docs/current/sql-createview.html) — ★★★☆☆
 - PostgreSQL Documentation: [CREATE MATERIALIZED VIEW](https://www.postgresql.org/docs/current/sql-creatematerializedview.html) — ★★★☆☆
-- MySQL Documentation: [CREATE VIEW Statement](https://dev.mysql.com/doc/refman/8.0/en/create-view.html) — ★★★☆☆
-- Oracle Documentation: [Materialized Views](https://docs.oracle.com/en/database/oracle/oracle-database/19/refrn/about-materialized-views.html) — ★★★☆☆
+- PostgreSQL Documentation: [REFRESH MATERIALIZED VIEW](https://www.postgresql.org/docs/current/sql-refreshmaterializedview.html) — ★★★☆☆
+- PostgreSQL Documentation: [CREATE TRIGGER (INSTEAD OF)](https://www.postgresql.org/docs/current/sql-createtrigger.html) — ★★★☆☆
+- MySQL Documentation: [CREATE VIEW Statement](https://dev.mysql.com/doc/refman/8.4/en/create-view.html) — ★★★☆☆
+- MySQL Documentation: [Optimizer Hints (MERGE, NO_MERGE)](https://dev.mysql.com/doc/refman/8.4/en/optimizer-hints.html) — ★★★☆☆
+- Oracle Documentation: [Basic Materialized Views](https://docs.oracle.com/en/database/oracle/oracle-database/26/dwhsg/basic-materialized-views.html) — ★★★☆☆
 
 ---
 
@@ -316,6 +339,6 @@ GROUP BY 1;
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -103,10 +103,12 @@ SELECT id, customer_name, amount FROM orders WHERE id = 123;
 
 ```sql
 -- 날짜 기준 RANGE 파티션 (1억 행 → 월별 분할)
-ALTER TABLE orders PARTITION BY RANGE (YEAR(created_at) * 100 + MONTH(created_at)) (
-    PARTITION p202601 VALUES LESS THAN (202602),
-    PARTITION p202602 VALUES LESS THAN (202603),
-    PARTITION p202607 VALUES LESS THAN (202608)
+-- 날짜 범위 조건 프루닝: RANGE COLUMNS(열 직접 비교) 또는 YEAR()·TO_DAYS()·TO_SECONDS()·UNIX_TIMESTAMP() 식에서 지원
+-- (YEAR()*100+MONTH() 같은 조합 식은 범위 프루닝 대상 아님)
+ALTER TABLE orders PARTITION BY RANGE COLUMNS (created_at) (
+    PARTITION p202601 VALUES LESS THAN ('2026-02-01'),
+    PARTITION p202602 VALUES LESS THAN ('2026-03-01'),
+    PARTITION p202607 VALUES LESS THAN ('2026-08-01')
 );
 
 -- 효과: WHERE created_at >= '2026-07-01' → p202607만 스캔 (partition pruning)
@@ -129,10 +131,10 @@ ALTER TABLE orders PARTITION BY RANGE (YEAR(created_at) * 100 + MONTH(created_at
 ### EXPLAIN 확인
 
 ```sql
-EXPLAIN ANALYZE
+EXPLAIN
 SELECT * FROM orders WHERE customer_id = 456 AND status = 'active';
 
--- 핵심 지표:
+-- 핵심 지표 (EXPLAIN ANALYZE는 TREE 형식으로 실제 시간·행 수를 표시):
 -- type: ALL (풀스캔 → 나쁨) / ref (인덱스 → 좋음) / const (PK → 최고)
 -- rows: 스캔 예상 행 수 (적을수록 좋음)
 -- Extra: Using filesort (정렬 부하), Using temporary (임시 테이블)
@@ -162,7 +164,7 @@ ON orders(customer_id, status, amount, created_at);
 | `COUNT(*)` 매번            | summary 테이블 캐시 |
 
 ```sql
--- 느림: 상관 서브쿼리 (N+1)
+-- 느릴 수 있음: IN 서브쿼리 (비상관, 옵티마이저가 세미조인으로 바꾸지 못할 때)
 SELECT * FROM orders
 WHERE customer_id IN (SELECT id FROM customers WHERE grade = 'vip');
 
@@ -184,10 +186,12 @@ WHERE c.grade = 'vip';
 
 ### 핵심 파라미터
 
+🟡 기본값은 MySQL 8.0 기준입니다. 8.4에서 바뀐 기본값은 [서버 설정](./rdbms_server_config.md#2-innodb)을 참고합니다.
+
 | 파라미터                         | 기본값 | 권장                | 설명                         |
 |----------------------------------|--------|---------------------|------------------------------|
 | `innodb_buffer_pool_size`        | 128M   | 물리 메모리 70~80%  | 데이터+인덱스 캐시           |
-| `innodb_log_file_size`           | 48M    | 1~2G                | redo log 크기 (쓰기 성능)    |
+| `innodb_redo_log_capacity`       | 100M   | 2~4G                | redo log 크기 (8.0.30+)      |
 | `innodb_flush_log_at_trx_commit` | 1      | 1 (안전) / 2 (성능) | fsync 빈도                   |
 | `max_connections`                | 151    | 실제 필요 + 여유    | 동시 접속 수                 |
 | `innodb_io_capacity`             | 200    | SSD: 2000~4000      | I/O 처리량 힌트              |
@@ -203,12 +207,12 @@ WHERE c.grade = 'vip';
 -- 현재 사용량 확인
 SELECT
     ROUND(@@innodb_buffer_pool_size / 1024 / 1024 / 1024, 1) AS pool_gb,
-    ROUND((SELECT VARIABLE_VALUE FROM performance_schema.global_status
-           WHERE VARIABLE_NAME = 'Innodb_buffer_pool_read_requests') /
-          (SELECT VARIABLE_VALUE FROM performance_schema.global_status
-           WHERE VARIABLE_NAME = 'Innodb_buffer_pool_reads') , 1) AS hit_ratio;
+    ROUND(100 * (1 - (SELECT VARIABLE_VALUE FROM performance_schema.global_status
+                      WHERE VARIABLE_NAME = 'Innodb_buffer_pool_reads') /
+                     (SELECT VARIABLE_VALUE FROM performance_schema.global_status
+                      WHERE VARIABLE_NAME = 'Innodb_buffer_pool_read_requests')), 2) AS hit_pct;
 
--- hit_ratio < 99 → buffer pool 증가 필요
+-- hit_pct < 99 → buffer pool 증가 검토
 ```
 
 ### 쓰기 성능 vs 안정성
@@ -239,8 +243,8 @@ SELECT
 원칙: 활성 데이터셋(working set)이 메모리에 들어가야 함
 
 데이터 50GB + 인덱스 20GB = 70GB
-→ buffer pool 56GB (80%) + OS 14GB
-→ 물리 메모리: 72~80GB 필요
+→ buffer pool 70GB (물리 메모리의 80%)
+→ 물리 메모리: 약 88GB (70GB / 0.8) 필요
 ```
 
 ### OS 튜닝 (Linux)
@@ -268,7 +272,7 @@ ulimit -n 65535
 ### 측정 방법
 
 ```sql
--- 쿼리 실행 시간 (MySQL 8.0+)
+-- 쿼리 실행 시간 (SHOW PROFILES는 deprecated, Performance Schema 권장)
 SET profiling = 1;
 SELECT ...;
 SHOW PROFILES;
@@ -321,6 +325,10 @@ ORDER BY SUM_TIMER_WAIT DESC LIMIT 10;
 - [rdbms_lock.md](../rdbms/rdbms_lock.md) — 잠금/동시성
 - [rdbms_slow_query.md](./rdbms_slow_query.md) — 슬로우 쿼리 분석
 - [rdbms_server_config.md](./rdbms_server_config.md) — 서버 설정
+- MySQL Documentation: [Partitioning Limitations Relating to Functions](https://dev.mysql.com/doc/refman/8.4/en/partitioning-limitations-functions.html) — ★★★☆☆
+- MySQL Documentation: [EXPLAIN Statement](https://dev.mysql.com/doc/refman/8.4/en/explain.html) — ★★★☆☆
+- MySQL Documentation: [Semijoin and Antijoin Transformations](https://dev.mysql.com/doc/refman/8.4/en/semijoins-antijoins.html) — ★★★☆☆
+- MySQL Documentation: [SHOW PROFILES Statement](https://dev.mysql.com/doc/refman/8.4/en/show-profiles.html) — ★★★☆☆
 
 ---
 
@@ -337,6 +345,6 @@ ORDER BY SUM_TIMER_WAIT DESC LIMIT 10;
 
 **작성일**: 2026-07-06
 
-**마지막 업데이트**: 2026-07-06
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

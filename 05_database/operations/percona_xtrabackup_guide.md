@@ -1,6 +1,6 @@
 # Percona XtraBackup 가이드
 
-MySQL/MariaDB의 물리적 백업 도구인 Percona XtraBackup 사용 가이드입니다.
+MySQL(Percona Server 포함)의 물리적 백업 도구인 Percona XtraBackup 사용 가이드입니다.
 
 ## 목차
 
@@ -20,7 +20,7 @@ MySQL/MariaDB의 물리적 백업 도구인 Percona XtraBackup 사용 가이드�
 
 ### XtraBackup이란?
 
-Percona XtraBackup은 MySQL/MariaDB의 **물리적 백업(Physical Backup)** 도구입니다.
+Percona XtraBackup은 MySQL(Percona Server 포함)의 **물리적 백업(Physical Backup)** 도구입니다. MariaDB는 XtraBackup을 지원하지 않으므로 MariaDB의 `mariadb-backup`을 씁니다.
 
 ### 주요 특징
 
@@ -90,8 +90,9 @@ rpm -qa | grep -i mysql-community-server
 | 8.0.x      | percona-xtrabackup-80 |
 | 8.1.x      | percona-xtrabackup-81 |
 | 8.4.x      | percona-xtrabackup-84 |
+| 9.7.x      | percona-xtrabackup-97 |
 
-MySQL 9.7용 XtraBackup 9.7은 2026-07 기준 RC(9.7.1-rc1) 단계입니다. 운영 백업에는 정식 출시 여부를 확인한 뒤 씁니다.
+MySQL 9.7용 XtraBackup 9.7은 9.7.1-rc1(2026-07-15)에 이어 9.7.2-2(2026-11-04)가 나왔고 설치 저장소는 `pxb-97-lts`입니다. XtraBackup 8.0은 2026-06에 지원이 끝났으므로(MySQL 8.0도 2026-04-30 종료) 8.4로 옮깁니다(확인일 2026-11-09).
 
 ### 2.3 설치 (RHEL 계열)
 
@@ -101,17 +102,21 @@ MySQL 9.7용 XtraBackup 9.7은 2026-07 기준 RC(9.7.1-rc1) 단계입니다. 운
 # Percona 저장소 추가
 yum install https://repo.percona.com/yum/percona-release-latest.noarch.rpm
 
-# 사용 가능한 버전 확인
+# 사용 가능한 버전 확인 (MySQL 8.0용)
 yum list percona-xtrabackup-80.x86_64 --showduplicates
 
-# 출력 예시:
-# percona-xtrabackup-80.x86_64    8.0.32-26.1.el7    percona-release-x86_64
-# percona-xtrabackup-80.x86_64    8.0.33-27.1.el7    percona-release-x86_64
-# percona-xtrabackup-80.x86_64    8.0.33-28.1.el7    percona-release-x86_64
+# 출력 예시 (EL9):
+# percona-xtrabackup-80.x86_64    8.0.32-26.1.el9    percona-release-x86_64
+# percona-xtrabackup-80.x86_64    8.0.33-27.1.el9    percona-release-x86_64
+# percona-xtrabackup-80.x86_64    8.0.33-28.1.el9    percona-release-x86_64
 
 # MySQL 버전에 맞춰 설치
 # 예: MySQL 8.0.33인 경우
-yum install percona-xtrabackup-80-8.0.33-28.1.el7
+yum install percona-xtrabackup-80-8.0.33-28.1.el9
+
+# MySQL 8.4: pxb-84-lts 저장소를 켠 뒤 설치
+percona-release enable pxb-84-lts
+yum install percona-xtrabackup-84
 
 # 설치 확인
 xtrabackup --version
@@ -126,14 +131,18 @@ wget https://repo.percona.com/apt/percona-release_latest.generic_all.deb
 dpkg -i percona-release_latest.generic_all.deb
 apt-get update
 
-# 설치
+# 설치 (MySQL 8.0)
 apt-get install percona-xtrabackup-80
+
+# 설치 (MySQL 8.4): pxb-84-lts 저장소를 켠 뒤 설치
+percona-release enable pxb-84-lts
+apt-get install percona-xtrabackup-84
 ```
 
 ### 2.5 백업 전용 사용자 생성
 
 ```sql
--- MySQL 8.0
+-- MySQL 8.0 / 8.4
 CREATE USER 'backup'@'localhost' IDENTIFIED BY 'SecurePassword123!';
 
 GRANT BACKUP_ADMIN, PROCESS, RELOAD, LOCK TABLES, REPLICATION CLIENT 
@@ -184,7 +193,7 @@ FLUSH PRIVILEGES;
 ### 3.2 증분 백업 방식
 
 **Incremental (증분 백업)**
-- 마지막 Full Backup 이후 변경된 데이터만 백업
+- 직전 백업(Full 또는 이전 증분) 이후 변경된 데이터만 백업
 - 복원 시 Full + 모든 Incremental 필요
 - 백업 용량 작음, 복원 시간 김
 
@@ -196,7 +205,7 @@ Full ──→ Inc1 ──→ Inc2 ──→ Inc3
 ```
 
 **Differential (차등 백업)**
-- 각 증분이 이전 증분을 기준으로 백업
+- 매번 마지막 Full Backup을 기준으로 변경된 데이터를 백업
 - 복원 시 Full + 마지막 Differential만 필요
 - 백업 용량 큼, 복원 시간 짧음
 
@@ -242,7 +251,7 @@ Full ──→ Diff1
 # 기본 명령어
 xtrabackup \
   --user=backup \
-  --password='SecurePassword123' \
+  --password='SecurePassword123!' \
   --backup \
   --target-dir=/backup/full/$(date +%Y%m%d-%H)
 
@@ -257,7 +266,7 @@ xtrabackup \
 # 압축하여 백업 (디스크 공간 절약)
 xtrabackup \
   --user=backup \
-  --password='SecurePassword123' \
+  --password='SecurePassword123!' \
   --backup \
   --compress \
   --compress-threads=4 \
@@ -332,9 +341,10 @@ xtrabackup --backup \
 # 3. 두 번째 증분 (월요일 02시)
 xtrabackup --backup \
   --target-dir=/backup/inc/20240101-02 \
-  --incremental-basedir=/backup/full/20240101-00
+  --incremental-basedir=/backup/inc/20240101-01
 
-# 주의: 모든 증분이 Full을 기준으로 함 (Differential 방식)
+# 주의: 각 증분은 직전 백업을 기준으로 함 (6.3처럼 순서대로 모두 적용)
+# 모든 증분을 Full 기준으로 받으면 Differential 방식이며, 복원 때 Full + 마지막 증분만 적용 (7.3 스크립트 방식)
 ```
 
 ### 5.3 LSN 확인
@@ -553,15 +563,15 @@ check_backup_dir() {
 perform_backup() {
     log "Starting full backup to ${BACKUP_DIR}"
     
+    local exit_code=0
     xtrabackup \
         --user="${DB_USER}" \
         --password="${DB_PASS}" \
         --backup \
         --parallel="${PARALLEL_THREADS}" \
         --target-dir="${BACKUP_DIR}" \
-        >> "${FULL_LOG}" 2>&1
+        >> "${FULL_LOG}" 2>&1 || exit_code=$?   # set -e에서도 실패 코드를 받아 아래에서 기록
     
-    local exit_code=$?
     if [ ${exit_code} -eq 0 ]; then
         log "Full backup completed successfully"
     else
@@ -698,6 +708,7 @@ main
 #!/bin/bash
 # /usr/local/bin/xtrabackup-incremental.sh
 # Incremental Backup Script
+# 매번 당일 00시 Full을 기준으로 받음 (Differential 방식, 복원 때 Full + 해당 증분 하나만 적용)
 
 set -euo pipefail
 
@@ -752,6 +763,7 @@ check_disk_space() {
 perform_backup() {
     log "Starting incremental backup to ${BACKUP_DIR}"
     
+    local exit_code=0
     xtrabackup \
         --user="${DB_USER}" \
         --password="${DB_PASS}" \
@@ -759,9 +771,8 @@ perform_backup() {
         --parallel="${PARALLEL_THREADS}" \
         --target-dir="${BACKUP_DIR}" \
         --incremental-basedir="${BASEDIR}" \
-        >> "${INC_LOG}" 2>&1
+        >> "${INC_LOG}" 2>&1 || exit_code=$?   # set -e에서도 실패 코드를 받아 아래에서 기록
     
-    local exit_code=$?
     if [ ${exit_code} -eq 0 ]; then
         log "Incremental backup completed successfully"
     else
@@ -1019,23 +1030,23 @@ xtrabackup --backup --throttle=0 --target-dir=/backup/full/...
 #### 디스크 I/O 과부하
 
 ```bash
-# 해결: I/O 제한 설정 (MB/s)
-xtrabackup --backup --throttle=100 --target-dir=/backup/full/...
+# 해결: I/O 제한 설정 (초당 복사할 10MB 청크 수, 10 = 약 100MB/s)
+xtrabackup --backup --throttle=10 --target-dir=/backup/full/...
 ```
 
 ### 8.5 디버깅
 
 ```bash
-# 상세 로그 출력
-xtrabackup --backup --target-dir=/backup/test --verbose
+# 진행 로그를 파일로 저장 (xtrabackup은 로그를 stderr로 출력, --verbose 옵션 없음)
+xtrabackup --backup --target-dir=/backup/test 2> /backup/test-backup.log
 
 # 특정 테이블만 백업 (테스트용)
 xtrabackup --backup \
     --tables="mydb.mytable" \
     --target-dir=/backup/test
 
-# Dry-run (실제 백업 없이 테스트)
-xtrabackup --backup --target-dir=/backup/test --dry-run
+# --dry-run 옵션은 없음 (알 수 없는 옵션은 --strict 기본값에 따라 오류로 종료)
+# 시험은 위처럼 작은 범위를 실제로 백업해 확인
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -1050,10 +1061,10 @@ xtrabackup --backup --target-dir=/backup/test --dry-run
 
 ```bash
 # ❌ 나쁜 예: 평문 패스워드
-xtrabackup --user=backup --password='SecurePassword123' --backup
+xtrabackup --user=backup --password='SecurePassword123!' --backup
 
 # ✅ 좋은 예: 파일로 관리
-echo "SecurePassword123" > /etc/xtrabackup/.password
+echo "SecurePassword123!" > /etc/xtrabackup/.password
 chmod 600 /etc/xtrabackup/.password
 
 xtrabackup --user=backup --password=$(cat /etc/xtrabackup/.password) --backup
@@ -1062,7 +1073,7 @@ xtrabackup --user=backup --password=$(cat /etc/xtrabackup/.password) --backup
 # /etc/xtrabackup/my.cnf
 [xtrabackup]
 user=backup
-password=SecurePassword123
+password=SecurePassword123!
 
 xtrabackup --defaults-file=/etc/xtrabackup/my.cnf --backup
 chmod 600 /etc/xtrabackup/my.cnf
@@ -1260,22 +1271,18 @@ aws s3 sync /backup/ s3://my-backup-bucket/mysql/ \
 # 1. 병렬 처리 (CPU 코어 수에 맞춰 조정)
 xtrabackup --backup --parallel=8
 
-# 2. 버퍼 크기 증가
-xtrabackup --backup --use-memory=4G
+# 2. 압축 스레드 증가 (--use-memory는 --prepare 단계에만 적용)
+xtrabackup --backup --compress --compress-threads=4
 
-# 3. I/O 스레드 증가
-xtrabackup --backup --read-threads=4
-
-# 4. 압축 레벨 조정 (1=빠름, 9=높은 압축률)
-xtrabackup --backup --compress --compress-level=1
+# 3. 압축 레벨 조정 (ZSTD 1~19, 기본 1, 낮을수록 빠름)
+xtrabackup --backup --compress --compress-zstd-level=1
 
 # 종합 예시
 xtrabackup --backup \
     --parallel=8 \
-    --use-memory=4G \
     --compress \
     --compress-threads=4 \
-    --compress-level=3 \
+    --compress-zstd-level=3 \
     --target-dir=/backup/optimized
 ```
 
@@ -1501,8 +1508,9 @@ xtrabackup --backup \
     --safe-slave-backup \
     --target-dir=/backup/slave
 
-# xtrabackup_slave_info 파일 생성됨
-# CHANGE MASTER TO MASTER_LOG_FILE='mysql-bin.000123', MASTER_LOG_POS=456789
+# xtrabackup_slave_info 파일 생성됨 (XtraBackup 8.4 형식)
+# CHANGE REPLICATION SOURCE TO SOURCE_LOG_FILE='mysql-bin.000123', SOURCE_LOG_POS=456789;
+# (XtraBackup 8.0은 CHANGE MASTER TO ... 형식, MySQL 8.4에서는 CHANGE MASTER TO가 제거됨)
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -1546,8 +1554,8 @@ xtrabackup --backup \
 
 ### 공식 문서
 
-- [Percona XtraBackup 공식 문서](https://docs.percona.com/percona-xtrabackup/latest/)
-- [MySQL 백업 및 복구](https://dev.mysql.com/doc/refman/8.0/en/backup-and-recovery.html)
+- [Percona XtraBackup 공식 문서](https://docs.percona.com/percona-xtrabackup/latest/) — ★★★☆☆
+- [MySQL 백업 및 복구](https://dev.mysql.com/doc/refman/8.4/en/backup-and-recovery.html) — ★★★☆☆
 
 ### 유용한 명령어
 
@@ -1651,8 +1659,8 @@ systemctl start mysqld
 ```bash
 # 백업 전 체크리스트
 mysql -u root -p << 'EOF'
--- 1. 복제 상태 확인 (Slave인 경우)
-SHOW SLAVE STATUS\G
+-- 1. 복제 상태 확인 (Replica인 경우, MySQL 8.4에서 SHOW SLAVE STATUS는 제거됨)
+SHOW REPLICA STATUS\G
 
 -- 2. 실행 중인 긴 쿼리 확인
 SELECT * FROM information_schema.processlist 
@@ -1761,7 +1769,7 @@ echo "LSN range: ${FROM_LSN} -> ${TO_LSN}"
 BACKUP_SIZE=$(du -sh "${BACKUP_DIR}" | awk '{print $1}')
 echo "Backup size: ${BACKUP_SIZE}"
 
-# 5. Prepare 테스트 (읽기 전용)
+# 5. Prepare 테스트 (redo를 적용해 백업 파일이 바뀜, 필요하면 복사본에서 실행)
 echo "Testing prepare..."
 xtrabackup --prepare --apply-log-only --target-dir="${BACKUP_DIR}" 2>&1 | \
     grep -q "completed OK" && echo "✅ Prepare test passed" || echo "❌ Prepare test failed"
@@ -1905,7 +1913,7 @@ NO_COMPRESS_SIZE=$(du -sh ${TEST_DIR}/no-compress | awk '{print $1}')
 echo "Size: ${NO_COMPRESS_SIZE}"
 echo ""
 
-# 2. XtraBackup 압축 (quicklz)
+# 2. XtraBackup 압축 (8.0.34-29부터 기본 ZSTD, quicklz 미지원)
 echo "2. XtraBackup compression..."
 time xtrabackup --backup --compress --target-dir=${TEST_DIR}/xb-compress
 XB_COMPRESS_SIZE=$(du -sh ${TEST_DIR}/xb-compress | awk '{print $1}')
@@ -2067,7 +2075,7 @@ exit ${BACKUP_EXIT_CODE}
 LOG_FILE="/var/log/xtrabackup/full.log"
 REPORT_FILE="/var/log/xtrabackup/backup_report_$(date +%Y%m%d).txt"
 
-cat > ${REPORT_FILE} << 'EOF'
+cat > ${REPORT_FILE} << EOF
 === XtraBackup Report ===
 Generated: $(date)
 
@@ -2233,7 +2241,14 @@ cat ${RESULTS_FILE}
 ## 참고 자료
 
 - Percona XtraBackup Documentation: [docs.percona.com](https://docs.percona.com/percona-xtrabackup/latest/) — ★★★☆☆
-- MySQL Backup Documentation: [dev.mysql.com](https://dev.mysql.com/doc/refman/8.0/en/backup-and-recovery.html) — ★★★☆☆
+- MySQL Backup Documentation: [dev.mysql.com](https://dev.mysql.com/doc/refman/8.4/en/backup-and-recovery.html) — ★★★☆☆
+- Percona XtraBackup 8.4: [Option reference](https://docs.percona.com/percona-xtrabackup/8.4/xtrabackup-option-reference.html) (`--throttle`, `--compress`, `--use-memory`, `--slave-info`) — ★★★☆☆
+- Percona XtraBackup 8.4: [Create an incremental backup](https://docs.percona.com/percona-xtrabackup/8.4/create-incremental-backup.html) — ★★★☆☆
+- Percona XtraBackup 8.4: [Install from APT repository](https://docs.percona.com/percona-xtrabackup/8.4/apt-repo.html) (`pxb-84-lts`) — ★★★☆☆
+- Percona XtraBackup 8.0: [Install from APT repository](https://docs.percona.com/percona-xtrabackup/8.0/apt-repo.html) (8.0 지원 종료 안내) — ★★★☆☆
+- Percona XtraBackup 9.7: [Release notes](https://docs.percona.com/percona-xtrabackup/9.7/release-notes/release-notes.html) — ★★★☆☆
+- MySQL 8.4: [What Is New in MySQL 8.4 since MySQL 8.0](https://dev.mysql.com/doc/refman/8.4/en/mysql-nutshell.html) (제거된 복제 문장) — ★★★☆☆
+- MariaDB Documentation: [Backup and Restore Overview](https://mariadb.com/docs/server/server-usage/backup-and-restore/backup-and-restore-overview) (MariaDB에서 XtraBackup 미지원, `mariadb-backup` 권장) — ★★★☆☆
 
 ---
 
@@ -2250,6 +2265,6 @@ cat ${RESULTS_FILE}
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

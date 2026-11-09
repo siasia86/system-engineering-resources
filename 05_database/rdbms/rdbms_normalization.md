@@ -126,7 +126,7 @@ Violation (PK: student_id + course):
 teacher → course (teacher is a determinant but not a candidate key)
 
 BCNF Applied:
-student_course (student_id PK, teacher FK)
+student_course (student_id PK, teacher PK/FK)
 teacher_course (teacher PK, course)
 ```
 
@@ -203,7 +203,7 @@ FOR EACH ROW
 
 - Codd, E.F. "A Relational Model of Data for Large Shared Data Banks" (1970) — ★★★★☆
 - Date, C.J. "An Introduction to Database Systems" — ★★★★☆
-- MySQL Documentation: [Database Design](https://dev.mysql.com/doc/refman/8.0/en/database-use.html) — ★★★☆☆
+- MySQL Documentation: [Creating and Using a Database](https://dev.mysql.com/doc/refman/8.4/en/database-use.html) — ★★★☆☆
 
 ---
 
@@ -220,6 +220,6 @@ FOR EACH ROW
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

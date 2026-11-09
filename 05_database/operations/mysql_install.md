@@ -64,14 +64,14 @@ sudo apt install mysql-server -y
 sudo systemctl enable --now mysql
 ```
 
-🟡 Ubuntu 기본 저장소의 MySQL 버전은 최신이 아닐 수 있습니다. 특정 버전이 필요하면 방법 B를 사용합니다.
+🟡 Ubuntu 22.04 / 24.04 기본 저장소의 MySQL은 8.0입니다(Oracle 지원은 2026-04-30 종료, 배포판 패키지 지원 기간은 배포판 수명 주기를 따름). 8.4가 필요하면 방법 B를 사용합니다.
 
 ### 2-3. 설치 방법 B: MySQL 공식 저장소
 
 ```bash
 # MySQL APT 저장소 패키지 다운로드
-wget https://dev.mysql.com/get/mysql-apt-config_0.8.33-1_all.deb
-sudo dpkg -i mysql-apt-config_0.8.33-1_all.deb
+wget https://dev.mysql.com/get/mysql-apt-config_0.8.40-1_all.deb
+sudo dpkg -i mysql-apt-config_0.8.40-1_all.deb
 # 대화형 메뉴에서 MySQL 8.4 선택 후 OK
 
 sudo apt update
@@ -107,11 +107,12 @@ Rocky Linux, AlmaLinux, RHEL, CentOS Stream에서 동일하게 적용됩니다.
 
 ### 배포판별 EL 버전 대응
 
-| 배포판                    | EL 버전 | 저장소 RPM 경로 키워드 |
-|---------------------------|---------|------------------------|
-| RHEL 8 / Rocky 8 / Alma 8 | el8     | `el8`                  |
-| RHEL 9 / Rocky 9 / Alma 9 | el9     | `el9`                  |
-| CentOS Stream 9           | el9     | `el9`                  |
+| 배포판                       | EL 버전 | 저장소 RPM 경로 키워드 |
+|------------------------------|---------|------------------------|
+| RHEL 8 / Rocky 8 / Alma 8    | el8     | `el8`                  |
+| RHEL 9 / Rocky 9 / Alma 9    | el9     | `el9`                  |
+| CentOS Stream 9              | el9     | `el9`                  |
+| RHEL 10 / Rocky 10 / Alma 10 | el10    | `el10`                 |
 
 ### 3-1. 시스템 업데이트
 
@@ -124,23 +125,35 @@ sudo dnf update -y
 AppStream 저장소에 포함된 버전을 사용합니다. 최신 버전이 필요하면 방법 B를 사용합니다.
 
 ```bash
-# 사용 가능한 MySQL 모듈 확인
+# 사용 가능한 MySQL 모듈 확인 (EL8 / EL9)
 sudo dnf module list mysql
 
-# MySQL 8.0 설치 (Oracle 지원은 2026-04-30 종료, 배포판 패키지 지원 기간은 배포판 수명 주기를 따름)
+# EL8: mysql:8.0 모듈 (Oracle 지원은 2026-04-30 종료, 배포판 패키지 지원 기간은 배포판 수명 주기를 따름)
 sudo dnf module enable mysql:8.0 -y
 sudo dnf install mysql-server -y
+
+# EL9: 기본 mysql-server 패키지가 8.0, 8.4는 mysql:8.4 모듈 스트림
+sudo dnf module enable mysql:8.4 -y   # 8.4가 필요할 때
+sudo dnf install mysql-server -y
+
+# EL10: 모듈 없음, 8.4 패키지 이름으로 설치
+sudo dnf install mysql8.4-server -y
+
 sudo systemctl enable --now mysqld
 ```
 
 ### 3-3. 설치 방법 B: MySQL 공식 저장소
 
 ```bash
+# EL10 (Rocky 10 / Alma 10 / RHEL 10)
+sudo dnf install -y https://dev.mysql.com/get/mysql84-community-release-el10-3.noarch.rpm
+
 # EL9 (Rocky 9 / Alma 9 / RHEL 9 / CentOS Stream 9)
-sudo dnf install -y https://dev.mysql.com/get/mysql84-community-release-el9-1.noarch.rpm
+sudo dnf install -y https://dev.mysql.com/get/mysql84-community-release-el9-4.noarch.rpm
 
 # EL8 (Rocky 8 / Alma 8 / RHEL 8)
-sudo dnf install -y https://dev.mysql.com/get/mysql84-community-release-el8-1.noarch.rpm
+sudo dnf install -y https://dev.mysql.com/get/mysql84-community-release-el8-3.noarch.rpm
+sudo dnf module disable mysql -y   # EL8만: 기본 mysql 모듈이 공식 저장소 패키지를 가림
 
 sudo dnf install mysql-community-server -y
 sudo systemctl enable --now mysqld
@@ -196,8 +209,8 @@ Securing the MySQL server deployment.
 
 Enter password for user root:          # 임시 패스워드 입력 (Rocky) 또는 엔터 (Ubuntu)
 
-New password: SecurePassword123        # 새 root 패스워드 설정
-Re-enter new password: SecurePassword123
+New password: SecurePassword123!       # 새 root 패스워드 설정 (RPM 설치는 validate_password 기본 정책 적용)
+Re-enter new password: SecurePassword123!
 
 Remove anonymous users? [Y/n] Y
 Disallow root login remotely? [Y/n] Y
@@ -222,11 +235,11 @@ mysql -u root -p
 CREATE DATABASE mydb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 전용 계정 생성 (로컬 접속)
-CREATE USER 'Secureuser123'@'localhost' IDENTIFIED BY 'SecurePassword123';
+CREATE USER 'Secureuser123'@'localhost' IDENTIFIED BY 'SecurePassword123!';
 GRANT ALL PRIVILEGES ON mydb.* TO 'Secureuser123'@'localhost';
 
 -- 원격 접속 허용 (특정 IP 대역)
-CREATE USER 'Secureuser123'@'10.0.1.%' IDENTIFIED BY 'SecurePassword123';
+CREATE USER 'Secureuser123'@'10.0.1.%' IDENTIFIED BY 'SecurePassword123!';
 GRANT SELECT, INSERT, UPDATE, DELETE ON mydb.* TO 'Secureuser123'@'10.0.1.%';
 
 FLUSH PRIVILEGES;
@@ -237,7 +250,7 @@ FLUSH PRIVILEGES;
 ```sql
 -- root 계정 인증 방식 변경
 ALTER USER 'root'@'localhost'
-    IDENTIFIED WITH caching_sha2_password BY 'SecurePassword123';
+    IDENTIFIED WITH caching_sha2_password BY 'SecurePassword123!';
 FLUSH PRIVILEGES;
 ```
 
@@ -270,7 +283,7 @@ collation-server      = utf8mb4_unicode_ci
 
 # InnoDB
 innodb_buffer_pool_size    = 1G     # RAM의 50~70% 권장
-innodb_log_file_size       = 256M
+innodb_redo_log_capacity   = 512M   # innodb_log_file_size(폐기 예정) 대체
 innodb_flush_log_at_trx_commit = 1  # 1: 완전 내구성 (프로덕션 권장)
 innodb_flush_method        = O_DIRECT
 
@@ -286,7 +299,7 @@ long_query_time            = 1
 
 # Binary Log (복제 사용 시)
 log_bin                    = /var/log/mysql/mysql-bin.log
-binlog_format              = ROW
+binlog_format              = ROW    # 기본값, 변수 자체가 폐기 예정(deprecated)
 binlog_expire_logs_seconds = 604800
 ```
 
@@ -306,7 +319,7 @@ sudo systemctl restart mysqld  # Rocky
 ### Primary 계정 생성
 
 ```sql
-CREATE USER 'repl'@'10.0.1.%' IDENTIFIED BY 'SecurePassword123';
+CREATE USER 'repl'@'10.0.1.%' IDENTIFIED BY 'SecurePassword123!';
 GRANT REPLICATION SLAVE ON *.* TO 'repl'@'10.0.1.%';
 FLUSH PRIVILEGES;
 ```
@@ -457,7 +470,7 @@ SELECT user, host FROM mysql.user;
 SHOW GRANTS FOR 'Secureuser123'@'localhost';
 
 -- 패스워드 변경
-ALTER USER 'Secureuser123'@'localhost' IDENTIFIED BY 'NewPassword123';
+ALTER USER 'Secureuser123'@'localhost' IDENTIFIED BY 'NewPassword123!';
 
 -- 계정 삭제
 DROP USER 'Secureuser123'@'localhost';
@@ -492,6 +505,12 @@ sudo mysqladmin -u root -p processlist   # 실행 중인 쿼리
 
 - MySQL Documentation: [Installing MySQL](https://dev.mysql.com/doc/refman/8.4/en/installing.html) — ★★★☆☆
 - MySQL Documentation: [Postinstallation Setup](https://dev.mysql.com/doc/refman/8.4/en/postinstallation.html) — ★★★☆☆
+- MySQL Documentation: [MySQL Releases: Innovation and LTS](https://dev.mysql.com/doc/refman/8.4/en/mysql-releases.html) — ★★★☆☆
+- MySQL Documentation: [Installing MySQL on Linux Using the MySQL Yum Repository](https://dev.mysql.com/doc/refman/8.4/en/linux-installation-yum-repo.html) (EL8 모듈 비활성화, validate_password 기본 정책) — ★★★☆☆
+- MySQL Downloads: [MySQL APT Repository](https://dev.mysql.com/downloads/repo/apt/) / [MySQL Yum Repository](https://dev.mysql.com/downloads/repo/yum/) (저장소 패키지 현재 판) — ★★★☆☆
+- MySQL Documentation: [InnoDB Startup Options and System Variables](https://dev.mysql.com/doc/refman/8.4/en/innodb-parameters.html) (`innodb_redo_log_capacity`) — ★★★☆☆
+- MySQL Documentation: [Binary Logging Options and Variables](https://dev.mysql.com/doc/refman/8.4/en/replication-options-binary-log.html) (`binlog_format` 폐기 예정) — ★★★☆☆
+- Rocky Linux: [Rocky 9 AppStream](https://dl.rockylinux.org/pub/rocky/9/AppStream/x86_64/os/) / [Rocky 10 AppStream](https://dl.rockylinux.org/pub/rocky/10/AppStream/x86_64/os/) (배포판 MySQL 패키지·모듈) — ★★★☆☆
 - [rdbms_replication.md](./rdbms_replication.md)
 
 ---
@@ -509,6 +528,6 @@ sudo mysqladmin -u root -p processlist   # 실행 중인 쿼리
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

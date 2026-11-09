@@ -39,7 +39,7 @@ GROUP BY u.user_id;
 
 | 컬럼            | 설명                                  |
 |-----------------|---------------------------------------|
-| `id`            | 쿼리 단계 번호 (높을수록 먼저 실행)   |
+| `id`            | SELECT 식별자 (쿼리 안 SELECT 순번)   |
 | `select_type`   | SIMPLE, PRIMARY, SUBQUERY, DERIVED 등 |
 | `table`         | 접근 테이블                           |
 | `type`          | 접근 방식 (아래 참조)                 |
@@ -107,7 +107,7 @@ EXPLAIN SELECT * FROM orders WHERE user_id = 1;
 -- 실제 실행 시간 포함
 EXPLAIN ANALYZE SELECT * FROM orders WHERE user_id = 1;
 
--- 버퍼 사용량 포함
+-- 버퍼 사용량 포함 (PostgreSQL 18+는 ANALYZE만으로 포함)
 EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM orders WHERE user_id = 1;
 ```
 
@@ -158,7 +158,7 @@ Execution Time: 0.05 ms
 # my.cnf 설정
 slow_query_log = 1
 slow_query_log_file = /var/log/mysql/slow.log
-long_query_time = 1        # 1초 이상
+long_query_time = 1        # 1초 초과
 log_queries_not_using_indexes = 1
 
 # 런타임 설정
@@ -193,7 +193,7 @@ LIMIT 10;
 
 ```sql
 -- 슬로우 쿼리 상위 10개
-SELECT digest_text, count_star, avg_timer_wait/1e9 AS avg_sec
+SELECT digest_text, count_star, avg_timer_wait/1e12 AS avg_sec  -- timer 단위: picosecond
 FROM performance_schema.events_statements_summary_by_digest
 ORDER BY avg_timer_wait DESC
 LIMIT 10;
@@ -226,7 +226,7 @@ SELECT * FROM orders WHERE user_id = 1 ORDER BY created_at DESC;
 -- 복합 인덱스로 정렬 제거
 CREATE INDEX idx_orders_user_date ON orders (user_id, created_at DESC);
 
--- After: Using index
+-- After: Using filesort 사라짐 (SELECT *라서 Using index는 아님)
 ```
 
 ### 패턴 3: Using temporary 제거
@@ -242,11 +242,12 @@ CREATE INDEX idx_orders_status ON orders (status);
 ### 패턴 4: 서브쿼리 → JOIN
 
 ```sql
--- Before: DEPENDENT SUBQUERY (행마다 실행)
+-- Before: MySQL 5.5 이하는 DEPENDENT SUBQUERY (행마다 실행)
+-- MySQL 5.6+는 IN 서브쿼리를 semijoin으로 자동 변환하므로 EXPLAIN으로 먼저 확인
 SELECT * FROM users
 WHERE user_id IN (SELECT user_id FROM orders WHERE amount > 10000);
 
--- After: JOIN (한 번 실행)
+-- After: JOIN (구버전 대안, 중복 제거에 DISTINCT 필요)
 SELECT DISTINCT u.*
 FROM users u
 JOIN orders o ON u.user_id = o.user_id
@@ -289,7 +290,9 @@ VACUUM ANALYZE orders;         -- PostgreSQL
 
 ## 참고 자료
 
-- MySQL Documentation: [EXPLAIN Statement](https://dev.mysql.com/doc/refman/8.0/en/explain.html) — ★★★☆☆
+- MySQL Documentation: [EXPLAIN Statement](https://dev.mysql.com/doc/refman/8.4/en/explain.html) — ★★★☆☆
+- MySQL Documentation: [Performance Schema Event Timing](https://dev.mysql.com/doc/refman/8.4/en/performance-schema-timing.html) — ★★★☆☆
+- MySQL Documentation: [Optimizing IN and EXISTS Subquery Predicates with Semijoin and Antijoin](https://dev.mysql.com/doc/refman/8.4/en/semijoins-antijoins.html) — ★★★☆☆
 - PostgreSQL Documentation: [EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) — ★★★☆☆
 - Use The Index, Luke: [Execution Plans](https://use-the-index-luke.com/sql/explain-plan) — ★★☆☆☆
 
@@ -308,6 +311,6 @@ VACUUM ANALYZE orders;         -- PostgreSQL
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

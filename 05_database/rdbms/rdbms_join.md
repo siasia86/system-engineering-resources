@@ -21,9 +21,9 @@ Table A        Table B
 └───┘          └───┘
 
 INNER JOIN     LEFT JOIN      RIGHT JOIN     FULL OUTER JOIN
-  ┌─┐           ┌───┐          ┌───┐           ┌───────┐
+  ┌─┬─┐         ┌─┬─┬─┐        ┌─┬─┬─┐         ┌─┬─┬─┬─┐
   │1│3│         │1│2│3│        │1│3│4│         │1│2│3│4│
-  └─┘           └───┘          └───┘           └───────┘
+  └─┴─┘         └─┴─┴─┘        └─┴─┴─┘         └─┴─┴─┴─┘
   (Intersect)   (All of A)     (All of B)      (Union)
 ```
 
@@ -123,7 +123,7 @@ for each row in outer_table:
 ```
 
 - 대용량 테이블, 인덱스 없을 때 효율적
-- MySQL 8.0+, PostgreSQL 지원
+- MySQL 8.0.18+, PostgreSQL 지원
 - 복잡도: O(N + M)
 
 ### Merge Join (Sort-Merge Join)
@@ -201,12 +201,13 @@ CREATE INDEX idx_orders_user_id ON orders (user_id);
 ### Tip 2: 드라이빙 테이블은 작은 쪽으로
 
 ```sql
--- 나쁜 예: 큰 테이블(orders)이 드라이빙
+-- INNER JOIN은 옵티마이저가 조인 순서를 정하므로 FROM 순서만 바꿔서는 드라이빙 테이블이 바뀌지 않음
+-- EXPLAIN으로 작은 결과셋(WHERE u.status = 'active')이 먼저 읽히는지 확인
 SELECT * FROM orders o JOIN users u ON o.user_id = u.user_id
 WHERE u.status = 'active';
 
--- 좋은 예: WHERE 조건으로 작은 결과셋이 드라이빙
-SELECT * FROM users u JOIN orders o ON u.user_id = o.user_id
+-- 옵티마이저가 큰 테이블을 먼저 읽을 때만 순서 고정 (MySQL: FROM에 적은 순서대로 조인)
+SELECT STRAIGHT_JOIN * FROM users u JOIN orders o ON u.user_id = o.user_id
 WHERE u.status = 'active';
 ```
 
@@ -291,7 +292,8 @@ SELECT * FROM category_tree ORDER BY depth, id;
 
 ## 참고 자료
 
-- MySQL Documentation: [JOIN Syntax](https://dev.mysql.com/doc/refman/8.0/en/join.html) — ★★★☆☆
+- MySQL Documentation: [JOIN Clause](https://dev.mysql.com/doc/refman/8.4/en/join.html) — ★★★☆☆
+- MySQL 8.0 Documentation: [Hash Join Optimization (8.0.18 도입)](https://dev.mysql.com/doc/refman/8.0/en/hash-joins.html) — ★★★☆☆
 - PostgreSQL Documentation: [Joins Between Tables](https://www.postgresql.org/docs/current/tutorial-join.html) — ★★★☆☆
 - Use The Index, Luke: [Join](https://use-the-index-luke.com/sql/join) — ★★☆☆☆
 
@@ -310,6 +312,6 @@ SELECT * FROM category_tree ORDER BY depth, id;
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

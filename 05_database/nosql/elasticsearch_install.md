@@ -141,7 +141,7 @@ sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kiban
 
 ```bash
 # 8.x는 기본적으로 TLS + 인증 활성화
-grep -E "xpack.security|xpack.http.ssl" /etc/elasticsearch/elasticsearch.yml
+grep -E "xpack.security|xpack.security.http.ssl" /etc/elasticsearch/elasticsearch.yml
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -168,9 +168,10 @@ path.data: /var/lib/elasticsearch
 path.logs: /var/log/elasticsearch
 
 # 메모리
-bootstrap.memory_lock: true   # swap 방지
+bootstrap.memory_lock: true   # swap 방지 (systemd에 LimitMEMLOCK=infinity 필요)
 
 # 클러스터 초기 마스터 노드 (단일 노드)
+# 패키지 자동 구성이 넣은 cluster.initial_master_nodes 줄은 지웁니다 (함께 두면 기동 실패)
 discovery.type: single-node   # 단일 노드 클러스터
 
 # 보안 (8.x 기본값)
@@ -184,7 +185,7 @@ sudo vi /etc/elasticsearch/jvm.options.d/heap.options
 ```
 
 ```
-# RAM의 50% 권장, 최대 32GB
+# RAM의 50% 이하, compressed oops 한계 이하 (대부분 26GB, 일부 시스템 30GB까지)
 -Xms4g
 -Xmx4g
 ```
@@ -262,10 +263,11 @@ curl -s --cacert $ES_CERT -u $ES_AUTH "$ES_URL/_cat/nodes?v"
 # compose.yaml
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.19.24
     environment:
       - discovery.type=single-node
       - ELASTIC_PASSWORD=SecurePassword123
+      # 명시 설정 시 보안 자동 구성(TLS 인증서 생성)을 건너뛰므로 HTTP는 평문입니다 (로컬 실습용)
       - xpack.security.enabled=true
       - ES_JAVA_OPTS=-Xms1g -Xmx1g
     volumes:
@@ -279,12 +281,11 @@ services:
     restart: unless-stopped
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.14.0
+    image: docker.elastic.co/kibana/kibana:8.19.24
     environment:
-      - ELASTICSEARCH_HOSTS=https://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=SecurePassword123
-      - ELASTICSEARCH_SSL_VERIFICATIONMODE=none
     ports:
       - "5601:5601"
     depends_on:
@@ -297,6 +298,12 @@ volumes:
 
 ```bash
 docker compose up -d
+
+# kibana_system 패스워드는 ELASTIC_PASSWORD로 설정되지 않으므로 Elasticsearch 기동 후 따로 지정합니다
+curl -s -u elastic:SecurePassword123 -X POST "http://127.0.0.1:9200/_security/user/kibana_system/_password" \
+    -H 'Content-Type: application/json' -d '{"password":"SecurePassword123"}'
+docker compose restart kibana
+
 # Kibana: http://SERVER_IP:5601 (elastic / SecurePassword123)
 ```
 
@@ -316,7 +323,7 @@ curl -s --cacert $ES_CERT -u $ES_AUTH -X PUT "$ES_URL/_ilm/policy/logs-policy" \
     -H 'Content-Type: application/json' -d '{
   "policy": {
     "phases": {
-      "hot":    { "actions": { "rollover": { "max_size": "50gb", "max_age": "7d" } } },
+      "hot":    { "actions": { "rollover": { "max_primary_shard_size": "50gb", "max_age": "7d" } } },
       "delete": { "min_age": "30d", "actions": { "delete": {} } }
     }
   }
@@ -331,7 +338,7 @@ curl -s --cacert $ES_CERT -u $ES_AUTH -X PUT "$ES_URL/_ilm/policy/logs-policy" \
 | 10 ~ 50 GB  | 2 ~ 5        |
 | > 50 GB     | 크기 / 30GB  |
 
-🟡 샤드가 너무 많으면 오버헤드 증가. 샤드당 20~50 GB 권장.
+🟡 샤드가 너무 많으면 오버헤드 증가. 샤드당 10~50 GB, 문서 2억 건 미만 권장.
 
 ### Tip 3: 슬로우 로그 활성화
 
@@ -372,7 +379,13 @@ curl -s --cacert $ES_CERT -u $ES_AUTH "$ES_URL/_cluster/health?pretty"
 
 ## 참고 자료
 
-- Elastic Documentation: [elastic.co/guide/en/elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/) — ★★★☆☆
+- Elastic Documentation: [elastic.co/docs/reference/elasticsearch](https://www.elastic.co/docs/reference/elasticsearch) — ★★★☆☆
+- Elastic 지원 기간 (8.x 유지보수 2027-01-15까지): [Elastic Product End of Life Dates](https://www.elastic.co/support/eol) — ★★★☆☆
+- 보안 자동 구성 생략 조건: [Automatic security setup](https://www.elastic.co/docs/deploy-manage/security/self-auto-setup) — ★★★☆☆
+- JVM 힙 크기: [JVM settings](https://www.elastic.co/docs/reference/elasticsearch/jvm-settings) — ★★★☆☆
+- 메모리 잠금 (LimitMEMLOCK): [Disable swapping](https://www.elastic.co/docs/deploy-manage/deploy/self-managed/setup-configuration-memory) — ★★★☆☆
+- ILM rollover (`max_size`는 9.3부터 deprecated): [Rollover](https://www.elastic.co/docs/reference/elasticsearch/index-lifecycle-actions/ilm-rollover) — ★★★☆☆
+- 샤드 크기: [Size your shards](https://www.elastic.co/docs/deploy-manage/production-guidance/optimize-performance/size-shards) — ★★★☆☆
 - [nosql_elasticsearch.md](./nosql_elasticsearch.md)
 
 ---
@@ -390,6 +403,6 @@ curl -s --cacert $ES_CERT -u $ES_AUTH "$ES_URL/_cluster/health?pretty"
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-05-04
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -77,10 +77,10 @@ SELECT * FROM t WHERE id BETWEEN 5 AND 10 FOR UPDATE;
 ### Gap Lock 비활성화
 
 ```sql
--- READ COMMITTED에서는 Gap Lock 미사용
+-- READ COMMITTED에서는 검색·인덱스 스캔에 Gap Lock 미사용 (FK·중복 키 검사에는 사용)
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
--- 또는 innodb_locks_unsafe_for_binlog=1 (deprecated)
+-- innodb_locks_unsafe_for_binlog는 MySQL 8.0에서 제거됨 (READ COMMITTED로 대체)
 ```
 
 ### Table Lock
@@ -93,7 +93,8 @@ UNLOCK TABLES;
 
 -- DDL은 묵시적 Table Lock (MDL: Metadata Lock)
 ALTER TABLE orders ADD COLUMN note TEXT;
--- 실행 중 다른 DML 대기
+-- MySQL 8.4 InnoDB는 기본 INSTANT로 처리: 짧은 배타 MDL 동안만 다른 DML 대기
+-- 긴 트랜잭션이 테이블을 사용 중이면 MDL을 얻을 때까지 ALTER가 대기
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -247,9 +248,11 @@ WHERE order_id = 1 AND version = 3;
 
 ## 참고 자료
 
-- MySQL Documentation: [InnoDB Locking](https://dev.mysql.com/doc/refman/8.0/en/innodb-locking.html) — ★★★☆☆
+- MySQL Documentation: [InnoDB Locking](https://dev.mysql.com/doc/refman/8.4/en/innodb-locking.html) — ★★★☆☆
 - PostgreSQL Documentation: [Explicit Locking](https://www.postgresql.org/docs/current/explicit-locking.html) — ★★★☆☆
-- MySQL Documentation: [Deadlocks](https://dev.mysql.com/doc/refman/8.0/en/innodb-deadlocks.html) — ★★★☆☆
+- MySQL Documentation: [Deadlocks](https://dev.mysql.com/doc/refman/8.4/en/innodb-deadlocks.html) — ★★★☆☆
+- MySQL Documentation: [Online DDL Operations](https://dev.mysql.com/doc/refman/8.4/en/innodb-online-ddl-operations.html) — ★★★☆☆
+- MySQL 8.0 Documentation: [What Is New in MySQL 8.0 (제거된 기능)](https://dev.mysql.com/doc/refman/8.0/en/mysql-nutshell.html) — ★★★☆☆
 
 ---
 
@@ -266,6 +269,6 @@ WHERE order_id = 1 AND version = 3;
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

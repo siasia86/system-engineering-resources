@@ -60,12 +60,12 @@ COMMIT;
 
 낮을수록 동시성 높음, 높을수록 정합성 높음.
 
-| 격리 수준        | Dirty Read | Non-Repeatable Read | Phantom Read            | 성능      |
-|------------------|------------|---------------------|-------------------------|-----------|
-| READ UNCOMMITTED | ✅ 발생    | ✅ 발생             | ✅ 발생                 | 가장 높음 |
-| READ COMMITTED   | ❌ 방지    | ✅ 발생             | ✅ 발생                 | 높음      |
-| REPEATABLE READ  | ❌ 방지    | ❌ 방지             | ✅ 발생 (InnoDB는 방지) | 중간      |
-| SERIALIZABLE     | ❌ 방지    | ❌ 방지             | ❌ 방지                 | 최저      |
+| 격리 수준        | Dirty Read | Non-Repeatable Read | Phantom Read                       | 성능      |
+|------------------|------------|---------------------|------------------------------------|-----------|
+| READ UNCOMMITTED | ✅ 발생    | ✅ 발생             | ✅ 발생                            | 가장 높음 |
+| READ COMMITTED   | ❌ 방지    | ✅ 발생             | ✅ 발생                            | 높음      |
+| REPEATABLE READ  | ❌ 방지    | ❌ 방지             | ✅ 발생 (InnoDB·PostgreSQL은 방지) | 중간      |
+| SERIALIZABLE     | ❌ 방지    | ❌ 방지             | ❌ 방지                            | 최저      |
 
 ### 기본값
 
@@ -124,7 +124,7 @@ T1: SELECT COUNT(*) WHERE age > 20 → 6건  ← Phantom
 
 ### InnoDB REPEATABLE READ에서 Phantom Read 방지
 
-InnoDB는 REPEATABLE READ에서 **Gap Lock**으로 Phantom Read를 방지합니다.
+InnoDB는 REPEATABLE READ에서 일반 SELECT는 MVCC 스냅샷으로, 잠금 읽기(`FOR UPDATE` 등)는 **Next-Key Lock**(Record Lock + Gap Lock)으로 Phantom Read를 방지합니다.
 
 ```sql
 -- T1
@@ -188,14 +188,14 @@ Undo Log (버전 체인):
 현재: balance = 500 (T2 커밋)
 이전: balance = 1000 (T1 시작 시점)
 
-T1 (REPEATABLE READ): 자신의 시작 시점 스냅샷 읽음 → 1000
+T1 (REPEATABLE READ): 첫 읽기 시점 스냅샷 읽음 → 1000
 T3 (새 트랜잭션): 최신 커밋 읽음 → 500
 ```
 
 | 항목           | Lock 기반 | MVCC                     |
 |----------------|-----------|--------------------------|
 | 읽기-쓰기 충돌 | 블로킹    | 비블로킹                 |
-| 저장 공간      | 적음      | Undo Log 필요            |
+| 저장 공간      | 적음      | 이전 버전 보관 필요      |
 | 구현 DBMS      | -         | MySQL InnoDB, PostgreSQL |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -237,7 +237,7 @@ SET autocommit = 1;
 -- FOR UPDATE: 배타 Lock (다른 FOR UPDATE/FOR SHARE 대기, 일반 SELECT는 MVCC로 허용)
 SELECT * FROM inventory WHERE product_id = 1 FOR UPDATE;
 
--- FOR SHARE (FOR KEY SHARE): 읽기 Lock (다른 트랜잭션 읽기는 허용)
+-- FOR SHARE: 읽기 Lock (다른 트랜잭션 읽기는 허용, MySQL 구 구문: LOCK IN SHARE MODE)
 SELECT * FROM inventory WHERE product_id = 1 FOR SHARE;
 ```
 
@@ -247,9 +247,10 @@ SELECT * FROM inventory WHERE product_id = 1 FOR SHARE;
 
 ## 참고 자료
 
-- MySQL Documentation: [InnoDB Transaction Model](https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-model.html) — ★★★☆☆
+- MySQL Documentation: [InnoDB Transaction Model](https://dev.mysql.com/doc/refman/8.4/en/innodb-transaction-model.html) — ★★★☆☆
 - PostgreSQL Documentation: [Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html) — ★★★☆☆
-- RFC 그 외: Bernstein, Philip A. "Concurrency Control and Recovery in Database Systems" — ★★★★☆
+- PostgreSQL Documentation: [Explicit Locking (Row-Level Locks)](https://www.postgresql.org/docs/current/explicit-locking.html) — ★★★☆☆
+- 도서: Bernstein, Philip A. "Concurrency Control and Recovery in Database Systems" — ★★★★☆
 
 ---
 
@@ -266,6 +267,6 @@ SELECT * FROM inventory WHERE product_id = 1 FOR SHARE;
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-04-30
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

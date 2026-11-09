@@ -2,6 +2,8 @@
 
 변경 이벤트를 DB 사용자, 호스트, 클라이언트 프로그램까지 추적하는 감사 기능을 상세히 설명합니다.
 
+🟡 이 기능(CLI `who-changed`·`user-activity`·`connection-history`, 콘솔 Forensics 화면, doctor의 audit plugin 점검)은 2026-07-16 dbtrail 코어에서 제거되었습니다(PR #1030). 코어에는 `query_text`·`query_hash`·`connection_id` 수집만 남아 있으며, 아래 내용은 제거 전 동작 기준입니다.
+
 ## 목차
 
 | 섹션                                                                                                            |
@@ -113,18 +115,18 @@ audit_log_file = /var/log/mysql/audit.log
 ### RDS Audit 설정
 
 ```
-파라미터 그룹:
+Aurora MySQL DB 클러스터 파라미터 그룹 (RDS for MySQL은 옵션 그룹의 MARIADB_AUDIT_PLUGIN):
   server_audit_logging = ON
   server_audit_events = CONNECT,QUERY_DML
 
-CloudWatch:
-  /aws/rds/audit → dbtrail이 자동 수집
+로그 위치:
+  인스턴스 로그 audit/audit.log.* (CloudWatch 게시 시 /aws/rds/cluster/<클러스터>/audit)
 ```
 
 ### bintrail doctor 확인
 
 ```bash
-bintrail doctor --host 192.0.2.1 --user dbtrail --password SecurePassword123
+bintrail doctor --source-dsn "dbtrail:<password>@tcp(192.0.2.1:3306)/"
 # ...
 # [forensics] audit plugin: percona audit_log (JSON)
 # [forensics] audit log path: /var/log/mysql/audit.log
@@ -144,10 +146,10 @@ audit plugin이 없으면:
 
 ## 4. 사용법
 
-### whochanged (특정 행 변경자 추적)
+### who-changed (특정 행 변경자 추적)
 
 ```bash
-bintrail whochanged --schema shop --table orders --pk 123
+bintrail who-changed --schema shop --table orders --pk 123
 
 # output:
 # ┌─────────────────────┬────────┬──────────────────────────┬──────────────┬─────────────┐
@@ -199,7 +201,10 @@ SET PERSIST binlog_rows_query_log_events = ON;
 ## 참고 자료
 
 - [recovery_guide.md](./recovery_guide.md)
-- dbtrail Forensics: [github.com/dbtrail/dbtrail/blob/main/docs/forensics.md](https://github.com/dbtrail/dbtrail/blob/main/docs/forensics.md) — ★★☆☆☆
+- dbtrail Forensics (제거 전 마지막 판): [docs/forensics.md @ 9a68d72](https://github.com/dbtrail/dbtrail/blob/9a68d72eca0203d8af1a43e59f6601acb57287f0/docs/forensics.md) — ★★★☆☆
+- dbtrail who-changed 제거: [PR #1030 core: retire the who-changed attribution surface](https://github.com/dbtrail/dbtrail/pull/1030) — ★★★☆☆
+- Aurora MySQL Advanced Auditing: [AuroraMySQL.Auditing](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Auditing.html) — ★★★☆☆
+- RDS for MySQL MariaDB Audit Plugin: [Appendix.MySQL.Options.AuditPlugin](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.AuditPlugin.html) — ★★★☆☆
 
 ---
 
@@ -216,6 +221,6 @@ SET PERSIST binlog_rows_query_log_events = ON;
 
 **작성일**: 2026-07-06
 
-**마지막 업데이트**: 2026-07-06
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.
