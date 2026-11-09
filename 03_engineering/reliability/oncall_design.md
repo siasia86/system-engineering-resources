@@ -158,12 +158,12 @@ SEV-N
 
 ### 번아웃 지표
 
-| 지표                       | 위험 임계값                 |
-|----------------------------|-----------------------------|
-| 주당 페이지 수             | > 2회/shift (SRE Book 기준) |
-| 야간 호출 빈도             | > 1회/주                    |
-| 연속 온콜 주수             | > 2주                       |
-| 온콜 중 프로젝트 작업 비율 | < 50% (25% 규칙 위반)       |
+| 지표                       | 위험 임계값           |
+|----------------------------|-----------------------|
+| 시프트(12h)당 장애 수      | > 2건 (SRE Book 기준) |
+| 야간 호출 빈도             | > 1회/주              |
+| 연속 온콜 주수             | > 2주                 |
+| 온콜 중 프로젝트 작업 비율 | < 50% (25% 규칙 위반) |
 
 ### 예방 조치
 
@@ -180,8 +180,8 @@ SEV-N
 | 도구           | 유형            | 특징                              |
 |----------------|-----------------|-----------------------------------|
 | PagerDuty      | 알림 관리       | 로테이션, 에스컬레이션, 모바일 앱 |
-| OpsGenie       | 알림 관리       | Atlassian 통합, 스케줄 관리       |
-| Grafana OnCall | OSS 알림        | Grafana 생태계 통합, 무료         |
+| OpsGenie       | 알림 관리       | Atlassian, 2027-04-05 지원 종료   |
+| Grafana OnCall | OSS 알림        | 2026-03 보관, 후속 Grafana IRM    |
 | Slack/Teams    | 커뮤니케이션    | War room, 자동 알림 전달          |
 | Backstage      | 서비스 카탈로그 | 온콜 담당자 표시, 런북 링크       |
 
@@ -195,16 +195,16 @@ SEV-N
 | 핸드오프 시 정보 유실   | 비동기 전달, 문서 미비 | 표준 핸드오프 템플릿 + 동기 미팅  |
 | 온콜 기피로 퇴사 증가   | 보상 부재, 과부하      | 보상 체계 도입, 인원 충원, 자동화 |
 
-> 온콜 설계의 핵심 원칙(25% cap, 최소 2인 로테이션)은 Google SRE Book Ch.11 "Being On-Call"에서 정립되었습니다.
+> 온콜 설계의 핵심 원칙(25% cap, primary·secondary 2인 동시 온콜)은 Google SRE Book Ch.11 "Being On-Call"에서 정립되었습니다.
 > — https://sre.google/sre-book/being-on-call/
 
-> Google SRE Book Ch.11: 온콜 엔지니어의 업무 비중은 25% 이하여야 하며, 최소 2인 로테이션이 필수입니다. 위반 시 번아웃 위험이 급증합니다.
+> Google SRE Book Ch.11: 온콜 업무 비중은 25% 이하여야 하며, 항상 2명(primary·secondary)이 온콜한다고 가정하면 단일 사이트 팀은 최소 8명, 2개 사이트 팀은 사이트당 최소 6명이 필요합니다. 장애는 12시간 시프트당 최대 2건을 기준으로 합니다.
 > — https://sre.google/sre-book/being-on-call/
 
 > PagerDuty의 On-Call 모범 사례: override 시 명시적 handoff 필수, escalation policy 사전 정의 권장.
 > — https://www.pagerduty.com/resources/learn/call-rotations-schedules/
 
-> MTTR(Mean Time to Resolve)은 DORA 4 Key Metrics 중 하나로, 온콜 효율성의 핵심 KPI입니다.
+> MTTR(Mean Time to Resolve)은 온콜 효율성의 핵심 KPI입니다. DORA는 현재 MTTR 대신 Failed deployment recovery time을 5개 소프트웨어 딜리버리 지표 중 하나로 사용합니다.
 > — https://dora.dev/guides/dora-metrics-four-keys/
 
 ## 참고 자료
@@ -212,11 +212,13 @@ SEV-N
 - Google SRE Book Ch.11: [Being On-Call](https://sre.google/sre-book/being-on-call/) — ★★★★☆
 - PagerDuty On-Call Guide: [pagerduty.com](https://www.pagerduty.com/resources/learn/call-rotations-schedules/) — ★★★☆☆
 - Grafana OnCall: [grafana.com/oss/oncall](https://grafana.com/oss/oncall/) — ★★★☆☆
+- Grafana OnCall OSS 보관 안내: [github.com/grafana-cold-storage/oncall](https://github.com/grafana-cold-storage/oncall) — ★★★☆☆
+- Atlassian Opsgenie 판매·지원 종료: [atlassian.com/licensing/opsgenie](https://www.atlassian.com/licensing/opsgenie) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

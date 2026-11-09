@@ -78,25 +78,13 @@ project/
 - **Deciders**: 담당자, 참여자
 - **Tags**: infra, network, database, monitoring, security, deploy
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Context
 
 왜 이 결정이 필요한가? 현재 상황과 문제점을 기술합니다.
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Decision
 
 무엇을 선택했는가? 핵심 결정 사항을 명확히 기술합니다.
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## Alternatives Considered
 
@@ -105,10 +93,6 @@ project/
 | Option A |      |      |
 | Option B |      |      |
 | Option C |      |      |
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## Consequences
 
@@ -120,10 +104,6 @@ project/
 
 ### 리스크
 -
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## References
 
@@ -190,27 +170,15 @@ Proposed → Accepted → (운영 중)
 - **Deciders**: 인프라팀
 - **Tags**: infra, os
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Context
 
 신규 게임 프로젝트의 서버 OS를 선정해야 합니다.
 기존 CentOS 7 EOL(2024-06)로 대체 OS가 필요합니다.
 게임 서버는 RHEL 계열 의존성이 높고, SELinux 정책 운영 경험이 있습니다.
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Decision
 
 Rocky Linux 10을 표준 OS로 선정합니다.
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## Alternatives Considered
 
@@ -220,10 +188,6 @@ Rocky Linux 10을 표준 OS로 선정합니다.
 | Ubuntu 24.04 LTS | 넓은 생태계, 문서 풍부 | RHEL 패키지 호환성 문제  |
 | AlmaLinux 10     | RHEL 호환, 안정적      | Rocky 대비 커뮤니티 작음 |
 | RHEL 10          | 공식 지원              | 라이선스 비용            |
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## Consequences
 
@@ -240,10 +204,6 @@ Rocky Linux 10을 표준 OS로 선정합니다.
 - Rocky Linux 프로젝트 지속성 (CentOS 전례)
   → AlmaLinux를 백업 플랜으로 유지
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## References
 - CentOS EOL 공지: https://blog.centos.org/
 - Rocky Linux 10 릴리스 노트
@@ -259,26 +219,14 @@ Rocky Linux 10을 표준 OS로 선정합니다.
 - **Deciders**: 인프라팀
 - **Tags**: infra, automation
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Context
 
 수십 대 서버의 설정 관리를 수동으로 하고 있어
 일관성 유지가 어렵고 휴먼 에러가 발생합니다.
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## Decision
 
 Ansible을 Configuration Management 도구로 선정합니다.
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## Alternatives Considered
 
@@ -288,10 +236,6 @@ Ansible을 Configuration Management 도구로 선정합니다.
 | Puppet  | 선언적, 대규모 안정적             | Ruby DSL 학습 비용         |
 | Chef    | 유연한 Ruby 기반                  | 복잡도 높음, 에이전트 필요 |
 | Salt    | 빠른 실행, 이벤트 드리븐          | 커뮤니티 축소 추세         |
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## Consequences
 
@@ -306,10 +250,6 @@ Ansible을 Configuration Management 도구로 선정합니다.
 
 ### 리스크
 - 규모 확장 시 성능 → Mitogen 플러그인 또는 AWX 분산 실행
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## References
 - ADR-001 (Rocky Linux 선정 → RHEL 계열 Ansible 호환성 확인)
@@ -404,18 +344,10 @@ description: >
 
 # ADR Writer
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
 ## When triggered
 - User compares technology options
 - User asks "why did we choose X?"
 - User requests decision documentation
-
-[⬆ 목차로 돌아가기](#목차)
-
----
 
 ## Workflow
 1. Ask for context and constraints
@@ -437,7 +369,7 @@ AI가 기존 ADR을 참조하면 일관된 형식과 맥락을 유지할 수 있
 
 ---
 
-> Architecture Decision Record(ADR)는 Michael Nygard가 2011년 블로그에서 제안한 형식입니다. Thoughtworks Technology Radar에서 "Adopt"로 선정(2016)되었습니다.
+> Architecture Decision Record(ADR)는 Michael Nygard가 2011년 블로그에서 제안한 형식입니다. Thoughtworks Technology Radar에서 2016년 11월 "Trial", 2017년 11월 "Adopt"로 선정되었습니다.
 > — https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
 > — https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records
 
@@ -449,7 +381,7 @@ AI가 기존 ADR을 참조하면 일관된 형식과 맥락을 유지할 수 있
 
 - Nygard, Michael. "Documenting Architecture Decisions": [cognitect.com](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) — ★★☆☆☆
 - ADR GitHub Organization: [adr.github.io](https://adr.github.io/) — ★★☆☆☆
-- adr-tools: [adr-tools](https://github.com/npryce/adr-tools) — ★★☆☆☆
+- adr-tools: [adr-tools](https://github.com/npryce/adr-tools) — ★★★☆☆
 
 ---
 
@@ -466,6 +398,6 @@ AI가 기존 ADR을 참조하면 일관된 형식과 맥락을 유지할 수 있
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-04-11
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

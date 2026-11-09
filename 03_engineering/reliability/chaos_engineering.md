@@ -109,7 +109,7 @@ abort_if:
 - 수동 중단 버튼 (Kill Switch) 항상 대기
 - 실험 최대 지속 시간 설정 (timeout)
 
-> AWS FIS의 Stop Condition은 CloudWatch Alarm 기반으로 자동 중단을 보장합니다. 모든 FIS 실험에 필수 설정입니다.
+> AWS FIS의 Stop Condition은 CloudWatch Alarm이 정의한 임계값에 도달하면 실험을 자동 중단합니다. 실험 템플릿은 `source: none`(중단 조건 없음)도 허용하므로, 이 문서의 기준대로 모든 실험에 명시적으로 설정합니다.
 > — https://docs.aws.amazon.com/fis/latest/userguide/stop-conditions.html
 
 ## 5. 실험 유형
@@ -137,16 +137,16 @@ abort_if:
 
 ## 6. 도구
 
-| 도구         | 유형           | 환경        | 특징                           |
-|--------------|----------------|-------------|--------------------------------|
-| AWS FIS      | 관리형 서비스  | AWS         | Stop condition, IAM 통합       |
-| LitmusChaos  | CNCF Graduated | Kubernetes  | CRD 기반, Resilience Score     |
-| Chaos Monkey | Netflix OSS    | Cloud 범용  | 랜덤 인스턴스 종료 (원조)      |
-| Gremlin      | 상용 SaaS      | 멀티 환경   | GUI, 안전 장치, 팀 관리        |
-| tc netem     | Linux 내장     | Linux       | 네트워크 지연/손실/대역폭 제한 |
-| toxiproxy    | Shopify OSS    | Application | TCP 프록시 기반 장애 주입      |
+| 도구         | 유형            | 환경        | 특징                           |
+|--------------|-----------------|-------------|--------------------------------|
+| AWS FIS      | 관리형 서비스   | AWS         | Stop condition, IAM 통합       |
+| LitmusChaos  | CNCF Incubating | Kubernetes  | CRD 기반, Resilience Score     |
+| Chaos Monkey | Netflix OSS     | Cloud 범용  | 랜덤 인스턴스 종료 (원조)      |
+| Gremlin      | 상용 SaaS       | 멀티 환경   | GUI, 안전 장치, 팀 관리        |
+| tc netem     | Linux 내장      | Linux       | 네트워크 지연/손실/대역폭 제한 |
+| toxiproxy    | Shopify OSS     | Application | TCP 프록시 기반 장애 주입      |
 
-> LitmusChaos는 2022년 CNCF Incubating 승격, 2025년 CNCF Graduated로 졸업되었습니다. AWS FIS는 2021년 GA로 출시되었습니다.
+> LitmusChaos는 2020년 CNCF Sandbox에 채택되고 2022년 Incubating으로 승격했으며, 2026-11 기준 Incubating 단계입니다. AWS FIS는 2021년 GA로 출시되었습니다.
 > — https://www.cncf.io/projects/litmus/
 > — https://aws.amazon.com/fis/
 
@@ -206,7 +206,7 @@ After:
 
 ## 참고 자료
 
-- Principles of Chaos Engineering: [principlesofchaos.org](https://principlesofchaos.org/) — ★★★★☆
+- Principles of Chaos Engineering: [principlesofchaos.org](https://principlesofchaos.org/) — ★★★☆☆
 - LitmusChaos: [litmuschaos.io](https://litmuschaos.io/) — ★★★☆☆
 - AWS FIS: [docs.aws.amazon.com/fis](https://docs.aws.amazon.com/fis/latest/userguide/) — ★★★☆☆
 
@@ -214,6 +214,6 @@ After:
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

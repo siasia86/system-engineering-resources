@@ -22,14 +22,15 @@
 
 ### Google 원칙
 
-- **Plan to fail**: N+1 또는 N+2 capacity (Google은 N+1 사용, 금융/게임 등 고가용성 환경은 N+2)
+- **Plan to fail**: N+1 또는 N+2 capacity (SRE Book Ch.2 예시는 업데이트 1개 + 장애 1개를 견디는 N+2, 소규모 리전은 비용 때문에 N+1)
 - **Demand forecasting**: Linear regression 부족 → Seasonal decomposition
 - **Load testing**: 실제 트래픽의 2x~3x로 stress test
 - **Headroom**: 30~50% headroom 유지 (burst 대비, 워크로드에 따라 조정)
 
 > Google SRE Workbook Ch.11 "Managing Load"에서 redundancy와 load balancing 전략을 다룹니다.
-> N+1은 Google SRE 표준, N+2는 금융/게임 등 보수적 환경 기준입니다. 30~50% headroom은 업계 통용 관행이며, 공식 문서에서 특정 수치를 명시하지는 않습니다.
+> Google SRE Book Ch.2 예시는 업데이트 중인 작업 1개와 그 사이 장애 1개를 견디도록 N+2로 프로비저닝하고, 트래픽이 적은 리전은 비용을 줄이려고 N+1로 낮춥니다. 30~50% headroom은 업계 통용 관행이며, 공식 문서에서 특정 수치를 명시하지는 않습니다.
 > — https://sre.google/workbook/managing-load/
+> — https://sre.google/sre-book/production-environment/
 
 ## 2. 계획 절차
 
@@ -174,7 +175,7 @@ Example:
 | Soak     | 장시간 안정성 확인         | 정상 부하 8~24시간 유지 |
 | Spike    | 급격한 부하 증가 대응 확인 | 0 → 피크 즉시 전환      |
 
-> 부하 테스트 4유형(Baseline/Stress/Soak/Spike)은 k6 공식 문서의 분류를 따릅니다.
+> k6 공식 문서는 부하 테스트를 Smoke, Average-load, Stress, Soak, Spike, Breakpoint 6유형으로 나눕니다. 위 Baseline(점진 증가로 한계 측정)은 k6의 Breakpoint 테스트에 해당합니다.
 > — https://grafana.com/docs/k6/latest/testing-guides/test-types/
 
 ### Load Test Checklist
@@ -192,7 +193,7 @@ Example:
 
 - **PERF 1**: 최적 아키텍처를 어떻게 선택하는가?
 - **PERF 2**: 컴퓨팅 솔루션을 어떻게 선택하는가?
-- **PERF 4**: 리소스 성능을 어떻게 모니터링하는가?
+- **PERF 5**: 조직의 관행과 문화가 성능 효율성에 어떻게 기여하는가? (KPI, 모니터링, 부하 테스트 포함)
 
 > AWS Well-Architected Performance Efficiency Pillar
 > — https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/
@@ -219,12 +220,14 @@ Example:
 ## 참고 자료
 
 - Google SRE Workbook Ch.11: [Managing Load](https://sre.google/workbook/managing-load/) — ★★★★☆
+- Google SRE Book Ch.2: [The Production Environment at Google](https://sre.google/sre-book/production-environment/) — ★★★★☆
+- k6 Test types: [grafana.com/docs/k6](https://grafana.com/docs/k6/latest/testing-guides/test-types/) — ★★★☆☆
 - AWS Well-Architected Performance Efficiency: [docs.aws.amazon.com](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

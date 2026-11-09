@@ -60,11 +60,11 @@ Phase 3: Contract
 |-----------------------|-------------------------|-----------------------------------|
 | ADD COLUMN (nullable) | ✅ INSTANT (8.0.12+)    | ✅ Instant (no rewrite)           |
 | ADD COLUMN (default)  | ✅ INSTANT (8.0.12+)    | ✅ Instant (11+, virtual default) |
-| DROP COLUMN           | ✅ INPLACE              | ✅ Instant (mark only)            |
+| DROP COLUMN           | ✅ INSTANT (8.0.29+)    | ✅ Instant (mark only)            |
 | ADD INDEX             | ✅ INPLACE, LOCK=NONE   | ✅ CREATE INDEX CONCURRENTLY      |
-| RENAME COLUMN         | ✅ INSTANT              | ✅ Instant                        |
+| RENAME COLUMN         | ✅ INSTANT (8.0.28+)    | ✅ Instant                        |
 | CHANGE COLUMN TYPE    | ❌ Table rebuild (위험) | ❌ ACCESS EXCLUSIVE lock (위험)   |
-| DROP INDEX            | ✅ INSTANT              | ✅ Instant                        |
+| DROP INDEX            | ✅ INPLACE (메타데이터) | ✅ Instant                        |
 
 ### 위험한 작업 → 안전한 대안
 
@@ -226,9 +226,9 @@ rollback_action:
 | 롤백 후에도 데이터 손실  | Contract 단계 이후 롤백 시도  | Contract 전 충분한 대기 (1주+) 확보    |
 | Canary 중 일부만 실패    | Session affinity 미설정       | Sticky session 또는 consistent hashing |
 
-> 무중단 마이그레이션 패턴(Strangler Fig, Blue-Green, Canary)은 Martin Fowler의 "Strangler Fig Application" 패턴(2004)과 AWS의 Migration Strategies(6 Rs)에 기반합니다.
+> 무중단 마이그레이션 패턴(Strangler Fig, Blue-Green, Canary)은 Martin Fowler의 "Strangler Fig Application" 패턴(2004)과 AWS의 Migration Strategies(7 Rs)에 기반합니다.
 > — https://martinfowler.com/bliki/StranglerFigApplication.html
-> — https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-retiring-applications/apg-gloss.html
+> — https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html
 
 > Blue-Green Deployment는 Jez Humble & David Farley의 "Continuous Delivery"(2010)에서 체계화되었습니다. Canary Release는 Netflix에서 대중화되었습니다.
 > — Humble, Jez & Farley, David. "Continuous Delivery" (Addison-Wesley, 2010)
@@ -244,12 +244,14 @@ rollback_action:
 - gh-ost: [github.com/github/gh-ost](https://github.com/github/gh-ost) — ★★★☆☆
 - Percona pt-online-schema-change: [docs.percona.com](https://docs.percona.com/percona-toolkit/pt-online-schema-change.html) — ★★★☆☆
 - AWS DMS: [docs.aws.amazon.com/dms](https://docs.aws.amazon.com/dms/latest/userguide/) — ★★★☆☆
+- MySQL 8.4 Online DDL Operations: [dev.mysql.com](https://dev.mysql.com/doc/refman/8.4/en/innodb-online-ddl-operations.html) — ★★★☆☆
+- AWS Migration Strategies(7 Rs): [docs.aws.amazon.com](https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html) — ★★★☆☆
 - Martin Fowler: [Expand-Contract](https://martinfowler.com/bliki/ParallelChange.html) — ★★☆☆☆
 
 ---
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

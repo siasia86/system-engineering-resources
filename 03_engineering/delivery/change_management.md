@@ -204,9 +204,9 @@ Change Failed
 > — ITIL 4: Create, Deliver and Support (Axelos, 2019)
 > — https://sre.google/sre-book/release-engineering/
 
-> ITIL v4에서 Change Enablement Practice는 Normal, Standard, Emergency 3개 유형으로 분류합니다. Google SRE Book에 따르면 프로덕션 장애의 대부분이 라이브 시스템 변경(deployment, config change)에서 기인합니다.
+> ITIL v4에서 Change Enablement Practice는 Normal, Standard, Emergency 3개 유형으로 분류합니다. Google SRE Book Ch.1에 따르면 장애의 약 70%가 라이브 시스템 변경(deployment, config change)에서 기인합니다.
 > — ITIL 4: Create, Deliver and Support (Axelos, 2019)
-> — https://sre.google/sre-book/release-engineering/
+> — https://sre.google/sre-book/introduction/
 
 > CAB(Change Advisory Board) 모델은 ITIL v3에서 정립되었으며, ITIL v4에서는 자동화된 Standard Change 승인을 권장합니다.
 > — ITIL 4: Direct, Plan and Improve (Axelos, 2019)
@@ -215,12 +215,12 @@ Change Failed
 
 - Google SRE Book Ch.8: [Release Engineering](https://sre.google/sre-book/release-engineering/) — ★★★★☆
 - ITIL v4: Change Enablement Practice — ★★★☆☆
-- Google: "most outages due to changes" (SRE talks, commonly cited) — ★★☆☆☆
+- Google SRE Book Ch.1: [Introduction](https://sre.google/sre-book/introduction/) ("roughly 70% of outages are due to changes in a live system") — ★★★★☆
 
 ---
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

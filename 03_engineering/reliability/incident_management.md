@@ -148,7 +148,7 @@ On-Call Engineer (초기 대응)
   3. 스케일 업/아웃 (부하 분산)
   4. 기능 비활성화 (feature flag off)
 
-> "Reduce the impact first. Investigate the root cause after the incident is mitigated." — Google SRE Book Ch.14
+> 영향을 먼저 줄이고 근본 원인 조사는 완화 이후에 진행합니다(Google SRE Book Ch.14 Best Practices의 "Stop the bleeding" 원칙 요약).
 > — https://sre.google/sre-book/managing-incidents/
 
 ## 5. 커뮤니케이션
@@ -268,11 +268,11 @@ CTO / CEO
 ### 온콜 부하 관리 (Google 권장)
 
 - 온콜 시간: 전체 업무의 25% 이하
-- 월 2회 이하 야간 호출 (번아웃 방지)
+- 12시간 시프트당 장애 2건 이하 (번아웃 방지)
 - 장애 대응 후 다음 시프트 면제 (피로 관리)
 - 온콜 중 프로젝트 작업: 중단 가능한 것만 배정
 
-> Google SRE Book Ch.11 "Being On-Call": 온콜 업무 비중 25% 이하, 최소 2인 로테이션 권장.
+> Google SRE Book Ch.11 "Being On-Call": 온콜 업무 비중 25% 이하, 항상 2명(primary·secondary) 온콜, 단일 사이트 팀은 최소 8명(2개 사이트는 사이트당 6명).
 > — https://sre.google/sre-book/being-on-call/
 
 ## 9. 트러블슈팅
@@ -296,6 +296,6 @@ CTO / CEO
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

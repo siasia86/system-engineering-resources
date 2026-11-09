@@ -195,6 +195,12 @@ groups:
           /
           sum(rate(http_requests_total[30d]))
 
+      - record: sli:availability:ratio_rate1h
+        expr: |
+          sum(rate(http_requests_total{code=~"2.."}[1h]))
+          /
+          sum(rate(http_requests_total[1h]))
+
       - alert: ErrorBudgetBurnRateHigh
         expr: |
           1 - sli:availability:ratio_rate1h > 14.4 * (1 - 0.999)
@@ -237,11 +243,12 @@ spec:
             type: prometheus
             spec:
               query: http_requests_total{service="payment"}
+  timeWindow:
+    - duration: 30d
+      isRolling: true
+  budgetingMethod: Occurrences
   objectives:
     - target: 0.999
-      timeWindow:
-        - duration: 30d
-          isRolling: true
 ```
 
 ## 8. 운영 주기
@@ -281,7 +288,7 @@ spec:
 > SLI(Service Level Indicator)는 측정값, SLO(Service Level Objective)는 목표값, SLA(Service Level Agreement)는 계약입니다. 이 3계층 구조는 Google SRE Book Ch.4에서 정의합니다.
 > — https://sre.google/sre-book/service-level-objectives/
 
-> Error Budget = 1 - SLO. 예: SLO 99.9% → Error Budget = 0.1% = 월 43.2분. Budget 소진 시 새 기능 배포를 중단하고 안정화에 집중합니다.
+> Error Budget = 1 - SLO. 예: SLO 99.9% → Error Budget = 0.1% = 30일 기준 43.2분(평균 월 길이 기준 43.83분). Budget 소진 시 새 기능 배포를 중단하고 안정화에 집중합니다.
 > — https://sre.google/workbook/error-budget-policy/
 
 > Google SRE Workbook Ch.2: Error Budget Policy는 팀 간 합의 문서이며, budget 소진 시 행동(배포 동결, postmortem 필수 등)을 사전 정의합니다.
@@ -296,11 +303,12 @@ spec:
 - Google SRE Workbook Ch.2: [Implementing SLOs](https://sre.google/workbook/implementing-slos/) — ★★★★☆
 - Google SRE Book Appendix A: [Availability Table](https://sre.google/sre-book/availability-table/) — ★★★★☆
 - OpenSLO: [openslo.com](https://openslo.com/) — ★★★☆☆
+- OpenSLO v1 SLO 명세: [github.com/OpenSLO/OpenSLO](https://github.com/OpenSLO/OpenSLO/blob/main/website/docs/schema/v1/slo.md) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

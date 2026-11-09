@@ -130,6 +130,9 @@ CNCF WP에서의 정의: "a bundle often described as a golden path" — 빌드,
 | L4   | Optimizing  | 템플릿 기반 전체 환경 프로비저닝 (web dev, MLOps)         |
 | L5   | Innovating  | 자동 계측 + 기능/성능/비용 관측                           |
 
+> 위 5단계 역량은 CNCF Platforms White Paper의 "Platform maturity" 항목을 정리한 것이며, 단계 이름은 이 문서의 편의 표기입니다. 별도의 CNCF Platform Engineering Maturity Model은 Provisional, Operationalized, Scalable, Optimizing 4단계와 Investment, Adoption, Interfaces, Operations, Measurement 5개 측면으로 평가합니다.
+> — https://tag-app-delivery.cncf.io/whitepapers/platform-eng-maturity-model/
+
 ## 8. 도입 전략
 
 ### 단계별 접근
@@ -175,14 +178,14 @@ CNCF WP에서의 정의: "a bundle often described as a golden path" — 빌드,
 
 ## 참고 자료
 
-- CNCF Platforms White Paper: [tag-app-delivery.cncf.io](https://tag-app-delivery.cncf.io/whitepapers/platforms/) — ★★★★☆
-- CNCF Platform Maturity Model: [tag-app-delivery.cncf.io](https://tag-app-delivery.cncf.io/whitepapers/platform-eng-maturity-model/) — ★★★★☆
+- CNCF Platforms White Paper: [tag-app-delivery.cncf.io](https://tag-app-delivery.cncf.io/whitepapers/platforms/) — ★★★☆☆
+- CNCF Platform Maturity Model: [tag-app-delivery.cncf.io](https://tag-app-delivery.cncf.io/whitepapers/platform-eng-maturity-model/) — ★★★☆☆
 - Backstage: [backstage.io](https://backstage.io/) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

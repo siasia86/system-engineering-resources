@@ -42,7 +42,7 @@
 - Postmortem 리뷰 미팅 필수 (작성만으로는 불충분)
 - "Blameless" 하지만 "Accountable" — 개선 책임은 존재
 
-> "A postmortem is written for all significant incidents, regardless of whether or not they paged." — Google SRE Book Ch.15
+> "Postmortems are expected after any significant undesirable event." — Google SRE Book Ch.15
 > — https://sre.google/sre-book/postmortem-culture/
 
 ## 3. 작성 기준
@@ -176,8 +176,9 @@ Root Cause: Tooling gap — static analysis not covering new library
 | Realistic  | "이번 스프린트에 린터 규칙 추가" | "전체 아키텍처 재설계" |
 | Trackable  | "Jira INFRA-1234"                | "나중에 하자"          |
 
-> SMART 기준(Specific, Measurable, Assignable, Realistic, Time-bound)은 Google SRE Book Appendix D의 예시 Postmortem에서 Action Items 작성 기준으로 권장됩니다.
-> — https://sre.google/sre-book/example-postmortem/
+> SMART 기준(원형: Specific, Measurable, Assignable, Realistic, Time-related)은 George T. Doran(1981)이 목표 작성용으로 제안했으며, 위 표는 T를 Trackable로 바꾼 변형입니다. Google SRE Workbook Ch.10은 Action item에 검증 가능한 완료 상태, 담당자와 추적 번호, 우선순위를 요구합니다.
+> — Doran, George T. "There's a S.M.A.R.T. Way to Write Management's Goals and Objectives" (Management Review, 1981)
+> — https://sre.google/workbook/postmortem-culture/
 
 ## 7. 리뷰 프로세스
 
@@ -224,11 +225,12 @@ Root Cause: Tooling gap — static analysis not covering new library
 - Google SRE Book Ch.15: [Postmortem Culture](https://sre.google/sre-book/postmortem-culture/) — ★★★★☆
 - Google SRE Book Appendix D: [Example Postmortem](https://sre.google/sre-book/example-postmortem/) — ★★★★☆
 - PagerDuty: [Postmortem Guide](https://postmortems.pagerduty.com/) — ★★★☆☆
+- Google SRE Workbook Ch.10: [Postmortem Culture: Learning from Failure](https://sre.google/workbook/postmortem-culture/) — ★★★★☆
 
 ---
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

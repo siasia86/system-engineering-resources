@@ -48,17 +48,18 @@
 
 ### Reserved Instances vs Savings Plans
 
-| 항목      | Reserved Instances    | Savings Plans        |
-|-----------|-----------------------|----------------------|
-| 할인율    | 최대 72%              | 최대 72%             |
-| 유연성    | 인스턴스 유형 고정    | 컴퓨팅 유형 유연     |
-| 적용 범위 | EC2, RDS, ElastiCache | EC2, Fargate, Lambda |
-| 기간      | 1년/3년               | 1년/3년              |
-| 결제 옵션 | 전액/부분/무선납      | 전액/부분/무선납     |
+| 항목      | Reserved Instances    | Savings Plans                     |
+|-----------|-----------------------|-----------------------------------|
+| 할인율    | 최대 72%              | 최대 72%                          |
+| 유연성    | 인스턴스 유형 고정    | 컴퓨팅 유형 유연                  |
+| 적용 범위 | EC2, RDS, ElastiCache | EC2, Fargate, Lambda (Compute SP) |
+| 기간      | 1년/3년               | 1년/3년                           |
+| 결제 옵션 | 전액/부분/무선납      | 전액/부분/무선납                  |
 
-> AWS 공식: RI는 최대 72% 할인, Savings Plans는 동일 할인율에 인스턴스 유형 유연성을 제공합니다.
+> AWS 공식: RI는 최대 72% 할인, Savings Plans는 최대 72%(EC2 Instance SP 기준, Compute SP는 최대 66%) 할인에 인스턴스 유형 유연성을 제공합니다. Savings Plans는 Compute, Database, EC2 Instance, SageMaker AI 4종이며, Database SP는 1년 약정에 최대 35% 할인입니다.
 > — https://aws.amazon.com/savingsplans/pricing/
 > — https://aws.amazon.com/ec2/pricing/reserved-instances/
+> — https://docs.aws.amazon.com/savingsplans/latest/userguide/plan-types.html
 
 ### 커버리지 전략
 
@@ -104,7 +105,7 @@
 | Grace period handling | 2분 중단 알림 활용 → 정상 종료   |
 | Fallback to On-demand | Spot 부족 시 자동 On-demand 전환 |
 
-> AWS의 "capacity-optimized" 배치 전략은 Spot 중단 확률이 가장 낮은 풀을 선택합니다. AWS 공식 best practice입니다.
+> AWS의 "capacity-optimized" 배치 전략은 가용 용량이 가장 많은 Spot 풀을 선택해 중단 가능성을 낮춥니다. 현재 AWS best practice는 가용 용량과 가격을 함께 고려하는 "price-capacity-optimized" 전략입니다.
 > — https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html
 
 ## 5. Right-sizing
@@ -118,8 +119,9 @@
 | Network      | 거의 미사용                 | 작은 타입 전환     |
 | Storage IOPS | Provisioned 대비 < 10% 사용 | gp3 전환 또는 축소 |
 
-> AWS Compute Optimizer는 14일간의 CloudWatch 메트릭을 분석하여 right-sizing을 권장합니다. CPU < 20% 기준은 Trusted Advisor의 "Low Utilization" 임계값입니다.
+> AWS Compute Optimizer는 기본 14일간의 CloudWatch 메트릭을 분석하여 right-sizing을 권장합니다. Trusted Advisor의 "Low Utilization Amazon EC2 Instances" 검사는 최근 14일 중 4일 이상 일일 CPU 10% 이하이면서 네트워크 I/O 5MB 이하인 인스턴스를 표시합니다. 위 표의 CPU < 20%는 이보다 넓은 실무 기준입니다.
 > — https://docs.aws.amazon.com/compute-optimizer/latest/ug/what-is-compute-optimizer.html
+> — https://docs.aws.amazon.com/awssupport/latest/user/cost-optimization-checks.html
 
 ### Right-sizing 절차
 
@@ -158,8 +160,9 @@
 | CostCenter  | CC-1234          | 부서 차지백   |
 | Owner       | user@example.com | 책임자 식별   |
 
-> AWS는 최소 태그 키로 Environment, Team/Project, CostCenter를 권장합니다. 미태깅 리소스는 AWS Cost Categories에서 "Untagged" 그룹으로 자동 분류됩니다.
+> AWS 태깅 문서는 태그 키 예로 CostCenter, Environment, Project를 듭니다. AWS Cost Categories는 어떤 규칙에도 맞지 않는 비용에 쓸 기본값(default value)을 선택적으로 지정할 수 있으므로, 미태깅 비용을 "Untagged" 같은 값으로 모으려면 기본값을 직접 설정합니다.
 > — https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html
+> — https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-cost-categories.html
 
 ### 예산 알림
 
@@ -179,7 +182,7 @@
 | Kubecost              | K8s 비용     | Pod/Namespace별 비용 할당 |
 | CloudHealth           | 멀티클라우드 | 비용 관리, 거버넌스, 보고 |
 
-> Infracost는 Terraform plan에서 비용 변화를 PR 코멘트로 표시합니다 (OSS, 2020~). OpenCost(Kubecost의 오픈소스 코어)는 CNCF Sandbox 프로젝트(2022)입니다.
+> Infracost는 Terraform plan에서 비용 변화를 PR 코멘트로 표시합니다 (OSS, 2020~). OpenCost(Kubecost의 오픈소스 코어)는 2022년 CNCF Sandbox에 채택되고 2024년 Incubating으로 승격했습니다.
 > — https://www.infracost.io/docs/
 > — https://www.cncf.io/projects/opencost/
 
@@ -199,14 +202,18 @@
 
 ## 참고 자료
 
-- FinOps Foundation: [finops.org/framework](https://www.finops.org/framework/) — ★★★★☆
+- FinOps Foundation: [finops.org/framework](https://www.finops.org/framework/) — ★★★☆☆
 - AWS Well-Architected Cost Optimization: [docs.aws.amazon.com](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/) — ★★★☆☆
-- Infracost: [infracost.io](https://www.infracost.io/) — ★★☆☆☆
+- Infracost: [infracost.io](https://www.infracost.io/) — ★★★☆☆
+- AWS Savings Plans types: [docs.aws.amazon.com](https://docs.aws.amazon.com/savingsplans/latest/userguide/plan-types.html) — ★★★☆☆
+- AWS Database Savings Plans: [aws.amazon.com](https://aws.amazon.com/savingsplans/database-pricing/) — ★★★☆☆
+- AWS Spot best practices: [docs.aws.amazon.com](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html) — ★★★☆☆
+- Trusted Advisor cost optimization checks: [docs.aws.amazon.com](https://docs.aws.amazon.com/awssupport/latest/user/cost-optimization-checks.html) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

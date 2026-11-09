@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261109-01 / DOCS-32 (2026-11-09): 전체 문서 일회성 검증 3단계로 `03_engineering` 20개 문서를 확인하고 14개 문서를 정정했습니다. Google SRE Book·Workbook 원문에 없는 인용을 원문 문장으로 바꾸고, 온콜 인원 기준(primary·secondary, 단일 사이트 최소 8명)과 N+2 예시를 원문대로 고쳤습니다. DORA 현행 5개 지표, MySQL online DDL의 INSTANT 범위, AWS 7 Rs·Savings Plans 4종·Spot price-capacity-optimized, LitmusChaos·OpenCost의 CNCF 단계, OpsGenie·Grafana OnCall OSS 지원 종료를 반영했습니다. ADR 템플릿 코드 블록에 자동 삽입된 목차 링크를 지우고 출처 별점을 GOVERNANCE 5절 기준으로 맞췄습니다. 내용이 빈 헤딩 2개와 출처 없는 수치는 고치지 않았습니다.
+
 - MAIN-20261109-01 / DOCS-32 (2026-11-09): 전체 문서 일회성 검증 2단계로 `02_infrastructure` 76개 문서를 6개 묶음으로 나눠 확인하고 71개 문서를 정정했습니다. ansible-core·molecule·PyYAML·promtool·amtool·git·`docker compose config` 등으로 설정과 명령을 재현했고, Airflow 3.0·Helm 4·Kafka 4(KRaft 전용)·Kubernetes 1.37·Prometheus 3.16 기준으로 제거·폐기된 문법과 버전을 갱신했습니다. MinIO 커뮤니티판 보관(archived), Terraform BSL, Zabbix AGPLv3처럼 상태가 바뀐 사실을 반영했고, HAProxy 문서의 ACME 인증서 이름·통계 유지 버전·Prometheus 접근 제한 순서 오류를 바로잡았습니다. 출처 별점을 GOVERNANCE 5절 기준으로 맞추고, 예시의 실제 계정 이름과 개인 경로를 자리표시자로 바꿨으며, root README Web Server 표에 누락 문서 1개를 연결했습니다. 재작성이 필요한 문서(100TB 로그 집계 비용, n8n MySQL 전제, ingress-nginx 예시 등)는 고치지 않았습니다.
 
 - MAIN-20261109-01 / DOCS-32 (2026-11-09): 전체 문서 일회성 검증 1단계로 `01_fundamentals` 183개 문서를 9개 묶음으로 나눠 사실·최신성·일관성·출처·별점·보안을 확인하고 120개 문서를 정정했습니다. 명령·코드 예시는 python3 3.14·gcc·go·bash와 서버의 ltrace·strace·perf·tcpdump 등으로 실행해 대조했고, 폐기된 RFC(793·7231·7540·8446·5575 등)를 현행 번호로 바꿨습니다. 출처 별점은 [GOVERNANCE](GOVERNANCE.md) 5절 기준(공식 문서 3, RFC·PEP·주요 도서 4, 블로그·제3자 2)으로 맞췄습니다. 깨진 외부 링크 5건을 고치고, 예시의 실제 계정 이름을 자리표시자로 바꿨으며, root README Programming 표에 누락 문서 5개, linux·python README에 누락 문서 6개를 연결했습니다. Rust·C#은 컴파일 환경이 없어 공식 문서·소스 대조만 했고, 재작성이 필요한 예제 등 판단 항목은 고치지 않았습니다.

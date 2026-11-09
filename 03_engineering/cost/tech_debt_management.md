@@ -55,7 +55,7 @@
 | MTTR (Mean Time to Repair) | 변경 후 복구까지 시간    | DORA metrics           |
 | Lead Time for Changes      | 커밋~배포 시간           | DORA metrics           |
 
-> DORA 4 Key Metrics(Deployment Frequency, Lead Time, Change Failure Rate, MTTR)는 "Accelerate" 연구(2018)에서 정립되었습니다.
+> DORA 4 Key Metrics(Deployment Frequency, Lead Time, Change Failure Rate, MTTR)는 "Accelerate" 연구(2018)에서 정립되었습니다. 현재 DORA는 MTTR을 Failed deployment recovery time으로 바꾸고 Deployment rework rate를 더한 5개 지표를 사용합니다.
 > — https://dora.dev/guides/dora-metrics-four-keys/
 
 ### 정성적 지표
@@ -108,7 +108,7 @@
 | Lint/SAST                          | CI 파이프라인 | Code debt 자동 탐지         |
 | ADR (Architecture Decision Record) | 변경 시       | 의사결정 맥락 보존          |
 
-> Thoughtworks Technology Radar에서 Lightweight ADR을 "Adopt"로 선정(2016)했습니다. CI 파이프라인의 SAST/Lint gate는 OWASP DevSecOps Guideline의 핵심 실천입니다.
+> Thoughtworks Technology Radar에서 Lightweight ADR을 2016년 11월 "Trial", 2017년 11월 "Adopt"로 선정했습니다. CI 파이프라인의 SAST/Lint gate는 OWASP DevSecOps Guideline의 핵심 실천입니다.
 > — https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records
 
 ## 6. 커뮤니케이션
@@ -118,7 +118,7 @@
 | 항목      | 표현 방법                                      |
 |-----------|------------------------------------------------|
 | 부채 규모 | "현재 변경 시간의 30%가 기존 부채 대응에 소모" |
-| 이자 비용 | "월 N시간의 엔지니어링 시간 = 약 "             |
+| 이자 비용 | "월 N시간의 엔지니어링 시간 = 약 X원"          |
 | 상환 계획 | "분기당 1스프린트 투자 → 6개월 후 30% 감소"    |
 | 리스크    | "미상환 시 보안 사고 확률 증가"                |
 
@@ -184,6 +184,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

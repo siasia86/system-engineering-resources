@@ -90,12 +90,12 @@ Active-Active:
 
 ### 동기화 방식 비교
 
-| 방식           | RPO   | 성능 영향        | 일관성        | 예시                             |
-|----------------|-------|------------------|---------------|----------------------------------|
-| Synchronous    | 0     | 높음 (latency +) | Strong        | Aurora Global (write forwarding) |
-| Asynchronous   | > 0   | 낮음             | Eventual      | RDS Cross-Region Read Replica    |
-| CDC Stream     | 초~분 | 낮음             | Eventual      | DMS, Debezium                    |
-| Backup/Restore | 시간  | 없음             | Point-in-time | S3 Cross-Region Replication      |
+| 방식           | RPO   | 성능 영향        | 일관성        | 예시                          |
+|----------------|-------|------------------|---------------|-------------------------------|
+| Synchronous    | 0     | 높음 (latency +) | Strong        | DynamoDB Global Tables (MRSC) |
+| Asynchronous   | > 0   | 낮음             | Eventual      | RDS Cross-Region Read Replica |
+| CDC Stream     | 초~분 | 낮음             | Eventual      | DMS, Debezium                 |
+| Backup/Restore | 시간  | 없음             | Point-in-time | S3 Cross-Region Replication   |
 
 ### 데이터 충돌 해결 (Active-Active)
 
@@ -226,12 +226,13 @@ Health Check Failure
 
 - AWS Disaster Recovery: [docs.aws.amazon.com](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-workloads-on-aws.html) — ★★★☆☆
 - AWS Global Accelerator: [docs.aws.amazon.com](https://docs.aws.amazon.com/global-accelerator/latest/dg/) — ★★★☆☆
+- DynamoDB global tables 일관성 모드(MREC·MRSC): [docs.aws.amazon.com](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/V2globaltables_HowItWorks.html) — ★★★☆☆
 - Google SRE Workbook Ch.9: [Incident Response](https://sre.google/workbook/incident-response/) — ★★★★☆
 
 ---
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

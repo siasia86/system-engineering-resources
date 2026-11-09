@@ -146,7 +146,7 @@
 
 ---
 
-> MTTR/MTBF/MTTA 등 신뢰성 지표는 ITIL v4와 DORA(DevOps Research and Assessment) 보고서에서 업계 표준으로 정의합니다.
+> MTTR/MTBF/MTTA 등 신뢰성 지표는 ITIL 4 같은 서비스 관리 프레임워크에서 다룹니다. DORA(DevOps Research and Assessment)는 MTBF·MTTA를 정의하지 않으며, 복구 지표로 MTTR 대신 Failed deployment recovery time을 사용합니다.
 > — https://dora.dev/guides/dora-metrics-four-keys/
 
 > MTBF(Mean Time Between Failures), MTTR(Mean Time To Repair), MTTA(Mean Time To Acknowledge)는 ITIL v4 서비스 관리 프레임워크에서 정의하는 핵심 신뢰성 지표입니다.
@@ -167,6 +167,6 @@
 
 **작성일**: 2026-05-21
 
-**마지막 업데이트**: 2026-05-21
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.
