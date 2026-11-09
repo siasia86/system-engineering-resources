@@ -70,7 +70,7 @@ DeviceFarmer/stf는 브라우저에서 Android 기기를 관리하고, ADB 기�
 현재 확인된 상태입니다.
 
 - GitHub 저장소 비보관 상태.
-- `v3.7.9` release 확인.
+- 최신 release `v3.9.0`(2026-10-26) 확인(2026-11-09 재확인, 조사 기준일 당시는 `v3.7.9`).
 - Android 중심이며 iOS device farm은 제공하지 않습니다.
 - USB hub·전원·USB host controller·ADB 연결 안정성이 운영 핵심입니다.
 - GitHub license metadata가 `NOASSERTION`이므로 사내·상용 사용 전 법적 검토가 필요합니다.
@@ -498,7 +498,8 @@ vagrant halt client-01
 - Android Emulator Container Scripts: [github.com/google/android-emulator-container-scripts](https://github.com/google/android-emulator-container-scripts) — ★★★☆☆
 - AWS Device Farm: [AWS Developer Guide](https://docs.aws.amazon.com/devicefarm/latest/developerguide/welcome.html) — ★★★☆☆
 - Firebase Test Lab: [firebase.google.com/docs/test-lab](https://firebase.google.com/docs/test-lab) — ★★★☆☆
-- Firebase Game Loop: [firebase.google.com/docs/test-lab/game-loop](https://firebase.google.com/docs/test-lab/game-loop) — ★★★☆☆
+- Firebase Game Loop (iOS): [firebase.google.com/docs/test-lab/game-loop](https://firebase.google.com/docs/test-lab/game-loop) — ★★★☆☆
+- Firebase Game Loop (Android): [firebase.google.com/docs/test-lab/android/game-loop](https://firebase.google.com/docs/test-lab/android/game-loop) — ★★★☆☆
 - Vagrant Multi-Machine: [developer.hashicorp.com/vagrant/docs/multi-machine](https://developer.hashicorp.com/vagrant/docs/multi-machine) — ★★★☆☆
 
 ---
@@ -516,6 +517,6 @@ vagrant halt client-01
 
 **작성일**: 2026-09-15
 
-**마지막 업데이트**: 2026-09-15
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

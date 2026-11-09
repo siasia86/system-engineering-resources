@@ -88,7 +88,7 @@ Hybrid             — 위 방식을 혼합
 | LoL         | MOBA         | AWS (지역별 서버)     |
 | PUBG        | 배틀로얄 FPS | Microsoft Azure       |
 | Fortnite    | 배틀로얄     | AWS                   |
-| Valorant    | 전술 FPS     | Riot 직접 운영        |
+| Valorant    | 전술 FPS     | AWS                   |
 | CS2         | FPS          | Valve + 커뮤니티 병행 |
 | Overwatch 2 | FPS          | Blizzard 운영         |
 | FIFA Online | 스포츠       | EA 서버               |
@@ -272,7 +272,7 @@ Dedicated Server + P2P 또는 Listen Server를 **상황에 따라 혼합**합니
 | 용어                      | 설명                                     |
 |---------------------------|------------------------------------------|
 | **RTT (Round Trip Time)** | 클라이언트 → 서버 → 클라이언트 왕복 시간 |
-| **핑 (Ping)**             | RTT의 절반 (단방향 지연시간 추정값)      |
+| **핑 (Ping)**             | RTT 측정값 (ICMP echo 왕복 시간)         |
 | **틱레이트**              | 서버가 초당 상태를 업데이트하는 횟수     |
 | **지터 (Jitter)**         | 패킷 지연시간의 변동폭                   |
 | **패킷 로스**             | 전송 중 손실된 패킷 비율                 |
@@ -325,12 +325,12 @@ COD 시리즈, Halo 시리즈 등에서 구현된 기술입니다.
 
 ### 게임 서버 전용 클라우드 서비스
 
-| 서비스                        | 제공사    | 특징                              |
-|-------------------------------|-----------|-----------------------------------|
-| **GameLift**                  | AWS       | Dedicated Server 관리형 서비스    |
-| **PlayFab**                   | Microsoft | 게임 백엔드 통합 (매칭, 랭킹, DB) |
-| **Game Servers (GKE/Agones)** | GCP       | Agones 기반 컨테이너 게임 서버    |
-| **Multiplay**                 | Unity     | Dedicated Server 호스팅           |
+| 서비스               | 제공사         | 특징                                                            |
+|----------------------|----------------|-----------------------------------------------------------------|
+| **GameLift Servers** | AWS            | Dedicated Server 관리형 서비스                                  |
+| **PlayFab**          | Microsoft      | 게임 백엔드 통합 (매칭, 랭킹, DB)                               |
+| **Agones (GKE)**     | GCP            | 오픈소스 Agones를 GKE에서 운영 (관리형 Game Servers API는 폐지) |
+| **Multiplay**        | Rocket Science | Unity 직접 운영은 2026-04-01 폐지, Rocket Science가 이어받음    |
 
 ### AWS GameLift 구조
 
@@ -354,9 +354,14 @@ Player Client
 ## 참고 자료
 
 - Valve Developer Community: [developer.valvesoftware.com](https://developer.valvesoftware.com/wiki/Source_Multiplayer_Networking) — ★★★☆☆
-- AWS GameLift: [docs.aws.amazon.com/gamelift](https://docs.aws.amazon.com/gamelift/latest/developerguide/gamelift-intro.html) — ★★★☆☆
+- Amazon GameLift Servers: [docs.aws.amazon.com/gameliftservers](https://docs.aws.amazon.com/gameliftservers/latest/developerguide/gamelift-intro.html) — ★★★☆☆
 - Riot Engineering Blog: [technology.riotgames.com](https://technology.riotgames.com/) — ★★☆☆☆
-- Gabriel Gambetta. "Fast-Paced Multiplayer" — ★★★★☆
+- Gabriel Gambetta. "Fast-Paced Multiplayer": [gabrielgambetta.com](https://www.gabrielgambetta.com/client-server-game-architecture.html) — ★★☆☆☆
+- Riot Games AWS 이전: [aws.amazon.com/blogs/gametech](https://aws.amazon.com/blogs/gametech/riot-games-prepares-to-close-its-last-data-center-as-it-completes-global-migration-to-aws/) — ★★★☆☆
+- ping(8): [man7.org/linux/man-pages/man8/ping.8.html](https://man7.org/linux/man-pages/man8/ping.8.html) — ★★★☆☆
+- Agones: [agones.dev/site/docs](https://agones.dev/site/docs/) — ★★★☆☆
+- Google Cloud Game Servers 클라이언트(폐지 안내): [github.com/googleapis/python-game-servers](https://github.com/googleapis/python-game-servers) — ★★★☆☆
+- Unity Multiplay Deprecation: [status.unity.com/info_notices/362941](https://status.unity.com/info_notices/362941) — ★★★☆☆
 
 ---
 
@@ -373,6 +378,6 @@ Player Client
 
 **작성일**: 2026-08-21
 
-**마지막 업데이트**: 2026-08-21
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

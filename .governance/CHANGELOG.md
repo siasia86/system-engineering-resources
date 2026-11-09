@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261109-01 / DOCS-32 (2026-11-09): 전체 문서 일회성 검증 7단계로 `97_misc` 6개 문서와 루트 `license_guide.md`를 확인하고 7개 모두 정정했습니다. Apache(광고 조항 제거는 v1.1)·BSD(1999년 3-Clause) 연혁, GPL v2/v3 호환 조건, 폐기된 SPDX 식별자(3.29.0 목록 대조), pip-licenses·Maven license 플러그인 명령을 고쳤습니다. Kiro 요금·credit pooling·모델 배율과 Amazon Q 전환 정책, GameLift Servers·Multiplay 운영사 변경, Ubuntu 24.04의 `adb` 패키지 이름, 404였던 Samsung Knox 백서 주소를 반영했습니다. 법률 단정 표현, 비공개 저장소 링크, 재작성이 필요한 권고는 고치지 않았습니다.
+
 - MAIN-20261109-01 / DOCS-32 (2026-11-09): 전체 문서 일회성 검증 5단계로 `05_database` 28개 문서를 4개 묶음으로 나눠 확인하고 28개 모두 정정했습니다(06단계보다 늦게 끝나 순서가 바뀜). MySQL 설치 안내의 저장소 패키지(mysql-apt-config 0.8.33, el9-1)에 든 GPG 키가 2025-10-23에 만료되어 유효한 판(0.8.40, el9-4·el8-3·el10-3)으로 바꿨습니다. MySQL 8.4 기준으로 제거·이름 변경된 명령과 변수(`SHOW BINARY LOG STATUS`, `--source-data`, `innodb_redo_log_capacity`, `GET_SOURCE_PUBLIC_KEY`)를 반영하고, 격리·잠금·EXPLAIN·Performance Schema 단위·PostgreSQL 통계 열 이름을 공식 문서와 대조해 고쳤습니다. XtraBackup 증분 LSN 체인·없는 옵션·`set -e` 오류, PostgreSQL 18·ICU 기본값·`pg_promote()`, Redis 줄 끝 주석·`ZRANGE REV`, MongoDB 지원 일정·제거된 설정, Elasticsearch 8.19 설정, dbtrail 명령 옵션과 코어에서 제거된 who-changed 기능 안내를 반영했습니다. 위험한 백업 hook 예시와 PITR 절차, dbtrail 구조 문서 재작성은 고치지 않았습니다.
 
 - MAIN-20261109-01 / DOCS-32 (2026-11-09): 전체 문서 일회성 검증 6단계로 `06_career` 42개 문서를 5개 묶음으로 나눠 확인하고 35개 문서를 정정했습니다. 2026-10-01 시행된 정보통신망법·시행령 개정(침해사고 신고 24시간 이내, CISO 임원 지정)과 확정된 과징금 고시·유출 대응 안내서를 개인정보 해설에 반영했고, 도메인이 없어진 `www.privacy-i.kr` 링크를 제조사 공식 페이지로 바꿨습니다. Kiro CLI 3.0.0(V3 기본) 기준판 안내, Claude Ultra 플랜, Codex `ultra` effort, v0·Bolt 무료 조건, `gh copilot` 확장 종료, AWS 자격증 폐지·개명, PromQL CPU 식, f-string SQL 예시를 고쳤습니다. 예시의 실제 이메일·계정 이름·개인 경로를 자리표시자로 바꾸고, 06 README에 누락 문서 12개를 연결했으며, 출처 별점을 GOVERNANCE 5절 기준으로 맞췄습니다. Kiro V3 전면 개정, 법령 원문 txt 추적 해제 여부 등은 고치지 않았습니다.

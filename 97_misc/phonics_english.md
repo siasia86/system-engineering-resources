@@ -66,13 +66,13 @@
 
 모음이 알파벳 이름 그대로 발음됩니다. Silent E 또는 Vowel Teams 패턴에서 나타납니다.
 
-| 모음 | 발음  | Silent E 예시  | Vowel Team 예시 |
-|------|-------|----------------|-----------------|
-| a    | /eɪ/  | `cake`, `name` | `rain`, `day`   |
-| e    | /iː/  | `these`        | `read`, `feet`  |
-| i    | /aɪ/  | `bike`, `time` | `pie`, `night`  |
-| o    | /oʊ/  | `home`, `note` | `boat`, `snow`  |
-| u    | /juː/ | `cube`, `tune` | `blue`, `due`   |
+| 모음 | 발음        | Silent E 예시  | Vowel Team 예시 |
+|------|-------------|----------------|-----------------|
+| a    | /eɪ/        | `cake`, `name` | `rain`, `day`   |
+| e    | /iː/        | `these`        | `read`, `feet`  |
+| i    | /aɪ/        | `bike`, `time` | `pie`, `night`  |
+| o    | /oʊ/        | `home`, `note` | `boat`, `snow`  |
+| u    | /juː/, /uː/ | `cube`, `tune` | `blue`, `due`   |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -112,7 +112,7 @@
 
 대표 목록: **Dolch Word List** (220개), **Fry Word List** (1000개)
 
-> Dolch Word List: 1936년 Edward Dolch가 선정한 영어 고빈도 단어 220개입니다. 일반 영어 텍스트의 50~75%를 차지하므로 우선 암기하면 독해 속도가 크게 향상됩니다.
+> Dolch Word List: 1936년 Edward Dolch가 선정한 영어 고빈도 단어 220개입니다. 명사 95개를 더한 목록이 아동 도서 단어의 약 80%, 성인 대상 글의 약 50%를 차지한다고 알려져 있으므로 우선 암기하면 독해 속도가 크게 향상됩니다.
 
 ### Sight Words vs 파닉스 적용 가능 단어 비교
 
@@ -184,6 +184,7 @@
 - Dolch Word List: [sightwords.com/sight-words/dolch](https://sightwords.com/sight-words/dolch/) — ★★☆☆☆
 - International Literacy Association: [literacyworldwide.org](https://www.literacyworldwide.org) — ★★★☆☆
 - Clymer, T. "The utility of phonic generalizations in the primary grades." (1963)
+- Cambridge Dictionary (blue·due·tune 발음): [dictionary.cambridge.org](https://dictionary.cambridge.org/dictionary/english/blue) — ★★★☆☆
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -191,6 +192,6 @@
 
 **작성일**: 2026-08-25
 
-**마지막 업데이트**: 2026-08-25
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

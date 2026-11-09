@@ -44,7 +44,7 @@ copies or substantial portions of the Software.
 
 ### Apache License 2.0
 
-> 2004년 Apache Software Foundation이 v2.0 발표. v1.0(1995)의 광고 조항 제거 및 특허 조항 명시.
+> 2004년 Apache Software Foundation이 v2.0 발표. v1.0의 광고 조항은 v1.1(2000)에서 제거되었고, v2.0에서 특허 조항을 명시.
 > — [Apache Software Foundation](https://www.apache.org/licenses/LICENSE-2.0)
 
 MIT와 유사하나 특허 사용 권한 명시. 기업 환경에서 선호.
@@ -128,7 +128,7 @@ GPL v3는 이를 막기 위해 **설치 정보 제공 의무**를 추가했습�
 
 ### BSD License
 
-> 1980년대 UC Berkeley의 BSD Unix 배포를 위해 작성. 원래 4-Clause였으나 광고 조항 논란으로 2-Clause로 단순화(1999).
+> 1980년대 UC Berkeley의 BSD Unix 배포를 위해 작성. 원래 4-Clause였으나 광고 조항 논란으로 1999년 이 조항을 삭제해 3-Clause가 되었고, 2-Clause는 여기서 조항 하나를 더 뺀 형태.
 > — [OSI](https://opensource.org/licenses/BSD-2-Clause)
 
 MIT와 유사. 2-Clause(Simplified)와 3-Clause(New) 두 종류.
@@ -146,15 +146,15 @@ modification, are permitted provided that the following conditions are met:
 - **2-Clause**: 출처 표시 + 보증 부인
 - **3-Clause**: 2-Clause + 프로젝트 이름 광고 금지
 
-#### 광고 조항 이슈 (4-Clause → 2-Clause)
+#### 광고 조항 이슈 (4-Clause → 3-Clause)
 
 원래 BSD는 4-Clause로 "광고 자료에 UC Berkeley 출처 표시 의무" 조항이 포함되어 있었습니다.
 이 조항이 GPL과 호환되지 않아 FSF로부터 비호환 판정을 받았으며, 수백 개 기여자 각각의 출처를 광고에 표시해야 하는 현실적 문제가 발생했습니다.
 
 1999년 UC Berkeley가 공식적으로 광고 조항(3번째 조항)을 삭제하여 현재의 3-Clause(New BSD)가 됐습니다.
-이후 보증 부인 조항만 남긴 2-Clause(Simplified BSD)도 널리 사용됩니다.
+이후 이름 사용(홍보·보증) 금지 조항까지 뺀 2-Clause(Simplified BSD)도 널리 사용됩니다.
 
-> BSD 4-Clause는 GPL 비호환으로 FSF가 공식 비권장 판정. 신규 프로젝트는 2-Clause 또는 3-Clause 사용 권장.
+> BSD 4-Clause는 GPL 비호환으로 FSF가 사용 비권장. 3-Clause·2-Clause는 GPL 호환이지만, FSF는 허용적 라이선스로 Apache 2.0을 더 낫다고 봄.
 > — [FSF License List](https://www.gnu.org/licenses/license-list.html#OriginalBSD)
 
 [⬆ 목차로 돌아가기](#목차)
@@ -175,7 +175,7 @@ modification, are permitted provided that the following conditions are met:
 | **CC BY-NC-ND** | ❌          | ❌   | ❌            | 출처 + 비상업 + 수정 금지   |
 | **CC0**         | ✅          | ✅   | ❌            | 퍼블릭 도메인 (출처 불필요) |
 
-이 저장소는 **CC BY 4.0** 적용 — 출처 표시 시 자유롭게 사용 가능.
+이 저장소의 문서는 **CC BY 4.0**, 문서 안 코드 예제는 **MIT** 적용([LICENSE.md](LICENSE.md)) — 출처 표시 시 자유롭게 사용 가능.
 원문: [creativecommons.org/licenses/by/4.0](https://creativecommons.org/licenses/by/4.0/)
 
 [⬆ 목차로 돌아가기](#목차)
@@ -199,7 +199,7 @@ modification, are permitted provided that the following conditions are met:
 ```
 MIT ──────────────────────────────> GPL v3 (포함 가능)
 Apache 2.0 ──────────────────────> GPL v3 (포함 가능)
-GPL v2 ──────────────────────────> GPL v3 (불가)
+GPL v2 only ─────────────────────> GPL v3 (불가, "v2 or later"는 가능)
 GPL v3 ──────────────────────────> MIT (불가, GPL이 더 제한적)
 ```
 
@@ -270,7 +270,7 @@ See the [LICENSE](LICENSE) file for details.
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.
 ```
@@ -400,13 +400,13 @@ my-project/
 
 ```bash
 # Python
-pip-licenses --format=table
+pip-licenses --format=markdown
 
 # Node.js
 npx license-checker --summary
 
 # Java (Maven)
-mvn license:summary
+mvn license:add-third-party
 ```
 
 ### Tip 4: SPDX 식별자 사용
@@ -429,6 +429,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - run: npm ci
       - run: npx license-checker --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause'
 ```
 
@@ -463,16 +464,16 @@ GitHub CLA Assistant 등 도구로 자동화 가능.
 ### 소프트웨어 — Copyleft (상호 라이선스)
 
 `GPL-2.0-only` `GPL-2.0-or-later` `GPL-3.0-only` `GPL-3.0-or-later`
-`LGPL-2.0` `LGPL-2.1` `LGPL-3.0` `AGPL-3.0` `MPL-2.0` `EUPL-1.2`
+`LGPL-2.0-only` `LGPL-2.1-only` `LGPL-3.0-only` `AGPL-3.0-only` `MPL-2.0` `EUPL-1.2`
 
 ### 소프트웨어 — 기타
 
 `CDDL-1.0` `EPL-1.0` `EPL-2.0` `CPAL-1.0` `OSL-3.0`
-`Artistic-2.0` `Perl` `Ruby` `PHP-3.0`
+`Artistic-2.0` `Artistic-1.0-Perl` `Ruby` `PHP-3.0`
 
 ### 폰트
 
-`OFL-1.1` (SIL Open Font License) `GPL-2.0 with font exception`
+`OFL-1.1` (SIL Open Font License) `GPL-2.0-only WITH Font-exception-2.0`
 
 ### 콘텐츠 — Creative Commons
 
@@ -481,12 +482,12 @@ GitHub CLA Assistant 등 도구로 자동화 가능.
 
 ### 데이터 / 데이터베이스
 
-`ODbL-1.0` (Open Database License) `PDDL-1.0` `DbCL-1.0`
+`ODbL-1.0` (Open Database License) `PDDL-1.0` `DbCL-1.0` (SPDX 미등재)
 
 ### 하드웨어 / 문서
 
 `CERN-OHL-S-2.0` `CERN-OHL-W-2.0` `CERN-OHL-P-2.0`
-`GFDL-1.3` (GNU Free Documentation License)
+`GFDL-1.3-only` (GNU Free Documentation License)
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -498,23 +499,29 @@ GitHub CLA Assistant 등 도구로 자동화 가능.
 
 - Choose a License: [choosealicense.com](https://choosealicense.com/) — ★★★☆☆
 - TLDR Legal: [tldrlegal.com](https://tldrlegal.com/) — ★★☆☆☆
-- SPDX License List: [spdx.org/licenses](https://spdx.org/licenses/) — ★★☆☆☆
+- SPDX License List: [spdx.org/licenses](https://spdx.org/licenses/) — ★★★☆☆
 
 ### 라이선스 원문 & 공식 문서
 
 - GNU Licenses: [gnu.org/licenses](https://www.gnu.org/licenses/) — ★★★☆☆
 - FSF 라이선스 호환성: [gnu.org/licenses/license-compatibility](https://www.gnu.org/licenses/license-compatibility.html) — ★★★☆☆
 - Apache License 2.0 원문: [apache.org/licenses](https://www.apache.org/licenses/LICENSE-2.0) — ★★★☆☆
-- OSI Approved Licenses: [opensource.org/licenses](https://opensource.org/licenses/) — ★★☆☆☆
-- Creative Commons: [creativecommons.org](https://creativecommons.org/licenses/) — ★★☆☆☆
+- OSI Approved Licenses: [opensource.org/licenses](https://opensource.org/licenses/) — ★★★☆☆
+- Creative Commons: [creativecommons.org](https://creativecommons.org/licenses/) — ★★★☆☆
+- Apache License 1.1 원문 (광고 조항 제거 설명): [apache.org/licenses/LICENSE-1.1](https://www.apache.org/licenses/LICENSE-1.1) — ★★★☆☆
+- GNU GPL FAQ (GPLv2·GPLv3 호환성): [gnu.org/licenses/gpl-faq](https://www.gnu.org/licenses/gpl-faq.html#v2v3Compatibility) — ★★★☆☆
+- GNU BSD License Problem: [gnu.org/licenses/bsd](https://www.gnu.org/licenses/bsd.html) — ★★★☆☆
 
 ### GitHub & 실무
 
 - GitHub Licensing a Repository: [docs.github.com](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository) — ★★★☆☆
+- pip-licenses (`--format` 값): [github.com/raimon49/pip-licenses](https://github.com/raimon49/pip-licenses) — ★★★☆☆
+- License Maven Plugin goals: [mojohaus.org/license-maven-plugin](https://www.mojohaus.org/license-maven-plugin/plugin-info.html) — ★★★☆☆
+- license-checker (`node_modules` 기준 검사): [github.com/davglass/license-checker](https://github.com/davglass/license-checker) — ★★★☆☆
 
 ### 법적 근거
 
-- 한국 저작권법: [law.go.kr](https://www.law.go.kr/법령/저작권법) — ★★☆☆☆
+- 한국 저작권법: [law.go.kr](https://www.law.go.kr/법령/저작권법) — ★★★☆☆
 
 ---
 
@@ -531,7 +538,7 @@ GitHub CLA Assistant 등 도구로 자동화 가능.
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-05
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.
 

@@ -113,7 +113,7 @@
 - **제약**: 공식 README에서 대부분의 질문과 실습이 실제 면접을 나타내지는 않는다고 명시함
 - **참고**: 주제별 분류, 질문·답변 패턴
 
-### google/sre-book
+### Google SRE Book
 
 - **강점**: Google 운영 경험을 바탕으로 원칙과 사례를 함께 설명함
 - **제약**: Google의 시스템과 조직 환경을 중심으로 구성됨
@@ -137,7 +137,7 @@
 | 검증 기반          | `_reference` 팩트 노트 + `fact-check` 프로세스 |
 | 설치→운영→튜닝     | 단편 지식이 아닌 **end-to-end 흐름**           |
 | 보안 실습          | CVE 분석 + CWE 실습 환경 (VM + playbook)       |
-| 품질 자동화        | `md-style-check.py`, `md-link-check.py`        |
+| 품질 자동화        | `sia-md-style-check`, `sia-md-link-check`      |
 | 시니어 콘텐츠      | 장애 관리, SLO, 용량 계획 등 (TODO 진행 중)    |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -167,6 +167,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-08-31
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.

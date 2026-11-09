@@ -44,7 +44,7 @@ ADB logcat은 **읽기 전용 로그 조회**입니다. 시스템을 변조하�
 
 ```bash
 # Ubuntu/Debian
-sudo apt-get install -y android-tools-adb
+sudo apt-get install -y adb
 
 # macOS
 brew install --cask android-platform-tools
@@ -104,7 +104,7 @@ adb shell dumpsys dropbox --print | grep -A 20 "crash"
 # ANR (Application Not Responding)
 adb shell dumpsys dropbox --print | grep -A 20 "anr"
 
-# 최근 크래시 파일 목록
+# ANR 트레이스 파일 목록 (네이티브 크래시 tombstone은 /data/tombstones/)
 adb shell ls /data/anr/ 2>/dev/null
 ```
 
@@ -198,7 +198,9 @@ adb bugreport bugreport_$(date +%Y%m%d).zip
 
 - Android Developers: [developer.android.com/tools/logcat](https://developer.android.com/tools/logcat) — ★★★☆☆
 - ADB Command Reference: [developer.android.com/tools/adb](https://developer.android.com/tools/adb) — ★★★☆☆
-- Samsung Knox Whitepaper: [samsungknox.com/whitepaper](https://docs.samsungknox.com/admin/whitepaper/) — ★★☆☆☆
+- Samsung Knox Whitepaper: [docs.samsungknox.com/admin/fundamentals/whitepaper](https://docs.samsungknox.com/admin/fundamentals/whitepaper/) — ★★★☆☆
+- Ubuntu adb 패키지: [packages.ubuntu.com/noble/adb](https://packages.ubuntu.com/noble/adb) — ★★★☆☆
+- AOSP Debugging Native Crashes: [source.android.com/docs/core/tests/debug](https://source.android.com/docs/core/tests/debug) — ★★★☆☆
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -206,6 +208,6 @@ adb bugreport bugreport_$(date +%Y%m%d).zip
 
 **작성일**: 2026-07-16
 
-**마지막 업데이트**: 2026-07-16
+**마지막 업데이트**: 2026-11-09
 
 © 2026 siasia86. Licensed under CC BY 4.0.
