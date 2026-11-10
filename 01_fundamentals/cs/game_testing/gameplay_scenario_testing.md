@@ -103,7 +103,8 @@
 
 ## 참고 자료
 
-- Unity Test Framework: [docs.unity3d.com](https://docs.unity3d.com/Packages/com.unity.test-framework@1.3/manual/index.html) — ★★★☆☆
+- Unity Test Framework (Unity 6.3 LTS): [docs.unity.com](https://docs.unity.com/en-us/engine/6000.3/manual/programming-environment/test-framework-introduction) — ★★★☆☆
+  - 편집기에 포함된 core 패키지라 Package Manager에서 판을 따로 고를 수 없습니다.
 - Firebase Test Lab Game Loop: [firebase.google.com](https://firebase.google.com/docs/test-lab/game-loop) — ★★★☆☆
 - [게임 테스트 케이스 설계](game_test_case_design.md)
 - [게임 상태 테스트](game_state_testing.md)
@@ -124,6 +125,6 @@
 
 **작성일**: 2026-09-15
 
-**마지막 업데이트**: 2026-09-15
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

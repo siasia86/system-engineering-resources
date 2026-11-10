@@ -123,7 +123,8 @@ Unity Test Framework나 Firebase Game Loop는 특정 클라이언트 실행 환�
 
 ## 참고 자료
 
-- Unity Test Framework: [docs.unity3d.com](https://docs.unity3d.com/Packages/com.unity.test-framework@1.3/manual/index.html) — ★★★☆☆
+- Unity Test Framework (Unity 6.3 LTS): [docs.unity.com](https://docs.unity.com/en-us/engine/6000.3/manual/programming-environment/test-framework-introduction) — ★★★☆☆
+  - 편집기에 포함된 core 패키지라 Package Manager에서 판을 따로 고를 수 없습니다.
 - Firebase Test Lab Game Loop: [firebase.google.com](https://firebase.google.com/docs/test-lab/game-loop) — ★★★☆☆
 - [상태 전이 테스트](../testing/01_black_box/state_transition_testing.md)
 - [테스트 오라클](../testing/04_test_design/test_oracle.md)
@@ -144,6 +145,6 @@ Unity Test Framework나 Firebase Game Loop는 특정 클라이언트 실행 환�
 
 **작성일**: 2026-09-15
 
-**마지막 업데이트**: 2026-09-15
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

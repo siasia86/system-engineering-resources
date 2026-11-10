@@ -6,9 +6,11 @@ tags:
   - unity
   - test-framework
   - firebase-test-lab
-last_checked: 2026-09-15
+last_checked: 2026-11-10
 sources:
-  - https://docs.unity3d.com/Packages/com.unity.test-framework@1.3/manual/index.html
+  - https://docs.unity.com/en-us/engine/6000.3/manual/programming-environment/test-framework-introduction
+  - https://docs.unity.com/en-us/engine/6000.3/manual/packages-list/packages-all/pack-core
+  - https://docs.unity3d.com/Packages/com.unity.test-framework@1.9/manual/index.html
   - https://firebase.google.com/docs/test-lab/game-loop
 ---
 
@@ -16,13 +18,13 @@ sources:
 
 ## 1. 확인 범위
 
-게임 도메인 테스트 문서에서 사용할 수 있는 공식 테스트 프레임워크와 게임 테스트 실행 모델을 2026-09-15에 Unity 공식 패키지 문서와 Firebase 공식 문서 기준으로 확인했습니다.
+게임 도메인 테스트 문서에서 사용할 수 있는 공식 테스트 프레임워크와 게임 테스트 실행 모델을 2026-09-15에 Unity 공식 패키지 문서와 Firebase 공식 문서 기준으로 확인했고, 2026-11-10에 Unity 6.3 LTS 매뉴얼과 Firebase 공식 문서로 다시 확인했습니다.
 
 ## 2. 공식 기준
 
-Unity Test Framework 공식 문서는 Unity 프로젝트에서 테스트 프레임워크를 사용하는 방법과 테스트 실행 구조를 설명합니다. 확인한 문서는 `com.unity.test-framework` 1.3.9 패키지 문서입니다.
+Unity Test Framework 공식 문서는 Unity 프로젝트에서 테스트 프레임워크를 사용하는 방법과 테스트 실행 구조를 설명합니다. Unity 6.3 LTS 매뉴얼은 Test Framework를 편집기 설치에 포함되는 core 패키지로 설명하며, core 패키지는 Package Manager에서 편집기 판과 다른 판을 고를 수 없습니다. 패키지 문서의 최신 판(1.9.0)은 Unity 6.2 이상의 사용 안내를 Unity Manual로 연결합니다. 2026-09-15 확인은 `com.unity.test-framework` 1.3.9 패키지 문서 기준이었습니다.
 
-Firebase Test Lab Game Loop 공식 문서는 게임에 맞춘 테스트를 작성하고 선택한 실제·가상 기기에서 실행하는 흐름을 설명합니다.
+Firebase Test Lab Game Loop 공식 문서는 게임 엔진에 맞춘 테스트를 작성하고 Test Lab에서 선택한 기기로 실행하는 흐름을 설명합니다. 로컬에서는 시뮬레이터로도 실행할 수 있습니다.
 
 ## 3. 적용 범위
 
