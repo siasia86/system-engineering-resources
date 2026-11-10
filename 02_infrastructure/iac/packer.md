@@ -382,6 +382,6 @@ Remove-Item -Recurse packer_cache
 
 **작성일**: 2026-06-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
-© 2026 sjyun. Licensed under CC BY 4.0.
+© 2026 siasia86. Licensed under CC BY 4.0.

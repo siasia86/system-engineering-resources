@@ -402,17 +402,17 @@ git rebase -i HEAD~3
 # fast-forward 가능 (직선 관계)
 main:   A---B
              \
-yunli:        C---D
+feature:      C---D
 
-git merge yunli  →  main이 D로 이동 (merge commit 없음, vi 안 뜸)
+git merge feature  →  main이 D로 이동 (merge commit 없음, vi 안 뜸)
 main:   A---B---C---D
 
 # fast-forward 불가 (분기 발생)
 main:   A---B---E
              \
-yunli:        C---D
+feature:      C---D
 
-git merge yunli  →  merge commit M 생성 (vi 뜸)
+git merge feature  →  merge commit M 생성 (vi 뜸)
 main:   A---B---E---M
              \   /
               C---D
@@ -607,6 +607,6 @@ sudo chown -R $(whoami):$(whoami) /path/to/repo
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

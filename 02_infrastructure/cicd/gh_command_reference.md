@@ -511,7 +511,7 @@ gh run list --commit "$(git rev-parse HEAD)"
 출력 예시입니다. 탭으로 구분된 열은 상태, 결과, 커밋 제목, 워크플로 이름, 브랜치, 이벤트, 실행 ID, 소요 시간, 시작 시각입니다.
 
 ```text
-completed	success	docs: AI 업무 원형과 Aside 브라우저 조사 추가	Markdown validation and README dates	yunli	push	38365410580	12s	2026-10-13T07:51:52Z
+completed	success	docs: AI 업무 원형과 Aside 브라우저 조사 추가	Markdown validation and README dates	main	push	38365410580	12s	2026-10-13T07:51:52Z
 ```
 
 | 상태(status)  | 결과(conclusion)                             |
@@ -875,11 +875,11 @@ gh pr create
 ```bash
 # 로컬 merge (혼자 작업, 빠르게)
 git checkout main
-git merge yunli
+git merge feature/login
 git push origin main
 
 # gh pr merge (팀 협업, 코드 리뷰)
-gh pr create --base main --head yunli --title "feat: 기능"
+gh pr create --base main --head feature/login --title "feat: 기능"
 # → 리뷰어 승인 + CI 통과 후
 gh pr merge --squash --delete-branch
 ```
@@ -1009,6 +1009,6 @@ gh auth login
 
 **작성일**: 2026-07-06
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261109-01 / DOCS-32 (2026-11-10): 검증 후속 D3·D4(사용자 승인). D3: `02_infrastructure/iac/packer.md` 권리 고지의 `sjyun`을 저장소 표기 `siasia86`으로 맞췄습니다. D4: 예시 브랜치로 쓰인 계정 이름 `yunli`를 바꿨습니다. `git_guide.md` fast-forward 그림은 앞 그림과 같은 `feature`로 바꾸고 `C---D` 열 위치를 유지했습니다. `gh_command_reference.md`는 명령 예시를 `feature/login`으로, `gh run list` 출력 예시의 branch 열을 `main`으로 바꿨습니다. 다른 저장소의 `yunli` 브랜치를 가리키는 실제 링크와 스크립트 안의 이름은 고치지 않았습니다.
+
 - MAIN-20261109-01 / DOCS-32 (2026-11-09): 검증 후속 D9(사용자 승인, 공식 근거나 재현으로 확인된 문장 수준 정정만)으로 작은 정정 후보 약 90건 중 대부분을 90개 문서에서 고쳤습니다. 예: Python 내장 예외를 가리는 클래스 이름, Rust `should_panic` 메시지·axum `State` 추출자, C# 중복 선언, HTB 기본 class·conntrack 기본값·overcommit 권장 단서, bash `((frame++))`·`set -E`, SoftEther Raw L2TP·기본 리스너, Cloudflare Magic Transit의 ASN·계층, Kafka 리스너 분리·JMX 이미지·파티셔너, Harness YAML 이름, systemd 드롭인, Chaos Monkey 2010·성숙도 모델 출처, SSH ssh.socket·PQ 키 교환, Windows OpenSSH 인코딩, mod_php 전용 지시어 단서, XtraBackup `--defaults-extra-file`, 라이선스 가이드 법률 단정 완화, 출처 노트 5개(`_reference/INDEX.md` 확인일 반영). 판단이 필요하거나 절·표를 새로 짜야 하는 항목은 고치지 않았습니다.
 
 - MAIN-20261109-01 / DOCS-32 (2026-11-09): 검증 후속 D2·D5(사용자 승인). D2: CVE-2026-43284 문서에서 이름이 바뀐 공개 PoC 저장소 링크 2곳을 지웠습니다. 같은 완화 방법(esp4·esp6·rxrpc 모듈 차단)은 탐지 도구 저장소의 "Fixing it" 절과 발견자 원본 저장소가 출처로 남아 있습니다. 두 CVE 문서의 PoC 빌드 명령 블록은 재현 시험 기록이라는 안내 문장으로 바꿨습니다. D5: 문서·예시 19개 파일의 내부망처럼 보이는 주소를 문서용 주소로 바꿨습니다(`10.200.101.0/24` → `192.0.2.0/24`, `10.200.90.155` → `198.51.100.155`, 마지막 자리와 서브넷 관계 유지). 상자 그림은 행 폭을 유지했고, AWS CLI 프로필 이름 예시는 `<profile>`로 바꿨습니다.
@@ -1029,6 +1031,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.
