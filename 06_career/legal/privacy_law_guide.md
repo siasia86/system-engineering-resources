@@ -1,5 +1,4 @@
 # 개인정보 보호 법령 및 감독기관 가이드
-<!-- reference: _reference/개인정보보호법_law.go.kr.txt, _reference/개인정보보호법시행령_law.go.kr.txt, _reference/정보통신망법_law.go.kr.txt, _reference/정보통신망법시행령_law.go.kr.txt, _reference/부정경쟁방지및영업비밀보호법_law.go.kr.txt -->
 
 ## 목차
 
@@ -712,6 +711,6 @@ CPO는 개인정보의 적법한 처리와 정보주체 권리 보호를, CISO�
 
 **작성일**: 2026-08-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

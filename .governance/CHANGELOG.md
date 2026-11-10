@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261109-01 / DOCS-32 (2026-11-10): 검증 후속 D6(사용자 승인). `06_career/legal/_reference/`에 남아 있던 법령 본문·발췌 텍스트 8개(국가법령정보센터 6개, 미국 연방 법령 2개)를 비공개 저장소 `37_law`의 `moleg/`·`us/`로 옮기고(`37_law` `750fac0`, Git blob 해시 일치 확인), 이 저장소에서는 추적을 해제했습니다(로컬 파일 유지, `.gitignore`에 `*.txt` 추가). 2026-10-27에 hwp·hwpx·pdf만 옮기고 txt는 남았던 것을 같은 원칙으로 마무리한 것입니다. `privacy_law_guide.md`·`reverse_engineering_legal_guide.md`의 `reference` 주석을 지우고, 참고 자료의 txt 링크 4개를 공식 출처 주소로 바꿨습니다(정보통신망법 `law.go.kr` 추가). 기존 commit 이력의 사본은 그대로 남습니다.
+
 - MAIN-20261109-01 / DOCS-32 (2026-11-10): D4 후속(사용자 승인)으로 다른 저장소의 `yunli` branch를 가리키던 링크 4개를 정리했습니다. 31 저장소의 `agent_skill_improvement_workflow.md`는 2026-10-03에 삭제됐습니다. 현행 `theorems/skill-maintenance.md`는 skill·저장소 지침 수정 절차만 다루고 32→41→35 흐름과 공용·개인 범위는 다루지 않아 후속 문서로 보지 않았습니다. 그래서 `harness_engineering.md`·`loop_engineering.md`·`_reference/github_references.md`의 링크 3개는 빼고 문장만 남겼습니다. 41 저장소의 참고 기록 링크는 같은 파일이 있는 `main`으로 바꿨습니다. `github_references.md`는 출처를 다시 확인하지 않아 `last_checked`를 유지했습니다.
 
 - MAIN-20261109-01 / DOCS-32 (2026-11-10): 검증 후속 D3·D4(사용자 승인). D3: `02_infrastructure/iac/packer.md` 권리 고지의 `sjyun`을 저장소 표기 `siasia86`으로 맞췄습니다. D4: 예시 브랜치로 쓰인 계정 이름 `yunli`를 바꿨습니다. `git_guide.md` fast-forward 그림은 앞 그림과 같은 `feature`로 바꾸고 `C---D` 열 위치를 유지했습니다. `gh_command_reference.md`는 명령 예시를 `feature/login`으로, `gh run list` 출력 예시의 branch 열을 `main`으로 바꿨습니다. 다른 저장소의 `yunli` 브랜치를 가리키는 실제 링크와 스크립트 안의 이름은 고치지 않았습니다.

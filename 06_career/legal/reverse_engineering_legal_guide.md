@@ -1,5 +1,4 @@
 # 리버스 엔지니어링 법적 기준 가이드
-<!-- reference: _reference/저작권법_law.go.kr.txt, _reference/정보통신망법_law.go.kr.txt, _reference/17USC1201_law.cornell.edu.txt, _reference/37CFR201.40_ecfr.gov.txt -->
 
 AI 에이전트 기반 리버스 엔지니어링 도구(예: [morluto/rea](https://github.com/morluto/rea))가 널리 쓰이면서, 바이너리·앱 분석을 누구나 쉽게 시작할 수 있게 되었습니다. 이 문서는 분석을 시작하기 전에 확인할 **도구 라이선스, 분석 대상의 계약 조건, 법률상 허용 범위**를 정리합니다.
 
@@ -188,11 +187,10 @@ AI 에이전트 기반 리버스 엔지니어링 도구(예: [morluto/rea](https
 
 ## 참고 자료
 
-- 저작권법 원문 발췌: [_reference/저작권법_law.go.kr.txt](./_reference/저작권법_law.go.kr.txt) — law.go.kr, 2026-10-15 확인
-- 정보통신망법 원문: [_reference/정보통신망법_law.go.kr.txt](./_reference/정보통신망법_law.go.kr.txt)
-- 17 U.S.C. §1201 발췌: [_reference/17USC1201_law.cornell.edu.txt](./_reference/17USC1201_law.cornell.edu.txt)
-- 37 CFR §201.40(b)(18) 발췌: [_reference/37CFR201.40_ecfr.gov.txt](./_reference/37CFR201.40_ecfr.gov.txt)
+법령 원문 발췌 사본은 비공개 저장소 `37_law`에 보관하며, 이 저장소에는 공식 출처 주소만 둡니다.
+
 - 한국 저작권법: [law.go.kr](https://www.law.go.kr/법령/저작권법) — ★★★☆☆
+- 정보통신망법: [law.go.kr](https://www.law.go.kr/법령/정보통신망%20이용촉진%20및%20정보보호%20등에%20관한%20법률) — ★★★☆☆
 - 17 U.S. Code §1201: [law.cornell.edu](https://www.law.cornell.edu/uscode/text/17/1201) — ★★★☆☆
 - 37 CFR §201.40: [ecfr.gov](https://www.ecfr.gov/current/title-37/chapter-II/subchapter-A/part-201/section-201.40) — ★★★☆☆
 - rea DISCLAIMER: [github.com/morluto/rea](https://github.com/morluto/rea/blob/main/DISCLAIMER.md) — ★★★☆☆
@@ -213,6 +211,6 @@ AI 에이전트 기반 리버스 엔지니어링 도구(예: [morluto/rea](https
 
 **작성일**: 2026-10-15
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.
