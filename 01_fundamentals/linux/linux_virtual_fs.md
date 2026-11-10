@@ -379,7 +379,7 @@ inotifywait -m /sys/block/sda/queue/scheduler
 
 - Linux Kernel Documentation: [kernel.org/doc/html/latest/filesystems/proc.html](https://www.kernel.org/doc/html/latest/filesystems/proc.html) — ★★★☆☆
 - sysfs Documentation: [kernel.org/doc/html/latest/filesystems/sysfs.html](https://www.kernel.org/doc/html/latest/filesystems/sysfs.html) — ★★★☆☆
-- Brendan Gregg Linux Performance: [brendangregg.com/linuxperf.html](https://www.brendangregg.com/linuxperf.html) — ★★★☆☆
+- Brendan Gregg Linux Performance: [brendangregg.com/linuxperf.html](https://www.brendangregg.com/linuxperf.html) — ★★☆☆☆
 - Netfilter conntrack sysctl: [docs.kernel.org/networking/nf_conntrack-sysctl.html](https://docs.kernel.org/networking/nf_conntrack-sysctl.html) — ★★★☆☆
 - [cgroup_concepts.md](./cgroup_concepts.md)
 
@@ -398,6 +398,6 @@ inotifywait -m /sys/block/sda/queue/scheduler
 
 **작성일** : 2026-05-15
 
-**마지막 업데이트** : 2026-11-09
+**마지막 업데이트** : 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

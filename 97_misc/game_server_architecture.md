@@ -357,7 +357,7 @@ Player Client
 - Amazon GameLift Servers: [docs.aws.amazon.com/gameliftservers](https://docs.aws.amazon.com/gameliftservers/latest/developerguide/gamelift-intro.html) — ★★★☆☆
 - Riot Engineering Blog: [technology.riotgames.com](https://technology.riotgames.com/) — ★★☆☆☆
 - Gabriel Gambetta. "Fast-Paced Multiplayer": [gabrielgambetta.com](https://www.gabrielgambetta.com/client-server-game-architecture.html) — ★★☆☆☆
-- Riot Games AWS 이전: [aws.amazon.com/blogs/gametech](https://aws.amazon.com/blogs/gametech/riot-games-prepares-to-close-its-last-data-center-as-it-completes-global-migration-to-aws/) — ★★★☆☆
+- Riot Games AWS 이전: [aws.amazon.com/blogs/gametech](https://aws.amazon.com/blogs/gametech/riot-games-prepares-to-close-its-last-data-center-as-it-completes-global-migration-to-aws/) — ★★☆☆☆
 - ping(8): [man7.org/linux/man-pages/man8/ping.8.html](https://man7.org/linux/man-pages/man8/ping.8.html) — ★★★☆☆
 - Agones: [agones.dev/site/docs](https://agones.dev/site/docs/) — ★★★☆☆
 - Google Cloud Game Servers 클라이언트(폐지 안내): [github.com/googleapis/python-game-servers](https://github.com/googleapis/python-game-servers) — ★★★☆☆
@@ -378,6 +378,6 @@ Player Client
 
 **작성일**: 2026-08-21
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -927,7 +927,7 @@ Security (선택, 고가치)
 
 ## 참고 자료
 
-- roadmap.sh: [roadmap.sh](https://roadmap.sh/) — ★★★☆☆
+- roadmap.sh: [roadmap.sh](https://roadmap.sh/) — ★★☆☆☆
 - TIOBE Index: [tiobe.com](https://www.tiobe.com/tiobe-index/) — ★★☆☆☆
 - exa README (유지보수 종료, eza 안내): [github.com/ogham/exa](https://github.com/ogham/exa) — ★★★☆☆
 - Katacoda 종료 안내: [oreilly.com](https://www.oreilly.com/online-learning/leveraging-katacoda-technology.html) — ★★★☆☆
@@ -948,6 +948,6 @@ Security (선택, 고가치)
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

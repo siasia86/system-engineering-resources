@@ -258,7 +258,7 @@ Sharding (수평 확장)
 
 ## 참고 자료
 
-- roadmap.sh DBA: [roadmap.sh/postgresql-dba](https://roadmap.sh/postgresql-dba) — ★★★☆☆
+- roadmap.sh DBA: [roadmap.sh/postgresql-dba](https://roadmap.sh/postgresql-dba) — ★★☆☆☆
 - Use The Index, Luke: [use-the-index-luke.com](https://use-the-index-luke.com/) — ★★★☆☆
 - Percona Blog: [percona.com/blog](https://www.percona.com/blog/) — ★★☆☆☆
 - Planet MySQL: [planet.mysql.com](https://planet.mysql.com/) — ★★☆☆☆
@@ -283,6 +283,6 @@ Sharding (수평 확장)
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -417,8 +417,8 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 - [_reference/ai_coding_tools_official_notes.md](../../_reference/ai_coding_tools_official_notes.md) — 가격·모델·벤치마크 검증 근거 노트
 - [_reference/claude_code_official_notes.md](../../_reference/claude_code_official_notes.md) — Claude Code·Claude 모델 검증 근거 노트 (2026-10-14)
 
-- BenchLM Computer Use: [benchlm.ai/best/computer-use](https://benchlm.ai/best/computer-use) — ★★★☆☆
-- BenchLM Coding: [benchlm.ai/best/coding](https://benchlm.ai/best/coding) — ★★★☆☆
+- BenchLM Computer Use: [benchlm.ai/best/computer-use](https://benchlm.ai/best/computer-use) — ★★☆☆☆
+- BenchLM Coding: [benchlm.ai/best/coding](https://benchlm.ai/best/coding) — ★★☆☆☆
 - Kiro Pricing: [kiro.dev/pricing](https://kiro.dev/pricing) — ★★★☆☆
 - OpenAI Agents SDK: [github.com/openai/openai-agents-python](https://github.com/openai/openai-agents-python) — ★★★☆☆
 - OpenAI Codex (ChatGPT 내 코딩 에이전트 기능, Agents SDK와는 별개 제품): [learn.chatgpt.com/docs/cloud](https://learn.chatgpt.com/docs/cloud) — ★★★☆☆
@@ -440,6 +440,6 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 
 **작성일**: 2026-07-27
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

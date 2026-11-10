@@ -191,7 +191,7 @@ AI 에이전트 기반 리버스 엔지니어링 도구(예: [morluto/rea](https
 
 - 한국 저작권법: [law.go.kr](https://www.law.go.kr/법령/저작권법) — ★★★☆☆
 - 정보통신망법: [law.go.kr](https://www.law.go.kr/법령/정보통신망%20이용촉진%20및%20정보보호%20등에%20관한%20법률) — ★★★☆☆
-- 17 U.S. Code §1201: [law.cornell.edu](https://www.law.cornell.edu/uscode/text/17/1201) — ★★★☆☆
+- 17 U.S. Code §1201: [law.cornell.edu](https://www.law.cornell.edu/uscode/text/17/1201) — ★★☆☆☆
 - 37 CFR §201.40: [ecfr.gov](https://www.ecfr.gov/current/title-37/chapter-II/subchapter-A/part-201/section-201.40) — ★★★☆☆
 - rea DISCLAIMER: [github.com/morluto/rea](https://github.com/morluto/rea/blob/main/DISCLAIMER.md) — ★★★☆☆
 - [DRM 가이드](drm_guide.md), [IP 귀속 가이드](ip_ownership_guide.md), [라이선스 가이드](../../license_guide.md)

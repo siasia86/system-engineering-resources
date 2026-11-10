@@ -508,7 +508,7 @@ sia-readme-inventory-check README.md
 
 ## 참고 자료
 
-- roadmap.sh: [roadmap.sh](https://roadmap.sh/) — ★★★☆☆
+- roadmap.sh: [roadmap.sh](https://roadmap.sh/) — ★★☆☆☆
 - Linux Documentation Project: [tldp.org](https://tldp.org/) — ★★☆☆☆
 
 ---
@@ -531,6 +531,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

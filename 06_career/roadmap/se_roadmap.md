@@ -1297,7 +1297,7 @@ SE → IT Manager
 
 ## 참고 자료
 
-- roadmap.sh DevOps: [roadmap.sh/devops](https://roadmap.sh/devops) — ★★★☆☆
+- roadmap.sh DevOps: [roadmap.sh/devops](https://roadmap.sh/devops) — ★★☆☆☆
 - virt-install man page (`--osinfo`, OS 감지 실패 시 동작): [github.com/virt-manager](https://github.com/virt-manager/virt-manager/blob/main/man/virt-install.rst) — ★★★☆☆
 - MySQL 8.4 Using Option Files (주석은 `#`·`;`): [dev.mysql.com](https://dev.mysql.com/doc/refman/8.4/en/option-files.html) — ★★★☆☆
 
@@ -1316,6 +1316,6 @@ SE → IT Manager
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

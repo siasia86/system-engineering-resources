@@ -45,7 +45,7 @@
 - [kiro/kiro_agent_lock.md](./ai_tools/kiro/kiro_agent_lock.md) — 협업 디렉토리 동시 작업 방지 lock 구현과 유사 오픈소스 비교
 - [jev/jev_concepts.md](./ai_tools/jev/jev_concepts.md) — System One 모델, 질문 유형, 확률·신뢰도
 - [jev/jev_guide.md](./ai_tools/jev/jev_guide.md) — Playground, HTTP API, Python SDK와 결과 분기
-- [ip_ownership_guide.md](./legal/ip_ownership_guide.md) — 코드 저작권, 직무 발명
+- [ip_ownership_guide.md](./legal/ip_ownership_guide.md) — 업무 외 저작물 귀속, 저작권법 제9조, 근로계약서 귀속 조항, 판단 기준·실무 대응
 - [reverse_engineering_legal_guide.md](./legal/reverse_engineering_legal_guide.md) — 역분석 허용 요건, 기술적 보호조치, 정보통신망법, DMCA 예외, 작업 체크리스트
 - [drm_guide.md](./legal/drm_guide.md) — DRM 개념·기술 방식, DRM과 오픈소스, DMCA와 법적 근거
 - [privacy_law_guide.md](./legal/privacy_law_guide.md) — 개인정보 보호 법령, 감독기관, 처리자·취급자, CI/DI, CPO·CISO, 침해사고 대응
@@ -71,6 +71,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

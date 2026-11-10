@@ -920,7 +920,7 @@ rm -f /tmp/testfile
 
 - Kernel Documentation: [kernel.org/doc/html/latest/admin-guide/cgroup-v2.html](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html) — ★★★☆☆
 - Red Hat cgroup v2: [access.redhat.com](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_monitoring_and_updating_the_kernel/assembly_using-cgroups-v2-to-control-distribution-of-cpu-time-for-applications_managing-monitoring-and-updating-the-kernel) — ★★★☆☆
-- Brendan Gregg: [brendangregg.com/linuxperf.html](https://www.brendangregg.com/linuxperf.html) — ★★★☆☆
+- Brendan Gregg: [brendangregg.com/linuxperf.html](https://www.brendangregg.com/linuxperf.html) — ★★☆☆☆
 - systemd NEWS (v256·v258 cgroup v1 지원 변경): [github.com/systemd/systemd](https://github.com/systemd/systemd/blob/main/NEWS) — ★★★☆☆
 - libcgroup v2.0 릴리스 노트: [github.com/libcgroup/libcgroup](https://github.com/libcgroup/libcgroup/releases/tag/v2.0) — ★★★☆☆
 - Kubernetes cgroup 버전 확인: [kubernetes.io](https://kubernetes.io/docs/concepts/architecture/cgroups/) — ★★★☆☆
@@ -941,6 +941,6 @@ rm -f /tmp/testfile
 
 **작성일** : 2026-05-15
 
-**마지막 업데이트** : 2026-11-09
+**마지막 업데이트** : 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

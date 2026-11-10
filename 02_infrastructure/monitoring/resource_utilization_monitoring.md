@@ -371,7 +371,7 @@ zabbix → 30% (10:00에 수집했다면) 또는 95% (10:03에 수집했다면)
 
 - Linux man pages: [man7.org](https://man7.org/linux/man-pages/) — ★★★☆☆
 - Zabbix agent item keys (`system.cpu.util`·`net.if.in`·`vm.memory.size`): [zabbix.com/documentation](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/zabbix_agent) — ★★★☆☆
-- Brendan Gregg - Linux Performance: [brendangregg.com](https://www.brendangregg.com/linuxperf.html) — ★★★☆☆
+- Brendan Gregg - Linux Performance: [brendangregg.com](https://www.brendangregg.com/linuxperf.html) — ★★☆☆☆
 
 ---
 
@@ -388,6 +388,6 @@ zabbix → 30% (10:00에 수집했다면) 또는 95% (10:03에 수집했다면)
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.
