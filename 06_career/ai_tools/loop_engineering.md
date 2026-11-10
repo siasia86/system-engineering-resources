@@ -235,7 +235,7 @@ Automations 탭:
 
 ### 자료 조사에 사용하는 제한된 루프
 
-아래는 설계 예시입니다. 실제 `32 조사 → 41 clone·기록 → 35 도구별 구현`의 행동 기준과 공용·개인 범위는 [31 중앙 workflow](https://github.com/siasia86/31_governances/blob/yunli/.governance/repository/agent_skill_improvement_workflow.md)에서 관리합니다.
+아래는 설계 예시입니다. 실제 `32 조사 → 41 clone·기록 → 35 도구별 구현`의 행동 기준과 공용·개인 범위는 31 중앙 저장소에서 관리합니다.
 
 | 항목   | 예시                                                               |
 |--------|--------------------------------------------------------------------|
@@ -401,6 +401,6 @@ Inner loop: observe -> act -> inspect feedback -> next action
 
 **작성일**: 2026-07-02
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

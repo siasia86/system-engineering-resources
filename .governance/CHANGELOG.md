@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261109-01 / DOCS-32 (2026-11-10): D4 후속(사용자 승인)으로 다른 저장소의 `yunli` branch를 가리키던 링크 4개를 정리했습니다. 31 저장소의 `agent_skill_improvement_workflow.md`는 2026-10-03에 삭제됐습니다. 현행 `theorems/skill-maintenance.md`는 skill·저장소 지침 수정 절차만 다루고 32→41→35 흐름과 공용·개인 범위는 다루지 않아 후속 문서로 보지 않았습니다. 그래서 `harness_engineering.md`·`loop_engineering.md`·`_reference/github_references.md`의 링크 3개는 빼고 문장만 남겼습니다. 41 저장소의 참고 기록 링크는 같은 파일이 있는 `main`으로 바꿨습니다. `github_references.md`는 출처를 다시 확인하지 않아 `last_checked`를 유지했습니다.
+
 - MAIN-20261109-01 / DOCS-32 (2026-11-10): 검증 후속 D3·D4(사용자 승인). D3: `02_infrastructure/iac/packer.md` 권리 고지의 `sjyun`을 저장소 표기 `siasia86`으로 맞췄습니다. D4: 예시 브랜치로 쓰인 계정 이름 `yunli`를 바꿨습니다. `git_guide.md` fast-forward 그림은 앞 그림과 같은 `feature`로 바꾸고 `C---D` 열 위치를 유지했습니다. `gh_command_reference.md`는 명령 예시를 `feature/login`으로, `gh run list` 출력 예시의 branch 열을 `main`으로 바꿨습니다. 다른 저장소의 `yunli` 브랜치를 가리키는 실제 링크와 스크립트 안의 이름은 고치지 않았습니다.
 
 - MAIN-20261109-01 / DOCS-32 (2026-11-09): 검증 후속 D9(사용자 승인, 공식 근거나 재현으로 확인된 문장 수준 정정만)으로 작은 정정 후보 약 90건 중 대부분을 90개 문서에서 고쳤습니다. 예: Python 내장 예외를 가리는 클래스 이름, Rust `should_panic` 메시지·axum `State` 추출자, C# 중복 선언, HTB 기본 class·conntrack 기본값·overcommit 권장 단서, bash `((frame++))`·`set -E`, SoftEther Raw L2TP·기본 리스너, Cloudflare Magic Transit의 ASN·계층, Kafka 리스너 분리·JMX 이미지·파티셔너, Harness YAML 이름, systemd 드롭인, Chaos Monkey 2010·성숙도 모델 출처, SSH ssh.socket·PQ 키 교환, Windows OpenSSH 인코딩, mod_php 전용 지시어 단서, XtraBackup `--defaults-extra-file`, 라이선스 가이드 법률 단정 완화, 출처 노트 5개(`_reference/INDEX.md` 확인일 반영). 판단이 필요하거나 절·표를 새로 짜야 하는 항목은 고치지 않았습니다.

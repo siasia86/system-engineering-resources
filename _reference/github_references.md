@@ -55,7 +55,7 @@ sources:
 
 Codex skill 설정 절차는 [Codex Skills 설정 가이드](../06_career/ai_tools/codex/codex_skills_setup_guide.md)에서 확인합니다. 아래 20개는 개발 절차, 분야별 예제, 공식 명세와 탐색 도구를 함께 살펴볼 참고 목록입니다.
 
-GitHub stars는 2026-10-03 GitHub REST API의 `stargazers_count` 조회값입니다. 용도와 Codex 지원 근거는 각 저장소의 README에서 확인했습니다. 실제 clone·정적 검토 상태는 [41 참고 기록](https://github.com/siasia86/41_clone-repo/blob/yunli/docs/reference_repositories.md)에서 관리하며, 설치·실행과 Windows 동작 검증은 이 목록 작성의 결과가 아닙니다.
+GitHub stars는 2026-10-03 GitHub REST API의 `stargazers_count` 조회값입니다. 용도와 Codex 지원 근거는 각 저장소의 README에서 확인했습니다. 실제 clone·정적 검토 상태는 [41 참고 기록](https://github.com/siasia86/41_clone-repo/blob/main/docs/reference_repositories.md)에서 관리하며, 설치·실행과 Windows 동작 검증은 이 목록 작성의 결과가 아닙니다.
 
 ### 1.1. 개발 행동과 엔지니어링 절차
 
@@ -134,4 +134,4 @@ Symphony는 신뢰하는 환경에서 시험하는 engineering preview로 명시
 
 Windows에서는 PowerShell·Git Bash·WSL의 경로·인자·종료 코드와 각 실행기의 shell·SDK·sandbox 요구사항을 확인합니다. gstack·planning-with-files의 절차와 상태 파일 패턴은 [개발 행동 목록](#11-개발-행동과-엔지니어링-절차)에서 함께 참고할 수 있습니다.
 
-개념과 적용 예시는 [Harness Engineering](../06_career/ai_tools/harness_engineering.md#6-실전-적용)과 [Loop Engineering](../06_career/ai_tools/loop_engineering.md#5-루프-설계-예시), 실제 개선 단계의 중앙 기준은 [31 workflow](https://github.com/siasia86/31_governances/blob/yunli/.governance/repository/agent_skill_improvement_workflow.md)에서 관리합니다.
+개념과 적용 예시는 [Harness Engineering](../06_career/ai_tools/harness_engineering.md#6-실전-적용)과 [Loop Engineering](../06_career/ai_tools/loop_engineering.md#5-루프-설계-예시), 실제 개선 단계의 중앙 기준은 31 중앙 저장소에서 관리합니다.
