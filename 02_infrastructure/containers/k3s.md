@@ -95,7 +95,7 @@ curl -sfL https://get.k3s.io | sh -
 # 특정 버전 설치
 curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.37.2+k3s1 sh -
 
-# Traefik 비활성화 (Nginx Ingress 사용 시)
+# Traefik 비활성화 (다른 Ingress 컨트롤러 사용 시, 모든 server 노드에 지정)
 curl -sfL https://get.k3s.io | sh -s - --disable traefik
 
 # 외부 데이터스토어 (HA 구성용)
@@ -354,6 +354,7 @@ sudo k3s etcd-snapshot save --name k3s-snapshot
 - k3s Documentation: [docs.k3s.io](https://docs.k3s.io/) — ★★★☆☆
 - k3s GitHub: [github.com/k3s-io/k3s](https://github.com/k3s-io/k3s) — ★★★☆☆
 - k3s Requirements: [docs.k3s.io/installation/requirements](https://docs.k3s.io/installation/requirements) — ★★★☆☆
+- k3s Networking Services (Traefik 비활성화): [docs.k3s.io/networking/networking-services](https://docs.k3s.io/networking/networking-services) — ★★★☆☆
 - [kubernetes_basic.md](./kubernetes_basic.md)
 
 ---
@@ -371,6 +372,6 @@ sudo k3s etcd-snapshot save --name k3s-snapshot
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

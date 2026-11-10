@@ -89,6 +89,7 @@ Kubernetes(K8s)는 컨테이너화된 애플리케이션의 배포, 스케일링
 | CronJob          | 스케줄 기반 Job 실행                                       |
 | Service          | Pod 집합에 대한 안정적인 네트워크 엔드포인트               |
 | Ingress          | HTTP/HTTPS 라우팅 규칙 (L7 로드밸런서)                     |
+| Gateway          | 트래픽 진입점. HTTPRoute로 L7 라우팅 (CRD 별도 설치)       |
 | ConfigMap        | 설정 데이터 저장 (비민감 정보)                             |
 | Secret           | 민감 데이터 저장 (비밀번호, 토큰 등)                       |
 | PersistentVolume | 클러스터 수준 스토리지 리소스                              |
@@ -312,16 +313,15 @@ spec:
 
 ### Ingress
 
+🔵 Ingress API(`networking.k8s.io/v1`)는 v1.19부터 GA이고 제거 계획은 없지만, 동결되어 더 이상 기능이 추가되지 않습니다. Kubernetes 프로젝트는 새 구성에 [Gateway API](#gateway-api)를 권장합니다. 널리 쓰이던 컨트롤러 ingress-nginx(`kubernetes/ingress-nginx`)는 2026-03에 은퇴했고 저장소는 2026-03-24 읽기 전용으로 보관되어 이후 릴리스·보안 수정이 없습니다. 기존 배포는 계속 동작하므로 다른 Ingress 컨트롤러나 Gateway API 구현으로 옮길 계획을 세웁니다. F5 NGINX의 NGINX Ingress Controller(`nginx/kubernetes-ingress`)는 별개 프로젝트로 이 은퇴와 관계가 없습니다.
+
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: my-app-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
-  ingressClassName: nginx
+  ingressClassName: <INGRESS_CLASS>   # 클러스터의 IngressClass 이름 (kubectl get ingressclass)
   tls:
     - hosts:
         - app.example.com
@@ -345,6 +345,88 @@ spec:
                 port:
                   number: 80
 ```
+
+HTTP → HTTPS 강제 전환과 경로 재작성(rewrite)은 Ingress 명세에 없어 컨트롤러별 annotation이나 설정으로 지정합니다. TLS 기능도 컨트롤러마다 차이가 있으므로 사용하는 컨트롤러 문서를 확인합니다. `ingressClassName`을 생략하면 기본 IngressClass(`ingressclass.kubernetes.io/is-default-class: "true"`)가 적용됩니다.
+
+### Gateway API
+
+Gateway API(`gateway.networking.k8s.io/v1`, v1.0부터 GA)는 역할별로 리소스를 나눕니다. GatewayClass는 구현(컨트롤러)을 지정하고, Gateway는 listener·TLS를 정의하며, HTTPRoute는 경로 규칙을 Service에 연결합니다. Kubernetes에 기본 포함되지 않는 add-on이므로 CRD를 따로 설치하고(구현 설치 과정에서 함께 설치되기도 함), GatewayClass를 제공하는 구현이 클러스터에 있어야 동작합니다.
+
+```bash
+# Standard 채널 CRD 설치 (v1.7.0, 2026-10 릴리스)
+kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.7.0/standard-install.yaml
+
+# 구현이 제공하는 GatewayClass 확인
+kubectl get gatewayclass
+```
+
+```yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: my-gateway
+spec:
+  gatewayClassName: <GATEWAY_CLASS>   # 구현이 제공하는 GatewayClass 이름
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: app.example.com
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: app.example.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: tls-secret       # kubernetes.io/tls 타입 Secret
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: my-app-route
+spec:
+  parentRefs:
+    - name: my-gateway
+      sectionName: https           # 연결할 listener 이름
+  hostnames:
+    - app.example.com
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api
+      backendRefs:
+        - name: api-svc
+          port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: frontend-svc
+          port: 80
+---
+# HTTP -> HTTPS 전환 (표준 RequestRedirect 필터)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: my-app-redirect
+spec:
+  parentRefs:
+    - name: my-gateway
+      sectionName: http
+  hostnames:
+    - app.example.com
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+```
+
+Ingress와 달리 HTTPS 전환을 annotation 없이 표준 필드로 적을 수 있습니다. 기존 Ingress는 [Ingress2Gateway](https://github.com/kubernetes-sigs/ingress2gateway)로 Gateway API 리소스로 변환해 볼 수 있습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -697,6 +779,14 @@ kubectl debug -it my-pod --image=busybox --target=my-app
 - Kubernetes Documentation: [kubernetes.io/docs](https://kubernetes.io/docs/home/) — ★★★☆☆
 - kubectl Cheat Sheet: [kubernetes.io/docs/reference/kubectl/cheatsheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/) — ★★★☆☆
 - Kubernetes Patterns: [k8spatterns.com](https://k8spatterns.com/) — ★★★★☆
+- Ingress (API 동결·Gateway 권장): [kubernetes.io/docs/concepts/services-networking/ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) — ★★★☆☆
+- Ingress NGINX Retirement (2025-11-11 공지): [kubernetes.io/blog/2025/11/11/ingress-nginx-retirement](https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/) — ★★★☆☆
+- ingress-nginx 저장소 (보관됨, 은퇴 안내): [github.com/kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx) — ★★★☆☆
+- Gateway API 개념: [kubernetes.io/docs/concepts/services-networking/gateway](https://kubernetes.io/docs/concepts/services-networking/gateway/) — ★★★☆☆
+- Gateway API 설치 안내 (v1.7.0): [gateway-api.sigs.k8s.io/guides/getting-started/introduction](https://gateway-api.sigs.k8s.io/guides/getting-started/introduction/) — ★★★☆☆
+- Gateway API HTTP Redirect: [gateway-api.sigs.k8s.io/guides/user-guides/http-redirect-rewrite](https://gateway-api.sigs.k8s.io/guides/user-guides/http-redirect-rewrite/) — ★★★☆☆
+- Gateway API v1.7.0 릴리스: [github.com/kubernetes-sigs/gateway-api/releases/tag/v1.7.0](https://github.com/kubernetes-sigs/gateway-api/releases/tag/v1.7.0) — ★★★☆☆
+- Ingress2Gateway: [github.com/kubernetes-sigs/ingress2gateway](https://github.com/kubernetes-sigs/ingress2gateway) — ★★★☆☆
 
 ---
 
@@ -713,6 +803,6 @@ kubectl debug -it my-pod --image=busybox --target=my-app
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

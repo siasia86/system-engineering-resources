@@ -332,7 +332,7 @@ service:
 
 ingress:
   enabled: false
-  className: nginx
+  className: ""   # 비워두면 클러스터 기본 IngressClass 사용 (helm create 기본값)
   hosts:
     - host: app.example.com
       paths:
@@ -527,6 +527,7 @@ helm diff upgrade my-app ./my-app -f values-prod.yaml
 - Helm 4 Overview (플래그 이름 변경): [helm.sh/docs/overview](https://helm.sh/docs/overview/) — ★★★☆☆
 - Charts Repo Deprecation: [helm.sh/blog/charts-repo-deprecation](https://helm.sh/blog/charts-repo-deprecation/) — ★★★☆☆
 - Bitnami Charts README (OCI 설치 안내): [github.com/bitnami/charts](https://github.com/bitnami/charts) — ★★★☆☆
+- helm create 기본 values (v4.3.1, `className: ""`): [github.com/helm/helm/blob/v4.3.1/pkg/chart/v2/util/create.go](https://github.com/helm/helm/blob/v4.3.1/pkg/chart/v2/util/create.go) — ★★★☆☆
 
 ---
 
@@ -543,6 +544,6 @@ helm diff upgrade my-app ./my-app -f values-prod.yaml
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.
