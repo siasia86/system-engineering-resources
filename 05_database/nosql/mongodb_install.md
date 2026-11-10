@@ -7,6 +7,7 @@
 | [1. 개요](#1-개요) / [2. Ubuntu 설치](#2-ubuntu-설치) / [3. RHEL 계열 설치](#3-rhel-계열-설치)                                    |
 | [4. 초기 보안 설정](#4-초기-보안-설정) / [5. 기본 설정 (mongod.conf)](#5-기본-설정-mongodconf) / [6. 기본 사용법](#6-기본-사용법) |
 | [7. 실무 팁](#7-실무-팁) / [8. 트러블슈팅](#8-트러블슈팅)                                                                         |
+| [9. 구판(8.0) 차이](#9-구판80-차이)                                                                                               |
 
 ---
 
@@ -27,8 +28,8 @@
 |-------------|-------------|-------------------|
 | MongoDB 6.0 | EOL 2025-07 | 🟡 비권장         |
 | MongoDB 7.0 | EOL 2027-08 | ✅ 권장           |
-| MongoDB 8.0 | EOL 2029-10 | ✅ 신규 구축 권장 |
-| MongoDB 9.0 | EOL 2031-10 | 최신 (2026-09)    |
+| MongoDB 8.0 | EOL 2029-10 | ✅ 권장           |
+| MongoDB 9.0 | EOL 2031-10 | ✅ 신규 구축 권장 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -46,12 +47,12 @@ sudo apt update && sudo apt upgrade -y
 
 ```bash
 sudo apt install gnupg curl -y
-curl -fsSL https://pgp.mongodb.com/server-8.0.asc \
-    | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-8.0.gpg
+curl -fsSL https://pgp.mongodb.com/server-9.asc \
+    | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-9.gpg
 
-echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] \
-    https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/8.0 multiverse" \
-    | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-9.gpg ] \
+    https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/9.0 multiverse" \
+    | sudo tee /etc/apt/sources.list.d/mongodb-org-9.0.list
 
 sudo apt update
 sudo apt install mongodb-org -y
@@ -81,13 +82,13 @@ sudo dnf update -y
 ### 3-2. MongoDB 공식 저장소 추가
 
 ```bash
-sudo tee /etc/yum.repos.d/mongodb-org-8.0.repo << 'EOF'
-[mongodb-org-8.0]
+sudo tee /etc/yum.repos.d/mongodb-org-9.0.repo << 'EOF'
+[mongodb-org-9.0]
 name=MongoDB Repository
-baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/8.0/x86_64/
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/9.0/x86_64/
 gpgcheck=1
 enabled=1
-gpgkey=https://pgp.mongodb.com/server-8.0.asc
+gpgkey=https://pgp.mongodb.com/server-9.asc
 EOF
 
 sudo dnf install mongodb-org -y
@@ -336,13 +337,30 @@ mongosh --eval "db.currentOp()" -u Secureuser123 -p SecurePassword123 --authenti
 
 ---
 
+## 9. 구판(8.0) 차이
+
+🔵 MongoDB 8.0은 2029-10-31에 지원이 끝납니다([MongoDB Software Lifecycle Schedules](https://www.mongodb.com/legal/support-policy/lifecycles)). 8.0을 설치할 때는 2·3절에서 다음만 바꿉니다.
+
+- GPG 키: `https://pgp.mongodb.com/server-8.0.asc`, 키링 `mongodb-server-8.0.gpg` (9.0부터 키 이름은 `server-9.asc`처럼 주 판 숫자만 씁니다)
+- 저장소: `mongodb-org/8.0`, 파일 `mongodb-org-8.0.list`·`mongodb-org-8.0.repo`, 저장소 이름 `[mongodb-org-8.0]`
+- 지원 OS: 8.0은 Ubuntu 20.04·22.04·24.04, RHEL 8·9·10 / 9.0은 Ubuntu 22.04·24.04·26.04, RHEL 8·9·10
+- 8.1~9.0 호환성 변경에 이 문서의 설정 파일·명령에 해당하는 항목은 없습니다
+- 기존 8.0(또는 8.3) 배포는 9.0으로 바로 올릴 수 있고, 7.0 이하는 8.0을 거칩니다 ([Upgrade a Standalone to 9.0](https://www.mongodb.com/docs/manual/release-notes/9.0-upgrade-standalone/))
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 참고 자료
 
 - MongoDB Documentation: [mongodb.com/docs](https://www.mongodb.com/docs/) — ★★★☆☆
 - MongoDB CRUD: [mongodb.com/docs/manual/crud](https://www.mongodb.com/docs/manual/crud/) — ★★★☆☆
 - MongoDB 지원 기간: [MongoDB Software Lifecycle Schedules](https://www.mongodb.com/legal/support-policy/lifecycles) — ★★★☆☆
 - 설정 옵션 (storage.journal.enabled 제거, cacheSizeGB 기본값): [Configuration File Options](https://www.mongodb.com/docs/manual/reference/configuration-options/) — ★★★☆☆
-- RHEL 설치·SELinux 정책: [Install MongoDB on Red Hat](https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-red-hat/) — ★★★☆☆
+- 9.0 설치 (Ubuntu·RHEL 저장소, 키 `server-9.asc`, 지원 OS): [Install MongoDB Community on Linux](https://www.mongodb.com/docs/manual/administration/install-community-linux/) — ★★★☆☆
+- SELinux 정책: [Configure the MongoDB SELinux Policy](https://www.mongodb.com/docs/manual/tutorial/selinux/mongodb-policy/) — ★★★☆☆
+- 9.0 호환성 변경: [Compatibility Changes in MongoDB 9.0](https://www.mongodb.com/docs/manual/release-notes/9.0-compatibility/) — ★★★☆☆
+- 8.0 설치 (구판 차이): [Install MongoDB on Ubuntu (v8.0)](https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-ubuntu/) — ★★★☆☆
 - mongorestore `--nsInclude`: [mongorestore](https://www.mongodb.com/docs/database-tools/mongorestore/) — ★★★☆☆
 - compact 명령: [compact](https://www.mongodb.com/docs/manual/reference/command/compact/) — ★★★☆☆
 - [nosql_mongodb.md](./nosql_mongodb.md)
@@ -362,6 +380,6 @@ mongosh --eval "db.currentOp()" -u Secureuser123 -p SecurePassword123 --authenti
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

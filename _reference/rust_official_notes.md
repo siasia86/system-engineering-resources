@@ -7,7 +7,7 @@ tags:
   - systems-programming
   - cargo
   - crates
-last_checked: 2026-11-09
+last_checked: 2026-11-10
 sources:
   - https://doc.rust-lang.org/book/
   - https://doc.rust-lang.org/std/
@@ -16,6 +16,8 @@ sources:
   - https://tokio.rs/tokio/tutorial
   - https://crates.io/
   - https://blog.rust-lang.org/releases/
+  - https://doc.rust-lang.org/edition-guide/rust-2024/index.html
+  - https://doc.rust-lang.org/cargo/reference/rust-version.html
 ---
 
 # Rust 공식 문서 참조 노트
@@ -30,7 +32,7 @@ sources:
 |-------------|--------|----------------------------------------|
 | Stable      | 1.99.1 | MSRV 기준 확인 필요                    |
 | Edition     | 2024   | 현행 권장 (Rust 1.85+, cargo new 기본) |
-| MSRV (최소) | 1.70   | LazyLock=1.80+, Edition 2024=1.85+     |
+| MSRV (예시) | 1.85   | Edition 2024=1.85+, LazyLock=1.80+     |
 
 ### 주요 크레이트 최신 안정 버전 (2026-11-09)
 

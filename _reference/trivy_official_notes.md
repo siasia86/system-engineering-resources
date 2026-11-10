@@ -6,9 +6,11 @@ tags:
   - vulnerability-scanning
   - supply-chain
   - security
-last_checked: 2026-11-09
+last_checked: 2026-11-10
 sources:
   - https://api.github.com/repos/aquasecurity/trivy/releases
+  - https://api.github.com/repos/aquasecurity/trivy/compare/v0.76.1...v0.76.2
+  - https://aquasecurity.github.io/trivy-repo/deb/dists/generic/main/binary-amd64/Packages
   - https://github.com/aquasecurity/trivy/security/advisories/GHSA-69fq-xp46-6x23
   - https://github.com/aquasecurity/trivy/security/advisories/GHSA-mcj4-mphf-j9ff
   - https://github.com/aquasecurity/trivy/security/advisories/GHSA-8rc5-4fr6-64pw
@@ -36,10 +38,10 @@ sources:
 
 ## 2. Version status
 
-- 최신 릴리스: `v0.76.1`(2026-10-21). 직전 `v0.76.0`(2026-10-14), `v0.75.0`(2026-10-01). 저장소 라이선스 Apache-2.0, archive 아님.
+- 최신 릴리스: `v0.76.2`(2026-11-05). 직전 `v0.76.1`(2026-10-21), `v0.76.0`(2026-10-14). 저장소 라이선스 Apache-2.0, archive 아님.
 - v0.76.1 릴리스는 GitHub immutable release로 표시됩니다.
-- 2026-11-09 확인: `v0.76.2`(2026-11-05, immutable)가 최신입니다. 공식 이미지를 Alpine 3.24.3으로 다시 빌드하고 `golang.org/x/net`·`go-jose` 의존성을 올린 보안 수정판이며, 새 GHSA 공지는 없습니다. `trivy-action` 최신은 그대로 `v0.36.0`입니다.
-- v0.76.1 Linux x64 자산: `trivy_0.76.1_Linux-64bit.tar.gz`, `.deb`, `.rpm`과 각 `.sigstore.json`, `trivy_0.76.1_checksums.txt`와 그 `.sigstore.json`.
+- 2026-11-10 확인: `v0.76.2`(immutable)는 공식 이미지를 Alpine 3.24.3으로 다시 빌드하고 `golang.org/x/net`·`go-jose` 의존성을 올린 보안 수정판이며, 새 GHSA 공지는 없습니다. 0.77 계열 태그는 없고 v0.76.1과 v0.76.2 사이에 `docs/` 변경은 없습니다. `trivy-action` 최신은 그대로 `v0.36.0`입니다.
+- v0.76.2 Linux x64 자산: `trivy_0.76.2_Linux-64bit.tar.gz`, `.deb`, `.rpm`과 각 `.sigstore.json`, `trivy_0.76.2_checksums.txt`와 그 `.sigstore.json`.
 - `aquasecurity/trivy-action` 최신 릴리스 `v0.36.0`(2026-04-22, immutable). 태그 객체가 가리키는 commit은 `ed142fd0673e97e23eac54620cfb913e5ce36c25`입니다. `action.yaml`의 `version` 기본값은 `v0.70.0`입니다.
 
 ## 3. 보안 공지
@@ -83,5 +85,5 @@ sources:
 
 ## 7. 적용 범위와 제한
 
-- 이 노트와 가이드의 명령은 공식 문서 기준이며 작업 서버에서 실행하지 않았습니다. 패키지 저장소의 정확한 버전 문자열(`trivy=0.76.1`)과 이미지 digest 값은 확인하지 않았습니다.
+- 이 노트와 가이드의 명령은 공식 문서 기준이며 작업 서버에서 실행하지 않았습니다. 패키지 저장소의 버전 문자열(`trivy=0.76.2`)은 2026-11-10 apt 저장소 `Packages` 목록에서 확인했고, GHCR `0.76.2` 태그는 있으나 이미지 digest 값은 문서에 고정하지 않았습니다.
 - 공식 문서의 설정 오류 ID 예시는 `AVD-DS-0002` 형식입니다. 실제 결과의 ID 형식은 사용 버전의 출력으로 확인합니다.

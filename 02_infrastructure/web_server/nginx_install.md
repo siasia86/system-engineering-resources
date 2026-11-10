@@ -327,9 +327,9 @@ server {
     ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
 
-    # Mozilla Intermediate v5.7 (ssl-config.mozilla.org)
+    # Mozilla Intermediate 6.0 (ssl-config.mozilla.org)
     ssl_protocols       TLSv1.2 TLSv1.3;
-    ssl_ciphers         ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305;
+    ssl_ciphers         ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305;
     ssl_prefer_server_ciphers off;
     ssl_session_cache   shared:SSL:10m;
     ssl_session_timeout 1d;
@@ -355,6 +355,8 @@ server {
     return 301 https://$host$request_uri;
 }
 ```
+
+🔵 Mozilla 6.0 intermediate는 5.7에 있던 DHE 암호 3개를 빼고 키 교환 그룹에 `X25519MLKEM768`을 더했습니다. `ssl_ecdh_curve`를 두지 않으면 기본값 `auto`가 OpenSSL 내장 목록을 쓰며, OpenSSL 3.5 이상에서는 이 그룹이 기본 목록에 들어 있습니다. Mozilla 지침에는 판별 지원 기간이 없습니다. 5.7의 최소 대상 클라이언트(Firefox 27, Chrome 31, Windows 7의 IE 11, Java 8u31)까지 받아야 할 때만 `ssl_ciphers` 끝에 `DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305`를 더하고, `ssl_dhparam`에 ffdhe2048 파일(`https://ssl-config.mozilla.org/ffdhe2048.txt`)을 지정합니다. nginx는 `ssl_dhparam`이 없으면 DHE 암호를 쓰지 않습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -441,6 +443,9 @@ ps aux | grep nginx
 - nginx Linux 패키지 저장소(https, `module_hotfixes`): [nginx.org/en/linux_packages.html](https://nginx.org/en/linux_packages.html) — ★★★☆☆
 - NGINX와 SELinux(프록시 연결 boolean, 파일 레이블): [f5.com/company/blog/nginx/using-nginx-plus-with-selinux](https://www.f5.com/company/blog/nginx/using-nginx-plus-with-selinux) — ★★☆☆☆
 - EPEL 시작 안내(CRB 활성화 후 epel-release 설치): [docs.fedoraproject.org/en-US/epel/getting-started](https://docs.fedoraproject.org/en-US/epel/getting-started/) — ★★★☆☆
+- Mozilla 서버 TLS 권장 6.0(intermediate): [ssl-config.mozilla.org/guidelines/6.0.json](https://ssl-config.mozilla.org/guidelines/6.0.json) — ★★★☆☆
+- nginx SSL 모듈(`ssl_ecdh_curve auto`, `ssl_dhparam` 미지정 시 DHE 미사용): [nginx.org/en/docs/http/ngx_http_ssl_module.html](https://nginx.org/en/docs/http/ngx_http_ssl_module.html) — ★★★☆☆
+- OpenSSL 3.5 기본 키 교환 그룹(`X25519MLKEM768` 포함): [docs.openssl.org/3.5/man3/SSL_CTX_set1_curves](https://docs.openssl.org/3.5/man3/SSL_CTX_set1_curves/) — ★★★☆☆
 
 ---
 
@@ -457,6 +462,6 @@ ps aux | grep nginx
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

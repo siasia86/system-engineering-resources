@@ -6,7 +6,7 @@ tags:
   - wireguard
   - ipsec
   - networking
-last_checked: 2026-11-09
+last_checked: 2026-11-10
 sources:
   - https://datatracker.ietf.org/doc/html/rfc2637
   - https://datatracker.ietf.org/doc/html/rfc2661
@@ -20,7 +20,9 @@ sources:
   - https://datatracker.ietf.org/doc/html/rfc7296
   - https://datatracker.ietf.org/doc/html/rfc4555
   - https://www.wireguard.com/papers/wireguard.pdf
-  - https://openvpn.net/community-docs/community-articles/openvpn-2-6-manual/
+  - https://openvpn.net/community-docs/community-articles/openvpn-2-7-manual/
+  - https://github.com/OpenVPN/openvpn/blob/release/2.7/Changes.md
+  - https://community.openvpn.net/Pages/Supported%20versions
   - https://github.com/OpenVPN/openvpn/releases
 ---
 
@@ -93,11 +95,11 @@ DH 그룹 선택은 ESP 알고리즘 요구사항을 정의하는 RFC 8221이 �
 
 ## 5. OpenVPN (확인일: 2026-08-10)
 
-출처: openvpn.net Reference Manual (v2.6)
+출처: openvpn.net Reference Manual (v2.7)
 
 | 항목           | 값                                                                          |
 |----------------|-----------------------------------------------------------------------------|
-| 문서 기준 버전 | Community 2.6 Reference Manual 기준; 실제 배포 버전은 공식 릴리스 확인 필요 |
+| 문서 기준 버전 | Community 2.7 Reference Manual 기준; 실제 배포 버전은 공식 릴리스 확인 필요 |
 | 제어 채널      | TLS 1.2/1.3 범위에서 구성·TLS 라이브러리 지원에 따라 협상                   |
 | 데이터 채널    | `data-ciphers` 설정·협상에 따른 cipher (AEAD 권장)                          |
 | tls-crypt      | v2 지원 (메타데이터 포함 인증)                                              |
@@ -105,7 +107,9 @@ DH 그룹 선택은 ESP 알고리즘 요구사항을 정의하는 RFC 8221이 �
 | 권장 cipher    | AES-256-GCM (data-ciphers 옵션)                                             |
 | 폐기 예정      | BF-CBC, --cipher 옵션 (data-ciphers 대체)                                   |
 
-- 2026-11-09 확인: 최신 Community 릴리스는 2.7.9(2026-11-05)이고 2.6 계열도 2.6.23(2026-09-23)까지 나왔습니다. 2.6 매뉴얼 주소는 `community-docs/community-articles/openvpn-2-6-manual/`로 옮겨졌습니다.
+- 2026-11-10 확인: 최신 Community 릴리스는 2.7.9(2026-11-05)이고 2.6 계열도 2.6.23(2026-09-23)까지 나왔습니다. 2.7 매뉴얼 주소는 `community-docs/community-articles/openvpn-2-7-manual/`입니다.
+- 2026-11-10 확인(Supported versions): 2.7은 full stable 지원, 2.6은 old stable 지원이며 2027-08에 git tree only로 바뀌고 2028-08에 지원이 끝납니다.
+- 2026-11-10 확인(2.7.9 매뉴얼·Changes.md): 비-AEAD data cipher의 encrypt-then-mac, AEAD 사용 시 data channel에서 `--auth` 무시, 기본 `data-ciphers`(`AES-256-GCM:AES-128-GCM:CHACHA20-POLY1305`)는 2.6과 같습니다. 2.7은 AEAD cipher용 epoch data 형식을 추가했고, `--secret`은 `--allow-deprecated-insecure-static-crypto`가 있어야 쓸 수 있으며 2.8에서 제거될 예정입니다.
 
 ## 6. WireGuard (확인일: 2026-08-10)
 

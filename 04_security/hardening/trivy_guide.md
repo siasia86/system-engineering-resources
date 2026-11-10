@@ -20,7 +20,7 @@ Trivy는 컨테이너 이미지, 파일시스템, IaC 설정, Kubernetes 클러�
 |-----------|--------------------------------------------|
 | 언어      | Go                                         |
 | 라이선스  | Apache-2.0                                 |
-| 최신 버전 | v0.76.2 (2026-11-05 배포, 2026-11-09 확인) |
+| 최신 버전 | v0.76.2 (2026-11-05 배포, 2026-11-10 확인) |
 | GitHub    | https://github.com/aquasecurity/trivy      |
 | 공식 문서 | https://trivy.dev/                         |
 
@@ -71,7 +71,7 @@ Trivy는 컨테이너 이미지, 파일시스템, IaC 설정, Kubernetes 클러�
 v0.68.1부터 모든 릴리스 파일에 sigstore 서명 묶음(`.sigstore.json`)이 함께 올라옵니다. [cosign](https://github.com/sigstore/cosign) v3.0.0 이상으로 서명을 확인합니다. cosign v2(2.4.0 이상)는 `--new-bundle-format` 옵션을 추가합니다.
 
 ```bash
-VERSION="v0.76.1"
+VERSION="v0.76.2"
 BASE="https://github.com/aquasecurity/trivy/releases/download/${VERSION}"
 ASSET="trivy_${VERSION#v}_Linux-64bit.tar.gz"
 WORK=$(mktemp -d)
@@ -114,7 +114,7 @@ wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key \
 echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" \
   | sudo tee /etc/apt/sources.list.d/trivy.list
 sudo apt-get update
-sudo apt-get install trivy=0.76.1
+sudo apt-get install trivy=0.76.2
 ```
 
 🟡 패키지 저장소는 갱신할 때 새 버전이 바로 설치될 수 있습니다. 운영 서버는 버전을 지정해 설치하고 `apt-mark hold trivy`처럼 자동 갱신을 막은 뒤, 검토한 버전만 올립니다.
@@ -129,7 +129,7 @@ sudo apt-get install trivy=0.76.1
 
 ```bash
 # 이미지 서명 확인 후 digest 확인
-cosign verify ghcr.io/aquasecurity/trivy:0.76.1 \
+cosign verify ghcr.io/aquasecurity/trivy:0.76.2 \
   --certificate-identity-regexp 'https://github\.com/aquasecurity/trivy/\.github/workflows/.+' \
   --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
 
@@ -377,7 +377,7 @@ jobs:
       # 태그 대신 전체 commit SHA로 고정 (v0.36.0)
       - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
         with:
-          version: v0.76.1
+          version: v0.76.2
           scan-type: fs
           scan-ref: .
           scanners: vuln,secret,misconfig
@@ -521,6 +521,6 @@ Trivy 바이너리에는 검사 엔진만 들어 있고 검사 자료는 실행 
 
 **작성일**: 2026-11-05
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

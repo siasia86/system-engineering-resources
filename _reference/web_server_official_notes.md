@@ -11,7 +11,7 @@ tags:
   - load-balancer
   - keepalived
   - acme
-last_checked: 2026-11-09
+last_checked: 2026-11-10
 sources:
   - https://nginx.org/en/docs/
   - https://httpd.apache.org/docs/2.4/
@@ -59,7 +59,7 @@ sources:
 |------------------------------------|-----------------------------|------------------------------------------------------|
 | ssl_protocols                      | TLSv1.2 TLSv1.3             | TLS 1.0/1.1 제거                                     |
 | ssl_ciphers                        | Mozilla Intermediate 프로필 | ssl-config.mozilla.org                               |
-| ssl_prefer_server_ciphers          | off                         | Mozilla Intermediate 5.7 기준 (TLS 1.3에서는 무의미) |
+| ssl_prefer_server_ciphers          | off                         | Mozilla Intermediate 6.0 기준 (TLS 1.3에서는 무의미) |
 | add_header X-Frame-Options         | DENY 또는 SAMEORIGIN        | Clickjacking 방지                                    |
 | add_header X-Content-Type-Options  | nosniff                     | MIME sniffing 방지                                   |
 | add_header X-XSS-Protection        | 0                           | 최신 브라우저에서 deprecated, CSP 사용               |
@@ -262,17 +262,18 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 
 ## 4. TLS 설정 공통 (Mozilla SSL Configuration Generator)
 
-- 출처: https://ssl-config.mozilla.org/guidelines/5.7.json (v5.7, 확인일: 2026-07-14)
-- 2026-11-09 확인: 최신판은 6.0(`guidelines/latest.json`)이며, 이 노트와 본문은 5.7 기준입니다.
+- 출처: https://ssl-config.mozilla.org/guidelines/6.0.json (v6.0, 2026-04-06 발표, 확인일: 2026-11-10)
+- 2026-11-10 확인: `guidelines/latest.json`이 6.0과 같습니다. 6.0은 5.7 대비 intermediate의 DHE 암호 3개와 Old 프로필을 빼고 키 교환 그룹에 `X25519MLKEM768`을 더했습니다. 이 노트와 본문은 6.0 기준입니다.
+- 2026-11-10 확인: 생성기는 2026-05 커뮤니티 프로젝트 tlsref(https://configurator.tlsref.org/, 원본 https://github.com/tlsref/configurator)로 옮겨졌고, 보관된 mozilla/ssl-config-generator가 ssl-config.mozilla.org를 계속 제공하며 방문자를 새 사이트로 넘겨줍니다.
 - 검증: https://www.ssllabs.com/ssltest/ (A+ 목표)
 
 ### 프로필 비교
 
-| 프로필       | 대상            | 최소 TLS | 대상 클라이언트                       |
-|--------------|-----------------|----------|---------------------------------------|
-| Modern       | 최신 클라이언트 | TLS 1.3  | Firefox 63+, Chrome 70+, Safari 12.1+ |
-| Intermediate | 범용 (권장)     | TLS 1.2  | Firefox 27+, Chrome 31+, IE 11/Win7   |
-| Old          | 레거시 호환     | TLS 1.0  | 매우 오래된 클라이언트 (비권장)       |
+| 프로필       | 대상            | 최소 TLS | 대상 클라이언트                        |
+|--------------|-----------------|----------|----------------------------------------|
+| Modern       | 최신 클라이언트 | TLS 1.3  | Firefox 63+, Chrome 70+, Safari 12.1+  |
+| Intermediate | 범용 (권장)     | TLS 1.2  | Firefox 31.3+, Chrome 49+, IE 11/Win10 |
+| Old          | 레거시 호환     | TLS 1.0  | 6.0에서 제거 (5.7까지 제공)            |
 
 ### Intermediate 프로필 상세 (프로덕션 권장)
 
@@ -295,16 +296,13 @@ ECDHE-ECDSA-AES256-GCM-SHA384
 ECDHE-RSA-AES256-GCM-SHA384
 ECDHE-ECDSA-CHACHA20-POLY1305
 ECDHE-RSA-CHACHA20-POLY1305
-DHE-RSA-AES128-GCM-SHA256
-DHE-RSA-AES256-GCM-SHA384
-DHE-RSA-CHACHA20-POLY1305
 ```
 
 ### Nginx 적용 예시
 
 ```nginx
 ssl_protocols       TLSv1.2 TLSv1.3;
-ssl_ciphers         ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305;
+ssl_ciphers         ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305;
 ssl_prefer_server_ciphers off;
 ssl_session_timeout 1d;
 ssl_session_cache   shared:SSL:10m;
@@ -318,7 +316,7 @@ add_header Strict-Transport-Security "max-age=63072000" always;
 
 ```apache
 SSLProtocol             all -SSLv3 -TLSv1 -TLSv1.1
-SSLCipherSuite          ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305
+SSLCipherSuite          ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305
 SSLHonorCipherOrder     off
 SSLSessionTickets       off
 SSLUseStapling On

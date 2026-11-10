@@ -36,8 +36,8 @@ SE 실무에서 자주 사용하는 핵심 크레이트와 Cargo 활용법을 �
 [package]
 name = "my-tool"
 version = "0.1.0"
-edition = "2021"
-rust-version = "1.70"
+edition = "2024"
+rust-version = "1.85"   # 예시 MSRV: edition 2024가 Rust 1.85에서 안정화되어 이보다 낮출 수 없음
 
 [dependencies]
 tokio = { version = "1.53", features = ["full"] }
@@ -53,6 +53,8 @@ opt-level = 3
 lto = true
 strip = true
 ```
+
+`rust-version`은 패키지가 지원하는 최소 Rust 버전(MSRV)이며, 이보다 낮은 toolchain에서 빌드하면 Cargo가 오류로 알립니다. edition 2021도 계속 사용할 수 있고 다른 edition의 크레이트와 함께 연결됩니다. 기존 프로젝트를 2024로 옮길 때는 `cargo fix --edition`을 실행한 뒤 `edition` 값을 바꿉니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -336,6 +338,9 @@ cargo audit --deny warnings
 - lib.rs (크레이트 검색): [lib.rs](https://lib.rs/) — ★★★☆☆
 - Awesome Rust: [github.com/rust-unofficial/awesome-rust](https://github.com/rust-unofficial/awesome-rust) — ★★☆☆☆
 - Cargo Book: [doc.rust-lang.org/cargo](https://doc.rust-lang.org/cargo/) — ★★★☆☆
+- Cargo Book - rust-version: [doc.rust-lang.org/cargo/reference/rust-version.html](https://doc.rust-lang.org/cargo/reference/rust-version.html) — ★★★☆☆
+- Edition Guide - Rust 2024: [doc.rust-lang.org/edition-guide/rust-2024](https://doc.rust-lang.org/edition-guide/rust-2024/index.html) — ★★★☆☆
+- Edition Guide - Transitioning to a new edition: [doc.rust-lang.org/edition-guide](https://doc.rust-lang.org/edition-guide/editions/transitioning-an-existing-project-to-a-new-edition.html) — ★★★☆☆
 
 ---
 
@@ -352,6 +357,6 @@ cargo audit --deny warnings
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

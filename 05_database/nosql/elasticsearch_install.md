@@ -7,6 +7,7 @@
 | [1. 개요](#1-개요) / [2. Ubuntu 설치](#2-ubuntu-설치) / [3. RHEL 계열 설치](#3-rhel-계열-설치)                                                |
 | [4. 초기 보안 설정](#4-초기-보안-설정) / [5. 기본 설정 (elasticsearch.yml)](#5-기본-설정-elasticsearchyml) / [6. 기본 사용법](#6-기본-사용법) |
 | [7. ELK 스택 (Docker Compose)](#7-elk-스택-docker-compose) / [8. 실무 팁](#8-실무-팁) / [9. 트러블슈팅](#9-트러블슈팅)                        |
+| [10. 구판(8.x) 차이](#10-구판8x-차이)                                                                                                         |
 
 ---
 
@@ -36,7 +37,7 @@ Application Logs
 | CPU    | 2 core     | 8 core 이상        |
 | RAM    | 4 GB       | 16 GB 이상         |
 | 디스크 | 20 GB      | SSD 500 GB 이상    |
-| JVM    | JDK 17+    | 번들 JDK 사용 권장 |
+| JVM    | JDK 21     | 번들 JDK 사용 권장 |
 | 포트   | 9200, 9300 | 9200/tcp, 9300/tcp |
 
 [⬆ 목차로 돌아가기](#목차)
@@ -60,8 +61,8 @@ wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch \
     | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
 
 echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] \
-    https://artifacts.elastic.co/packages/8.x/apt stable main" \
-    | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
+    https://artifacts.elastic.co/packages/9.x/apt stable main" \
+    | sudo tee /etc/apt/sources.list.d/elastic-9.x.list
 
 sudo apt update
 ```
@@ -80,7 +81,7 @@ sudo systemctl enable --now elasticsearch
 ```bash
 sudo systemctl status elasticsearch --no-pager | head -5
 
-# HTTPS + 인증 (8.x 기본)
+# HTTPS + 인증 (8.x부터 기본)
 curl -s --cacert /etc/elasticsearch/certs/http_ca.crt \
     -u elastic:SecurePassword123 \
     https://localhost:9200
@@ -106,8 +107,8 @@ sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
 sudo tee /etc/yum.repos.d/elasticsearch.repo << 'EOF'
 [elasticsearch]
-name=Elasticsearch repository for 8.x packages
-baseurl=https://artifacts.elastic.co/packages/8.x/yum
+name=Elasticsearch repository for 9.x packages
+baseurl=https://artifacts.elastic.co/packages/9.x/yum
 gpgcheck=1
 gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
 enabled=1
@@ -140,7 +141,7 @@ sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kiban
 ### 보안 설정 확인
 
 ```bash
-# 8.x는 기본적으로 TLS + 인증 활성화
+# 8.x부터 기본적으로 TLS + 인증 활성화
 grep -E "xpack.security|xpack.security.http.ssl" /etc/elasticsearch/elasticsearch.yml
 ```
 
@@ -174,7 +175,7 @@ bootstrap.memory_lock: true   # swap 방지 (systemd에 LimitMEMLOCK=infinity �
 # 패키지 자동 구성이 넣은 cluster.initial_master_nodes 줄은 지웁니다 (함께 두면 기동 실패)
 discovery.type: single-node   # 단일 노드 클러스터
 
-# 보안 (8.x 기본값)
+# 보안 (8.x부터 기본값)
 xpack.security.enabled: true
 ```
 
@@ -263,7 +264,7 @@ curl -s --cacert $ES_CERT -u $ES_AUTH "$ES_URL/_cat/nodes?v"
 # compose.yaml
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.19.24
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.5.6
     environment:
       - discovery.type=single-node
       - ELASTIC_PASSWORD=SecurePassword123
@@ -281,7 +282,7 @@ services:
     restart: unless-stopped
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.19.24
+    image: docker.elastic.co/kibana/kibana:9.5.6
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - ELASTICSEARCH_USERNAME=kibana_system
@@ -361,7 +362,7 @@ curl -s --cacert $ES_CERT -u $ES_AUTH -X PUT "$ES_URL/myindex/_settings" \
 | `max virtual memory areas too low` | vm.max_map_count 미설정       | `sysctl -w vm.max_map_count=262144`       |
 | 클러스터 상태 `red`                | 샤드 미할당                   | `GET /_cluster/allocation/explain` 확인   |
 | `circuit_breaking_exception`       | JVM 힙 부족                   | `Xmx` 증가 또는 쿼리 최적화               |
-| 인증 실패 (8.x)                    | 패스워드 오류 또는 TLS 설정   | `elasticsearch-reset-password -u elastic` |
+| 인증 실패 (8.x 이후)               | 패스워드 오류 또는 TLS 설정   | `elasticsearch-reset-password -u elastic` |
 | 노드 연결 불가                     | 방화벽 또는 network.host 설정 | 9200/9300 포트 확인                       |
 
 ```bash
@@ -377,10 +378,28 @@ curl -s --cacert $ES_CERT -u $ES_AUTH "$ES_URL/_cluster/health?pretty"
 
 ---
 
+## 10. 구판(8.x) 차이
+
+🔵 8.x는 2027-01-15에 유지보수가, 2027-07-15에 지원이 끝납니다([Elastic Product End of Life Dates](https://www.elastic.co/support/eol)). 8.x 최신 패치는 8.19.24(2026-11-02)입니다.
+
+- 저장소: `packages/8.x/apt`·`packages/8.x/yum`, 목록 파일 `elastic-8.x.list`, 저장소 이름 `repository for 8.x packages` (GPG 키는 같음)
+- Docker 이미지: `elasticsearch:8.19.24`, `kibana:8.19.24`
+- 번들 JDK 대신 자체 JDK를 쓸 때: 8.19.x는 JDK 17·21·24·25·26, 9.5.x는 JDK 21·26 지원
+- 9.0 호환성 변경에 이 문서의 `elasticsearch.yml` 설정·보안 자동 구성·API 사용법에 해당하는 항목은 없습니다
+- 8.x에서 9.x로 올릴 때는 먼저 8.x 최신판으로 올린 뒤 진행합니다 ([Breaking changes](https://www.elastic.co/docs/release-notes/elasticsearch/breaking-changes))
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 참고 자료
 
 - Elastic Documentation: [elastic.co/docs/reference/elasticsearch](https://www.elastic.co/docs/reference/elasticsearch) — ★★★☆☆
 - Elastic 지원 기간 (8.x 유지보수 2027-01-15까지): [Elastic Product End of Life Dates](https://www.elastic.co/support/eol) — ★★★☆☆
+- 9.x 설치 (저장소 `9.x`, 최신 9.5.6): [Install Elasticsearch with a Debian package](https://www.elastic.co/docs/deploy-manage/deploy/self-managed/install-elasticsearch-with-debian-package) — ★★★☆☆
+- 9.x RPM 저장소: [Install Elasticsearch with RPM](https://www.elastic.co/docs/deploy-manage/deploy/self-managed/install-elasticsearch-with-rpm) — ★★★☆☆
+- JDK 지원 판 (Product and JVM): [Elastic Support Matrix](https://www.elastic.co/support/matrix) — ★★★☆☆
+- 9.x 호환성 변경·업그레이드 경로: [Elasticsearch breaking changes](https://www.elastic.co/docs/release-notes/elasticsearch/breaking-changes) — ★★★☆☆
 - 보안 자동 구성 생략 조건: [Automatic security setup](https://www.elastic.co/docs/deploy-manage/security/self-auto-setup) — ★★★☆☆
 - JVM 힙 크기: [JVM settings](https://www.elastic.co/docs/reference/elasticsearch/jvm-settings) — ★★★☆☆
 - 메모리 잠금 (LimitMEMLOCK): [Disable swapping](https://www.elastic.co/docs/deploy-manage/deploy/self-managed/setup-configuration-memory) — ★★★☆☆
@@ -403,6 +422,6 @@ curl -s --cacert $ES_CERT -u $ES_AUTH "$ES_URL/_cluster/health?pretty"
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

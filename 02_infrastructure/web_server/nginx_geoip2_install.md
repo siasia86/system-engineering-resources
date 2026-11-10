@@ -57,7 +57,7 @@ apt-get install -y nginx libnginx-mod-http-geoip2
 스크립트 사용:
 
 ```bash
-sudo bash nginx_geoip2_install.sh          # 기본 1.30.1
+sudo bash nginx_geoip2_install.sh          # 기본 1.30.6
 sudo bash nginx_geoip2_install.sh 1.30.0   # 버전 지정
 ```
 
@@ -76,7 +76,7 @@ echo "deb https://nginx.org/packages/ubuntu $(lsb_release -cs) nginx" \
 apt-get update
 
 # 2. nginx 설치
-apt-get install -y nginx=1.30.1-1~jammy
+apt-get install -y nginx=1.30.6-1~jammy
 
 # 3. 빌드 의존성
 apt-get install -y libmaxminddb-dev build-essential libpcre3-dev libssl-dev zlib1g-dev
@@ -174,11 +174,12 @@ nginx -t
 - ngx_http_geoip2_module: [github.com/leev/ngx_http_geoip2_module](https://github.com/leev/ngx_http_geoip2_module) — ★★★☆☆
 - MaxMind GeoLite2: [maxmind.com](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data) — ★★★☆☆
 - nginx 공식 레포: [nginx.org/packages](https://nginx.org/packages/ubuntu/pool/nginx/n/nginx/) — ★★★☆☆
+- nginx 다운로드(stable 1.30.6): [nginx.org/en/download.html](https://nginx.org/en/download.html) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-05-20
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

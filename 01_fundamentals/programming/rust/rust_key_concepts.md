@@ -302,7 +302,8 @@ edition = "2024"   # cargo new 기본값 (Rust 1.85+)
 
 ```toml
 [package]
-rust-version = "1.70"   # MSRV 명시
+edition = "2024"
+rust-version = "1.85"   # MSRV 예시: edition 2024는 Rust 1.85 이상이 필요해 이보다 낮출 수 없음
 ```
 
 | 기능                                     | 필요 Rust 버전 |
@@ -487,6 +488,6 @@ fn main() {
 
 **작성일**: 2026-07-31
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

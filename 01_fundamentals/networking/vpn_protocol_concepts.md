@@ -762,7 +762,9 @@ UDP/TCP transmission
 
 > tls-auth: OpenVPN 제어 채널 패킷에 HMAC 서명을 추가하는 기능입니다. HMAC 불일치 패킷은 TLS 핸드셰이크 전에 즉시 폐기되어 DoS/포트 스캔 방어 효과가 있습니다. tls-crypt는 HMAC 인증을 적용하면서 제어 채널 전체를 암호화하여 내용을 숨깁니다.
 
-OpenVPN 2.6 문서 기준으로 비-AEAD data cipher는 Encrypt-then-MAC을 사용합니다. AES-GCM 같은 AEAD cipher에서는 cipher 자체의 인증 태그를 사용하며 별도 `--auth` HMAC은 data channel에 적용되지 않습니다.
+OpenVPN 2.7 문서 기준으로 비-AEAD data cipher는 Encrypt-then-MAC을 사용합니다. AES-GCM 같은 AEAD cipher에서는 cipher 자체의 인증 태그를 사용하며 별도 `--auth` HMAC은 data channel에 적용되지 않습니다. 2.7은 TLS 모드의 AEAD cipher용 epoch data 형식(인증 태그를 패킷 끝에 두고 64비트 packet ID 사용)을 추가했습니다.
+
+🔵 구판(2.6) 차이: 2.6은 2027-08까지 old stable 지원을 받고 2028-08에 지원이 끝날 예정입니다([OpenVPN Supported versions](https://community.openvpn.net/Pages/Supported%20versions), 2026-11-10 확인). Encrypt-then-MAC·AEAD 태그 동작과 기본 `--data-ciphers`(`AES-256-GCM:AES-128-GCM:CHACHA20-POLY1305`)는 2.6과 2.7이 같습니다. 2.6에는 epoch data 형식이 없고, 정적 키 모드(`--secret`)는 2.6에서 deprecated 상태로 쓸 수 있지만 2.7에서는 `--allow-deprecated-insecure-static-crypto`를 함께 지정해야 합니다.
 
 ### 장단점
 
@@ -1034,13 +1036,15 @@ PPTP              ── ❌ 신규 사용 금지
 - RFC 7748: Elliptic Curves for Diffie-Hellman Key Agreement (Curve25519)
 - WireGuard: [wireguard.com/protocol](https://www.wireguard.com/protocol/) — ★★★☆☆
 - WireGuard Whitepaper: [wireguard.com/papers](https://www.wireguard.com/papers/wireguard.pdf) — ★★★★☆
-- OpenVPN: [openvpn.net/community-resources](https://openvpn.net/community-resources/reference-manual-for-openvpn-2-6/) — ★★★☆☆
+- OpenVPN 2.7 매뉴얼: [openvpn.net/community-docs](https://openvpn.net/community-docs/community-articles/openvpn-2-7-manual/) — ★★★☆☆
+- OpenVPN 2.7 변경 사항(epoch data 형식, `--secret` 기본 제거): [github.com/OpenVPN/openvpn Changes.md](https://github.com/OpenVPN/openvpn/blob/release/2.7/Changes.md) — ★★★☆☆
+- OpenVPN 지원 판(2.7 full stable, 2.6 old stable): [community.openvpn.net Supported versions](https://community.openvpn.net/Pages/Supported%20versions) — ★★★☆☆
 - Noise Protocol: [noiseprotocol.org](https://noiseprotocol.org/noise.html) — ★★★☆☆
 
 ---
 
 **작성일**: 2026-06-29
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-10
 
 © 2026 siasia86. Licensed under CC BY 4.0.

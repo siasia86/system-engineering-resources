@@ -5,7 +5,7 @@ tags:
   - index
   - reference
   - directory
-last_checked: 2026-11-09
+last_checked: 2026-11-10
 sources:
   - self (이 파일이 인덱스 역할)
 ---
@@ -49,7 +49,7 @@ sources:
 | HashiCorp Vault                | `_reference/hashicorp_vault_official_notes.md`          | KV·Database Dynamic Secret·라이선스                     | 2026-08-19 | O    |
 | GitLab CI/CD Variables         | `_reference/gitlab_ci_variables_official_notes.md`      | Protected·Masked·File·AWS OIDC                          | 2026-08-19 | O    |
 | Gitleaks                       | `_reference/gitleaks_official_notes.md`                 | v8.30.1                                                 | 2026-11-09 | O    |
-| Trivy                          | `_reference/trivy_official_notes.md`                    | v0.76.2·GHSA-69fq 공급망 사고·action v0.36.0            | 2026-11-09 | O    |
+| Trivy                          | `_reference/trivy_official_notes.md`                    | v0.76.2·GHSA-69fq 공급망 사고·action v0.36.0            | 2026-11-10 | O    |
 | TLS 인증서 수명 주기           | `_reference/tls_cert_lifecycle_official_notes.md`       | BR v2.3.1·LE 45일·RFC 9773·blackbox v0.29.1             | 2026-11-09 | O    |
 | Lynis                          | `_reference/lynis_official_notes.md`                    | 3.1.7·GPG 서명·프로필·보고서 형식·Hardening index       | 2026-11-05 | O    |
 | Grafana                        | `_reference/grafana_official_notes.md`                  | v13.3.0                                                 | 2026-11-05 | O    |
@@ -80,8 +80,8 @@ sources:
 | Backup Tools                   | `_reference/backup_tools_official_notes.md`             | rsnapshot·lsyncd·Bacula·Borg·Duplicity·Amanda·Bareos    | 2026-09-21 | O    |
 | SRE Operations                 | `_reference/sre_operations_official_notes.md`           | Google SRE Book / ITIL v4                               | 2026-11-09 | X    |
 | Terraform                      | `_reference/terraform_official_notes.md`                | v1.17.1, AWS Provider v6.72.0                           | 2026-11-09 | O    |
-| VPN Protocol                   | `_reference/vpn_protocol_official_notes.md`             | RFC 7296 / WireGuard protocol                           | 2026-11-09 | O    |
-| Web Server                     | `_reference/web_server_official_notes.md`               | Nginx 1.30.6, Apache 2.4.70, HAProxy 3.4.7 LTS          | 2026-11-09 | O    |
+| VPN Protocol                   | `_reference/vpn_protocol_official_notes.md`             | RFC 7296 / WireGuard protocol                           | 2026-11-10 | O    |
+| Web Server                     | `_reference/web_server_official_notes.md`               | Nginx 1.30.6, Apache 2.4.70, HAProxy 3.4.7 LTS          | 2026-11-10 | O    |
 | YAML Spec                      | `_reference/yaml_spec_notes.md`                         | 1.2 (1.1 호환)                                          | 2026-11-09 | O    |
 | Zabbix                         | `_reference/zabbix_official_notes.md`                   | 8.0 LTS (2026-11-05), 7.4 Standard                      | 2026-11-09 | O    |
 | e4fsprogs (CentOS 5)           | `_reference/e4fsprogs_centos5_notes.md`                 | 1.41.12-4.el5_10, fsck.ext4                             | 2026-07-22 | O    |
@@ -95,7 +95,7 @@ sources:
 | AI 업무 원형                   | `_reference/ai_work_archetypes_notes.md`                | Boris Cherny 제안·전재 대조·원문 직접 열람 제한         | 2026-11-09 | O    |
 | Aside AI 브라우저              | `_reference/aside_browser_official_notes.md`            | v1.0.1022.1·플랫폼·요금·권한·데이터 처리·CLI·MCP        | 2026-11-09 | O    |
 | ASD-STE100                     | `_reference/asd_ste100_official_notes.md`               | Issue 9 공식 설명·GitHub 5개·Codex 적용 근거            | 2026-10-09 | O    |
-| Rust                           | `_reference/rust_official_notes.md`                     | 1.99.1, Edition 2024, 주요 크레이트                     | 2026-11-09 | O    |
+| Rust                           | `_reference/rust_official_notes.md`                     | 1.99.1, Edition 2024, 주요 크레이트                     | 2026-11-10 | O    |
 | Windows Server 에디션/라이선스 | `_reference/windows_server_editions_licensing_notes.md` | Standard vs Datacenter, KMS/MAK/AVMA                    | 2026-11-09 | O    |
 | Windows Server Concepts        | `_reference/windows_server_concepts_notes.md`           | Hyper-V, S2D, Failover Cluster, Shielded VM, SDN        | 2026-11-09 | O    |
 | SCVMM                          | `_reference/scvmm_official_notes.md`                    | System Center 2025, 호스트 관리·베어메탈·Arc            | 2026-11-09 | O    |
