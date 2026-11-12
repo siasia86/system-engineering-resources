@@ -28,7 +28,7 @@
 
 ## 4. 저장소 지침 수정 경로
 
-이 저장소의 AGENTS·운영 문서는 `31_governances/common/profile/32_system-engineering-resources/`에서 수정·검증·게시한 뒤 대상에 병합합니다. 일반 작업은 실제 적용된 지침을 따르며 중앙 조회는 출처 확인·개정·배포가 필요한 때 수행합니다. 상세 수정 workflow는 31의 `common/skill-maintenance.md`에서 확인합니다.
+이 저장소의 AGENTS·운영 문서는 `31_governances/apply/common/profile/32_system-engineering-resources/`에서 수정·검증·게시한 뒤 대상에 병합합니다. 일반 작업은 실제 적용된 지침을 따르며 중앙 조회는 출처 확인·개정·배포가 필요한 때 수행합니다. 상세 수정 workflow는 31의 `theorems/skill-maintenance.md`에서 확인합니다.
 
 현장의 PLAN/TODO·완료 이력·사용자 차이를 보존합니다. 현재 수동 반영하며 31 변경의 CI/CD 자동 적용은 후속 예정입니다.
 
@@ -36,6 +36,6 @@
 
 **작성일**: 2026-10-04
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-12
 
 © 2026 siasia86. Licensed under CC BY 4.0.
