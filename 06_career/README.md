@@ -64,6 +64,7 @@
 
 - SRE 실무: [03_engineering/reliability/](../03_engineering/reliability/)
 - 전체 학습 경로: [루트 README 추천 학습 순서](../README.md#추천-학습-순서)
+- 도구와 무관한 AX 환경 구축: [07_ai_transformation/](../07_ai_transformation/)
 
 [⬆ 루트 README로 돌아가기](../README.md)
 
@@ -71,6 +72,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-12
 
 © 2026 siasia86. Licensed under CC BY 4.0.
