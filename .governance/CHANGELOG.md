@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- AX-HUB-17 / CL2CX-20261112-01 (2026-11-12): 중앙 원본 31 `22f92ad324a8e96d0ed3b2ce8f9c405fed23794d`의 문서 형식 경로 정정을 운영 규칙에 수동 반영했습니다. 검사 범위는 변경 문서 두 개의 문체·헤딩·링크·교차 앵커와 diff입니다.
+
 - MAIN-20261109-01 / DOCS-32 (2026-11-10): 검증 후속 E(사용자 승인, 문체·형식). 별점은 [운영 규칙](GOVERNANCE.md)의 자료 유형 기준(블로그·튜토리얼 ★2, 공식 문서 ★3)을 그대로 적용해, 개인·커뮤니티 사이트와 사례 글·제3자 재게시·집계 자료 11줄을 ★3에서 ★2로 바꿨습니다(Brendan Gregg Linux Performance 3줄, roadmap.sh 4줄, AWS의 Riot 이전 사례 1줄, Cornell LII §1201 1줄, BenchLM 2줄). 공급사 발표·지원 종료 공지와 도서 공식 페이지는 ★3을 유지했습니다. `01_fundamentals/README.md`의 cs 행 설명에 빠져 있던 알고리즘·압축·게임 테스트를 넣고, `06_career/README.md`의 `ip_ownership_guide.md` 설명을 문서 내용(업무 외 저작물 귀속, 저작권법 제9조, 근로계약서 귀속 조항)에 맞췄습니다. 기존 설명의 "직무 발명"은 문서에 없는 내용이었습니다. 코드 블록 그림 속 한글(디렉토리 트리 포함 225개 블록)과 `절대`·`완전히`·`무조건`이 쓰인 44줄(부정문·용어·안전 경고·사실 진술)은 고치지 않았고, 리디렉션되는 ISTQB·Codex 문서 링크는 다음 정기 검사로 미뤘습니다.
 
 - MAIN-20261109-01 / DOCS-32 (2026-11-10): 검증 후속 D7-3(사용자 승인). ingress-nginx가 2026-03에 은퇴(저장소 2026-03-24 보관)해 [Kubernetes 기초](../02_infrastructure/containers/kubernetes_basic.md)의 Ingress 예시에서 nginx 전용 annotation을 빼고 `ingressClassName`을 자리표시로 바꿨습니다. Ingress API 동결·Gateway 권장 안내와 `### Gateway API` 소절(v1.7.0 CRD, Gateway·HTTPRoute·HTTPS 전환 예시)을 추가했습니다. [k3s](../02_infrastructure/containers/k3s.md)의 Traefik 비활성화 주석과 [Helm](../02_infrastructure/containers/helm.md) values 예시의 `className`(`helm create` 기본값 `""`)도 맞췄습니다. YAML은 PyYAML 파싱과 Gateway API v1.7.0 CRD 스키마 대조만 했고 클러스터 적용은 하지 않았습니다.
