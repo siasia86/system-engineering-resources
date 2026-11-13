@@ -22,6 +22,8 @@
 
 대기 — AX-HUB-19 후속: [07_ai_transformation](../07_ai_transformation/README.md)의 내용 문서는 사용자가 주제를 정할 때 작성합니다. 기존 `06_career/ai_tools/` 문서는 옮기지 않으며 이동은 별도 결정입니다.
 
+대기 — MAIN-20261113-01 / AX-HUB-20 단계 1: [후보 기록](outputs/MAIN-20261113-01_AX참고문서후보/20261113_markdown/CANDIDATES.md)에서 사용자가 문서를 고르고 05가 다시 배정하면 reference 문서를 쓰고 07 README·`_reference/INDEX.md`에 연결합니다.
+
 ### 검사 예외 파일
 
 설정 파일의 파일별 예외입니다. 사유와 재검토일의 원본은 [검증 기준](verification.md)이며, 재검토 대기는 [ISSUE](ISSUE.md)의 ISS-02로 관리합니다.
@@ -40,6 +42,6 @@
 
 **작성일**: 2026-06-21
 
-**마지막 업데이트**: 2026-11-12
+**마지막 업데이트**: 2026-11-13
 
 © 2026 siasia86. Licensed under CC BY 4.0.
