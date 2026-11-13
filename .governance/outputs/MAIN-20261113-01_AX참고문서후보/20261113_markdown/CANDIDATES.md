@@ -3,7 +3,7 @@
 ```
 CANDIDATES
 ├── ✅ 검증 완료 후보 28건의 공식 주소·게시일 또는 버전 확인(2026-11-13)
-├── 🟠 검토 필요 단계 1에서 쓸 문서 선택(권장 묶음 4개 문서)
+├── ✅ 검증 완료 권장 묶음 4개 문서 작성(사용자 선택, 2026-11-13)
 ├── 🟡 확인 대기 일부 게시일·라이선스 미확인(5절)
 └── 🔵 참고      공개 본문 폴더 미작성, 단계 0 기록만
 ```
@@ -20,19 +20,19 @@ AX-HUB-20 단계 0으로 AX 환경 구축에 참고할 공식 문서 후보를 �
 
 ### 2.1. 저장소 지침 파일
 
-| 번호 | 제목·발행처                                                                                                 | 게시일·버전                                 | AX 환경에서 쓰는 곳                                   | 자리                    | 우선 | 32 기존 문서와 겹침                                    |
-|------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------|-------------------------------------------------------|-------------------------|------|--------------------------------------------------------|
-| 1    | [AGENTS.md](https://agents.md/) — Agentic AI Foundation(Linux Foundation)                                   | 버전 표기 없음, 저장소 최근 갱신 2026-09-10 | 도구 공통 지침 파일 관례, 하위 파일 우선, 사용자 우선 | 07                      | 상   | harness 6절 AGENTS.md 예시, markdown patterns 1절 일부 |
-| 2    | [Custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) — OpenAI | 버전 표기 없음                              | Codex 탐색 순서, `AGENTS.override.md`, 32 KiB 한도    | `_reference/` 기존 갱신 | 상   | Codex CLI 노트 7절, harness 참고 자료 링크             |
-| 3    | [Store instructions and memories](https://code.claude.com/docs/en/memory) — Anthropic                       | 버전 표기 없음                              | CLAUDE.md 계층, `@` import, rules, 자동 메모리        | `_reference/` 기존 갱신 | 상   | Claude Code 노트 7절, Claude 확장 가이드 1절           |
+| 번호 | 제목·발행처                                                                                                 | 게시일·버전                                 | AX 환경에서 쓰는 곳                                   | 자리                 | 우선 | 32 기존 문서와 겹침                                    |
+|------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------|-------------------------------------------------------|----------------------|------|--------------------------------------------------------|
+| 1    | [AGENTS.md](https://agents.md/) — Agentic AI Foundation(Linux Foundation)                                   | 버전 표기 없음, 저장소 최근 갱신 2026-09-10 | 도구 공통 지침 파일 관례, 하위 파일 우선, 사용자 우선 | `_reference/` 묶음 1 | 상   | harness 6절 AGENTS.md 예시, markdown patterns 1절 일부 |
+| 2    | [Custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) — OpenAI | 버전 표기 없음                              | Codex 탐색 순서, `AGENTS.override.md`, 32 KiB 한도    | `_reference/` 묶음 1 | 상   | Codex CLI 노트 7절, harness 참고 자료 링크             |
+| 3    | [Store instructions and memories](https://code.claude.com/docs/en/memory) — Anthropic                       | 버전 표기 없음                              | CLAUDE.md 계층, `@` import, rules, 자동 메모리        | `_reference/` 묶음 1 | 상   | Claude Code 노트 7절, Claude 확장 가이드 1절           |
 
 ### 2.2. Agent skill
 
-| 번호 | 제목·발행처                                                                                                                                                      | 게시일·버전                                 | AX 환경에서 쓰는 곳                                  | 자리                    | 우선 | 32 기존 문서와 겹침                                       |
-|------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|------------------------------------------------------|-------------------------|------|-----------------------------------------------------------|
-| 4    | [Agent Skills Specification](https://agentskills.io/specification) — agentskills                                                                                 | 버전 표기 없음, 저장소 최근 갱신 2026-11-04 | `SKILL.md` 필드 제한, 동봉 폴더, 단계적 로딩, 검증기 | `_reference/`           | 상   | GitHub 참고 목록 1.3 저장소 행, markdown patterns 2·3·6절 |
-| 5    | [Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) — Anthropic | 2025-10-16                                  | skill 설계 의도, 신뢰하지 않는 skill의 위험          | 07                      | 중   | markdown patterns 2절                                     |
-| 6    | [Skills](https://code.claude.com/docs/en/skills)(Anthropic), [Build skills](https://learn.chatgpt.com/docs/build-skills)(OpenAI)                                 | 버전 표기 없음                              | 도구별 skill 위치·호출 방식                          | `_reference/` 기존 갱신 | 하   | 두 노트 8절, Claude 확장 가이드 4절, Codex skill 가이드   |
+| 번호 | 제목·발행처                                                                                                                                                   | 게시일·버전                                 | AX 환경에서 쓰는 곳                                  | 자리                    | 우선 | 32 기존 문서와 겹침                                       |
+|------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|------------------------------------------------------|-------------------------|------|-----------------------------------------------------------|
+| 4    | [Agent Skills Specification](https://agentskills.io/specification) — agentskills                                                                              | 버전 표기 없음, 저장소 최근 갱신 2026-11-04 | `SKILL.md` 필드 제한, 동봉 폴더, 단계적 로딩, 검증기 | `_reference/`           | 상   | GitHub 참고 목록 1.3 저장소 행, markdown patterns 2·3·6절 |
+| 5    | [Equipping agents for the real world with Agent Skills](https://www.anthropic.com/research/equipping-agents-for-the-real-world-with-agent-skills) — Anthropic | 2025-10-16                                  | skill 설계 의도, 신뢰하지 않는 skill의 위험          | `_reference/` 묶음 2    | 중   | markdown patterns 2절                                     |
+| 6    | [Skills](https://code.claude.com/docs/en/skills)(Anthropic), [Build skills](https://learn.chatgpt.com/docs/build-skills)(OpenAI)                              | 버전 표기 없음                              | 도구별 skill 위치·호출 방식                          | `_reference/` 기존 갱신 | 하   | 두 노트 8절, Claude 확장 가이드 4절, Codex skill 가이드   |
 
 ### 2.3. Hook·권한·설정
 
@@ -48,7 +48,7 @@ AX-HUB-20 단계 0으로 AX 환경 구축에 참고할 공식 문서 후보를 �
 |------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|---------------------------------------------------|-------------------------|------|-----------------------------------------|
 | 10   | [Subagents](https://code.claude.com/docs/en/sub-agents), [Agent teams](https://code.claude.com/docs/en/agent-teams), [Cross-session messaging](https://code.claude.com/docs/en/cross-session-messaging) — Anthropic | 버전 표기 없음 | 문맥 분리, 병렬 작업, 세션 간 메시지와 권한 경계  | `_reference/` 기존 갱신 | 중   | Claude 확장 가이드 6절, 노트 8절 링크만 |
 | 11   | [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents) — OpenAI                                                                                                                                  | 버전 표기 없음 | Codex 에이전트 정의 파일, 동시 실행 수, 승인 상속 | `_reference/` 기존 갱신 | 중   | 없음                                    |
-| 12   | [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) — Anthropic                                                                                       | 2025-06-13     | 지휘·하위 에이전트 구성의 효과와 토큰 비용        | 07                      | 중   | loop 2.5절 Maker·Checker 일부           |
+| 12   | [How we built our multi-agent research system](https://www.anthropic.com/research/multi-agent-research-system) — Anthropic                                                                                          | 2025-06-13     | 지휘·하위 에이전트 구성의 효과와 토큰 비용        | 07                      | 중   | loop 2.5절 Maker·Checker 일부           |
 
 ### 2.5. 모델·추론 단계 선택
 
@@ -59,19 +59,19 @@ AX-HUB-20 단계 0으로 AX 환경 구축에 참고할 공식 문서 후보를 �
 
 ### 2.6. 문맥 관리
 
-| 번호 | 제목·발행처                                                                                                                                  | 게시일·버전    | AX 환경에서 쓰는 곳                                | 자리                    | 우선 | 32 기존 문서와 겹침                           |
-|------|----------------------------------------------------------------------------------------------------------------------------------------------|----------------|----------------------------------------------------|-------------------------|------|-----------------------------------------------|
-| 15   | [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) — Anthropic | 2025-09-29     | 문맥 부패, 요약, 구조화된 메모, 하위 에이전트 분리 | 07                      | 상   | loop 3절 메모리 일부, GitHub 참고 목록 1.1 행 |
-| 16   | [Explore the context window](https://code.claude.com/docs/en/context-window) — Anthropic                                                     | 버전 표기 없음 | 요약 뒤 다시 읽히는 것과 사라지는 것               | `_reference/` 기존 갱신 | 상   | 없음                                          |
+| 번호 | 제목·발행처                                                                                                                               | 게시일·버전    | AX 환경에서 쓰는 곳                                | 자리                    | 우선 | 32 기존 문서와 겹침                           |
+|------|-------------------------------------------------------------------------------------------------------------------------------------------|----------------|----------------------------------------------------|-------------------------|------|-----------------------------------------------|
+| 15   | [Effective context engineering for AI agents](https://www.anthropic.com/research/effective-context-engineering-for-ai-agents) — Anthropic | 2025-09-29     | 문맥 부패, 요약, 구조화된 메모, 하위 에이전트 분리 | 07                      | 상   | loop 3절 메모리 일부, GitHub 참고 목록 1.1 행 |
+| 16   | [Explore the context window](https://code.claude.com/docs/en/context-window) — Anthropic                                                  | 버전 표기 없음 | 요약 뒤 다시 읽히는 것과 사라지는 것               | `_reference/` 기존 갱신 | 상   | 없음                                          |
 
 ### 2.7. 에이전트 설계 일반
 
-| 번호 | 제목·발행처                                                                                                                                            | 게시일·버전    | AX 환경에서 쓰는 곳                                 | 자리 | 우선 | 32 기존 문서와 겹침                   |
-|------|--------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|-----------------------------------------------------|------|------|---------------------------------------|
-| 17   | [Building effective agents](https://www.anthropic.com/engineering/building-effective-agents) — Anthropic                                               | 2024-12-19     | 단순성 우선, workflow와 agent 구분, 도구 설계       | 07   | 상   | harness 4절 Anthropic 접근법(다른 글) |
-| 18   | [Writing effective tools for AI agents](https://www.anthropic.com/engineering/writing-tools-for-agents) — Anthropic                                    | 2025-09-11     | 도구 수 줄이기, 평가로 도구 개선                    | 07   | 하   | 없음                                  |
-| 19   | [A practical guide to building agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf) — OpenAI         | 게시일 미확인  | 모델·도구·지침 구성, 지휘 형태, 안전장치, 사람 확인 | 07   | 중   | 없음                                  |
-| 20   | [Best practices](https://code.claude.com/docs/en/best-practices)(Anthropic), [Best practices](https://learn.chatgpt.com/guides/best-practices)(OpenAI) | 버전 표기 없음 | 두 도구의 권장 작업 방식 비교                       | 07   | 중   | Claude Code 노트 링크만               |
+| 번호 | 제목·발행처                                                                                                                                            | 게시일·버전    | AX 환경에서 쓰는 곳                                 | 자리                    | 우선 | 32 기존 문서와 겹침                   |
+|------|--------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|-----------------------------------------------------|-------------------------|------|---------------------------------------|
+| 17   | [Building effective agents](https://www.anthropic.com/research/building-effective-agents) — Anthropic                                                  | 2024-12-19     | 단순성 우선, workflow와 agent 구분, 도구 설계       | 07                      | 상   | harness 4절 Anthropic 접근법(다른 글) |
+| 18   | [Writing effective tools for AI agents](https://www.anthropic.com/research/writing-tools-for-agents) — Anthropic                                       | 2025-09-11     | 도구 수 줄이기, 평가로 도구 개선                    | 07                      | 하   | 없음                                  |
+| 19   | [A practical guide to building agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf) — OpenAI         | 게시일 미확인  | 모델·도구·지침 구성, 지휘 형태, 안전장치, 사람 확인 | 07                      | 중   | 없음                                  |
+| 20   | [Best practices](https://code.claude.com/docs/en/best-practices)(Anthropic), [Best practices](https://learn.chatgpt.com/guides/best-practices)(OpenAI) | 버전 표기 없음 | 두 도구의 권장 작업 방식 비교                       | `_reference/` 기존 갱신 | 중   | Claude Code 노트 링크만               |
 
 ### 2.8. Codex CLI 지침·설정
 
@@ -88,16 +88,16 @@ AX-HUB-20 단계 0으로 AX 환경 구축에 참고할 공식 문서 후보를 �
 
 ### 2.10. Git 운영과 검사
 
-| 번호 | 제목·발행처                                                                                                                   | 게시일·버전                            | AX 환경에서 쓰는 곳            | 자리          | 우선 | 32 기존 문서와 겹침         |
-|------|-------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|--------------------------------|---------------|------|-----------------------------|
-| 24   | [About secret scanning](https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning) — GitHub | 버전 표기 없음                         | 원격 저장소의 비밀 정보 검출   | `_reference/` | 하   | Gitleaks 노트               |
-| 25   | [markdownlint](https://github.com/DavidAnson/markdownlint)(MIT), [pre-commit](https://github.com/pre-commit/pre-commit)(MIT)  | markdownlint 미확인, pre-commit v4.7.0 | commit 전 Markdown 검사 자동화 | `_reference/` | 하   | 없음(32는 자체 검사기 사용) |
+| 번호 | 제목·발행처                                                                                                                  | 게시일·버전                            | AX 환경에서 쓰는 곳            | 자리          | 우선 | 32 기존 문서와 겹침         |
+|------|------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|--------------------------------|---------------|------|-----------------------------|
+| 24   | [About secret scanning](https://docs.github.com/en/code-security/concepts/secret-security/secret-scanning) — GitHub          | 버전 표기 없음                         | 원격 저장소의 비밀 정보 검출   | `_reference/` | 하   | Gitleaks 노트               |
+| 25   | [markdownlint](https://github.com/DavidAnson/markdownlint)(MIT), [pre-commit](https://github.com/pre-commit/pre-commit)(MIT) | markdownlint 미확인, pre-commit v4.7.0 | commit 전 Markdown 검사 자동화 | `_reference/` | 하   | 없음(32는 자체 검사기 사용) |
 
 ### 2.11. 32 관점에서 더한 주제
 
 | 번호 | 제목·발행처                                                                                                                                                                            | 게시일·버전    | AX 환경에서 쓰는 곳                                   | 자리                    | 우선 | 32 기존 문서와 겹침                        |
 |------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|-------------------------------------------------------|-------------------------|------|--------------------------------------------|
-| 26   | [Model Context Protocol Specification](https://modelcontextprotocol.io/specification/latest) — MCP 프로젝트                                                                            | 2026-07-28     | 외부 도구 연결 규격, 사용자 동의·도구 안전 원칙       | `_reference/`           | 중   | Claude Code 노트 MCP 링크, 확장 가이드 7절 |
+| 26   | [Model Context Protocol Specification](https://modelcontextprotocol.io/specification/2026-07-28) — MCP 프로젝트                                                                        | 2026-07-28     | 외부 도구 연결 규격, 사용자 동의·도구 안전 원칙       | `_reference/`           | 중   | Claude Code 노트 MCP 링크, 확장 가이드 7절 |
 | 27   | [OWASP Top 10 for Agentic Applications for 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) — OWASP GenAI Security Project                      | 2025-12-09     | 목표 탈취·도구 오용·메모리 오염 등 에이전트 위협 점검 | 07                      | 상   | markdown patterns 7절 보안 규칙 일부       |
 | 28   | [Security](https://code.claude.com/docs/en/security), [Sandboxing](https://code.claude.com/docs/en/sandboxing)(Anthropic), [Security](https://learn.chatgpt.com/docs/security)(OpenAI) | 버전 표기 없음 | 두 도구의 격리·권한 보호 수단 비교                    | `_reference/` 기존 갱신 | 중   | Codex CLI 노트 5절 일부                    |
 
@@ -114,7 +114,9 @@ AX-HUB-20 단계 0으로 AX 환경 구축에 참고할 공식 문서 후보를 �
 | 3    | `07_ai_transformation/agent_design_principles.md`      | 15·17     | 도구와 무관한 설계·문맥 관리 원칙                |
 | 4    | `07_ai_transformation/agent_security_risks.md`         | 27        | 에이전트 위협 10개를 AX 환경 점검표로 바꿈       |
 
-"기존 갱신" 후보(2·3·6~11·13·14·16·21·23·28)는 새 문서보다 해당 공식 노트의 절을 넓히는 편이 중복이 적습니다. 별도 묶음으로 고르면 됩니다.
+"기존 갱신" 후보(6~11·13·14·16·20·21·23·28)는 새 문서보다 해당 공식 노트의 절을 넓히는 편이 중복이 적습니다. 별도 묶음으로 고르면 됩니다.
+
+2026-11-13 사용자가 묶음 1~4를 골라 작성했습니다. 작성 전 검토 지적에 따라 후보 1·2·3을 묶음 1, 5를 묶음 2의 `_reference/` 자리로 맞췄습니다. 새 노트에는 도구 간 비교와 규격만 두고 도구별 세부는 기존 Claude·Codex 노트를 가리킵니다. 20번은 07이 아닌 기존 갱신 후보로 옮겼고, 넘어가는 주소(Anthropic 글, GitHub Docs)는 최종 주소로, MCP 규격은 날짜 판 주소로 바꿨습니다.
 
 ## 4. 문서 하나의 양식 예시
 

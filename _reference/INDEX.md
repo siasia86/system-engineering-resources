@@ -5,7 +5,7 @@ tags:
   - index
   - reference
   - directory
-last_checked: 2026-11-10
+last_checked: 2026-11-13
 sources:
   - self (이 파일이 인덱스 역할)
 ---
@@ -41,6 +41,8 @@ sources:
 | Charset/Encoding               | `_reference/charset_encoding_official_notes.md`         | RFC 3629, Unicode 18.0                                  | 2026-11-09 | O    |
 | Claude Code                    | `_reference/claude_code_official_notes.md`              | v2.1.319·모델 5.5/Fable 5.1·권한·설정·확장·headless·앱  | 2026-11-09 | O    |
 | Codex CLI                      | `_reference/codex_cli_official_notes.md`                | Skills 설정·plugin; v0.167.0 (로컬 도움말 v0.164.0)     | 2026-11-09 | O    |
+| 에이전트 지침 파일             | `_reference/agent_instruction_files_official_notes.md`  | AGENTS.md·Codex·Claude Code 비교, 버전 표기 없음        | 2026-11-13 | O    |
+| Agent Skills 규격              | `_reference/agent_skills_spec_official_notes.md`        | SKILL.md 필드·폴더·단계적 로딩, 버전 표기 없음          | 2026-11-13 | O    |
 | Jev                            | `_reference/jev_official_notes.md`                      | jev-1.13.0(최신 1.14.0)·Choice·Score·HTTP·Python SDK    | 2026-11-09 | O    |
 | CVE/Security                   | `_reference/cve_security_official_notes.md`             | NVD API 2.0, CISA KEV                                   | 2026-11-09 | O    |
 | Docker                         | `_reference/docker_official_notes.md`                   | Engine 29.9.3, Compose v5.7.0                           | 2026-11-09 | O    |
@@ -142,6 +144,6 @@ sources:
 
 **작성일**: 2026-05-22
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-13
 
 © 2026 siasia86. Licensed under CC BY 4.0.

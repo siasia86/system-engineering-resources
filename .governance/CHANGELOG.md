@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- MAIN-20261113-01 / AX-HUB-20 단계 1 (2026-11-13): 사용자가 고른 권장 묶음 문서 4개를 썼습니다. `_reference/`에 [지침 파일 비교 노트](../_reference/agent_instruction_files_official_notes.md)와 [Agent Skills 규격 노트](../_reference/agent_skills_spec_official_notes.md), `07_ai_transformation/`에 [에이전트 설계 원칙](../07_ai_transformation/agent_design_principles.md)과 [에이전트 보안 위협 점검](../07_ai_transformation/agent_security_risks.md)입니다. 07 README 문서 목록, 루트 README 7절, `_reference/INDEX.md`에 연결했습니다. 새 노트에는 도구 간 비교와 규격만 두고 도구별 세부는 기존 노트를 가리킵니다. OWASP 항목은 이름과 자체 한 줄 설명만 두었고 원문 PDF는 접근 제한으로 열람하지 못해 OWASP 조직 저장소 두 곳에서 이름을 대조했습니다. 후보 기록의 자리 열과 넘어가는 주소를 정정했습니다.
+
 - MAIN-20261113-01 / AX-HUB-20 단계 0 (2026-11-13): AX 환경 구축 참고 문서 후보 28건과 먼저 쓸 묶음(문서 4개), 문서 양식 예시를 [후보 기록](outputs/MAIN-20261113-01_AX참고문서후보/20261113_markdown/CANDIDATES.md)에 정리했습니다. 공식 주소와 게시일·버전은 2026-11-13에 직접 확인했고 미확인 항목은 기록 5절에 남겼습니다. `07_ai_transformation/`·`_reference/`·`06_career/` 본문은 쓰지 않았습니다.
 
 - AX-HUB-19 (2026-11-12): 새 최상위 [07_ai_transformation](../07_ai_transformation/README.md)의 첫 골격을 만들었습니다. README에 목적(AX 환경 구축 참고 자료)과 나누는 기준(특정 도구 사용법은 `06_career/ai_tools/`, 도구와 무관한 AX 환경 구축 방법은 07, 공식 원문 정리는 `_reference/`), 관련 06 문서 5개 연결을 두고 문서 목록은 아직 없음으로 표시했습니다. 루트 README 목차와 `7. AI Transformation` 절, `06_career/README.md` 관련 섹션에 07 연결을 더했습니다. 내용 문서 작성과 기존 06 문서 이동은 하지 않았습니다.
