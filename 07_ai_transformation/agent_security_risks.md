@@ -30,7 +30,7 @@ AX 환경에서 에이전트가 만드는 보안 위협을 점검하는 방법 �
 - ASI01 Agent Goal Hijack — 에이전트가 읽은 내용이 원래 목표를 바꿔 놓는 위협
 - ASI02 Tool Misuse — 허용된 도구를 의도와 다르게 써서 피해를 내는 위협
 - ASI03 Identity & Privilege Abuse — 에이전트의 자격 증명·권한이 맡은 범위를 넘어 쓰이는 위협
-- ASI04 Agentic Supply Chain — 외부에서 가져온 도구·skill·연결 서버가 오염되는 위협
+- ASI04 Agentic Supply Chain Vulnerabilities — 외부에서 가져온 도구·skill·연결 서버가 오염되는 위협
 - ASI05 Unexpected Code Execution — 자연어 지시가 의도하지 않은 코드 실행으로 이어지는 위협
 - ASI06 Memory & Context Poisoning — 메모리나 문맥에 들어간 잘못된 내용이 이후 행동을 계속 비트는 위협
 - ASI07 Insecure Inter-Agent Communication — 에이전트 사이의 메시지가 위조되거나 가로채이는 위협
@@ -75,7 +75,8 @@ AX 환경에서 에이전트가 만드는 보안 위협을 점검하는 방법 �
 ## 5. 미확인
 
 - 원문 PDF는 공식 다운로드 링크가 접근 제한 페이지를 돌려줘 열람하지 못했습니다(2026-11-13).
-- 항목 이름은 OWASP 조직 저장소 두 곳에서 대조했습니다. `secure-agent-playbook`에서 열 개를 모두 확인했고, `AISVS`는 ASI02를 "Tool Misuse & Exploitation"으로 적어 표기가 다릅니다. 원문 표기는 미확인입니다.
+- 항목 이름은 OWASP 조직 저장소 두 곳에서 대조했습니다. `secure-agent-playbook`의 위험 평가 절차 문서(`plays/agentic-ai-risk-assess.md`)에서 열 개를 모두 확인했고, ASI04는 그 문서 제목의 표기를 따랐습니다. 같은 저장소의 skill 파일은 ASI04를 "Agentic Supply Chain"으로 줄여 적습니다.
+- 최종 원문 표기를 확인하지 못한 항목은 두 개입니다. ASI02는 `AISVS`가 "Tool Misuse & Exploitation"으로 적어 표기가 다릅니다. ASI05는 공개 초안에서 "Unexpected Code Execution (RCE)"로 적었다는 보고가 있으나 직접 확인하지 못했습니다.
 - 원문 자체의 라이선스 예외 여부는 확인하지 못했습니다.
 
 [⬆ 목차로 돌아가기](#목차)

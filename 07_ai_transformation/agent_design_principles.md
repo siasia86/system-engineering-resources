@@ -47,6 +47,8 @@ AX 환경을 만들 때 작업 형태·지침·문맥·도구를 어떻게 정�
 | 지시가 서로 충돌함               | 우선순위를 한 곳에 적고 오래된 지시를 삭제           |
 | 반드시 지켜야 하는 금지 사항     | 지침 문장 대신 도구 호출 전 hook으로 강제            |
 
+표의 "같은 실수가 두 번 나오면 규칙 추가"와 "금지 사항은 hook으로 강제"는 두 글이 아니라 Claude Code 문서(Extend Claude Code, memory)에 나오는 권고입니다.
+
 도구별 지침 파일 차이는 [지침 파일 노트](../_reference/agent_instruction_files_official_notes.md), skill 형식은 [Agent Skills 규격 노트](../_reference/agent_skills_spec_official_notes.md)에서 확인합니다.
 
 ### 2.3. 문맥 예산 관리
@@ -91,6 +93,7 @@ AX 환경을 만들 때 작업 형태·지침·문맥·도구를 어떻게 정�
 
 - Anthropic: [Building effective agents](https://www.anthropic.com/research/building-effective-agents) — ★★★☆☆ (확인일 2026-11-13)
 - Anthropic: [Effective context engineering for AI agents](https://www.anthropic.com/research/effective-context-engineering-for-ai-agents) — ★★★☆☆ (확인일 2026-11-13)
+- Anthropic: [Extend Claude Code](https://code.claude.com/docs/en/features-overview), [How Claude remembers your project](https://code.claude.com/docs/en/memory) — 2.2절 표의 도구 문서 예 — ★★★☆☆ (확인일 2026-11-13)
 - [Harness Engineering](../06_career/ai_tools/harness_engineering.md), [Loop Engineering](../06_career/ai_tools/loop_engineering.md)
 
 [⬆ 07 README로 돌아가기](README.md)

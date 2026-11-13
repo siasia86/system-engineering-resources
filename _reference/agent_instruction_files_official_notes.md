@@ -51,6 +51,8 @@ AGENTS.md는 코딩 에이전트에게 저장소 맥락을 전하는 Markdown �
 
 공통 규칙을 `AGENTS.md` 한 곳에 두고 `CLAUDE.md`에서 가져오면 두 도구가 같은 원본을 읽습니다. Claude Code 전용 내용만 `CLAUDE.md`에 더합니다.
 
+Claude Code가 `AGENTS.md`를 직접 읽지 않는 경우가 있으므로 가져오기 구성이 안전합니다. 작업 폴더나 그 위에 `CLAUDE.local.md`나 `.claude/CLAUDE.md`만 있어도 직접 읽기가 멈춥니다. v2.1.277 이전 버전이거나, `AGENTS.md`를 읽는 내장 plugin을 끈 경우도 마찬가지입니다. `AGENTS.override.md`, `AGENTS.local.md`, `.agents/` 아래 파일은 어느 경우에도 읽지 않습니다.
+
 ## 4. 도구별 세부
 
 - Codex 지침 파일·설정: [Codex CLI 노트 7절](codex_cli_official_notes.md#7-설정-및-지침-파일)
