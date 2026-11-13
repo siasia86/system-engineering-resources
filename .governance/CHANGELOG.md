@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- AX-HUB-21 옛 결과물 삭제 (2026-11-13): 사용자 결정으로 `.governance/outputs/MAIN-20261004-01_스킬목록병합/`(2개 파일)을 사본 없이 지웠습니다. 이 폴더를 가리키던 링크 1개는 삭제 직전 원격 commit 기준 고정 주소로 바꿨고, 경로·삭제 직전 SHA·복원 명령은 [삭제 기록](REMOVED.md)에 남겼습니다. `outputs/MAIN-20261113-01_AX참고문서후보/`는 TODO 대기 항목이 쓰므로 남겼습니다.
+
 - MAIN-20261113-01 / AX-HUB-20 사후 대조 정정 (2026-11-13): 보안 위협 문서의 ASI04 이름을 대조 문서 제목 표기로 고치고, 최종 원문 표기 미확인 항목에 ASI05를 더했습니다. 지침 파일 노트에 Claude Code가 `AGENTS.md`를 직접 읽지 않는 경우와 가져오기 구성을 권하는 이유를, 설계 원칙 문서에 2.2절 표 일부가 Claude Code 문서의 권고라는 출처를 적었습니다. TODO의 "기존 갱신" 후보 수를 13건으로 바로잡았습니다.
 
 - MAIN-20261113-01 / AX-HUB-20 단계 1 (2026-11-13): 사용자가 고른 권장 묶음 문서 4개를 썼습니다. `_reference/`에 [지침 파일 비교 노트](../_reference/agent_instruction_files_official_notes.md)와 [Agent Skills 규격 노트](../_reference/agent_skills_spec_official_notes.md), `07_ai_transformation/`에 [에이전트 설계 원칙](../07_ai_transformation/agent_design_principles.md)과 [에이전트 보안 위협 점검](../07_ai_transformation/agent_security_risks.md)입니다. 07 README 문서 목록, 루트 README 7절, `_reference/INDEX.md`에 연결했습니다. 새 노트에는 도구 간 비교와 규격만 두고 도구별 세부는 기존 노트를 가리킵니다. OWASP 항목은 이름과 자체 한 줄 설명만 두었고 원문 PDF는 접근 제한으로 열람하지 못해 OWASP 조직 저장소 두 곳에서 이름을 대조했습니다. 후보 기록의 자리 열과 넘어가는 주소를 정정했습니다.
@@ -86,7 +88,7 @@
 
 ### main 병합 검토 — 2026-10-04
 
-- MAIN-20261004-01에서 CAT-20261004-01 스킬 목록의 faa6574를 main에 fast-forward·일반 push하고 원격 SHA를 확인했습니다. 후보 문서 5개·링크 259개·교차 앵커 8개·inventory·Gitleaks를 재검사했고 확인된 모순·의도 불일치는 없었습니다. [병합 결과와 미실행](outputs/MAIN-20261004-01_스킬목록병합/20261004_markdown/REVIEW.md).
+- MAIN-20261004-01에서 CAT-20261004-01 스킬 목록의 faa6574를 main에 fast-forward·일반 push하고 원격 SHA를 확인했습니다. 후보 문서 5개·링크 259개·교차 앵커 8개·inventory·Gitleaks를 재검사했고 확인된 모순·의도 불일치는 없었습니다. [병합 결과와 미실행](https://github.com/siasia86/system-engineering-resources/blob/167744a19d578d71e921b4a918b2b12c1fc800e8/.governance/outputs/MAIN-20261004-01_%EC%8A%A4%ED%82%AC%EB%AA%A9%EB%A1%9D%EB%B3%91%ED%95%A9/20261004_markdown/REVIEW.md).
 
 
 - 기존 날짜 CI의 UTC 기준으로 한국 날짜의 작성일보다 갱신일이 하루 앞서지는 문제를 확인해 날짜 계산만 KST(UTC+9, POSIX TZ=KST-9)로 지정했습니다. 날짜 갱신은 기존처럼 yunli에서만 수행하며 Windows Git Bash에서도 자정 경계 두 사례를 확인했습니다.
