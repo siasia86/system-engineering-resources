@@ -24,6 +24,7 @@
     ├── HANDOFF.md               인계
     ├── CHANGELOG.md             완료 기록
     ├── REMOVED.md               삭제 기록
+    ├── MOVED.md                 옮김 기록
     ├── tracks/                  새 수동 기록(필요한 역할 폴더만)
     │   └── MAIN-20261113-01_ax-reference-docs/
     └── local/                   Git 제외
