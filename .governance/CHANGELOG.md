@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- 중앙 profile 기준 틀 병합 (2026-11-14): 31 `633dd64`의 32 profile 변경분을 수동 병합했습니다. [INDEX](INDEX.md) 1절에 현장 실제 경로에 맞춘 관리 공간 tree와 배치 안내 연결을 더하고 4절 결과물 문장을 배치 기준으로 바꿨습니다. PLAN 문장 교체는 현장 PLAN에 바꿀 문장이 없어 병합하지 않았고 이유를 [적용 기록](APPLICATION.md) 5절에 남겼습니다.
+
 - MAIN-20261113-01 후보 기록 이동 (2026-11-14): AX 참고 문서 후보 기록을 새 결과물 규칙(GOVERNANCE 3절)에 맞춰 `.governance/outputs/`에서 [트랙](tracks/MAIN-20261113-01_ax-reference-docs/README.md)의 `40_results/`로 내용 변경 없이 옮기고, TODO·CHANGELOG의 링크 2개를 새 자리로 고쳤습니다.
 
 - AX-HUB-21 옛 결과물 삭제 (2026-11-13): 사용자 결정으로 `.governance/outputs/MAIN-20261004-01_스킬목록병합/`(2개 파일)을 사본 없이 지웠습니다. 이 폴더를 가리키던 링크 1개는 삭제 직전 원격 commit 기준 고정 주소로 바꿨고, 경로·삭제 직전 SHA·복원 명령은 [삭제 기록](REMOVED.md)에 남겼습니다. `outputs/MAIN-20261113-01_AX참고문서후보/`는 TODO 대기 항목이 쓰므로 남겼습니다.
