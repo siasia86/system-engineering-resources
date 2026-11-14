@@ -1,6 +1,6 @@
 # 32_system-engineering-resources 작업 지침
 
-관리 문서의 공통 기준 위치는 `.governance/`이며 INDEX·GOVERNANCE·PLAN·TODO·ISSUE·verification·CHANGELOG·HANDOFF의 이름과 역할을 통일합니다. 기존 기록은 보존하고 승인된 현장 전환에서 현행 상태를 한 번 병합하며 이전 위치는 연결 안내로 유지합니다. 이 profile 개정만으로 다른 현장 적용이 완료된 것은 아닙니다.
+관리 문서의 공통 기준 위치는 `.governance/`이며 INDEX·GOVERNANCE·PLAN·TODO·ISSUE·verification·CHANGELOG·HANDOFF의 이름과 역할을 통일합니다. 기존 기록은 보존하고 승인된 현장 전환에서 현행 상태를 한 번 병합합니다. 첫 이동 때 소유 현장에 `.governance/MOVED.md`를 만들고 각 이동을 기록합니다. 옛 자리 안내는 외부 참조가 있을 때 둡니다. 기존 안내의 소급 전환은 요구하지 않으며 진입 지침·도구 고정 경로·현재 소비 계약은 보존합니다. 이 profile 개정만으로 다른 현장 적용이 완료된 것은 아닙니다.
 
 기존 root AGENTS에 필요한 연결을 병합할 원본입니다. 기존 지침·하위 override·사용자 변경을 보존하며 현재 사용자 요청과 실제 Git 루트·branch·변경부터 확인합니다.
 

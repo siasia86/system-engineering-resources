@@ -6,7 +6,7 @@
 
 ## [Unreleased]
 
-- AX-HUB-17 옛 자리 안내의 옮김 기록 전환 (2026-11-14): 33 기준 v1.5(`307863d`) 5절·6절에 따라 [옮김 기록](MOVED.md)을 새로 만들고, 2026-10-27에 `.governance/`로 옮긴 루트 `PLAN.md`·`TODO.md`·`CHANGELOG.md` 3행에 외부 참조 확인과 정리 조건을 적었습니다. [INDEX](INDEX.md) 1절 tree에 한 줄을 더했습니다. 루트 연결 안내 3개는 지우지 않았습니다.
+- AX-HUB-17 옛 자리 안내의 옮김 기록 전환 (2026-11-14): 33 기준 v1.5(`307863d`) 5절·6절에 따라 [옮김 기록](MOVED.md)을 새로 만들고, 2026-10-27에 `.governance/`로 옮긴 루트 `PLAN.md`·`TODO.md`·`CHANGELOG.md` 3행에 외부 참조 확인과 정리 조건을 적었습니다. [INDEX](INDEX.md) 1절 tree에 한 줄을 더했습니다. 중앙 profile 31 `bc68358`에 맞춰 AGENTS·[GOVERNANCE](GOVERNANCE.md)·INDEX·[관리 진입](README.md)의 3행 공통 기준 문장을 옮김 기록 기준으로 바꿨습니다. HANDOFF와 루트 README에는 대응 문장이 없어 그대로 두었습니다. 루트 연결 안내 3개는 지우지 않았습니다.
 
 - 운영 규칙 반복 문장 정정 (2026-11-14): 중앙 profile 31 `ffd7052`에 맞춰 [GOVERNANCE](GOVERNANCE.md) 3절에서 같은 뜻으로 두 번 적힌 비공개 원문 보존 문장 가운데 뒤 문장을 지웠습니다. 다른 문장은 바꾸지 않았습니다.
 
