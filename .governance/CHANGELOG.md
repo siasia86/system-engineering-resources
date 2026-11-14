@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- 운영 규칙 반복 문장 정정 (2026-11-14): 중앙 profile 31 `ffd7052`에 맞춰 [GOVERNANCE](GOVERNANCE.md) 3절에서 같은 뜻으로 두 번 적힌 비공개 원문 보존 문장 가운데 뒤 문장을 지웠습니다. 다른 문장은 바꾸지 않았습니다.
+
 - 중앙 profile 기준 틀 병합 (2026-11-14): 31 `633dd64`의 32 profile 변경분을 수동 병합했습니다. [INDEX](INDEX.md) 1절에 현장 실제 경로에 맞춘 관리 공간 tree와 배치 안내 연결을 더하고 4절 결과물 문장을 배치 기준으로 바꿨습니다. PLAN 문장 교체는 현장 PLAN에 바꿀 문장이 없어 병합하지 않았고 이유를 [적용 기록](APPLICATION.md) 5절에 남겼습니다.
 
 - MAIN-20261113-01 후보 기록 이동 (2026-11-14): AX 참고 문서 후보 기록을 새 결과물 규칙(GOVERNANCE 3절)에 맞춰 `.governance/outputs/`에서 [트랙](tracks/MAIN-20261113-01_ax-reference-docs/README.md)의 `40_results/`로 내용 변경 없이 옮기고, TODO·CHANGELOG의 링크 2개를 새 자리로 고쳤습니다.
