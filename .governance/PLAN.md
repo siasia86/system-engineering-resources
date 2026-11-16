@@ -97,14 +97,16 @@
 
 완료된 30 consumer 전환·검증 이력은 `CHANGELOG.md`의 `[4.0.0]`에 기록합니다.
 
-현재 승인된 consumer baseline은 다음과 같습니다.
+현재 승인된 consumer baseline은 다음과 같습니다. 2026-11-16에 [검사 workflow](../.github/workflows/update-date.yml)의 고정 값과 대조했습니다.
 
 ```text
 repository: siasia86/30_sia-scripts
-release:    v0.3.3
-artifact:   sia_scripts_0.3.3.tar.gz
-sha256:     0b293d76e8efb55e93ad6bb21c0b00bf4362e60aa7a3a4ea5e6d752a012bb4ad
+release:    v0.5.0
+artifact:   sia_scripts_0.5.0.tar.gz
+sha256:     8acdbd500dba31e9407471d4d8968fd4be85232cf5d311240ba11226e5e14a33
 ```
+
+30에는 v0.5.1(2026-10-29)이 게시돼 있으나 32는 채택하지 않았습니다. 다음 고정 판 갱신은 30의 다음 판(v0.5.2 후보, `--list-skips` 설정 예외 출력 수정 포함)이 나온 뒤 31·32·35 고정 판을 함께 바꾸는 일괄 결정을 따릅니다. 바꿀 때는 workflow의 판·checksum, [검증 기준](verification.md)의 판, 이 절을 같은 변경에서 고칩니다.
 
 ## 5. 문서 운영 계획
 
@@ -188,6 +190,6 @@ local 환경에 wrapper가 없으면 승인된 30 artifact를 먼저 설치합�
 
 **작성일**: 2026-08-27
 
-**마지막 업데이트**: 2026-09-01
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.
