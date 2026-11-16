@@ -75,7 +75,7 @@ Physical Storage (LUN / SSD / HDD)
 "All of the storage usage is measured in Normalized IOPS. This is a count of the storage input/output operations per second. Any IO that is 8KB or smaller is considered as one normalized IO. Any IO that is larger than 8KB is treated as multiple normalized IOs. For example, a 256KB request is treated as 32 normalized IOPS."
 
 - 기본 단위: 8KB (Windows Server 2016에서 변경 가능)
-- 변경 명령: `Set-StorageQosPolicy` 에서 normalization size 지정 가능
+- 변경 명령: `Set-StorageQosPolicyStore -IOPSNormalizationSize 32KB` (스토리지 클러스터 전체에 적용, 확인은 `Get-StorageQosPolicyStore`)
 
 ### 정책 유형 (공식 문서)
 

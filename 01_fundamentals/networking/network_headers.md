@@ -346,7 +346,7 @@ iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
 ```
  0  1 2 3 4  5  6  7  8  9  0  1  2 3 4 5
 ┌──┬────────┬──┬──┬──┬──┬──┬──┬──┬────────┐
-│QR│ Opcode │AA│TC│RD│RA│AD│CD│Z │ RCODE  │
+│QR│ Opcode │AA│TC│RD│RA│Z │AD│CD│ RCODE  │
 └──┴────────┴──┴──┴──┴──┴──┴──┴──┴────────┘
 ```
 
@@ -358,9 +358,9 @@ iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
 | **TC**     | 1 bit  | Truncated                                |
 | **RD**     | 1 bit  | Recursion Desired                        |
 | **RA**     | 1 bit  | Recursion Available                      |
+| **Z**      | 1 bit  | Reserved (must be 0)                     |
 | **AD**     | 1 bit  | Authenticated Data (DNSSEC, RFC 4035)    |
 | **CD**     | 1 bit  | Checking Disabled (DNSSEC, RFC 4035)     |
-| **Z**      | 1 bit  | Reserved (must be 0)                     |
 | **RCODE**  | 4 bits | Response Code (0=No Error, 3=Name Error) |
 
 ### DNS 레코드 타입
@@ -863,6 +863,6 @@ quic
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

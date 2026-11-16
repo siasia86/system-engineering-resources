@@ -250,11 +250,15 @@ SELECT
 ### OS 튜닝 (Linux)
 
 ```bash
-# /etc/sysctl.conf
-vm.swappiness = 1               # swap 최소화 (DB는 swap 사용 금지)
-vm.dirty_ratio = 15             # dirty page 비율 제한
-vm.dirty_background_ratio = 5   # background flush 시작점
-net.core.somaxconn = 4096       # 연결 대기 큐
+# /etc/sysctl.conf (줄 끝 주석은 값으로 읽히므로 주석은 별도 줄에 둡니다)
+# swap 최소화 (DB는 swap 사용 금지)
+vm.swappiness = 1
+# dirty page 비율 제한
+vm.dirty_ratio = 15
+# background flush 시작점
+vm.dirty_background_ratio = 5
+# 연결 대기 큐
+net.core.somaxconn = 4096
 
 # I/O 스케줄러 (SSD)
 echo none > /sys/block/sda/queue/scheduler
@@ -329,6 +333,7 @@ ORDER BY SUM_TIMER_WAIT DESC LIMIT 10;
 - MySQL Documentation: [EXPLAIN Statement](https://dev.mysql.com/doc/refman/8.4/en/explain.html) — ★★★☆☆
 - MySQL Documentation: [Semijoin and Antijoin Transformations](https://dev.mysql.com/doc/refman/8.4/en/semijoins-antijoins.html) — ★★★☆☆
 - MySQL Documentation: [SHOW PROFILES Statement](https://dev.mysql.com/doc/refman/8.4/en/show-profiles.html) — ★★★☆☆
+- sysctl.conf(5) (`#`·`;`로 시작하는 줄만 주석): [man7.org sysctl.conf.5](https://man7.org/linux/man-pages/man5/sysctl.conf.5.html) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
@@ -345,6 +350,6 @@ ORDER BY SUM_TIMER_WAIT DESC LIMIT 10;
 
 **작성일**: 2026-07-06
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

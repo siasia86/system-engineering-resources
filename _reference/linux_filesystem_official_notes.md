@@ -147,7 +147,7 @@ sources:
 | 항목                | 값                                          | 출처                  |
 |---------------------|---------------------------------------------|-----------------------|
 | 저널링 목적         | crash 후 빠른 복구 (fsck 시간 단축)         | docs.kernel.org/ext4  |
-| ext4 journal 모드   | data=ordered: 메타+데이터 순서 보장         | docs.kernel.org/ext4  |
+| ext4 ordered 모드   | data=ordered: 메타+데이터 순서 보장         | docs.kernel.org/ext4  |
 | ext4 writeback 모드 | 메타만 저널, 데이터 순서 미보장 (성능 우선) | docs.kernel.org/ext4  |
 | ext4 journal 모드   | 메타+데이터 모두 저널 (가장 안전, 느림)     | docs.kernel.org/ext4  |
 | XFS 저널            | metadata only (데이터 저널링 없음)          | docs.kernel.org/xfs   |

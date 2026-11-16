@@ -196,7 +196,7 @@ PATH=/usr/local/bin:/usr/bin:/bin
 
 ### su - 로 login shell 환경 로드
 
-`su -` (또는 `su -l`) 는 login shell 을 시작하므로 `/etc/profile`, `~/.bash_profile`, `~/.bashrc` 가 모두 로드됩니다.
+`su -` (또는 `su -l`) 는 login shell 을 시작하므로 `/etc/profile` 과 `~/.bash_profile` 이 로드됩니다. bash login shell 은 `~/.bashrc` 를 직접 읽지 않으며, 대부분 배포판의 기본 `~/.bash_profile` 이 `~/.bashrc` 를 source 합니다.
 
 ```bash
 # crontab -e
@@ -337,6 +337,6 @@ sudo rm /etc/profile.d/my_setting.sh
 
 **작성일**: 2026-04-28
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

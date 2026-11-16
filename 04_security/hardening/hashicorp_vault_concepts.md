@@ -492,10 +492,10 @@ AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 
 |----------------------------|----------------------------------------------------------------------------------------------|
 | Barrier                    | Vault Core와 Storage Backend 사이의 암호화 계층                                              |
 | Seal / Unseal              | Vault의 암호화 데이터 접근을 잠그거나 해제하는 상태와 절차                                   |
-| Shamir Secret Sharing      | Unseal Key를 여러 share로 나누고 threshold 이상을 모아야 복원 방식                           |
+| Shamir Secret Sharing      | Unseal Key를 여러 share로 나누고 threshold 이상을 모아야 복원하는 방식                       |
 | Key Share / Threshold      | 분할된 Unseal Key 조각과 복원에 필요한 최소 조각 수                                          |
 | Root Key                   | 실제 데이터 암호화에 사용하는 Encryption Key를 보호하는 상위 키                              |
-| Encryption Key             | Vault 데이터를 암호화·복호화 키                                                              |
+| Encryption Key             | Vault 데이터를 암호화·복호화하는 키                                                          |
 | Recovery Key               | Auto Unseal 환경에서 특정 관리자 작업을 승인하는 키. Root Key 직접 복호화 불가               |
 | Auth Method                | Client의 신원을 확인하고 Token 또는 Identity를 발급하는 인증 방식                            |
 | Root Token                 | 모든 경로에 접근 가능한 Token. 초기 설정·비상 절차 외의 일반 자동화에는 사용하지 않음        |
@@ -549,6 +549,6 @@ AWS 단일 환경에서 일반 Secret만 관리한다면 AWS Secrets Manager의 
 
 **작성일**: 2026-08-20
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -141,7 +141,7 @@ let r2 = &mut s;   // OK: r1이 더 이상 사용되지 않으므로
 | 항목 | `std::sync::mpsc`   | `crossbeam::channel`   |
 |------|---------------------|------------------------|
 | 패턴 | MPSC (단일 수신자)  | MPMC (다중 수신자)     |
-| 버퍼 | unbounded           | bounded/unbounded 선택 |
+| 버퍼 | bounded/unbounded   | bounded/unbounded 선택 |
 | 클론 | sender만 clone 가능 | sender/receiver 모두   |
 | 성능 | 표준                | 고성능 (lock-free)     |
 
@@ -270,7 +270,7 @@ static RE: LazyLock<Regex> = LazyLock::new(|| {
 
 - 메서드가 `Sized` 바운드를 요구하지 않아야 함.
 - 메서드가 제네릭 타입 매개변수를 사용하지 않아야 함.
-- `Self` 반환 타입 없어야 함 (단, `Box<Self>` 가능).
+- receiver 외 위치(반환 타입 등)에 `Self`를 쓰지 않아야 함 (`self: Box<Self>` 같은 receiver는 가능, `where Self: Sized` 메서드는 예외).
 
 ## 9. 버전별 주요 기능 추가
 

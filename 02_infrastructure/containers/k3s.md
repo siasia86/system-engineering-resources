@@ -214,7 +214,7 @@ spec:
 # k3s 기본 ServiceLB(klipper) 비활성화 후 MetalLB 사용
 curl -sfL https://get.k3s.io | sh -s - --disable servicelb
 
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.16.0/config/manifests/metallb-native.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.16.2/config/manifests/metallb-native.yaml
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -252,7 +252,7 @@ ls /var/lib/rancher/k3s/storage/
 
 ```bash
 # Longhorn 설치 (멀티 노드 환경)
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.11.2/deploy/longhorn.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.11.3/deploy/longhorn.yaml
 
 # 기본 StorageClass 변경
 kubectl patch storageclass local-path -p '{"metadata":{"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
@@ -372,6 +372,6 @@ sudo k3s etcd-snapshot save --name k3s-snapshot
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

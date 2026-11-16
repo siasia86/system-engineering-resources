@@ -478,7 +478,7 @@ LOG_FILE=$1
 echo "=== I/O Report ==="
 echo ""
 echo "Top I/O Processes:"
-awk '/Total DISK/ {next} NR>1 {print $8, $4, $5}' $LOG_FILE | \
+awk '/Total DISK/ {next} NR>1 {print $12, $4, $6}' $LOG_FILE | \
     sort -k2 -rn | head -10
 
 echo ""
@@ -552,6 +552,6 @@ awk '/Total DISK READ/ {read+=$4; write+=$10; count++}
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

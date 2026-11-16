@@ -782,7 +782,7 @@ Install-WindowsFeature -Name Web-Server -IncludeManagementTools
 |-------------------------------|------------------------|-----------|------------------------------------------|
 | **EA (Enterprise Agreement)** | 대기업 (500 디바이스+) | 3년       | 전사 통일 라이선스, 할인율 높음, SA 포함 |
 | **EAS (EA Subscription)**     | EA와 동일              | 3년       | 구독형 EA, 계약 종료 시 사용권 없음      |
-| **Open Value**                | 중소기업               | 3년       | Software Assurance 포함, 최소 5개 제품   |
+| **Open Value**                | 중소기업               | 3년       | SA 포함, 최초 주문 최소 5개 라이선스     |
 | **Open Value Subscription**   | 중소기업               | 3년       | 구독형 Open Value                        |
 | **Open License**              | 소규모                 | 2년       | 2021-12-31 판매 종료 (CSP로 이전)        |
 | **Select Plus**               | 대기업 (부서별)        | 없음      | 사용량 기반, 부서별 유연 구매            |
@@ -993,6 +993,7 @@ Get-ADComputer -Filter * | Select-Object Name, OperatingSystem
 - Microsoft: [Automatic VM Activation](https://learn.microsoft.com/en-us/windows-server/get-started/automatic-vm-activation) — ★★★☆☆
 - Microsoft: [Client Access Licenses](https://www.microsoft.com/en-us/licensing/product-licensing/client-access-license) — ★★★☆☆
 - Microsoft: [Volume Licensing overview](https://www.microsoft.com/en-us/licensing/how-to-buy/how-to-buy) — ★★★☆☆
+- Microsoft: [Open Value 프로그램 약관(최초 주문 최소 5개 라이선스)](https://www.microsoft.com/licensing/terms/product/ProgramAgreementSupplementalTerms/OVOVS) — ★★★☆☆ (확인일 2026-11-16)
 - Microsoft: [Deploy Storage Spaces on a stand-alone server](https://learn.microsoft.com/en-us/windows-server/storage/storage-spaces/deploy-standalone-storage-spaces) — ★★★☆☆
 - Microsoft: [Server Core vs Desktop Experience](https://learn.microsoft.com/en-us/windows-server/get-started/install-options-server-core-desktop-experience) — ★★★☆☆
 - Microsoft: [ESU FAQ](https://learn.microsoft.com/en-us/lifecycle/faq/extended-security-updates) — ★★★☆☆
@@ -1016,6 +1017,6 @@ Get-ADComputer -Filter * | Select-Object Name, OperatingSystem
 
 **작성일**: 2026-07-29
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

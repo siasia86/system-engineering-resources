@@ -223,7 +223,7 @@ CI artifact and review
 ### 주차별 연습
 
 ```text
-1주차  함수·재귀·List·Option·Result
+1주차  함수·재귀·List·Option·Except
 2주차  inductive 상태 모델·pattern matching
 3주차  등식·명제·implication·conjunction
 4주차  simp·rw·cases·induction
@@ -314,6 +314,7 @@ lake build
 - Lean Language Reference: [lean-lang.org/doc/reference/latest](https://lean-lang.org/doc/reference/latest/) — ★★★☆☆
 - Lean 4 releases: [github.com/leanprover/lean4/releases](https://github.com/leanprover/lean4/releases) — ★★★☆☆
 - Lake reference: [lean-lang.org/doc/reference/latest/Build-Tools-and-Distribution/Lake](https://lean-lang.org/doc/reference/latest/Build-Tools-and-Distribution/Lake/) — ★★★☆☆
+- Lean API `Init.Control.Except`: [lean-lang.org/doc/api/Init/Control/Except.html](https://lean-lang.org/doc/api/Init/Control/Except.html) — ★★★☆☆ (확인일 2026-11-16)
 - [Lean 공식 문서 참조 노트](../../_reference/lean_official_notes.md)
 
 ---
@@ -331,6 +332,6 @@ lake build
 
 **작성일**: 2026-09-11
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

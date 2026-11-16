@@ -265,14 +265,14 @@ Linux Kernel
 sudo unshare --pid --net --mount --fork /bin/bash
 
 # 새로운 namespace 내부에서:
+mount -t proc proc /proc
+# 새 PID namespace 기준으로 /proc 다시 마운트 (없으면 ps가 호스트 프로세스를 보여 줌)
+
 ps aux
 # PID 1번만 보임 (격리됨)
 
 ip addr
 # lo만 보임 (네트워크 격리)
-
-mount -t proc proc /proc
-# 새로운 프로세스 트리
 ```
 
 #### Docker 컨테이너의 Namespace 확인
@@ -1088,6 +1088,6 @@ Kernel:      Linux Kernel (기반)
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

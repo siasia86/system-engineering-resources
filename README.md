@@ -364,7 +364,7 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [Replication](05_database/operations/rdbms_replication.md)               | binlog, GTID, Streaming |
 | [Partition](05_database/operations/rdbms_partition.md)                   | Range/List/Hash         |
 | [Schema Migration](05_database/operations/rdbms_schema_migration.md)     | pt-osc, gh-ost          |
-| [Server Config](05_database/operations/rdbms_server_config.md)           | my.cnf, postgresql.conf |
+| [Server Config](05_database/operations/rdbms_server_config.md)           | my.cnf, 메모리별 템플릿 |
 | [Slow Query](05_database/operations/rdbms_slow_query.md)                 | 슬로우 쿼리 분석        |
 | [Tuning](05_database/operations/rdbms_tuning.md)                         | 버퍼풀, 캐시, I/O       |
 | [Percona XtraBackup](05_database/operations/percona_xtrabackup_guide.md) | MySQL 물리 백업·복구    |
@@ -546,6 +546,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-13
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -124,11 +124,11 @@ s3://bucket/dbtrail/
 ├── server-id/
 │   ├── 2026/07/06/
 │   │   ├── 14/
-│   │   │   ├── events_1720270800_000.parquet
-│   │   │   ├── events_1720270800_001.parquet
+│   │   │   ├── events_1783346400_000.parquet
+│   │   │   ├── events_1783346400_001.parquet
 │   │   │   └── ...
 │   │   └── 15/
-│   │       └── events_1720274400_000.parquet
+│   │       └── events_1783350000_000.parquet
 │   └── ...
 └── baselines/
     └── shop.orders_20260706_140000.parquet
@@ -318,6 +318,6 @@ bintrail doctor --index-dsn "..." --retain 30d
 
 **작성일**: 2026-07-06
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

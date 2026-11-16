@@ -319,7 +319,7 @@ services:
     restart: unless-stopped
 
   grafana:
-    image: grafana/grafana:13.3.0
+    image: grafana/grafana:13.3.1
     ports:
       - "3000:3000"
     volumes:
@@ -452,6 +452,6 @@ promtool check rules /etc/prometheus/rules/node.yml
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

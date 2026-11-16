@@ -174,6 +174,9 @@ table inet filter {
         # ICMP
         ip protocol icmp icmp type echo-request limit rate 1/second accept
 
+        # ICMPv6 neighbor discovery (inet 테이블에서 막으면 IPv6 연결이 끊김)
+        icmpv6 type { nd-neighbor-solicit, nd-router-advert, nd-neighbor-advert } accept
+
         # SSH (brute-force 방어 — meter 사용, 버전 호환성 높음)
         tcp dport 22 ct state new meter ssh-meter { ip saddr limit rate over 3/minute } drop
         tcp dport 22 accept
@@ -237,6 +240,7 @@ iptables-translate -A INPUT -p tcp --dport 22 -j ACCEPT
 - iptables 프로젝트(지원 커널 2.4 이상): [netfilter.org/projects/iptables](https://www.netfilter.org/projects/iptables/index.html) — ★★★☆☆
 - nftables 룰셋 저장·복원: [Operations at ruleset level](https://wiki.nftables.org/wiki-nftables/index.php/Operations_at_ruleset_level) — ★★★☆☆
 - iptables-apply(8)(원격 적용 후 미확인 시 자동 복원): [man7.org](https://man7.org/linux/man-pages/man8/iptables-apply.8.html) — ★★★☆☆
+- nftables 워크스테이션 기본 룰셋(ICMPv6 neighbor discovery 허용): [wiki.nftables.org](https://wiki.nftables.org/wiki-nftables/index.php/Simple_ruleset_for_a_workstation) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
@@ -253,6 +257,6 @@ iptables-translate -A INPUT -p tcp --dport 22 -j ACCEPT
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

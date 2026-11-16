@@ -19,7 +19,7 @@
 | 아키텍처    | 프로세스/스레드 기반 (MPM)  | 이벤트 기반 (비동기)            |
 | 동적 콘텐츠 | mod_php 등 모듈 내장 처리   | 외부 프로세스(FastCGI) 위임     |
 | .htaccess   | ✅ 디렉토리별 설정 가능     | ❌ 미지원                       |
-| 모듈 시스템 | 런타임 동적 로드            | 컴파일 타임 포함                |
+| 모듈 시스템 | 런타임 동적 로드            | 컴파일 타임 또는 동적 모듈      |
 | 설정 유연성 | 높음                        | 중간                            |
 | 권장 상황   | PHP 앱, .htaccess 필요 환경 | 고성능 정적 서빙, 리버스 프록시 |
 
@@ -171,7 +171,7 @@ MPM은 Apache가 요청을 처리하는 방식을 결정하는 핵심 모듈입�
 
 | MPM     | 동작                                                          |
 |---------|---------------------------------------------------------------|
-| prefork | 요청마다 fork된 프로세스가 처리 (프로세스 격리, 메모리 많음)  |
+| prefork | 미리 fork된 프로세스가 요청을 하나씩 처리 (격리, 메모리 많음) |
 | worker  | fork된 프로세스 안에서 스레드가 요청 처리 (메모리 절약)       |
 | event   | worker와 동일 + Keep-Alive를 전용 스레드가 처리 (가장 효율적) |
 
@@ -555,7 +555,7 @@ sudo systemctl restart apache2
 | 403 Forbidden                       | 파일 권한 또는 `Require` 설정    | `chmod`, `chown` 확인 / `Require all granted` 추가            |
 | 404 Not Found                       | DocumentRoot 또는 파일 경로 오류 | `DocumentRoot` 경로 확인                                      |
 | 500 Internal Server Error           | PHP 오류 또는 .htaccess 문제     | `error.log` 확인                                              |
-| `bind() to 0.0.0.0:80 failed`       | 포트 충돌                        | `ss -tlnp \| grep 80` 확인                                    |
+| `could not bind to address`         | 포트 충돌                        | `ss -tlnp \| grep 80` 확인                                    |
 | mod_php + event MPM 충돌            | libphp는 prefork 전용            | `a2dismod mpm_event && a2enmod mpm_prefork` 또는 PHP-FPM 사용 |
 | RHEL: DocumentRoot 접근 거부        | SELinux 컨텍스트 불일치          | `semanage fcontext` + `restorecon`                            |
 | `Could not reliably determine FQDN` | ServerName 미설정                | `apache2.conf` 에 `ServerName localhost` 추가                 |
@@ -600,6 +600,6 @@ apache2ctl status 2>/dev/null || curl -s http://localhost/server-status?auto
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

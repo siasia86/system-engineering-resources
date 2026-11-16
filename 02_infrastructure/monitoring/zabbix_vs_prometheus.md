@@ -19,7 +19,7 @@
 | 라이선스    | AGPLv3 (7.0+, 6.4까지 GPLv2)     | Apache 2.0                      |
 | 개발        | Zabbix SIA (라트비아)            | CNCF Graduated Project          |
 | 초기 릴리즈 | 2001                             | 2012 (SoundCloud)               |
-| 최신 버전   | 7.4 (LTS: 7.0)                   | v3.16.0 (LTS: 3.13)             |
+| 최신 버전   | 8.0 LTS (2026-11-05)             | v3.16.0 (LTS: 3.13)             |
 | 주 언어     | C, PHP, Go (Agent 2)             | Go                              |
 | 데이터 모델 | 호스트 → 아이템 → 트리거         | 시계열 (metric + labels)        |
 | 수집 방식   | Pull(Passive)·Push(Active) Agent | Pull (Server → Target /metrics) |
@@ -227,6 +227,6 @@
 
 **작성일**: 2026-07-03
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

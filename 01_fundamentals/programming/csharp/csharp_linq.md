@@ -182,6 +182,8 @@ var single = numbers.Single(n => n == 5);          // 5
 대부분의 LINQ 연산자는 열거 시점까지 실행을 미룹니다.
 
 ```csharp
+var numbers = new List<int> { 1, 2, 3, 4, 5 }; // Add를 쓰려면 배열이 아닌 List
+
 var query = numbers.Where(n => n > 3); // 아직 실행 안 됨
 
 numbers.Add(10); // 이후 변경 반영됨
@@ -257,6 +259,6 @@ var combined = names.Zip(ages, (name, age) => $"{name}({age})");
 
 **작성일**: 2026-08-02
 
-**마지막 업데이트**: 2026-08-02
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

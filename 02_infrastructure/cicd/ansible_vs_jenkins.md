@@ -236,7 +236,8 @@ backup-tool/
 │   ├── deploy.yml
 │   ├── test.yml
 │   └── templates/
-│       └── config.yaml.j2
+│       ├── config.yaml.j2
+│       └── backup.service.j2
 ├── Jenkinsfile
 └── README.md
 ```
@@ -673,6 +674,6 @@ pipeline {
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

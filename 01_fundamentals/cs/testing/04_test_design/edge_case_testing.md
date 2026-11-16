@@ -149,6 +149,8 @@ def test_validate_score(value, expected):
 
 ### Bash 장애 주입 예시
 
+🟡 아래 명령은 디스크·네트워크 인터페이스·CPU 전체에 영향을 줍니다. 운영 호스트가 아닌 격리된 테스트 환경에서만 실행하고, 정리 명령까지 함께 실행합니다.
+
 ```bash
 # 디스크 풀 시뮬레이션
 dd if=/dev/zero of=/tmp/fill_disk bs=1M count=10240
@@ -201,6 +203,6 @@ if l.strip().startswith('└') and l.strip().endswith('┘'):
 
 **작성일**: 2026-06-19
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

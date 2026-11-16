@@ -38,7 +38,7 @@ Kubernetes는 각 노드에 컨테이너 런타임이 설치되어 있어야 Pod
 | CRI  | Container Runtime Interface — kubelet과 런타임 간 gRPC 표준 인터페이스 |
 | OCI  | Open Container Initiative — 컨테이너 이미지/런타임 표준 규격           |
 | runc | OCI 표준 구현체, 실제 컨테이너 프로세스를 생성하는 저수준 런타임       |
-| shim | 런타임과 kubelet 사이의 중간 프로세스 (containerd-shim 등)             |
+| shim | containerd와 컨테이너 사이의 중간 프로세스 (containerd-shim 등)        |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -264,6 +264,6 @@ sysctl net.ipv4.ip_forward
 
 **작성일**: 2026-05-26
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -2081,7 +2081,7 @@ cat result-*.txt
 
 ```bash
 # 비대화형 모드로 실행, 결과를 파일로 저장
-kiro-cli chat --no-interactive --trust-all-tools \
+kiro-cli chat --no-interactive --trust-tools=fs_read \
   "$(git diff main..HEAD) 이 변경사항의 개선점을 검토해줘" \
   > review.log 2>&1
 ```
@@ -2105,7 +2105,7 @@ code-review:
   script:
     - git diff $CI_MERGE_REQUEST_DIFF_BASE_SHA..HEAD > diff.patch
     - |
-      kiro-cli chat --no-interactive --trust-all-tools \
+      kiro-cli chat --no-interactive --trust-tools=fs_read \
         "아래 diff 를 리뷰해줘. 보안, 성능, 코드 품질 관점에서 개선점을 정리해줘.
         $(cat diff.patch)" > review.log 2>&1
     - cat review.log
@@ -2124,7 +2124,7 @@ code-review:
     KIRO_API_KEY: ${{ secrets.KIRO_API_KEY }}
   run: |
     git diff ${{ github.event.pull_request.base.sha }}..HEAD > diff.patch
-    kiro-cli chat --no-interactive --trust-all-tools \
+    kiro-cli chat --no-interactive --trust-tools=fs_read \
       "아래 diff 를 리뷰해줘. 보안, 성능, 코드 품질 관점에서 개선점을 정리해줘.
       $(cat diff.patch)" > review.log 2>&1
     cat review.log
@@ -2145,6 +2145,8 @@ code-review:
 | 비용      | 실행마다 API 호출 발생                                             |
 | 도구 승인 | 확인 프롬프트 불가 → `--trust-all-tools` 또는 `--trust-tools` 지정 |
 | diff 크기 | 너무 크면 파일별로 나눠서 리뷰하는 방식 권장                       |
+
+PR diff처럼 외부 입력을 넣는 리뷰 작업은 공식 Headless 문서의 권고대로 `--trust-all-tools` 대신 필요한 도구만 `--trust-tools`로 지정합니다. 위 예시는 읽기 도구만 허용합니다.
 
 > 도구 권한 상세는 [섹션 7. 도구 권한 관리](#7-도구-권한-관리-tool-trust) 참고
 
@@ -2561,6 +2563,7 @@ kiro-cli chat --delete-session <ID>   # 대화 삭제
 | 에이전트 설정 레퍼런스  | https://kiro.dev/docs/custom-agents/configuration-reference/ |
 | 에이전트 예시           | https://kiro.dev/docs/custom-agents/examples/                |
 | Hooks                   | https://kiro.dev/docs/hooks/                                 |
+| Headless (CI) 모드      | https://kiro.dev/docs/cli/headless/                          |
 | Agent Skills            | https://kiro.dev/docs/skills/                                |
 | Code Intelligence       | https://kiro.dev/docs/tools/code-intelligence/               |
 | Tangent Mode            | https://kiro.dev/docs/cli/experimental/tangent-mode/         |
@@ -2617,6 +2620,6 @@ kiro-cli chat --delete-session <ID>   # 대화 삭제
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

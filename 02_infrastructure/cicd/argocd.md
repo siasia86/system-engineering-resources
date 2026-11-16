@@ -73,17 +73,17 @@ ArgoCD는 Kubernetes를 위한 GitOps 기반 CD(Continuous Delivery) 도구. Git
 
 ## 3. 핵심 개념
 
-| 개념          | 설명                                                        |
-|---------------|-------------------------------------------------------------|
-| Application   | Git 소스 + K8s 클러스터/네임스페이스 매핑 단위              |
-| Project       | Application 그룹. 소스/대상 클러스터/네임스페이스 제한 가능 |
-| Sync          | Git 상태를 클러스터에 적용하는 작업                         |
-| Sync Status   | Synced / OutOfSync / Unknown                                |
-| Health Status | Healthy / Progressing / Degraded / Missing / Suspended      |
-| Drift         | Git 정의와 실제 클러스터 상태의 차이                        |
-| Auto Sync     | 변경 감지 시 자동으로 Sync 실행                             |
-| Self Heal     | 클러스터에서 직접 변경된 내용을 Git 상태로 되돌림           |
-| Prune         | Git에서 삭제된 리소스를 클러스터에서도 삭제                 |
+| 개념          | 설명                                                             |
+|---------------|------------------------------------------------------------------|
+| Application   | Git 소스 + K8s 클러스터/네임스페이스 매핑 단위                   |
+| Project       | Application 그룹. 소스/대상 클러스터/네임스페이스 제한 가능      |
+| Sync          | Git 상태를 클러스터에 적용하는 작업                              |
+| Sync Status   | Synced / OutOfSync / Unknown                                     |
+| Health Status | Healthy / Progressing / Degraded / Missing / Suspended / Unknown |
+| Drift         | Git 정의와 실제 클러스터 상태의 차이                             |
+| Auto Sync     | 변경 감지 시 자동으로 Sync 실행                                  |
+| Self Heal     | 클러스터에서 직접 변경된 내용을 Git 상태로 되돌림                |
+| Prune         | Git에서 삭제된 리소스를 클러스터에서도 삭제                      |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -521,6 +521,6 @@ metadata:
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

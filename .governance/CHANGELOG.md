@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- 문서 내용 검토와 정정 (2026-11-16): 사용자 지시로 추적 문서 491개를 11묶음으로 나눠 병렬 검토하고, 공식 문서·같은 문서 안 근거로 확인된 정정만 61개 파일에 반영했습니다. 위험한 예시(호스트 전체 볼륨 삭제, 정확히 일치하지 않는 사용자 허용 검사, 값으로 읽히는 sysctl 줄 끝 주석, ICMPv6 차단, 경고 없는 policy drop)를 고쳤고, 명령·옵션 오류(unshare 순서, mc retention, restic key remove, Vault capability·dev 수신 주소, Kiro CI 도구 권한), 문서 안 모순(DNS 헤더 비트 순서, LINQ 지연 실행 예시, 복사된 Filebeat 표, View 생성 순서), 연결 노트와 어긋난 값(Zabbix 8.0 LTS, Unicode 문자 수, GRAID 명령), 패치 판(MetalLB·Longhorn·Grafana·kube-prometheus-stack)과 `_reference` 노트 14개의 정의·판 표기를 바로잡았습니다. 절 재작성·주 판 전환·날짜가 박힌 표·근거 부족 항목은 고치지 않고 따로 모았습니다.
+
 - 운영 기준 제목과 적용 문구 정정 (2026-11-16): 중앙 profile 31 `a08c206`에 맞춰 [GOVERNANCE](GOVERNANCE.md) 제목을 "운영 기준"으로 바꾸고 6절 끝 문장을 현장에서도 참인 문장으로 고쳤습니다. [적용 기록](APPLICATION.md) 7절에 남겼습니다.
 
 - 클라우드 백업 비교 문서 이름 변경과 INDEX 칸 삭제 (2026-11-16): 사용자 결정으로 `02_infrastructure/cloud_aws/backup_tools_comparison.md`를 [cloud_backup_cost_comparison.md](../02_infrastructure/cloud_aws/cloud_backup_cost_comparison.md)로 옮겼습니다(`3de9397`). `storage/`의 같은 이름 문서와 구분하려는 것이며, 제목과 루트 README 설명(옛 "AWS Backup vs 직접 구현")을 실제 내용인 도구 리소스·비용 비교에 맞췄습니다. 외부 참조 확인과 관찰 유예는 [옮김 기록](MOVED.md)에 적었습니다. [_reference INDEX](../_reference/INDEX.md) 표에서 뜻이 정해지지 않았던 "참조" 칸을 지웠습니다.

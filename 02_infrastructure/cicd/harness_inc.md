@@ -98,7 +98,9 @@ stages:
             - step:
                 type: Verify
                 spec:
-                  duration: 5m       # 5분간 메트릭 검증
+                  type: Canary
+                  spec:
+                    duration: 5m     # 5분간 메트릭 검증
             # Canary Delete step으로 canary workload 정리 후 전체 배포
             - step:
                 type: K8sRollingDeploy
@@ -118,7 +120,9 @@ stages:
             - step:
                 type: Verify
                 spec:
-                  duration: 10m
+                  type: Bluegreen
+                  spec:
+                    duration: 10m
             - step:
                 type: K8sBGSwapServices
 ```
@@ -226,6 +230,6 @@ pipeline:
 
 **작성일**: 2026-06-18
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

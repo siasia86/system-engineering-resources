@@ -116,6 +116,8 @@ iptables의 현대적 대안입니다. 배포판과 릴리스에 따라 기본 �
 nft list ruleset
 
 # 테이블/체인 생성
+# 주의: policy drop 체인은 만든 즉시 적용되므로 SSH로 원격 작업 중이면 허용 규칙을 넣기 전에 접속이 끊길 수 있음
+#       원격에서는 규칙 전체를 파일로 작성해 nft -f로 한 번에 적용하거나 policy accept로 만든 뒤 마지막에 drop으로 바꿈
 nft add table inet filter
 nft add chain inet filter input { type filter hook input priority 0 \; policy drop \; }
 
@@ -269,6 +271,6 @@ echo 60 > /proc/sys/net/netfilter/nf_conntrack_tcp_timeout_established
 
 **작성일** : 2026-05-21
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

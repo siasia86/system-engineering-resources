@@ -106,7 +106,7 @@ sources:
 | 도구               | 약정 기간 | 절감율 | 유연성    |
 |--------------------|-----------|--------|-----------|
 | Reserved Instances | 1~3년     | 30~72% | 낮음      |
-| Savings Plans      | 1~3년     | 20~66% | 중간      |
+| Savings Plans      | 1~3년     | 20~72% | 중간      |
 | Spot Instances     | 없음      | 60~90% | 중단 위험 |
 
 - AWS 공식 최대 할인율: Savings Plans는 EC2 Instance SP 최대 72%, Compute SP 최대 66%입니다(2026-11-09 확인).

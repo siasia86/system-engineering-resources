@@ -55,7 +55,7 @@ MinIO는 다음과 구분합니다.
 
 ### 오픈소스와 상용 제품
 
-공식 GitHub 저장소의 MinIO Server는 AGPLv3 라이선스로 공개되어 있습니다. 다만 2026-11-09 확인 기준 이 저장소(`minio/minio`)와 MinIO Client 저장소(`minio/mc`)는 GitHub에서 archived 상태이며, `minio/minio` README에는 더 이상 유지보수하지 않는다고 명시되어 있습니다. 커뮤니티판은 미리 빌드한 바이너리 없이 소스 코드로만 배포되며(마지막 공식 바이너리 릴리스는 `RELEASE.2025-10-15T17-29-55Z`), README는 대안으로 단독 배포용 무료 라이선스인 AIStor Free와 상용 AIStor Enterprise를 안내합니다. MinIO의 상용 제품과 기능·지원·라이선스 범위는 별도로 확인합니다.
+공식 GitHub 저장소의 MinIO Server는 AGPLv3 라이선스로 공개되어 있습니다. 다만 2026-11-09 확인 기준 이 저장소(`minio/minio`)와 MinIO Client 저장소(`minio/mc`)는 GitHub에서 archived 상태이며, `minio/minio` README에는 더 이상 유지보수하지 않는다고 명시되어 있습니다. 커뮤니티판은 미리 빌드한 바이너리 없이 소스 코드로만 배포되며(마지막 GitHub 릴리스는 `RELEASE.2025-10-15T17-29-55Z`), README는 대안으로 단독 배포용 무료 라이선스인 AIStor Free와 상용 AIStor Enterprise를 안내합니다. MinIO의 상용 제품과 기능·지원·라이선스 범위는 별도로 확인합니다.
 
 | 구분          | MinIO Server                          | 상용 Enterprise 제품      |
 |---------------|---------------------------------------|---------------------------|
@@ -421,7 +421,7 @@ mc alias set minio https://minio.example.com \
 mc admin info minio
 mc ls minio
 mc version info minio/backup
-mc retention info minio/backup
+mc retention info --default minio/backup
 ```
 
 예시 자격증명은 실제 환경에서 사용하지 않고 Secret Manager·환경별 Credential·IAM 연동으로 대체합니다.
@@ -533,6 +533,6 @@ mc retention info minio/backup
 
 **작성일**: 2026-09-21
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

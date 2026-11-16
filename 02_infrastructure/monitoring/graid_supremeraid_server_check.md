@@ -688,7 +688,7 @@ graidctl stop consistency_check current_task
 - SupremeRAID GPU는 `nvidia-smi`에서 항상 100% utilization 표시 → 정상 (polling mechanism)
 - GPU를 일반 CUDA/AI 워크로드와 공유할 수 없습니다.
 - GPU 물리 교체 시 새 라이선스 키가 필요합니다 (시리얼 넘버 종속)
-- GPU 온도는 `nvidia-smi` 또는 `graidctl show controller` (v1.5) / `graidctl describe controller` (v1.7.2·v2.0 안내서)로 확인합니다.
+- GPU 온도는 `nvidia-smi` 또는 `graidctl describe controller <id>` (1.7.2·2.0.1 안내서, 1.5.0 안내서는 `graidctl list controller`)로 확인합니다.
 
 #### 리빌드 중 운영
 
@@ -920,6 +920,6 @@ graidctl list drive_group
 
 **작성일**: 2026-07-10
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

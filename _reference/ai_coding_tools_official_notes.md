@@ -216,7 +216,7 @@ Global Cross-Region은 지원되나 Kiro가 In-Region 정책 사용 → 미제�
 
 - 전체 5개 모델 모두 독점(Closed) 모델
 - 오픈 웨이트 대안 없음 (benchlm 명시)
-- benchlm 설명: "Claude Opus 4.5 holds third with solid OSWorld coverage" (순위 표현 불일치, 실제 4위)
+- benchlm 설명: "Claude Opus 4.5 holds third with solid OSWorld coverage" (순위 표현 불일치, 위 표 기준 5위)
 
 ### 코딩 (benchlm.ai/best/coding)
 

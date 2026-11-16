@@ -22,7 +22,7 @@ sources:
 | kernel BPF docs | https://docs.kernel.org/bpf/libbpf/index.html    | libbpf API                 |
 | ebpf.io         | https://ebpf.io/what-is-ebpf/                    | eBPF 개념, verifier, JIT   |
 
-### 검증된 사실 (2026-08-01)
+### 검증된 사실 (2026-08-01, 버전 행은 2026-11-09)
 
 | 항목              | 값                                      | 출처           |
 |-------------------|-----------------------------------------|----------------|

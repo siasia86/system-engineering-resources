@@ -58,7 +58,7 @@ Console.WriteLine(list1.Count); // 4 (공유됨)
 string s1 = "hello";
 string s2 = "hello";
 Console.WriteLine(s1 == s2);           // true (값 비교)
-Console.WriteLine(object.ReferenceEquals(s1, s2)); // 인턴 풀 여부에 따라 다름
+Console.WriteLine(object.ReferenceEquals(s1, s2)); // true (같은 어셈블리의 동일 리터럴은 같은 인스턴스, 런타임 생성 문자열은 false일 수 있음)
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -341,6 +341,7 @@ public class Config
 - Microsoft Learn: [learn.microsoft.com/dotnet/csharp](https://learn.microsoft.com/en-us/dotnet/csharp/) — ★★★☆☆
 - C# Language Reference: [learn.microsoft.com/dotnet/csharp/language-reference](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/) — ★★★☆☆
 - dotnet/csharplang Language-Version-History: [github.com/dotnet/csharplang](https://github.com/dotnet/csharplang/blob/main/Language-Version-History.md) — ★★★☆☆
+- C# 명세 6.4.5.6 String literals (동일 리터럴의 같은 인스턴스 참조): [learn.microsoft.com/dotnet/csharp/language-reference/language-specification/lexical-structure](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/lexical-structure#6456-string-literals) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
@@ -351,6 +352,6 @@ public class Config
 
 **작성일**: 2026-08-02
 
-**마지막 업데이트**: 2026-08-02
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

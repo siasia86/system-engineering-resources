@@ -823,7 +823,7 @@ logrotate /etc/logrotate.d/backup
 
 ### Q5. 백업 중 파일이 변경되면 어떻게 되나요?
 **A:**
-- **Restic/BorgBackup**: 백업 시작 시점 기준 (일관성 보장)
+- **Restic/BorgBackup**: 파일을 읽는 시점 기준 (파일시스템 전체의 시점 일관성은 보장 안 됨)
 - **AWS CLI/rsync**: 변경된 파일 재전송 (일관성 보장 안 됨)
 - **권장**: 백업 전 스냅샷 생성 (LVM, ZFS 등)
 

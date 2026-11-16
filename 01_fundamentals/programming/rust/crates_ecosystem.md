@@ -286,10 +286,11 @@ serde = { version = "1", features = ["derive"] }
 
 ```toml
 [features]
+# serde_json·serde_yaml·toml은 optional = true 의존성 (edition 2024는 암묵적 feature가 없어 dep: 표기)
 default = ["json"]
-json = ["serde_json"]
-yaml = ["serde_yaml"]
-full = ["json", "yaml", "toml"]
+json = ["dep:serde_json"]
+yaml = ["dep:serde_yaml"]
+full = ["json", "yaml", "dep:toml"]
 ```
 
 ```rust
@@ -340,6 +341,7 @@ cargo audit --deny warnings
 - Cargo Book: [doc.rust-lang.org/cargo](https://doc.rust-lang.org/cargo/) — ★★★☆☆
 - Cargo Book - rust-version: [doc.rust-lang.org/cargo/reference/rust-version.html](https://doc.rust-lang.org/cargo/reference/rust-version.html) — ★★★☆☆
 - Edition Guide - Rust 2024: [doc.rust-lang.org/edition-guide/rust-2024](https://doc.rust-lang.org/edition-guide/rust-2024/index.html) — ★★★☆☆
+- Edition Guide - Cargo: Remove implicit features: [doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html](https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html) — ★★★☆☆ (확인일 2026-11-16)
 - Edition Guide - Transitioning to a new edition: [doc.rust-lang.org/edition-guide](https://doc.rust-lang.org/edition-guide/editions/transitioning-an-existing-project-to-a-new-edition.html) — ★★★☆☆
 
 ---
@@ -357,6 +359,6 @@ cargo audit --deny warnings
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

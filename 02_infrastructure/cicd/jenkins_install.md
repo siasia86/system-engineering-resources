@@ -324,7 +324,7 @@ Jenkins → Manage Jenkins → Nodes → New Node
 ```bash
 # 로그 확인
 sudo journalctl -u jenkins -f
-sudo tail -100 /var/log/jenkins/jenkins.log
+# systemd 기반 패키지는 로그를 systemd-journald로 보내며 별도 jenkins.log 파일을 만들지 않음
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -354,6 +354,6 @@ sudo tail -100 /var/log/jenkins/jenkins.log
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

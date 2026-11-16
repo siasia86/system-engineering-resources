@@ -143,7 +143,13 @@ metadata:
   name: web
 spec:
   replicas: 3
+  selector:
+    matchLabels:
+      app: web
   template:
+    metadata:
+      labels:
+        app: web
     spec:
       containers:
       - name: web
@@ -308,6 +314,6 @@ AlertManager (Slack/Email 알림)
 
 **작성일**: 2026-05-26
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

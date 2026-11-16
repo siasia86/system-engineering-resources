@@ -614,7 +614,7 @@ Repository Key를 확인하고 관리합니다.
 ```bash
 restic key list
 restic key add
-restic key remove
+restic key remove <KEY_ID>
 ```
 
 새 Key로 실제 Repository 접근과 복구를 확인하기 전 기존 Key를 제거하지 않습니다. `key remove`는 해당 Key를 사용하는 복구 경로를 끊을 수 있으므로 실행 전 승인과 기록을 남깁니다. Repository Password와 Key 관리 절차는 비상 복구 담당자와 함께 보관합니다.
@@ -690,6 +690,6 @@ Restic은 파일 동기화나 데이터베이스 전용 백업을 단순히 대�
 
 **작성일**: 2026-09-21
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

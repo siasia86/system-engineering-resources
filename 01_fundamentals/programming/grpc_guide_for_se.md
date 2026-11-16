@@ -158,7 +158,7 @@ integration test + compatibility gate
 
 ### Deadline
 
-gRPC client는 기본 deadline을 설정하지 않을 수 있으므로 외부 호출마다 현실적인 deadline을 명시합니다. 서버가 deadline을 넘긴 작업을 계속 수행하면 thread·connection·DB slot이 누적될 수 있습니다.
+gRPC client는 기본 deadline을 설정하지 않으므로 외부 호출마다 현실적인 deadline을 명시합니다. 서버가 deadline을 넘긴 작업을 계속 수행하면 thread·connection·DB slot이 누적될 수 있습니다.
 
 ```text
 incoming request deadline
@@ -358,6 +358,6 @@ CI에는 다음 검증을 포함합니다.
 
 **작성일**: 2026-09-11
 
-**마지막 업데이트**: 2026-09-11
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

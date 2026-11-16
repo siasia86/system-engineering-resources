@@ -134,9 +134,8 @@ docker compose up -d --scale <서비스>=3          # 서비스 인스턴스 수
 ### 데이터 초기화
 
 ```bash
-# 볼륨 초기화 후 재시작
-docker compose down
-docker volume rm $(docker volume ls -q)
+# 볼륨 초기화 후 재시작 (이 프로젝트의 named·익명 볼륨만 삭제)
+docker compose down -v
 docker compose up -d
 
 # 특정 서비스만 재생성
@@ -313,6 +312,6 @@ services:
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

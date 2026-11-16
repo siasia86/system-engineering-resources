@@ -157,7 +157,7 @@ services:
       - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
   grafana:
-    image: grafana/grafana:13.3.0
+    image: grafana/grafana:13.3.1
     ports:
       - "3000:3000"
     environment:
@@ -194,7 +194,7 @@ helm repo update
 helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
   --namespace monitoring \
   --create-namespace \
-  --version 93.1.0 \
+  --version 93.1.2 \
   -f values-monitoring.yaml
 ```
 
@@ -636,6 +636,6 @@ curl -s http://localhost:9090/api/v1/status/tsdb | jq '.data.headStats'
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

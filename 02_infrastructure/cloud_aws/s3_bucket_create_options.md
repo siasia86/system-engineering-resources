@@ -226,7 +226,7 @@ AWS가 키 생성·관리·교체를 모두 자동으로 처리합니다. 사용
 | 2    | KEK (Key Encryption Key)  | AWS S3 자동 | DEK를 암호화, 주기적 자동 교체 |
 
 > DEK(Data Encryption Key): 실제 데이터를 암호화하는 키입니다.
-> KEK(Key Encryption Key): DEK 자체를 암호화하는 키입니다. 키를 암호화하는 키 계층 구조로 KEK가 노출되어도 DEK가 보호됩니다.
+> KEK(Key Encryption Key): DEK 자체를 암호화하는 키입니다. 키를 암호화하는 키 계층 구조로 객체와 함께 저장되는 것은 암호화된 DEK뿐이며 평문 DEK는 남기지 않습니다.
 
 **적합한 경우**: 정적 웹사이트, 공개 데이터, 규제 요건 없는 일반 스토리지
 
@@ -451,6 +451,6 @@ SSE-KMS 버킷에 Cross-account로 접근할 때 권한이 누락되기 쉬운 �
 
 **작성일**: 2026-08-12
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

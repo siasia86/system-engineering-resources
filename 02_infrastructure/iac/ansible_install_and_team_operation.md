@@ -256,7 +256,7 @@ ssh_args = -o ControlMaster=auto -o ControlPersist=600s
 | `ControlMaster=auto`  | -      | SSH 연결 다중화. 동일 호스트 재접속 시 기존 연결 재사용합니다.                                      |
 | `ControlPersist=600s` | -      | 마지막 접속 후 10분간 연결 유지. 연속 playbook 실행 시 SSH 재연결 없이 속도가 향상됩니다.           |
 
-🟡 `ansible.cfg` 우선순위: 현재 디렉토리 → 홈 디렉토리 → `/etc/ansible/ansible.cfg` 순으로 적용됩니다. 프로젝트별 설정이 필요하면 프로젝트 디렉토리에 별도 `ansible.cfg`를 생성합니다.
+🟡 `ansible.cfg` 우선순위: `ANSIBLE_CONFIG` 환경변수 → 현재 디렉토리 → 홈 디렉토리 → `/etc/ansible/ansible.cfg` 순으로 적용됩니다. 프로젝트별 설정이 필요하면 프로젝트 디렉토리에 별도 `ansible.cfg`를 생성합니다.
 
 ### 4-4. Inventory 파일 설정
 
@@ -652,7 +652,7 @@ CURRENT_USER=$(whoami)
 ENV=$(echo "$@" | grep -oP '(?<=-i inventory/)\w+')
 
 if [[ "$ENV" == "prd" || "$ENV" == "stg" ]]; then
-    if ! echo "$ALLOWED_PRD_USERS" | grep -qw "$CURRENT_USER"; then
+    if [[ " $ALLOWED_PRD_USERS " != *" $CURRENT_USER "* ]]; then   # grep -w는 '-'를 단어 경계로 봐 admin·kim 같은 이름도 통과시킴
         echo "❌ $CURRENT_USER 은 $ENV 환경 실행 권한이 없습니다."
         exit 1
     fi
@@ -772,6 +772,6 @@ git push -u origin main
 
 **작성일**: 2026-03-24
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

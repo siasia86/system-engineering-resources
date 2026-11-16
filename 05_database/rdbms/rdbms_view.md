@@ -218,10 +218,10 @@ GROUP BY product_id;
 View 위에 View를 쌓으면 옵티마이저가 최적화하기 어렵습니다.
 
 ```sql
--- 나쁜 예: View 3단 중첩
-CREATE VIEW v3 AS SELECT * FROM v2 WHERE ...;
-CREATE VIEW v2 AS SELECT * FROM v1 WHERE ...;
+-- 나쁜 예: View 3단 중첩 (참조하는 View가 먼저 있어야 하므로 v1 → v2 → v3 순서로 생성)
 CREATE VIEW v1 AS SELECT * FROM base_table WHERE ...;
+CREATE VIEW v2 AS SELECT * FROM v1 WHERE ...;
+CREATE VIEW v3 AS SELECT * FROM v2 WHERE ...;
 
 -- 좋은 예: 단일 View로 통합
 CREATE VIEW v_final AS
@@ -339,6 +339,6 @@ CREATE UNIQUE INDEX ON dashboard_stats (date);
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

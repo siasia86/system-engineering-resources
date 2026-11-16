@@ -271,7 +271,7 @@ curl --request POST 'https://api.example.com/graphql' \
 }
 ```
 
-> Partial response: 일부 field는 성공했지만 다른 field의 validation·resolver·권한 오류가 `errors`에 기록된 응답입니다. client는 HTTP status가 성공이어도 `errors`와 업무 결과를 함께 확인해야 합니다.
+> Partial response: 일부 field는 성공했지만 다른 field의 resolver·권한 오류가 `errors`에 기록된 응답입니다. client는 HTTP status가 성공이어도 `errors`와 업무 결과를 함께 확인해야 합니다.
 
 ### 오류 분류
 
@@ -556,6 +556,6 @@ curl --fail-with-body --silent --show-error \
 
 **작성일**: 2026-09-14
 
-**마지막 업데이트**: 2026-09-14
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

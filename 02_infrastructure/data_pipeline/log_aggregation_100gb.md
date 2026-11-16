@@ -47,13 +47,11 @@ AWS Servers                   │  (hot: 30d)                         │
 
 ### 수집 계층 — Filebeat
 
-| 항목     | 내용                                      |
-|----------|-------------------------------------------|
-| 역할     | 5년 장기 보관 (감사 로그 원본)            |
-| 스토리지 | S3 Standard -> 90일 후 S3 Glacier Instant |
-| 포맷     | Parquet (Athena 쿼리 최적화, gzip 압축)   |
-| 암호화   | SSE-KMS                                   |
-| 버전관리 | S3 Versioning + Object Lock (감사 무결성) |
+| 항목 | 내용                                       |
+|------|--------------------------------------------|
+| 역할 | IDC·AWS 서버 로그 수집 후 Logstash로 전송  |
+| IDC  | App / DB, OS / Infra 서버에 Filebeat 설치  |
+| AWS  | EC2 / ECS, Lambda Logs에서 Filebeat로 전송 |
 
 IDC → AWS 구간은 Direct Connect 또는 Site-to-Site VPN을 사용합니다.
 
@@ -167,6 +165,6 @@ IDC → AWS 구간은 Direct Connect 또는 Site-to-Site VPN을 사용합니다.
 
 **작성일**: 2026-06-18
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

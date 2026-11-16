@@ -47,7 +47,7 @@ sources:
 | PS1 설정                    | 인터랙티브 셸에서만 기본 설정됨                        | bash manual |
 | BASH_ENV 사용               | 쉘 스크립트 실행 시 참조 (비인터랙티브 스크립트)       | bash manual |
 | 인터랙티브 동작             | job control, history, `interactive_comments` 옵션 활성 | bash manual |
-| SIGHUP 처리                 | 인터랙티브 셸 종료 시 자식에게 SIGHUP 재전송           | bash manual |
+| SIGHUP 처리                 | SIGHUP 수신 시 종료 전 모든 job에 SIGHUP 재전송        | bash manual |
 | 에러 처리 차이              | 비인터랙티브 셸에서 syntax error 발생 시 종료          | bash manual |
 
 ## 3. Bash 시작 옵션 (bash.1 man page 기반)
@@ -108,6 +108,6 @@ sources:
 
 **작성일**: 2026-08-01
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

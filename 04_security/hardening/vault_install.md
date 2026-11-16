@@ -21,7 +21,7 @@ Vault는 패스워드, API 키, 인증서 등의 시크릿을 중앙에서 저�
 |--------------------|------------------------------------------------|
 | **Secrets Engine** | 시크릿을 저장하거나 생성하는 플러그인          |
 | **Auth Method**    | Token, AppRole, AWS, Kubernetes 등의 인증 방식 |
-| **Policy**         | 경로별 `read`, `write`, `list` 권한 정의       |
+| **Policy**         | 경로별 `read`, `update`, `list` 등 권한 정의   |
 | **Seal/Unseal**    | Vault의 암호화 키 접근 잠금 또는 해제          |
 | **Lease**          | 동적 시크릿의 유효 기간과 갱신 정보 관리       |
 
@@ -313,7 +313,7 @@ services:
       - "127.0.0.1:8200:8200"
     environment:
       VAULT_DEV_ROOT_TOKEN_ID: SecureToken123   # 개발 모드 전용
-      VAULT_DEV_LISTEN_ADDRESS: 127.0.0.1:8200
+      VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200   # 컨테이너 안 주소, 호스트 노출은 ports의 127.0.0.1로 제한
     cap_add:
       - IPC_LOCK
     command: server -dev
@@ -411,6 +411,7 @@ Unseal Key를 명령행 인자로 전달하지 말고 `vault operator unseal`을
 - Vault AWS KMS Seal: [developer.hashicorp.com/vault/docs/configuration/seal/awskms](https://developer.hashicorp.com/vault/docs/configuration/seal/awskms) — ★★★☆☆
 - Vault Releases: [github.com/hashicorp/vault/releases](https://github.com/hashicorp/vault/releases) — ★★★☆☆
 - Vault Docker Images: [hub.docker.com/r/hashicorp/vault/tags](https://hub.docker.com/r/hashicorp/vault/tags) — ★★★☆☆
+- Vault Docker 이미지 설명(`VAULT_DEV_LISTEN_ADDRESS` 기본 `0.0.0.0:8200`): [hub.docker.com/r/hashicorp/vault](https://hub.docker.com/r/hashicorp/vault) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
@@ -427,6 +428,6 @@ Unseal Key를 명령행 인자로 전달하지 말고 `vault operator unseal`을
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

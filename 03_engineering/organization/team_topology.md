@@ -90,7 +90,7 @@
 ### 원문
 
 > "Any organization that designs a system will produce a design whose structure is a copy of the organization's communication structure."
-> — Conway, Melvin. "How Do Committees Invent?" Datamation, 1968 — Melvin Conway, 1968
+> — Conway, Melvin. "How Do Committees Invent?" Datamation, 1968
 
 ### Inverse Conway Maneuver
 
@@ -190,6 +190,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -121,7 +121,7 @@ Developer A   Developer B            Developer A   Developer B
 │   ├── revprops/       # revision properties (log messages)
 │   └── txn-current     # current transaction number
 ├── hooks/              # hook scripts (pre-commit, etc.)
-└── locks/              # file lock info
+└── locks/              # repository access lock files
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -480,6 +480,6 @@ Monthly           : full dump to offsite (S3, tape)
 
 **작성일**: 2026-07-29
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

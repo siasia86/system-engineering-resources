@@ -11,6 +11,7 @@ sources:
   - https://kubernetes.io/docs/concepts/overview/
   - https://kubernetes.io/docs/concepts/architecture/
   - https://kubernetes.io/docs/setup/production-environment/container-runtimes/
+  - https://kubernetes.io/blog/2025/09/12/kubernetes-v1-34-cri-cgroup-driver-lookup-now-ga/
 ---
 
 # Kubernetes 공식 문서 참조 노트
@@ -65,7 +66,7 @@ kube-controller-manager          (containerd / CRI-O)
 
 - v1.24+: dockershim 제거, CRI 표준 런타임 필수
 - v1.26+: CRI API v1 필수
-- v1.38: containerd 1.x 호환 불가 예정 (RuntimeConfig CRI RPC 미지원 → kubelet의 cgroup driver fallback 제거)
+- v1.36+: containerd 1.x 지원 종료 (v1.35가 마지막 지원 판, RuntimeConfig CRI RPC를 지원하는 containerd 2.0 이상 필요, `kubelet_cri_losing_support` 지표로 사전 확인)
 
 ## 7. 주의사항
 

@@ -46,7 +46,7 @@ sources:
 |------------------------------------|------------------------------------------------------|----------------|
 | uninitialised value use            | 초기화되지 않은 값 사용 시 보고                      | mc-manual §4.2 |
 | invalid read / invalid write       | 할당 범위 밖 메모리 접근                             | mc-manual      |
-| definitely lost                    | 여전히 메모리가 사용 가능하지만 포인터가 없는 경우   | mc-manual      |
+| definitely lost                    | 블록을 가리키는 포인터를 찾을 수 없는 경우           | mc-manual      |
 | indirectly lost                    | 직접 접근 불가 구조체의 내부 포인터                  | mc-manual      |
 | possibly lost                      | 포인터가 블록 시작이 아닌 내부를 가리키는 경우       | mc-manual      |
 | still reachable                    | 종료 시 포인터가 남아있는 메모리 (누수 아닐 수 있음) | mc-manual      |
@@ -56,13 +56,13 @@ sources:
 
 ### 검증된 사실 (2026-08-01)
 
-| 옵션                      | 동작                                             | 출처      |
-|---------------------------|--------------------------------------------------|-----------|
-| `--leak-check=full`       | 누수 블록 상세 출력 (definitely/indirectly 포함) | mc-manual |
-| `--track-origins=yes`     | 초기화되지 않은 값의 원본 추적 (느려짐)          | mc-manual |
-| `--error-exitcode=<n>`    | 오류 발생 시 지정 종료 코드 반환                 | mc-manual |
-| `--show-leak-kinds=all`   | 모든 누수 종류 출력                              | mc-manual |
-| `--undef-value-errors=no` | 초기화 오류 무시 (성능 향상 목적)                | mc-manual |
+| 옵션                      | 동작                                         | 출처      |
+|---------------------------|----------------------------------------------|-----------|
+| `--leak-check=full`       | 누수 블록 상세 출력 (기본 definite·possible) | mc-manual |
+| `--track-origins=yes`     | 초기화되지 않은 값의 원본 추적 (느려짐)      | mc-manual |
+| `--error-exitcode=<n>`    | 오류 발생 시 지정 종료 코드 반환             | mc-manual |
+| `--show-leak-kinds=all`   | 모든 누수 종류 출력                          | mc-manual |
+| `--undef-value-errors=no` | 초기화 오류 무시 (성능 향상 목적)            | mc-manual |
 
 ## 4. 기타 주요 도구
 
