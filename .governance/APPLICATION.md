@@ -32,6 +32,10 @@ MAIN-20261027-06에서 중앙 profile(31 `origin/main` `e6ada74` 기준, 32 prof
 
 중앙 profile 31 `ffd7052`에 맞춰 GOVERNANCE 3절에서 같은 뜻으로 두 번 적힌 비공개 원문 보존 문장 가운데 하나를 지웠습니다(`439be13`). 이어 31 `bc68358`의 3행 공통 기준 문장(첫 이동 때 [옮김 기록](MOVED.md)을 만들고 옛 자리 안내는 외부 참조가 있을 때 둠)을 AGENTS·GOVERNANCE·INDEX·`.governance/README.md`에 병합했습니다(`82acda0`). HANDOFF와 루트 README에는 대응 문장이 없어 바꾸지 않았습니다. 복구는 각 commit을 `git revert`합니다.
 
+## 7. 운영 기준 제목과 적용 문구 정정 — 2026-11-16
+
+중앙 profile 31 `a08c206`(Codex 판정 CX2CL-20261116-02, 31 `808c78e`)에 맞춰 [GOVERNANCE](GOVERNANCE.md)의 제목에서 도구 이름을 빼고, 6절 끝에서 이 문서를 "중앙 profile 후보"로 부르던 문장을 현장 적용 범위는 적용 기록에서, 새 세션의 읽기·스킬 선택·실행 결과는 실제 관찰로 확인한다는 문장으로 바꿨습니다. 3절의 저장 파일 분류 기준 판 표기는 profile과 같이 그대로 두었습니다. 복구는 이 commit을 `git revert`합니다.
+
 ---
 
 **작성일**: 2026-10-04
