@@ -7,7 +7,7 @@ tags:
   - performance
   - hyper-v
   - storage
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/
   - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-counter
@@ -15,6 +15,7 @@ sources:
   - https://learn.microsoft.com/en-us/windows-server/storage/storage-qos/storage-qos-overview
   - https://learn.microsoft.com/en-us/sysinternals/
   - https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/role/hyper-v-server/detecting-virtualized-environment-bottlenecks
+  - https://learn.microsoft.com/en-us/troubleshoot/windows-server/backup-and-storage/troubleshoot-data-corruption-and-disk-errors
 ---
 
 # Windows Server 2022 리소스 모니터링 참조 노트
@@ -95,8 +96,8 @@ Get-VM | Select Name, MemoryAssigned, MemoryDemand, MemoryStatus
 - https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/role/hyper-v-server/detecting-virtualized-environment-bottlenecks
 - 2026-11-09 확인: 이전 출처 `performance-tuning/subsystem/storage/`는 404이며, 성능 튜닝 목차의 Storage subsystem tuning 아래에 별도 디스크 카운터 문서가 없습니다.
 
-
 🟡 아래 Disk latency 임계치(10ms/20ms)는 MS 공식 수치가 아닌 업계 표준입니다. MS Hyper-V 병목 탐지 문서는 `Avg. disk sec/Read`·`Avg. disk sec/Write` 지연이 지속적으로 50ms를 넘으면 VM 분산·더 빠른 저장소·Storage QoS 등을 검토하라고 안내합니다. SSD 환경에서는 5ms 이상을 경고로 볼 수 있습니다.
+
 ### 주요 카운터
 
 | 카운터                                         | 설명             | 정상     | 경고    | 위험             |
@@ -224,8 +225,10 @@ Export-Counter -Path "C:\temp\perfmon_$(Get-Date -Format 'yyyyMMdd_HHmmss').csv"
 | Memory     | Pages Input/sec              | 1시간 평균 < 10                   | learn.microsoft.com/performance-tuning/role/hyper-v-server/memory-performance |
 | Memory     | Standby Cache + Free/Zero    | > 200MB (1GB RAM), > 300MB (2GB+) | 동일                                                                          |
 | Hyper-V    | Logical Processor % Run Time | CPU 사용률 특성화 용도            | learn.microsoft.com/performance-tuning/role/hyper-v-server/configuration      |
-| Disk       | Event ID 153                 | 발생 시 = latency > 15초          | System Event Log (disk provider)                                              |
+| Disk       | Event ID 153                 | 발생 시 = I/O 시간 초과·재시도    | System Event Log (disk provider)                                              |
 | StorageVSP | Event ID 9                   | 발생 시 = VM VHD latency 초과     | Hyper-V-StorageVSP-Admin                                                      |
+
+- Event ID 153: Microsoft 문서는 저장소 하위 시스템 과부하로 요청이 시간 초과되어 miniport 드라이버가 요청을 중단하고 class 드라이버가 재시도한 경우로 설명합니다. 특정 latency 수치(예: 15초)는 공식 문서에서 확인되지 않았습니다(2026-11-16 확인).
 
 ### 업계 표준/베스트 프랙티스 (MS 공식 수치 아님)
 

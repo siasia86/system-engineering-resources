@@ -284,7 +284,7 @@ find . -name "vault.yml" | xargs ansible-vault rekey \
 ### 설계
 
 - `vault_` 접두사 규칙 준수: 암호화 변수와 평문 변수를 명확히 구분.
-- 파일 단위 암호화 권장: 인라인 암호화는 diff가 어려워 코드 리뷰에 불편.
+- 파일 단위 암호화 권장: `ansible-vault rekey`로 비밀번호 교체가 쉽고 변수 이름까지 숨길 수 있음. 인라인(변수 단위) 암호화는 변수 이름이 보여 읽기·리뷰는 쉽지만 rekey를 지원하지 않아 비밀번호 교체가 번거로움.
 - `group_vars/*/vault.yml` 패턴: 그룹별로 vault 파일을 분리하면 권한 관리 용이.
 
 ### 운영
@@ -331,6 +331,6 @@ ansible localhost -m debug -a "var=vault_db_password" \
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

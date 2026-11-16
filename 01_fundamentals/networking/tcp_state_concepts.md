@@ -337,7 +337,7 @@ sysctl -w net.ipv4.ip_local_port_range="10000 65535"
 
 - RFC 9293: Transmission Control Protocol (RFC 793 대체)
 - RFC 1122: Requirements for Internet Hosts
-- Linux Kernel Documentation: tcp.txt
+- Linux Kernel Documentation: IP Sysctl (`Documentation/networking/ip-sysctl.rst`, tcp_fin_timeout·tcp_tw_reuse 등): [docs.kernel.org](https://docs.kernel.org/networking/ip-sysctl.html) — ★★★☆☆ (확인일 2026-11-16)
 - Stevens, W. Richard. "TCP/IP Illustrated, Volume 1"
 
 ---
@@ -355,6 +355,6 @@ sysctl -w net.ipv4.ip_local_port_range="10000 65535"
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -281,8 +281,9 @@ spec:
 | Error Budget Policy 무시      | 조직 합의 부재                | 경영진 포함 Policy 재승인            |
 | Alert fatigue (과다 알림)     | Burn rate 임계값 부적절       | Multi-window alert 적용, 임계값 조정 |
 
-> SLO/SLI/Error Budget 개념은 Google SRE Book Ch.4 "Service Level Objectives"에서 최초 정립되었습니다. Error Budget Policy는 Google SRE Workbook Ch.2에서 상세히 다룹니다.
+> SLO/SLI/Error Budget 개념은 Google SRE Book Ch.4 "Service Level Objectives"에서 최초 정립되었습니다. Error Budget Policy는 Google SRE Workbook Ch.2 "Implementing SLOs"에서 다루고, 예시 문서는 Appendix B "Example Error Budget Policy"에 있습니다.
 > — https://sre.google/sre-book/service-level-objectives/
+> — https://sre.google/workbook/implementing-slos/
 > — https://sre.google/workbook/error-budget-policy/
 
 > SLI(Service Level Indicator)는 측정값, SLO(Service Level Objective)는 목표값, SLA(Service Level Agreement)는 계약입니다. 이 3계층 구조는 Google SRE Book Ch.4에서 정의합니다.
@@ -291,7 +292,7 @@ spec:
 > Error Budget = 1 - SLO. 예: SLO 99.9% → Error Budget = 0.1% = 30일 기준 43.2분(평균 월 길이 기준 43.83분). Budget 소진 시 새 기능 배포를 중단하고 안정화에 집중합니다.
 > — https://sre.google/workbook/error-budget-policy/
 
-> Google SRE Workbook Ch.2: Error Budget Policy는 팀 간 합의 문서이며, budget 소진 시 행동(배포 동결, postmortem 필수 등)을 사전 정의합니다.
+> Google SRE Workbook Appendix B: Error Budget Policy는 팀 간 합의 문서이며, budget 소진 시 행동(배포 동결, postmortem 필수 등)을 사전 정의합니다.
 > — https://sre.google/workbook/error-budget-policy/
 
 > Burn rate alert: 14.4x burn rate는 "이 속도가 지속되면 약 2일 내 월간 budget 전체 소진"을 의미합니다. Google SRE Workbook의 multi-window alerting에서 1시간 윈도우 기준 Page alert 임계값입니다.
@@ -309,6 +310,6 @@ spec:
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

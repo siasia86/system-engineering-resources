@@ -751,7 +751,7 @@ class PositiveNumber:
     
     def __set__(self, obj, value):
         if value < 0:
-            raise ValueError(f"{self.name}은 양수여야 합니다")
+            raise ValueError(f"{self.name}은 0 이상이어야 합니다")
         obj.__dict__[self.name] = value
 
 class Product:
@@ -790,6 +790,6 @@ p = Product("노트북", 1000000, 10)
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-03-11
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

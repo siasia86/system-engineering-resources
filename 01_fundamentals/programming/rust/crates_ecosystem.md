@@ -177,7 +177,7 @@ where D: Deserializer<'de> {
 use regex::Regex;
 
 // 로그 파싱 예시
-fn parse_nginx_log(line: &str) -> Option<(String, u16, String)> {
+fn parse_nginx_log(line: &str) -> Option<(String, String, String)> {
     let re = Regex::new(
         r#"(\d+\.\d+\.\d+\.\d+) .+ \[.+\] "(\w+) (.+?) HTTP"#
     ).unwrap();
@@ -185,7 +185,7 @@ fn parse_nginx_log(line: &str) -> Option<(String, u16, String)> {
     re.captures(line).map(|caps| {
         (
             caps[1].to_string(), // IP
-            caps[2].parse().unwrap_or(0), // method → 간략화
+            caps[2].to_string(), // method (GET, POST 등)
             caps[3].to_string(), // path
         )
     })

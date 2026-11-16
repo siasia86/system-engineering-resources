@@ -222,16 +222,18 @@ docker compose up -d --force-recreate            # 네트워크 설정 변경 �
 services:
   ubuntu22:
     privileged: true
-    cgroup: host          # cgroup v2 + systemd 249+ 필수
-    # cgroup: private     # systemd 237 이하에서만 정상 동작
+    cgroup: host          # with host /sys/fs/cgroup bind mount (image README)
+    # cgroup: private     # dockerd default on cgroup v2, no host cgroup mount
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
 ```
 
-| cgroup 모드 | cgroupns | systemd 237 이하 | systemd 249+ | 비고                      |
-|-------------|----------|------------------|--------------|---------------------------|
-| `host`      | host     | ✅               | ✅           | cgroup v2 호스트에서 권장 |
-| `private`   | private  | ✅               | ❌           | Exit(255) 발생            |
+| cgroup 모드 | dockerd 기본값   | 용도                                                   |
+|-------------|------------------|--------------------------------------------------------|
+| `host`      | cgroup v1 호스트 | systemd 이미지 + 호스트 `/sys/fs/cgroup` rw bind mount |
+| `private`   | cgroup v2 호스트 | 일반 컨테이너 (컨테이너 자신의 cgroup만 보임)          |
+
+🔵 geerlingguy systemd 이미지 README는 `--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns=host` 조합을 안내합니다. 모드별 상세는 [docker.md 11절](./docker.md#11-cgroup-namespace)을 참고합니다.
 
 ### 리소스 제한
 

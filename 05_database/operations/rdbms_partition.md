@@ -240,7 +240,8 @@ SELECT * FROM orders WHERE YEAR(created_at) = 2026;
 -- 좋은 예: 범위 조건 사용
 SELECT * FROM orders
 WHERE created_at >= '2026-01-01' AND created_at < '2027-01-01';
--- → p2026만 스캔
+-- → p2026 중심으로 프루닝 (YEAR() 기준이라 상한 '2027-01-01'의 YEAR 값 2027이
+--   속한 p_future도 함께 포함될 수 있음, EXPLAIN의 partitions 열로 확인)
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -380,6 +381,6 @@ ON orders (order_id, created_at);  -- created_at(파티션 키) 포함
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

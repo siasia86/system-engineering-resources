@@ -8,7 +8,7 @@ tags:
   - activation
   - datacenter
   - standard
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://learn.microsoft.com/en-us/windows-server/get-started/editions-comparison
   - https://www.microsoft.com/en-us/licensing/product-licensing/windows-server
@@ -237,7 +237,7 @@ Get-WindowsEdition -Online
 
 ## 10. ESU (Extended Security Updates) 핵심 사실
 
-> 출처: learn.microsoft.com/en-us/lifecycle/faq/extended-security-updates (2026-07-29)
+> 출처: learn.microsoft.com/en-us/lifecycle/faq/extended-security-updates (2026-11-16 확인)
 
 ### 비용 구조
 
@@ -247,7 +247,7 @@ Get-WindowsEdition -Online
 
 ### 무료 조건
 
-- Azure VM: **무료 자동 적용**
+- Azure VM: Windows Server 2012/R2는 **무료 자동 적용**, Windows Server 2016은 Azure에서도 **유료**
 - Azure Arc 연동 on-premises: **유료** (Azure Arc 에이전트 설치 필요)
 
 ### 적용 버전별 ESU 종료일
@@ -256,7 +256,9 @@ Get-WindowsEdition -Online
 |------------------------|---------------|-----------------|
 | Windows Server 2012/R2 | 2023-10-10    | 2026-10-13 (Y3) |
 | Windows Server 2016    | 2027-01-12    | 2030-01-08 (Y3) |
-| Windows Server 2019    | 2029-01-09    | 2032-01-13 (Y3) |
+| Windows Server 2019    | 2029-01-09    | 미발표          |
+
+- 2026-11-16 확인: 공식 ESU 표에는 Windows Server 2016(Year 3 종료 2030-01-08)까지만 있고 Windows Server 2019 ESU는 아직 발표되지 않았습니다.
 
 ### 수명주기 지원 단계 구분 (라이선스 비용 기준)
 

@@ -336,9 +336,10 @@ server {
     ssl_session_tickets off;
 
     # OCSP Stapling: 인증서에 OCSP 주소가 있을 때만 의미 있음
-    # Let's Encrypt는 2025-08-06 OCSP를 종료해 효과가 없으므로 끄거나 지움
-    ssl_stapling        on;
-    ssl_stapling_verify on;
+    # Let's Encrypt는 2025-08-06 OCSP를 종료해 이 예시(Let's Encrypt 인증서)에서는 끔
+    # OCSP 주소가 있는 다른 CA 인증서를 쓰면 아래 두 줄의 주석을 풉니다
+    # ssl_stapling        on;
+    # ssl_stapling_verify on;
 
     # HSTS (2년)
     add_header Strict-Transport-Security "max-age=63072000" always;
@@ -462,6 +463,6 @@ ps aux | grep nginx
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

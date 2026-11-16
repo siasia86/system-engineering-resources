@@ -687,9 +687,13 @@ with ctx:
 ### Tip 8: nullcontext로 조건부 처리
 
 ```python
+import threading
 from contextlib import nullcontext
 
+shared_resource = 0
+
 def process(use_lock=True):
+    global shared_resource
     lock = threading.Lock() if use_lock else nullcontext()
     
     with lock:
@@ -861,6 +865,6 @@ class GoodContext:
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

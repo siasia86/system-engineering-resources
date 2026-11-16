@@ -844,11 +844,13 @@ gh pr create
 
 ### 마이그레이션 권장
 
-| 용도          | Classic → Fine-grained                               |
-|---------------|------------------------------------------------------|
-| 일상 작업     | `repo` scope → Contents + PRs + Issues (특정 repo만) |
-| Actions 연동  | `repo, workflow` → Contents + Actions (특정 repo만)  |
-| org 전체 접근 | resource owner를 org로 지정 (토큰당 owner 1개)       |
+| 용도          | Classic → Fine-grained                                |
+|---------------|-------------------------------------------------------|
+| 일상 작업     | `repo` scope → Contents + PRs + Issues (특정 repo만)  |
+| Actions 연동  | `repo, workflow` → Contents + Workflows (특정 repo만) |
+| org 전체 접근 | resource owner를 org로 지정 (토큰당 owner 1개)        |
+
+🔵 Classic `workflow` scope(`.github/workflows` 파일 추가·수정)에 대응하는 Fine-grained 권한은 "Workflows"입니다. 워크플로 실행·재실행·로그 관리까지 하려면 "Actions" 권한을 따로 추가합니다.
 
 🟡 Fine-grained PAT 하나는 resource owner(사용자 또는 org) 1개의 저장소에만 접근합니다. 여러 owner에 접근하려면 토큰을 나눠 발급합니다.
 
@@ -914,7 +916,12 @@ gh pr list --json number,title,statusCheckRollup --jq   '.[] | "\(.number) \(.ti
 gh pr list --search "review-requested:@me" --json number --jq 'length'
 
 # 오래된 브랜치 정리 (머지된 PR의 원격 브랜치)
-gh pr list --state merged --json headRefName --jq '.[].headRefName' |   xargs -I{} git push origin --delete {}
+# 🟡 원격 브랜치 삭제는 되돌리기 어렵습니다. 먼저 목록만 출력해 확인합니다.
+#    gh pr list 기본 조회 수는 30개이며, 같은 이름으로 다시 만든 브랜치나 main 같은 보호 대상이 섞일 수 있습니다.
+gh pr list --state merged --limit 100 --json headRefName --jq '.[].headRefName' | sort -u > merged_branches.txt
+cat merged_branches.txt   # 삭제 대상 확인, 남길 브랜치는 파일에서 지움
+# 확인 후 실행
+xargs -I{} git push origin --delete {} < merged_branches.txt
 ```
 
 ### co-author 추가
@@ -1009,6 +1016,6 @@ gh auth login
 
 **작성일**: 2026-07-06
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

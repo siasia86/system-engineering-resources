@@ -529,11 +529,10 @@ mkdir -p "${RESTORE_SCRIPT_DIR}"
 BACKUP_DATE=$(date '+%Y%m%d-%H')
 BACKUP_DIR="${FULL_BACKUP_DIR}/${BACKUP_DATE}"
 DB_PASS=$(cat "${DB_PASS_FILE}")
-LOG_DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
-# 로깅 함수
+# 로깅 함수 (줄마다 현재 시각 기록)
 log() {
-    echo "[${LOG_DATE}] $*" | tee -a "${FULL_LOG}"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "${FULL_LOG}"
 }
 
 # 에러 핸들러
@@ -725,11 +724,10 @@ FULL_DATE=$(date '+%Y%m%d')-00
 BACKUP_DIR="${INC_BACKUP_DIR}/${BACKUP_DATE}"
 BASEDIR="${FULL_BACKUP_DIR}/${FULL_DATE}"
 DB_PASS=$(cat "${DB_PASS_FILE}")
-LOG_DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
-# 로깅 함수
+# 로깅 함수 (줄마다 현재 시각 기록)
 log() {
-    echo "[${LOG_DATE}] $*" | tee -a "${INC_LOG}"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "${INC_LOG}"
 }
 
 error_exit() {
@@ -900,11 +898,9 @@ main
 
 # Incremental Backup: 매시간 (00시 제외)
 0 1-23 * * * /usr/local/bin/xtrabackup-incremental.sh
-
-# 또는 주 1회 Full, 나머지는 Incremental
-0 0 * * 0 /usr/local/bin/xtrabackup-full.sh      # 일요일
-0 * * * 1-6 /usr/local/bin/xtrabackup-incremental.sh  # 월-토
 ```
+
+🟡 7.3 증분 스크립트는 당일 00시 Full(`${FULL_BACKUP_DIR}/${FULL_DATE}`)을 기준으로 삼으므로 위처럼 Full을 매일 받아야 합니다. 주 1회 Full로 바꾸려면 스크립트가 가장 최근 Full을 찾도록 `BASEDIR`를 먼저 고친 뒤 일정을 바꿉니다.
 
 ### 7.5 스크립트 설치
 
@@ -1167,7 +1163,7 @@ fi
 # 백업 크기 추적
 
 BACKUP_DIR="/backup/full/$(date +%Y%m%d)-00"
-BACKUP_SIZE=$(du -sh "${BACKUP_DIR}" | awk '{print $1}')
+BACKUP_SIZE=$(du -sm "${BACKUP_DIR}" | awk '{print $1}')   # MB 숫자 (gnuplot은 12G 같은 표기를 숫자로 읽지 못함)
 
 echo "$(date '+%Y-%m-%d %H:%M:%S'),${BACKUP_SIZE}" >> /var/log/xtrabackup/backup_size.log
 
@@ -1180,7 +1176,7 @@ set xdata time
 set timefmt "%Y-%m-%d %H:%M:%S"
 set format x "%m/%d"
 set xlabel "Date"
-set ylabel "Backup Size"
+set ylabel "Backup Size (MB)"
 plot '/var/log/xtrabackup/backup_size.log' using 1:2 with lines title 'Backup Size'
 EOF
 ```
@@ -2144,13 +2140,18 @@ grep -i "error\|failed" ${LOG_FILE} | tail -10 >> ${REPORT_FILE}
 # 평균 백업 시간
 echo "" >> ${REPORT_FILE}
 echo "2. Backup Duration Statistics" >> ${REPORT_FILE}
-grep "completed OK" ${LOG_FILE} | tail -30 | \
-    awk '{print $1, $2}' | \
-    while read start end; do
-        duration=$(($(date -d "$end" +%s) - $(date -d "$start" +%s)))
-        echo "${duration}s"
-    done | \
-    awk '{sum+=$1; count++} END {print "Average: " sum/count "s"}' >> ${REPORT_FILE}
+# 7.2 스크립트의 "Starting full backup"·"Full backup completed successfully" 줄 시각을 짝지어 계산
+grep -E "Starting full backup|Full backup completed successfully" ${LOG_FILE} | \
+    sed -E 's/^\[([0-9-]+ [0-9:]+)\] (Starting|Full).*/\1|\2/' | \
+    while IFS='|' read ts kind; do
+        if [ "${kind}" = "Starting" ]; then
+            start=$(date -d "${ts}" +%s)
+        elif [ -n "${start}" ]; then
+            echo $(( $(date -d "${ts}" +%s) - start ))
+            start=""
+        fi
+    done | tail -30 | \
+    awk '{sum+=$1; count++} END {if (count) print "Average: " sum/count "s"; else print "Average: no data"}' >> ${REPORT_FILE}
 
 # 백업 크기 추이
 echo "" >> ${REPORT_FILE}
@@ -2322,6 +2323,6 @@ cat ${RESULTS_FILE}
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

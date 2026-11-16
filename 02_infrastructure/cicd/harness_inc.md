@@ -53,8 +53,10 @@ Git Push ──► Harness CI (Build/Test)
                 └── Health Check
                 │
                 ▼
-         Auto Rollback (이상 감지 시 자동 롤백)
+         Auto Rollback (on anomaly detected)
 ```
+
+Continuous Verification이 배포 후 메트릭·로그에서 이상을 감지하면 자동으로 롤백합니다.
 
 ### Delegate (핵심 컴포넌트)
 

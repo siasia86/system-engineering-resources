@@ -6,7 +6,7 @@ tags:
   - dotnet
   - programming
   - microsoft
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://learn.microsoft.com/en-us/dotnet/csharp/
   - https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/
@@ -16,7 +16,7 @@ sources:
 
 # C# / .NET 공식 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-08-02)
+## 1. 버전 현황 (확인일: 2026-11-16)
 
 ### 공식 소스
 
@@ -26,23 +26,24 @@ sources:
 | C# what's new              | https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/                                    | 언어 버전 변경 이력 |
 | configure-language-version | https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version | 버전 대응표         |
 
-### 검증된 사실 (2026-08-02)
+### 검증된 사실 (2026-11-16 기준)
 
-| .NET 버전 | 릴리스 유형 | 지원 상태   | EOL 날짜   | 기본 C# 버전 | 출처           |
-|-----------|-------------|-------------|------------|--------------|----------------|
-| .NET 11   | preview     | preview     | -          | C# 15(예정)  | releases-index |
-| .NET 10   | LTS         | active      | 2028-11-14 | C# 14        | releases-index |
-| .NET 9    | STS         | maintenance | 2026-11-10 | C# 13        | releases-index |
-| .NET 8    | LTS         | maintenance | 2026-11-10 | C# 12        | releases-index |
-| .NET 7    | STS         | EOL         | 2024-05-14 | C# 11        | releases-index |
-| .NET 6    | LTS         | EOL         | 2024-11-12 | C# 10        | releases-index |
+| .NET 버전 | 릴리스 유형 | 지원 상태 | EOL 날짜   | 기본 C# 버전 | 출처           |
+|-----------|-------------|-----------|------------|--------------|----------------|
+| .NET 11   | STS         | active    | 2028-11-14 | C# 15        | releases-index |
+| .NET 10   | LTS         | active    | 2028-11-14 | C# 14        | releases-index |
+| .NET 9    | STS         | EOL       | 2026-11-10 | C# 13        | releases-index |
+| .NET 8    | LTS         | EOL       | 2026-11-10 | C# 12        | releases-index |
+| .NET 7    | STS         | EOL       | 2024-05-14 | C# 11        | releases-index |
+| .NET 6    | LTS         | EOL       | 2024-11-12 | C# 10        | releases-index |
 
-🟡 .NET 8/9는 2026-11-10 EOL 예정. (2026-11-09 확인: .NET 11은 STS 릴리스로 11.0.0-rc.3(2026-10-25)·go-live 단계이며, .NET 8/9의 EOL 날짜는 변동 없음)
+🟡 .NET 8/9는 2026-11-10에 지원이 끝났습니다(마지막 판 8.0.34·9.0.23). .NET 11.0.0은 같은 날 STS로 출시되었고, 현재 LTS는 .NET 10입니다. C# 15는 `net11.0` 대상 프로젝트의 기본 언어 버전입니다([What's new in C# 15](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-15)).
 
 ### C# 언어 버전 ↔ .NET SDK 기본 매핑
 
 | C# 버전 | 기본 .NET SDK | 출처                |
 |---------|---------------|---------------------|
+| C# 15   | .NET 11       | whats-new/csharp-15 |
 | C# 14   | .NET 10       | whats-new/csharp-14 |
 | C# 13   | .NET 9        | whats-new/csharp-13 |
 | C# 12   | .NET 8        | language-reference  |
@@ -163,6 +164,6 @@ sources:
 
 **작성일**: 2026-08-02
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

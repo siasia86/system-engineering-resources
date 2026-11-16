@@ -88,9 +88,9 @@ IDC Servers                          AWS
 | 역할     | 최근 7일 핫 데이터 운영 조회                  |
 | 인스턴스 | r6g.4xlarge.search × 48 (3 AZ × 16)           |
 | 스토리지 | gp3 EBS 클러스터 약 608TB (노드당 최대 12TiB) |
-| ISM      | 7일 후 S3로 이동                              |
+| ISM      | 7일 후 인덱스 삭제 (`delete`)                 |
 
-🟡 100TB/일 규모에서 OpenSearch 보관은 7일 이내로 제한합니다. 그 이상은 Snowflake + S3에서 처리합니다.
+🟡 100TB/일 규모에서 OpenSearch 보관은 7일 이내로 제한합니다. 그 이상은 Snowflake + S3에서 처리합니다. ISM에는 인덱스를 S3로 옮기는 동작이 없고(`delete`·`snapshot`·`convert_index_to_remote` 등), S3 원본은 MSK → Firehose 경로로 따로 적재됩니다. 인덱스 백업이 필요하면 ISM `snapshot` 동작으로 S3 스냅샷 저장소에 남깁니다.
 
 ### 장기 분석 — Snowflake
 
@@ -119,18 +119,20 @@ Snowflake가 이 규모에서 선택되는 이유:
 ## 4. 스토리지 설계
 
 ```
-수집 (원본)
+ingest (raw)
     │
-    ├──► MSK 48시간 버퍼
-    │
-    ├──► S3 raw (JSON) ──► 30일 후 Glacier Instant
-    │
-    └──► Glue ETL ──► S3 Parquet
-                          │
-                          ├──► Snowflake External Stage (5년 분석)
-                          │
-                          └──► OpenSearch (7일 핫 데이터)
+    └──► MSK (48h buffer)
+              │
+              ├──► Firehose ──► S3 raw (JSON) ──► Glacier Instant after 30d
+              │                      │
+              │                      └──► Glue ETL ──► S3 Parquet
+              │                                            │
+              │                                            └──► Snowflake External Stage (5yr)
+              │
+              └──► OpenSearch (7d hot data)
 ```
+
+수집 원본은 MSK에 48시간 버퍼링된 뒤 두 갈래로 나뉩니다. 한쪽은 Firehose로 S3 raw(JSON)에 적재되어 30일 후 Glacier Instant로 전환되고, Glue ETL이 Parquet로 변환해 Snowflake External Stage(5년 분석)에 제공합니다. 다른 쪽은 OpenSearch에 직접 적재되어 7일간 핫 데이터로 조회합니다(2절 구성도와 같은 흐름).
 
 ### 용량 추산
 
@@ -209,6 +211,6 @@ Snowflake가 이 규모에서 선택되는 이유:
 
 **작성일**: 2026-06-18
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

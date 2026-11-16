@@ -480,7 +480,7 @@ X-Forwarded-For: 1.2.3.4, 10.0.0.1
 
 ## 7. TLS/SSL 헤더
 
-### TLS Handshake 구조
+### TLS Handshake 구조 (TLS 1.2 전체 핸드셰이크)
 
 ```
 Client                                              Server
@@ -492,8 +492,10 @@ Client                                              Server
     │                                                  │
     │       <═══════════════════ ServerHello ──────────┤
     │         - Selected Cipher Suite                  │
-    │         - Server Certificate                     │
     │         - Random Data                            │
+    │       <═══════════════════ Certificate ──────────┤
+    │       <═════════════ ServerKeyExchange ──────────┤
+    │       <═══════════════ ServerHelloDone ──────────┤
     │                                                  │
     ├── ClientKeyExchange ════════════════════>        │
     ├── ChangeCipherSpec ═════════════════════>        │
@@ -504,6 +506,8 @@ Client                                              Server
     │                                                  │
     └── Encrypted Communication Start ─────────────────┘
 ```
+
+서버 인증서는 ServerHello 안이 아니라 별도 Certificate 메시지로 보냅니다. ServerKeyExchange는 ECDHE 같은 임시 키 교환에서만 보냅니다(RFC 5246 §7.3). TLS 1.3은 ClientKeyExchange 없이 ClientHello·ServerHello의 key_share 확장으로 키를 교환하고, ServerHello 뒤 메시지(인증서 포함)를 암호화합니다(RFC 8446 §2).
 
 ### TLS Record 헤더 (5 bytes)
 
@@ -664,32 +668,36 @@ VNI 300: 고객 C 네트워크
 
 ### 구조 (Long Header)
 
+RFC 9000 §17.2의 표기(괄호 안은 bit 수)입니다.
+
 ```
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-┌─┬───────┬───────────┬─────────┬───────────────────────────────┐
-│1│  Type │  Reserved │ PKN Len │          Version              │
-├─┴───────┴─┬─────────┴─────────┴───────────────────────────────┤
-│ DCID Len  │   Destination Connection ID (0-160 bits)          │
-├───────────┼───────────────────────────────────────────────────┤
-│ SCID Len  │   Source Connection ID (0-160 bits)               │
-├───────────┴───────────────────────────────────────────────────┤
-│                       Packet Number                           │
-├───────────────────────────────────────────────────────────────┤
-│                         Payload                               │
-└───────────────────────────────────────────────────────────────┘
+Long Header Packet {
+  Header Form (1) = 1,
+  Fixed Bit (1) = 1,
+  Long Packet Type (2),
+  Type-Specific Bits (4),
+  Version (32),
+  Destination Connection ID Length (8),
+  Destination Connection ID (0..160),
+  Source Connection ID Length (8),
+  Source Connection ID (0..160),
+  Type-Specific Payload (..),
+}
 ```
 
 ### 필드 설명
 
-| 필드              | 크기    | 설명                                         |
-|-------------------|---------|----------------------------------------------|
-| **Header Form**   | 1 bit   | 1=Long Header, 0=Short Header                |
-| **Type**          | 2 bits  | 패킷 타입 (Initial, 0-RTT, Handshake, Retry) |
-| **Version**       | 32 bits | QUIC 버전                                    |
-| **DCID**          | 가변    | Destination Connection ID                    |
-| **SCID**          | 가변    | Source Connection ID                         |
-| **Packet Number** | 가변    | 패킷 번호                                    |
+| 필드                    | 크기       | 설명                                                               |
+|-------------------------|------------|--------------------------------------------------------------------|
+| **Header Form**         | 1 bit      | 1=Long Header, 0=Short Header                                      |
+| **Fixed Bit**           | 1 bit      | 항상 1 (0이면 유효한 QUIC 패킷이 아님)                             |
+| **Long Packet Type**    | 2 bits     | 패킷 타입 (Initial, 0-RTT, Handshake, Retry)                       |
+| **Type-Specific Bits**  | 4 bits     | Initial·0-RTT·Handshake는 Reserved Bits(2)·Packet Number Length(2) |
+| **Version**             | 32 bits    | QUIC 버전                                                          |
+| **DCID Len / SCID Len** | 8 bits     | 각 Connection ID 길이 (byte 단위, 최대 20)                         |
+| **DCID**                | 0~160 bits | Destination Connection ID                                          |
+| **SCID**                | 0~160 bits | Source Connection ID                                               |
+| **Packet Number**       | 8~32 bits  | Type-Specific Payload 안에 위치 (Retry에는 없음)                   |
 
 ### QUIC 특징
 

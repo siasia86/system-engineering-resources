@@ -242,7 +242,10 @@ backup-tool/
 └── README.md
 ```
 
-**Jenkinsfile:**
+**Jenkinsfile (Multibranch Pipeline 작업 기준):**
+
+`when { branch ... }` 조건은 Multibranch Pipeline에서만 동작하므로, 이 예시는 브랜치별로 작업이 만들어지는 Multibranch Pipeline 작업을 전제로 합니다.
+
 ```groovy
 pipeline {
     agent any
@@ -254,7 +257,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/company/backup-tool.git'
+                checkout scm   // 지금 빌드 중인 브랜치를 체크아웃
             }
         }
         
@@ -574,7 +577,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/company/backup-tool.git'
+                git branch: 'main', url: 'https://github.com/company/backup-tool.git'   // branch 생략 시 master
             }
         }
         stage('Deploy') {

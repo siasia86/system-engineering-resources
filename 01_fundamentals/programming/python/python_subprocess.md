@@ -182,6 +182,7 @@ try:
     proc.wait(timeout=5)
 except subprocess.TimeoutExpired:
     proc.kill()
+    proc.wait()  # 종료된 자식 프로세스 회수 (좀비 방지)
     print("프로세스 강제 종료")
 ```
 
@@ -221,7 +222,8 @@ except subprocess.CalledProcessError as e:
 
 ```python
 def check_disk_usage(threshold=80):
-    result = subprocess.run(['df', '-h'], capture_output=True, text=True)
+    # -P: 장치 이름이 길어도 파일 시스템마다 한 줄로 출력 (POSIX 형식)
+    result = subprocess.run(['df', '-hP'], capture_output=True, text=True)
     for line in result.stdout.strip().split('\n')[1:]:
         parts = line.split()
         usage = int(parts[4].replace('%', ''))
@@ -317,6 +319,6 @@ def search_log(log_file, pattern, lines=10):
 
 **작성일**: 2026-04-20
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

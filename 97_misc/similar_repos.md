@@ -75,15 +75,17 @@
 
 ### 커버리지 비교
 
+이 repo 열의 문서 수는 2026-11-16 기준이며, 해당 폴더(Linux `01_fundamentals/linux`, DB `05_database`, IaC `02_infrastructure/iac`, AWS `02_infrastructure/cloud_aws`, 파이프라인 `02_infrastructure/data_pipeline`, AI `06_career/ai_tools`) 아래 README를 뺀 `.md` 수입니다.
+
 | 분야             | awesome-sysadmin      | devops-exercises      | 이 repo                    |
 |------------------|-----------------------|-----------------------|----------------------------|
-| Linux 기초/고급  | 🟡 (도구 목록)        | ✅ (Q&A·실습)         | ✅ (가이드 30개)           |
-| DB 튜닝/운영     | 🟡 (RDBMS·NoSQL 도구) | ✅ (Databases 주제)   | ✅ (가이드 27개)           |
-| 보안 (CVE/CWE)   | 🟡 (보안 도구)        | ✅ (Security 주제)    | ✅ (CVE 5건 + CWE 4건)     |
-| IaC (Ansible/TF) | ✅                    | ✅                    | ✅ (가이드 11개)           |
-| 클라우드 (AWS)   | 🟡 (클라우드 도구)    | ✅ (Cloud·AWS 주제)   | ✅ (AWS 가이드 6개)        |
+| Linux 기초/고급  | 🟡 (도구 목록)        | ✅ (Q&A·실습)         | ✅ (가이드 55개)           |
+| DB 튜닝/운영     | 🟡 (RDBMS·NoSQL 도구) | ✅ (Databases 주제)   | ✅ (가이드 31개)           |
+| 보안 (CVE/CWE)   | 🟡 (보안 도구)        | ✅ (Security 주제)    | ✅ (CVE 7건 + CWE 4건)     |
+| IaC (Ansible/TF) | ✅                    | ✅                    | ✅ (가이드 12개)           |
+| 클라우드 (AWS)   | 🟡 (클라우드 도구)    | ✅ (Cloud·AWS 주제)   | ✅ (AWS 가이드 9개)        |
 | 파이프라인       | 🟡 (CI/CD·로그 도구)  | ✅ (CI/CD·Kafka 주제) | ✅ (데이터 파이프라인 4개) |
-| AI/에이전트      | ❌                    | ❌                    | ✅ (AI 도구 가이드 8개)    |
+| AI/에이전트      | ❌                    | ❌                    | ✅ (AI 도구 가이드 31개)   |
 
 ### 품질 관리 비교
 
@@ -167,6 +169,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

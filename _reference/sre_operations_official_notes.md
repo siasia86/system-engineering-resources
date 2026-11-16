@@ -7,7 +7,7 @@ tags:
   - oncall
   - postmortem
   - itil
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://sre.google/sre-book/table-of-contents/
   - https://sre.google/sre-book/introduction/
@@ -15,6 +15,9 @@ sources:
   - https://sre.google/sre-book/availability-table/
   - https://sre.google/workbook/table-of-contents/
   - https://sre.google/workbook/implementing-slos/
+  - https://sre.google/workbook/managing-load/
+  - https://sre.google/sre-book/software-engineering-in-sre/
+  - https://sre.google/sre-book/production-environment/
   - https://openslo.com/
   - https://response.pagerduty.com/
   - https://github.com/github/gh-ost
@@ -149,20 +152,21 @@ spec:
           isRolling: true
 ```
 
-## 3. Capacity Planning (확인일: 2026-07-07)
+## 3. Capacity Planning (확인일: 2026-11-16)
 
-출처: Google SRE Workbook Ch.11 "Managing Load"
+출처: Google SRE Book Ch.2 "The Production Environment at Google", Ch.18 "Software Engineering in SRE", SRE Workbook Ch.11 "Managing Load"
 
 ### Google의 Capacity Planning 원칙
 
-- "Plan to fail" — N+2 capacity (N+1은 불충분)
-- Demand forecasting: linear regression 부족 → seasonal decomposition 사용
-- Load testing: 실제 트래픽의 2x~3x로 stress test
-- Headroom: 항상 50% headroom 유지 권장 (burst 대비)
+- N+2 예시: 업데이트 중인 task 1개와 그 사이 장애 1개를 견디도록 N+2로 잡고, 트래픽이 적은 리전은 비용을 줄이려고 N+1로 낮춤 (SRE Book Ch.2)
+- Intent-based capacity planning: "My service must be N + 2 per continent"처럼 중복 수준을 의도로 표현하고, 자원이 부족하면 서비스별 중복 수준(N + 2, N + 1)의 우선순위를 정함 (SRE Book Ch.18, Auxon 사례)
+- Spare capacity: 사용자 대상 서비스는 과부하 보호와 중복을 위한 여유 용량을 확보 (SRE Workbook Ch.11, 비율 수치는 제시하지 않음)
+- Load testing 사례: Niantic은 가장 낙관적인 트래픽 예상치의 5배까지 부하 시험 (SRE Workbook Ch.11)
+- 이전 판에 적었던 "Plan to fail", "2x~3x stress test", "50% headroom", seasonal decomposition 수요 예측은 위 세 장 원문에서 확인되지 않아 삭제함 (2026-11-16 확인)
 
 ### AWS Well-Architected — Performance Efficiency Pillar
 
-출처: docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/
+출처: https://docs.aws.amazon.com/wellarchitected/latest/framework/a-performance-efficiency.html
 
 현행 Well-Architected Framework 문구입니다(2026-11-09 확인). 이전 판의 모니터링 질문은 현행 질문 목록에 별도 항목으로 없습니다.
 

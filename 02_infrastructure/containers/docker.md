@@ -317,22 +317,26 @@ stat -fc %T /sys/fs/cgroup
 
 ### cgroup 네임스페이스 모드
 
-| 모드      | 설명                                                    |
-|-----------|---------------------------------------------------------|
-| `host`    | 컨테이너 런타임의 cgroup 네임스페이스 사용              |
-| `private` | 컨테이너 전용 독립 cgroup 네임스페이스 (dockerd 기본값) |
+| 모드      | 설명                                       | dockerd 기본값   |
+|-----------|--------------------------------------------|------------------|
+| `host`    | 컨테이너 런타임의 cgroup 네임스페이스 사용 | cgroup v1 호스트 |
+| `private` | 컨테이너 전용 독립 cgroup 네임스페이스     | cgroup v2 호스트 |
+
+기본값은 dockerd의 `default-cgroupns-mode` 설정을 따르며, 공식 문서 기준 cgroup v2에서는 `private`, v1에서는 `host`입니다.
 
 ```
-host 모드:
-  컨테이너 A ── 런타임 cgroup 네임스페이스 공유
-  컨테이너 B ── 런타임 cgroup 네임스페이스 공유
+host mode:
+  container A ── shares runtime cgroup namespace
+  container B ── shares runtime cgroup namespace
 
-private 모드:
-  컨테이너 A ── 독립 cgroup 네임스페이스
-  컨테이너 B ── 독립 cgroup 네임스페이스
+private mode:
+  container A ── own cgroup namespace
+  container B ── own cgroup namespace
 ```
 
 ### compose.yml 설정
+
+호스트의 `/sys/fs/cgroup`을 bind mount하는 systemd 이미지는 이미지 README가 안내하는 대로 `host` 모드와 함께 씁니다(geerlingguy 이미지 README: `--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns=host`).
 
 ```yaml
 services:
@@ -340,7 +344,7 @@ services:
     image: geerlingguy/docker-ubuntu2204-ansible
     privileged: true
     command: /lib/systemd/systemd
-    cgroup: private          # 컨테이너 전용 독립 cgroup 네임스페이스
+    cgroup: host             # image README: --cgroupns=host with /sys/fs/cgroup rw
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
 ```
@@ -355,14 +359,15 @@ Docker는 컨테이너마다 고유한 cgroup 경로를 자동 할당합니다:
 ```
 
 따라서 **같은 호스트에서 systemd 컨테이너 여러 개를 동시에 실행해도 실제로는 충돌하지 않습니다.**
-`cgroup: private` 없이도 동시 실행이 가능합니다.
+`cgroup: host`에서도 컨테이너별 cgroup 경로가 따로 잡히므로 동시 실행이 가능합니다.
 
 `cgroup: private`이 유효한 경우:
 - 컨테이너 내부에서 `/sys/fs/cgroup`의 루트가 컨테이너 자신의 cgroup으로 보임 (격리 강화)
 - 컨테이너 내부 프로세스가 호스트 전체 cgroup 트리를 볼 수 없게 제한
-- 보안 격리가 필요한 환경에서 권장
+- 보안 격리가 필요한 일반 컨테이너에서 권장
+- 호스트 `/sys/fs/cgroup`을 rw로 bind mount하면 호스트 트리가 그대로 보이므로 위 격리 효과가 없습니다. systemd 이미지의 bind mount 구성은 위 `host` 예시를 따릅니다.
 
-🟡 `cgroup: private`은 Docker Compose v2.x 이상에서 지원합니다. (공식 문서: [compose-spec cgroup](https://docs.docker.com/reference/compose-file/services/#cgroup))
+🟡 Compose의 `cgroup` 속성은 Compose Specification을 따르는 Docker Compose v2에서 사용합니다. 값을 지정하지 않으면 컨테이너 런타임이 정합니다. (공식 문서: [compose-spec cgroup](https://docs.docker.com/reference/compose-file/services/#cgroup))
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -478,6 +483,8 @@ docker system prune -a   # 볼륨 제외 3가지 + 미사용 네트워크 (볼�
 - Dockerfile Best Practices: [docs.docker.com/build/building/best-practices](https://docs.docker.com/build/building/best-practices/) — ★★★☆☆
 - docker system prune: [docs.docker.com/reference/cli/docker/system/prune](https://docs.docker.com/reference/cli/docker/system/prune/) — ★★★☆☆
 - dockerd `--default-cgroupns-mode`: [docs.docker.com/reference/cli/dockerd](https://docs.docker.com/reference/cli/dockerd/) — ★★★☆☆
+- Docker runtime metrics (cgroup v2 기본 cgroupns 모드): [docs.docker.com/engine/containers/runmetrics](https://docs.docker.com/engine/containers/runmetrics/) — ★★★☆☆ (확인일 2026-11-16)
+- geerlingguy/docker-ubuntu2204-ansible README: [github.com/geerlingguy/docker-ubuntu2204-ansible](https://github.com/geerlingguy/docker-ubuntu2204-ansible) — ★★☆☆☆ (확인일 2026-11-16)
 - MySQL EOL Notice (8.0 지원 종료 2026-04): [mysql.com/support/eol-notice.html](https://www.mysql.com/support/eol-notice.html) — ★★★☆☆
 
 ---
@@ -495,6 +502,6 @@ docker system prune -a   # 볼륨 제외 3가지 + 미사용 네트워크 (볼�
 
 **작성일**: 2026-05-15
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

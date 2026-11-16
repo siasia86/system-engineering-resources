@@ -6,7 +6,7 @@ tags:
   - kubernetes
   - package-manager
   - chart
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://helm.sh/docs/intro/using_helm/
   - https://helm.sh/docs/chart_template_guide/
@@ -15,11 +15,11 @@ sources:
 
 # Helm 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-11-05)
+## 1. 버전 현황 (확인일: 2026-11-16)
 
 | 항목 | 버전   | 비고                                      |
 |------|--------|-------------------------------------------|
-| Helm | v4.3.1 | v3.8+부터 OCI GA, v4에서 digest 지원 추가 |
+| Helm | v4.3.2 | v3.8+부터 OCI GA, v4에서 digest 지원 추가 |
 
 ## 2. 공식 정의
 
@@ -61,6 +61,8 @@ helm rollback my-release 1
 helm uninstall my-release
 helm list
 ```
+
+- 2026-11-16 확인: `https://charts.bitnami.com/bitnami/index.yaml`은 `repo.broadcom.com/bitnami-files/index.yaml`로 넘겨져 계속 받을 수 있고, 차트 본체는 `oci://registry-1.docker.io/bitnamicharts`에서 받습니다. 차트 기본 이미지가 `bitnami/<name>:latest`를 가리키므로 운영에서는 이미지 저장소·태그를 직접 지정하고 고정합니다.
 
 ## 6. v4 주요 변경사항 (helm.sh/docs/overview 기준)
 

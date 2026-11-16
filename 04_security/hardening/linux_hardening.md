@@ -15,8 +15,10 @@
 
 ```bash
 # 네트워크 보안
-net.ipv4.tcp_syncookies = 1          # SYN Flood 방어
-net.ipv4.conf.all.rp_filter = 1      # IP Spoofing 방어
+# SYN Flood 방어
+net.ipv4.tcp_syncookies = 1
+# IP Spoofing 방어
+net.ipv4.conf.all.rp_filter = 1
 net.ipv4.conf.all.accept_redirects = 0
 net.ipv4.conf.all.send_redirects = 0
 net.ipv4.conf.all.accept_source_route = 0
@@ -26,11 +28,17 @@ net.ipv4.icmp_echo_ignore_broadcasts = 1
 net.ipv6.conf.all.disable_ipv6 = 1
 
 # 커널 보안
-kernel.randomize_va_space = 2        # ASLR 활성화
-kernel.dmesg_restrict = 1            # 일반 사용자 dmesg 제한
-kernel.kptr_restrict = 2             # 커널 포인터 노출 제한
-fs.suid_dumpable = 0                 # SUID 프로세스 core dump 비활성화
+# ASLR 활성화
+kernel.randomize_va_space = 2
+# 일반 사용자 dmesg 제한
+kernel.dmesg_restrict = 1
+# 커널 포인터 노출 제한
+kernel.kptr_restrict = 2
+# SUID 프로세스 core dump 비활성화
+fs.suid_dumpable = 0
 ```
+
+sysctl.d·sysctl.conf는 첫 비공백 문자가 `#`·`;`인 줄만 주석으로 처리하므로, 설명 주석은 값 뒤가 아니라 윗줄에 둡니다.
 
 ```bash
 # 즉시 적용 (/etc/sysctl.d/ 하위 파일은 --system으로 적용)
@@ -205,6 +213,7 @@ sudo journalctl -k | grep apparmor | grep DENIED
 - Linux-PAM System Administrator's Guide 원본: [github.com/linux-pam/linux-pam](https://github.com/linux-pam/linux-pam/tree/master/doc/sag) — ★★★☆☆
 - pam_faillock(8): [man7.org/linux/man-pages/man8/pam_faillock.8.html](https://man7.org/linux/man-pages/man8/pam_faillock.8.html) — ★★★☆☆
 - pam-auth-update(8)(Ubuntu 24.04): [manpages.ubuntu.com](https://manpages.ubuntu.com/manpages/noble/man8/pam-auth-update.8.html) — ★★★☆☆
+- sysctl.d(5): [man7.org/linux/man-pages/man5/sysctl.d.5.html](https://man7.org/linux/man-pages/man5/sysctl.d.5.html) — ★★★☆☆ (확인일 2026-11-16)
 - useradd(8)·passwd(1): [useradd.8](https://man7.org/linux/man-pages/man8/useradd.8.html), [passwd.1](https://man7.org/linux/man-pages/man1/passwd.1.html) — ★★★☆☆
 - open(2) glibc의 openat 사용: [man7.org/linux/man-pages/man2/open.2.html](https://man7.org/linux/man-pages/man2/open.2.html) — ★★★☆☆
 - Red Hat SELinux Guide: [access.redhat.com/documentation/selinux](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/using_selinux/) — ★★★☆☆
@@ -225,6 +234,6 @@ sudo journalctl -k | grep apparmor | grep DENIED
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

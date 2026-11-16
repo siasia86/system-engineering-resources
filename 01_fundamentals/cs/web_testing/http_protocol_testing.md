@@ -166,9 +166,9 @@ ALPN 결과는 `openssl s_client -connect 192.0.2.10:443 -servername www.example
 
 ## 참고 자료
 
-- RFC 9110 HTTP Semantics: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9110.html)
-- RFC 9112 HTTP/1.1: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9112.html)
-- RFC 9113 HTTP/2: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9113.html)
+- RFC 9110 HTTP Semantics: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9110.html) — ★★★★☆
+- RFC 9112 HTTP/1.1: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9112.html) — ★★★★☆
+- RFC 9113 HTTP/2: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9113.html) — ★★★★☆
 - nginx ngx_http_core_module: [nginx.org](https://nginx.org/en/docs/http/ngx_http_core_module.html) — ★★★☆☆
 - curl man page: [curl.se/docs/manpage.html](https://curl.se/docs/manpage.html) — ★★★☆☆
 - curl 연결 재사용 메시지 소스(lib/url.c): [github.com/curl/curl](https://github.com/curl/curl/blob/master/lib/url.c) — ★★★☆☆
@@ -190,6 +190,6 @@ ALPN 결과는 `openssl s_client -connect 192.0.2.10:443 -servername www.example
 
 **작성일**: 2026-10-27
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

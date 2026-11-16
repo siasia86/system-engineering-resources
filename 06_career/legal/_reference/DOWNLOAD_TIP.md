@@ -139,6 +139,11 @@ def download_attachments(ntt_id, save_dir=".", bbs_id="BS061", m_code="C01001000
     # 4. 순차 다운로드
     base_url = "https://pipc.go.kr/np/cmm/fms/FileDown.do"
     for sn, ext, fname in files:
+        # HTML의 파일명에 경로 구분자·..가 섞여도 save_dir 밖에 쓰지 않도록 이름만 사용
+        fname = os.path.basename(fname.replace("\\", "/"))
+        if fname in ("", ".", ".."):
+            print(f"  [SKIP] 잘못된 파일명: sn={sn}")
+            continue
         save_path = os.path.join(save_dir, fname)
 
         # 중복 건너뜀
@@ -152,9 +157,9 @@ def download_attachments(ntt_id, save_dir=".", bbs_id="BS061", m_code="C01001000
             with urllib.request.urlopen(req, timeout=15) as resp:
                 data = resp.read()
 
-            # HTML 응답이면 차단 또는 오류
+            # HTML 응답이면 파일 대신 오류·차단 페이지를 받은 것
             if data[:20].decode("utf-8", errors="ignore").strip().startswith("<!"):
-                print(f"  [FAIL] 차단됨 (세션 만료 가능성): {fname}")
+                print(f"  [FAIL] HTML 응답 (오류 또는 접근 차단 페이지): {fname}")
                 continue
 
             with open(save_path, "wb") as f:

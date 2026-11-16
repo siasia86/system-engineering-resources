@@ -6,7 +6,7 @@ tags:
   - finops
   - cost
   - reliability
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://principlesofchaos.org/
   - https://litmuschaos.io/
@@ -26,16 +26,21 @@ sources:
 
 정의: "Chaos Engineering is the discipline of experimenting on a system in order to build confidence in the system's capability to withstand turbulent conditions in production."
 
-4대 원칙:
+실험 절차(4단계):
+1. 정상 동작을 나타내는 측정 가능한 출력으로 steady state를 정의
+2. 대조군과 실험군 모두에서 steady state가 유지된다고 가설 수립
+3. 서버 장애·디스크 고장·네트워크 단절 같은 실제 사건을 반영한 변수 주입
+4. 대조군과 실험군의 steady state 차이를 찾아 가설 반증 시도
+
+### Advanced Principles
+
+공식 페이지의 Advanced Principles는 다음 5개입니다(2026-11-16 확인).
+
 1. Build a Hypothesis around Steady State Behavior
 2. Vary Real-world Events
 3. Run Experiments in Production
 4. Automate Experiments to Run Continuously
-
-### Advanced Principles
-
-- Minimize Blast Radius — 실험 범위를 최소화하여 실제 장애 방지
-- Start with known good behavior — 정상 상태 정의 후 실험 시작
+5. Minimize Blast Radius — 실험 범위를 최소화하여 실제 장애 방지
 
 ### LitmusChaos (CNCF Incubating)
 

@@ -169,7 +169,7 @@ command line에서 window을 생성하거나 이름을 지정할 수도 있습�
 
 ```bash
 tmux new-window -t ops -n logs
-tmux rename-window -t ops:0 editor
+tmux rename-window -t 'ops:^' editor    # ^: 번호가 가장 작은 window (base-index 1이어도 동작)
 tmux list-windows -t ops
 ```
 
@@ -224,7 +224,7 @@ q                      종료
 스크롤백을 파일로 저장해야 하는 경우 다음과 같이 현재 pane의 내용을 출력할 수 있습니다.
 
 ```bash
-tmux capture-pane -p -S -100 -t ops:logs.0 > /tmp/tmux_logs.txt
+tmux capture-pane -p -S -100 -t ops:logs > /tmp/tmux_logs.txt    # pane 번호를 생략하면 활성 pane
 ```
 
 민감정보가 포함된 pane을 파일로 저장하거나 공유하지 않도록 주의합니다.
@@ -381,6 +381,6 @@ tmux source-file ~/.tmux.conf
 
 **작성일**: 2026-08-28
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

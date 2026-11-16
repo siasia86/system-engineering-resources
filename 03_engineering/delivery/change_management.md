@@ -208,7 +208,7 @@ Change Failed
 > — ITIL 4: Create, Deliver and Support (Axelos, 2019)
 > — https://sre.google/sre-book/introduction/
 
-> CAB(Change Advisory Board) 모델은 ITIL v3에서 정립되었으며, ITIL v4에서는 자동화된 Standard Change 승인을 권장합니다.
+> CAB(Change Advisory Board) 모델은 ITIL v4 이전 판의 변경 관리(Change Management)에서 쓰던 승인 방식이며, ITIL v4에서는 자동화된 Standard Change 승인을 권장합니다.
 > — ITIL 4: Direct, Plan and Improve (Axelos, 2019)
 
 ## 참고 자료
@@ -221,6 +221,6 @@ Change Failed
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

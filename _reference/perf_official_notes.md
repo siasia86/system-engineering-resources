@@ -1,9 +1,10 @@
 ---
 name: perf-official-notes
-last_checked: 2026-08-01
+last_checked: 2026-11-16
 sources:
   - https://man7.org/linux/man-pages/man1/perf.1.html
   - https://perf.wiki.kernel.org/index.php/Main_Page
+  - https://docs.kernel.org/trace/ftrace.html
 ---
 
 # perf 공식 참조 노트
@@ -69,15 +70,17 @@ sources:
 
 ## 4. deprecated / 주의사항
 
-| 항목               | 상태                                                     | 출처   |
-|--------------------|----------------------------------------------------------|--------|
-| `--debugfs-dir`    | sysfs 기반 tracing으로 이전 권장 (debugfs 마운트 불필요) | perf.1 |
-| `perf.data` 호환성 | 커널 버전이 다르면 `perf.data` 파싱 실패 가능            | perf.1 |
+| 항목            | 상태                                                                                   | 출처        |
+|-----------------|----------------------------------------------------------------------------------------|-------------|
+| `--debugfs-dir` | perf.1은 "debugfs 디렉토리 설정 또는 `PERF_DEBUGFS_DIR` 환경 변수"만 설명              | perf.1      |
+| tracing 경로    | 커널 4.1부터 tracing 제어 파일은 tracefs(`/sys/kernel/tracing`), 이전에는 debugfs 아래 | kernel docs |
+
+- perf.1에는 `--debugfs-dir` 폐기나 `perf.data`의 커널 버전 간 호환성 서술이 없습니다(2026-11-16 확인).
 
 ---
 
 **작성일**: 2026-08-01
 
-**마지막 업데이트**: 2026-08-01
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

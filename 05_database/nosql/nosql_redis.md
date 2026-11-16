@@ -94,6 +94,8 @@ ZADD, ZRANGE, ZRANK, ZSCORE
 
 ## 3. 주요 명령어
 
+🟡 아래 블록의 대문자 명령은 `redis-cli` 프롬프트에 입력하는 Redis 명령입니다. `#` 뒤는 설명이며, redis-cli는 `#`을 주석으로 처리하지 않고 인자로 보내므로 `#`부터 줄 끝까지 빼고 입력합니다.
+
 ### String
 
 ```bash
@@ -347,8 +349,8 @@ def is_rate_limited(user_id, limit=100, window=60):
 # 점수 업데이트
 r.zincrby("leaderboard:daily", score_delta, user_id)
 
-# 상위 10명 조회
-top10 = r.zrevrange("leaderboard:daily", 0, 9, withscores=True)
+# 상위 10명 조회 (zrevrange 대신 zrange(desc=True), 서버 명령 ZREVRANGE는 6.2부터 deprecated)
+top10 = r.zrange("leaderboard:daily", 0, 9, desc=True, withscores=True)
 
 # 내 순위
 rank = r.zrevrank("leaderboard:daily", user_id)
@@ -364,6 +366,8 @@ rank = r.zrevrank("leaderboard:daily", user_id)
 - Redis Commands: [redis.io/commands](https://redis.io/commands/) — ★★★☆☆
 - Redis Patterns: [redis.io/docs/latest/develop/clients/patterns](https://redis.io/docs/latest/develop/clients/patterns/) — ★★★☆☆
 - ZREVRANGE (6.2부터 deprecated): [redis.io/docs/latest/commands/zrevrange](https://redis.io/docs/latest/commands/zrevrange/) — ★★★☆☆
+- redis-cli 입력 분해 (`cliSplitArgs` → `sdssplitargs`, `#` 주석 처리 없음): [redis/redis src/redis-cli.c](https://github.com/redis/redis/blob/unstable/src/redis-cli.c) — ★★★☆☆ (확인일 2026-11-16)
+- redis-py `zrange(desc=True)`: [redis-py redis/commands/core.py](https://github.com/redis/redis-py/blob/master/redis/commands/core.py) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
@@ -380,6 +384,6 @@ rank = r.zrevrank("leaderboard:daily", user_id)
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -19,17 +19,19 @@ OOM(Out of Memory)은 커널이 메모리 할당 요청을 처리할 수 없을 
 ### 발생 흐름
 
 ```
-메모리 부족 감지
+Out of memory detected
        │
        v
-  OOM killer 실행
+  OOM killer runs
        │
        v
-  oom_score 계산 (프로세스별)
+  Compute oom_score (per process)
        │
        v
-  점수 가장 높은 프로세스 kill
+  Kill the highest-scoring process
 ```
+
+메모리 부족 감지 → OOM killer 실행 → 프로세스별 `oom_score` 계산 → 점수가 가장 높은 프로세스 kill 순서로 진행됩니다.
 
 ### oom_score 계산
 
@@ -318,6 +320,6 @@ sudo smem -r -k | head -15
 
 **작성일**: 2026-05-21
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

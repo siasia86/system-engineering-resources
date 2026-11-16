@@ -6,7 +6,7 @@ tags:
   - idp
   - cncf
   - team-topologies
-last_checked: 2026-07-07
+last_checked: 2026-11-16
 sources:
   - https://tag-app-delivery.cncf.io/whitepapers/platforms/
   - https://tag-app-delivery.cncf.io/whitepapers/platform-eng-maturity-model/
@@ -51,13 +51,22 @@ sources:
 2. Market, evangelize and advocate for platform values
 3. Manage/develop interfaces (portals, APIs, docs, templates, CLI tools)
 
-## 5. Platform Maturity Levels (CNCF WP)
+## 5. Platform maturity 사용 사례 (CNCF WP)
+
+CNCF Platforms White Paper의 "Platform maturity" 절은 플랫폼이 성숙하면서 지원하는 사용 사례 5가지를 순서대로 듭니다. 별도 문서인 Platform Engineering Maturity Model의 단계(아래 표)와는 다른 목록입니다.
 
 1. Provision capabilities on demand (compute, storage, databases, identities)
 2. Provision service spaces (pipelines, artifact stores, telemetry)
 3. Third-party software provisioning with dependencies
 4. Complete environments from templates (web dev, MLOps)
 5. Observe functionality, performance, cost through automatic instrumentation
+
+### Platform Engineering Maturity Model (CNCF TAG)
+
+| 구분 | 내용                                                      |
+|------|-----------------------------------------------------------|
+| 단계 | Provisional → Operational → Scalable → Optimizing (4단계) |
+| 측면 | Investment, Adoption, Interfaces, Operations, Measurement |
 
 ## 6. Challenges (CNCF WP)
 

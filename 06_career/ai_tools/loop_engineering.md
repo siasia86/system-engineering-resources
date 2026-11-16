@@ -141,25 +141,25 @@ example-project/
 [read configured guidance and state]
       │
       v
-[TODO.md 확인 → 다음 작업 결정]
+[check TODO.md → choose next task]
       │
       v
-[skill 기반 작업 수행]
-  - python-script-template → 스크립트 작성
-  - code-review → 검증
-  - md-style-check → 문서 품질
+[run the task with skills]
+  - python-script-template → write script
+  - code-review → review
+  - md-style-check → document quality
       │
       v
-[검증 통과 확인]
+[confirm checks pass]
   - ast.parse OK
-  - md-style-check 0건
-  - aws_security_check.sh 통과
+  - md-style-check 0 issues
+  - aws_security_check.sh pass
       │
       v
-[PLAN.md 이슈 기록 + TODO.md 상태 갱신]
+[record issues in PLAN.md + update TODO.md status]
       │
       v
-[session end → memory.md 갱신 절차 실행]
+[session end → run memory.md update step]
 ```
 
 🟡 위 구조는 단일 세션 운영 예시이며 현재 32·41의 설치·자동 로드 증거가 아닙니다. `memory.md` + `TODO.md` + `PLAN.md`에 상태를 기록하고 다음 실행에서 읽도록 연결해 세션 간 연속성을 확보합니다. `/goal`의 목표 유지와 주기 실행 스케줄은 별도 기능이며, 도구별 지원 명령은 사용 중인 버전에서 확인합니다.
@@ -401,6 +401,6 @@ Inner loop: observe -> act -> inspect feedback -> next action
 
 **작성일**: 2026-07-02
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -90,7 +90,7 @@ Windows Server 운영에 필요한 핵심 기술 개념을 정리합니다.
 | Two-way Mirror   | 2개         | 양방향 미러링, 1개 디스크 장애 허용 | ~50%      |
 | Three-way Mirror | 5개         | 삼방향 미러링, 2개 디스크 장애 허용 | ~33%      |
 | Single Parity    | 3개         | RAID 5 유사, 1개 디스크 장애 허용   | ~67%      |
-| Dual Parity      | 4개 이상    | RAID 6 유사, 2개 디스크 장애 허용   | 50~80%    |
+| Dual Parity      | 7개         | RAID 6 유사, 2개 디스크 장애 허용   | 50~80%    |
 
 ---
 
@@ -143,7 +143,7 @@ Storage Spaces를 **클러스터 전체**로 확장한 기능입니다. 각 서�
 
 🟡 S2D는 Storage Spaces의 확장이므로 Mirror/Parity 복원력 유형이 동일하게 적용됩니다.
 
-🟡 Dual Parity의 "4개 이상"은 fault domain(S2D에서는 서버 노드) 기준입니다. 단일 서버 Storage Spaces에서는 디스크 수 기준이 다를 수 있습니다.
+🟡 위 복원력 표의 Dual Parity "7개"는 단일 서버 Storage Spaces의 디스크 수 기준입니다. S2D의 Dual Parity는 fault domain(서버 노드) 4개 이상이 기준입니다.
 
 ---
 
@@ -398,7 +398,7 @@ Shielded VM 인프라의 핵심 서비스입니다. 호스트가 신뢰할 수 �
 
 | 항목      | 내용                                              |
 |-----------|---------------------------------------------------|
-| 구성      | 최소 2대 이상 HGS 서버 (HA 구성 권장)             |
+| 구성      | 가용성을 위해 물리 서버 3대 클러스터 권장         |
 | 증명 모드 | TPM 기반 (보안 강도 높음) / AD 기반 (구축 간편)   |
 | 독립 배치 | 별도 AD 포리스트에 배치 권장 (관리 도메인과 분리) |
 
@@ -786,7 +786,7 @@ Install-WindowsFeature -Name Web-Server -IncludeManagementTools
 | **Open Value Subscription**   | 중소기업               | 3년       | 구독형 Open Value                        |
 | **Open License**              | 소규모                 | 2년       | 2021-12-31 판매 종료 (CSP로 이전)        |
 | **Select Plus**               | 대기업 (부서별)        | 없음      | 사용량 기반, 부서별 유연 구매            |
-| **MPSA**                      | 중대기업               | 1년       | 단일 계약으로 여러 MS 제품 통합          |
+| **MPSA**                      | 중대기업               | 없음      | 단일 계약으로 여러 MS 제품 통합          |
 
 🟡 Volume License 경로의 ESU 구매는 **활성 Software Assurance(EA·EAS·SCE·EES 등) 또는 CSP 구독**이 있어야 합니다.
 
@@ -994,6 +994,9 @@ Get-ADComputer -Filter * | Select-Object Name, OperatingSystem
 - Microsoft: [Client Access Licenses](https://www.microsoft.com/en-us/licensing/product-licensing/client-access-license) — ★★★☆☆
 - Microsoft: [Volume Licensing overview](https://www.microsoft.com/en-us/licensing/how-to-buy/how-to-buy) — ★★★☆☆
 - Microsoft: [Open Value 프로그램 약관(최초 주문 최소 5개 라이선스)](https://www.microsoft.com/licensing/terms/product/ProgramAgreementSupplementalTerms/OVOVS) — ★★★☆☆ (확인일 2026-11-16)
+- Microsoft: [Storage Spaces in Windows(Parity 2개 디스크 장애 보호에 7개 이상)](https://support.microsoft.com/en-us/windows/storage-spaces-in-windows-b6c8b540-b8d8-fb8a-e7ab-4a75ba11f9f2) — ★★★☆☆ (확인일 2026-11-16)
+- Microsoft: [Review HGS prerequisites(3노드 물리 클러스터)](https://learn.microsoft.com/en-us/windows-server/security/guarded-fabric-shielded-vm/guarded-fabric-prepare-for-hgs) — ★★★☆☆ (확인일 2026-11-16)
+- Microsoft: [MPSA(non-expiring agreement)](https://www.microsoft.com/en-us/licensing/mpsa/default) — ★★★☆☆ (확인일 2026-11-16)
 - Microsoft: [Deploy Storage Spaces on a stand-alone server](https://learn.microsoft.com/en-us/windows-server/storage/storage-spaces/deploy-standalone-storage-spaces) — ★★★☆☆
 - Microsoft: [Server Core vs Desktop Experience](https://learn.microsoft.com/en-us/windows-server/get-started/install-options-server-core-desktop-experience) — ★★★☆☆
 - Microsoft: [ESU FAQ](https://learn.microsoft.com/en-us/lifecycle/faq/extended-security-updates) — ★★★☆☆

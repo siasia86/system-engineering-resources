@@ -67,14 +67,14 @@
 
 #### 스토리지 비용 (월)
 
-| 도구               | 중복 제거 | 압축   | 실제 저장량 | 월 비용 |
-|--------------------|-----------|--------|-------------|---------|
-| **AWS CLI**        | ❌        | ❌     | 1,500GB     | $37.50  |
-| **Restic**         | ✅        | 제한적 | 200GB       | $5.00   |
-| **BorgBackup**     | ✅        | ✅     | 150GB       | $3.75   |
-| **Rclone**         | ❌        | ❌     | 1,500GB     | $37.50  |
-| **Duplicity**      | ❌        | ✅     | 180GB       | $4.50   |
-| **rsync + tar.gz** | ❌        | ✅     | 500GB       | $12.50  |
+| 도구               | 중복 제거 | 압축 | 실제 저장량 | 월 비용 |
+|--------------------|-----------|------|-------------|---------|
+| **AWS CLI**        | ❌        | ❌   | 1,500GB     | $37.50  |
+| **Restic**         | ✅        | ✅   | 200GB       | $5.00   |
+| **BorgBackup**     | ✅        | ✅   | 150GB       | $3.75   |
+| **Rclone**         | ❌        | ❌   | 1,500GB     | $37.50  |
+| **Duplicity**      | ❌        | ✅   | 180GB       | $4.50   |
+| **rsync + tar.gz** | ❌        | ✅   | 500GB       | $12.50  |
 
 *S3 Standard 기준 $0.025/GB*
 
@@ -82,9 +82,9 @@
 
 | 도구          | 업로드 (IN) | 다운로드 (OUT) | 복원 비용 (전체) |
 |---------------|-------------|----------------|------------------|
-| **모든 도구** | $0 (무료)   | $0.126/GB      | $189 (1.5TB)     |
+| **모든 도구** | $0 (무료)   | $0.126/GB      | $176 (1.5TB)     |
 
-*첫 100GB 무료, 이후 $0.126/GB*
+*인터넷 송신은 계정 전체(모든 서비스·리전 합산) 월 100GB 무료, 이후 서울 리전 첫 10TB까지 $0.126/GB. 복원 비용은 무료분을 뺀 1,400GB × $0.126 ≈ $176이며, 같은 달 다른 송신이 있으면 무료분이 줄어듭니다.*
 
 #### 운영 비용
 
@@ -152,7 +152,7 @@ CPU: ████░░░░░░ 5%
 - 🟡 **CPU 사용 높음** (30-50%, 암호화/중복 제거)
 - 🟡 **메모리 사용** (200-500MB, 인덱스 로드)
 - 🟡 **BorgBackup보다 느림**
-- 🟡 **압축 제한적**
+- 🟡 **압축은 저장소 형식 v2(restic 0.14+)부터 지원** (zstd, `--compression auto` 기본)
 
 #### 적합한 경우
 ```bash
@@ -347,8 +347,8 @@ CPU: ██████░░░░ 10%
 - ❌ **별도 백업 필요**
 
 #### 적합한 경우
-```yaml
-# Fluent Bit 설정
+```ini
+# Fluent Bit 설정 (classic 형식)
 [OUTPUT]
     Name s3
     Match *
@@ -390,7 +390,7 @@ CPU: ██████░░░░ 8%
 |---------------|---------|--------|----------------|---------|-----------|--------|------------|
 | **스냅샷**    | ❌      | ✅     | ✅             | ❌      | ✅        | ❌     | ❌         |
 | **중복 제거** | ❌      | ✅     | ✅ chunk-level | ❌      | ❌        | ❌     | ❌         |
-| **압축**      | ❌      | 제한적 | ✅ 강력        | ❌      | ✅        | 제한적 | ✅         |
+| **압축**      | ❌      | ✅ v2  | ✅ 강력        | ❌      | ✅        | 제한적 | ✅         |
 | **암호화**    | 서버측  | ✅     | ✅             | ✅      | ✅ GPG    | SSH    | TLS        |
 | **클라우드**  | S3만    | ✅     | ❌             | ✅ 최다 | ✅        | ❌     | ✅         |
 | **Windows**   | ✅      | ✅     | ❌             | ✅      | 🟡        | 🟡     | ✅         |
@@ -559,12 +559,12 @@ BorgBackup (lz4): 20GB/일
 ```bash
 # S3 Lifecycle
 # 30일 후 Glacier ($0.0045/GB)
-# 90일 후 Deep Archive ($0.00099/GB)
+# 90일 후 Deep Archive ($0.002/GB, 서울 리전)
 
 # 1.5TB 기준:
 # Standard: $37.5/월
 # Glacier: $6.75/월
-# Deep Archive: $1.5/월
+# Deep Archive: $3.0/월
 ```
 
 ### 4. 하이브리드 전략
@@ -817,7 +817,7 @@ logrotate /etc/logrotate.d/backup
 
 ### Q4. S3 Glacier로 바로 백업할 수 있나요?
 **A:** 
-- Restic: Glacier 직접 지원 안 함 (Standard → Lifecycle 사용)
+- Restic: 정식 기능으로는 Glacier 클래스 직접 백업·복원을 지원하지 않음 (Standard → Lifecycle 사용, cold storage 복원은 alpha 기능 플래그 단계)
 - AWS CLI: Glacier 직접 업로드 가능하지만 복원 느림 (3-5시간)
 - 권장: Standard → Lifecycle 자동 이관
 
@@ -872,11 +872,12 @@ timeout 2h restic backup /data
 
 #### 문제: 메모리 부족
 ```bash
-# 해결: 캐시 크기 제한
-restic backup /data --cache-dir /tmp/restic-cache
+# 해결: 사용 CPU 코어 수 제한 (공식 문서: 메모리 사용이 약간 줄어듦)
+GOMAXPROCS=2 restic backup /data
 
-# 또는 캐시 비활성화
-restic backup /data --no-cache
+# 참고: --cache-dir는 캐시 위치 변경, --no-cache는 캐시 비활성화로
+# 메모리 제한 옵션이 아님 (디스크 공간 부족 시 사용)
+restic backup /data --cache-dir /tmp/restic-cache
 ```
 
 ### BorgBackup
@@ -900,10 +901,10 @@ borg check --repair /backup
 
 #### 문제: "Connection timeout"
 ```bash
-# 해결: 재시도 및 타임아웃 설정
-aws configure set s3.max_concurrent_requests 10
-aws configure set s3.max_bandwidth 50MB/s
-aws configure set s3.multipart_threshold 64MB
+# 해결: 동시 요청 수·대역폭·멀티파트 임계값을 낮춰 연결 부하 줄이기
+aws configure set default.s3.max_concurrent_requests 10
+aws configure set default.s3.max_bandwidth 50MB/s
+aws configure set default.s3.multipart_threshold 64MB
 ```
 
 #### 문제: 대용량 파일 업로드 실패
@@ -979,6 +980,8 @@ rclone sync /data remote: --buffer-size 256M
 - [AWS CLI S3 명령어](https://docs.aws.amazon.com/cli/latest/reference/s3/) — ★★★☆☆
 - [AWS CLI S3 설정](https://docs.aws.amazon.com/cli/latest/topic/s3-config.html) — ★★★☆☆
 - [Duplicity 공식 사이트](https://duplicity.us/) — ★★★☆☆
+- [Restic Tuning parameters (압축·GOMAXPROCS)](https://restic.readthedocs.io/en/latest/047_tuning_parameters.html) — ★★★☆☆ (확인일 2026-11-16)
+- [AWS Price List API (S3·Glacier Deep Archive·Data Transfer, ap-northeast-2)](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/index.json) — ★★★☆☆ (확인일 2026-11-16)
 
 ### 커뮤니티
 - [Restic Forum](https://forum.restic.net/) — ★★☆☆☆

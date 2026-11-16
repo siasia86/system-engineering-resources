@@ -815,10 +815,12 @@ ltrace myapp 2>&1 | tee ltrace.log
 ### ltrace ls 전체 흐름 (요약)
 
 ```
-초기화 → 옵션 파싱 → 환경 확인 → 디렉토리 열기 → 파일 읽기 → 정렬 → 출력 → 종료
-   v         v           v            v            v         v       v       v
-setlocale getopt_long  getenv      opendir      readdir  strcoll  write  closedir
+init ------> parse opts --> check env -> open dir -> read dir -> sort ----> output -> close
+v            v              v            v           v           v          v         v
+setlocale    getopt_long    getenv       opendir     readdir     strcoll    write     closedir
 ```
+
+단계는 초기화 → 옵션 파싱 → 환경 확인 → 디렉토리 열기 → 디렉토리 항목 읽기 → 정렬 → 출력 → 종료 순서이며, 각 단계 아래는 주로 보이는 라이브러리 함수입니다.
 
 **실제 출력 (축약):**
 ```
@@ -918,6 +920,6 @@ ltrace -c -p <PID>
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

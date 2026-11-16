@@ -326,13 +326,14 @@ public class Config
 
 | .NET 버전 | 릴리스 유형 | EOL        | 기본 C# 버전 |
 |-----------|-------------|------------|--------------|
+| .NET 11   | STS         | 2028-11-14 | C# 15        |
 | .NET 10   | LTS         | 2028-11-14 | C# 14        |
 | .NET 9    | STS         | 2026-11-10 | C# 13        |
 | .NET 8    | LTS         | 2026-11-10 | C# 12        |
 | .NET 7    | STS         | 2024-05-14 | C# 11        |
 | .NET 6    | LTS         | 2024-11-12 | C# 10        |
 
-🟡 .NET 8/9는 2026-11-10 EOL 예정.
+🟡 2026-11-16 기준: .NET 8/9는 2026-11-10에 지원이 종료되었고, 지원 중인 판은 .NET 10(LTS)과 .NET 11(STS)입니다.
 
 ---
 
@@ -342,6 +343,8 @@ public class Config
 - C# Language Reference: [learn.microsoft.com/dotnet/csharp/language-reference](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/) — ★★★☆☆
 - dotnet/csharplang Language-Version-History: [github.com/dotnet/csharplang](https://github.com/dotnet/csharplang/blob/main/Language-Version-History.md) — ★★★☆☆
 - C# 명세 6.4.5.6 String literals (동일 리터럴의 같은 인스턴스 참조): [learn.microsoft.com/dotnet/csharp/language-reference/language-specification/lexical-structure](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/lexical-structure#6456-string-literals) — ★★★☆☆ (확인일 2026-11-16)
+- .NET 지원 정책 (판별 지원 종료일): [dotnet.microsoft.com/platform/support/policy/dotnet-core](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core) — ★★★☆☆ (확인일 2026-11-16)
+- C# 언어 버전 기본값 (대상 프레임워크별): [learn.microsoft.com/dotnet/csharp/language-reference/language-versioning](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-versioning) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 

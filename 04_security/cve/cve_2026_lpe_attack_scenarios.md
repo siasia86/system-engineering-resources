@@ -35,15 +35,15 @@ sudo로 root를 취득할 수 있는 계정은 이미 **신뢰된 사용자**입
 
 이 CVE가 위협이 되는 것은 **sudo 권한이 없는 계정**이 시스템에 존재할 때입니다.
 
-```
 일반적인 Linux 서버 계정 구조:
 
-root          ← 최고 권한
-├── admin     ← sudo 가능 (관리자)
-├── www-data  ← sudo 없음 (웹서버 프로세스)
-├── postgres  ← sudo 없음 (DB 프로세스)
-├── appuser   ← sudo 없음 (애플리케이션 서비스)
-└── nobody    ← sudo 없음 (최소 권한 프로세스)
+```
+root          ← highest privilege
+├── admin     ← sudo allowed (administrator)
+├── www-data  ← no sudo (web server process)
+├── postgres  ← no sudo (DB process)
+├── appuser   ← no sudo (application service)
+└── nobody    ← no sudo (least-privilege process)
 ```
 
 `www-data`, `postgres` 등은 정상 경로로는 root가 될 수 없습니다. 이 CVE는 그 경계를 무너뜨립니다.
@@ -71,39 +71,43 @@ root          ← 최고 권한
 ### 웹 취약점 → 권한 상승 (가장 일반적)
 
 ```
-외부 공격자
+External attacker
     │
     ▼
-웹 취약점 (SQL Injection, RCE, SSRF 등)
+Web vulnerability (SQL Injection, RCE, SSRF, etc.)
     │
     ▼
-www-data 쉘 획득 (sudo 없음)
+www-data shell (no sudo)
     │
     ▼
-CVE-2026-31431 / CVE-2026-43284+43500 / CVE-2026-46300 실행
+CVE-2026-31431 / CVE-2026-43284+43500 / CVE-2026-46300 / CVE-2026-43503
     │
     ▼
-root 권한 획득
+root privilege
     │
     ▼
-백도어 설치 / 데이터 탈취 / 횡적 이동
+Backdoor / data theft / lateral movement
 ```
+
+외부 공격자가 웹 취약점으로 sudo 권한이 없는 `www-data` 쉘을 얻은 뒤, 위 LPE 취약점으로 root 권한을 얻고 백도어 설치·데이터 탈취·횡적 이동으로 이어지는 흐름입니다.
 
 ### 컨테이너 탈출
 
 ```
-컨테이너 내부 비권한 프로세스
+Unprivileged process in container
     │
     ▼
-page cache write primitive 획득
-(컨테이너와 호스트가 커널을 공유)
+page cache write primitive
+(container and host share the kernel)
     │
     ▼
-호스트 커널 page cache 덮어쓰기
+Overwrite host page cache
     │
     ▼
-호스트 root 권한 획득
+Host root privilege
 ```
+
+컨테이너 안의 비권한 프로세스가 page cache 쓰기 수단을 얻으면, 컨테이너와 호스트가 같은 커널을 공유하므로 호스트의 page cache까지 덮어써 호스트 root 권한으로 이어질 수 있습니다.
 
 Copy Fail(CVE-2026-31431) 발견자 Xint 블로그 원문:
 > "The page cache is shared across all processes on a system, including across container boundaries."
@@ -205,7 +209,7 @@ sudo dpkg --verify openssh-server sudo bash 2>/dev/null
 
 # RHEL / CentOS — rpm으로 설치 파일 무결성 검사
 sudo rpm -Va 2>/dev/null | grep -v "^$"
-# S: 파일 크기 변조, M: 권한 변조, 5: MD5 불일치
+# S: 파일 크기 다름, M: 모드(권한·파일 형식) 다름, 5: digest(이전 MD5) 다름
 
 # 핵심 바이너리만 검사
 sudo rpm -V openssh-server sudo bash coreutils 2>/dev/null
@@ -220,9 +224,14 @@ sudo rpm -V openssh-server sudo bash coreutils 2>/dev/null
 journalctl --since "2026-04-22" | grep -i "session opened for user root"
 
 # 2026-04-22 이후 SSH 접속
-journalctl --since "2026-04-22" -u ssh | grep -E "Accepted|Failed|Invalid"
+# 단위 이름: Debian·Ubuntu는 ssh, RHEL 계열은 sshd
+journalctl --since "2026-04-22" -u ssh -u sshd | grep -E "Accepted|Failed|Invalid"
 
-# sudo / su 이력
+# sudo / su 이력 (journald 기준)
+journalctl --since "2026-04-22" -t sudo -t su | tail -50
+
+# /var/log/auth.log를 직접 볼 때: 시각 형식이 ISO(2026-05-13T...)인지 전통 형식(May 13 ...)인지 먼저 확인하고
+# 날짜 필터를 형식에 맞춥니다 (아래는 ISO 형식 기준)
 grep -E "sudo|su|ROOT" /var/log/auth.log | grep "2026-04\|2026-05" | tail -50
 
 # crontab 백도어 확인
@@ -256,6 +265,8 @@ ls -la /etc/cron* /var/spool/cron/crontabs/ 2>/dev/null
 - DirtyClone: [research.jfrog.com](https://research.jfrog.com/post/dissecting-and-exploiting-linux-lpe-variant-dirtyclone-cve-2026-43503/) — ★★★☆☆
 - [cve_2026_43503_dirty_clone.md](./cve_2026_43503_dirty_clone.md) — CVE-2026-43503 (DirtyClone)
 - Docker 기본 seccomp 프로파일(splice·tee·vmsplice 허용): [github.com/moby/profiles](https://github.com/moby/profiles/blob/main/seccomp/default.json) — ★★★☆☆
+- rpm(8) verify 출력 문자: [man7.org/linux/man-pages/man8/rpm.8.html](https://man7.org/linux/man-pages/man8/rpm.8.html) — ★★★☆☆ (확인일 2026-11-16)
+- journalctl(1) `-u`·`-t` 반복 지정: [man7.org/linux/man-pages/man1/journalctl.1.html](https://man7.org/linux/man-pages/man1/journalctl.1.html) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
@@ -272,6 +283,6 @@ ls -la /etc/cron* /var/spool/cron/crontabs/ 2>/dev/null
 
 **작성일**: 2026-05-14
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -31,7 +31,7 @@
 | 확장 불가 (수직 확장 한계) | 비즈니스 성장 제약   |
 
 > 배포 주기와 변경 실패율은 DORA metrics 기준으로 측정합니다.
-> Low performer: 배포 주기 월 1회 미만, 변경 실패율 46~60%.
+> Low performer(2019 Accelerate State of DevOps Report 기준): 배포 주기 월 1회 미만, 변경 실패율 46~60%. 이후 연도 보고서는 구간 값이 다릅니다.
 > — https://dora.dev/
 
 ## 2. 현대화 전략
@@ -76,7 +76,22 @@ Martin Fowler (2004): 교살 무화과(Strangler Fig)가 숙주 나무를 서서
 
 ### Facade 패턴 구현
 
+Facade(프록시)는 클라이언트와 레거시·신규 시스템 사이에 놓여 요청을 가로채고, 기능별로 레거시 또는 신규 서비스로 보냅니다. 클라이언트는 같은 접점을 계속 쓰므로 전환 중임을 알 필요가 없습니다.
 
+```
+[Client] --> [Facade / Proxy] --+--> [Legacy System]   (unmigrated features)
+                                |
+                                +--> [New Services]    (migrated features)
+```
+
+| 항목      | 내용                                                                        |
+|-----------|-----------------------------------------------------------------------------|
+| 구현 수단 | 리버스 프록시(Nginx·HAProxy), API Gateway, 서비스 메시 라우팅 규칙          |
+| 초기 상태 | 대부분의 요청을 레거시로 보냄                                               |
+| 진행      | 기능을 옮길 때마다 해당 경로를 신규 서비스로 전환                           |
+| 종료      | 레거시 폐기 후 Facade를 없애고 클라이언트가 신규 시스템을 직접 호출         |
+| 주의      | Facade가 단일 장애 지점·성능 병목이 되지 않도록 이중화하고 지연을 측정      |
+| 교차 호출 | 레거시와 신규 사이의 호출은 Anti-Corruption Layer로 변환해 신규 설계를 보호 |
 
 ### 라우팅 전략
 
@@ -198,6 +213,7 @@ Martin Fowler (2004): 교살 무화과(Strangler Fig)가 숙주 나무를 서서
 ## 참고 자료
 
 - Martin Fowler: [StranglerFigApplication](https://martinfowler.com/bliki/StranglerFigApplication.html) — ★★☆☆☆
+- Microsoft Azure Architecture Center: [Strangler Fig pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/strangler-fig) — ★★★☆☆ (확인일 2026-11-16)
 - AWS Migration Strategies: [docs.aws.amazon.com](https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html) — ★★★☆☆
 - Sam Newman. "Monolith to Microservices" (2019) — ★★★★☆
 
@@ -205,6 +221,6 @@ Martin Fowler (2004): 교살 무화과(Strangler Fig)가 숙주 나무를 서서
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-07-07
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

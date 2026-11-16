@@ -440,17 +440,39 @@ exit 0
 ```
 Daily incremental dump + Weekly full dump + hotcopy
 
-Every day 00:00   : svnadmin dump --incremental >> /backup/daily.svndump
+Every day 02:00   : svnadmin dump /srv/svn/myrepo -r (LAST+1):YOUNGEST --incremental
 Every Sunday      : svnadmin hotcopy /srv/svn/myrepo /backup/weekly/
 Monthly           : full dump to offsite (S3, tape)
 ```
 
 ```bash
-# crontab example
-# incremental backup at 2 AM daily
-# (crontab does not support line continuation; keep each entry on one line)
-0 2 * * * svnadmin dump /srv/svn/myrepo -r $(cat /var/svn/last_backup_rev):HEAD --incremental >> /backup/svn/myrepo_incr_$(date +\%Y\%m\%d).svndump
+# crontab example: incremental backup at 2 AM daily
+0 2 * * * /usr/local/bin/svn_incr_backup.sh
 ```
+
+```bash
+#!/bin/bash
+# /usr/local/bin/svn_incr_backup.sh
+# Dump only revisions added since the last run, then record the new last revision.
+# Initialize the state file once after a full dump: svnlook youngest /srv/svn/myrepo > /var/svn/last_backup_rev
+set -euo pipefail
+
+REPO=/srv/svn/myrepo
+STATE=/var/svn/last_backup_rev
+
+LAST=$(cat "$STATE")
+YOUNGEST=$(svnlook youngest "$REPO")
+
+if [ "$YOUNGEST" -le "$LAST" ]; then
+    exit 0  # no new revisions
+fi
+
+svnadmin dump "$REPO" -r "$((LAST + 1)):${YOUNGEST}" --incremental \
+    > "/backup/svn/myrepo_incr_$(date +%Y%m%d).svndump"
+echo "$YOUNGEST" > "$STATE"
+```
+
+`-r LAST:HEAD`처럼 지난 번 마지막 리비전부터 다시 지정하면 그 리비전이 매번 중복으로 들어가므로 `LAST+1`부터 덤프하고, 덤프가 끝난 뒤 상태 파일을 갱신합니다. 이렇게 만든 증분 덤프 파일은 만든 순서대로 `svnadmin load`로 적재합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -459,6 +481,7 @@ Monthly           : full dump to offsite (S3, tape)
 ## 참고 자료
 
 - SVN Book: [svnbook.red-bean.com](https://svnbook.red-bean.com/) — ★★★★☆
+- SVN Book, Repository Maintenance (`svnadmin dump --incremental` 범위 덤프): [svn.reposadmin.maint](https://svnbook.red-bean.com/en/1.7/svn.reposadmin.maint.html) — ★★★★☆ (확인일 2026-11-16)
 - Apache Subversion: [subversion.apache.org](https://subversion.apache.org/) — ★★★☆☆
 - Apache Subversion 1.15 Release Notes: [subversion.apache.org](https://subversion.apache.org/docs/release-notes/1.15.html) — ★★★☆☆
 - Git LFS: [git-lfs-lock(1)](https://github.com/git-lfs/git-lfs/blob/main/docs/man/git-lfs-lock.adoc) — ★★★☆☆

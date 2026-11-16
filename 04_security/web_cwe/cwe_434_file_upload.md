@@ -104,13 +104,13 @@ curl "http://192.0.2.182/uploads/backdoor.php?cmd=cat+/etc/passwd"
 | 파일명          | 실행 여부 | 설명                           |
 |-----------------|-----------|--------------------------------|
 | `shell.php`     | ✅        | 기본 PHP 확장자                |
-| `shell.phtml`   | ✅        | Apache 기본 PHP 핸들러         |
-| `shell.php5`    | ✅        | PHP 5 호환 핸들러              |
+| `shell.phtml`   | 설정 의존 | Ubuntu 기본만 PHP 처리         |
+| `shell.php5`    | 설정 의존 | 기본 핸들러 패턴에 없음        |
 | `shell.phar`    | ✅        | PHP 아카이브                   |
 | `shell.php.jpg` | ❌        | 더블 확장자 (설정에 따라 다름) |
 | `shell.jpg.php` | ✅        | 마지막 확장자 기준 실행        |
 
-> `.phtml` 실행 여부는 배포판 PHP 핸들러 설정에 따라 다릅니다. Ubuntu 기본 설정은 `.php`·`.phtml`·`.phar`, RHEL 계열(CentOS Stream 9) 기본 `php.conf`는 `.php`·`.phar`만 PHP로 처리합니다.
+> `.phtml`·`.php5` 실행 여부는 배포판 PHP 핸들러 설정에 따라 다릅니다. Ubuntu 기본 설정은 `.php`·`.phtml`·`.phar`, RHEL 계열(CentOS Stream 9) 기본 `php.conf`는 `.php`·`.phar`만 PHP로 처리하며, 두 기본 설정 모두 `.php5`는 처리하지 않습니다. 관리자가 핸들러 패턴을 넓혔거나 `AddHandler`·`AddType`을 추가한 서버에서는 실행될 수 있으므로, 업로드 검증은 확장자 차단 목록이 아니라 허용 목록으로 구성합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -216,6 +216,6 @@ $target = $upload_dir . $new_name;
 
 **작성일**: 2026-07-02
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

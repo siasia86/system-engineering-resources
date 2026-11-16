@@ -447,19 +447,19 @@ Extended Security Updates는 Extended 지원 종료 후에도 보안 패치를 �
 | 포함        | Critical·Important 등급 보안 패치만           |
 | 미포함      | 기능 업데이트, 버그 수정, 설계 변경 요청      |
 | 최대 기간   | Extended 지원 종료 후 **최대 3년** (Year 1~3) |
-| Azure VM    | **무료** (자동 적용)                          |
+| Azure VM    | 2012/R2 **무료** (자동 적용), 2016 **유료**   |
 | On-premises | **유료** (Volume License 또는 Azure Arc 경유) |
 
-### 적용 버전 (2026-07 기준)
+### 적용 버전 (2026-11-16 기준)
 
 | 버전                   | Extended 종료 | ESU Year 1 | ESU Year 2 | ESU Year 3 |
 |------------------------|---------------|------------|------------|------------|
 | Windows Server 2012    | 2023-10-10    | 2024-10-08 | 2025-10-14 | 2026-10-13 |
 | Windows Server 2012 R2 | 2023-10-10    | 2024-10-08 | 2025-10-14 | 2026-10-13 |
-| Windows Server 2016    | 2027-01-12    | 미발표     | 미발표     | 미발표     |
+| Windows Server 2016    | 2027-01-12    | 2028-01-11 | 2029-01-09 | 2030-01-08 |
 | Windows Server 2019    | 2029-01-09    | 미발표     | 미발표     | 미발표     |
 
-🟡 2016·2019 ESU는 Microsoft ESU FAQ 표에 아직 없습니다(2026-11 확인). 표에 있는 Windows Server ESU는 2012/2012 R2뿐입니다.
+🟡 2016 ESU 날짜는 Microsoft ESU FAQ 표 기준입니다(2026-11-16 확인). 2016 ESU는 Azure에서도 유료입니다. 2019 ESU는 아직 FAQ 표에 없습니다.
 
 🟡 2022는 Extended 지원 중 (종료: 2031-10-14), 2025는 Mainstream 지원 중 → 현재 ESU 불필요.
 2022는 Mainstream 지원이 2026-10-13에 종료됐으나, Extended 지원 종료(2031)까지는 보안 패치가 계속 제공됩니다.
@@ -481,7 +481,7 @@ Extended Security Updates는 Extended 지원 종료 후에도 보안 패치를 �
 
 | 방법                      | 비용 | 조건                                          |
 |---------------------------|------|-----------------------------------------------|
-| Azure VM으로 마이그레이션 | 무료 | Azure VM에서 자동 적용                        |
+| Azure VM으로 마이그레이션 | 무료 | Azure VM에서 자동 적용 (2016은 유료)          |
 | Azure Arc 연동 (on-prem)  | 유료 | Azure Arc 에이전트 설치 필요                  |
 | Volume License (연간)     | 유료 | 활성 SA(EA·EAS·SCE·EES 등) 또는 CSP 구독 필요 |
 
@@ -531,6 +531,6 @@ Extended 지원 종료 임박?
 
 **작성일**: 2026-07-29
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

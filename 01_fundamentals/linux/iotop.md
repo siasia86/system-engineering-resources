@@ -310,8 +310,9 @@ sudo iotop -p $(pgrep rsync) -o
 
 # 백업 스크립트에 통합
 #!/bin/bash
-sudo iotop -b -p $$ > backup_io.log &
-IOTOP_PID=$!
+# -p $$는 스크립트 셸만 관찰하고 자식 rsync는 잡지 않으므로, 프로세스 단위(-P)·활동 중(-o) 출력에서 rsync 줄만 기록
+sudo iotop -b -o -P -k -d 1 | grep --line-buffered rsync > backup_io.log &
+IOTOP_PID=$!    # 파이프라인 마지막 grep의 PID. grep이 끝나면 iotop도 다음 출력 때 종료됨
 
 rsync -av /source /dest
 

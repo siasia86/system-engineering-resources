@@ -14,17 +14,19 @@
 ### 체인 구조
 
 ```
-패킷 수신
+Incoming packet
     │
     v
 PREROUTING (nat)
     │
-    ├─ 로컬 프로세스 대상 ──> INPUT ──> 로컬 프로세스
+    ├─ to local process ──> INPUT ──> local process
     │
-    └─ 포워딩 대상 ──> FORWARD ──> POSTROUTING ──> 송신
-                                        ^
-로컬 프로세스 ──> OUTPUT ──────────────┘
+    └─ to forward ──> FORWARD ──> POSTROUTING ──> send
+                                       ^
+local process ──> OUTPUT ──────────────┘
 ```
+
+수신 패킷은 PREROUTING을 지난 뒤 로컬 프로세스 대상이면 INPUT으로, 포워딩 대상이면 FORWARD → POSTROUTING으로 갑니다. 로컬 프로세스가 보내는 패킷은 OUTPUT을 지나 POSTROUTING으로 나갑니다.
 
 ### 기본 명령어
 

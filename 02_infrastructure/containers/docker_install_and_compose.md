@@ -561,15 +561,17 @@ docker volume inspect VOLUME
 ### 개념
 
 ```
-물리 스위치 (192.0.2.1)
+physical switch (gateway 192.0.2.1)
     │
-    eth0 (호스트 IP: 198.51.100.155)
+    eth0 (host IP: 192.0.2.10)
     │
     macvlan
-    ├── container-a  192.0.2.151     ← 외부 PC에서 직접 접속 가능
+    ├── container-a  192.0.2.151     ← reachable directly from external PCs
     ├── container-b  192.0.2.152
     └── container-c  192.0.2.153
 ```
+
+호스트 eth0와 컨테이너는 같은 물리 서브넷(192.0.2.0/24)에 있고, 외부 PC는 컨테이너 IP로 직접 접속합니다.
 
 🟡 macvlan 제약: 호스트 → 컨테이너 직접 통신 불가 (macvlan 특성). 외부 PC → 컨테이너는 가능합니다.
 
@@ -668,6 +670,6 @@ sudo ip link set macvlan0 up
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

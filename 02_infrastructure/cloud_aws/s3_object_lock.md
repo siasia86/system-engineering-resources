@@ -20,13 +20,15 @@ S3에 저장된 객체를 **보존 기간 동안 삭제·덮어쓰기 불가**�
 
 ### 왜 필요한가
 
-| 위협                         | Object Lock 없음     | Object Lock 있음                 |
-|------------------------------|----------------------|----------------------------------|
-| 관리자 실수 (rm -rf)         | 삭제됨               | 거부됨                           |
-| 랜섬웨어 (덮어쓰기)          | 암호화된 파일로 교체 | 거부됨                           |
-| 내부자 악의적 삭제           | 삭제됨               | 거부됨 (Compliance: root도 불가) |
-| 공격자 침입 후 증거 인멸     | 삭제됨               | 거부됨                           |
-| 규제 감사 (데이터 보존 증명) | 증명 불가            | Object Lock 설정 자체가 증명     |
+| 위협                         | Object Lock 없음     | Object Lock 있음                              |
+|------------------------------|----------------------|-----------------------------------------------|
+| 관리자 실수 (rm -rf)         | 삭제됨               | 삭제 마커만 추가, 잠긴 버전 보존              |
+| 랜섬웨어 (덮어쓰기)          | 암호화된 파일로 교체 | 새 버전 생성, 잠긴 버전 보존                  |
+| 내부자 악의적 삭제           | 삭제됨               | 버전 영구 삭제 거부 (Compliance: root도 불가) |
+| 공격자 침입 후 증거 인멸     | 삭제됨               | 버전 영구 삭제 거부                           |
+| 규제 감사 (데이터 보존 증명) | 증명 불가            | Object Lock 설정 자체가 증명                  |
+
+🔵 Object Lock은 버전 관리 버킷의 **특정 객체 버전**을 보호합니다. 버전 ID 없이 삭제하면 `200 OK`와 함께 삭제 마커가 현재 버전으로 추가되고, 같은 키로 덮어쓰면 새 버전이 생깁니다. 잠긴 기존 버전은 그대로 남으므로 이전 버전을 꺼내 복구합니다. 버전 ID를 지정한 영구 삭제만 `403 Access Denied`로 거부됩니다.
 
 ### WORM 개념
 
@@ -43,15 +45,15 @@ Write Once Read Many (WORM)
 
 ### Governance vs Compliance
 
-| 항목             | Governance                     | Compliance                        |
-|------------------|--------------------------------|-----------------------------------|
-| 삭제 가능 여부   | 특별 권한 있으면 가능          | 누구도 불가 (root 포함)           |
-| 보존 기간 단축   | 가능 (특별 권한)               | 불가                              |
-| 보존 기간 연장   | 가능                           | 가능                              |
-| 모드 변경        | Compliance로 변경 가능         | 변경 불가                         |
-| AWS Support 요청 | 해제 가능                      | 해제 불가                         |
-| 용도             | 테스트, 일반 보호, 내부 정책   | 규제 준수 (금융, 의료, 법적 보존) |
-| 필요 권한        | `s3:BypassGovernanceRetention` | 해당 없음 (우회 불가)             |
+| 항목           | Governance                     | Compliance                        |
+|----------------|--------------------------------|-----------------------------------|
+| 삭제 가능 여부 | 특별 권한 있으면 가능          | 누구도 불가 (root 포함)           |
+| 보존 기간 단축 | 가능 (특별 권한)               | 불가                              |
+| 보존 기간 연장 | 가능                           | 가능                              |
+| 모드 변경      | Compliance로 변경 가능         | 변경 불가                         |
+| 만료 전 해제   | 우회 권한 + 요청 헤더로 가능   | AWS 계정 삭제 외 방법 없음        |
+| 용도           | 테스트, 일반 보호, 내부 정책   | 규제 준수 (금융, 의료, 법적 보존) |
+| 필요 권한      | `s3:BypassGovernanceRetention` | 해당 없음 (우회 불가)             |
 
 ### Retention Period vs Legal Hold
 
@@ -351,15 +353,15 @@ Defense in depth:
 
 ## 7. 트러블슈팅
 
-| 에러                                                  | 원인                                  | 해결                                                |
-|-------------------------------------------------------|---------------------------------------|-----------------------------------------------------|
-| `AccessDenied` on DeleteObject                        | Retention 기간 내 삭제 시도           | 보존 기간 만료 대기 또는 Governance 우회            |
-| `InvalidRequest: Object Lock not enabled`             | Object Lock 미활성화 버킷에 보존 설정 | 버전 관리 활성화 후 `put-object-lock-configuration` |
-| `ObjectLockConfigurationNotFound`                     | 설정 조회 실패                        | Object Lock 미활성화 버킷                           |
-| Lifecycle 삭제 안 됨                                  | Retention 기간 > Lifecycle Days       | Lifecycle은 Retention 이후에만 동작                 |
-| 버전 용량 계속 증가                                   | `s3 cp` 반복 실행                     | `s3 sync` 또는 사전 비교 로직 추가                  |
-| Compliance 모드 해제 불가                             | 설계상 의도된 동작                    | 보존 기간 만료까지 대기 (방법 없음)                 |
-| `OperationAborted: conflicting conditional operation` | 동시 Retention 변경                   | 재시도 (경합 상태)                                  |
+| 에러                                                  | 원인                                  | 해결                                                                       |
+|-------------------------------------------------------|---------------------------------------|----------------------------------------------------------------------------|
+| `AccessDenied` on DeleteObject                        | Retention 기간 내 삭제 시도           | 보존 기간 만료 대기 또는 Governance 우회                                   |
+| `InvalidRequest: Object Lock not enabled`             | Object Lock 미활성화 버킷에 보존 설정 | 버전 관리 활성화 후 `put-object-lock-configuration`                        |
+| `ObjectLockConfigurationNotFound`                     | 설정 조회 실패                        | Object Lock 미활성화 버킷                                                  |
+| Lifecycle 삭제 안 됨                                  | Retention 기간 > Lifecycle Days       | 현재 버전 만료는 삭제 마커만 추가, 잠긴 버전 영구 삭제는 Retention 만료 후 |
+| 버전 용량 계속 증가                                   | `s3 cp` 반복 실행                     | `s3 sync` 또는 사전 비교 로직 추가                                         |
+| Compliance 모드 해제 불가                             | 설계상 의도된 동작                    | 보존 기간 만료까지 대기 (방법 없음)                                        |
+| `OperationAborted: conflicting conditional operation` | 동시 Retention 변경                   | 재시도 (경합 상태)                                                         |
 
 ### Compliance 모드 설정 전 체크리스트
 
@@ -383,6 +385,6 @@ Defense in depth:
 
 **작성일**: 2026-07-01
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

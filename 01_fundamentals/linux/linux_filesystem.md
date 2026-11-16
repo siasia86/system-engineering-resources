@@ -270,8 +270,7 @@ Btrfs(B-tree filesystem)는 차세대 Linux 파일시스템입니다. Copy-on-Wr
 # 파일시스템 생성
 sudo mkfs.btrfs /dev/sdb1
 
-# zstd 압축 활성화
-sudo mkfs.btrfs /dev/sdb1
+# zstd 압축 활성화 (마운트 옵션, 위에서 만든 파일시스템에 적용)
 sudo mount -o compress=zstd /dev/sdb1 /mnt/data
 
 # 서브볼륨 생성
@@ -600,16 +599,16 @@ sudo xfs_db -r -c frag /dev/sdb1
 
 ## 12. 배포판 기본 FS
 
-| 배포판              | 기본 FS | 비고   |
-|---------------------|---------|--------|
-| Ubuntu 20.04+       | ext4    | -      |
-| Debian 12+          | ext4    | -      |
-| RHEL 7 / Rocky 8, 9 | XFS     | -      |
-| AlmaLinux 8, 9      | XFS     | -      |
-| openSUSE Tumbleweed | Btrfs   | -      |
-| SLES 12+            | Btrfs   | -      |
-| Fedora 33+          | Btrfs   | -      |
-| Arch Linux          | ext4    | 선택형 |
+| 배포판              | 기본 FS | 비고                      |
+|---------------------|---------|---------------------------|
+| Ubuntu 20.04+       | ext4    | -                         |
+| Debian 12+          | ext4    | -                         |
+| RHEL 7 / Rocky 8, 9 | XFS     | -                         |
+| AlmaLinux 8, 9      | XFS     | -                         |
+| openSUSE Tumbleweed | Btrfs   | -                         |
+| SLES 12+            | Btrfs   | -                         |
+| Fedora 33+          | Btrfs   | 데스크톱 에디션·스핀 기준 |
+| Arch Linux          | ext4    | 선택형                    |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -623,6 +622,7 @@ sudo xfs_db -r -c frag /dev/sdb1
 - Btrfs Documentation: [btrfs.readthedocs.io](https://btrfs.readthedocs.io/) — ★★★☆☆
 - man fstab(5): [man7.org/fstab.5](https://man7.org/linux/man-pages/man5/fstab.5.html) — ★★★☆☆
 - util-linux 2.29 릴리스 노트(findmnt --verify): [github.com/util-linux/util-linux](https://github.com/util-linux/util-linux/blob/master/Documentation/releases/v2.29-ReleaseNotes) — ★★★☆☆
+- Fedora Change: Btrfs by default (데스크톱 에디션·스핀 대상): [fedoraproject.org/wiki/Changes/BtrfsByDefault](https://fedoraproject.org/wiki/Changes/BtrfsByDefault) — ★★★☆☆ (확인일 2026-11-16)
 - Evi Nemeth et al. "UNIX and Linux System Administration Handbook, 5th Edition"
 - [_reference/linux_filesystem_official_notes.md](../../_reference/linux_filesystem_official_notes.md)
 
@@ -630,6 +630,6 @@ sudo xfs_db -r -c frag /dev/sdb1
 
 **작성일**: 2026-07-17
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

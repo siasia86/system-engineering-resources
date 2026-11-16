@@ -22,7 +22,8 @@ PermitRootLogin no
 
 # 패스워드 인증 비활성화 (키 기반만 허용)
 PasswordAuthentication no
-KbdInteractiveAuthentication no   # OpenSSH 8.7+, 구버전은 ChallengeResponseAuthentication no
+# OpenSSH 8.7+ 키 이름. 구버전은 ChallengeResponseAuthentication no
+KbdInteractiveAuthentication no
 UsePAM yes
 
 # 빈 패스워드 금지
@@ -159,10 +160,14 @@ google-authenticator
 # PAM 설정 (/etc/pam.d/sshd 상단에 추가)
 auth required pam_google_authenticator.so
 
-# sshd_config 수정
-KbdInteractiveAuthentication yes   # OpenSSH 8.7+, 구버전은 ChallengeResponseAuthentication yes
+# sshd_config 수정 (OpenSSH 8.7+ 키 이름. 구버전은 ChallengeResponseAuthentication yes)
+KbdInteractiveAuthentication yes
 AuthenticationMethods publickey,keyboard-interactive
 ```
+
+sshd_config는 `#`로 시작하는 줄만 주석으로 처리하므로(sshd_config(5)), 설명 주석은 값 뒤가 아니라 윗줄에 둡니다.
+
+🟡 Ubuntu 기본 `/etc/pam.d/sshd`는 `@include common-auth`(pam_unix)를 포함합니다. 위처럼 `pam_google_authenticator.so`만 상단에 추가하면 keyboard-interactive 단계에서 TOTP 코드와 함께 unix 패스워드도 요구됩니다. 공개 키+TOTP만 쓰려면 `/etc/pam.d/sshd`의 `@include common-auth` 줄을 주석 처리하고, 콘솔 등 다른 접속 경로를 남겨 둔 상태에서 새 세션으로 로그인을 시험합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -212,6 +217,6 @@ AuthenticationMethods publickey,keyboard-interactive
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -150,7 +150,7 @@ services:
       - '--web.enable-lifecycle'
 
   alertmanager:
-    image: prom/alertmanager:v0.34.2
+    image: prom/alertmanager:v0.35.0
     ports:
       - "9093:9093"
     volumes:

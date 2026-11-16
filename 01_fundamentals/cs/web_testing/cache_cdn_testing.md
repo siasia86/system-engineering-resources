@@ -150,8 +150,8 @@ nginx에서는 `add_header X-Cache-Status $upstream_cache_status;`처럼 캐시 
 
 ## 참고 자료
 
-- RFC 9111 HTTP Caching: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9111.html)
-- RFC 5861 HTTP Cache-Control Extensions for Stale Content: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc5861.html)
+- RFC 9111 HTTP Caching: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9111.html) — ★★★★☆
+- RFC 5861 HTTP Cache-Control Extensions for Stale Content: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc5861.html) — ★★★★☆
 - nginx ngx_http_proxy_module: [nginx.org](https://nginx.org/en/docs/http/ngx_http_proxy_module.html) — ★★★☆☆
 - [CDN·Proxy와 Origin IP](../../networking/cdn_proxy_origin_ip.md)
 - [HTTP 프로토콜 테스트](http_protocol_testing.md)
@@ -171,6 +171,6 @@ nginx에서는 `add_header X-Cache-Status $upstream_cache_status;`처럼 캐시 
 
 **작성일**: 2026-10-27
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

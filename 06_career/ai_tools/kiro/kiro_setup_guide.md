@@ -40,26 +40,26 @@ Hook   = 자동화 트리거            — "파일 저장 시 git diff 출력"
 ## 2. 디렉토리 구조
 
 ```
-~/.kiro/                           ← 글로벌 (모든 프로젝트 공통)       
-├── agents/                                                            
-│   ├── infra.json                 ← 인프라 운영 에이전트              
-│   └── readonly.json              ← 읽기 전용 안전 에이전트           
-├── markdown/                                                          
-│   └── STYLE.md                   ← 문서 작성 스타일 가이드           
-├── prompts/                                                           
-│   └── ansible-create.md          ← Ansible playbook 작성 템플릿      
-├── settings/                                                          
-│   └── cli.json                   ← CLI 전역 설정                     
-└── skills/                                                            
-    ├── work-rules/                                                    
-    │   └── SKILL.md               ← 공통 작업 규칙                    
-    └── infra-rules/                                                   
-        └── SKILL.md               ← 인프라 전용 규칙                  
-                                                                       
-.kiro/                             ← 로컬 (프로젝트별, 글로벌보다 우선)
-├── agents/                                                            
-├── prompts/                                                           
-└── skills/                                                            
+~/.kiro/                           ← global (shared by all projects)      
+├── agents/                                                               
+│   ├── infra.json                 ← infra operation agent                
+│   └── readonly.json              ← read-only safe agent                 
+├── markdown/                                                             
+│   └── STYLE.md                   ← writing style guide                  
+├── prompts/                                                              
+│   └── ansible-create.md          ← Ansible playbook template            
+├── settings/                                                             
+│   └── cli.json                   ← CLI global settings                  
+└── skills/                                                               
+    ├── work-rules/                                                       
+    │   └── SKILL.md               ← common work rules                    
+    └── infra-rules/                                                      
+        └── SKILL.md               ← infra-only rules                     
+                                                                          
+.kiro/                             ← local (per project, overrides global)
+├── agents/                                                               
+├── prompts/                                                              
+└── skills/                                                               
 ```
 
 ### 글로벌 vs 로컬 우선순위
@@ -83,10 +83,12 @@ Skill은 AI에게 특정 상황에서 어떻게 행동할지 알려주는 Markdo
 ### 3.1 파일 위치
 
 ```
-~/.kiro/skills/                                                    
-└── skill-name/          ← 디렉토리명 = skill 이름 (소문자, 하이픈)
-    └── SKILL.md         ← 항상 대문자 SKILL.md                    
+~/.kiro/skills/                                                            
+└── skill-name/          ← directory name = skill name (lowercase, hyphens)
+    └── SKILL.md         ← always uppercase SKILL.md                       
 ```
+
+디렉토리 이름이 skill 이름이 되며(소문자·하이픈), 파일 이름은 항상 대문자 `SKILL.md`입니다.
 
 ### 3.2 SKILL.md 구조
 
@@ -219,37 +221,43 @@ Agent는 Skill, 도구 권한, 페르소나를 묶은 JSON 설정 파일입니�
 
 ### 4.3 주요 필드 비교
 
-| 필드           | 역할                             | 없으면?                    |
-|----------------|----------------------------------|----------------------------|
-| `tools`        | 사용 가능한 도구 카테고리 활성화 | 해당 도구 자체를 사용 불가 |
-| `allowedTools` | 확인 없이 자동 승인할 도구       | 매번 y/n 확인 프롬프트     |
-| `prompt`       | 에이전트 페르소나 정의           | 기본 에이전트 동작         |
-| `resources`    | skill/파일 자동 로드             | 추가 규칙 없음             |
+| 필드           | 역할                       | 없으면?                    |
+|----------------|----------------------------|----------------------------|
+| `tools`        | 사용 가능한 도구 목록      | 해당 도구 자체를 사용 불가 |
+| `allowedTools` | 확인 없이 자동 승인할 도구 | 매번 y/n 확인 프롬프트     |
+| `prompt`       | 에이전트 페르소나 정의     | 기본 에이전트 동작         |
+| `resources`    | skill/파일 자동 로드       | 추가 규칙 없음             |
 
-### 4.4 tools 카테고리 → 실제 도구 매핑
+### 4.4 tools 이름과 별칭
 
-| `tools` 카테고리 | 포함 도구                         |
-|------------------|-----------------------------------|
-| `read`           | `fs_read`, `glob`, `grep`, `code` |
-| `write`          | `fs_write`                        |
-| `shell`          | `execute_bash`                    |
-| `aws`            | `use_aws`                         |
-| `subagent`       | `use_subagent`                    |
-| `web`            | `web_search`, `web_fetch`         |
+CLI 2.x의 `tools`에는 카테고리가 아니라 기본 도구 이름(또는 별칭)을 적습니다. `"*"`는 기본 도구와 MCP 도구 전부, `"@builtin"`은 기본 도구 전부, `"@서버이름"`은 그 MCP 서버의 도구를 뜻합니다.
+
+| 도구 이름  | 별칭(2.x 내부 이름)           | 비고                  |
+|------------|-------------------------------|-----------------------|
+| `read`     | `fs_read`, `fsRead`           | 파일·디렉터리 읽기    |
+| `write`    | `fs_write`, `fsWrite`         | 파일 생성·수정        |
+| `shell`    | `execute_bash`, `execute_cmd` | 명령 실행             |
+| `aws`      | `use_aws`                     | V3 기본 도구에는 없음 |
+| `subagent` | `use_subagent`                | 하위 에이전트 실행    |
+
+- `glob`, `grep`, `code`, `web_search`, `web_fetch`는 `read`에 포함되지 않는 별도 도구입니다. 필요하면 `tools`에 따로 적습니다.
+- V3에서는 `read`·`write`·`shell`·`web`·`subagent`가 여러 도구를 묶는 카테고리 태그이며, `/upgrade-agent`가 2.x 이름을 V3 선택자로 바꿉니다.
 
 ### 4.5 실행 흐름
 
 ```
-tools 확인 → allowedTools 확인 → 실행
+check tools → check allowedTools → run
 
-1단계: tools에 해당 카테고리가 있나?
-   shell ✅ → execute_bash 사용 가능
-   없으면 → 호출 불가
+Step 1: is the tool listed in tools?
+   shell ✅ → execute_bash can be used
+   no      → cannot be called
 
-2단계: allowedTools에 해당 도구가 있나?
-   execute_bash ✅ → 자동 실행 (확인 없음)
-   없으면 → 매번 y/n 확인
+Step 2: is the tool listed in allowedTools?
+   execute_bash ✅ → runs automatically (no prompt)
+   no              → y/n prompt every time
 ```
+
+1단계에서 `tools`에 없는 도구는 호출할 수 없고, 2단계에서 `allowedTools`에 있는 도구만 확인 없이 실행되며 나머지는 매번 y/n 확인을 받습니다.
 
 ### 4.6 에이전트 예시 모음
 
@@ -646,38 +654,40 @@ kiro-cli settings chat.enableCheckpoint true
 신규 서버 운영 또는 IaC 작업 시 권장하는 기본 구성입니다.
 
 ```
-~/.kiro/                                                               
-├── agents/                                                            
-│   ├── infra.json          ← 운영 에이전트                            
-│   └── readonly.json       ← 조회 전용 에이전트                       
-├── hooks/                                                             
-│   ├── block-prd-write.sh                                             
-│   ├── block-dangerous-cmd.sh                                         
-│   └── audit-log.sh                                                   
-└── skills/                                                            
-    ├── work-rules/                                                    
-    │   └── SKILL.md        ← 공통 작업 규칙 (복명복창, 위험 작업 확인)
-    └── infra-rules/                                                   
-        └── SKILL.md        ← 인프라 운영 규칙 (환경별 처리, 롤백)     
+~/.kiro/                                                                       
+├── agents/                                                                    
+│   ├── infra.json          ← operation agent                                  
+│   └── readonly.json       ← read-only agent                                  
+├── hooks/                                                                     
+│   ├── block-prd-write.sh                                                     
+│   ├── block-dangerous-cmd.sh                                                 
+│   └── audit-log.sh                                                           
+└── skills/                                                                    
+    ├── work-rules/                                                            
+    │   └── SKILL.md        ← common work rules (read-back, confirm risky work)
+    └── infra-rules/                                                           
+        └── SKILL.md        ← infra rules (per-environment handling, rollback) 
 ```
+
+`work-rules`는 복명복창·위험 작업 확인 같은 공통 규칙을, `infra-rules`는 환경별 처리·롤백 같은 인프라 운영 규칙을 담습니다.
 
 ### 8.2 Skill 로드 흐름
 
 작업 유형에 따라 적합한 skill을 선택합니다.
 
 ```
-작업 도착                                                                
-    │                                                                    
-    ├── 무엇을 만들지 모름?           → interview-me / idea-refine skill 
-    ├── 신규 기능/변경 설계?          → spec-driven-development skill    
-    ├── 스펙 있음, 작업 분해 필요?    → planning-and-task-breakdown skill
-    ├── 코드 구현 중?                 → incremental-implementation skill 
-    │   ├── IaC 작업?                 → incremental-change skill         
-    │   └── 위험한 비가역 변경?       → doubt-driven-infra skill         
-    ├── 오류 발생?                    → debugging-and-recovery skill     
-    ├── 코드 리뷰?                    → code-review skill                
-    ├── 배포/런칭?                    → shipping-checklist skill         
-    └── 문서 작성?                    → readme-template / STYLE.md       
+Task arrives                                                              
+    │                                                                     
+    ├── Unsure what to build?          → interview-me / idea-refine skill 
+    ├── Designing a feature/change?    → spec-driven-development skill    
+    ├── Spec ready, need breakdown?    → planning-and-task-breakdown skill
+    ├── Implementing code?             → incremental-implementation skill 
+    │   ├── IaC work?                  → incremental-change skill         
+    │   └── Risky irreversible change? → doubt-driven-infra skill         
+    ├── Error occurred?                → debugging-and-recovery skill     
+    ├── Code review?                   → code-review skill                
+    ├── Deploy/launch?                 → shipping-checklist skill         
+    └── Writing docs?                  → readme-template / STYLE.md       
 ```
 
 ### 8.3 단계별 작업 Skill 시퀀스
@@ -700,6 +710,8 @@ kiro-cli settings chat.enableCheckpoint true
 - Kiro CLI 공식 문서: [kiro.dev/docs/cli](https://kiro.dev/docs/cli/) — ★★★☆☆
 - Kiro CLI 2.x → V3 업그레이드: [kiro.dev/docs/cli/v3](https://kiro.dev/docs/cli/v3/) — ★★★☆☆
 - Hooks 마이그레이션(V2 도구 그룹): [kiro.dev/docs/cli/v3/hooks-migration](https://kiro.dev/docs/cli/v3/hooks-migration/) — ★★★☆☆
+- 기본 도구 참조(2.x 도구 이름·별칭): [kiro.dev/docs/reference/built-in-tools](https://kiro.dev/docs/reference/built-in-tools/) — ★★★☆☆ (확인일 2026-11-16)
+- Agent 설정 참조(`tools` 값·V3 카테고리 태그): [kiro.dev/docs/custom-agents/configuration-reference](https://kiro.dev/docs/custom-agents/configuration-reference/) — ★★★☆☆ (확인일 2026-11-16)
 - 프롬프트 관리: [kiro.dev/docs/cli/chat/manage-prompts](https://kiro.dev/docs/cli/chat/manage-prompts/) — ★★★☆☆
 - [kiro_cli_command_reference.md](./kiro_cli_command_reference.md)
 
@@ -707,6 +719,6 @@ kiro-cli settings chat.enableCheckpoint true
 
 **작성일**: 2026-06-09
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

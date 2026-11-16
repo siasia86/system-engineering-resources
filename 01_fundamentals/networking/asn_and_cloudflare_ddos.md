@@ -166,14 +166,14 @@ L3/L4 전체 트래픽 보호. 자체 /24 이상 IP 대역(BYOIP)을 쓰거나 /
                  Full IP prefix protection                         
 ```
 
-| 항목      | 내용                                    |
-|-----------|-----------------------------------------|
-| ASN 필요  | 선택 (기본 AS13335로 광고)              |
-| 보호 범위 | 전체 IP 대역 (모든 프로토콜)            |
-| IP 사용   | 자체 PI IP (Cloudflare에 BGP 광고 위임) |
-| 비용      | 수천$/월~ (트래픽 규모별)               |
-| 설정      | BGP 피어링 + GRE/IPsec Tunnel           |
-| 적합 대상 | 대규모 IDC, 전체 네트워크 보호          |
+| 항목      | 내용                                              |
+|-----------|---------------------------------------------------|
+| ASN 필요  | 선택 (기본 AS13335로 광고)                        |
+| 보호 범위 | 전체 IP 대역 (모든 프로토콜)                      |
+| IP 사용   | 자체 /24 이상 대역(BYOIP) 또는 Cloudflare 소유 IP |
+| 비용      | 수천$/월~ (트래픽 규모별)                         |
+| 설정      | BGP 피어링 + GRE/IPsec Tunnel                     |
+| 적합 대상 | 대규모 IDC, 전체 네트워크 보호                    |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -224,7 +224,7 @@ ASN이 있으면 Cloudflare 외에도 직접 제어 가능한 방법이 생긴�
                     │                        
                     v                        
 ┌───────────────────────────────────────────┐
-│      Requires ASN                         │
+│      Requires ASN (for BGP multihoming)   │
 │  ┌──────────────────────────────────────┐ │
 │  │ Magic Transit + BGP Multihoming      │ │
 │  │ (Full IP range DDoS protection)      │ │
@@ -233,7 +233,7 @@ ASN이 있으면 Cloudflare 외에도 직접 제어 가능한 방법이 생긴�
 ```
 
 - 대부분의 IDC 서비스는 ASN 없이 Cloudflare DNS/Proxy + Spectrum으로 충분
-- ASN + Magic Transit은 자체 IDC에서 대규모 서비스 운영 + 전체 네트워크 보호가 필요할 때
+- Magic Transit 자체는 ASN 없이 쓸 수 있고(4-3절), ASN은 Magic Transit과 ISP 이중화(BGP 멀티호밍)를 함께 운영할 때 필요
 - DDoS 방어만이 목적이면 ASN 등록보다 Cloudflare 서비스가 비용 대비 효과적
 
 [⬆ 목차로 돌아가기](#목차)
@@ -272,25 +272,25 @@ ASN이 있으면 Cloudflare 외에도 직접 제어 가능한 방법이 생긴�
 ## 9. ISP/ASN 업체의 BFD 지원 현황
 
 BFD(Bidirectional Forwarding Detection)는 두 네트워크 장비 간 링크 장애를 빠르게 감지하는 프로토콜입니다.
-BGP만 사용할 경우 장애 감지에 30\~90초가 걸리지만, BFD를 적용하면 50ms\~1초 이내에 감지할 수 있습니다.
+BGP만 사용하면 링크는 살아 있는데 상대 라우터가 응답하지 않는 장애를 Hold Timer 만료로 감지하며, 기본값 기준 90초(RFC 4271 권장값·Juniper 기본)\~180초(Cisco IOS 기본)가 걸립니다. BFD를 적용하면 50ms\~1초 이내에 감지할 수 있습니다.
 
 ```
-BGP만 사용 시:
+BGP only:
 Router A ----X---- Router B
-         장애 발생 → 감지까지 30~90초 → Failover
+         Failure → detected after Hold Timer expiry (90-180s default) → Failover
 
-BGP + BFD 사용 시:
+BGP + BFD:
 Router A ----X---- Router B
-         장애 발생 → 감지까지 ~150ms → Failover
-         (BFD: 50ms 간격 × 3회 미응답 = 150ms)
+         Failure → detected in ~150ms → Failover
+         (BFD: 50ms interval × 3 missed = 150ms)
 ```
 
-| 항목             | BGP만 사용                  | BGP + BFD                        |
-|------------------|-----------------------------|----------------------------------|
-| 장애 감지 시간   | 30~90초                     | 50ms ~ 1초                       |
-| 동작 방식        | Keepalive 메시지 타임아웃   | 전용 경량 패킷으로 상시 헬스체크 |
-| 오버헤드         | 낮음                        | 매우 낮음 (패킷이 작음)          |
-| 게임 서비스 영향 | 장애 시 30초 이상 접속 불가 | 1초 이내 백업 회선 전환          |
+| 항목             | BGP만 사용                      | BGP + BFD                        |
+|------------------|---------------------------------|----------------------------------|
+| 장애 감지 시간   | 90~180초 (기본 Hold Timer 기준) | 50ms ~ 1초                       |
+| 동작 방식        | Keepalive 메시지 타임아웃       | 전용 경량 패킷으로 상시 헬스체크 |
+| 오버헤드         | 낮음                            | 매우 낮음 (패킷이 작음)          |
+| 게임 서비스 영향 | 장애 시 1분 이상 접속 불가      | 1초 이내 백업 회선 전환          |
 
 ### 9-1. ISP 구간별 BFD 지원 여부
 
@@ -363,6 +363,8 @@ Router A ----X---- Router B
 - Magic Transit Cloudflare 소유 IP: [developers.cloudflare.com](https://developers.cloudflare.com/magic-transit/cloudflare-ips/) — ★★★☆☆
 - Magic Transit 제품 소개 (L3 DDoS, Spectrum L4·DDoS L7과 역할 구분): [cloudflare.com](https://www.cloudflare.com/network-services/products/magic-transit/) — ★★★☆☆
 - RFC 4271: BGP-4: [RFC 4271](https://datatracker.ietf.org/doc/html/rfc4271) — ★★★★☆
+- Cisco IOS XE 17 IP Routing Configuration Guide (기본 Keepalive 60초·Hold 180초, 양쪽 중 작은 값 협상): [cisco.com](https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-routing/b-ip-routing/m_irg-int-features-0.html) — ★★★☆☆ (확인일 2026-11-16)
+- Junos BGP hold-time (기본 90초): [networkingdocs.hpe.com](https://networkingdocs.hpe.com/documentation/us/en/software/junos/cli-reference/topics/ref/statement/hold-time-edit-protocols-bgp.html) — ★★★☆☆ (확인일 2026-11-16)
 - RFC 8955: Dissemination of Flow Specification Rules (BGP Flowspec): [RFC 8955](https://www.rfc-editor.org/rfc/rfc8955) — ★★★★☆
 
 ---
@@ -380,6 +382,6 @@ Router A ----X---- Router B
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

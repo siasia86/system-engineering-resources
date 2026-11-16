@@ -110,12 +110,12 @@ command 2> error.log
 `&`는 **"다음 숫자를 파일명이 아닌 FD 번호로 해석하라"** 는 의미입니다.
 
 ```
-2  >  &  1                                    
-│  │  │  │                                    
-│  │  │  └── FD 번호 1 (stdout)               
-│  │  └───── 다음 숫자는 파일명이 아닌 FD 번호
-│  └──────── 리다이렉트 연산자                
-└─────────── 리다이렉트할 FD (stderr)         
+2  >  &  1                                        
+│  │  │  │                                        
+│  │  │  └── FD number 1 (stdout)                 
+│  │  └───── next number is an FD, not a file name
+│  └──────── redirect operator                    
+└─────────── FD to redirect (stderr)              
 ```
 
 `&` 없으면 `1`은 FD가 아닌 파일명 `"1"`로 해석됩니다:
@@ -154,24 +154,24 @@ command 2>&1 > file.log    # stderr은 여전히 터미널로 출력
 순서별 동작 다이어그램:
 
 ```
-# command > file.log 2>&1 (올바른 순서)
+# command > file.log 2>&1 (correct order)
 
   Step 1: > file.log       Step 2: 2>&1
-  FD1 ───> file.log        FD2 ───> (FD1이 가리키는 곳) ───> file.log
+  FD1 ───> file.log        FD2 ───> (where FD1 points) ───> file.log
 
   Result:
   FD1 ───> file.log
   FD2 ───> file.log
 
 
-# command 2>&1 > file.log (잘못된 순서)
+# command 2>&1 > file.log (wrong order)
 
   Step 1: 2>&1             Step 2: > file.log
   FD2 ───> (FD1 = terminal)   FD1 ───> file.log
 
   Result:
   FD1 ───> file.log
-  FD2 ───> terminal        ← stderr이 파일로 안 감
+  FD2 ───> terminal        <- stderr does not go to the file
 ```
 
 ### `&>` — stdout + stderr 모두 파일로 (bash 전용 단축)
@@ -420,11 +420,13 @@ echo "터미널로 출력"
 ```
 
 ```
-  Step 1: exec 3>&1        FD3 ───> terminal (백업)
+  Step 1: exec 3>&1        FD3 ───> terminal (backup)
   Step 2: exec > file      FD1 ───> file
-  Step 3: exec 1>&3        FD1 ───> terminal (복원)
-  Step 4: exec 3>&-        FD3 닫힘  (3>&- : FD3을 닫음, 열린 FD는 명시적으로 닫아야 누수 방지)
+  Step 3: exec 1>&3        FD1 ───> terminal (restore)
+  Step 4: exec 3>&-        FD3 closed
 ```
+
+1단계에서 터미널을 FD3에 백업하고, 3단계에서 FD1을 복원합니다. 4단계의 `3>&-`는 FD3을 닫습니다. 열린 FD는 명시적으로 닫아야 누수를 막을 수 있습니다.
 
 ### 파이프 + Redirection
 
@@ -658,6 +660,6 @@ echo "$(date) script end"
 
 **작성일**: 2026-05-21
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

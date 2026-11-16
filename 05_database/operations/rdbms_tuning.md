@@ -108,10 +108,12 @@ SELECT id, customer_name, amount FROM orders WHERE id = 123;
 ALTER TABLE orders PARTITION BY RANGE COLUMNS (created_at) (
     PARTITION p202601 VALUES LESS THAN ('2026-02-01'),
     PARTITION p202602 VALUES LESS THAN ('2026-03-01'),
-    PARTITION p202607 VALUES LESS THAN ('2026-08-01')
+    -- p202603 ~ p202606 같은 형식으로 월마다 추가 (생략)
+    PARTITION p202607 VALUES LESS THAN ('2026-08-01'),
+    PARTITION p_future VALUES LESS THAN (MAXVALUE)   -- 없으면 범위 밖 INSERT 오류
 );
 
--- 효과: WHERE created_at >= '2026-07-01' → p202607만 스캔 (partition pruning)
+-- 효과: WHERE created_at >= '2026-07-01' → p202607, p_future만 스캔 (partition pruning)
 ```
 
 ### 테이블 분리

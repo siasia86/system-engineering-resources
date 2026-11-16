@@ -459,7 +459,7 @@ python3 -c "import sys; print(sys.byteorder)"
 |-----------|------------------------------------------------------|----------------------------------|
 | L1 캐시   | 가변 길이 명령어 → 디코드 캐시 추가 (micro-op cache) | 고정 길이 → 단순 I-cache         |
 | 캐시 효율 | 코드 밀도 높아 I-cache 적중률 양호                   | 코드 크기 커서 I-cache 미스 가능 |
-| 전력      | 디코드 캐시로 전력 소모 증가                         | 단순 구조로 전력 효율 우수       |
+| 전력      | 디코더 전력 부담, 디코드 캐시 적중 시 절감           | 단순 구조로 전력 효율 우수       |
 
 ### 캐시 확인 명령어
 
@@ -580,6 +580,7 @@ CISC 탄생 --> RISC 등장 --> CISC+RISC --> ARM/RISC-V
 
 - Patterson, David A. & Hennessy, John L. "Computer Organization and Design"
 - Intel Software Developer's Manual: [Intel SDM](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html) — ★★★☆☆
+- Intel 64 and IA-32 Architectures Optimization Reference Manual (Decoded ICache 절, 디코드 단계를 건너뛰어 전력 절감): [Intel Optimization](https://www.intel.com/content/www/us/en/developer/articles/technical/intel64-and-ia32-architectures-optimization.html) — ★★★☆☆ (확인일 2026-11-16)
 - ARM Architecture Reference Manual: [ARM Developer Docs](https://developer.arm.com/documentation) — ★★★☆☆
 - Arm AAPCS64 (범용 레지스터 31개) / AAPCS32 (코어 레지스터 16개): [aapcs64](https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst), [aapcs32](https://github.com/ARM-software/abi-aa/blob/main/aapcs32/aapcs32.rst) — ★★★☆☆
 - RISC-V 비특권 명세 (RV32I 32개, RV32E 16개): [riscv-isa-manual](https://github.com/riscv/riscv-isa-manual) — ★★★☆☆
@@ -601,6 +602,6 @@ CISC 탄생 --> RISC 등장 --> CISC+RISC --> ARM/RISC-V
 
 **작성일**: 2026-04-24
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

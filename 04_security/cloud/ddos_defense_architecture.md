@@ -158,11 +158,11 @@ Windows Game Server (Auto Scaling)                                │   │  │
 ```
 Client
   v
-Route 53 (DNS 조회)
+Route 53 (DNS lookup)
   v
-AWS Network Firewall (검사 통과)
+AWS Network Firewall (inspection passed)
   v
-NLB (로드밸런싱)
+NLB (load balancing)
   v
 Linux Proxy
   ├─ XDP (pass)
@@ -180,7 +180,7 @@ Attacker
   v
 Route 53
   v
-AWS Network Firewall (일부 차단)
+AWS Network Firewall (partial block)
   v
 NLB
   v
@@ -199,13 +199,13 @@ Linux Proxy (CrowdSec Agent)
   │ (Block decision request)
 CrowdSec LAPI Server
   │ (Blocked IP list response)
-Linux Proxy (nftables 업데이트)
+Linux Proxy (nftables update)
 
-Linux Proxy (XDP 동기화 스크립트)
+Linux Proxy (XDP sync script)
   │ (Blocked IP query)
 Redis (ElastiCache)
   │ (Blocked IP list response)
-Linux Proxy (XDP BPF Map 업데이트)
+Linux Proxy (XDP BPF map update)
 
 Linux Proxy (Zabbix Agent)
   │ (Metrics push)
@@ -530,6 +530,6 @@ redis-cli -h redis.xxxxx.cache.amazonaws.com SMEMBERS blocked_ips
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

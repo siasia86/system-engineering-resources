@@ -25,14 +25,14 @@ AI 코딩 에이전트(Kiro, Claude Code, Gemini CLI, Cursor 등)에서 사용�
 에이전트 시스템을 4개의 마크다운 파일로 구조화하는 패턴입니다.
 
 ```
-repo/                                                     
-├── AGENTS.md                  ← 시스템 전체 구조 (조직도)
-└── agents/                                               
-    └── analyst/                                          
-        ├── Agent.md           ← 에이전트 정체성          
-        ├── INSTRUCTIONS.md    ← 행동 규칙 + 워크플로우   
-        └── skills/                                       
-            └── SKILL.md       ← 특정 기술 수행 절차      
+repo/                                                                
+├── AGENTS.md                  ← overall system structure (org chart)
+└── agents/                                                          
+    └── analyst/                                                     
+        ├── Agent.md           ← agent identity                      
+        ├── INSTRUCTIONS.md    ← behavior rules + workflow           
+        └── skills/                                                  
+            └── SKILL.md       ← procedure for a specific skill      
 ```
 
 | 파일              | 역할                       | 비유        | 변경 빈도 |
@@ -128,12 +128,14 @@ description: >
 하나의 스킬을 디렉토리로 구조화하는 패턴입니다.
 
 ```
-my-skill/                                                        
-├── SKILL.md           ← 필수: 메타데이터 + 지시사항 (500줄 이하)
-├── scripts/           ← 실행 가능한 스크립트 (출력만 토큰 소비)
-├── references/        ← 참조 문서 (도메인별 분리)               
-└── assets/            ← 템플릿, 정적 리소스                     
+my-skill/                                                                     
+├── SKILL.md           ← required: metadata + instructions (500 lines or less)
+├── scripts/           ← executable scripts (only output uses tokens)         
+├── references/        ← reference docs (split by domain)                     
+└── assets/            ← templates, static resources                          
 ```
+
+`SKILL.md`만 필수이고 500줄 이하로 유지합니다. `scripts/`는 실행 결과만 토큰을 쓰며, `references/`는 도메인별 참조 문서, `assets/`는 템플릿·정적 리소스를 둡니다.
 
 ### 핵심 규칙
 
@@ -351,21 +353,23 @@ description: >
 ### 인프라 운영 스킬 디렉토리 구성 예시
 
 ```
-~/.kiro/skills/                                                
-├── work-rules/                                                
-│   └── SKILL.md                ← 공통 작업 규칙               
-├── infra-ops/                                                 
-│   ├── SKILL.md                ← 인프라 운영 절차 (500줄 이하)
-│   ├── references/                                            
-│   │   ├── server_setup.md     ← 서버 초기 설정               
-│   │   ├── monitoring.md       ← 모니터링 설정                
-│   │   └── deploy_procedure.md ← 배포 절차                    
-│   └── scripts/                                               
-│       ├── health_check.sh     ← 서버 상태 점검               
-│       └── log_collect.sh      ← 로그 수집                    
-└── naming-rules/                                              
-    └── SKILL.md                ← 네이밍 규칙                  
+~/.kiro/skills/                                                                
+├── work-rules/                                                                
+│   └── SKILL.md                ← common work rules                            
+├── infra-ops/                                                                 
+│   ├── SKILL.md                ← infra operation procedure (500 lines or less)
+│   ├── references/                                                            
+│   │   ├── server_setup.md     ← initial server setup                         
+│   │   ├── monitoring.md       ← monitoring setup                             
+│   │   └── deploy_procedure.md ← deployment procedure                         
+│   └── scripts/                                                               
+│       ├── health_check.sh     ← server health check                          
+│       └── log_collect.sh      ← log collection                               
+└── naming-rules/                                                              
+    └── SKILL.md                ← naming rules                                 
 ```
+
+공통 작업 규칙(`work-rules`), 인프라 운영 절차(`infra-ops`, 참조 문서·점검 스크립트 포함), 네이밍 규칙(`naming-rules`)을 skill 하나씩으로 나눈 예시입니다.
 
 ---
 
@@ -393,6 +397,6 @@ description: >
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

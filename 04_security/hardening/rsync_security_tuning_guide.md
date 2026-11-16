@@ -230,8 +230,10 @@ hostname 검사 생략은 인증서 이름과 실제 접속 주소가 합법적�
 ```text
 backup client ── TLS :874 ──> HAProxy/Nginx ── rsync :873 ──> local daemon
                                   │
-                                  └── backend :873은 proxy만 접근
+                                  └── backend :873 reachable only from proxy
 ```
+
+backend의 873 포트는 proxy만 접근할 수 있게 둡니다.
 
 같은 호스트에 proxy와 daemon을 배치하면 daemon을 loopback에만 바인딩하고, 다른 호스트라면 backend port에 proxy source만 접근하도록 firewall을 설정합니다. TLS proxy의 인증서 개인키는 proxy 계정과 운영 관리자만 읽을 수 있어야 합니다.
 
@@ -474,6 +476,6 @@ SSH 키 교체는 기존 키를 먼저 삭제하지 않습니다. 새 제한 키
 
 **작성일**: 2026-09-14
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

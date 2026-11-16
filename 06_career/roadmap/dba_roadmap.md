@@ -43,11 +43,11 @@
 ### OS & 인프라
 
 ```
-Linux 기초                                       
-├── 파일 시스템 (ext4, XFS) — DB 데이터 파일 저장
-├── I/O 스케줄러 — DB 성능에 직접 영향           
-├── 메모리 관리 (swap, huge pages)               
-└── 네트워크 (TCP 튜닝, 소켓 버퍼)               
+Linux basics                                       
+├── File systems (ext4, XFS) — DB data file storage
+├── I/O scheduler — directly affects DB performance
+├── Memory management (swap, huge pages)           
+└── Network (TCP tuning, socket buffers)           
 ```
 
 ### SQL 기초
@@ -78,13 +78,15 @@ SQL
 ### 학습 순서
 
 ```
-1. 인덱스 설계     → 조회 성능의 핵심
-2. 실행 계획 분석  → 슬로우 쿼리 튜닝
-3. 트랜잭션/Lock   → 동시성 제어
-4. 파티셔닝        → 대용량 테이블 관리
-5. 복제            → 고가용성 기반
-6. 스키마 마이그레이션 → 무중단 운영
+1. Index design         → key to query performance
+2. Execution plans      → slow query tuning
+3. Transactions/Locks   → concurrency control
+4. Partitioning         → large table management
+5. Replication          → basis for high availability
+6. Schema migration     → zero-downtime operations
 ```
+
+인덱스 설계 → 실행 계획 분석 → 트랜잭션·Lock → 파티셔닝 → 복제 → 스키마 마이그레이션 순서로 익힙니다.
 
 ### DBMS별 특화 학습
 
@@ -283,6 +285,6 @@ Sharding (수평 확장)
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

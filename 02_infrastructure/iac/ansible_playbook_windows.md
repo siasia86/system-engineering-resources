@@ -259,13 +259,13 @@ ansible windows -m ansible.windows.win_shell -a "chcp 65001 | Out-Null; systemin
 ### authorized_keys CRLF 문제
 
 `Set-Content`는 CRLF로 저장하여 SSH 인증 실패를 유발합니다.
-반드시 `WriteAllText`로 LF 강제 저장합니다.
+`WriteAllText`로 LF 줄바꿈을 지정해 저장합니다. 인코딩은 BOM 없는 UTF-8(`UTF8Encoding($false)`)을 씁니다. `[System.Text.Encoding]::UTF8`은 BOM을 붙이므로 첫 줄 키가 BOM 바이트와 섞일 수 있습니다.
 
 ```powershell
 [System.IO.File]::WriteAllText(
     "C:\ProgramData\ssh\administrators_authorized_keys",
     ($keys -join "`n") + "`n",
-    [System.Text.Encoding]::UTF8
+    (New-Object System.Text.UTF8Encoding $false)
 )
 ```
 
@@ -309,6 +309,6 @@ C:\ProgramData\ssh\administrators_authorized_keys
 
 **작성일**: 2026-05-19
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

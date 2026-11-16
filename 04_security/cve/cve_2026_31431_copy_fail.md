@@ -44,9 +44,9 @@
 ```
 splice() → UDP socket → shared frag pages
                               ↓
-                    algif_aead 복호화 (in-place)
+                    algif_aead decrypt (in-place)
                               ↓
-                    page cache 덮어쓰기 → 권한 상승
+                    page cache overwrite → privilege escalation
 ```
 
 - **패치 커밋**: `a664bf3d603d` (mainline, v7.0-rc7)
@@ -216,6 +216,6 @@ for v in sorted(linux,key=lambda x:x['dateAdded'],reverse=True)[:5]:
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

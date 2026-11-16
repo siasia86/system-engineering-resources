@@ -156,13 +156,15 @@ git checkout HEAD@{3}  # 3번째 이전 HEAD 위치로 이동
 
 ```
 Untracked ──git add──> Staged ──git commit──> Committed
-    ^                                              │
-    │                                              │ edit file
-    │                                              v
-    │                                           Modified
-    │                                              │
-    └──── git rm --cached ───────── git add <──────┘
+    ^                   │  ^                      │
+    │                   │  │                      │ edit file
+    │                   │  │                      v
+    │                   │  └────── git add ───── Modified
+    │                   │
+    └─ git rm --cached ─┘
 ```
+
+수정한 파일(Modified)은 `git add`로 다시 Staged가 되고, `git rm --cached`는 파일을 Index에서 빼 Untracked로 되돌립니다(작업 디렉토리의 파일은 남음).
 
 | 상태      | 설명                              |
 |-----------|-----------------------------------|
@@ -483,6 +485,6 @@ git gc --prune=now --aggressive
 
 **작성일**: 2026-07-29
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

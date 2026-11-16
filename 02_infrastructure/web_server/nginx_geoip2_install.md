@@ -161,7 +161,7 @@ nginx -t
 
 | 증상                      | 원인                           | 해결                                             |
 |---------------------------|--------------------------------|--------------------------------------------------|
-| `rc` 상태 (`dpkg -l`)     | nginx 버전과 모듈 버전 불일치  | 버전 맞춰 재설치 또는 컴파일                     |
+| `rc` 상태 (`dpkg -l`)     | 모듈 제거됨, 설정 파일만 남음  | nginx 버전에 맞춰 모듈 재설치 또는 컴파일        |
 | `make modules` 실패       | PCRE/SSL/zlib 헤더 없음        | `apt install libpcre3-dev libssl-dev zlib1g-dev` |
 | `nginx -t` 실패           | `modules-enabled` include 없음 | nginx.conf 첫 줄에 `include` 추가                |
 | `curl: command not found` | 기본 도구 미설치               | `apt install curl gnupg2 git lsb-release`        |
@@ -172,6 +172,7 @@ nginx -t
 ## 참고 자료
 
 - ngx_http_geoip2_module: [github.com/leev/ngx_http_geoip2_module](https://github.com/leev/ngx_http_geoip2_module) — ★★★☆☆
+- dpkg-query(1) 상태 문자(`r` 제거 요청, `c` 설정 파일만 남음): [man7.org/linux/man-pages/man1/dpkg-query.1.html](https://man7.org/linux/man-pages/man1/dpkg-query.1.html) — ★★★☆☆ (확인일 2026-11-16)
 - MaxMind GeoLite2: [maxmind.com](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data) — ★★★☆☆
 - nginx 공식 레포: [nginx.org/packages](https://nginx.org/packages/ubuntu/pool/nginx/n/nginx/) — ★★★☆☆
 - nginx 다운로드(stable 1.30.6): [nginx.org/en/download.html](https://nginx.org/en/download.html) — ★★★☆☆
@@ -180,6 +181,6 @@ nginx -t
 
 **작성일**: 2026-05-20
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

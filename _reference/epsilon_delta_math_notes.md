@@ -7,7 +7,7 @@ tags:
   - limits
   - epsilon-delta
   - calculus
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://en.wikipedia.org/wiki/(%CE%B5,_%CE%B4)-definition_of_limit
   - Rudin, Walter. "Principles of Mathematical Analysis" 3rd ed. McGraw-Hill, 1976.
@@ -71,11 +71,13 @@ f is continuous at p if:
   0 < |x - a| < δ  ⟹  f(x) > M
 ```
 
-## 극한의 유일성 (Theorem 4.2, Rudin)
+## 극한의 유일성 (Theorem 4.2의 따름정리, Rudin)
 
 If lim(x→p) f(x) = q₁ and lim(x→p) f(x) = q₂, then q₁ = q₂.
 
-증명 핵심: 삼각 부등식으로 |q₁ - q₂| < 2ε → ε arbitrary → q₁ = q₂.
+Theorem 4.2는 수열로 함수 극한을 판정하는 정리이며, 유일성은 그 직후 따름정리(수열 극한의 유일성 Theorem 3.2(b) 이용)입니다.
+
+증명 핵심(ε 직접 증명): 삼각 부등식으로 |q₁ - q₂| < 2ε → ε arbitrary → q₁ = q₂.
 
 ## 극한의 산술 (Theorem 4.4, Rudin)
 

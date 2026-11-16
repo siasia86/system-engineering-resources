@@ -158,7 +158,8 @@ egress queue (qdisc)
 
 ```bash
 # eth0 packet out 10Mbps 제한
-tc qdisc add dev eth0 root tbf rate 10mbit burst 32kbit latency 400ms
+# burst(버퍼)는 최소 rate/HZ 바이트 필요. tc-tbf(8): 10mbit에 최소 약 10KB. 작으면 패킷이 버려져 설정 속도에 못 미침
+tc qdisc add dev eth0 root tbf rate 10mbit burst 16kb latency 400ms
 
 # 확인
 tc qdisc show dev eth0
@@ -171,7 +172,7 @@ modprobe ifb
 ip link set ifb0 up
 tc qdisc add dev eth0 ingress
 tc filter add dev eth0 parent ffff: protocol ip u32 match u32 0 0 action mirred egress redirect dev ifb0
-tc qdisc add dev ifb0 root tbf rate 10mbit burst 32kbit latency 400ms
+tc qdisc add dev ifb0 root tbf rate 10mbit burst 16kb latency 400ms
 ```
 
 ### 네트워크 장애 시뮬레이션 (netem)
@@ -226,7 +227,7 @@ tc filter add dev eth0 parent 1: protocol ip prio 1 u32 \
 
 ```bash
 # 백업 실행 전 대역폭 제한
-tc qdisc add dev eth0 root tbf rate 50mbit burst 32kbit latency 400ms
+tc qdisc add dev eth0 root tbf rate 50mbit burst 64kb latency 400ms
 rsync -av /data/ backup@remote:/backup/
 tc qdisc del dev eth0 root
 ```
@@ -262,6 +263,7 @@ echo 60 > /proc/sys/net/netfilter/nf_conntrack_tcp_timeout_established
 ## 참고 자료
 
 - Linux tc man page: [man7.org/linux/man-pages/man8/tc.8.html](https://man7.org/linux/man-pages/man8/tc.8.html) — ★★★☆☆
+- tc-tbf(8) man page (burst 최소 크기): [man7.org/linux/man-pages/man8/tc-tbf.8.html](https://man7.org/linux/man-pages/man8/tc-tbf.8.html) — ★★★☆☆ (확인일 2026-11-16)
 - netfilter: [netfilter.org/documentation](https://www.netfilter.org/documentation/) — ★★★☆☆
 - Linux Kernel Docs nf_conntrack sysctl: [docs.kernel.org/networking/nf_conntrack-sysctl.html](https://docs.kernel.org/networking/nf_conntrack-sysctl.html) — ★★★☆☆
 - Linux 커널 소스 sch_htb.c (기본 class가 없으면 direct 처리): [github.com/torvalds/linux](https://github.com/torvalds/linux/blob/master/net/sched/sch_htb.c) — ★★★☆☆

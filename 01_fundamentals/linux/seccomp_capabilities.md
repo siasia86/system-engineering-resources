@@ -141,20 +141,24 @@ docker run --cap-add=SYS_PTRACE ubuntu strace ls
 
 ### 커스텀 Seccomp 프로파일
 
+프로파일은 허용 목록(allowlist) 방식입니다. `defaultAction`으로 목록에 없는 시스템 콜을 거부하고 `syscalls`에 적은 것만 허용합니다. 아래는 구조를 보여 주는 최소 예시입니다.
+
 ```json
 {
   "defaultAction": "SCMP_ACT_ERRNO",
   "syscalls": [
     {
-      "names": ["read", "write", "open", "close", "stat", "exit_group"],
+      "names": ["read", "write", "openat", "close", "newfstatat", "exit_group"],
       "action": "SCMP_ACT_ALLOW"
     }
   ]
 }
 ```
 
+🟡 이 목록만으로는 `execve`·`mmap`·`brk` 같은 프로세스 시작에 필요한 시스템 콜이 없어 `ubuntu` 같은 일반 이미지가 기동하지 않습니다. 또 `open`·`stat`처럼 x86_64에만 있고 arm64에는 없는 시스템 콜이 있으므로 이름은 대상 아키텍처 기준으로 고릅니다. 실제 프로파일은 Docker 기본 프로파일([moby/profiles default.json](https://github.com/moby/profiles/blob/main/seccomp/default.json))을 복사한 뒤 필요 없는 항목을 줄이는 방식으로 만들고, 적용 후 동작을 시험합니다.
+
 ```bash
-docker run --security-opt seccomp=/path/to/profile.json ubuntu
+docker run --security-opt seccomp=/path/to/profile.json <image>
 ```
 
 ### Kubernetes 적용
@@ -226,6 +230,6 @@ strace ./myapp 2>&1 | grep "EPERM\|EACCES"
 
 **작성일** : 2026-05-21
 
-**마지막 업데이트** : 2026-11-09
+**마지막 업데이트** : 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

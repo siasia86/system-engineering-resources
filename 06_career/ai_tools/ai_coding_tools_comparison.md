@@ -11,11 +11,11 @@
 
 ## 1. 개요
 
-2026년 7월 기준 주요 AI 코딩 도구 10종 비교입니다. 요금·모델 일부는 2026-11-09에 공식 자료로 다시 확인했으며, 바꾼 위치에 확인일을 적었습니다.
+2026년 7월 기준 주요 AI 코딩 도구 10종 비교입니다. 요금·모델 일부는 2026-11-09·2026-11-16에 공식 자료로 다시 확인했으며, 바꾼 위치에 확인일을 적었습니다.
 
 | 도구              | 제조사              | 카테고리                                | 기반 모델                              |
 |-------------------|---------------------|-----------------------------------------|----------------------------------------|
-| Kiro              | AWS                 | AI IDE / CLI / Web / Mobile             | Claude Sonnet 4.6 / Opus 4.5 등        |
+| Kiro              | AWS                 | AI IDE / CLI / Web / Mobile             | Claude Opus 5.5 / Sonnet 5.5 / GPT 등  |
 | Claude Code       | Anthropic           | AI 코딩 에이전트 (CLI/IDE/Web/Desktop)  | Claude 계열 (기본), 서드파티 연동 가능 |
 | OpenAI Agents SDK | OpenAI              | 멀티에이전트 프레임워크 (Python/TS SDK) | GPT-5.6 Sol / Terra 등                 |
 | Cursor            | Anysphere           | AI IDE (VS Code fork)                   | Claude / GPT / Gemini 멀티모델         |
@@ -47,18 +47,23 @@ AWS가 만든 AI 개발 도구입니다. VS Code 기반 IDE(`kiro`), 터미널 C
 - AWS 계정과 통합 (Bedrock, SSO)
 - CI/CD headless 모드: PR 리뷰·버그 수정 자동화
 
-#### 지원 모델 (2026-07-27 기준)
+#### 지원 모델 (2026-11-16 기준, 일부)
 
-| 모델              | 크레딧 배율 |
-|-------------------|-------------|
-| claude-sonnet-4.6 | 1.30x       |
-| claude-opus-4.5   | 2.20x       |
-| claude-haiku-4.5  | 0.40x       |
-| deepseek-3.2      | 0.25x       |
-| qwen3-coder-next  | 0.05x       |
-| auto              | 1.00x       |
+| 모델                       | 크레딧 배율        |
+|----------------------------|--------------------|
+| Claude Opus 5.5            | 2.0x               |
+| Claude Sonnet 5.5          | 1.3x               |
+| Claude Haiku 5.5           | 0.06x              |
+| GPT-5.6 Sol / Terra / Luna | 4.4x / 2.2x / 0.6x |
+| Claude Opus 4.8·4.7·4.6    | 2.2x               |
+| Claude Opus 4.5            | 2.2x               |
+| Claude Sonnet 4.6          | 1.3x               |
+| Claude Haiku 4.5           | 0.4x               |
+| DeepSeek 3.2               | 0.25x              |
+| Qwen3 Coder Next           | 0.05x              |
+| Auto                       | 1.0x               |
 
-🟡 모델 제공 여부는 Kiro 계정·리전·시점에 따라 달라질 수 있으므로 최신 공식 모델 목록을 확인해야 합니다. 2026-11-09에 확인한 공식 모델 페이지(2026-10-24 갱신)에는 위 모델과 함께 Claude Opus 5.5(2.0x)·Sonnet 5.5(1.3x)·Haiku 5.5(0.06x, 10만 토큰까지)와 GPT-5.6 Sol·Terra·Luna(4.4x·2.2x·0.6x, 27.2만 토큰까지)가 있습니다.
+🟡 모델 제공 여부는 Kiro 계정·리전·시점에 따라 달라질 수 있으므로 최신 공식 모델 목록을 확인해야 합니다. 위 표는 2026-11-16에 확인한 공식 모델 페이지(2026-11-12 갱신)에서 고른 것입니다. Haiku 5.5·GPT-5.6 계열은 일정 토큰을 넘으면 더 높은 배율이 적용되고, Claude Fable 5.1(6x)은 Enterprise·US East에서만 제공됩니다.
 
 ---
 
@@ -172,7 +177,7 @@ Codeium에서 리브랜딩한 VS Code fork 기반 AI IDE로, 현재 Cognition AI
 - MCP 지원
 - Flows: 반복 작업 자동화
 
-#### 가격 (2026-07-27 기준)
+#### 가격 (2026-11-16 기준)
 
 🟡 `windsurf.com/pricing`은 `devin.ai/pricing`으로 리다이렉트되어 Devin과 동일한 가격 페이지를 공유합니다.
 
@@ -199,7 +204,7 @@ Cognition AI가 만든 자율 AI 소프트웨어 엔지니어입니다. 사람�
 - Agent Command Center: 여러 에이전트 동시 관리
 - ACP 호환
 
-#### 가격 (2026-07-27 기준)
+#### 가격 (2026-11-16 기준)
 
 | 플랜  | 가격                          |
 |-------|-------------------------------|
@@ -276,21 +281,21 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 
 ### 핵심 기능
 
-| 기능                  | Kiro          | Claude Code   | Cursor             | Copilot          |
-|-----------------------|---------------|---------------|--------------------|------------------|
-| IDE 통합              | ✅ (기본)     | 🟡 (플러그인) | ✅ (기본)          | ✅ (플러그인)    |
-| 터미널 CLI            | ✅            | ✅ (주력)     | ✅ (Cursor CLI)    | 🟡 (Copilot CLI) |
-| 자동완성 (Tab)        | ✅            | ❌            | ✅                 | ✅               |
-| 에이전트 모드         | ✅            | ✅            | ✅                 | ✅               |
-| 멀티에이전트          | 🟡            | ✅            | ✅                 | ❌               |
-| MCP 지원              | ✅            | ✅            | ✅                 | ✅               |
-| 커스텀 에이전트 정의  | ✅ (파일)     | ✅ (agents/)  | ✅ (.cursor/rules) | 🟡               |
-| Skills / 재사용 패턴  | ✅ (SKILL.md) | ✅ (Skills)   | ✅ (Skills)        | ✅ (Skills)      |
-| Hooks / 이벤트 자동화 | ✅            | ✅            | ✅                 | ✅               |
-| Git / PR 연동         | ✅            | ✅            | ✅                 | ✅ (주력)        |
-| 멀티모델 선택         | ✅            | 🟡 (Claude만) | ✅                 | 🟡               |
-| AWS 통합              | ✅ (강점)     | ✅ (Bedrock)  | ❌                 | ❌               |
-| GitHub Actions 통합   | ❌            | ✅            | ✅ (Cursor CLI)    | ✅ (강점)        |
+| 기능                  | Kiro          | Claude Code   | Cursor               | Copilot          |
+|-----------------------|---------------|---------------|----------------------|------------------|
+| IDE 통합              | ✅ (기본)     | 🟡 (플러그인) | ✅ (기본)            | ✅ (플러그인)    |
+| 터미널 CLI            | ✅            | ✅ (주력)     | ✅ (Cursor CLI)      | 🟡 (Copilot CLI) |
+| 자동완성 (Tab)        | ✅            | ❌            | ✅                   | ✅               |
+| 에이전트 모드         | ✅            | ✅            | ✅                   | ✅               |
+| 멀티에이전트          | 🟡            | ✅            | ✅                   | ❌               |
+| MCP 지원              | ✅            | ✅            | ✅                   | ✅               |
+| 커스텀 에이전트 정의  | ✅ (파일)     | ✅ (agents/)  | ✅ (.cursor/agents/) | 🟡               |
+| Skills / 재사용 패턴  | ✅ (SKILL.md) | ✅ (Skills)   | ✅ (Skills)          | ✅ (Skills)      |
+| Hooks / 이벤트 자동화 | ✅            | ✅            | ✅                   | ✅               |
+| Git / PR 연동         | ✅            | ✅            | ✅                   | ✅ (주력)        |
+| 멀티모델 선택         | ✅            | 🟡 (Claude만) | ✅                   | 🟡               |
+| AWS 통합              | ✅ (강점)     | ✅ (Bedrock)  | ❌                   | ❌               |
+| GitHub Actions 통합   | ✅ (headless) | ✅            | ✅ (Cursor CLI)      | ✅ (강점)        |
 
 ### 커스터마이징 방식 비교
 
@@ -355,7 +360,7 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 - 코딩 가성비: GPT-5.6 Sol ($30 output / 1M tokens)
 - 측정 속도 1위: Grok 4.2 (233 tokens/sec)
 
-🟡 벤치마크는 2026-07-27 시점 자료입니다. 이후 출시된 Claude Fable 5.1·Opus 5.5·Sonnet 5.5·Haiku 5.5는 포함되지 않았습니다. 현재 라인업은 [Claude 모델 가이드](claude/claude_models_guide.md)를 참고합니다.
+🟡 벤치마크는 2026-07-27 시점 자료입니다. 이후 출시된 Claude Fable 5.1·5.2·Opus 5.5·Sonnet 5.5·Haiku 5.5는 포함되지 않았습니다. 현재 라인업은 [Claude 모델 가이드](claude/claude_models_guide.md)를 참고합니다.
 
 🟡 도구(Kiro, Claude Code 등)가 아닌 **기반 모델** 기준 벤치마크입니다. 실제 도구 성능은 기반 모델 + 시스템 프롬프트 + 컨텍스트 처리 방식에 따라 달라집니다.
 
@@ -430,7 +435,9 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 - Cursor CLI: [cursor.com/docs/cli/overview](https://cursor.com/docs/cli/overview) — ★★★☆☆
 - Cursor 2.0 변경 이력(Notepads deprecated): [cursor.com/changelog/2-0](https://cursor.com/changelog/2-0) — ★★★☆☆
 - Claude Pricing: [claude.com/pricing](https://claude.com/pricing) — ★★★☆☆
-- Kiro Models: [kiro.dev/docs/models](https://kiro.dev/docs/models/) — ★★★☆☆
+- Kiro Models: [kiro.dev/docs/models](https://kiro.dev/docs/models/) — ★★★☆☆ (확인일 2026-11-16)
+- Kiro Headless (CI) 모드: [kiro.dev/docs/cli/headless](https://kiro.dev/docs/cli/headless/) — ★★★☆☆ (확인일 2026-11-16)
+- Cursor Subagents: [cursor.com/docs/subagents](https://cursor.com/docs/subagents) — ★★★☆☆ (확인일 2026-11-16)
 - Devin Pricing: [devin.ai/pricing](https://devin.ai/pricing) — ★★★☆☆
 - Amp 분사 공지: [ampcode.com/news/amp-inc](https://ampcode.com/news/amp-inc) — ★★★☆☆
 - v0 Pricing: [v0.app/pricing](https://v0.app/pricing) — ★★★☆☆
@@ -440,6 +447,6 @@ UI 컴포넌트 및 풀스택 앱을 프롬프트로 생성하는 웹 기반 도
 
 **작성일**: 2026-07-27
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

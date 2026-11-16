@@ -5,7 +5,7 @@ tags:
   - vpn
   - softether
   - networking
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://www.softether.org/3-spec
   - https://github.com/SoftEtherVPN/SoftEtherVPN/blob/master/src/GlobalConst.h
@@ -15,6 +15,9 @@ sources:
   - https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases
   - https://github.com/SoftEtherVPN/SoftEtherVPN/releases
   - https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
+  - https://github.com/SoftEtherVPN/SoftEtherVPN/blob/master/src/Cedar/Proto_OpenVPN.c
+  - https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/blob/master/src/Cedar/Interop_OpenVPN.c
+  - https://pages.nist.gov/ACVP/draft-hammett-acvp-safe-primes.html
 ---
 
 # SoftEther VPN 공식 참조 노트
@@ -133,7 +136,7 @@ sources:
 | 지원 해시     | MD5, SHA-1                                                   |
 | 지원 DH Group | MODP 768 (Group 1), MODP 1024 (Group 2), MODP 1536 (Group 5) |
 
-🟡 SoftEther의 L2TP/IPsec DH Group은 MODP 768/1024/1536 (Group 1/2/5)으로 모두 2048bit 미만입니다. NIST SP 800-56A Rev.3은 Group 14 (MODP 2048) 이상을 권장합니다. 보안 민감 환경에서는 SoftEther VPN 프로토콜(TLS 1.3) 또는 OpenVPN(AES-256-GCM) 사용을 권장합니다.
+🟡 SoftEther의 L2TP/IPsec DH Group은 MODP 768/1024/1536 (Group 1/2/5)으로 모두 2048bit 미만입니다. NIST SP 800-56A Rev.3 5.6.1.1.1절의 승인 safe-prime 그룹은 RFC 3526 MODP-2048(Group 14)~8192와 RFC 7919 ffdhe2048~8192이므로 Group 1/2/5는 여기에 들지 않습니다(NIST ACVP Safe Primes 문서 기준, 2026-11-16 확인). 보안 민감 환경에서는 SoftEther VPN 프로토콜(TLS 1.3) 또는 OpenVPN(AES-256-GCM) 사용을 권장합니다.
 
 ---
 
@@ -148,6 +151,8 @@ sources:
 | 지원 cipher | AES-128-CBC, AES-192-CBC, AES-256-CBC, BF-CBC, CAST-CBC, CAST5-CBC, DES-CBC, DES-EDE-CBC, DES-EDE3-CBC, DESX-CBC, RC2-40-CBC, RC2-64-CBC, RC2-CBC |
 | 지원 해시   | SHA, SHA1, MD5, MD4, RMD160                                                                                                                       |
 | 클론 방식   | OpenVPN Technologies Inc. 구현체와 호환                                                                                                           |
+
+🟡 위 cipher 표는 공식 스펙 페이지 기준입니다. 소스코드(`SoftEtherVPN/src/Cedar/Proto_OpenVPN.c`, `SoftEtherVPN_Stable/src/Cedar/Interop_OpenVPN.c`)에는 AEAD cipher(AES-GCM) 처리가 있어 스펙 페이지보다 지원 범위가 넓습니다(2026-11-16 확인).
 
 🟡 BF-CBC, DES 계열, RC2 계열은 취약한 cipher입니다. OpenVPN 2.5+ 공식 클라이언트는 BF-CBC를 기본에서 제거했습니다. 실사용 시 AES-256-CBC 또는 AES-256-GCM 사용을 권장합니다.
 
@@ -194,6 +199,6 @@ sources:
 
 **작성일**: 2026-08-05
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

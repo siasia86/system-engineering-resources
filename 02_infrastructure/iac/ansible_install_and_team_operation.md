@@ -649,9 +649,10 @@ ssh-copy-id ansible@<managed-node-ip>
 
 ALLOWED_PRD_USERS="ansible-admin user-kim"
 CURRENT_USER=$(whoami)
-ENV=$(echo "$@" | grep -oP '(?<=-i inventory/)\w+')
+# -i·--inventory·--inventory=·절대경로 어느 형식이든 인자에 prd·stg 경로가 보이면 제한 대상
+ENV=$(printf '%s\n' "$@" | grep -oE '(^|[/=_.-])(prd|stg)([/_.-]|$)' | grep -oE 'prd|stg' | head -n1)
 
-if [[ "$ENV" == "prd" || "$ENV" == "stg" ]]; then
+if [[ -n "$ENV" ]]; then
     if [[ " $ALLOWED_PRD_USERS " != *" $CURRENT_USER "* ]]; then   # grep -w는 '-'를 단어 경계로 봐 admin·kim 같은 이름도 통과시킴
         echo "❌ $CURRENT_USER 은 $ENV 환경 실행 권한이 없습니다."
         exit 1
@@ -669,6 +670,8 @@ sudo chmod 755 /opt/ansible/bin/run-playbook.sh
 # 사용 예시
 /opt/ansible/bin/run-playbook.sh -i inventory/prd playbooks/deploy.yml
 ```
+
+🟡 래퍼는 보조 통제입니다. `-i` 없이 `ansible.cfg`의 기본 inventory를 쓰거나 `ansible-playbook`을 직접 실행하면 우회되므로, prd·stg inventory와 vault 비밀번호 파일의 파일 권한(그룹 소유·`640` 등)으로 실제 접근을 막습니다.
 
 ### 11-2. 환경별 권한 매트릭스
 

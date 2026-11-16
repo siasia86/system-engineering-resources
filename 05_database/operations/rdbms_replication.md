@@ -95,11 +95,12 @@ CREATE USER 'repl'@'10.0.1.%' IDENTIFIED BY 'SecurePassword123';
 GRANT REPLICATION SLAVE ON *.* TO 'repl'@'10.0.1.%';
 FLUSH PRIVILEGES;
 
--- 현재 binlog 위치 확인 (초기 데이터 덤프 전)
-FLUSH TABLES WITH READ LOCK;
-SHOW BINARY LOG STATUS\G   -- 8.0 이하: SHOW MASTER STATUS
--- File: mysql-bin.000003, Position: 154
+-- 현재 binlog 위치 확인 (참고용, 8.0 이하: SHOW MASTER STATUS)
+SHOW BINARY LOG STATUS\G
+-- File: mysql-bin.000003, Position: 157
 ```
+
+🟡 Replica 시작 위치는 아래 덤프 파일에 기록된 값을 씁니다. `--single-transaction --source-data=2`는 덤프 시작 때 mysqldump가 잠깐 전역 읽기 잠금을 걸어 일관된 binlog 위치를 덤프에 주석으로 남기므로, 따로 `FLUSH TABLES WITH READ LOCK`을 걸 필요가 없습니다.
 
 ### 초기 데이터 동기화
 
@@ -110,6 +111,9 @@ mysqldump \
     --source-data=2 \
     --all-databases \
     -u root -p > dump.sql
+
+# 덤프에 기록된 binlog 위치 확인 (File·Position → 아래 SOURCE_LOG_FILE·SOURCE_LOG_POS)
+grep -m1 -E "CHANGE (MASTER|REPLICATION SOURCE) TO" dump.sql
 
 # Replica로 전송 및 복원
 scp dump.sql replica:/tmp/
@@ -135,7 +139,7 @@ CHANGE REPLICATION SOURCE TO
     SOURCE_USER     = 'repl',
     SOURCE_PASSWORD = 'SecurePassword123',
     SOURCE_LOG_FILE = 'mysql-bin.000003',
-    SOURCE_LOG_POS  = 154,
+    SOURCE_LOG_POS  = 157,
     GET_SOURCE_PUBLIC_KEY = 1;   -- caching_sha2_password(기본) + 비암호화 연결 시 필요
 
 START REPLICA;
@@ -625,6 +629,7 @@ CHANGE REPLICATION SOURCE TO
 - MySQL Documentation: [GTID-Based Replication](https://dev.mysql.com/doc/refman/8.4/en/replication-gtids.html) — ★★★☆☆
 - MySQL Documentation: [What Is New in MySQL 8.4 since MySQL 8.0](https://dev.mysql.com/doc/refman/8.4/en/mysql-nutshell.html) — ★★★☆☆
 - MySQL Documentation: [Creating a User for Replication](https://dev.mysql.com/doc/refman/8.4/en/replication-howto-repuser.html) — ★★★☆☆
+- MySQL Documentation: [mysqldump](https://dev.mysql.com/doc/refman/8.4/en/mysqldump.html) (`--single-transaction --source-data`, 시작 때 전역 읽기 잠금) — ★★★☆☆ (확인일 2026-11-16)
 - PostgreSQL Documentation: [Streaming Replication](https://www.postgresql.org/docs/current/warm-standby.html) — ★★★☆☆
 - PostgreSQL Documentation: [Failover](https://www.postgresql.org/docs/current/warm-standby-failover.html) — ★★★☆☆
 - AWS Documentation: [RDS Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html) — ★★★☆☆
@@ -647,6 +652,6 @@ CHANGE REPLICATION SOURCE TO
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

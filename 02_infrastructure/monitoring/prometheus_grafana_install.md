@@ -382,8 +382,9 @@ scrape_configs:
         refresh_interval: 30s
 ```
 
+`/etc/prometheus/targets/servers.json` (JSON은 주석을 허용하지 않으므로 파일 이름은 블록 밖에 둡니다):
+
 ```json
-// /etc/prometheus/targets/servers.json
 [
   {
     "targets": ["10.0.1.11:9100", "10.0.1.12:9100"],

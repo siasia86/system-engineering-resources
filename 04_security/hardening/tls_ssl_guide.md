@@ -12,13 +12,13 @@
 ## 1. 인증서 구조
 
 ```
-Root CA (자체 서명)
-    └── Intermediate CA (Root CA가 서명)
-            └── Server Certificate (Intermediate CA가 서명)
+Root CA (self-signed)
+    └── Intermediate CA (signed by Root CA)
+            └── Server Certificate (signed by Intermediate CA)
                     ├── Subject: CN=example.com
                     ├── SAN: DNS:example.com, DNS:www.example.com
                     ├── Public Key
-                    └── Validity: 90일 (Let's Encrypt) / 최대 200일
+                    └── Validity: 90 days (Let's Encrypt) / max 200 days
 ```
 
 ### TLS Handshake (TLS 1.3)
@@ -26,16 +26,16 @@ Root CA (자체 서명)
 ```
 Client                          Server
   │                               │
-  ├── ClientHello ──────────────> │  (지원 cipher, random)
+  ├── ClientHello ──────────────> │  (supported ciphers, random)
   │                               │
-  │ <────────────── ServerHello ──┤  (선택 cipher, random)
-  │ <──────────── Certificate ────┤  (서버 인증서)
-  │ <──────── CertificateVerify ──┤  (서명)
+  │ <────────────── ServerHello ──┤  (selected cipher, random)
+  │ <──────────── Certificate ────┤  (server certificate)
+  │ <──────── CertificateVerify ──┤  (signature)
   │ <──────────────── Finished ───┤
   │                               │
   ├── Finished ─────────────────> │
   │                               │
-  └──── 암호화 통신 시작 ─────────┘
+  └──── Encrypted traffic ────────┘
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -104,13 +104,14 @@ sudo certbot renew --dry-run
 0 3 * * * /usr/bin/certbot renew --quiet --post-hook "systemctl reload nginx"
 ```
 
-```
 인증서 경로:
+
+```
 /etc/letsencrypt/live/example.com/
-├── cert.pem        ← 서버 인증서
-├── chain.pem       ← 중간 CA 체인
-├── fullchain.pem   ← cert.pem + chain.pem (Nginx에서 사용)
-└── privkey.pem     ← 개인키
+├── cert.pem        ← server certificate
+├── chain.pem       ← intermediate CA chain
+├── fullchain.pem   ← cert.pem + chain.pem (used by Nginx)
+└── privkey.pem     ← private key
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -135,11 +136,11 @@ server {
     ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384;
     ssl_prefer_server_ciphers off;
 
-    # OCSP Stapling: 인증서에 OCSP 주소가 있을 때만 의미 있음
-    # Let's Encrypt는 2025-08-06 OCSP를 종료해 효과가 없으므로 끄거나 지움
-    ssl_stapling on;
-    ssl_stapling_verify on;
-    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
+    # OCSP Stapling: 인증서에 OCSP 주소가 있는 CA를 쓸 때만 켬
+    # Let's Encrypt는 2025-08-06 OCSP를 종료해 효과가 없으므로 이 예시(LE 경로)에서는 주석 처리
+    # ssl_stapling on;
+    # ssl_stapling_verify on;
+    # ssl_trusted_certificate /etc/ssl/certs/ca-chain.pem;
 
     # HSTS (6개월)
     add_header Strict-Transport-Security "max-age=15768000; includeSubDomains" always;
@@ -256,6 +257,6 @@ git clone --depth 1 https://github.com/testssl/testssl.sh.git
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

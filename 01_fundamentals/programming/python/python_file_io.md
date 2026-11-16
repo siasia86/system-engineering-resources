@@ -542,7 +542,7 @@ with tempfile.NamedTemporaryFile(mode='w', delete=True) as temp:
 # 자동으로 삭제됨
 ```
 
-### Tip 7: 파일 잠금 처리
+### Tip 7: 쓰기 실패 시 재시도
 
 ```python
 from pathlib import Path
@@ -555,10 +555,12 @@ def safe_write(filename, content, max_retries=3):
             with open(path, 'w') as file:
                 file.write(content)
             return True
-        except IOError:
+        except OSError:  # IOError는 OSError의 별칭
             time.sleep(0.1)
     return False
 ```
+
+이 함수는 쓰기 실패를 재시도할 뿐 파일 잠금(다른 프로세스의 동시 쓰기 차단)을 하지 않습니다. 잠금이 필요하면 Unix에서는 `fcntl.flock()`을 사용합니다.
 
 ### Tip 8: 바이너리 파일 처리
 
@@ -719,6 +721,6 @@ content = data_file.read_text()
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

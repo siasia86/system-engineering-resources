@@ -108,10 +108,10 @@ inductive ServiceState where
 
 ### 명제와 증명
 
-명제는 타입이고 증명은 그 타입의 값입니다. 아래 정리는 자연수에 0을 더한 결과가 원래 수와 같다는 명제를 `simp` 전술로 증명합니다.
+명제는 타입이고 증명은 그 타입의 값입니다. 아래 정리는 자연수에 0을 더한 결과가 원래 수와 같다는 명제를 `simp` 전술로 증명합니다. Mathlib을 가져오면 같은 이름의 `add_zero` 정리가 이미 있으므로 예시 이름을 `my_add_zero`로 둡니다.
 
 ```lean
-theorem add_zero (n : Nat) : n + 0 = n := by
+theorem my_add_zero (n : Nat) : n + 0 = n := by
   simp
 ```
 
@@ -315,6 +315,7 @@ lake build
 - Lean 4 releases: [github.com/leanprover/lean4/releases](https://github.com/leanprover/lean4/releases) — ★★★☆☆
 - Lake reference: [lean-lang.org/doc/reference/latest/Build-Tools-and-Distribution/Lake](https://lean-lang.org/doc/reference/latest/Build-Tools-and-Distribution/Lake/) — ★★★☆☆
 - Lean API `Init.Control.Except`: [lean-lang.org/doc/api/Init/Control/Except.html](https://lean-lang.org/doc/api/Init/Control/Except.html) — ★★★☆☆ (확인일 2026-11-16)
+- Mathlib `mul_one`/`add_zero` 정의 (`@[to_additive]`): [github.com/leanprover-community/mathlib4/blob/master/Mathlib/Algebra/Group/Monoid.lean](https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/Algebra/Group/Monoid.lean) — ★★★☆☆ (확인일 2026-11-16)
 - [Lean 공식 문서 참조 노트](../../_reference/lean_official_notes.md)
 
 ---

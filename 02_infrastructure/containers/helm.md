@@ -262,6 +262,13 @@ Create a default fully qualified app name.
 {{- end }}
 
 {{/*
+Chart name and version for the chart label
+*/}}
+{{- define "my-app.chart" -}}
+{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "my-app.labels" -}}
@@ -302,10 +309,10 @@ replicas: {{ if eq .Values.env "prod" }}3{{ else }}1{{ end }}
 {{ $key }}: {{ $value | quote }}
 {{- end }}
 
-# with (컨텍스트 변경)
+# with (컨텍스트 변경, nindent 값은 nodeSelector 키의 들여쓰기 + 2)
 {{- with .Values.nodeSelector }}
 nodeSelector:
-  {{- toYaml . | nindent 8 }}
+  {{- toYaml . | nindent 2 }}
 {{- end }}
 ```
 
@@ -544,6 +551,6 @@ helm diff upgrade my-app ./my-app -f values-prod.yaml
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

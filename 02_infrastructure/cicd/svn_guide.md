@@ -18,20 +18,22 @@
 ### 작업 흐름
 
 ```
-Repository (중앙 서버)
+Repository (central server)
        │
-       │ svn checkout (최초 1회)
+       │ svn checkout (first time only)
        v
-  Working Copy (로컬)
+  Working Copy (local)
        │
-       │ 파일 편집
+       │ edit files
        │
        ├── svn add / svn delete / svn move
        │
-       │ svn commit ──────────────────────> Repository (즉시 반영)
+       │ svn commit ──────────────────────> Repository (applied immediately)
        │
-       └── svn update <────────────────── Repository (최신 반영)
+       └── svn update <────────────────── Repository (pull latest)
 ```
+
+중앙 저장소에서 처음 한 번 checkout한 뒤 로컬 Working Copy에서 편집하고, `svn commit`은 저장소에 바로 반영되며 `svn update`로 저장소의 최신 변경을 받아옵니다.
 
 ### 리비전 키워드
 
@@ -751,6 +753,7 @@ echo "Build revision: ${REVISION}"
 
 - Apache Subversion 공식 사이트: [subversion.apache.org](https://subversion.apache.org/) — ★★★☆☆
 - SVN Book (공식 매뉴얼): [svnbook.red-bean.com](https://svnbook.red-bean.com/) — ★★★★☆
+- Release Notes 1.15 (1.15.0, 2026-10-08 출시): [subversion.apache.org/docs/release-notes/1.15](https://subversion.apache.org/docs/release-notes/1.15.html) — ★★★☆☆ (확인일 2026-11-16)
 - Release Notes 1.14: [subversion.apache.org/docs/release-notes/1.14](https://subversion.apache.org/docs/release-notes/1.14.html) — ★★★☆☆
 
 ---
@@ -768,6 +771,6 @@ echo "Build revision: ${REVISION}"
 
 **작성일**: 2026-07-29
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

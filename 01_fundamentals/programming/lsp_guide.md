@@ -334,7 +334,7 @@ vim.lsp.enable({ 'terraformls', 'bashls', 'yamlls', 'pyright', 'ansiblels' })
 ### ✅ Bash
 
 - `shellcheck` 함께 설치하면 보안 취약점, 이식성 문제까지 감지
-- `#!/bin/bash` shebang 필수 (LSP가 파일 타입 인식에 사용)
+- 배경 분석은 기본 `globPattern`(`**/*@(.sh|.inc|.bash|.command)`)에 맞는 확장자 파일만 대상이므로, 확장자 없는 스크립트는 열었을 때만 분석됩니다. 이런 파일은 `#!/bin/bash` shebang을 두어 편집기가 셸 파일로 인식하게 합니다
 
 ### ✅ Python
 
@@ -371,6 +371,7 @@ vim.lsp.enable({ 'terraformls', 'bashls', 'yamlls', 'pyright', 'ansiblels' })
 - LSP Implementations: [langserver.org](https://langserver.org/) — ★★☆☆☆
 - nvim-lspconfig README: [github.com/neovim/nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) — ★★★☆☆
 - bash-language-server README: [github.com/bash-lsp/bash-language-server](https://github.com/bash-lsp/bash-language-server) — ★★★☆☆
+- bash-language-server 기본 설정 (`globPattern`): [github.com/bash-lsp/bash-language-server/blob/main/server/src/config.ts](https://github.com/bash-lsp/bash-language-server/blob/main/server/src/config.ts) — ★★★☆☆ (확인일 2026-11-16)
 - ShellCheck optional checks: [github.com/koalaman/shellcheck/wiki/Optional](https://github.com/koalaman/shellcheck/wiki/Optional) — ★★★☆☆
 - Ansible Language Server: [github.com/ansible/vscode-ansible](https://github.com/ansible/vscode-ansible/tree/main/packages/ansible-language-server) — ★★★☆☆
 
@@ -389,6 +390,6 @@ vim.lsp.enable({ 'terraformls', 'bashls', 'yamlls', 'pyright', 'ansiblels' })
 
 **작성일**: 2026-04-08
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

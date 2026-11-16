@@ -7,7 +7,7 @@ tags:
   - typesafe-ai
   - system-one
   - decision-model
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://docs.typesafe.ai/introduction
   - https://docs.typesafe.ai/introduction/coding-agents
@@ -43,15 +43,15 @@ sources:
 
 | 항목           | 확인 결과                                         |
 |----------------|---------------------------------------------------|
-| 버전 ID        | `jev-1.13.0`                                      |
+| 버전 ID        | `jev-1.14.0` (`jev-1.13.0`도 계속 제공)           |
 | 별칭           | `jev-latest`, `jev-preview` 모두 위 버전을 가리킴 |
 | 입력 가격      | 100만 입력 토큰당 USD 0.042                       |
 | 출력 가격      | 출력 토큰 무료                                    |
 | 전체 요청 길이 | `state`와 모든 질문을 합쳐 64k 토큰               |
 | 개별 질문 길이 | `state`와 가장 긴 질문을 합쳐 32k 토큰            |
-| 입력 매체      | 텍스트; 이미지·음성·영상 직접 입력 미지원         |
+| 입력 매체      | 텍스트·PNG/JPEG 이미지; 음성·영상 입력 미지원     |
 
-(2026-11-09 확인: Jev 1.14.0이 2026-10-14에 출시되어 `jev-latest`·`jev-preview`가 `jev-1.14.0`을 가리킵니다. 가격과 64k·32k 기본 제한은 같고, `TypeSafe-Danger-Zone-Long-Context: true` 헤더로 두 제한을 262k로 늘릴 수 있습니다. PNG·JPEG 이미지 입력과 긴 문맥은 1.13에서도 동작하며, 이미지 위치를 묻는 Box 질문은 1.14가 필요합니다. [Models](https://docs.typesafe.ai/models), [Model changelog](https://docs.typesafe.ai/changelog).)
+(2026-11-16 확인: Jev 1.14.0은 2026-10-14에 출시되었고 `jev-preview`는 별도 미리보기 판 없이 `jev-latest`와 같은 모델을 가리킵니다. `TypeSafe-Danger-Zone-Long-Context: true` 헤더로 두 제한을 262k로 늘릴 수 있으나 공식 문서는 긴 문맥이 느리고 정확도가 낮다고 안내합니다. PNG·JPEG 이미지 입력과 긴 문맥은 1.13에서도 동작하며, 이미지 위치를 묻는 Box 질문은 1.14가 필요합니다. [Models](https://docs.typesafe.ai/models), [Model changelog](https://docs.typesafe.ai/changelog).)
 
 속도 제한은 공식 문서에서도 유동적인 값으로 설명하므로 배포 시 재확인합니다. 별칭 대신 버전 ID를 지정하면 모델 변경에 따른 회귀 평가 시점을 관리할 수 있습니다.
 

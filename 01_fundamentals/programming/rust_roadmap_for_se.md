@@ -173,7 +173,7 @@ nix crate (POSIX 시스템 콜 래퍼)
 | gRPC               | tonic                | 마이크로서비스 통신         |
 | DNS                | hickory-resolver     | DNS 조회 도구               |
 | Prometheus metrics | prometheus-client    | 커스텀 exporter 개발        |
-| SSH                | thrussh, russh       | 원격 명령 실행              |
+| SSH                | russh                | 원격 명령 실행              |
 
 ### SE 관점 연습 과제
 
@@ -307,6 +307,7 @@ use prometheus_client::registry::Registry;
 - Awesome Rust: [github.com/rust-unofficial/awesome-rust](https://github.com/rust-unofficial/awesome-rust) — ★★☆☆☆
 - async-std discontinued notice: [github.com/async-rs/async-std](https://github.com/async-rs/async-std) — ★★★☆☆
 - Hickory DNS (구 Trust-DNS): [github.com/hickory-dns/hickory-dns](https://github.com/hickory-dns/hickory-dns) — ★★★☆☆
+- russh (thrussh에서 포크해 독립 유지보수): [github.com/warp-tech/russh](https://github.com/warp-tech/russh) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 

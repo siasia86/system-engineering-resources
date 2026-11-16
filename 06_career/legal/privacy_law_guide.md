@@ -138,13 +138,15 @@
 개인정보처리자의 지휘·감독을 받아 개인정보를 처리하는 임직원·파견근로자·시간제근로자 등이 개인정보취급자입니다. 시스템 접근권한만 형식적으로 존재하는지보다 실제 담당 업무, 권한과 처리 가능 범위를 함께 판단해야 합니다.
 
 ```
-(주)OO게임즈  ← 개인정보처리자 (법적 책임 주체)
+OO Games Inc.  ← personal information controller (legally responsible)
       │
-      ├── 인프라팀   ← 취급자 (서버·DB 인프라 관리)
-      ├── DB팀       ← 취급자 (DB 직접 접근·조회)
-      ├── 웹팀       ← 취급자 (수집·처리 로직 구현)
-      └── CS팀       ← 취급자 (고객정보 조회)
+      ├── Infra team   ← handler (server/DB infrastructure)
+      ├── DB team      ← handler (direct DB access/queries)
+      ├── Web team     ← handler (collection/processing logic)
+      └── CS team      ← handler (customer data lookup)
 ```
+
+회사((주)OO게임즈)가 개인정보처리자로 법적 책임을 지고, 인프라·DB·웹·CS팀 구성원은 각 업무 범위에서 개인정보취급자가 됩니다.
 
 ### 책임 구조
 
@@ -176,18 +178,20 @@
 ### CI 처리 구조
 
 ```
-이용자
+User
   │
-  └── 본인인증 요청
+  └── identity verification request
         │
         ▼
-  본인확인기관·인증 연계 사업자       ← 계약 구조에 따라 CI 생성·전달
+  Identity verification agency / auth broker   ← creates and delivers CI per contract
         │
-        └── CI/DI 생성 후 게임사에 전달
+        └── creates CI/DI and delivers to game company
               │
               ▼
-        게임사 (개인정보처리자)        ← CI 수령·저장·이용
+        Game company (controller)              ← receives, stores, uses CI
 ```
+
+이용자의 본인인증 요청을 본인확인기관·인증 연계 사업자가 받아 계약 구조에 따라 CI/DI를 만들어 게임사에 전달하고, 게임사(개인정보처리자)는 CI를 받아 저장·이용합니다.
 
 ### CI 관련 주체별 법적 지위
 
@@ -384,19 +388,21 @@ CPO는 개인정보의 적법한 처리와 정보주체 권리 보호를, CISO�
 ### 중소 게임사 현실적 구조
 
 ```
-대표이사 또는 임원
+CEO or executive
     │
-    ├── CPO 지정 (소상공인 예외 기준 확인)
-    │     ├── 개인정보 처리방침 관리
-    │     ├── 개인정보 취급자 교육
-    │     └── 침해사고 대응
+    ├── Appoint CPO (check small-business exception)
+    │     ├── manage privacy policy
+    │     ├── train personal data handlers
+    │     └── respond to breaches
     │
     └── CISO
-          ├── 정보통신서비스 제공자 여부 확인
-          ├── 시행령 제36조의7 제1항 지정자 분류
-          ├── 제36조의7 제2항 신고 면제 여부 별도 확인
-          └── 보안 정책·취약점·접근 권한 관리
+          ├── check ICT service provider status
+          ├── classify under Enforcement Decree Art. 36-7(1)
+          ├── check reporting exemption under Art. 36-7(2) separately
+          └── manage security policy, vulnerabilities, access rights
 ```
+
+대표이사 또는 임원 아래에 CPO(소상공인 예외 기준 확인, 처리방침 관리·취급자 교육·침해사고 대응)와 CISO(정보통신서비스 제공자 여부, 시행령 제36조의7 제1항 지정자 분류, 같은 조 제2항 신고 면제 여부, 보안 정책·취약점·접근 권한 관리)를 둡니다.
 
 ### 중소기업 최소 이행 체크리스트
 
@@ -439,17 +445,19 @@ CPO는 개인정보의 적법한 처리와 정보주체 권리 보호를, CISO�
 ### 침해사고 대응 흐름
 
 ```
-침해사고 발생
+Incident occurs
       │
-      ├── 개인정보 유출 포함  →  정보주체 통지 (72시간 이내)
-      │                           + 신고 요건 해당 시 개보위 신고 (72시간 이내)
+      ├── Includes personal data leak  →  notify data subjects (within 72 hours)
+      │                                    + report to PIPC if required (within 72 hours)
       │
-      ├── 해킹·서버 침해      →  과기정통부·KISA 118 신고 (24시간 이내)
+      ├── Hacking / server intrusion   →  report to MSIT / KISA 118 (within 24 hours)
       │
-      ├── 소스코드·영업비밀   →  경찰청 사이버수사대 고소
+      ├── Source code / trade secrets  →  file complaint with police cyber unit
       │
-      └── 공공기관 해당 시    →  기관에 적용되는 소관 대응체계에 보고
+      └── Public institution           →  report through the applicable response system
 ```
+
+개인정보 유출은 정보주체 통지와 요건 해당 시 개보위 신고(각 72시간 이내), 해킹·서버 침해는 과기정통부·KISA 118 신고(24시간 이내), 소스코드·영업비밀 침해는 경찰청 사이버수사대 고소, 공공기관은 소관 대응체계 보고로 나뉩니다.
 
 ### 유출 통지 의무 (정보주체)
 
@@ -711,6 +719,6 @@ CPO는 개인정보의 적법한 처리와 정보주체 권리 보호를, CISO�
 
 **작성일**: 2026-08-25
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

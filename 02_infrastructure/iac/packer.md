@@ -207,7 +207,8 @@ boot_command = [
   "boot<enter>"
 ]
 
- # Windows — floppy 기반 무인 설치 (boot_command 불필요)
+ # Windows — Autounattend.xml 무인 설치 (설치 옵션 입력은 불필요)
+ # UEFI(Gen2)의 "Press any key to boot from CD or DVD" 대기만 키 입력으로 넘김
 boot_command = ["<enter>"]
 ```
 
@@ -382,6 +383,6 @@ Remove-Item -Recurse packer_cache
 
 **작성일**: 2026-06-04
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

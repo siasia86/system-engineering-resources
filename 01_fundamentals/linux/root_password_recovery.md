@@ -90,7 +90,7 @@ GRUB2 + systemd. CentOS 7과 동일한 `rd.break` 방식.
 > Rocky 10은 기본 SELinux enforcing.
 
 1. 부팅 시 GRUB 메뉴에서 커널 선택 → `e` 키
-2. `linux` (UEFI 환경이면 `linuxefi`) 줄 끝에서 `rhgb quiet` 삭제
+2. `linux`로 시작하는 줄 끝에서 `rhgb quiet` 삭제 (RHEL 8 이후 BLS 항목은 BIOS·UEFI 모두 `linux` 키를 사용. `linuxefi`·`linux16`은 CentOS 7 같은 이전 GRUB 설정에서 보임)
 3. 같은 줄 끝에 `rd.break` 추가
 4. `Ctrl + x` 로 부팅
 5. initramfs emergency shell 진입 후:
@@ -168,6 +168,7 @@ reboot -f
 
 - Red Hat Documentation - Root Password Reset (RHEL 9, Managing users and groups 장): [docs.redhat.com](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_basic_system_settings/managing-users-and-groups_configuring-basic-system-settings) — ★★★☆☆
 - Ubuntu release cycle: [ubuntu.com/about/release-cycle](https://ubuntu.com/about/release-cycle) — ★★★☆☆
+- UAPI Group Boot Loader Specification (Type #1 항목의 `linux` 키): [uapi-group.org](https://uapi-group.org/specifications/specs/boot_loader_specification/) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
@@ -184,6 +185,6 @@ reboot -f
 
 **작성일**: 2026-04-28
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

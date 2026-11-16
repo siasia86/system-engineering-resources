@@ -61,16 +61,18 @@
 ```
 skb shared frag in-place decrypt → page cache write → LPE
 │
-├── CVE-2026-31431  algif_aead (Copy Fail) ── CISA KEV, 별도 완화
+├── CVE-2026-31431  algif_aead (Copy Fail) ── CISA KEV, separate mitigation
 │   └── /etc/modprobe.d/disable-algif-aead.conf
 │
 ├── CVE-2026-43284  xfrm/ESP (Dirty Frag)      ──┐
 ├── CVE-2026-43500  rxrpc (Dirty Frag)         ──┤── /etc/modprobe.d/dirtyfrag.conf
-├── CVE-2026-46300  espintcp (Fragnesia)       ──┤
+├── CVE-2026-46300  espintcp (Fragnesia)       ──┤   (CISA KEV)
 └── CVE-2026-43503  frag-transfer (DirtyClone) ──┘
 
 Timeline: 04-22 ──> 05-07 ──> 05-13 ──> 06-25
 ```
+
+CISA KEV 등재 대상은 CVE-2026-31431(Copy Fail)과 CVE-2026-46300(Fragnesia, 2026-10-28 등재)입니다. Copy Fail은 별도 완화 파일을 쓰고, 나머지 네 CVE는 `dirtyfrag.conf` 하나로 함께 완화합니다.
 
 | 완화 파일                                 | 대상                                  |
 |-------------------------------------------|---------------------------------------|
@@ -102,6 +104,6 @@ Timeline: 04-22 ──> 05-07 ──> 05-13 ──> 06-25
 
 **작성일**: 2026-06-29
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -390,7 +390,7 @@ let x = v[10]; // panic: index out of bounds
 let config = fs::read_to_string("/etc/critical.conf")
     .expect("FATAL: critical.conf must exist");
 
-// ✅ OK: 정규식 컴파일 (컴파일 타임에 확인 가능)
+// ✅ OK: 고정 패턴 정규식 (Regex::new는 런타임에 컴파일하지만, 리터럴 패턴은 clippy `invalid_regex`가 빌드 전에 검사)
 let re = Regex::new(r"^\d{4}-\d{2}-\d{2}$").unwrap();
 
 // ❌ BAD: 사용자 입력 파싱
@@ -571,6 +571,6 @@ fn main() {
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

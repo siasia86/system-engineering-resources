@@ -70,7 +70,9 @@ IDC → AWS 구간은 Direct Connect 또는 Site-to-Site VPN을 사용합니다.
 | 역할      | 최근 30일 로그 검색/분석           |
 | 인스턴스  | r6g.large.search × 3 (3 AZ)        |
 | 스토리지  | gp3 EBS 3TB (샤드 × 3 복제본)      |
-| 보관 기간 | 30일 후 S3로 이동 (OpenSearch ISM) |
+| 보관 기간 | 30일 후 인덱스 삭제 (ISM `delete`) |
+
+🔵 OpenSearch ISM에는 인덱스를 S3로 옮기는 동작이 없습니다(`delete`·`snapshot` 등). S3 장기 보관본은 4절 흐름처럼 수집 단계에서 따로 적재하고, 인덱스 백업이 필요하면 ISM `snapshot` 동작으로 S3 스냅샷 저장소에 남깁니다.
 
 ### 장기 저장 — S3
 
@@ -95,23 +97,27 @@ IDC → AWS 구간은 Direct Connect 또는 Site-to-Site VPN을 사용합니다.
 ### 데이터 흐름 및 보관 정책
 
 ```
-수집 (원본 JSON)
+ingest (raw JSON)
     │
-    ├──► OpenSearch  보관 30일  (검색/실시간 조회)
+    ├──► OpenSearch  keep 30d  (search / near real-time)
     │
-    └──► S3 Standard 보관 90일
+    └──► S3 Standard keep 90d
               │
-              └──► S3 Glacier Instant  보관 5년
-                   (90일~5년, 감사 원본 Parquet)
+              └──► S3 Glacier Instant  keep 5yr
+                   (90d to 5yr, audit source Parquet)
 ```
+
+수집한 원본 JSON은 OpenSearch(30일 검색·조회)와 S3 Standard(90일)에 각각 적재하고, S3 객체는 90일 후 Glacier Instant로 전환해 5년까지 감사 원본(Parquet)으로 보관합니다.
 
 ### 용량 추산
 
-| 구간         | 압축률 | 일일  | 연간  | 5년      |
-|--------------|--------|-------|-------|----------|
-| 원본 JSON    | -      | 100GB | 36TB  | 180TB    |
-| Parquet+gzip | ~10:1  | 10GB  | 3.6TB | 18TB     |
-| OpenSearch   | ~3:1   | 33GB  | 1TB   | (30일분) |
+| 구간         | 압축률 | 일일  | 연간  | 5년   |
+|--------------|--------|-------|-------|-------|
+| 원본 JSON    | -      | 100GB | 36TB  | 180TB |
+| Parquet+gzip | ~10:1  | 10GB  | 3.6TB | 18TB  |
+| OpenSearch   | ~3:1   | 33GB  | -     | -     |
+
+OpenSearch는 30일만 보관하므로 연간·5년 누적 대신 상주 용량으로 봅니다. 상주 용량은 약 1TB(33GB × 30일)이며, 복제를 포함한 EBS 설계값은 3절의 3TB입니다.
 
 ## 5. 비용 추산
 

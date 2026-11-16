@@ -893,8 +893,10 @@ strace myapp 2>&1 | grep -E "EACCES|EPERM"
 
 **해결:**
 ```bash
-# 권한 부여 또는 다른 경로 사용
-sudo chmod 666 /var/log/myapp.log
+# 앱 실행 계정에 소유권 부여 또는 다른 경로 사용
+# (chmod 666은 모든 사용자에게 쓰기를 열어 로그 변조가 가능해지므로 피함)
+sudo chown myapp:myapp /var/log/myapp.log
+sudo chmod 640 /var/log/myapp.log
 # 또는
 # 로그를 /tmp나 홈 디렉토리에 저장
 ```
@@ -955,14 +957,15 @@ cat /proc/sys/kernel/yama/ptrace_scope
 # 0 = 제한 없음
 # 1 = 부모-자식만 (기본값)
 # 2 = admin만
-# 3 = 완전 비활성화
+# 3 = 완전 비활성화 (한 번 설정하면 재부팅 전까지 바꿀 수 없음)
 
-# 3. 임시 해제 (주의!)
+# 3. 임시 해제 (주의: 같은 UID의 모든 프로세스가 서로 attach해 메모리를 읽을 수 있음. 작업 후 1로 복구)
 echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
-# 4. 영구 설정
-echo "kernel.yama.ptrace_scope = 0" | sudo tee -a /etc/sysctl.conf
-sudo sysctl -p
+# 4. 영구 설정은 보안이 약해지므로 운영 서버에는 권장하지 않음
+#    필요하면 sudo strace 또는 CAP_SYS_PTRACE를 사용하고, 디버깅 전용 호스트에서만 아래처럼 설정
+echo "kernel.yama.ptrace_scope = 0" | sudo tee /etc/sysctl.d/99-ptrace-debug.conf
+sudo sysctl --system
 ```
 
 ### 문제 2: "Too many open files"
@@ -1066,12 +1069,14 @@ unbuffer strace myapp | tee output.log
 ### strace ls 전체 흐름 (요약)
 
 ```
-프로그램 실행 → 라이브러리 로딩 → 프로세스 설정 → 디렉토리 열기 → 파일 읽기 → 출력 → 종료
-      v              v                v               v            v         v       v
-   execve         openat           arch_prctl       openat      getdents64  write  exit_group
-                  mmap             set_tid_address  fstat
-                  close            mprotect
+exec ---> load libs -> setup -----------> open dir -> read dir ---> output -> exit
+v         v            v                  v           v             v         v
+execve    openat       arch_prctl         openat      getdents64    write     exit_group
+          mmap         set_tid_address    fstat
+          close        mprotect
 ```
+
+단계는 프로그램 실행 → 라이브러리 로딩 → 프로세스 설정 → 디렉토리 열기 → 디렉토리 항목 읽기 → 출력 → 종료 순서이며, 각 단계 아래는 주로 보이는 시스템 콜입니다.
 
 **실제 출력 (축약):**
 ```
@@ -1205,6 +1210,7 @@ strace -o /tmp/trace.log -s 128 -p <PID>
 - strace GitHub: [strace](https://github.com/strace/strace) — ★★★☆☆
 - Linux man pages - strace: [man7.org](https://man7.org/linux/man-pages/man1/strace.1.html) — ★★★☆☆
 - Brendan Gregg - strace: [brendangregg.com](https://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html) — ★★☆☆☆
+- Linux Kernel Docs - Yama (ptrace_scope): [docs.kernel.org](https://docs.kernel.org/admin-guide/LSM/Yama.html) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
@@ -1221,6 +1227,6 @@ strace -o /tmp/trace.log -s 128 -p <PID>
 
 **작성일**: 2026-01-29
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

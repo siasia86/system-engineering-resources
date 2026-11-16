@@ -46,15 +46,15 @@ AES-GCM 키스트림이 캐시된 파일 페이지에 XOR되며, IV nonce를 제
 ```
 splice(2)/sendfile(2) → TCP recv queue (file pages queued)
                                ↓
-          TCP socket → espintcp ULP 전환
+          TCP socket → switch to espintcp ULP
                                ↓
-          커널: 파일 페이지를 ESP 암호문으로 오인
+          kernel treats file pages as ESP ciphertext
                                ↓
-          AES-GCM in-place 복호화 (IV nonce 제어)
+          AES-GCM in-place decrypt (IV nonce controlled)
                                ↓
           page cache 1-byte arbitrary write primitive
                                ↓
-          /usr/bin/su page cache 덮어쓰기 → root
+          overwrite /usr/bin/su page cache → root
 ```
 
 **공개 PoC 동작:**
@@ -65,7 +65,7 @@ splice(2)/sendfile(2) → TCP recv queue (file pages queued)
 **Dirty Frag 버그 클래스 전체 구조:**
 
 ```
-버그 클래스: skb/page shared frag in-place 복호화 → page cache write primitive
+Bug class: skb/page shared frag in-place decrypt → page cache write primitive
 
 CVE-2026-31431   algif_aead (Copy Fail)      — Xint Code        (2026-04-22)
 CVE-2026-43284   xfrm/ESP (esp4, esp6)       — @v4bel           (2026-05-07)
@@ -251,6 +251,6 @@ curl -s "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2026-46300" 
 
 **작성일**: 2026-05-18
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

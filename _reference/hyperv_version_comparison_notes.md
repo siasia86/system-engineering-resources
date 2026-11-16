@@ -7,7 +7,7 @@ tags:
   - compatibility
   - centos
   - legacy
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://learn.microsoft.com/en-us/lifecycle/products/windows-server-2008
   - https://learn.microsoft.com/en-us/lifecycle/products/windows-server-2008-r2
@@ -38,7 +38,7 @@ sources:
 |---------------------------|--------------------|-----------------------|--------------------|-------------|
 | 최대 vCPU/VM              | 4                  | 4                     | 64                 | 64          |
 | 최대 메모리/VM            | 64GB               | 64GB                  | 1TB                | 1TB         |
-| 최대 VM 수/호스트         | 비공식 ~150        | ~384                  | 1024               | 1024        |
+| 최대 VM 수/호스트         | 128→192 (업데이트) | ~384                  | 1024               | 1024        |
 | VHD 포맷                  | VHD (2TB)          | VHD (2TB)             | VHDX (64TB)        | VHDX (64TB) |
 | Generation 2 VM           | ❌                 | ❌                    | ❌                 | ✅          |
 | Live Migration            | ❌                 | ✅                    | ✅                 | ✅          |
@@ -52,6 +52,7 @@ sources:
 | Virtual Fibre Channel     | ❌                 | ❌                    | ✅                 | ✅          |
 | RemoteFX                  | ❌                 | ✅ (SP1)              | ✅                 | ✅          |
 
+- 2008의 최대 실행 VM 수는 출시 때 128개이며, 2008-09 업데이트로 논리 프로세서 24개 지원과 함께 192개로 늘었습니다(2026-11-16 확인). 출처: [Hyper-V Maximum Supported Configurations](https://learn.microsoft.com/en-us/archive/blogs/nickmac/hyper-v-maximum-supported-configurations) — ★★☆☆☆ (확인일 2026-11-16), [Virtualization gets bigger](https://learn.microsoft.com/en-us/archive/blogs/danwoodman/virtualization-gets-bigger) — ★★☆☆☆ (확인일 2026-11-16)
 - 2012 R2의 Storage QoS는 가상 디스크별 최대 IOPS 제한(최소 IOPS는 미달 알림)입니다. 정책 기반 중앙 Storage QoS(SOFS·CSV)는 2016부터 제공합니다.
 
 ## 3. CentOS 5.x 호환성

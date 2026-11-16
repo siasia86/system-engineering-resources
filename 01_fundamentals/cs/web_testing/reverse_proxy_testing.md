@@ -158,8 +158,8 @@ nginx 접근 로그에 `$upstream_addr`·`$upstream_status`·`$upstream_response
 
 ## 참고 자료
 
-- RFC 9110 HTTP Semantics: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9110.html)
-- RFC 7239 Forwarded HTTP Extension: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc7239.html)
+- RFC 9110 HTTP Semantics: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9110.html) — ★★★★☆
+- RFC 7239 Forwarded HTTP Extension: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc7239.html) — ★★★★☆
 - nginx ngx_http_proxy_module: [nginx.org](https://nginx.org/en/docs/http/ngx_http_proxy_module.html) — ★★★☆☆
 - HAProxy Configuration Manual 3.2: [docs.haproxy.org](https://docs.haproxy.org/3.2/configuration.html) — ★★★☆☆
 - [Nginx 설치 가이드](../../../02_infrastructure/web_server/nginx_install.md)
@@ -181,6 +181,6 @@ nginx 접근 로그에 `$upstream_addr`·`$upstream_status`·`$upstream_response
 
 **작성일**: 2026-10-27
 
-**마지막 업데이트**: 2026-10-27
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

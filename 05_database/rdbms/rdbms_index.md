@@ -290,9 +290,11 @@ EXPLAIN SELECT * FROM orders WHERE user_id = 1 AND created_at >= '2026-01-01';
 +----+-------------+--------+------+------------------+------------------+---------+-------+------+-------------+
 | id | select_type | table | type | possible_keys | key | key_len | ref | rows | Extra |
 +----+-------------+--------+------+------------------+------------------+---------+-------+------+-------------+
-| 1 | SIMPLE | orders | ref | idx_user_date | idx_user_date | 4 | const | 150 | Using index condition |
+| 1 | SIMPLE | orders | range | idx_orders_user_date | idx_orders_user_date | 9 | NULL | 150 | Using index condition |
 +----+-------------+--------+------+------------------+------------------+---------+-------+------+-------------+
 ```
+
+등치(`user_id`) + 범위(`created_at`) 조건이라 `type`은 `range`, `ref`는 `NULL`입니다. `key_len` 9는 `user_id INT`(4) + `created_at DATETIME`(5)를 모두 쓴 값입니다(두 열 NOT NULL 가정, NULL 허용이면 열마다 1바이트 추가).
 
 ### type 컬럼 해석 (성능 순서)
 
@@ -537,6 +539,6 @@ ORDER BY pg_relation_size(indexrelid) DESC;
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

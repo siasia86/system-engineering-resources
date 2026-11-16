@@ -252,7 +252,7 @@ ls /var/lib/rancher/k3s/storage/
 
 ```bash
 # Longhorn 설치 (멀티 노드 환경)
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.11.3/deploy/longhorn.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.12.2/deploy/longhorn.yaml
 
 # 기본 StorageClass 변경
 kubectl patch storageclass local-path -p '{"metadata":{"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
@@ -330,8 +330,9 @@ node-label:
 # 이미지 사전 로드 (에어갭 환경)
 sudo k3s ctr images import my-image.tar
 
-# 클러스터 백업 (SQLite)
-sudo cp /var/lib/rancher/k3s/server/db/state.db ~/k3s-backup.db
+# 클러스터 백업 (SQLite) — 공식 문서: db 디렉터리 전체 + 서버 토큰 파일
+sudo cp -a /var/lib/rancher/k3s/server/db ~/k3s-backup-db
+sudo cp -a /var/lib/rancher/k3s/server/token ~/k3s-backup-token
 
 # 클러스터 백업 (etcd)
 sudo k3s etcd-snapshot save --name k3s-snapshot
@@ -355,6 +356,8 @@ sudo k3s etcd-snapshot save --name k3s-snapshot
 - k3s GitHub: [github.com/k3s-io/k3s](https://github.com/k3s-io/k3s) — ★★★☆☆
 - k3s Requirements: [docs.k3s.io/installation/requirements](https://docs.k3s.io/installation/requirements) — ★★★☆☆
 - k3s Networking Services (Traefik 비활성화): [docs.k3s.io/networking/networking-services](https://docs.k3s.io/networking/networking-services) — ★★★☆☆
+- k3s Backup and Restore: [docs.k3s.io/datastore/backup-restore](https://docs.k3s.io/datastore/backup-restore) — ★★★☆☆ (확인일 2026-11-16)
+- Longhorn Releases (1.12 안정판): [github.com/longhorn/longhorn](https://github.com/longhorn/longhorn#releases) — ★★★☆☆ (확인일 2026-11-16)
 - [kubernetes_basic.md](./kubernetes_basic.md)
 
 ---

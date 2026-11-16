@@ -61,16 +61,16 @@ SCVMM 있음 — 중앙 콘솔에서 통합 관리
 
 ### 관리 가능한 대상
 
-| 대상                   | 지원 수준                     |
-|------------------------|-------------------------------|
-| Hyper-V 호스트         | ✅ 완전 지원                  |
-| VMware ESXi            | 🟡 제한적 (조회/마이그레이션) |
-| Citrix XenServer       | ❌ 미지원                     |
-| 물리 서버 (Bare Metal) | ✅ OS 배포까지                |
-| SAN/NAS 스토리지       | ✅ 완전 지원                  |
-| 가상 네트워크/SDN      | ✅ 완전 지원                  |
-| KVM/Proxmox            | ❌ 미지원                     |
-| Docker/Kubernetes      | ❌ Azure Arc 별도 필요        |
+| 대상                   | 지원 수준                |
+|------------------------|--------------------------|
+| Hyper-V 호스트         | ✅ 완전 지원             |
+| VMware ESXi            | 🟡 제한적 (vCenter 경유) |
+| Citrix XenServer       | ❌ 미지원                |
+| 물리 서버 (Bare Metal) | ✅ OS 배포까지           |
+| SAN/NAS 스토리지       | ✅ 완전 지원             |
+| 가상 네트워크/SDN      | ✅ 완전 지원             |
+| KVM/Proxmox            | ❌ 미지원                |
+| Docker/Kubernetes      | ❌ Azure Arc 별도 필요   |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -321,12 +321,18 @@ Empty physical server
 
 ```powershell
 # 베어메탈 서버를 Hyper-V 호스트로 프로비저닝
-$physicalMachine = Get-SCPhysicalComputerProfile -Name "HyperV-Profile"
+# (사전 조건: VMM에 PXE 서버 추가, 호스트 프로필 생성)
+$bmcAccount  = Get-SCRunAsAccount -Name "BMC-Admin"
+$computer    = Find-SCComputer -BMCAddress "192.0.2.100" -BMCRunAsAccount $bmcAccount -BMCProtocol "IPMI"
+$hostProfile = Get-SCVMHostProfile -Name "HyperV-Profile"
 
 New-SCVMHost `
-    -PhysicalComputerProfile $physicalMachine `
-    -BMCAddress "192.0.2.100" `
-    -BMCRunAsAccount $credential
+    -ComputerName "hyperv-host03" `
+    -VMHostProfile $hostProfile `
+    -SMBiosGuid $computer.SMBIOSGUID `
+    -BMCAddress $computer.BMCAddress `
+    -BMCRunAsAccount $bmcAccount `
+    -BMCProtocol "IPMI"
 ```
 
 ### 라이브 마이그레이션
@@ -381,10 +387,10 @@ Remove-SCVirtualMachine -VM "web-server-01"
 # VM 스냅샷 생성
 New-SCVMCheckpoint -VM "web-server-01" -Name "before-patch"
 
-# 스냅샷 복원
-Restore-SCVMCheckpoint -VMCheckpoint (
-    Get-SCVMCheckpoint -VM "web-server-01" -Name "before-patch"
-)
+# 스냅샷 복원 (Get-SCVMCheckpoint에는 -Name이 없어 이름으로 거름)
+$checkpoint = Get-SCVMCheckpoint -VM (Get-SCVirtualMachine -Name "web-server-01") |
+    Where-Object { $_.Name -eq "before-patch" }
+Restore-SCVMCheckpoint -VMCheckpoint $checkpoint
 ```
 
 ### VMware 연동 (제한적)
@@ -397,13 +403,14 @@ Add-SCVirtualizationManager `
     -Credential $vcenterAccount `
     -TCPPort 443
 
-# VMware VM 조회
-Get-SCVirtualMachine | Where-Object { $_.HostType -eq "VMware" }
+# VMware(ESXi) 호스트의 VM 조회
+Get-SCVMHost | Where-Object { $_.VirtualizationPlatform -like "VMware*" } |
+    ForEach-Object { $_.VMs }
 ```
 
 | 기능                 | Hyper-V | VMware ESXi |
 |----------------------|---------|-------------|
-| VM 생성/삭제         | ✅      | ❌          |
+| VM 생성/삭제         | ✅      | ✅          |
 | VM 시작/중지         | ✅      | ✅          |
 | 라이브 마이그레이션  | ✅      | 🟡 제한적   |
 | 모니터링             | ✅      | ✅          |
@@ -426,11 +433,13 @@ New-SCVMNetwork `
     -Name "VM-Production" `
     -LogicalNetwork (Get-SCLogicalNetwork -Name "Production-Network")
 
-# 가상 스위치 생성
+# 가상 스위치 생성 (호스트의 물리 NIC에 연결)
+$vmhost      = Get-SCVMHost -ComputerName "hyperv-host01.example.com"
+$hostAdapter = Get-SCVMHostNetworkAdapter -VMHost $vmhost -Name "Ethernet"
 New-SCVirtualNetwork `
     -Name "ExternalSwitch" `
-    -VMHost (Get-SCVMHost -ComputerName "hyperv-host01.example.com") `
-    -NetworkAdapterName "Ethernet"
+    -VMHost $vmhost `
+    -VMHostNetworkAdapters $hostAdapter
 ```
 
 ### 스토리지 관리
@@ -644,6 +653,10 @@ SCVMM + Azure Arc
 - Microsoft Learn: [Identify VMM ports and protocols](https://learn.microsoft.com/en-us/system-center/vmm/plan-ports-protocols?view=sc-vmm-2025) — ★★★☆☆
 - Microsoft Learn: [New-SCOpsMgrConnection](https://learn.microsoft.com/en-us/powershell/module/virtualmachinemanager/new-scopsmgrconnection?view=systemcenter-ps-2025) — ★★★☆☆
 - Microsoft Learn: [Add-SCVirtualizationManager](https://learn.microsoft.com/en-us/powershell/module/virtualmachinemanager/add-scvirtualizationmanager?view=systemcenter-ps-2025) — ★★★☆☆
+- Microsoft Learn: [New-SCVMHost](https://learn.microsoft.com/en-us/powershell/module/virtualmachinemanager/new-scvmhost?view=systemcenter-ps-2025) — ★★★☆☆ (확인일 2026-11-16)
+- Microsoft Learn: [Get-SCVMCheckpoint](https://learn.microsoft.com/en-us/powershell/module/virtualmachinemanager/get-scvmcheckpoint?view=systemcenter-ps-2025) — ★★★☆☆ (확인일 2026-11-16)
+- Microsoft Learn: [New-SCVirtualNetwork](https://learn.microsoft.com/en-us/powershell/module/virtualmachinemanager/new-scvirtualnetwork?view=systemcenter-ps-2025) — ★★★☆☆ (확인일 2026-11-16)
+- Microsoft Learn: [Set up VMware servers in the VMM compute fabric](https://learn.microsoft.com/en-us/system-center/vmm/manage-vmware-hosts?view=sc-vmm-2025) — ★★★☆☆ (확인일 2026-11-16)
 - Terraform Registry: [taliesins/hyperv](https://registry.terraform.io/providers/taliesins/hyperv/latest/docs/resources/machine_instance) — ★★★☆☆
 - [windows_server_key_concepts.md](./windows_server_key_concepts.md)
 
@@ -662,6 +675,6 @@ SCVMM + Azure Arc
 
 **작성일**: 2026-08-21
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

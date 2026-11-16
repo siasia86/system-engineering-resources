@@ -42,7 +42,7 @@ Vault는 패스워드, API 키, 인증서 등의 시크릿을 중앙에서 저�
 
 ## 2. Ubuntu 설치
 
-HashiCorp 공식 APT 저장소를 등록한 뒤 `vault` 패키지를 설치합니다. 공식 설치 문서 기준 최신 버전은 2026-11-09 확인 시 `2.2.1`입니다.
+HashiCorp 공식 APT 저장소를 등록한 뒤 `vault` 패키지를 설치합니다. 공식 릴리스 목록 기준 최신 버전은 2026-11-16 확인 시 `2.2.2`입니다.
 
 ```bash
 sudo apt-get update
@@ -302,13 +302,13 @@ vault read database/creds/myapp-role
 
 ## 7. Docker Compose로 구성
 
-Docker Compose는 개발·테스트에만 사용하고, 운영 환경에서는 영속 스토리지·TLS·백업·Unseal·방화벽을 별도로 설계합니다. 2026-11-09 확인 최신 태그는 `2.2.1`이며, 아래는 해당 멀티 아키텍처 이미지의 확인된 digest를 고정한 예시입니다.
+Docker Compose는 개발·테스트에만 사용하고, 운영 환경에서는 영속 스토리지·TLS·백업·Unseal·방화벽을 별도로 설계합니다. 2026-11-16 확인 최신 태그는 `2.2.2`이며, 아래는 해당 멀티 아키텍처 이미지의 확인된 digest를 고정한 예시입니다.
 
 ```yaml
 # compose.yaml
 services:
   vault:
-    image: hashicorp/vault:2.2.1@sha256:962a92876e168d68eaaa24b0b8b49bbce1cb63024060a67bba95cd158a366fc2
+    image: hashicorp/vault:2.2.2@sha256:dfa48c2fa2b0099ccb47681ec5c4804bf5aec9d6879ecfee07ad4b92a5427ad6
     ports:
       - "127.0.0.1:8200:8200"
     environment:
@@ -410,6 +410,7 @@ Unseal Key를 명령행 인자로 전달하지 말고 `vault operator unseal`을
 - Vault Audit Devices: [developer.hashicorp.com/vault/docs/audit](https://developer.hashicorp.com/vault/docs/audit) — ★★★☆☆
 - Vault AWS KMS Seal: [developer.hashicorp.com/vault/docs/configuration/seal/awskms](https://developer.hashicorp.com/vault/docs/configuration/seal/awskms) — ★★★☆☆
 - Vault Releases: [github.com/hashicorp/vault/releases](https://github.com/hashicorp/vault/releases) — ★★★☆☆
+- Vault 릴리스 목록(`2.2.2`): [releases.hashicorp.com/vault](https://releases.hashicorp.com/vault/) — ★★★☆☆ (확인일 2026-11-16)
 - Vault Docker Images: [hub.docker.com/r/hashicorp/vault/tags](https://hub.docker.com/r/hashicorp/vault/tags) — ★★★☆☆
 - Vault Docker 이미지 설명(`VAULT_DEV_LISTEN_ADDRESS` 기본 `0.0.0.0:8200`): [hub.docker.com/r/hashicorp/vault](https://hub.docker.com/r/hashicorp/vault) — ★★★☆☆ (확인일 2026-11-16)
 

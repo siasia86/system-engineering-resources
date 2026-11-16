@@ -18,7 +18,7 @@
 | 분류          | 블랙박스 테스트 기법 (조합 테스트)               |
 | 핵심 아이디어 | 결함의 대부분은 2개 파라미터 상호작용에서 발생   |
 | 목적          | 전수 조합 대비 테스트 수를 대폭 감소             |
-| 근거          | 결함의 70~90%가 1~2개 파라미터 상호작용에서 발생 |
+| 근거          | 대부분의 결함이 1~2개 파라미터 상호작용에서 발생 |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -154,6 +154,7 @@ for i, pair in enumerate(AllPairs(parameters)):
 ## 참고 자료
 
 - PICT: [github.com/microsoft/pict](https://github.com/microsoft/pict) — ★★★☆☆
+- NIST Automated Combinatorial Testing for Software (대부분의 결함이 1~2개 파라미터에서 발생): [csrc.nist.gov](https://csrc.nist.gov/projects/automated-combinatorial-testing-for-software) — ★★★☆☆ (확인일 2026-11-16)
 - ISTQB Foundation Level Syllabus — ★★★☆☆
 - [결정 테이블 테스트](decision_table_testing.md)
 
@@ -172,6 +173,6 @@ for i, pair in enumerate(AllPairs(parameters)):
 
 **작성일**: 2026-05-08
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

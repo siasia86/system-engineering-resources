@@ -19,17 +19,18 @@ Grafana OSS(무료)와 Infinity Datasource 플러그인을 사용하여 GitLab �
 │                                                                     │
 │  GitLab API ──> Infinity Datasource ──> Grafana Heatmap             │
 │                                                                     │
-│  /groups/<id>/events       group-wide commit events                 │
-│  /projects/<id>/commits    per-project commits                      │
+│  /users/<id>/events                 per-user push events            │
+│  /projects/<id>/events              per-project push events         │
+│  /projects/<id>/repository/commits  per-project commits             │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-| 항목       | 내용                                          |
-|------------|-----------------------------------------------|
-| Grafana    | OSS (무료)                                    |
-| 플러그인   | yesoreyeram-infinity-datasource               |
-| Enterprise | 불필요                                        |
-| 인증       | GitLab Admin Personal Access Token (read_api) |
+| 항목       | 내용                                               |
+|------------|----------------------------------------------------|
+| Grafana    | OSS (무료)                                         |
+| 플러그인   | yesoreyeram-infinity-datasource                    |
+| Enterprise | 불필요                                             |
+| 인증       | GitLab Personal Access Token (read_api, read_user) |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -44,18 +45,21 @@ grafana cli plugins install yesoreyeram-infinity-datasource
 sudo systemctl restart grafana-server
 ```
 
-### GitLab Admin Access Token 발급
+### GitLab Access Token 발급
 
-전체 사용자/프로젝트 이벤트 조회는 **admin 계정 토큰**이 필요합니다. 일반 토큰은 본인 이벤트만 반환합니다.
+GitLab Events API에는 인스턴스 전체 사용자의 이벤트를 한 번에 돌려주는 엔드포인트가 없습니다. `GET /events`는 관리자 토큰이라도 **토큰 소유자 본인의 이벤트**만 반환하고, 그룹 단위 이벤트 엔드포인트도 없습니다. 따라서 사용자별(`/users/:id/events`) 또는 프로젝트별(`/projects/:id/events`)로 조회합니다.
+
+- 이벤트는 토큰 소유자가 볼 수 있는 프로젝트 범위에서만 반환됩니다. 비공개 프로젝트까지 집계하려면 해당 프로젝트를 볼 수 있는 계정(멤버 또는 관리자)의 토큰을 사용합니다.
+- 공식 문서는 `/events`·`/users/:id/events`에 `read_user` 또는 `api` scope를 요구하므로, 읽기 전용으로는 `read_api`와 `read_user`를 함께 부여합니다.
 
 **웹 UI에서 발급:**
 ```
-GitLab admin 계정으로 로그인
+대상 프로젝트를 볼 수 있는 계정으로 로그인
 → 우측 상단 아바타 → Edit profile
 → 왼쪽 사이드바 Access → Personal access tokens
 → Generate token → Legacy token
   - Token name: grafana-readonly
-  - Scopes: read_api
+  - Scopes: read_api, read_user
 → Generate token
 → 토큰 값 복사 (페이지 벗어나면 재확인 불가)
 ```
@@ -68,7 +72,7 @@ sudo gitlab-rails console
 user = User.find_by_username('root')
 token = user.personal_access_tokens.create(
   name: 'grafana-readonly',
-  scopes: ['read_api'],
+  scopes: ['read_api', 'read_user'],
   expires_at: 365.days.from_now
 )
 puts token.token
@@ -88,6 +92,10 @@ curl -s --header "PRIVATE-TOKEN: <token>" \
 # 그룹 내 프로젝트 확인
 curl -s --header "PRIVATE-TOKEN: <token>" \
   "https://gitlab.example.com/api/v4/groups/<group_id>/projects"
+
+# 그룹 멤버(사용자 ID) 확인
+curl -s --header "PRIVATE-TOKEN: <token>" \
+  "https://gitlab.example.com/api/v4/groups/<group_id>/members"
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -114,20 +122,20 @@ curl -s --header "PRIVATE-TOKEN: <token>" \
 
 ## 4. 패널 쿼리 설정
 
-### 전체 사용자 커밋 이벤트 (admin 토큰 필요)
+### 사용자별 푸시 이벤트
 
 패널 추가 → Datasource: `Infinity` 선택
 
-| 항목   | 값                                                                    |
-|--------|-----------------------------------------------------------------------|
-| Type   | `JSON`                                                                |
-| Method | `GET`                                                                 |
-| URL    | `https://gitlab.example.com/api/v4/events?action=pushed&per_page=100` |
+| 항목   | 값                                                                                    |
+|--------|---------------------------------------------------------------------------------------|
+| Type   | `JSON`                                                                                |
+| Method | `GET`                                                                                 |
+| URL    | `https://gitlab.example.com/api/v4/users/<user_id>/events?action=pushed&per_page=100` |
 
 Headers 탭:
 ```
 Key:   PRIVATE-TOKEN
-Value: <admin-token>
+Value: <token>
 ```
 
 Columns 탭:
@@ -141,12 +149,15 @@ project_id      → string → project_id
 
 ### 범위별 API 엔드포인트
 
-| 범위          | 엔드포인트                                           | 권한       |
-|---------------|------------------------------------------------------|------------|
-| 전체 사용자   | `/api/v4/events?action=pushed`                       | admin 전용 |
-| 특정 사용자   | `/api/v4/users/<user_id>/events?action=pushed`       | read_api   |
-| 특정 그룹     | `/api/v4/groups/<group_id>/events?action=pushed`     | read_api   |
-| 특정 프로젝트 | `/api/v4/projects/<project_id>/events?action=pushed` | read_api   |
+| 범위          | 엔드포인트                                           | 반환 범위                           |
+|---------------|------------------------------------------------------|-------------------------------------|
+| 토큰 소유자   | `/api/v4/events?action=pushed`                       | 본인 이벤트만 (관리자 토큰도 같음)  |
+| 특정 사용자   | `/api/v4/users/<user_id>/events?action=pushed`       | 토큰이 볼 수 있는 프로젝트의 이벤트 |
+| 특정 프로젝트 | `/api/v4/projects/<project_id>/events?action=pushed` | 해당 프로젝트의 보이는 이벤트       |
+
+🔵 그룹 단위 이벤트 엔드포인트는 공식 문서에 없습니다. 그룹 기준 집계는 그룹의 프로젝트별 또는 멤버별 쿼리를 합쳐서 만듭니다.
+
+🔵 푸시 이벤트 1건에 커밋 여러 개가 들어 있을 수 있습니다. 커밋 수로 집계하려면 이벤트의 `push_data.commit_count`를 합산하거나 Commits API(`/projects/<id>/repository/commits`)를 사용합니다.
 
 ### Computed columns / Filter / Group by
 
@@ -247,16 +258,16 @@ Color:      Fixed → Green
 
 ## 6. 그룹별 분리
 
-쿼리를 여러 개 추가하여 그룹/사용자별로 분리합니다.
+쿼리를 여러 개 추가하여 그룹/사용자별로 분리합니다. 그룹 이벤트 엔드포인트가 없으므로 그룹은 소속 프로젝트별 쿼리로, 사용자는 사용자 ID별 쿼리로 나눕니다. 프로젝트 ID는 `/groups/<group_id>/projects`, 사용자 ID는 `/groups/<group_id>/members`로 확인합니다.
 
 ```
-# 그룹별
-Query A: /api/v4/groups/10/events?action=pushed   → team-a
-Query B: /api/v4/groups/20/events?action=pushed   → team-b
+# group (one query per project in the group)
+Query A: /api/v4/projects/101/events?action=pushed   → team-a
+Query B: /api/v4/projects/201/events?action=pushed   → team-b
 
-# 사용자별 (전체 이벤트에서 Filter 활용)
-Query A: /api/v4/events?action=pushed + Filter: author.username == "user1"
-Query B: /api/v4/events?action=pushed + Filter: author.username == "user2"
+# user (one query per user)
+Query A: /api/v4/users/11/events?action=pushed       → user1
+Query B: /api/v4/users/12/events?action=pushed       → user2
 ```
 
 패널을 그룹별로 나누려면 Dashboard에 **Row** 추가:
@@ -264,9 +275,9 @@ Query B: /api/v4/events?action=pushed + Filter: author.username == "user2"
 ```
 Dashboard → Add → Row         
 ├── Row: team-a               
-│   └── Heatmap 패널 (Query A)
+│   └── Heatmap panel (Query A)
 └── Row: team-b               
-    └── Heatmap 패널 (Query B)
+    └── Heatmap panel (Query B)
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -277,10 +288,10 @@ Dashboard → Add → Row
 
 ```bash
 # 페이지네이션 — 커밋이 100개 초과 시
-/api/v4/groups/<id>/events?action=pushed&per_page=100&page=2
+/api/v4/users/<id>/events?action=pushed&per_page=100&page=2
 
-# 기간 필터
-/api/v4/groups/<id>/events?action=pushed&after=2026-01-01&before=2026-12-31
+# 기간 필터 (ISO 8601 날짜)
+/api/v4/users/<id>/events?action=pushed&after=2026-01-01&before=2026-12-31
 ```
 
 🟡 GitLab API는 페이지당 최대 100개 제한입니다. 커밋이 많으면 Infinity 단독으로는 한계가 있으며, 이 경우 Prometheus exporter 방식으로 전환합니다.
@@ -300,7 +311,8 @@ Dashboard → Add → Row
 ## 참고 자료
 
 - Infinity Datasource: [grafana.com/plugins/yesoreyeram-infinity-datasource](https://grafana.com/grafana/plugins/yesoreyeram-infinity-datasource/) — ★★★☆☆
-- GitLab Events API: [docs.gitlab.com/ee/api/events](https://docs.gitlab.com/ee/api/events.html) — ★★★☆☆
+- GitLab Events API: [docs.gitlab.com/api/events](https://docs.gitlab.com/api/events/) — ★★★☆☆ (확인일 2026-11-16)
+- GitLab Access token scopes: [docs.gitlab.com/security/tokens/access_token_scopes](https://docs.gitlab.com/security/tokens/access_token_scopes/) — ★★★☆☆ (확인일 2026-11-16)
 - GitLab Commits API: [docs.gitlab.com/ee/api/commits](https://docs.gitlab.com/ee/api/commits.html) — ★★★☆☆
 - GitLab Personal access tokens: [docs.gitlab.com/user/profile/personal_access_tokens](https://docs.gitlab.com/user/profile/personal_access_tokens/) — ★★★☆☆
 - Grafana CLI: [grafana.com/docs/grafana/latest/administration/cli](https://grafana.com/docs/grafana/latest/administration/cli/) — ★★★☆☆
@@ -321,6 +333,6 @@ Dashboard → Add → Row
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -50,12 +50,12 @@ CVE-2026-31431 (`algif_aead`)은 동일한 skb shared frag in-place 복호화 �
 `MSG_SPLICE_PAGES`로 pipe 페이지를 UDP skb에 붙일 때 IPv4/IPv6 datagram append 경로가 `SKBFL_SHARED_FRAG` 플래그를 설정하지 않습니다. ESP input이 uncloned skb로 판단하여 **외부 소유 메모리에 in-place 복호화**를 수행합니다.
 
 ```
-MSG_SPLICE_PAGES → UDP skb (SKBFL_SHARED_FRAG 미설정)
+MSG_SPLICE_PAGES → UDP skb (SKBFL_SHARED_FRAG not set)
                         ↓
               ESP input (no-COW fast path)
                         ↓
-              외부 소유 frag 페이지 in-place 복호화
-              → page cache 임의 쓰기 → 권한 상승
+              in-place decrypt of externally owned frag pages
+              → arbitrary page cache write → privilege escalation
 ```
 
 **패치 내용:** IPv4/IPv6 datagram splice 시 `SKBFL_SHARED_FRAG` 설정 + ESP input에서 해당 플래그 존재 시 `skb_cow_data()` 호출로 fallback.
@@ -275,6 +275,6 @@ rm -f dirty_frag_detect.py
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

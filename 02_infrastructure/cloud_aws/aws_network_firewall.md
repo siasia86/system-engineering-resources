@@ -199,7 +199,7 @@ aws network-firewall update-logging-configuration \
     ]
   }' --region ap-northeast-3
 
-# 전체 제거
+# ALERT 제거 (마지막 남은 타입, 이 호출로 로깅 설정이 모두 비워짐)
 aws network-firewall update-logging-configuration \
   --firewall-name anf-fw \
   --logging-configuration '{"LogDestinationConfigs": []}' \
@@ -364,6 +364,8 @@ aws ec2 describe-nat-gateways   --nat-gateway-ids nat-xxx   --query "NatGateways
 | Rule Group        | 무료                       |
 
 
+단가는 AWS Price List API(AWSNetworkFirewall, ap-northeast-3)로 2026-11-16에 확인했습니다.
+
 🟡 Firewall Endpoint는 AZ별 과금입니다. 멀티 AZ 구성 시 AZ 수만큼 비용이 발생합니다.
 
 ## 참고 자료
@@ -372,11 +374,12 @@ aws ec2 describe-nat-gateways   --nat-gateway-ids nat-xxx   --query "NatGateways
 - AWS CLI Reference: [awscli.amazonaws.com](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/network-firewall/index.html) — ★★★☆☆
 - AWS API Reference: [UpdateLoggingConfiguration](https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_UpdateLoggingConfiguration.html) — ★★★☆☆
 - AWS API Reference: [FirewallStatus](https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_FirewallStatus.html) — ★★★☆☆
+- AWS Price List API (AWSNetworkFirewall, ap-northeast-3): [pricing.us-east-1.amazonaws.com](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSNetworkFirewall/current/ap-northeast-3/index.json) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
 **작성일**: 2026-06-17
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -7,7 +7,7 @@ tags:
   - anthropic
   - ai-agent
   - cli
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://code.claude.com/docs/llms.txt
   - https://code.claude.com/docs/en/overview.md
@@ -43,7 +43,7 @@ sources:
 
 ## 1. 버전 상태
 
-- 2026-10-14 확인한 GitHub 최신 릴리스: `v2.1.299` (2026-10-14 게시, `gh api repos/anthropics/claude-code/releases/latest`). 2026-11-09 확인: `v2.1.319` (2026-11-06 게시).
+- 2026-10-14 확인한 GitHub 최신 릴리스: `v2.1.299` (2026-10-14 게시, `gh api repos/anthropics/claude-code/releases/latest`). 2026-11-09 확인: `v2.1.319` (2026-11-06 게시). 2026-11-16 확인: `v2.1.325` (2026-11-13 게시).
 - 공식 문서의 설치 확인 예시 출력은 `2.1.211 (Claude Code)`이며, 이는 형식 예시입니다.
 - 작성 서버의 `PATH`에는 `claude` CLI가 없습니다. 2026-10-15 데스크톱 앱이 SSH 세션용으로 설치한 `~/.claude/remote/ccd-cli/2.1.295-<빌드>`에서 `--version`을 실행해 `2.1.295 (Claude Code)`를 확인했습니다. 그 밖의 CLI 도움말·실제 실행 대조는 하지 않았고 명령·옵션은 공식 문서 기준입니다.
 - 문서에 버전 조건이 붙은 기능은 해당 버전을 함께 기록합니다. 예: 내장 기본 권한 모드 `auto`는 v2.1.283 이상.
@@ -72,16 +72,16 @@ sources:
 - Claude Code는 모든 유료 플랜에 포함되며, 채팅과 사용량 한도를 공유합니다. 무료 플랜에는 포함되지 않습니다.
 - 사용 가능 계정: Pro, Max, Ultra, Team, Enterprise, Claude Console(API 종량제). Bedrock·Google Cloud·Microsoft Foundry 같은 클라우드 제공자로도 사용할 수 있습니다.
 
-| 플랜       | 가격                                                        | 사용량                         |
-|------------|-------------------------------------------------------------|--------------------------------|
-| Pro        | 월 $20 (연간 결제 시 월 $17)                                | Free 대비 5시간당 5배 이상     |
-| Max        | 월 $100부터                                                 | Pro 대비 5배 또는 20배 중 선택 |
-| Ultra      | 월 $200                                                     | 주간 기준 Pro 대비 10배        |
-| Team       | Standard 좌석 $25 (연간 $20), Premium 좌석 $125 (연간 $100) | Premium은 Standard의 5배       |
-| Enterprise | 좌석당 월 $20 + API 요금 기준 사용량                        | 연간 계약                      |
+| 플랜       | 가격                                                        | 사용량                     |
+|------------|-------------------------------------------------------------|----------------------------|
+| Pro        | 월 $20 (연간 결제 시 월 $17)                                | Free 대비 5시간당 5배 이상 |
+| Max        | 월 $100                                                     | Pro 대비 5배               |
+| Ultra      | 월 $200                                                     | 주간 기준 Pro 대비 10배    |
+| Team       | Standard 좌석 $25 (연간 $20), Premium 좌석 $125 (연간 $100) | Premium은 Standard의 5배   |
+| Enterprise | 좌석당 월 $20 + API 요금 기준 사용량                        | 연간 계약                  |
 
 - 사용량 한도는 5시간 단위로 초기화되고, 유료 플랜에는 주간 한도가 추가됩니다. Ultra는 인증된 계정이면 5시간 한도 없이 주간 한도만 적용됩니다.
-- 2026-11-09 확인: 요금 페이지는 Ultra를 새로 표시하고 Max는 월 $100·Pro 대비 5배로만 표시합니다. setup 문서의 필요 계정도 Pro, Max, Ultra, Team, Enterprise, Console입니다.
+- 2026-11-16 확인: 요금 페이지는 Max를 월 $100·Pro 대비 5배로만 표시하고(20배 단계 없음) 그 위 단계로 Ultra를 표시합니다. setup 문서의 필요 계정도 Pro, Max, Ultra, Team, Enterprise, Console입니다.
 - 기업 배포 평균 비용: 활성일 기준 개발자당 약 $13, 월 $150~250, 사용자 90%가 활성일당 $30 미만(costs 문서).
 
 ## 4. 설치와 업데이트 (setup)
@@ -133,7 +133,7 @@ sources:
   - 사용자: `~/.claude/CLAUDE.md`
   - 프로젝트: `./CLAUDE.md` 또는 `./.claude/CLAUDE.md`
   - 개인 프로젝트용: `./CLAUDE.local.md` (`.gitignore` 대상)
-- `AGENTS.md`: 작업 디렉터리나 상위에 `CLAUDE.md`·`CLAUDE.local.md`가 없으면 `AGENTS.md`를 프로젝트 지침으로 읽습니다. 둘 다 있으면 `CLAUDE.md`만 읽고, `CLAUDE.md`에서 `AGENTS.md`를 import하면 함께 읽습니다.
+- `AGENTS.md`: 작업 디렉터리나 상위에 `CLAUDE.md`·`.claude/CLAUDE.md`·`CLAUDE.local.md`가 없으면 `AGENTS.md`를 프로젝트 지침으로 읽습니다. 둘 다 있으면 `CLAUDE.md`만 읽고, `CLAUDE.md`에서 `AGENTS.md`를 import하면 함께 읽습니다.
 - Auto memory: Claude가 직접 기록하는 저장소별 메모리로, 세션마다 앞 200줄 또는 25KB까지 로드합니다.
 
 ## 8. 확장 기능
@@ -238,6 +238,6 @@ sources:
 
 **작성일**: 2026-10-14
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -435,9 +435,12 @@ data:
         }]
 
   trigger.on-sync-succeeded: |
-    - when: app.status.sync.status == 'Synced'
+    - when: app.status.operationState != nil and app.status.operationState.phase in ['Succeeded']
+      oncePer: app.status.operationState?.syncResult?.revision
       send: [app-sync-succeeded]
 ```
+
+`app.status.sync.status == 'Synced'`처럼 상태만 보는 조건은 Synced가 유지되는 동안 계속 참이라 알림이 반복될 수 있습니다. 공식 카탈로그는 sync 작업 결과(`operationState.phase`)와 `oncePer`(revision당 1회)를 씁니다. 아래 `on-sync-failed` 구독은 카탈로그의 `trigger.on-sync-failed`·`template.app-sync-failed`를 함께 설치했다고 가정합니다.
 
 ```yaml
 # Application에 어노테이션 추가
@@ -505,6 +508,7 @@ metadata:
 - Argo CD Helm (OCI 차트 repoURL 형식): [argo-cd.readthedocs.io/user-guide/helm](https://argo-cd.readthedocs.io/en/stable/user-guide/helm/) — ★★★☆☆
 - Argo Helm argo-cd-9.5.15 릴리스 (appVersion v3.4.2): [github.com/argoproj/argo-helm](https://github.com/argoproj/argo-helm/releases/tag/argo-cd-9.5.15) — ★★★☆☆
 - Bitnami Charts README (OCI 설치 안내): [github.com/bitnami/charts](https://github.com/bitnami/charts) — ★★★☆☆
+- Argo CD Notifications 트리거 카탈로그 (notifications_catalog/install.yaml): [github.com/argoproj/argo-cd](https://github.com/argoproj/argo-cd/blob/stable/notifications_catalog/install.yaml) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 

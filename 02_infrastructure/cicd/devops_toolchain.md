@@ -78,7 +78,7 @@ Jenkins              │
 | 카테고리          | 도구                     | 최신 버전 | 공식 설명                                           |
 |-------------------|--------------------------|-----------|-----------------------------------------------------|
 | 인프라 프로비저닝 | Terraform                | v1.17.1   | Infrastructure as code tool                         |
-| 서버 구성 자동화  | Ansible                  | v2.22.0   | Open source IT automation engine                    |
+| 서버 구성 자동화  | Ansible (ansible-core)   | v2.22.0   | Open source IT automation engine                    |
 | 컨테이너 런타임   | Docker Engine            | v29.9.3   | Build, share, and run containerized applications    |
 | 컨테이너 구성     | Docker Compose           | v5.7.0    | Multi-container application definition              |
 | 오케스트레이션    | Kubernetes               | v1.37.2   | Automated container deployment, scaling, management |
@@ -229,8 +229,10 @@ Git 저장소를 단일 진실 공급원(Single Source of Truth)으로 삼아 K8
 
 ```
 Git repo (YAML) ──> ArgoCD ──> Kubernetes Cluster
-     변경 감지          자동 sync
+              detect change    auto sync
 ```
+
+ArgoCD가 Git 저장소의 변경을 감지하고 클러스터에 자동으로 sync합니다.
 
 - 공식: [argoproj.github.io/cd](https://argoproj.github.io/cd/)
 
@@ -243,19 +245,18 @@ Git repo (YAML) ──> ArgoCD ──> Kubernetes Cluster
 ### Prometheus + Grafana
 
 ```
-앱/서버/K8s                    
-    │  Expose metrics (/metrics)  
-    v                          
-Prometheus (수집·저장·알림)    
-    │                          
-    v                          
-Grafana (대시보드 시각화)      
-    │                          
-    v                          
-AlertManager (Slack/Email 알림)
+Apps / Servers / K8s                              
+    │  expose metrics (/metrics)                  
+    v                                             
+Prometheus (scrape, store, evaluate alert rules)  
+    │                       │                     
+    │ PromQL query          │ firing alerts       
+    v                       v                     
+Grafana (dashboards)    Alertmanager (Slack/Email)
 ```
 
-- Prometheus: 시계열 메트릭 수집, PromQL 쿼리 언어
+- Prometheus: 시계열 메트릭을 pull 방식으로 수집·저장하고 PromQL로 조회, 알림 규칙을 평가해 발생한 알림을 Alertmanager로 보냄
+- Alertmanager: 받은 알림의 중복 제거·묶음·라우팅 후 Slack·Email 등으로 발송
 - Grafana: 다양한 데이터소스 시각화 (Prometheus, Loki, CloudWatch 등)
 - 공식 Prometheus: [prometheus.io](https://prometheus.io)
 - 공식 Grafana: [grafana.com](https://grafana.com)

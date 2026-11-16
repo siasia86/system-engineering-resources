@@ -11,13 +11,14 @@ tags:
   - load-balancer
   - keepalived
   - acme
-last_checked: 2026-11-10
+last_checked: 2026-11-16
 sources:
   - https://nginx.org/en/docs/
   - https://httpd.apache.org/docs/2.4/
   - https://ssl-config.mozilla.org/
   - https://www.ssllabs.com/ssltest/
   - https://www.haproxy.org/
+  - https://www.haproxy.com/blog/cves-2026-quic-denial-of-service
   - https://docs.haproxy.org/3.4/configuration.html
   - https://docs.haproxy.org/3.4/management.html
   - https://haproxy.debian.net/
@@ -188,7 +189,7 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 - 짝수 분기는 LTS(5년), 홀수 분기는 stable(짧은 지원)입니다.
 - 3.4.0 배포 2026-06-03: CLI로 backend 생성·게시·삭제, HTTP/2 flood 제한, ACME DNS-01·dns-persist-01, systemd unit의 `conf.d` 디렉터리, OpenTelemetry filter(OpenTracing은 폐기 예정).
 - 3.3.0 배포 2025-11-26: 기본 분산 알고리즘이 `random(2)`로 바뀜, reload 후에도 통계 유지, KTLS.
-- 2026-02-12 공지: QUIC 파싱 취약점 CVE-2026-26081(3.0 이상)·CVE-2026-26080(3.2 이상), 조작된 패킷으로 프로세스 중단 위험. 수정판 3.0.12, 3.1.14, 3.2.12, 3.3.3.
+- 2026-02-12 공지: QUIC 파싱 취약점 CVE-2026-26081(3.0 이상)·CVE-2026-26080(3.2 이상), 조작된 패킷으로 프로세스 중단 위험. 수정판 3.0.16, 3.1.14, 3.2.12, 3.3.3 (HAProxy 공지 표 기준, 2026-11-16 확인).
 - 작업 서버(Ubuntu 24.04) 기본 저장소 후보 `2.8.30-0ubuntu0.24.04.2`.
 - Launchpad `~vbernat/haproxy-3.4` PPA의 게시 원본은 `3.4.7-1ppa1~resolute`(Ubuntu 26.04) 1건만 확인했습니다. 다른 Ubuntu 버전용 게시 여부는 확인하지 않았습니다.
 

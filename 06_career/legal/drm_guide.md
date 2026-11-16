@@ -44,7 +44,7 @@ DRM(Digital Rights Management)은 디지털 콘텐츠의 **무단 복제, 배포
 콘텐츠를 암호화하고 인증된 플레이어만 복호화 키를 받는 방식입니다.
 
 ```
-콘텐츠 암호화 → 라이선스 서버 → 인증 → 복호화 키 발급 → 재생
+content encryption → license server → authentication → decryption key issued → playback
 ```
 
 ### 하드웨어 바인딩
@@ -52,8 +52,8 @@ DRM(Digital Rights Management)은 디지털 콘텐츠의 **무단 복제, 배포
 특정 기기의 고유 식별자(UUID, MAC, TPM)와 라이선스를 묶는 방식.
 
 ```bash
-# TPM 기반 하드웨어 바인딩 예시
-# 기기 고유 키로 콘텐츠 키를 암호화
+# 기기 공개키로 콘텐츠 키를 암호화하는 예시 (일반 RSA 공개키 방식, TPM 미사용)
+# TPM 바인딩은 기기 개인키를 TPM 안에서 만들고 보관해 밖으로 꺼낼 수 없게 하는 방식
 openssl pkeyutl -encrypt -pubin -inkey device_pubkey.pem -in content_key.bin -out encrypted_key.bin
 ```
 
@@ -210,6 +210,6 @@ def verify_license(license_key: str) -> bool:
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

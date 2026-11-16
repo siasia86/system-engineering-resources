@@ -808,7 +808,7 @@ podman run nginx
 
 ### 도구가 내부적으로 사용 (Mid-level)
 ```bash
-# LXC (LXD가 내부적으로 호출)
+# LXC (liblxc 기반 CLI, LXD는 lxc-* 명령이 아니라 liblxc 라이브러리를 직접 사용)
 lxc-create -n web -t ubuntu
 
 # runc (Docker가 내부적으로 호출)

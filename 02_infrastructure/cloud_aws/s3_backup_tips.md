@@ -16,13 +16,15 @@ EC2에서 S3로 백업할 때 비용·성능·보안·무결성 측면의 운영
 
 ### Storage Class 선택
 
-| Class                | 최소 보관 | 검색 비용   | 용도                                |
-|----------------------|-----------|-------------|-------------------------------------|
-| STANDARD             | 없음      | 없음        | 즉시 접근 필요 (7일 이내 삭제 가능) |
-| STANDARD_IA          | 30일      | GB당 과금   | 30일+ 보관, 가끔 접근               |
-| Glacier Instant      | 90일      | GB당 과금   | 90일+ 보관, 밀리초 검색             |
-| Glacier Flexible     | 90일      | 요청당 과금 | 90일+ 보관, 수 분~수 시간 검색      |
-| Glacier Deep Archive | 180일     | 요청당 과금 | 180일+ 보관, 12~48시간 검색         |
+| Class                | 최소 보관 | 검색 비용 | 용도                                |
+|----------------------|-----------|-----------|-------------------------------------|
+| STANDARD             | 없음      | 없음      | 즉시 접근 필요 (7일 이내 삭제 가능) |
+| STANDARD_IA          | 30일      | GB당 과금 | 30일+ 보관, 가끔 접근               |
+| Glacier Instant      | 90일      | GB당 과금 | 90일+ 보관, 밀리초 검색             |
+| Glacier Flexible     | 90일      | 요청+GB당 | 90일+ 보관, 수 분~수 시간 검색      |
+| Glacier Deep Archive | 180일     | 요청+GB당 | 180일+ 보관, 12~48시간 검색         |
+
+Glacier Flexible·Deep Archive는 복원 요청 건수와 복원한 GB 양에 모두 과금되며, 단가는 복원 속도(Expedited·Standard·Bulk)에 따라 다릅니다.
 
 ### Lifecycle 전환 예시
 
@@ -223,6 +225,8 @@ aws ec2 modify-vpc-endpoint \
 
 ### Bucket Policy (VPC 외부 접근 거부)
 
+🟡 아래 정책은 지정 VPC의 S3 Gateway Endpoint를 거치지 않는 모든 요청을 거부합니다. 콘솔·VPC 밖의 관리자 CLI 요청도 막히므로 버킷 정책 수정·삭제까지 못 하게 될 수 있습니다. 적용 전에 관리용 역할을 예외 조건(`aws:PrincipalArn` 등)으로 두거나, 계정 root 사용자로 버킷 정책을 삭제하는 복구 경로를 확인합니다.
+
 ```json
 {
   "Version": "2012-10-17",
@@ -338,8 +342,17 @@ aws s3api put-object-tagging \
 ### 실패 시 재시도 패턴
 
 ```python
-def upload_with_retry(local_path, s3_key, retries=2, backoff=5):
+import logging
+import subprocess
+import time
+
+logger = logging.getLogger(__name__)
+BUCKET = "my-backup-bucket"
+
+
+def upload_with_retry(local_path, s3_key, retries=2, backoff=5, timeout=3600):
     """Exponential backoff retry."""
+    cmd = ["aws", "s3", "cp", local_path, f"s3://{BUCKET}/{s3_key}"]
     for attempt in range(retries + 1):
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
         if result.returncode == 0:
@@ -538,6 +551,6 @@ aws ec2 stop-instances --instance-ids i-verify-server
 
 **작성일**: 2026-07-01
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

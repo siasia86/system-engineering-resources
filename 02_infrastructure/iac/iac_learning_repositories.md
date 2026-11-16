@@ -176,31 +176,6 @@ Argo CD + Observability
 
 **전체 IaC와 DevOps 도구 체인을 학습하는 목적에는 가장 적합한 후보**입니다.
 
-### 2.5 `khuedoan/homelab`
-
-링크: [github.com/khuedoan/homelab](https://github.com/khuedoan/homelab)
-
-실제 Homelab을 코드로 구축·운영하는 구조를 참고하기 좋은 저장소입니다.
-
-포함 범위는 다음과 같습니다.
-
-- Ansible 기반 설치와 설정
-- Docker 기반 PXE 서비스
-- K3s/Kubernetes
-- Terraform 모듈
-- Argo CD 기반 GitOps
-- Prometheus, Grafana, Loki
-- External Secrets 계열의 Secret 관리
-- 백업·복구와 인프라 테스트
-
-HashiCorp Vault를 직접 사용하는 저장소는 아니며 자체 Secret Generator와 External Secrets 구성이 중심입니다. README에는 프로젝트 상태가 Alpha로 표시되어 있으므로 실제 운영에 그대로 복사하기보다 다음 구조를 학습하는 용도로 사용합니다.
-
-- GitOps 디렉터리 구성
-- Kubernetes 설치 자동화
-- Secret 관리 분리
-- 모니터링과 백업 자동화
-- 테스트와 검증 단계
-
 ### 2.2 `m-aboud/infra-automation-lab`
 
 링크: [github.com/m-aboud/infra-automation-lab](https://github.com/m-aboud/infra-automation-lab)
@@ -265,6 +240,31 @@ GKE 사용에 따른 클라우드 비용이 발생할 수 있습니다. 전체 �
 ```
 
 Packer, Terraform, Ansible, Vagrant, Docker, Docker Compose, Kubernetes를 모두 다루지만 Vault는 포함하지 않습니다. README에 2018년에 작성되어 최신 API나 이미지가 동작하지 않을 수 있다고 명시되어 있으므로, 명령어를 그대로 실행하기보다 **도구 간 역할과 학습 순서**를 이해하는 용도로 사용합니다.
+
+### 2.5 `khuedoan/homelab`
+
+링크: [github.com/khuedoan/homelab](https://github.com/khuedoan/homelab)
+
+실제 Homelab을 코드로 구축·운영하는 구조를 참고하기 좋은 저장소입니다.
+
+포함 범위는 다음과 같습니다.
+
+- Ansible 기반 설치와 설정
+- Docker 기반 PXE 서비스
+- K3s/Kubernetes
+- Terraform 모듈
+- Argo CD 기반 GitOps
+- Prometheus, Grafana, Loki
+- External Secrets 계열의 Secret 관리
+- 백업·복구와 인프라 테스트
+
+HashiCorp Vault를 직접 사용하는 저장소는 아니며 자체 Secret Generator와 External Secrets 구성이 중심입니다. README에는 프로젝트 상태가 Alpha로 표시되어 있으므로 실제 운영에 그대로 복사하기보다 다음 구조를 학습하는 용도로 사용합니다.
+
+- GitOps 디렉터리 구성
+- Kubernetes 설치 자동화
+- Secret 관리 분리
+- 모니터링과 백업 자동화
+- 테스트와 검증 단계
 
 ### 2.6 `lisenet/kubernetes-homelab`
 
@@ -643,6 +643,6 @@ kubectl get nodes \
 
 **작성일**: 2026-09-17
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

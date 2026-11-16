@@ -1035,8 +1035,9 @@ tail -f /var/log/app.log | grep --line-buffered ERROR
 int* ptr = malloc(sizeof(int));  // C: malloc
 *ptr = 42;
 free(ptr);                       // 해제 (필수!)
+```
 
-// C++
+```cpp
 int* ptr2 = new int(42);         // C++: new
 delete ptr2;                     // 해제 (필수!)
 ```
@@ -1192,12 +1193,14 @@ chmod +x script.sh
 ## 14. 학습 난이도
 
 ```
-쉬움 ←―――――――――――――――――――――――――――――――――→ 어려움
+Easy ←―――――――――――――――――――――――――――――――――→ Hard
 
 Bash ―― Python ―― Go ―― C# ―――――― C ―――――― C++
   v        v       v      v        v         v
- 1주      1주    1개월  2개월    3개월     6개월+
+ 1wk      1wk    1mo    2mo      3mo       6mo+
 ```
+
+왼쪽일수록 쉽고 오른쪽일수록 어렵습니다. 아래 줄은 기본 문법을 익히는 데 드는 대략적인 기간(wk = 주, mo = 개월)입니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -1257,6 +1260,6 @@ Bash ―― Python ―― Go ―― C# ―――――― C ―――――― C
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

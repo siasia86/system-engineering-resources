@@ -52,9 +52,9 @@ CVE-2026-31431 (`algif_aead`)은 동일한 skb shared frag in-place 복호화 �
 ```
 splice() → rxrpc socket → shared frag pages
                                ↓
-                  AEAD/skcipher SGL 직접 바인딩
+                  bound directly to AEAD/skcipher SGL
                                ↓
-                  in-place 복호화 → page cache 쓰기 → 권한 상승
+                  in-place decrypt → page cache write → privilege escalation
 ```
 
 **패치 내용:** `skb_has_frag_list()` 또는 `skb_has_shared_frag()` 가 true일 때도 unshare 처리하도록 gate 확장.
@@ -247,6 +247,6 @@ rm -f dirty_frag_detect.py
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -25,15 +25,15 @@
 
 ### 버전 선택 기준
 
-| 버전          | EOL     | 현재 마이너 | 권장 여부                      |
-|---------------|---------|-------------|--------------------------------|
-| PostgreSQL 14 | 2026-11 | 14.24       | 🟡 EOL 임박, 마이그레이션 필요 |
-| PostgreSQL 15 | 2027-11 | 15.19       | ✅ 안정적                      |
-| PostgreSQL 16 | 2028-11 | 16.15       | ✅ 안정적, 운영 권장           |
-| PostgreSQL 17 | 2029-11 | 17.11       | ✅ 신규 구축 권장              |
-| PostgreSQL 18 | 2030-11 | 18.6        | ✅ 최신, 신규 구축 가능        |
+| 버전          | EOL     | 현재 마이너 | 권장 여부                     |
+|---------------|---------|-------------|-------------------------------|
+| PostgreSQL 14 | 2026-11 | 14.25       | 🔴 지원 종료, 업그레이드 필요 |
+| PostgreSQL 15 | 2027-11 | 15.20       | ✅ 안정적                     |
+| PostgreSQL 16 | 2028-11 | 16.16       | ✅ 안정적, 운영 권장          |
+| PostgreSQL 17 | 2029-11 | 17.12       | ✅ 신규 구축 권장             |
+| PostgreSQL 18 | 2030-11 | 18.7        | ✅ 최신, 신규 구축 가능       |
 
-🟡 PostgreSQL 14는 2026-11-12에 지원이 끝납니다. PostgreSQL 19는 2026-10-15에 RC 1이 나왔으며 정식 출시 전입니다(확인일 2026-11-05).
+🟡 2026-11-16 기준입니다. PostgreSQL 14는 2026-11-12 14.25를 마지막으로 지원이 끝났습니다. PostgreSQL 19는 RC 2까지 나왔으며 정식 출시 전입니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -357,7 +357,7 @@ sudo vi /var/lib/pgsql/18/data/pg_hba.conf
 # TYPE  DATABASE   USER           ADDRESS          METHOD
 # 로컬 소켓 접속
 local   all        postgres                        peer
-local   all        all                             md5
+local   all        all                             scram-sha-256
 
 # 로컬 TCP 접속
 host    all        all            127.0.0.1/32     scram-sha-256
@@ -487,8 +487,10 @@ WHERE state IS NOT NULL;
 
 ```bash
 # 에러 로그 확인
-sudo tail -100 /var/log/postgresql/postgresql-18-main.log   # Ubuntu
-sudo tail -100 /var/lib/pgsql/18/data/log/postgresql-*.log  # RHEL 계열
+# logging_collector = on (5절) 기준: data_directory 아래 log/
+sudo tail -100 /var/lib/postgresql/18/main/log/postgresql-*.log  # Ubuntu
+sudo tail -100 /var/lib/pgsql/18/data/log/postgresql-*.log       # RHEL 계열
+# Ubuntu에서 logging_collector = off이면 /var/log/postgresql/postgresql-18-main.log
 
 # 현재 Lock 대기 확인
 sudo -u postgres psql -c "
@@ -613,6 +615,7 @@ sudo -u postgres psql -c "SELECT pid, usename, datname, state, query FROM pg_sta
 
 - PostgreSQL Documentation: [Installation](https://www.postgresql.org/docs/current/installation.html) — ★★★☆☆
 - PostgreSQL Documentation: [Client Authentication](https://www.postgresql.org/docs/current/client-authentication.html) — ★★★☆☆
+- PostgreSQL 18 Documentation: [Password Authentication](https://www.postgresql.org/docs/18/auth-password.html) (MD5 비밀번호 deprecated) — ★★★☆☆ (확인일 2026-11-16)
 - PostgreSQL Documentation: [Server Configuration](https://www.postgresql.org/docs/current/runtime-config.html) — ★★★☆☆
 - PostgreSQL: [Versioning Policy](https://www.postgresql.org/support/versioning/) (현재 마이너·지원 종료일) — ★★★☆☆
 - PostgreSQL Documentation: [initdb](https://www.postgresql.org/docs/current/app-initdb.html) (`--locale-provider` 기본값 `libc`) — ★★★☆☆
@@ -638,6 +641,6 @@ sudo -u postgres psql -c "SELECT pid, usename, datname, state, query FROM pg_sta
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

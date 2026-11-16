@@ -248,6 +248,8 @@ redis-cli -h 10.0.1.10 -p 6379 -a SecurePassword123
 
 ### 자료형별 기본 명령어
 
+🟡 아래 블록의 대문자 명령은 `redis-cli` 프롬프트에 입력하는 Redis 명령입니다. `#` 뒤는 설명이며, redis-cli는 `#`을 주석으로 처리하지 않고 인자로 보내므로 `#`부터 줄 끝까지 빼고 입력합니다.
+
 ```bash
 # String
 SET user:1:name "alice"
@@ -375,6 +377,7 @@ redis-cli info clients | grep connected_clients
 - Redis RPM 설치 (Rocky/Alma): [Install Redis Open Source using RPM](https://redis.io/docs/latest/operate/oss_and_stack/install/install-stack/rpm/) — ★★★☆☆
 - redis.conf 원본 (protected-mode, rename-command DEPRECATED): [redis/redis redis.conf](https://github.com/redis/redis/blob/unstable/redis.conf) — ★★★☆☆
 - ZREVRANGE (6.2부터 deprecated): [redis.io/docs/latest/commands/zrevrange](https://redis.io/docs/latest/commands/zrevrange/) — ★★★☆☆
+- redis-cli 입력 분해 (`cliSplitArgs` → `sdssplitargs`, `#` 주석 처리 없음): [redis/redis src/redis-cli.c](https://github.com/redis/redis/blob/unstable/src/redis-cli.c) — ★★★☆☆ (확인일 2026-11-16)
 - RHEL 10 Valkey 전환: [Considerations in adopting RHEL 10 — Infrastructure services](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/considerations_in_adopting_rhel_10/infrastructure-services) — ★★★☆☆
 - [nosql_redis.md](./nosql_redis.md)
 
@@ -393,6 +396,6 @@ redis-cli info clients | grep connected_clients
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

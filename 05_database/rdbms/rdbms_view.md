@@ -296,11 +296,11 @@ FROM users;
 -- 매일 새벽 갱신되는 대시보드용 집계 View
 CREATE MATERIALIZED VIEW dashboard_stats AS
 SELECT
-    DATE(created_at)    AS date,
-    COUNT(*)            AS new_users,
-    SUM(order_amount)   AS revenue
-FROM users
-JOIN orders USING (user_id)
+    DATE(o.created_at)          AS date,
+    COUNT(*)                    AS orders,       -- 일별 주문 수
+    COUNT(DISTINCT o.user_id)   AS buyers,       -- 일별 구매자 수
+    SUM(o.order_amount)         AS revenue
+FROM orders o                   -- users와 JOIN하면 COUNT(*)가 주문 수가 되고 created_at이 모호해짐
 GROUP BY 1;
 
 -- CONCURRENTLY 갱신에 필요한 UNIQUE 인덱스

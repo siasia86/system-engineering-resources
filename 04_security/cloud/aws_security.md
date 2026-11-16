@@ -54,12 +54,18 @@ aws iam get-access-key-last-used --access-key-id AKIAIOSFODNN7EXAMPLE
 ### IAM 모범 사례
 
 ```json
-// MFA 강제 정책 (MFA 없으면 모든 작업 거부)
+// MFA 강제 정책 (MFA 없으면 MFA 등록·인증에 필요한 작업 외 모두 거부)
+// 공식 예시의 DenyAllExceptListedIfNoMFA 문장. 목록의 작업은 별도 Allow 문장이 있어야 실제로 허용됨
 {
+    "Sid": "DenyAllExceptListedIfNoMFA",
     "Effect": "Deny",
     "NotAction": [
         "iam:CreateVirtualMFADevice",
         "iam:EnableMFADevice",
+        "iam:GetUser",
+        "iam:ListMFADevices",
+        "iam:ListVirtualMFADevices",
+        "iam:ResyncMFADevice",
         "sts:GetSessionToken"
     ],
     "Resource": "*",
@@ -241,6 +247,7 @@ aws cloudwatch put-metric-alarm \
     --namespace "CloudTrailMetrics" \
     --statistic Sum \
     --period 300 \
+    --evaluation-periods 1 \
     --threshold 1 \
     --comparison-operator GreaterThanOrEqualToThreshold \
     --alarm-actions arn:aws:sns:ap-northeast-2:123456789012:security-alerts
@@ -288,6 +295,8 @@ aws securityhub get-findings \
 - GuardDuty Condition(Gte 등 폐기 멤버): [docs.aws.amazon.com/guardduty/latest/APIReference/API_Condition](https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Condition.html) — ★★★☆☆
 - IAM Access Analyzer CreateAnalyzer(type 값): [docs.aws.amazon.com/access-analyzer/latest/APIReference/API_CreateAnalyzer](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_CreateAnalyzer.html) — ★★★☆☆
 - Enabling Security Hub CSPM: [docs.aws.amazon.com/securityhub/latest/userguide/securityhub-settingup](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-settingup.html) — ★★★☆☆
+- IAM 정책 예시(MFA 인증 사용자의 MFA 자체 관리): [docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_my-sec-creds-self-manage-mfa-only](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_my-sec-creds-self-manage-mfa-only.html) — ★★★☆☆ (확인일 2026-11-16)
+- CloudWatch PutMetricAlarm(`EvaluationPeriods`): [docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
@@ -304,6 +313,6 @@ aws securityhub get-findings \
 
 **작성일**: 2026-05-03
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

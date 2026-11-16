@@ -1,6 +1,6 @@
 ---
 name: valgrind-official-notes
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://valgrind.org/docs/manual/manual.html
   - https://valgrind.org/docs/manual/mc-manual.html
@@ -30,7 +30,7 @@ sources:
 | 도구 선택 옵션   | `--tool=<toolname>` (기본값: memcheck)                 | valgrind manual |
 | 실행 방식        | `valgrind [options] <program> [args]`                  | valgrind manual |
 
-- 2026-11-09 확인: 최신 stable은 3.28.0(2026-10-23)입니다(valgrind.org, sourceware FTP).
+- 2026-11-16 확인: 최신 stable은 3.28.0(2026-10-23)입니다(sourceware FTP). 위 표의 최신 stable 버전 행은 이 확인값이고, 나머지 행은 2026-08-01 확인값입니다.
 
 ## 2. Memcheck 오류 분류 (mc-manual 기반)
 

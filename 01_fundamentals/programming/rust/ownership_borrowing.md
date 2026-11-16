@@ -34,12 +34,6 @@ Rust는 GC 없이 컴파일러가 메모리 해제 시점을 결정합니다. �
 │  │ owner   │──────> Heap data                                    │
 │  └─────────┘        (auto-drop when owner goes out of scope)     │
 └──────────────────────────────────────────────────────────────────┘
-
-
-
-
-
-
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -507,6 +501,6 @@ fn find_by_hostname<'a>(servers: &'a [Server], name: &str) -> Option<&'a Server>
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

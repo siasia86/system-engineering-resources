@@ -8,7 +8,7 @@ tags:
   - setfacl
   - getfacl
   - permissions
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://savannah.nongnu.org/projects/acl/
   - https://savannah.nongnu.org/files/?group=acl
@@ -23,7 +23,7 @@ sources:
 
 ## 1. 확인 범위
 
-2026-09-16 기준으로 POSIX Access Control List(ACL), `setfacl`, `getfacl`, 파일·디렉토리 Default ACL 상속, ACL mask, `gpasswd`의 공식 동작을 확인했습니다.
+2026-09-16에 POSIX Access Control List(ACL), `setfacl`, `getfacl`, 파일·디렉토리 Default ACL 상속, ACL mask, `gpasswd`의 공식 동작을 확인했습니다. 이후 2026-11-09에 ACL entry 인수 분리 동작을 `setfacl 2.3.2`로 재현했고, 2026-11-16에 Savannah 배포 목록에서 최신 배포 버전(`acl-2.4.0`)을 다시 확인했습니다.
 
 실제 사용자명·그룹명·운영 경로는 reference note에 포함하지 않습니다. 예시는 `example_user`, `example_read_only_group`, `/srv/example_data` 같은 비민감 placeholder만 사용합니다.
 

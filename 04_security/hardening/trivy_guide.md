@@ -90,11 +90,16 @@ rm -rf "${WORK}"
 trivy --version
 ```
 
-cosign을 쓸 수 없는 환경에서는 최소한 체크섬을 확인합니다. 체크섬 파일은 릴리스와 같은 곳에서 받으므로 서명 확인보다 보장이 약합니다.
+cosign을 쓸 수 없는 환경에서는 최소한 체크섬을 확인합니다. 체크섬 파일은 릴리스와 같은 곳에서 받으므로 서명 확인보다 보장이 약합니다. 위 블록의 `cosign verify-blob` 대신 아래를 실행하고, 확인한 뒤 설치·정리 단계를 이어 갑니다(위 블록 끝의 `rm -rf "${WORK}"` 뒤에는 `${WORK}`가 없으므로 다시 받아야 합니다).
 
 ```bash
+# 위 블록의 VERSION·BASE·ASSET·WORK 설정과 내려받기 뒤, 서명 확인 대신 실행
 curl -fsSL -o "${WORK}/checksums.txt" "${BASE}/trivy_${VERSION#v}_checksums.txt"
 (cd "${WORK}" && grep " ${ASSET}\$" checksums.txt | sha256sum -c -)
+
+# OK가 나오면 설치 후 정리
+sudo tar -xzf "${WORK}/${ASSET}" -C /usr/local/bin trivy
+rm -rf "${WORK}"
 ```
 
 ### 패키지 저장소
@@ -521,6 +526,6 @@ Trivy 바이너리에는 검사 엔진만 들어 있고 검사 자료는 실행 
 
 **작성일**: 2026-11-05
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -55,7 +55,8 @@ PUT /products
   "mappings": {
     "properties": {
       "product_id":   { "type": "integer" },
-      "name":         { "type": "text", "analyzer": "standard" },
+      "name":         { "type": "text", "analyzer": "standard",
+                        "fields": { "keyword": { "type": "keyword" } } },
       "description":  { "type": "text" },
       "price":        { "type": "float" },
       "category":     { "type": "keyword" },
@@ -445,6 +446,6 @@ PUT /korean_index
 
 **작성일**: 2026-04-30
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -71,7 +71,9 @@ Routing:
 3. 상태가 `Pending acceptance`인 연결 선택
 4. Actions → Accept request → Accept
 
-### Step 3: 라우팅 테이블 추가 (양쪽 모두) // 일반적으로 이미 라우팅 테이블이 존재해서 3-1 에서 작업 진행
+### Step 3: 라우팅 테이블 추가 (양쪽 모두)
+
+🔵 대부분은 VPC에 라우팅 테이블이 이미 있으므로 [Step 3-1](#step-3-1-기존-라우팅-테이블에-peering-경로만-추가)에서 경로만 추가합니다.
 
 버지니아 측:
 
@@ -380,6 +382,6 @@ aws ec2 describe-route-tables \
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

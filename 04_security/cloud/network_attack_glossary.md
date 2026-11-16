@@ -54,13 +54,15 @@
 ### ARP Spoofing 동작
 
 ```
-정상:
-  PC-A ──ARP Request──> "Gateway MAC은?" ──> Gateway 응답 (정상 MAC)
+Normal:
+  PC-A ──ARP Request──> "Gateway MAC?" ──> Gateway reply (real MAC)
 
-공격:
-  Attacker ──위조 ARP Reply──> PC-A: "Gateway MAC = Attacker MAC"
-  PC-A ──트래픽──> Attacker ──전달──> Gateway (MITM 성립)
+Spoofed:
+  Attacker ──forged ARP Reply──> PC-A: "Gateway MAC = Attacker MAC"
+  PC-A ──traffic──> Attacker ──relay──> Gateway (MITM)
 ```
+
+정상일 때는 Gateway가 자기 MAC으로 응답하지만, 공격자가 위조 ARP Reply로 Gateway의 MAC을 자기 MAC으로 알리면 PC-A의 트래픽이 공격자를 거쳐 Gateway로 전달되어 중간자 상태가 됩니다. 대응은 위 표의 DAI·Static ARP·VPN입니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -82,10 +84,12 @@
 
 ```
 Client ──────────> Attacker ──────────> Server
-         (암호화 해제)        (재암호화)
-   Client는 정상 통신으로 인식
-   Attacker는 평문 데이터 열람 가능
+          (decrypt)          (re-encrypt)
+   Client sees a normal session
+   Attacker can read plaintext
 ```
+
+공격자가 중간에서 복호화·재암호화하므로 Client는 정상 통신으로 인식하고, 공격자는 평문을 볼 수 있습니다. 인증서 검증과 HSTS가 이를 막는 기본 수단입니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -110,11 +114,13 @@ Client ──────────> Attacker ──────────> 
 ### SYN Flood 동작
 
 ```
-Attacker ──SYN (위조 IP)──> Server
-Server ──SYN+ACK──> 위조 IP (응답 없음)
-Server: half-open 연결 대기 (자원 점유)
-... 수만 회 반복 → backlog 가득 → 정상 연결 불가
+Attacker ──SYN (spoofed IP)──> Server
+Server ──SYN+ACK──> spoofed IP (no reply)
+Server: waits on half-open connection (holds resources)
+... repeated tens of thousands of times → backlog full → legitimate connections fail
 ```
+
+위조 IP로 보낸 SYN에 서버가 SYN+ACK로 답해도 응답이 오지 않아 half-open 연결이 쌓이고, backlog가 가득 차면 정상 연결을 받지 못합니다.
 
 ### 대응: SYN Cookie
 
@@ -264,6 +270,6 @@ uname -r
 
 **작성일**: 2026-07-02
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

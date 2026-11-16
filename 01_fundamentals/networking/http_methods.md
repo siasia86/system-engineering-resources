@@ -678,11 +678,7 @@ DELETE /api/files/abc123
 Response: 204 No Content
 ```
 
-- GET: URL에 민감 정보 노출 주의 (로그에 기록됨)
-- POST/PUT/PATCH: HTTPS 사용 권장
-- DELETE: 인증/권한 확인 필수
-- TRACE: XST 공격 가능, 비활성화 권장
-- OPTIONS: CORS 설정 확인
+메서드별 보안 주의점은 [10. 보안 고려사항](#10-보안-고려사항)에 정리합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -928,6 +924,6 @@ Response: 500 Internal Server Error
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

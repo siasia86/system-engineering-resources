@@ -7,7 +7,7 @@ tags:
   - nvme
   - raid
   - storage
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://docs.graidtech.com/sr/
   - https://docs.graidtech.com/sr/user-guide/linux/2.0.0/
@@ -123,25 +123,22 @@ NVMe SSD → (graidctl create physical_drive)
 
 ### 주요 관리 명령어
 
-| 명령어                                | 설명                         |
-|---------------------------------------|------------------------------|
-| `graidctl version`                    | 버전 확인                    |
-| `graidctl show controller <id>`       | 컨트롤러 상세 (온도, 팬, SN) |
-| `graidctl show physical_drive <id>`   | PD 상세 (모델, SMART)        |
-| `graidctl show drive_group <id>`      | DG 상세 (RAID 레벨, 상태)    |
-| `graidctl show virtual_drive <id>`    | VD 상세 (크기, 상태)         |
-| `graidctl create physical_drive`      | PD 생성                      |
-| `graidctl create drive_group`         | DG 생성                      |
-| `graidctl create virtual_drive`       | VD 생성                      |
-| `graidctl delete physical_drive <id>` | PD 삭제 (SSD OS로 반환)      |
-| `graidctl delete drive_group <id>`    | DG 삭제                      |
-| `graidctl delete virtual_drive <id>`  | VD 삭제                      |
-| `graidctl apply license <KEY>`        | 라이선스 적용                |
+| 명령어                                | 설명                    |
+|---------------------------------------|-------------------------|
+| `graidctl version`                    | 버전 확인               |
+| `graidctl create physical_drive`      | PD 생성                 |
+| `graidctl create drive_group`         | DG 생성                 |
+| `graidctl create virtual_drive`       | VD 생성                 |
+| `graidctl delete physical_drive <id>` | PD 삭제 (SSD OS로 반환) |
+| `graidctl delete drive_group <id>`    | DG 삭제                 |
+| `graidctl delete virtual_drive <id>`  | VD 삭제                 |
+| `graidctl apply license <KEY>`        | 라이선스 적용           |
 
 ### describe 서브커맨드
 
 | 명령어                                      | 설명                     |
 |---------------------------------------------|--------------------------|
+| `graidctl describe controller <id>`         | CX 상세 (온도, 팬, SN)   |
 | `graidctl describe drive_group <id>`        | DG 상세 (RAID, 상태, PD) |
 | `graidctl describe physical_drive <id>`     | PD 상세 (모델, SMART)    |
 | `graidctl describe virtual_drive <dg> <vd>` | VD 상세 (크기, 상태)     |
@@ -182,7 +179,7 @@ NVMe SSD → (graidctl create physical_drive)
 ## GPU 관련 참고
 
 - SupremeRAID GPU는 항상 100% utilization 표시 (polling mechanism, 정상)
-- GPU 온도/팬속도는 `graidctl show controller` 로 확인 (1.5.0·1.7.2·2.0.1 공식 안내서에는 `show`가 없고, 1.7.2·2.0.1은 `graidctl describe controller <id>`, 1.5.0은 `graidctl list controller`를 안내)
+- GPU 온도/팬속도는 `graidctl describe controller <id>`(약어 `graidctl desc cx`)로 확인 (1.7.2·2.0.1 공식 안내서 기준, 1.5.0 안내서는 `graidctl list controller`를 안내하며 세 판 모두 `show` 서브커맨드는 없음)
 - `nvidia-smi`로도 확인 가능하나, 일반 GPU 워크로드와 공유 불가
 
 ## 고가용성 (HA)

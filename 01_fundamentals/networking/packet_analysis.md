@@ -625,6 +625,9 @@ backend game_servers
 ```nginx
 # /etc/nginx/nginx.conf
 
+# stream(L4 중계)과 http(L7 처리)는 각각의 사용 예입니다.
+# 한 nginx에서 함께 쓰면 같은 포트를 두 블록이 listen할 수 없으므로 포트를 나눕니다.
+
 stream {
     server {
         listen 80 proxy_protocol;  # PROXY Protocol 수신
@@ -637,7 +640,7 @@ stream {
 
 http {
     server {
-        listen 80 proxy_protocol;
+        listen 8080 proxy_protocol;  # stream의 80과 겹치지 않게 분리
         
         # 원본 IP 사용
         real_ip_header proxy_protocol;
@@ -849,6 +852,6 @@ tcpdump -i eth0 'tcp[tcpflags] & tcp-rst != 0'     # RST
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

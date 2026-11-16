@@ -9,6 +9,8 @@ Edge case, corner case 등 예상 밖 상황에서의 소프트웨어 동작을 
 | [1. 개념 정리](#1-개념-정리) / [2. 도출 방법](#2-도출-방법) / [3. 인프라 체크리스트](#3-인프라-체크리스트)         |
 | [4. 스크립트 체크리스트](#4-스크립트-체크리스트) / [5. 테스트 방법](#5-테스트-방법) / [6. 실전 사례](#6-실전-사례) |
 
+[⬆ 목차로 돌아가기](#목차)
+
 ## 1. 개념 정리
 
 | 용어            | 정의                                         | 예시                                       |
@@ -27,6 +29,8 @@ Edge case, corner case 등 예상 밖 상황에서의 소프트웨어 동작을 
 Edge case testing은 BVA를 포함하면서 환경, 상태, 시간, 리소스까지 확장합니다.
 
 - BVA: [경계값 분석](../01_black_box/boundary_value_analysis.md) 참고.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ## 2. 도출 방법
 
@@ -47,6 +51,8 @@ Edge case testing은 BVA를 포함하면서 환경, 상태, 시간, 리소스까
 ```
 
 각 축에서 최소 1개씩 도출하면 기본적인 edge case 커버리지를 확보합니다.
+
+[⬆ 목차로 돌아가기](#목차)
 
 ## 3. 인프라 체크리스트
 
@@ -87,6 +93,8 @@ Edge case testing은 BVA를 포함하면서 환경, 상태, 시간, 리소스까
 | 토큰/키 만료          | 자동 갱신, 만료 전 경고         |
 | SELinux/AppArmor 차단 | 감사 로그 확인, 정책 추가 방법  |
 
+[⬆ 목차로 돌아가기](#목차)
+
 ## 4. 스크립트 체크리스트
 
 Python/Bash 스크립트 작성 시 확인해야 하는 edge case입니다.
@@ -118,6 +126,8 @@ Python/Bash 스크립트 작성 시 확인해야 하는 edge case입니다.
 | 동일 스크립트 중복 실행 | fcntl.flock / PID file          |
 | 부모 프로세스 Kill      | 자식 프로세스 정리, signal 처리 |
 | Ctrl+C 중단             | finally 블록, 임시 파일 정리    |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ## 5. 테스트 방법
 
@@ -166,6 +176,8 @@ rm /tmp/fill_disk
 tc qdisc del dev eth0 root
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
 ## 6. 실전 사례
 
 ### md-style-check.py 중첩 박스 다이어그램 버그 (2026-06-19)
@@ -198,6 +210,27 @@ if l.strip().startswith('└') and l.strip().endswith('┘'):
 | 입력 | 중첩 박스 (box-in-box)                      |
 | 상태 | 파서가 "박스 내부" 상태에서 내부 └┘ 를 만남 |
 | 환경 | 해당 없음                                   |
+
+[⬆ 목차로 돌아가기](#목차)
+
+## 참고 자료
+
+- pytest parametrize: [docs.pytest.org](https://docs.pytest.org/en/stable/how-to/parametrize.html) — ★★★☆☆ (확인일 2026-11-16)
+- Linux man-pages tc-netem(8): [man7.org](https://man7.org/linux/man-pages/man8/tc-netem.8.html) — ★★★☆☆ (확인일 2026-11-16)
+- stress-ng: [github.com/ColinIanKing/stress-ng](https://github.com/ColinIanKing/stress-ng) — ★★★☆☆ (확인일 2026-11-16)
+- [경계값 분석](../01_black_box/boundary_value_analysis.md)
+- [장애 주입 테스트](fault_injection_testing.md)
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
 
 ---
 

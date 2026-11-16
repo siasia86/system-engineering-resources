@@ -163,9 +163,9 @@ testssl.sh -p -S -h https://www.example.com
 
 ## 참고 자료
 
-- RFC 9846 TLS 1.3 (RFC 8446 대체): [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9846.html)
-- RFC 8996 Deprecating TLS 1.0 and TLS 1.1: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc8996.html)
-- RFC 6797 HTTP Strict Transport Security: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc6797.html)
+- RFC 9846 TLS 1.3 (RFC 8446 대체): [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc9846.html) — ★★★★☆
+- RFC 8996 Deprecating TLS 1.0 and TLS 1.1: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc8996.html) — ★★★★☆
+- RFC 6797 HTTP Strict Transport Security: [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc6797.html) — ★★★★☆
 - Mozilla SSL Configuration Generator: [ssl-config.mozilla.org](https://ssl-config.mozilla.org/) — ★★★☆☆
 - testssl.sh: [github.com/testssl/testssl.sh](https://github.com/testssl/testssl.sh) — ★★★☆☆
 - OpenSSL 3.5 s_client: [docs.openssl.org](https://docs.openssl.org/3.5/man1/openssl-s_client/) — ★★★☆☆
@@ -187,6 +187,6 @@ testssl.sh -p -S -h https://www.example.com
 
 **작성일**: 2026-10-27
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

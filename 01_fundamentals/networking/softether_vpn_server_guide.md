@@ -261,7 +261,7 @@ unzip /home/user/openvpn_config.zip -d /home/user/openvpn_config/
 |----------|----------|---------|
 | UDP 1194 | UDP      | OpenVPN |
 
-🟡 SoftEther의 OpenVPN은 AES-256-CBC를 지원하지만 기본 협상 cipher에 BF-CBC 등 취약 cipher가 포함됩니다. 클라이언트 측 `.ovpn`에 `cipher AES-256-GCM`을 명시적으로 추가하는 것을 권장합니다.
+🟡 SoftEther의 OpenVPN 서버는 cipher를 NCP로 협상하지 않고 클라이언트가 요청한 cipher를 그대로 씁니다. 공식 사양 페이지의 지원 cipher 목록에는 BF-CBC 같은 취약 cipher를 포함한 CBC 계열만 있지만, Stable(`Interop_OpenVPN.c`)·Developer Edition(`Proto_OpenVPN.c`) 소스는 AES-GCM 같은 AEAD cipher 처리 경로를 포함합니다. 클라이언트 측 `.ovpn`에 `cipher AES-256-GCM`을 명시적으로 추가하는 것을 권장합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -530,6 +530,7 @@ VPN Server> Flush
 - Linux 설치 절차(chmod): [softether.org 7.3](https://www.softether.org/4-docs/1-manual/7._Installing_SoftEther_VPN_Server/7.3_Install_on_Linux_and_Initial_Configurations) — ★★★☆☆
 - SoftEther 소스(UDP 1701은 Raw L2TP 활성 시만 수신): [Proto_IPsec.c](https://github.com/SoftEtherVPN/SoftEtherVPN/blob/master/src/Cedar/Proto_IPsec.c) — ★★★☆☆
 - SoftEther 소스(기존 포트로 리스너 생성 시 ERR_LISTENER_ALREADY_EXISTS): [Admin.c](https://github.com/SoftEtherVPN/SoftEtherVPN/blob/master/src/Cedar/Admin.c) — ★★★☆☆
+- SoftEther 소스(OpenVPN 서버 AEAD 처리·클라이언트 cipher 그대로 사용): [Interop_OpenVPN.c (Stable)](https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/blob/master/src/Cedar/Interop_OpenVPN.c), [Proto_OpenVPN.c](https://github.com/SoftEtherVPN/SoftEtherVPN/blob/master/src/Cedar/Proto_OpenVPN.c) — ★★★☆☆ (확인일 2026-11-16)
 - linuxbabe.com Ubuntu 24.04 가이드: [linuxbabe.com/ubuntu/set-up-softether-vpn-server-ubuntu-24-04](https://www.linuxbabe.com/ubuntu/set-up-softether-vpn-server-ubuntu-24-04) — ★★☆☆☆
 - [SoftEther VPN Client 가이드](./softether_vpn_client_guide.md)
 - [VPN 프로토콜 개념](./vpn_protocol_concepts.md)
@@ -548,6 +549,6 @@ VPN Server> Flush
 
 **작성일**: 2026-08-05
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

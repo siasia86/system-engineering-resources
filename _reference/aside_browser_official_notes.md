@@ -6,7 +6,7 @@ tags:
   - ai-browser
   - browser-agent
   - automation
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://aside.com/
   - https://aside.com/download
@@ -47,12 +47,12 @@ YC 회사 페이지는 Aside를 Fall 2025 기업으로 소개하고 공식 사�
 | 데스크톱        | macOS·Windows 다운로드 안내                    | [Download](https://aside.com/download)                 |
 | macOS 최소 버전 | 도움말에 15.0 이상 명시                        | [Get started](https://docs.aside.com/help/get-started) |
 | Windows 지원    | v1.0.914.1에서 공식 제공 공지                  | [Changelog](https://docs.aside.com/changelog/native)   |
-| 브라우저 버전   | 확인한 변경 이력의 상단 항목 v1.0.928.1        | [Changelog](https://docs.aside.com/changelog/native)   |
+| 브라우저 버전   | 변경 이력 상단 항목 v1.0.1116.1 (2026-11-16)   | [Changelog](https://docs.aside.com/changelog/native)   |
 | Linux·모바일    | 조사한 다운로드·도움말에서 설치 지원 확인 못함 | [Download](https://aside.com/download)                 |
 
 브라우저 버전과 AI 구성요소 버전은 동일한 값이라고 가정하지 않습니다. Windows의 최소 OS 버전은 미확인입니다.
 
-2026-11-09 확인: 변경 이력의 상단 항목은 v1.0.1022.1이며 Windows ARM64 공식 지원과 macOS Apple Silicon·Intel 별도 배포를 알립니다. 변경 이력에는 항목별 날짜가 표시되지 않습니다. [Changelog](https://docs.aside.com/changelog/native).
+2026-11-16 확인: 변경 이력의 상단 항목은 v1.0.1116.1이며 성능 개선, 여러 프로필 가져오기, 탭 관리, Chromium 갱신을 알립니다. 바로 앞 항목 v1.0.1022.1은 Windows ARM64 공식 지원과 macOS Apple Silicon·Intel 별도 배포를 알립니다. 변경 이력에는 항목별 날짜가 표시되지 않습니다. [Changelog](https://docs.aside.com/changelog/native).
 
 ## 3. 기능과 연결
 
@@ -92,6 +92,7 @@ YC 회사 페이지는 Aside를 Fall 2025 기업으로 소개하고 공식 사�
 - 1차 대조: 공식 제품·기능·도움말에서 작업 방식, 모델 연결, 권한, 메모리·routine·개발 도구 확인.
 - 2차 대조: 다운로드와 변경 이력, 요금과 구독 도움말, 홈페이지와 개인정보 정책을 교차 확인. Max 사용량과 데이터 전송 설명의 차이를 기록.
 - 재확인(2026-11-09): 요금·구독 도움말의 Max 배수 일치(40배)와 변경 이력 상단 항목(v1.0.1022.1)을 확인.
+- 재확인(2026-11-16): 변경 이력 상단 항목 v1.0.1116.1로 표와 본문을 갱신.
 - 벤치마크: 홈페이지의 순위 주장과 공개 결과의 평가 조건을 구분.
 - 접근 한계: 일부 `.md` 도움말 URL은 웹 도구에서 지원하지 않아 같은 경로의 HTML 문서를 확인.
 - 미실행: 설치·공급자 인증·MFA·결제·MCP 연결·routine 실행·보안 구조 검증·벤치마크 재현.
@@ -100,6 +101,6 @@ YC 회사 페이지는 Aside를 Fall 2025 기업으로 소개하고 공식 사�
 
 **작성일**: 2026-10-13
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

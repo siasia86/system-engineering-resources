@@ -601,12 +601,12 @@ def cleanup_xcom(context, session=None):
 airflow tasks clear my_dag --start-date 2026-01-01 --end-date 2026-04-01
 ```
 
-| 항목           | 제한                              |
-|----------------|-----------------------------------|
-| SQLite         | 2GB (개발용, 운영 비권장)         |
-| PostgreSQL     | 1GB per value                     |
-| MySQL          | 64KB (MEDIUMBLOB 설정 시 16MB)    |
-| 권장 최대 크기 | 48KB 이하 (경로/ID/상태값만 전달) |
+| 항목      | 내용                                                                    |
+|-----------|-------------------------------------------------------------------------|
+| 저장 위치 | 기본 XCom backend는 메타데이터 DB의 JSON 열에 저장 (PostgreSQL은 JSONB) |
+| 크기 상한 | Airflow가 숫자로 정하지 않음, 메타데이터 DB의 JSON 열 제한을 따름       |
+| 공식 권장 | 작은 값(경로·ID·상태값)만 전달, DataFrame 같은 큰 값은 전달하지 않음    |
+| 큰 데이터 | Object Storage XCom backend 또는 외부 저장소 경로만 XCom으로 전달       |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -826,6 +826,8 @@ airflow tasks states-for-dag-run my_dag manual__2026-04-27T00:00:00+00:00
 - Airflow 3 업그레이드 안내: [Upgrading to Airflow 3](https://airflow.apache.org/docs/apache-airflow/stable/installation/upgrading_to_airflow3.html) — ★★★☆☆
 - Airflow Release Notes: [Release Notes](https://airflow.apache.org/docs/apache-airflow/stable/release_notes.html) — ★★★☆☆
 - Airflow 소스 taskinstance.py (clear_task_instances는 XCom을 지우지 않음): [github.com/apache/airflow](https://github.com/apache/airflow/blob/main/airflow-core/src/airflow/models/taskinstance.py) — ★★★☆☆
+- Airflow XComs (작은 값 전용, Object Storage backend 안내): [XComs](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/xcoms.html) — ★★★☆☆ (확인일 2026-11-16)
+- Airflow 소스 xcom.py (value 열 JSON, PostgreSQL JSONB): [github.com/apache/airflow](https://github.com/apache/airflow/blob/main/airflow-core/src/airflow/models/xcom.py) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
@@ -842,6 +844,6 @@ airflow tasks states-for-dag-run my_dag manual__2026-04-27T00:00:00+00:00
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

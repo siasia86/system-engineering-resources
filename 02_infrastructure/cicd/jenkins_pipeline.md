@@ -651,7 +651,9 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh "docker build --cache-from ${ECR_URI}:latest -t ${ECR_URI}:${IMAGE_TAG} -t ${ECR_URI}:latest ."
+                // BuildKit은 이미지에 inline cache 메타데이터가 있어야 --cache-from이 효과를 냅니다.
+                // BUILDKIT_INLINE_CACHE=1로 빌드·push한 이미지를 다음 빌드의 캐시 원본으로 씁니다.
+                sh "docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ${ECR_URI}:latest -t ${ECR_URI}:${IMAGE_TAG} -t ${ECR_URI}:latest ."
             }
         }
 
@@ -833,6 +835,6 @@ stage('Integration Test') {
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

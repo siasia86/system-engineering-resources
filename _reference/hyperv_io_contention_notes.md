@@ -8,7 +8,7 @@ tags:
   - storage-qos
   - performance
   - cluster
-last_checked: 2026-07-31
+last_checked: 2026-11-16
 sources:
   - https://learn.microsoft.com/en-us/windows-server/storage/storage-qos/storage-qos-overview
   - https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning/role/hyper-v-server/storage-io-performance
@@ -113,11 +113,11 @@ CSV Redirected I/O (ReFS 볼륨 또는 장애 상황)
 
 ### 적용 버전 및 요구 사항
 
-| 항목      | 내용                                              |
-|-----------|---------------------------------------------------|
-| 도입 버전 | Windows Server 2016                               |
-| 배포 형태 | Hyper-V + Scale-Out File Server 또는 S2D 클러스터 |
-| 에디션    | Datacenter (S2D 구성 시)                          |
+| 항목      | 내용                                     |
+|-----------|------------------------------------------|
+| 도입 버전 | Windows Server 2016                      |
+| 배포 형태 | Hyper-V + Scale-Out File Server 또는 CSV |
+| 에디션    | Datacenter (S2D 구성 시)                 |
 
 ### Normalized IOPS 개념
 
@@ -180,9 +180,11 @@ Get-StorageQosFlow | Sort-Object -Property StorageNodeIOPS -Descending |
 |-------------------------------------------------|-----------|----------------|
 | `Physical Disk(*)\Avg. Disk sec/Read`           | > 50ms    | 읽기 지연 높음 |
 | `Physical Disk(*)\Avg. Disk sec/Write`          | > 50ms    | 쓰기 지연 높음 |
-| `Physical Disk(*)\Avg. Disk Read Queue Length`  | > 2       | 읽기 큐 적체   |
-| `Physical Disk(*)\Avg. Disk Write Queue Length` | > 2       | 쓰기 큐 적체   |
+| `Physical Disk(*)\Avg. Disk Read Queue Length`  | 기준 없음 | 읽기 큐 적체   |
+| `Physical Disk(*)\Avg. Disk Write Queue Length` | 기준 없음 | 쓰기 큐 적체   |
 | `Physical Disk(*)\Disk Transfers/sec`           | 사양 대비 | 총 IOPS        |
+
+출처 문서는 지연이 지속적으로 50ms를 넘으면 조치하라고 안내하며 큐 길이 카운터의 임계값은 제시하지 않습니다. `Disk Transfers/sec`는 출처 문서 목록에 없는 보조 카운터입니다(2026-11-16 확인).
 
 ### Hyper-V 가상 스토리지 카운터
 

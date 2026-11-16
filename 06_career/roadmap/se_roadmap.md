@@ -146,7 +146,7 @@ sudo systemctl enable nginx
 # 설정
 /etc/nginx/nginx.conf
 /etc/nginx/sites-available/
-/usr/share/nginx/html/
+/var/www/html/            # Ubuntu 패키지 기본 문서 루트 (nginx.org 패키지·RHEL 계열은 /usr/share/nginx/html)
 ```
 
 **실습 과제:**
@@ -445,7 +445,10 @@ sysctl -p
 # 네트워크
 net.core.somaxconn = 65535
 net.ipv4.tcp_max_syn_backlog = 8192
+# 기본값은 32768 60999. 1024부터 넓히면 서비스 수신 포트와 겹칠 수 있으므로
+# 서비스 포트를 ip_local_reserved_ports로 자동 할당에서 제외(포트는 환경에 맞게 지정)
 net.ipv4.ip_local_port_range = 1024 65535
+net.ipv4.ip_local_reserved_ports = 3306,6379,8080
 
 # 파일 디스크립터
 fs.file-max = 2097152
@@ -532,8 +535,10 @@ bantime = 3600
 
 **EC2 관리**
 ```bash
-# AWS CLI 설치
-sudo apt-get install awscli
+# AWS CLI v2 설치 (x86_64, AWS 공식 설치 프로그램)
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
 
 # 설정
 aws configure
@@ -1300,6 +1305,9 @@ SE → IT Manager
 - roadmap.sh DevOps: [roadmap.sh/devops](https://roadmap.sh/devops) — ★★☆☆☆
 - virt-install man page (`--osinfo`, OS 감지 실패 시 동작): [github.com/virt-manager](https://github.com/virt-manager/virt-manager/blob/main/man/virt-install.rst) — ★★★☆☆
 - MySQL 8.4 Using Option Files (주석은 `#`·`;`): [dev.mysql.com](https://dev.mysql.com/doc/refman/8.4/en/option-files.html) — ★★★☆☆
+- Ubuntu Server nginx 설정(기본 문서 루트 `/var/www/html`): [ubuntu.com/server/docs](https://ubuntu.com/server/docs/how-to/web-services/configure-nginx/) — ★★★☆☆ (확인일 2026-11-16)
+- Linux kernel IP sysctl(`ip_local_port_range`·`ip_local_reserved_ports`): [docs.kernel.org](https://docs.kernel.org/networking/ip-sysctl.html) — ★★★☆☆ (확인일 2026-11-16)
+- AWS CLI 설치: [docs.aws.amazon.com](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
@@ -1316,6 +1324,6 @@ SE → IT Manager
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -11,7 +11,7 @@ tags:
   - devin
   - aider
   - agents-sdk
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://kiro.dev/pricing
   - https://code.claude.com/docs/en/overview
@@ -63,26 +63,29 @@ sources:
 | Max      | $100/user/월 | $200/월     | 2.9x+ usage than Pro+ |
 | Business | $19/user/월  | —           | 팀 관리 기능          |
 
-### Cursor (cursor.com/pricing)
+### Cursor (cursor.com/pricing, 2026-11-16 기준)
 
-| 플랜       | 가격        | 비고                     |
-|------------|-------------|--------------------------|
-| Hobby      | Free        | 제한적 Agent 요청        |
-| Individual | $20/월      | Pro / Pro+ / Ultra 선택  |
-| Teams      | $40/user/월 | 팀 공유 컨텍스트, Bugbot |
-| Enterprise | Custom      | SSO, SCIM, Audit logs    |
+| 플랜       | 가격         | 비고                        |
+|------------|--------------|-----------------------------|
+| Free       | $0/월        | 제한적 Agent·Chat 요청      |
+| Plus       | $8/월        | 공유 AI 사용량              |
+| Premium    | $30/월       | Plus의 4배, cloud agents    |
+| Super      | $100/월      | Plus의 15배                 |
+| Ultra      | $200/월      | Plus의 50배                 |
+| Teams      | $30+/user/월 | 중앙 결제, 사용량 분석, SSO |
+| Enterprise | Custom       | SCIM, Audit logs            |
 
-- 2026-11-09 확인: 개인 플랜은 Free $0 / Plus $8 / Premium $30 / Super $100 / Ultra $200(월), Teams는 $30/user/월부터, Enterprise는 Custom입니다.
+- 세금 별도이며 Cursor 안의 외부 모델 사용량은 따로 청구됩니다.
 - `.cursorrules`는 deprecated → `.cursor/rules`로 변경됨 (공식 docs 확인)
 - Continue.dev는 Cursor에 인수됨 (2026년, continue.dev 공식 발표)
 
-### Claude Code (code.claude.com, 2026-10-14 재확인)
+### Claude Code (code.claude.com, 2026-11-16 재확인)
 
-- 모든 유료 플랜(Pro $20/월, Max $100/월부터 5x·20x, Team, Enterprise)에 포함, 채팅과 사용량 한도 공유. 무료 플랜 미포함
+- 모든 유료 플랜(Pro $20/월, Max $100/월·Pro의 5배, Ultra $200/월, Team, Enterprise)에 포함, 채팅과 사용량 한도 공유. 무료 플랜 미포함
 - API 직접 연결 시: `ANTHROPIC_API_KEY` 환경 변수 (Claude Console 종량제)
 - Amazon Bedrock·Google Cloud·Microsoft Foundry 연동 가능
 - 플랫폼: 터미널 CLI, VS Code 확장, JetBrains 확장, 데스크탑 앱, 웹, 모바일
-- 2026-11-09 확인(claude.com/pricing): Ultra $200/월(주간 Pro의 10배, 인증된 계정은 5시간 한도 없음)이 추가되었고 Max는 $100/월·Pro의 5배로 표시됩니다. Ultra에도 Claude Code가 포함됩니다.
+- 2026-11-16 확인(claude.com/pricing): Ultra $200/월(주간 Pro의 10배, 인증된 계정은 5시간 한도 없음), Max $100/월(Pro의 5배)이며 20배 Max 단계는 표시되지 않습니다. Ultra에도 Claude Code가 포함됩니다.
 - 상세 근거: `_reference/claude_code_official_notes.md`
 
 ### Windsurf (windsurf.com/pricing)

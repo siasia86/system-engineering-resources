@@ -5,7 +5,7 @@ tags:
   - mysql
   - storage-engine
   - database
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://dev.mysql.com/doc/refman/8.4/en/storage-engines.html
   - https://dev.mysql.com/doc/refman/8.4/en/innodb-introduction.html
@@ -20,25 +20,26 @@ sources:
   - https://dev.mysql.com/doc/refman/8.0/en/mysql-nutshell.html
   - https://dev.mysql.com/doc/refman/9.7/en/mysql-releases.html
   - https://dev.mysql.com/doc/relnotes/mysql/8.4/en/
+  - https://dev.mysql.com/doc/relnotes/mysql/9.7/en/
 ---
 
 # MySQL Storage Engine 공식 문서 참조 노트
 
-MySQL 8.4 LTS (2026-11-09 확인: 8.4.13) / MySQL 9.7 LTS 기준.
+MySQL 8.4 LTS (2026-11-16 확인: 8.4.13) / MySQL 9.7 LTS 기준.
 
 ## 버전 정보
 
 | 항목        | 값                                            |
 |-------------|-----------------------------------------------|
-| LTS 버전    | 8.4.10 (2026-07 기준)                         |
-| LTS (9.x)   | 9.7.1 (2026-07 기준)                          |
+| LTS 버전    | 8.4.13 (2026-10-20 릴리스)                    |
+| LTS (9.x)   | 9.7.4 (2026-10-20 릴리스)                     |
 | 8.0         | 2026-04-30 지원 종료                          |
 | 이후 버전명 | 연월 형식(26.7, 26.10), Innovation 트랙       |
 | 기본 엔진   | InnoDB                                        |
 | 아키텍처    | Pluggable Storage Engine                      |
 | 참조 매뉴얼 | Chapter 17 (InnoDB), Chapter 18 (Alternative) |
 
-- (2026-11-09 확인: 최신 판은 8.4.13과 9.7.4이며 둘 다 2026-10-20 릴리스입니다.)
+- (2026-11-16 확인: 최신 판은 8.4.13과 9.7.4이며 둘 다 2026-10-20 릴리스입니다. 8.4·9.7 LTS는 2026년에 4·6·7·8·10월에 패치 판이 나와 분기보다 짧은 간격으로 릴리스되었습니다.)
 
 ## Storage Engine Feature Summary (공식 비교표)
 

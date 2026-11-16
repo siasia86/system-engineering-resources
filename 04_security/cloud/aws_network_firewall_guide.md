@@ -37,59 +37,64 @@ Stateful/Stateless 패킷 필터링, IPS(침입 방지), 도메인 필터링을 
 
 ### 트래픽 흐름
 
+아래는 공식 문서의 단일 AZ·Internet Gateway 구성(arch-single-zone-igw)을 기준으로 한 그림입니다. 보호 대상 서브넷(Protected Subnet)은 공인 IP를 가진 리소스가 있는 서브넷이며, 들어오는 트래픽과 나가는 트래픽 모두 Firewall Endpoint를 거칩니다.
+
 ```
-Internet Gateway
-       |
-       v
+          Internet
+             ^
+             |
+             v
+      Internet Gateway
+  (Edge RT: 10.0.1.0/24 -> vpce)
+             ^
+             |
+             v
   ┌─────────────────────────────────────────┐
-  │              Public Subnet              │
-  │  (Route: 0.0.0.0/0 → Firewall Endpoint) │
+  │        Firewall Subnet (10.0.3.0/28)    │
+  │   Firewall Endpoint (vpce-xxxxxxxx)     │
+  │   Stateless Rules -> Stateful Rules     │
+  │   (RT: 0.0.0.0/0 -> igw)                │
   └─────────────────────────────────────────┘
-       |
-       v
+             ^
+             |
+             v
   ┌─────────────────────────────────────────┐
-  │           Firewall Subnet               │
-  │         (Network Firewall)              │
-  │   Stateless Rules → Stateful Rules      │
-  └─────────────────────────────────────────┘
-       |
-       v
-  ┌─────────────────────────────────────────┐
-  │           Private Subnet                │
-  │  (Route: 0.0.0.0/0 → Firewall Endpoint) │
-  │           EC2 Instances                 │
+  │       Protected Subnet (10.0.1.0/24)    │
+  │   EC2 Instances (public IP / EIP)       │
+  │   (RT: 0.0.0.0/0 -> vpce)               │
   └─────────────────────────────────────────┘
 ```
+
+공인 IP 없이 NAT Gateway로 나가는 Private 서브넷을 보호하려면 NAT Gateway 서브넷을 따로 두는 구성(공식 문서 arch-igw-ngw)을 따릅니다. 이 문서의 예시는 위 단일 AZ IGW 구성만 다룹니다.
 
 ### 서브넷 구성 요구사항
 
-| 서브넷 유형     | 용도                       | 권장 크기   |
-|-----------------|----------------------------|-------------|
-| Firewall Subnet | Firewall Endpoint 전용     | /28 이상    |
-| Public Subnet   | IGW → Firewall 경유 라우팅 | 기존 서브넷 |
-| Private Subnet  | 보호 대상 리소스           | 기존 서브넷 |
+| 서브넷 유형      | 용도                                      | 권장 크기   |
+|------------------|-------------------------------------------|-------------|
+| Firewall Subnet  | Firewall Endpoint 전용                    | /28 이상    |
+| Protected Subnet | 보호 대상 리소스 (Firewall Endpoint 경유) | 기존 서브넷 |
 
 🟡 Firewall Subnet은 AZ당 1개 필요합니다. 멀티 AZ 구성 시 AZ별로 생성합니다.
 
 ### Route Table 설정
 
 ```
-# IGW Route Table (Ingress Routing)
+# IGW Route Table (Edge association, Ingress Routing)
 Destination        Target
-10.0.1.0/24   →   vpce-xxxxxxxx (Firewall Endpoint)  ← Private Subnet 트래픽
-
-# Public Subnet Route Table
-Destination        Target
-0.0.0.0/0     →   vpce-xxxxxxxx (Firewall Endpoint)
-
-# Private Subnet Route Table
-Destination        Target
-0.0.0.0/0     →   vpce-xxxxxxxx (Firewall Endpoint)
+10.0.1.0/24   ->  vpce-xxxxxxxx (Firewall Endpoint)   # Protected Subnet inbound
 
 # Firewall Subnet Route Table
 Destination        Target
-0.0.0.0/0     →   igw-xxxxxxxx (Internet Gateway)
+10.0.0.0/16   ->  local
+0.0.0.0/0     ->  igw-xxxxxxxx (Internet Gateway)
+
+# Protected Subnet Route Table
+Destination        Target
+10.0.0.0/16   ->  local
+0.0.0.0/0     ->  vpce-xxxxxxxx (Firewall Endpoint)
 ```
+
+IGW Route Table은 보호 대상 서브넷으로 들어오는 트래픽을 Firewall Endpoint로 보내고, 보호 대상 서브넷의 기본 경로는 Firewall Endpoint를, Firewall Subnet의 기본 경로는 IGW를 가리킵니다. 그래서 들어오는 트래픽과 나가는 트래픽이 같은 Endpoint를 대칭으로 지납니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -97,17 +102,19 @@ Destination        Target
 
 ```
 Network Firewall
-├── Firewall Policy          ← 규칙 그룹 조합
-│   ├── Stateless Rule Group (우선순위 순 평가)
+├── Firewall Policy          ← combines rule groups
+│   ├── Stateless Rule Group (evaluated by priority)
 │   │   ├── Rule 1: PASS  tcp 443
 │   │   └── Rule 2: Forward to Stateful
 │   └── Stateful Rule Group
 │       ├── Domain List
 │       ├── Standard Rules (5-tuple)
 │       └── Suricata Rules
-└── Firewall (VPC에 연결)
-    └── Firewall Endpoint (AZ별 생성)
+└── Firewall (attached to VPC)
+    └── Firewall Endpoint (one per AZ)
 ```
+
+Firewall Policy는 Rule Group을 조합하고, Stateless Rule Group은 우선순위 순으로 평가합니다. Firewall은 VPC에 연결되며 Firewall Endpoint는 AZ마다 하나씩 생깁니다.
 
 | 구성 요소            | 설명                                               |
 |----------------------|----------------------------------------------------|
@@ -288,25 +295,27 @@ GeneratedRulesType: DENYLIST
 ### 규칙 평가 순서
 
 ```
-패킷 수신
+Packet received
     |
     v
-Stateless Rules (Priority 낮을수록 먼저)
+Stateless Rules (lower priority number first)
     |
-    ├── aws:pass    → 허용 (종료)
-    ├── aws:drop    → 차단 (종료)
+    ├── aws:pass    → allow (stop)
+    ├── aws:drop    → block (stop)
     └── aws:forward_to_sfe
             |
             v
     Stateful Rules
             |
-            ├── PASS  → 허용
-            ├── DROP  → 차단
-            └── ALERT → 로깅 후 평가 계속
+            ├── PASS  → allow
+            ├── DROP  → block
+            └── ALERT → log, continue evaluation
                     |
                     v
-            Default Action (정책 기본값)
+            Default Action (policy default)
 ```
+
+Stateless 규칙은 Priority 숫자가 낮은 것부터 평가하며 `aws:pass`·`aws:drop`이면 그 자리에서 끝나고, `aws:forward_to_sfe`면 Stateful 규칙으로 넘깁니다. Stateful 규칙의 ALERT는 로그만 남기고 평가를 계속하며, 일치하는 규칙이 없으면 정책 기본 동작을 따릅니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -536,7 +545,7 @@ aws logs filter-log-events \
 
 - **증상**: 트래픽이 Firewall을 경유하지 않음
 - **원인**: Route Table이 Firewall Endpoint가 아닌 IGW/NAT를 직접 가리킴
-- **해결**: 각 서브넷 Route Table의 0.0.0.0/0 → Firewall Endpoint(vpce-xxx)로 수정
+- **해결**: 보호 대상 서브넷 Route Table의 0.0.0.0/0과 IGW Route Table의 보호 대상 CIDR을 Firewall Endpoint(vpce-xxx)로 수정 (Firewall Subnet의 0.0.0.0/0은 IGW 유지)
 
 ### Firewall Endpoint ID 확인
 
@@ -575,7 +584,8 @@ pass icmp 192.168.10.0/24 any -> 10.102.0.0/16 any (sid:1003; rev:1;)
 - UpdateLoggingConfiguration(한 번에 하나씩 변경): [docs.aws.amazon.com/.../API_UpdateLoggingConfiguration](https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_UpdateLoggingConfiguration.html) — ★★★☆☆
 - UpdateFirewallPolicy(UpdateToken 필수): [docs.aws.amazon.com/.../API_UpdateFirewallPolicy](https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_UpdateFirewallPolicy.html) — ★★★☆☆
 - 위협 시그니처 관리형 규칙 그룹: [docs.aws.amazon.com/.../aws-managed-rule-groups-threat-signature](https://docs.aws.amazon.com/network-firewall/latest/developerguide/aws-managed-rule-groups-threat-signature.html) — ★★★☆☆
-- 단일 AZ IGW 구성의 Route Table: [docs.aws.amazon.com/.../arch-single-zone-igw](https://docs.aws.amazon.com/network-firewall/latest/developerguide/arch-single-zone-igw.html) — ★★★☆☆
+- 단일 AZ IGW 구성의 Route Table: [docs.aws.amazon.com/.../arch-single-zone-igw](https://docs.aws.amazon.com/network-firewall/latest/developerguide/arch-single-zone-igw.html) — ★★★☆☆ (확인일 2026-11-16)
+- IGW·NAT Gateway 구성: [docs.aws.amazon.com/.../arch-igw-ngw](https://docs.aws.amazon.com/network-firewall/latest/developerguide/arch-igw-ngw.html) — ★★★☆☆ (확인일 2026-11-16)
 
 ---
 
@@ -592,6 +602,6 @@ pass icmp 192.168.10.0/24 any -> 10.102.0.0/16 any (sid:1003; rev:1;)
 
 **작성일**: 2026-05-12
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

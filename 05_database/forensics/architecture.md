@@ -1,6 +1,6 @@
 # dbtrail 아키텍처
 
-dbtrail 내부 동작 원리, 데이터 흐름, 저장 구조를 상세히 설명합니다.
+dbtrail 내부 동작 원리, 데이터 흐름, 저장 구조를 상세히 설명합니다. 제품·저장소 이름은 dbtrail이고 명령줄 도구 이름은 `bintrail`입니다.
 
 ## 목차
 
@@ -14,31 +14,31 @@ dbtrail 내부 동작 원리, 데이터 흐름, 저장 구조를 상세히 설�
 ## 1. 전체 흐름
 
 ```
-Source MySQL                    bintrail                        Storage
-┌──────────────┐               ┌──────────────────┐            ┌──────────┐
-│ binlog_format│               │                  │            │          │
-│ = ROW        │──replication─>│ bintrail stream  │──Parquet──>│ S3       │
-│ binlog_row   │  protocol     │                  │            │          │
-│ _image=FULL  │               │  schema snapshot │            └────┬─────┘
-└──────────────┘               │  gap detection   │                 │      
-                               │  rotation        │                 v      
-                               └──────────────────┘            ┌──────────┐
-                                                               │ DuckDB   │
-                                                               │ (index)  │
-                                                               └────┬─────┘
-                                                                    │      
-                                              ┌─────────────────────┼─────────────┐
-                                              v                     v             v
-                                        query/recover       reconstruct         verify
+Source MySQL                   bintrail                    Index MySQL     
+┌──────────────┐              ┌──────────────────┐        ┌───────────────┐
+│ binlog_format│              │                  │        │ binlog_events │
+│ = ROW        │─replication─>│ bintrail stream  │─batch─>│ (hourly       │
+│ binlog_row   │  protocol    │                  │        │  partitions)  │
+│ _image=FULL  │              │  schema snapshot │        └───────┬───────┘
+└──────────────┘              │  gap detection   │                │        
+                              └──────────────────┘                │ rotate 
+                                                                  v        
+                                                          ┌───────────────┐
+                                                          │ Parquet       │
+                                                          │ (local / S3)  │
+                                                          └───────┬───────┘
+                                                                  │        
+               query/recover: Index MySQL + Parquet (DuckDB) <────┘        
 ```
+
+`bintrail stream`은 이벤트를 Index MySQL에 쓰고, `bintrail rotate`가 보존 기간이 지난 시간 파티션을 Parquet로 보관(로컬, 선택적으로 S3)한 뒤 지웁니다. `query`·`recover`는 Index MySQL과 Parquet 보관본을 함께 읽습니다(Parquet는 DuckDB로 읽음).
 
 ### 동작 순서
 
 1. `bintrail doctor` — MySQL 설정 점검 (binlog_format, binlog_row_image)
-2. `bintrail stream` — 복제 프로토콜(`COM_BINLOG_DUMP`)로 binlog 이벤트 수신
-3. 이벤트를 Parquet 파일로 변환 → S3 업로드
-4. `bintrail index` — Parquet → DuckDB 인덱싱
-5. 사용자가 query/recover/reconstruct 명령으로 데이터 조회·복구
+2. `bintrail stream` — 복제 프로토콜(`COM_BINLOG_DUMP`)로 binlog 이벤트 수신 → Index MySQL의 `binlog_events`에 기록 (binlog 파일을 직접 읽을 수 있으면 `bintrail index` 사용 가능)
+3. `bintrail rotate --retain 7d --archive-dir ... [--archive-s3 ...]` — 오래된 시간 파티션을 Parquet로 쓰고 S3에 올린 뒤 파티션 삭제
+4. 사용자가 query/recover/reconstruct 명령으로 데이터 조회·복구 (Index MySQL + Parquet 보관본 병합)
 
 ### 프로토콜 레벨
 
@@ -119,19 +119,17 @@ bintrail status
 
 ### Parquet 파일 구조
 
+`bintrail rotate --archive-dir`가 쓰는 Hive 형식 경로입니다. `--archive-s3`를 함께 주면 같은 구조로 S3에 올립니다(Athena·Glue·DuckDB 호환).
+
 ```
-s3://bucket/dbtrail/
-├── server-id/
-│   ├── 2026/07/06/
-│   │   ├── 14/
-│   │   │   ├── events_1783346400_000.parquet
-│   │   │   ├── events_1783346400_001.parquet
-│   │   │   └── ...
-│   │   └── 15/
-│   │       └── events_1783350000_000.parquet
-│   └── ...
-└── baselines/
-    └── shop.orders_20260706_140000.parquet
+<archive-dir or s3://bucket/prefix>/
+└── bintrail_id=<uuid>/
+    ├── event_date=2026-07-06/
+    │   ├── event_hour=14/
+    │   │   └── events.parquet
+    │   └── event_hour=15/
+    │       └── events.parquet
+    └── ...
 ```
 
 ### 이벤트당 저장 데이터
@@ -175,43 +173,32 @@ s3://bucket/dbtrail/
 
 ## 4. 인덱싱
 
-### DuckDB 역할
+### Index MySQL 역할
 
-S3에 저장된 Parquet 파일을 DuckDB가 인덱싱하여 빠른 조회를 제공합니다.
+`stream`·`index`는 이벤트를 Index MySQL(`--index-dsn`)의 `binlog_events` 테이블에 씁니다. 이 테이블은 `event_timestamp` 기준으로 시간별 RANGE 파티션이 나뉩니다.
 
-```bash
-# Parquet → DuckDB 인덱싱
-bintrail index
-
-# 인덱스 위치
-/var/lib/bintrail/index/
-```
+PK 조회는 `pk_hash`(`SHA2(pk_values, 256)`)를 덮는 `idx_pk_hash (schema_name, table_name, pk_hash, event_timestamp)` 인덱스를 쓰고, 해시 충돌에 대비해 `pk_values`도 비교합니다. 그래서 `--pk`에는 `--schema`·`--table`을 함께 지정해야 합니다.
 
 ### 쿼리 경로
 
 ```
-bintrail query --schema shop --table orders --pk 123
+bintrail query --index-dsn "..." --schema shop --table orders --pk 123
+    │
+    ├── Index MySQL: idx_pk_hash lookup (recent partitions)
+    └── Parquet archive: DuckDB scan (rotated partitions, from archive_state)
     │
     v
-DuckDB: pk_hash 기반 검색 → 해당 Parquet 파일만 스캔
-    │
-    v
-결과: [{event_type: DELETE, timestamp: ..., row_before: {...}}]
+merge: dedupe by event_id (live row wins), sort by time, apply --limit
 ```
 
 ### Live + Archive 병합
 
-최근 데이터는 Index MySQL에서, 오래된 데이터는 S3 Parquet에서 읽어 자동 병합합니다.
+최근 데이터는 Index MySQL에서, rotate로 지워진 오래된 데이터는 Parquet 보관본에서 읽어 자동 병합합니다.
 
-```
-query --since '30 days ago'
-    │
-    ├── 최근 7일 → Index (빠름)
-    └── 7~30일 → S3 Parquet 직접 쿼리 (약간 느림)
-    │
-    v
-    결과 병합 (시간순 정렬)
-```
+- 보관 위치는 `archive_state` 테이블에서 자동으로 찾습니다. `--archive-dir`·`--archive-s3`를 주면 자동 탐색을 건너뛰며 이때 `--bintrail-id`가 필요합니다.
+- `--no-archive`를 주면 Index MySQL 결과만 돌려줍니다.
+- 같은 `event_id`가 겹치면 Index MySQL 행을 쓰고, 시간순 정렬 뒤 `--limit`를 한 번 적용합니다.
+- S3 보관본은 기본적으로 파일을 디스크에 받아 DuckDB로 읽습니다(`--ultrafast`는 `httpfs`로 직접 읽어 메모리를 더 씀).
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -300,6 +287,8 @@ bintrail doctor --index-dsn "..." --retain 30d
 - dbtrail Streaming docs: [github.com/dbtrail/dbtrail/blob/main/docs/streaming.md](https://github.com/dbtrail/dbtrail/blob/main/docs/streaming.md) — ★★★☆☆
 - dbtrail Capacity (Parquet 보관 30~60배 축소, `doctor --retain`): [docs/capacity.md](https://github.com/dbtrail/dbtrail/blob/main/docs/capacity.md) — ★★★☆☆
 - dbtrail Indexing (`pk_values`·`binlog_events`): [docs/indexing.md](https://github.com/dbtrail/dbtrail/blob/main/docs/indexing.md) — ★★★☆☆
+- dbtrail Rotation and status (`rotate --archive-dir`·`--archive-s3`, Hive 경로): [docs/rotation-and-status.md](https://github.com/dbtrail/dbtrail/blob/main/docs/rotation-and-status.md) — ★★★☆☆ (확인일 2026-11-16)
+- dbtrail Query and recovery (live + archive 병합, DuckDB): [docs/query-and-recovery.md](https://github.com/dbtrail/dbtrail/blob/main/docs/query-and-recovery.md) — ★★★☆☆ (확인일 2026-11-16)
 - MySQL GTID 수명 주기 (Gtid_log_event는 트랜잭션 앞): [GTID Life Cycle](https://dev.mysql.com/doc/refman/8.4/en/replication-gtids-lifecycle.html) — ★★★☆☆
 - Cloud SQL 바이너리 로그 (PITR): [Configure point-in-time recovery](https://docs.cloud.google.com/sql/docs/mysql/backup-recovery/configure-pitr) — ★★★☆☆
 

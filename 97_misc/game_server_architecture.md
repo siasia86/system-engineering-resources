@@ -356,6 +356,9 @@ Player Client
 - Valve Developer Community: [developer.valvesoftware.com](https://developer.valvesoftware.com/wiki/Source_Multiplayer_Networking) — ★★★☆☆
 - Amazon GameLift Servers: [docs.aws.amazon.com/gameliftservers](https://docs.aws.amazon.com/gameliftservers/latest/developerguide/gamelift-intro.html) — ★★★☆☆
 - Riot Engineering Blog: [technology.riotgames.com](https://technology.riotgames.com/) — ★★☆☆☆
+- Riot Games Technology: [VALORANT's 128-Tick Servers](https://technology.riotgames.com/node/112) (Valorant 128 tick) — ★★☆☆☆ (확인일 2026-11-16)
+- KRAFTON·Microsoft Azure 협력 (PUBG·PUBG Mobile Azure 호스팅, 2020-11): [KRAFTON Inc. Announces Global Collaboration With Microsoft Azure](https://www.businesswire.com/news/home/20201106005606/en/KRAFTON-Inc.-Announces-Global-Collaboration-With-Microsoft-Azure) — ★★☆☆☆ (확인일 2026-11-16)
+- Epic Games goes all in on AWS (2018-07): [press.aboutamazon.com](https://press.aboutamazon.com/2018/7/epic-games-goes-all-in-on-aws) — ★★☆☆☆ (확인일 2026-11-16)
 - Gabriel Gambetta. "Fast-Paced Multiplayer": [gabrielgambetta.com](https://www.gabrielgambetta.com/client-server-game-architecture.html) — ★★☆☆☆
 - Riot Games AWS 이전: [aws.amazon.com/blogs/gametech](https://aws.amazon.com/blogs/gametech/riot-games-prepares-to-close-its-last-data-center-as-it-completes-global-migration-to-aws/) — ★★☆☆☆
 - ping(8): [man7.org/linux/man-pages/man8/ping.8.html](https://man7.org/linux/man-pages/man8/ping.8.html) — ★★★☆☆
@@ -378,6 +381,6 @@ Player Client
 
 **작성일**: 2026-08-21
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

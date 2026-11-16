@@ -7,7 +7,7 @@ tags:
   - logcat
   - troubleshooting
   - mobile
-last_checked: 2026-11-09
+last_checked: 2026-11-16
 sources:
   - https://developer.android.com/tools/adb
   - https://developer.android.com/tools/logcat
@@ -34,7 +34,7 @@ sources:
 | Windows          | platform-tools zip 다운로드 후 PATH 추가                    | SDK Manager 또는 독립 |
 | 공식 다운로드    | https://developer.android.com/tools/releases/platform-tools | 전 플랫폼             |
 
-- 현재 버전: **37.0.1** (formulae.brew.sh 확인, 2026-07-16). 2026-11-09 확인: **37.0.2** (formulae.brew.sh·공식 릴리스 노트)
+- 현재 버전: **37.0.1** (2026-07 출시, 2026-11-16 공식 릴리스 노트·formulae.brew.sh 확인). 37.0.2는 Canary 단계에서 배포가 중단되었고, 37.0.3은 2026-11 Canary입니다.
 - Ubuntu 22.04·24.04·26.04와 Debian 12·13 저장소의 패키지 이름은 `adb`이며, 옛 이름 `android-tools-adb`는 검색되지 않습니다(2026-11-09 packages.ubuntu.com·packages.debian.org 확인).
 
 ## 2. logcat 핵심 옵션
@@ -95,7 +95,7 @@ AOSP 공식 정의에 따르면, 부트로더 언락은 비공식 이미지 플�
 
 #### 언락 절차 (Samsung)
 
-1. 설정 → 개발자 옵션 → OEM 잠금 해제 활성화 (`get_unlock_ability = 1`)
+1. 설정 → 개발자 옵션 → OEM 잠금 해제 활성화 (AOSP에서는 이 설정이 `fastboot flashing get_unlock_ability`를 1로 만들지만, Samsung은 fastboot 대신 Download Mode에서 언락을 확인함)
 2. 전원 종료 후 Download Mode 진입 (기기별 키 조합)
 3. 볼륨 업 길게 눌러 부트로더 언락 확인
 4. **자동 공장 초기화** (전체 데이터 삭제)
@@ -199,7 +199,7 @@ AOSP 공식 정의에 따르면, 부트로더 언락은 비공식 이미지 플�
 
 - URL: https://formulae.brew.sh/cask/android-platform-tools
 - 설치 명령: `brew install --cask android-platform-tools`
-- 버전: 37.0.1 (2026-07-16), 2026-11-09 확인 37.0.2
+- 버전: 37.0.1 (2026-07-16, 2026-11-16 재확인. 37.0.2·37.0.3은 Canary)
 - 유형: **cask** (formula 아님, `--cask` 플래그 필수)
 
 🟡 `brew install android-platform-tools` (cask 없이)도 자동 해석되는 경우 있으나, 명시적 `--cask` 권장.
