@@ -13,7 +13,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 
 ## 1. 문서 구성
 
-현재 Linux 문서는 `README.md`를 제외하고 52개입니다. 개념 문서와 실습·분석 도구 문서를 함께 배치하여 개념 학습 후 실제 시스템 관찰로 이어지도록 구성합니다.
+현재 Linux 문서는 `README.md`를 제외하고 55개입니다. 개념 문서와 실습·분석 도구 문서를 함께 배치하여 개념 학습 후 실제 시스템 관찰로 이어지도록 구성합니다.
 
 | 주제                     | 범위                                  |
 |--------------------------|---------------------------------------|
@@ -118,6 +118,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 - [namespace](./namespace_concepts.md) — 실행 환경 격리.
 - [seccomp·capabilities](./seccomp_capabilities.md) — 권한과 시스템 콜 제한.
 - [netfilter·tc](./netfilter_tc.md) — 패킷 필터링과 트래픽 제어.
+- [sysctl 커널 매개변수](./sysctl_kernel_parameters.md) — /proc/sys 값 조회·영구 적용·판단 기준.
 - [Linux 파일시스템](./linux_filesystem.md) — 파일시스템 운영 경계.
 - [Virtual File System](./linux_virtual_fs.md) — /proc·/sys 가상 파일시스템.
 
@@ -127,6 +128,8 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 - [Vim airline](./vim_airline.md) — Vim 상태 표시줄 설정.
 - [Neovim](./neovim_guide.md) — Lua 설정, API, LSP, headless 실행.
 - [tmux](./tmux_guide.md) — session·window·pane 관리.
+- [systemd 유닛 관리](./systemd_unit_management.md) — 유닛 파일, systemctl, drop-in, 재시작 정책, timer.
+- [journalctl·logrotate](./journald_logrotate_guide.md) — 저널 조회·용량 관리, 텍스트 로그 순환.
 - [lsof](./lsof.md) — 열린 파일과 소켓 조회.
 - [tcpdump](./tcpdump.md) — 패킷 캡처와 필터링.
 - [iperf3](./iperf3_guide.md) — TCP·UDP throughput, loss, jitter 측정.
@@ -157,6 +160,6 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 
 **작성일**: 2026-08-18
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -6,9 +6,9 @@
 
 | 디렉토리                 | 설명                                                             | 문서 수 |
 |--------------------------|------------------------------------------------------------------|---------|
-| [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                | 5       |
+| [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로, 기술 면접 준비                | 6       |
 | [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권, 리버스 엔지니어링, 개인정보       | 6       |
-| [ai_tools/](./ai_tools/) | AI 도구 — 공통 문서와 claude/·codex/·kiro/·jev/ 도구별 하위 폴더 | 29      |
+| [ai_tools/](./ai_tools/) | AI 도구 — 공통 문서와 claude/·codex/·kiro/·jev/ 도구별 하위 폴더 | 31      |
 
 ## 주요 문서
 
@@ -17,13 +17,17 @@
 - [dba_roadmap.md](./roadmap/dba_roadmap.md) — DBA 역할, 필수 지식, 고가용성, 단계별 학습, 자격증
 - [infra_roles_comparison.md](./roadmap/infra_roles_comparison.md) — DevOps·Cloud·SRE·SE·Platform·MLOps 직군의 역할·도구·전환 경로 비교
 - [se_complete_roadmap_programming_languages.md](./roadmap/se_complete_roadmap_programming_languages.md) — SE 관점의 언어별 우선순위·실무 사례·학습 순서
+- [se_technical_interview_guide.md](./roadmap/se_technical_interview_guide.md) — 면접 유형별 답변 틀, 트러블슈팅·설계·경험 질문
 - [it_reference_blogs.md](./it_reference_blogs.md) — IT 기술 블로그·학습 사이트 모음
+- [technical_writing_for_engineers.md](./technical_writing_for_engineers.md) — 런북·작업 계획서·README 작성 규칙, 검토 점검표
 - AI 공통: [ai_coding_tools_comparison.md](./ai_tools/ai_coding_tools_comparison.md) — 도구 비교, [harness_engineering.md](./ai_tools/harness_engineering.md) — 에이전트 환경·검증, [loop_engineering.md](./ai_tools/loop_engineering.md) — 제한된 반복 설계
 - [ai_agent_workspace_tools.md](./ai_tools/ai_agent_workspace_tools.md) — herdr·omp·Orca와 pi·OpenCode·cmux 등 agent 운영 도구
 - [ai_work_archetypes.md](./ai_tools/ai_work_archetypes.md) — Boris Cherny의 다섯 업무 원형·제품 단계별 조합·인프라 적용 예시
 - [aside_browser_guide.md](./ai_tools/aside_browser_guide.md) — Aside AI 브라우저의 기능·요금·권한·데이터 처리·CLI·MCP
 - [ai_development_request_template.md](./ai_tools/ai_development_request_template.md) — AI 개발 요청 양식(배경·환경·AS-IS/TO-BE·요구사항·테스트·배포)
 - [ai_markdown_design_patterns.md](./ai_tools/ai_markdown_design_patterns.md) — 에이전트용 Markdown 패턴(4-파일, 3단계 로딩, 스킬 디렉토리, 토큰 효율)
+- [mcp_protocol_guide.md](./ai_tools/mcp_protocol_guide.md) — MCP 구조·전송·인증·보안 점검
+- [ai_generated_infra_code_review.md](./ai_tools/ai_generated_infra_code_review.md) — AI가 만든 인프라 코드의 자동 검사와 사람 검토 기준
 - [claude/claude_code_concepts.md](./ai_tools/claude/claude_code_concepts.md) — Claude Code 구성 요소, 사용 환경, 권한 모드, 계정과 비용
 - [claude/claude_code_cli_linux_guide.md](./ai_tools/claude/claude_code_cli_linux_guide.md) — Claude Code Linux 설치·인증·권한 규칙·비대화형 실행
 - [claude/claude_code_basics_guide.md](./ai_tools/claude/claude_code_basics_guide.md) — 요청 작성, plan 모드, 파일 지정, 컨텍스트 관리, 세션 재개와 되돌리기
@@ -72,6 +76,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-11-12
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

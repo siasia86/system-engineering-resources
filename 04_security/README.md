@@ -4,12 +4,12 @@
 
 ## 구조
 
-| 디렉토리                   | 설명                                                      | 문서 수 |
-|----------------------------|-----------------------------------------------------------|---------|
-| [hardening/](./hardening/) | 서버 강화 — iptables/nftables, SSH, 시크릿 관리, gitleaks | 15      |
-| [cloud/](./cloud/)         | 클라우드 보안 — AWS Security, DDoS 방어, Network Firewall | 4       |
-| [cve/](./cve/)             | CVE 분석 — 2026년 Linux 커널·PHP 취약점 (Dirty Frag 등)   | 9       |
-| [web_cwe/](./web_cwe/)     | 웹 취약점 — CWE-22, CWE-78, CWE-200, CWE-434              | 4       |
+| 디렉토리                   | 설명                                                                             | 문서 수 |
+|----------------------------|----------------------------------------------------------------------------------|---------|
+| [hardening/](./hardening/) | 서버 강화 — iptables/nftables, SSH, 시크릿 관리, gitleaks, AIDE, auditd, SELinux | 19      |
+| [cloud/](./cloud/)         | 클라우드 보안 — AWS Security, DDoS 방어, Network Firewall                        | 4       |
+| [cve/](./cve/)             | CVE 분석 — 2026년 Linux 커널·PHP 취약점 (Dirty Frag 등)                          | 9       |
+| [web_cwe/](./web_cwe/)     | 웹 취약점 — CWE-22, CWE-78, CWE-200, CWE-434                                     | 4       |
 
 ## 주요 문서
 
@@ -21,6 +21,8 @@
 - [trivy_guide.md](./hardening/trivy_guide.md) — 이미지·IaC·호스트 취약점 스캔과 공급망 안전 설치
 - [tls_certificate_expiry_monitoring.md](./hardening/tls_certificate_expiry_monitoring.md) — 인증서 만료 감시와 갱신 자동화 점검
 - [lynis_audit_guide.md](./hardening/lynis_audit_guide.md) — Lynis 서버 감사, 역할별 프로필과 정기 점검·결과 비교
+- [aide_file_integrity_monitoring.md](./hardening/aide_file_integrity_monitoring.md) — AIDE 파일 무결성 기준 DB·정기 점검·변경 승인
+- [linux_intrusion_triage_checklist.md](./hardening/linux_intrusion_triage_checklist.md) — 침해 의심 서버 초동 점검과 격리 판단
 - [cve_2026_43284_dirty_frag.md](./cve/cve_2026_43284_dirty_frag.md) — CVE-2026-43284 분석
 
 ## 추천 학습 순서
@@ -43,6 +45,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

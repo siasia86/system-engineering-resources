@@ -33,11 +33,14 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Shell 인터랙티브 모드](01_fundamentals/linux/shell_interactive_mode.md)        | interactive/non-interactive |
 | [Vim 사용법](01_fundamentals/linux/vim.md)                                      | 기본 명령어, 모드, 설정     |
 | [시스템 프로세스](01_fundamentals/linux/linux_system_processes.md)              | init, systemd, 데몬         |
+| [systemd 유닛 관리](01_fundamentals/linux/systemd_unit_management.md)           | 유닛 파일, drop-in, timer   |
+| [journalctl·logrotate](01_fundamentals/linux/journald_logrotate_guide.md)       | 저널 조회, 로그 순환        |
 | [Namespace](01_fundamentals/linux/namespace_concepts.md)                        | 7종 namespace, 격리         |
 | [Cgroup](01_fundamentals/linux/cgroup_concepts.md)                              | v1/v2, 리소스 제한          |
 | [Scheduler](01_fundamentals/linux/scheduler_concepts.md)                        | CFS, RT, Deadline           |
 | [Virtual Memory](01_fundamentals/linux/virtual_memory_concepts.md)              | 페이지 테이블, TLB, OOM     |
 | [VFS](01_fundamentals/linux/linux_virtual_fs.md)                                | inode, dentry, superblock   |
+| [sysctl 커널 매개변수](01_fundamentals/linux/sysctl_kernel_parameters.md)       | /proc/sys, sysctl.d         |
 | [POSIX ACL·setfacl](01_fundamentals/linux/acl_setfacl_guide.md)                 | ACL·Default ACL·mask·상속   |
 | [IPC](01_fundamentals/linux/ipc_concepts.md)                                    | Pipe, Socket, SHM, MQ       |
 | [Netfilter/TC](01_fundamentals/linux/netfilter_tc.md)                           | iptables/nftables, TC       |
@@ -59,23 +62,25 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Networking
 
-| 문서                                                                             | 설명                         |
-|----------------------------------------------------------------------------------|------------------------------|
-| [IPv4 주소 체계](01_fundamentals/networking/ipv4_addressing_guide.md)            | 서브넷, CIDR, AWS VPC        |
-| [IPv6 주소 체계](01_fundamentals/networking/ipv6_addressing_guide.md)            | 주소 구조, 표기법, SLAAC     |
-| [TCP 상태 전이](01_fundamentals/networking/tcp_state_concepts.md)                | 3/4-Way Handshake, TIME_WAIT |
-| [패킷 분석](01_fundamentals/networking/packet_analysis.md)                       | IP/TCP/UDP 헤더, PROXY Proto |
-| [네트워크 헤더](01_fundamentals/networking/network_headers.md)                   | Ethernet, ARP, DNS, TLS      |
-| [HTTP 메서드](01_fundamentals/networking/http_methods.md)                        | GET/POST/PUT/DELETE/PATCH    |
-| [tcpdump 예제](01_fundamentals/networking/tcpdump_examples.md)                   | 패킷 캡처 실전 예제          |
-| [Switch VLAN Mode](01_fundamentals/networking/switch_vlan_mode.md)               | Access/Trunk/Hybrid          |
-| [VPN Protocol](01_fundamentals/networking/vpn_protocol_concepts.md)              | PPTP~WireGuard 비교          |
-| [에러 코드](01_fundamentals/networking/error_codes.md)                           | HTTP/SMTP/FTP 상태 코드      |
-| [ASN/DDoS 대응](01_fundamentals/networking/asn_and_cloudflare_ddos.md)           | ASN 운영, Cloudflare         |
-| [CDN/Proxy/Origin](01_fundamentals/networking/cdn_proxy_origin_ip.md)            | CDN 구조, Origin IP 보호     |
-| [SoftEther VPN Client](01_fundamentals/networking/softether_vpn_client_guide.md) | SoftEther 클라이언트 설정    |
-| [SoftEther VPN Server](01_fundamentals/networking/softether_vpn_server_guide.md) | SoftEther 서버 설치·설정     |
-| [VPN 프로토콜 선택 가이드](01_fundamentals/networking/vpn_comparison_blog.md)    | 프로토콜 비교·시나리오 선택  |
+| 문서                                                                               | 설명                               |
+|------------------------------------------------------------------------------------|------------------------------------|
+| [IPv4 주소 체계](01_fundamentals/networking/ipv4_addressing_guide.md)              | 서브넷, CIDR, AWS VPC              |
+| [IPv6 주소 체계](01_fundamentals/networking/ipv6_addressing_guide.md)              | 주소 구조, 표기법, SLAAC           |
+| [TCP 상태 전이](01_fundamentals/networking/tcp_state_concepts.md)                  | 3/4-Way Handshake, TIME_WAIT       |
+| [패킷 분석](01_fundamentals/networking/packet_analysis.md)                         | IP/TCP/UDP 헤더, PROXY Proto       |
+| [네트워크 헤더](01_fundamentals/networking/network_headers.md)                     | Ethernet, ARP, DNS, TLS            |
+| [HTTP 메서드](01_fundamentals/networking/http_methods.md)                          | GET/POST/PUT/DELETE/PATCH          |
+| [tcpdump 예제](01_fundamentals/networking/tcpdump_examples.md)                     | 패킷 캡처 실전 예제                |
+| [Switch VLAN Mode](01_fundamentals/networking/switch_vlan_mode.md)                 | Access/Trunk/Hybrid                |
+| [VPN Protocol](01_fundamentals/networking/vpn_protocol_concepts.md)                | PPTP~WireGuard 비교                |
+| [에러 코드](01_fundamentals/networking/error_codes.md)                             | HTTP/SMTP/FTP 상태 코드            |
+| [ASN/DDoS 대응](01_fundamentals/networking/asn_and_cloudflare_ddos.md)             | ASN 운영, Cloudflare               |
+| [CDN/Proxy/Origin](01_fundamentals/networking/cdn_proxy_origin_ip.md)              | CDN 구조, Origin IP 보호           |
+| [SoftEther VPN Client](01_fundamentals/networking/softether_vpn_client_guide.md)   | SoftEther 클라이언트 설정          |
+| [SoftEther VPN Server](01_fundamentals/networking/softether_vpn_server_guide.md)   | SoftEther 서버 설치·설정           |
+| [VPN 프로토콜 선택 가이드](01_fundamentals/networking/vpn_comparison_blog.md)      | 프로토콜 비교·시나리오 선택        |
+| [DNS 해석·장애 진단](01_fundamentals/networking/dns_resolution_troubleshooting.md) | 해석 흐름, TTL, dig 진단           |
+| [MTU·MSS·PMTUD](01_fundamentals/networking/mtu_mss_pmtud.md)                       | 단편화, PMTUD 블랙홀, MSS clamping |
 
 ### CS
 
@@ -85,29 +90,33 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Git 개념](01_fundamentals/cs/git_concepts.md)                   | 내부 구조, 객체 모델              |
 | [버전 관리 개념](01_fundamentals/cs/version_control_concepts.md) | VCS 비교, 브랜치 전략             |
 | [압축 알고리즘](01_fundamentals/cs/compression_algorithms.md)    | 허프만, DEFLATE, gzip, ZIP, zstd  |
-| [자료구조](01_fundamentals/cs/data_structures/)                  | Array, Stack, Queue, Tree 등      |
+| [분산 기초](01_fundamentals/cs/distributed_systems_concepts.md)  | CAP·쿼럼·Raft·논리 시계           |
+| [수 표현](01_fundamentals/cs/number_representation.md)           | 2의 보수, IEEE 754, 엔디언        |
+| [자료구조](01_fundamentals/cs/data_structures/)                  | Tree·Hash·블룸 필터·HLL 등        |
 | [테스팅](01_fundamentals/cs/testing/)                            | Black/White Box, 테스트 레벨      |
 | [게임 테스트](01_fundamentals/cs/game_testing/)                  | 게임 상태·시나리오·경제·성능      |
 | [웹 서버 테스트](01_fundamentals/cs/web_testing/)                | HTTP·프록시·TLS·LB·캐시·보안·관측 |
-| [알고리즘](01_fundamentals/cs/algorithms/)                       | 시간·공간 복잡도 계산 패턴        |
+| [알고리즘](01_fundamentals/cs/algorithms/)                       | 복잡도 계산, 일관된 해싱          |
 
 ### Windows
 
-| 문서                                                                                    | 설명                   |
-|-----------------------------------------------------------------------------------------|------------------------|
-| [Windows 서버 리소스 분석](01_fundamentals/windows/windows_server_resource_analysis.md) | CPU/메모리/디스크 분석 |
+| 문서                                                                                    | 설명                       |
+|-----------------------------------------------------------------------------------------|----------------------------|
+| [Windows 서버 리소스 분석](01_fundamentals/windows/windows_server_resource_analysis.md) | CPU/메모리/디스크 분석     |
+| [Windows 네트워크 진단](01_fundamentals/windows/windows_network_diagnostics.md)         | Test-NetConnection, pktmon |
 
 ### Math
 
-| 문서                                              | 설명                       |
-|---------------------------------------------------|----------------------------|
-| [ε-δ 논법](01_fundamentals/math/epsilon_delta.md) | 극한 정의, 증명 구조, 변형 |
+| 문서                                                               | 설명                       |
+|--------------------------------------------------------------------|----------------------------|
+| [ε-δ 논법](01_fundamentals/math/epsilon_delta.md)                  | 극한 정의, 증명 구조, 변형 |
+| [Little 법칙·대기열](01_fundamentals/math/littles_law_queueing.md) | L=λW, 사용률, 용량 계획    |
 
 ### Programming
 
 | 문서                                                                               | 설명                        |
 |------------------------------------------------------------------------------------|-----------------------------|
-| [Python 가이드](01_fundamentals/programming/python/)                               | 클래스~subprocess (26개)    |
+| [Python 가이드](01_fundamentals/programming/python/)                               | 클래스~subprocess (30개)    |
 | [C# 가이드](01_fundamentals/programming/csharp/)                                   | async, LINQ, OOP, 예외 처리 |
 | [Rust 가이드](01_fundamentals/programming/rust/)                                   | 소유권, 동시성, 에러 처리   |
 | [언어 비교](01_fundamentals/programming/c_cpp_csharp_go_python_bash_comparison.md) | 6개 언어 비교               |
@@ -129,18 +138,21 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Containers
 
-| 문서                                                                                 | 설명                       |
-|--------------------------------------------------------------------------------------|----------------------------|
-| [Docker 설치 + Compose](02_infrastructure/containers/docker_install_and_compose.md)  | 설치, daemon.json, Compose |
-| [Docker Compose 치트시트](02_infrastructure/containers/docker_compose_cheatsheet.md) | 명령어 정리                |
-| [Docker 가이드](02_infrastructure/containers/docker.md)                              | 이미지, 네트워크, 볼륨     |
-| [컨테이너 아키텍처](02_infrastructure/containers/container_architecture.md)          | Namespace, Cgroup, OCI     |
-| [Container Runtime](02_infrastructure/containers/container_runtime.md)               | containerd, CRI-O          |
-| [Kubernetes 설치](02_infrastructure/containers/kubernetes_install.md)                | k3s, kubeadm               |
-| [Kubernetes 기본](02_infrastructure/containers/kubernetes_basic.md)                  | Pod, Deployment, Service   |
-| [k3s](02_infrastructure/containers/k3s.md)                                           | 경량 K8s, SQLite 기반      |
-| [Helm](02_infrastructure/containers/helm.md)                                         | Chart, Values, Release     |
-| [n8n Docker](02_infrastructure/containers/n8n_docker_cheatsheet.md)                  | n8n 치트시트               |
+| 문서                                                                                 | 설명                           |
+|--------------------------------------------------------------------------------------|--------------------------------|
+| [Docker 설치 + Compose](02_infrastructure/containers/docker_install_and_compose.md)  | 설치, daemon.json, Compose     |
+| [Docker Compose 치트시트](02_infrastructure/containers/docker_compose_cheatsheet.md) | 명령어 정리                    |
+| [Docker 가이드](02_infrastructure/containers/docker.md)                              | 이미지, 네트워크, 볼륨         |
+| [Dockerfile 작성과 빌드](02_infrastructure/containers/dockerfile_best_practices.md)  | 멀티 스테이지, BuildKit, 캐시  |
+| [컨테이너 아키텍처](02_infrastructure/containers/container_architecture.md)          | Namespace, Cgroup, OCI         |
+| [Container Runtime](02_infrastructure/containers/container_runtime.md)               | containerd, CRI-O              |
+| [Podman](02_infrastructure/containers/podman.md)                                     | rootless, Quadlet, Pod         |
+| [Kubernetes 설치](02_infrastructure/containers/kubernetes_install.md)                | k3s, kubeadm                   |
+| [Kubernetes 기본](02_infrastructure/containers/kubernetes_basic.md)                  | Pod, Deployment, Service       |
+| [Kubernetes 장애 진단](02_infrastructure/containers/kubernetes_troubleshooting.md)   | Pod 상태별 원인, kubectl debug |
+| [k3s](02_infrastructure/containers/k3s.md)                                           | 경량 K8s, SQLite 기반          |
+| [Helm](02_infrastructure/containers/helm.md)                                         | Chart, Values, Release         |
+| [n8n Docker](02_infrastructure/containers/n8n_docker_cheatsheet.md)                  | n8n 치트시트                   |
 
 ### CI/CD
 
@@ -150,6 +162,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Jenkins Pipeline](02_infrastructure/cicd/jenkins_pipeline.md)                          | Declarative/Scripted          |
 | [GitHub Actions](02_infrastructure/cicd/github_actions.md)                              | 워크플로우, Runner            |
 | [GitHub CLI 명령어 참조](02_infrastructure/cicd/gh_command_reference.md)                | gh 명령어, PR·Actions 실행    |
+| [GitLab CI/CD](02_infrastructure/cicd/gitlab_ci.md)                                     | .gitlab-ci.yml, rules, Runner |
 | [ArgoCD](02_infrastructure/cicd/argocd.md)                                              | GitOps CD, Application        |
 | [Harness](02_infrastructure/cicd/harness_inc.md)                                        | CI/CD 플랫폼                  |
 | [Git 가이드](02_infrastructure/cicd/git_guide.md)                                       | diff, log, rebase, stash      |
@@ -181,16 +194,17 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Monitoring
 
-| 문서                                                                                     | 설명                 |
-|------------------------------------------------------------------------------------------|----------------------|
-| [Prometheus + Grafana](02_infrastructure/monitoring/prometheus_grafana.md)               | PromQL, 대시보드     |
-| [Prometheus 설치](02_infrastructure/monitoring/prometheus_grafana_install.md)            | 설치, Node Exporter  |
-| [Zabbix vs Prometheus](02_infrastructure/monitoring/zabbix_vs_prometheus.md)             | 아키텍처 비교        |
-| [리소스 모니터링](02_infrastructure/monitoring/resource_utilization_monitoring.md)       | CPU/메모리/디스크    |
-| [게임 인프라 KPI](02_infrastructure/monitoring/game_infra_kpi_presentation.md)           | 운영 핵심 지표       |
-| [Grafana Heatmap](02_infrastructure/monitoring/grafana_gitlab_heatmap.md)                | GitLab 커밋 히트맵   |
-| [GRAID SupremeRAID 점검](02_infrastructure/monitoring/graid_supremeraid_server_check.md) | GPU RAID 점검 가이드 |
-| [Gstack 모니터링](02_infrastructure/monitoring/gstack.md)                                | 통합 모니터링 스택   |
+| 문서                                                                                     | 설명                      |
+|------------------------------------------------------------------------------------------|---------------------------|
+| [Prometheus + Grafana](02_infrastructure/monitoring/prometheus_grafana.md)               | PromQL, 대시보드          |
+| [Prometheus 설치](02_infrastructure/monitoring/prometheus_grafana_install.md)            | 설치, Node Exporter       |
+| [node_exporter 운영](02_infrastructure/monitoring/node_exporter_operations.md)           | collector, textfile, 알림 |
+| [Zabbix vs Prometheus](02_infrastructure/monitoring/zabbix_vs_prometheus.md)             | 아키텍처 비교             |
+| [리소스 모니터링](02_infrastructure/monitoring/resource_utilization_monitoring.md)       | CPU/메모리/디스크         |
+| [게임 인프라 KPI](02_infrastructure/monitoring/game_infra_kpi_presentation.md)           | 운영 핵심 지표            |
+| [Grafana Heatmap](02_infrastructure/monitoring/grafana_gitlab_heatmap.md)                | GitLab 커밋 히트맵        |
+| [GRAID SupremeRAID 점검](02_infrastructure/monitoring/graid_supremeraid_server_check.md) | GPU RAID 점검 가이드      |
+| [Gstack 모니터링](02_infrastructure/monitoring/gstack.md)                                | 통합 모니터링 스택        |
 
 ### Cloud (AWS)
 
@@ -200,6 +214,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [S3 Gateway Endpoint](02_infrastructure/cloud_aws/s3_gateway_endpoint_cross_account.md) | 크로스 계정 S3 접근        |
 | [S3 Object Lock](02_infrastructure/cloud_aws/s3_object_lock.md)                         | WORM, Compliance           |
 | [S3 백업 팁](02_infrastructure/cloud_aws/s3_backup_tips.md)                             | 비용/성능/무결성           |
+| [CloudWatch Agent·경보](02_infrastructure/cloud_aws/cloudwatch_agent_alarms.md)         | Agent 설정, 경보 평가      |
 | [STS AssumeRole](02_infrastructure/cloud_aws/sts_assume_role.md)                        | 크로스 계정 역할 위임      |
 | [클라우드 백업 비용 비교](02_infrastructure/cloud_aws/cloud_backup_cost_comparison.md)  | 백업 도구 리소스·비용 비교 |
 | [VPC Peering](02_infrastructure/cloud_aws/vpc_peering_inter_region_guide.md)            | Inter-Region Peering       |
@@ -224,14 +239,16 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Storage
 
-| 문서                                                                                          | 설명                    |
-|-----------------------------------------------------------------------------------------------|-------------------------|
-| [스토리지 아키텍처](02_infrastructure/storage/storage_architecture.md)                        | 스토리지 계층·구성 설계 |
-| [SSD 마모 분산과 fio 성능 검수](02_infrastructure/storage/ssd_wear_performance_validation.md) | 마모·쓰기량·시험 판정   |
-| [Linux 파일시스템 비교](02_infrastructure/storage/linux_filesystem_comparison.md)             | ext4·XFS·Btrfs·ZFS      |
-| [백업 도구 비교](02_infrastructure/storage/backup_tools_comparison.md)                        | 백업 솔루션·도구 비교   |
-| [Restic 백업·복구](02_infrastructure/storage/restic_backup.md)                                | 암호화 증분 백업·복구   |
-| [MinIO Object Storage](02_infrastructure/storage/minio_object_storage.md)                     | S3 호환 객체 스토리지   |
+| 문서                                                                                          | 설명                       |
+|-----------------------------------------------------------------------------------------------|----------------------------|
+| [스토리지 아키텍처](02_infrastructure/storage/storage_architecture.md)                        | 스토리지 계층·구성 설계    |
+| [SSD 마모 분산과 fio 성능 검수](02_infrastructure/storage/ssd_wear_performance_validation.md) | 마모·쓰기량·시험 판정      |
+| [Linux 파일시스템 비교](02_infrastructure/storage/linux_filesystem_comparison.md)             | ext4·XFS·Btrfs·ZFS         |
+| [백업 도구 비교](02_infrastructure/storage/backup_tools_comparison.md)                        | 백업 솔루션·도구 비교      |
+| [Restic 백업·복구](02_infrastructure/storage/restic_backup.md)                                | 암호화 증분 백업·복구      |
+| [MinIO Object Storage](02_infrastructure/storage/minio_object_storage.md)                     | S3 호환 객체 스토리지      |
+| [LVM 운영](02_infrastructure/storage/lvm_operations.md)                                       | PV·VG·LV, 확장·스냅샷·Thin |
+| [mdadm 소프트웨어 RAID](02_infrastructure/storage/mdadm_software_raid.md)                     | 구성·디스크 교체·scrub     |
 
 ### Web Server
 
@@ -256,23 +273,27 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Reliability
 
-| 문서                                                                       | 설명                             |
-|----------------------------------------------------------------------------|----------------------------------|
-| [Incident Management](03_engineering/reliability/incident_management.md)   | 장애 등급, IC 역할, 에스컬레이션 |
-| [SLO/Error Budget](03_engineering/reliability/slo_error_budget.md)         | SLI/SLO/SLA, Burn Rate Alert     |
-| [On-Call Design](03_engineering/reliability/oncall_design.md)              | 로테이션, 25% 규칙, 런북         |
-| [Postmortem Framework](03_engineering/reliability/postmortem_framework.md) | 5 Whys, Blameless, Action Items  |
-| [Chaos Engineering](03_engineering/reliability/chaos_engineering.md)       | 가설 실험, 폭발 반경, Game Day   |
+| 문서                                                                       | 설명                                   |
+|----------------------------------------------------------------------------|----------------------------------------|
+| [Incident Management](03_engineering/reliability/incident_management.md)   | 장애 등급, IC 역할, 에스컬레이션       |
+| [SLO/Error Budget](03_engineering/reliability/slo_error_budget.md)         | SLI/SLO/SLA, Burn Rate Alert           |
+| [On-Call Design](03_engineering/reliability/oncall_design.md)              | 로테이션, 25% 규칙, 런북               |
+| [Postmortem Framework](03_engineering/reliability/postmortem_framework.md) | 5 Whys, Blameless, Action Items        |
+| [Chaos Engineering](03_engineering/reliability/chaos_engineering.md)       | 가설 실험, 폭발 반경, Game Day         |
+| [Toil 관리](03_engineering/reliability/toil_reduction.md)                  | Toil 판별·측정·자동화 우선순위         |
+| [Resilience Patterns](03_engineering/reliability/resilience_patterns.md)   | Timeout, Retry Budget, Circuit Breaker |
 
 ### Delivery
 
-| 문서                                                                              | 설명                        |
-|-----------------------------------------------------------------------------------|-----------------------------|
-| [Change Management](03_engineering/delivery/change_management.md)                 | 변경 등급, CAB, 배포 윈도우 |
-| [Zero Downtime Migration](03_engineering/delivery/zero_downtime_migration.md)     | Expand-Contract, CDC, 롤백  |
-| [Capacity Planning](03_engineering/delivery/capacity_planning.md)                 | 트래픽 예측, Headroom       |
-| [Multi-Region Architecture](03_engineering/delivery/multi_region_architecture.md) | Active-Active, RPO/RTO      |
-| [ADR 가이드](03_engineering/delivery/adr_guide.md)                                | 아키텍처 의사결정 기록      |
+| 문서                                                                              | 설명                             |
+|-----------------------------------------------------------------------------------|----------------------------------|
+| [Change Management](03_engineering/delivery/change_management.md)                 | 변경 등급, CAB, 배포 윈도우      |
+| [Zero Downtime Migration](03_engineering/delivery/zero_downtime_migration.md)     | Expand-Contract, CDC, 롤백       |
+| [Capacity Planning](03_engineering/delivery/capacity_planning.md)                 | 트래픽 예측, Headroom            |
+| [Multi-Region Architecture](03_engineering/delivery/multi_region_architecture.md) | Active-Active, RPO/RTO           |
+| [ADR 가이드](03_engineering/delivery/adr_guide.md)                                | 아키텍처 의사결정 기록           |
+| [Progressive Delivery](03_engineering/delivery/progressive_delivery.md)           | Rolling, Blue-Green, Canary 분석 |
+| [Feature Flag 관리](03_engineering/delivery/feature_flag_management.md)           | 플래그 분류, 수명 주기, 제거     |
 
 ### Organization
 
@@ -302,20 +323,24 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 - [AI Agent 샌드박스 개념](04_security/hardening/ai_agent_sandbox_concepts.md) — OS 권한·승인·실행기와 다층 안전장치 설계.
 
-| 문서                                                                               | 설명                        |
-|------------------------------------------------------------------------------------|-----------------------------|
-| [Linux 서버 보안 강화](04_security/hardening/linux_hardening.md)                   | sysctl, auditd, umask       |
-| [방화벽](04_security/hardening/firewall_iptables_nftables.md)                      | iptables/nftables           |
-| [SSH 보안](04_security/hardening/ssh_security.md)                                  | 키 인증, fail2ban           |
-| [TLS/SSL](04_security/hardening/tls_ssl_guide.md)                                  | 인증서, Let's Encrypt, mTLS |
-| [시크릿 관리](04_security/hardening/secret_management.md)                          | Vault, AWS Secrets Manager  |
-| [취약점 스캔](04_security/hardening/vulnerability_scanning.md)                     | nmap, trivy, lynis          |
-| [Gitleaks 가이드](04_security/hardening/gitleaks_guide.md)                         | 민감정보 탐지, pre-commit   |
-| [Trivy 가이드](04_security/hardening/trivy_guide.md)                               | 이미지·IaC 스캔, CI 연동    |
-| [TLS 인증서 만료 감시](04_security/hardening/tls_certificate_expiry_monitoring.md) | 만료 감시, 갱신 점검        |
-| [Lynis 서버 감사](04_security/hardening/lynis_audit_guide.md)                      | 서버 감사, 정기 점검·비교   |
-| [Vault 설치](04_security/hardening/vault_install.md)                               | HashiCorp Vault 설치·운영   |
-| [Windows OpenSSH](04_security/hardening/windows_openssh_install.md)                | Windows SSH 서버 설치       |
+| 문서                                                                                  | 설명                          |
+|---------------------------------------------------------------------------------------|-------------------------------|
+| [Linux 서버 보안 강화](04_security/hardening/linux_hardening.md)                      | sysctl, auditd, umask         |
+| [방화벽](04_security/hardening/firewall_iptables_nftables.md)                         | iptables/nftables             |
+| [SSH 보안](04_security/hardening/ssh_security.md)                                     | 키 인증, fail2ban             |
+| [TLS/SSL](04_security/hardening/tls_ssl_guide.md)                                     | 인증서, Let's Encrypt, mTLS   |
+| [시크릿 관리](04_security/hardening/secret_management.md)                             | Vault, AWS Secrets Manager    |
+| [취약점 스캔](04_security/hardening/vulnerability_scanning.md)                        | nmap, trivy, lynis            |
+| [Gitleaks 가이드](04_security/hardening/gitleaks_guide.md)                            | 민감정보 탐지, pre-commit     |
+| [Trivy 가이드](04_security/hardening/trivy_guide.md)                                  | 이미지·IaC 스캔, CI 연동      |
+| [TLS 인증서 만료 감시](04_security/hardening/tls_certificate_expiry_monitoring.md)    | 만료 감시, 갱신 점검          |
+| [Lynis 서버 감사](04_security/hardening/lynis_audit_guide.md)                         | 서버 감사, 정기 점검·비교     |
+| [AIDE 파일 무결성 감시](04_security/hardening/aide_file_integrity_monitoring.md)      | 기준 DB, 정기 점검, 변경 승인 |
+| [auditd 규칙과 조회](04_security/hardening/auditd_rules_and_search_guide.md)          | 감사 규칙, ausearch, 보존     |
+| [SELinux 거부 분석](04_security/hardening/selinux_troubleshooting_guide.md)           | AVC 해석, fcontext, 불리언    |
+| [침해 의심 서버 초동 점검](04_security/hardening/linux_intrusion_triage_checklist.md) | 휘발성 수집, 지속 실행, 격리  |
+| [Vault 설치](04_security/hardening/vault_install.md)                                  | HashiCorp Vault 설치·운영     |
+| [Windows OpenSSH](04_security/hardening/windows_openssh_install.md)                   | Windows SSH 서버 설치         |
 
 ### Cloud Security
 
@@ -368,6 +393,10 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [Slow Query](05_database/operations/rdbms_slow_query.md)                 | 슬로우 쿼리 분석        |
 | [Tuning](05_database/operations/rdbms_tuning.md)                         | 버퍼풀, 캐시, I/O       |
 | [Percona XtraBackup](05_database/operations/percona_xtrabackup_guide.md) | MySQL 물리 백업·복구    |
+| [PostgreSQL 백업·PITR](05_database/operations/postgresql_backup_pitr.md) | pg_dump, WAL 아카이브   |
+| [MySQL 논리 백업](05_database/operations/mysql_logical_backup.md)        | mysqldump, binlog PITR  |
+| [PostgreSQL VACUUM](05_database/operations/postgresql_vacuum.md)         | autovacuum, 랩어라운드  |
+| [PgBouncer](05_database/operations/pgbouncer_connection_pooling.md)      | 연결 풀링, 풀 모드      |
 
 ### NoSQL
 
@@ -398,13 +427,14 @@ RDBMS, NoSQL, 운영, 포렌식.
 
 ### Roadmap
 
-| 문서                                                                            | 설명                  |
-|---------------------------------------------------------------------------------|-----------------------|
-| [SE 로드맵](06_career/roadmap/se_roadmap.md)                                    | 시스템 엔지니어 경로  |
-| [SRE 로드맵](06_career/roadmap/sre_roadmap.md)                                  | Site Reliability 경로 |
-| [DBA 로드맵](06_career/roadmap/dba_roadmap.md)                                  | DBA 역할, 자격증      |
-| [언어별 가이드](06_career/roadmap/se_complete_roadmap_programming_languages.md) | 언어 선택 기준        |
-| [인프라 직무 비교](06_career/roadmap/infra_roles_comparison.md)                 | 직무·역할·기술 비교   |
+| 문서                                                                            | 설명                       |
+|---------------------------------------------------------------------------------|----------------------------|
+| [SE 로드맵](06_career/roadmap/se_roadmap.md)                                    | 시스템 엔지니어 경로       |
+| [SRE 로드맵](06_career/roadmap/sre_roadmap.md)                                  | Site Reliability 경로      |
+| [DBA 로드맵](06_career/roadmap/dba_roadmap.md)                                  | DBA 역할, 자격증           |
+| [언어별 가이드](06_career/roadmap/se_complete_roadmap_programming_languages.md) | 언어 선택 기준             |
+| [인프라 직무 비교](06_career/roadmap/infra_roles_comparison.md)                 | 직무·역할·기술 비교        |
+| [SE 기술 면접 준비](06_career/roadmap/se_technical_interview_guide.md)          | 질문 유형, 답변 틀, 점검표 |
 
 ### Legal
 
@@ -422,6 +452,8 @@ RDBMS, NoSQL, 운영, 포렌식.
 |------------------------------------------------------------------------------------------|----------------------------------------------|
 | [AI 개발 요청 템플릿](06_career/ai_tools/ai_development_request_template.md)             | AI 활용 요청 양식                            |
 | [AI Markdown 패턴](06_career/ai_tools/ai_markdown_design_patterns.md)                    | 에이전트용 문서 패턴                         |
+| [MCP 프로토콜 가이드](06_career/ai_tools/mcp_protocol_guide.md)                          | 구조, 전송, 인증, 보안 점검                  |
+| [AI 작성 인프라 코드 검토](06_career/ai_tools/ai_generated_infra_code_review.md)         | 오류 유형, 자동 검사, 검토 점검표            |
 | [AI 코딩 도구 비교](06_career/ai_tools/ai_coding_tools_comparison.md)                    | Kiro·Claude Code·Codex·Cursor·Copilot 비교   |
 | [AI 에이전트 운영 도구](06_career/ai_tools/ai_agent_workspace_tools.md)                  | herdr·omp·Orca 등 실행·병렬·관리 도구        |
 | [AI 시대 다섯 업무 원형](06_career/ai_tools/ai_work_archetypes.md)                       | Boris Cherny의 역할 구분과 팀 구성           |
@@ -458,11 +490,14 @@ RDBMS, NoSQL, 운영, 포렌식.
 
 AX(AI 전환) 환경 구축 참고 자료. 도구와 무관한 환경 구축 방법을 다루며, 특정 도구 사용법은 [6. Career](#6-career)의 AI Tools에 있습니다.
 
-| 문서                                                                    | 설명                                       |
-|-------------------------------------------------------------------------|--------------------------------------------|
-| [AI Transformation 안내](07_ai_transformation/README.md)                | 나누는 기준과 문서 목록                    |
-| [에이전트 설계 원칙](07_ai_transformation/agent_design_principles.md)   | 작업 형태 선택, 지침 수준, 문맥 예산, 도구 |
-| [에이전트 보안 위협 점검](07_ai_transformation/agent_security_risks.md) | OWASP 에이전트 위협 10개와 AX 환경 점검    |
+| 문서                                                                                | 설명                                       |
+|-------------------------------------------------------------------------------------|--------------------------------------------|
+| [AI Transformation 안내](07_ai_transformation/README.md)                            | 나누는 기준과 문서 목록                    |
+| [에이전트 설계 원칙](07_ai_transformation/agent_design_principles.md)               | 작업 형태 선택, 지침 수준, 문맥 예산, 도구 |
+| [에이전트 보안 위협 점검](07_ai_transformation/agent_security_risks.md)             | OWASP 에이전트 위협 10개와 AX 환경 점검    |
+| [에이전트 평가 설계](07_ai_transformation/agent_evaluation_design.md)               | 과제·채점기·pass^k·회귀 평가               |
+| [MCP 서버 도입·운영 점검](07_ai_transformation/mcp_server_adoption_checklist.md)    | 전송·권한·도구 안전 점검                   |
+| [에이전트 실행 관측과 감사 기록](07_ai_transformation/agent_observability_audit.md) | OpenTelemetry GenAI 규약, 감사 기록        |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -496,6 +531,7 @@ AX(AI 전환) 환경 구축 참고 자료. 도구와 무관한 환경 구축 방
 | [게임 서버 아키텍처 유형](97_misc/game_server_architecture.md)                                                     | 게임 서비스의 서버 운영 방식 분류                                                 |
 | [Kiro 라이선스·비용](97_misc/kiro_license_guide.md)                                                                | Kiro 요금제와 비용 가이드                                                         |
 | [IT 레퍼런스 블로그](06_career/it_reference_blogs.md)                                                              | IT 기술 블로그·학습 사이트 모음                                                   |
+| [엔지니어 기술 문서 작성](06_career/technical_writing_for_engineers.md)                                            | 런북·작업 계획서·README 작성 규칙                                                 |
 | [파닉스 영어 학습법](97_misc/phonics_english.md)                                                                   | 영어 파닉스 학습법(기술 외 개인 자료)                                             |
 | [Windows 인시던트 로그 수집](96_scripts/windows/collect_incident_logs.py)                                          | 장애 시 로그 자동 수집 스크립트                                                   |
 | [Windows Hosts 관리](96_scripts/windows/win_hosts_manager.py)                                                      | hosts 파일 관리 도구                                                              |

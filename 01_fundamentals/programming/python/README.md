@@ -31,6 +31,7 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 - **[예외 처리](python_exceptions.md)** - try/except/finally, raise, 사용자 정의 예외
 - **[컴프리헨션](python_comprehensions.md)** - 리스트/딕셔너리/집합 컴프리헨션
 - **[정규표현식](python_regex.md)** - re 모듈, 패턴 매칭, 로그 파싱
+- **[날짜·시간 처리](python_datetime.md)** - datetime, zoneinfo, strptime, 단조 시계
 
 ### 고급
 - **[데코레이터](python_decorators.md)** - 데코레이터 개념과 활용, functools
@@ -42,15 +43,18 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 
 ### 비동기
 - **[비동기 프로그래밍](python_async.md)** - asyncio, async/await, Task, gather, 비동기 I/O
+- **[동시성](python_concurrency.md)** - threading, concurrent.futures, multiprocessing, GIL
 
 ### 실전
 - **[패키지](python_packages.md)** - 패키지 구조, __init__.py, import
 - **[Python 로깅](python_logging.md)** - logging 모듈 가이드
 - **[subprocess](python_subprocess.md)** - 외부 명령 실행, 프로세스 관리
+- **[HTTP 클라이언트](python_http_client.md)** - urllib.request, requests, timeout, 재시도, TLS
 - **[JSON/YAML](python_json_yaml.md)** - 설정 파일, 데이터 교환
 - **[argparse](python_argparse.md)** - CLI 도구 제작
 - **[가상환경](python_virtual_env.md)** - venv, pip, 의존성 관리
 - **[테스트](python_testing.md)** - pytest, unittest, Mock, 커버리지
+- **[디버깅·프로파일링](python_debugging_profiling.md)** - pdb, faulthandler, cProfile, tracemalloc
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -246,6 +250,6 @@ logging.info("작업 시작")
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

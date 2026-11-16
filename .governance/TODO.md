@@ -20,7 +20,7 @@
 
 수신 완료 — MAIN-20261027-06 Codex 계층 선택: POLICY-31 CX2CL-20261027-03 수용 판정(31 `8558b03`)을 2026-11-01에 받아 common 단독 유지 확정 문장을 [적용 기록](APPLICATION.md) 4절에 넣고 ISS-06을 종료했습니다(근거는 `CHANGELOG.md`의 `[Unreleased]`).
 
-대기 — AX-HUB-19 후속: [07_ai_transformation](../07_ai_transformation/README.md)의 내용 문서는 사용자가 주제를 정할 때 작성합니다. 기존 `06_career/ai_tools/` 문서는 옮기지 않으며 이동은 별도 결정입니다.
+대기 — AX-HUB-19 후속: [07_ai_transformation](../07_ai_transformation/README.md)에 2026-11-16 사용자 지시로 내용 문서 3개(평가 설계·MCP 서버 점검·실행 관측)를 더했습니다. 그 밖의 주제는 사용자가 정할 때 작성합니다. 기존 `06_career/ai_tools/` 문서는 옮기지 않으며 이동은 별도 결정입니다.
 
 대기 — MAIN-20261113-01 / AX-HUB-20 후속: 권장 묶음 4개는 작성했습니다. [후보 기록](tracks/MAIN-20261113-01_ax-reference-docs/40_results/CANDIDATES.md)의 "기존 갱신" 후보 13건(6~11·13·14·16·20·21·23·28)은 사용자가 정할 때 기존 공식 노트를 넓힙니다.
 

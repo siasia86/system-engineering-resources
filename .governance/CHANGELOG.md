@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- 폴더별 새 문서 추가 (2026-11-16): 사용자 지시(승인 없이 추가)로 11개 폴더 묶음의 빠진 주제를 분석해 새 문서 42개를 더하고, 폴더 README 9개와 루트 README에 목록·문서 수를 반영했습니다. 주요 주제는 systemd·journald·sysctl, Python 동시성·HTTP·날짜·디버깅, DNS·MTU, 분산 시스템·수 표현·확률적 자료구조·일관된 해싱, GitLab CI·Dockerfile·Podman·Kubernetes 장애 진단, LVM·mdadm·node_exporter·CloudWatch, 점진 배포·Feature Flag·Toil·Resilience, AIDE·auditd·SELinux·침해 초동 점검, PostgreSQL 백업·VACUUM·PgBouncer·MySQL 논리 백업, MCP·AI 작성 코드 검토·기술 면접·기술 문서 작성, 에이전트 평가·MCP 서버 점검·실행 관측입니다. 같은 LVM 주제가 두 폴더에 나와 `02_infrastructure/storage/lvm_operations.md` 하나만 남겼습니다.
+
 - 문서 내용 검토와 정정 (2026-11-16): 사용자 지시로 추적 문서 491개를 11묶음으로 나눠 병렬 검토하고, 공식 문서·같은 문서 안 근거로 확인된 정정만 61개 파일에 반영했습니다. 위험한 예시(호스트 전체 볼륨 삭제, 정확히 일치하지 않는 사용자 허용 검사, 값으로 읽히는 sysctl 줄 끝 주석, ICMPv6 차단, 경고 없는 policy drop)를 고쳤고, 명령·옵션 오류(unshare 순서, mc retention, restic key remove, Vault capability·dev 수신 주소, Kiro CI 도구 권한), 문서 안 모순(DNS 헤더 비트 순서, LINQ 지연 실행 예시, 복사된 Filebeat 표, View 생성 순서), 연결 노트와 어긋난 값(Zabbix 8.0 LTS, Unicode 문자 수, GRAID 명령), 패치 판(MetalLB·Longhorn·Grafana·kube-prometheus-stack)과 `_reference` 노트 14개의 정의·판 표기를 바로잡았습니다. 절 재작성·주 판 전환·날짜가 박힌 표·근거 부족 항목은 고치지 않고 따로 모았습니다.
 
 - 운영 기준 제목과 적용 문구 정정 (2026-11-16): 중앙 profile 31 `a08c206`에 맞춰 [GOVERNANCE](GOVERNANCE.md) 제목을 "운영 기준"으로 바꾸고 6절 끝 문장을 현장에서도 참인 문장으로 고쳤습니다. [적용 기록](APPLICATION.md) 7절에 남겼습니다.
