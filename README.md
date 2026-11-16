@@ -201,7 +201,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [S3 Object Lock](02_infrastructure/cloud_aws/s3_object_lock.md)                         | WORM, Compliance           |
 | [S3 백업 팁](02_infrastructure/cloud_aws/s3_backup_tips.md)                             | 비용/성능/무결성           |
 | [STS AssumeRole](02_infrastructure/cloud_aws/sts_assume_role.md)                        | 크로스 계정 역할 위임      |
-| [백업 도구 비교](02_infrastructure/cloud_aws/backup_tools_comparison.md)                | AWS Backup vs 직접 구현    |
+| [클라우드 백업 비용 비교](02_infrastructure/cloud_aws/cloud_backup_cost_comparison.md)  | 백업 도구 리소스·비용 비교 |
 | [VPC Peering](02_infrastructure/cloud_aws/vpc_peering_inter_region_guide.md)            | Inter-Region Peering       |
 | [AWS Network Firewall](02_infrastructure/cloud_aws/aws_network_firewall.md)             | 관리형 방화벽              |
 
