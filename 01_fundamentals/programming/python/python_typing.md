@@ -1,5 +1,4 @@
 # Python 타입 힌트 (Type Hints)
-<!-- reference: https://docs.python.org/3/library/typing.html -->
 
 Python 3.5+에서 도입된 타입 힌트(PEP 484)와 typing 모듈 사용법을 정리합니다.
 
@@ -520,6 +519,6 @@ print(Config.instance_count())  # 2
 
 **작성일**: 2026-08-09
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

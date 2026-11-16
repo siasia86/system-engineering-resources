@@ -1,5 +1,4 @@
 # Python 비동기 프로그래밍 (asyncio)
-<!-- reference: https://docs.python.org/3/library/asyncio.html -->
 
 Python의 asyncio 기반 비동기 프로그래밍 — async/await, Task, 동시 실행, 비동기 I/O를 정리합니다.
 
@@ -476,6 +475,6 @@ async def offload_fetch(url: str) -> str:
 
 **작성일**: 2026-08-09
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

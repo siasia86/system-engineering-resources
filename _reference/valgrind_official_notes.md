@@ -24,7 +24,7 @@ sources:
 
 | 항목             | 값                                                     | 출처            |
 |------------------|--------------------------------------------------------|-----------------|
-| 최신 stable 버전 | 3.27.1 (2026-05-20)                                    | sourceware FTP  |
+| 최신 stable 버전 | 3.28.0 (2026-10-23)                                    | sourceware FTP  |
 | 기본 도구        | Memcheck (기본값, 메모리 오류 검사)                    | valgrind manual |
 | 주요 도구 목록   | Memcheck, Callgrind, Cachegrind, Helgrind, DRD, Massif | valgrind manual |
 | 도구 선택 옵션   | `--tool=<toolname>` (기본값: memcheck)                 | valgrind manual |
@@ -87,6 +87,6 @@ sources:
 
 **작성일**: 2026-08-01
 
-**마지막 업데이트**: 2026-08-01
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -21,7 +21,7 @@ sources:
 
 | 항목             | 값                                     | 출처        |
 |------------------|----------------------------------------|-------------|
-| 최신 stable 버전 | 4.99.6                                 | tcpdump.org |
+| 최신 stable 버전 | 4.99.7 (2026-09-21)                    | tcpdump.org |
 | BPF 필터         | Berkeley Packet Filter 문법 사용       | tcpdump.1   |
 | 기본 동작        | 지정 인터페이스의 패킷을 캡처하여 출력 | tcpdump.1   |
 | root 권한        | 일반적으로 root 또는 CAP_NET_RAW 필요  | tcpdump.1   |
@@ -87,6 +87,6 @@ sources:
 
 **작성일**: 2026-08-01
 
-**마지막 업데이트**: 2026-08-01
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -5,7 +5,7 @@ tags:
   - index
   - reference
   - directory
-last_checked: 2026-11-13
+last_checked: 2026-11-16
 sources:
   - self (이 파일이 인덱스 역할)
 ---
@@ -48,7 +48,7 @@ sources:
 | Docker                         | `_reference/docker_official_notes.md`                   | Engine 29.9.3, Compose v5.7.0                           | 2026-11-09 | O    |
 | Epsilon-Delta (Math)           | `_reference/epsilon_delta_math_notes.md`                | Rudin Ch.4, Weierstrass                                 | 2026-11-09 | O    |
 | GitHub References              | `_reference/github_references.md`                       | Codex Skills·Harness/Loop·개발 절차·명세·탐색 목록      | 2026-10-03 | O    |
-| HashiCorp Vault                | `_reference/hashicorp_vault_official_notes.md`          | KV·Database Dynamic Secret·라이선스                     | 2026-08-19 | O    |
+| HashiCorp Vault                | `_reference/hashicorp_vault_official_notes.md`          | KV·Database Dynamic Secret·라이선스                     | 2026-08-20 | O    |
 | GitLab CI/CD Variables         | `_reference/gitlab_ci_variables_official_notes.md`      | Protected·Masked·File·AWS OIDC                          | 2026-08-19 | O    |
 | Gitleaks                       | `_reference/gitleaks_official_notes.md`                 | v8.30.1                                                 | 2026-11-09 | O    |
 | Trivy                          | `_reference/trivy_official_notes.md`                    | v0.76.2·GHSA-69fq 공급망 사고·action v0.36.0            | 2026-11-10 | O    |
@@ -83,10 +83,14 @@ sources:
 | SRE Operations                 | `_reference/sre_operations_official_notes.md`           | Google SRE Book / ITIL v4                               | 2026-11-09 | X    |
 | Terraform                      | `_reference/terraform_official_notes.md`                | v1.17.1, AWS Provider v6.72.0                           | 2026-11-09 | O    |
 | VPN Protocol                   | `_reference/vpn_protocol_official_notes.md`             | RFC 7296 / WireGuard protocol                           | 2026-11-10 | O    |
+| SoftEther VPN                  | `_reference/softether_official_notes.md`                | v4.44-9807-rtm (Stable), 5.2.5188 (개발)                | 2026-11-09 | -    |
 | Web Server                     | `_reference/web_server_official_notes.md`               | Nginx 1.30.6, Apache 2.4.70, HAProxy 3.4.7 LTS          | 2026-11-10 | O    |
 | YAML Spec                      | `_reference/yaml_spec_notes.md`                         | 1.2 (1.1 호환)                                          | 2026-11-09 | O    |
 | Zabbix                         | `_reference/zabbix_official_notes.md`                   | 8.0 LTS (2026-11-05), 7.4 Standard                      | 2026-11-09 | O    |
 | e4fsprogs (CentOS 5)           | `_reference/e4fsprogs_centos5_notes.md`                 | 1.41.12-4.el5_10, fsck.ext4                             | 2026-07-22 | O    |
+| Hyper-V I/O 경합               | `_reference/hyperv_io_contention_notes.md`              | Storage Stack·Storage QoS·성능 카운터                   | 2026-07-31 | -    |
+| Hyper-V I/O 경합 (CentOS 5)    | `_reference/hyperv_centos5_io_contention_notes.md`      | Storage QoS·LIS 지원 범위·CentOS 5.11                   | 2026-11-09 | -    |
+| Hyper-V 버전 비교              | `_reference/hyperv_version_comparison_notes.md`         | Windows Server 2008·2008 R2·2012, CentOS 5.x 호환       | 2026-11-09 | -    |
 | Android ADB                    | `_reference/android_adb_official_notes.md`              | platform-tools 37.0.2, logcat                           | 2026-11-09 | O    |
 | Windows Server 2022 Monitoring | `_reference/windows_server_2022_monitoring_notes.md`    | Get-Counter, 카운터, 임계치                             | 2026-11-09 | O    |
 | Linux Filesystem               | `_reference/linux_filesystem_official_notes.md`         | ext4, XFS, Btrfs, VFS                                   | 2026-11-09 | O    |

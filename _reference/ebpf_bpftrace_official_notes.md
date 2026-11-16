@@ -24,13 +24,13 @@ sources:
 
 ### 검증된 사실 (2026-08-01)
 
-| 항목              | 값                                                          | 출처            |
-|-------------------|-------------------------------------------------------------|-----------------|
-| verifier          | 프로그램 로드 시 커널 내 정적 검증 수행                     | bpf.2 man page  |
-| JIT 컴파일        | verifier 통과 후 native 코드로 컴파일                       | ebpf.io         |
-| libbpf 최신 버전  | v1.7.0 (2026-03-16)                                         | GitHub API      |
-| bpftrace 최신버전 | v0.26.1 (2026-06-02)                                        | GitHub API      |
-| kernel 버전       | docs.kernel.org 기준 7.2.0-rc5 (최신 stable 별도 확인 필요) | docs.kernel.org |
+| 항목              | 값                                      | 출처           |
+|-------------------|-----------------------------------------|----------------|
+| verifier          | 프로그램 로드 시 커널 내 정적 검증 수행 | bpf.2 man page |
+| JIT 컴파일        | verifier 통과 후 native 코드로 컴파일   | ebpf.io        |
+| libbpf 최신 버전  | v1.8.0 (2026-10-05)                     | GitHub API     |
+| bpftrace 최신버전 | v0.27.1 (2026-10-24)                    | GitHub API     |
+| kernel 버전       | stable 7.3.3, mainline 7.4-rc2          | kernel.org     |
 
 (2026-11-09 확인: libbpf 최신 v1.8.0(2026-10-05), bpftrace 최신 v0.27.1(2026-10-24), kernel.org 최신 stable 7.3.3·mainline 7.4-rc2)
 

@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- 저장소 분석과 모순 정정 (2026-11-16): 저장소 전체 검사(추적 파일 style·heading·link·inventory·gitleaks 0건) 뒤 자동 검사가 잡지 못하는 모순을 고쳤습니다. [_reference INDEX](../_reference/INDEX.md)에 빠진 노트 4개(SoftEther·Hyper-V 3개)를 더하고 Vault 확인일을 노트와 맞췄습니다. 노트 9개(eBPF·GDB·iotop·iperf3·Lean·rsync·strace·tcpdump·Valgrind)의 표에 남은 옛 최신 판을 같은 노트의 2026-11-09 확인 값으로 바꿨습니다. `vim_airline.md`의 작성일이 마지막 업데이트보다 늦던 것을 첫 commit 날짜로 고쳤고, 2026-11-09·11-15에 내용을 바꾸고도 날짜를 두었던 노트 7개와 관리 문서 4개(AGENTS 포함)의 마지막 업데이트를 실제 수정일로 맞췄습니다. Python 문서 2개의 `reference` 주석이 노트가 아닌 URL을 가리켜 지웠고(같은 URL은 참고 자료에 있음), [적용 기록](APPLICATION.md) 6절에 2026-11-14·15 profile 병합을 더했습니다.
+
 - 관리 문서 현행화 (2026-11-16): [PLAN](PLAN.md) 4절의 검사 도구 기준을 옛 v0.3.3에서 workflow 고정 값 v0.5.0·checksum으로 바로잡고 다음 고정 판 갱신 조건을 적었습니다. [HANDOFF](HANDOFF.md) 재개 지점과 [TODO](TODO.md) 대기 줄에 고정 판 갱신·루트 연결 안내 관찰 유예(2026-11-26)를 반영했습니다.
 
 - AX-HUB-17 옛 자리 안내의 옮김 기록 전환 (2026-11-14): 33 기준 v1.5(`307863d`) 5절·6절에 따라 [옮김 기록](MOVED.md)을 새로 만들고, 2026-10-27에 `.governance/`로 옮긴 루트 `PLAN.md`·`TODO.md`·`CHANGELOG.md` 3행에 외부 참조 확인과 정리 조건을 적었습니다. [INDEX](INDEX.md) 1절 tree에 한 줄을 더했습니다. 중앙 profile 31 `bc68358`에 맞춰 AGENTS·[GOVERNANCE](GOVERNANCE.md)·INDEX·[관리 진입](README.md)의 3행 공통 기준 문장을 옮김 기록 기준으로 바꿨습니다. HANDOFF와 루트 README에는 대응 문장이 없어 그대로 두었습니다. 루트 연결 안내 3개는 지우지 않았습니다.

@@ -22,7 +22,7 @@ iperf3의 명령 구조와 옵션은 ESnet 공식 문서와 공식 GitHub 저장
 | 항목             | 값                       | 출처                |
 |------------------|--------------------------|---------------------|
 | 프로젝트         | iperf3                   | ESnet 공식 GitHub   |
-| 최신 release     | 3.21                     | GitHub Releases API |
+| 최신 release     | 3.22 (2026-09-29)        | GitHub Releases API |
 | 주요 용도        | 네트워크 throughput 측정 | 공식 invoking 문서  |
 | 지원 측정 방식   | TCP, UDP, SCTP           | 공식 manual         |
 | 기본 server port | TCP 5201                 | 공식 manual         |
@@ -90,6 +90,6 @@ iperf3 --version
 
 **작성일**: 2026-08-28
 
-**마지막 업데이트**: 2026-08-28
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.

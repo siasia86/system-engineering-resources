@@ -21,7 +21,7 @@ sources:
 
 | 항목             | 값                                                                                            | 출처       |
 |------------------|-----------------------------------------------------------------------------------------------|------------|
-| 최신 stable 버전 | v1.31 (2026-01-21)                                                                            | GitHub API |
+| 최신 stable 버전 | v1.33 (2026-10-21)                                                                            | GitHub API |
 | 최소 커널 버전   | Linux 2.6.20 이상 필요                                                                        | iotop.8    |
 | 필요 커널 설정   | CONFIG_TASK_DELAY_ACCT, CONFIG_TASK_IO_ACCOUNTING, CONFIG_TASKSTATS, CONFIG_VM_EVENT_COUNTERS | iotop.8    |
 | 비-root 실행     | `cap_net_admin` capability 부여 시 가능                                                       | iotop.8    |
@@ -72,6 +72,6 @@ sources:
 
 **작성일**: 2026-08-01
 
-**마지막 업데이트**: 2026-08-01
+**마지막 업데이트**: 2026-11-16
 
 © 2026 siasia86. Licensed under CC BY 4.0.
