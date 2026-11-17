@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- 루트 연결 안내 삭제 (2026-11-17, 사용자 직접 결정): 2026-10-27 `.governance/`로 옮긴 뒤 루트에 두었던 `TODO.md`·`PLAN.md`·`CHANGELOG.md` 연결 안내를 지웠습니다. 저장소 안 링크·도구 입력은 0건이었고, 현행 AGENTS의 "옛 자리 안내는 외부 참조가 있을 때 둡니다"에 따라 관찰 유예 끝(11-26) 전에 앞당겼습니다. [옮김 기록](MOVED.md) 세 행을 닫고 [삭제 기록](REMOVED.md)에 복원 명령을 남겼으며, [INDEX](INDEX.md) 트리 1행과 TODO·HANDOFF의 대기 줄을 정리했습니다. 05 총괄에 미리 알렸습니다. `TODO2.md`는 그대로 둡니다.
+
 - 문서 세 건 정리 (2026-11-17, 05 D132 M4, 사용자 "모두 권장안"): `04_security/web_cwe/README.md`의 개인 playbook 경로 3곳을 자리표시자로 바꿨습니다(이력은 그대로). [gstack](../02_infrastructure/monitoring/gstack.md)을 공식 저장소 README(`VERSION` 1.99.5.0, commit `5b4fa9e`, 2026-11-17 확인) 기준으로 다시 썼고, 공식 자료에 없는 `.gstack/memory.md`·`/memory`·70% 임계 설명을 지웠습니다. `01_fundamentals/networking/tcpdump_examples.md`는 코드 블록이 [packet_analysis.md](../01_fundamentals/networking/packet_analysis.md) 1~4절과 같아 통합·삭제했고, 통합 대상에 없던 Python 출력 1줄(`print(f"Payload: …")`)은 packet_analysis.md의 같은 자리로 옮겼습니다. 링크 3곳과 루트 README 행을 고쳤습니다([옮김 기록](MOVED.md)).
 
 - 출처 미확인 commit 되돌림 (2026-11-17, 05 D133, 사용자 승인): 16:58에 main에 들어온 `fc60899`("docs: docs modified")가 루트 `CHANGELOG.md`·`README.md`, `06_career/README.md`, `_reference/INDEX.md`에 stash 충돌 표시를 남겨 CI가 실패했습니다. `git revert`로 되돌려(`5cfb780`) 트리를 `8655aae`와 같게 맞췄습니다. 10-13 stash는 그대로 두었고, commit을 만든 주체는 미확인입니다.

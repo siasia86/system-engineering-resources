@@ -10,7 +10,6 @@
 32_system-engineering-resources/
 ├── AGENTS.md                    작업 진입
 ├── README.md                    저장소 안내
-├── TODO.md·PLAN.md·CHANGELOG.md 이전 위치 연결 안내
 ├── TODO2.md                     별도 설계 과제
 └── .governance/
     ├── README.md                관리 진입
@@ -58,6 +57,6 @@
 
 **작성일**: 2026-10-04
 
-**마지막 업데이트**: 2026-11-15
+**마지막 업데이트**: 2026-11-17
 
 © 2026 siasia86. Licensed under CC BY 4.0.
