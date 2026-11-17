@@ -10,7 +10,6 @@
 32_system-engineering-resources/
 ├── AGENTS.md                    작업 진입
 ├── README.md                    저장소 안내
-├── TODO2.md                     별도 설계 과제
 └── .governance/
     ├── README.md                관리 진입
     ├── INDEX.md                 구조·읽기 조건
@@ -40,7 +39,6 @@
 | 주제별 조사    | `README.md`                 | 주제 색인에서 필요한 자료를 선택합니다.                                   |
 | 계획 재개      | `.governance/PLAN.md`       | 해당 작업의 단계·검증 근거만 확인합니다.                                  |
 | 현재 상태      | `.governance/TODO.md`       | 현재 지정 작업과 선행 조건을 확인합니다.                                  |
-| 별도 설계 과제 | `TODO2.md`                  | 해당 인프라/governance 과제일 때만 읽습니다.                              |
 | 문서 작성·수정 | `.governance/GOVERNANCE.md` | [문서 형식](GOVERNANCE.md#5-문서-형식)의 기본값·저장소 예외를 확인합니다. |
 
 추가 문서는 변경이 다른 영역과 이어질 때 선택합니다. 단순 질문에 모든 기록을 읽지 않습니다.
