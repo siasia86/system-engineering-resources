@@ -277,7 +277,7 @@
 - `30_sia-scripts` 공용 검사기·release artifact·Ansible 배포 구조의 migration 상태를 갱신.
 - 오류 fixture 4종과 legacy/common 검사기 반환 코드 대조를 완료.
 - 일반 계정 Controller의 사용자 소유 `.venv`에서 Ansible syntax check를 완료.
-- 최종 검증이 끝난 `/root/30_sia-scripts` 검증 clone을 사용자 승인으로 삭제. 원격 `main`과 사용자 clone을 기준 상태로 사용.
+- 최종 검증이 끝난 30 저장소(`30_sia-scripts`) 검증 clone을 사용자 승인으로 삭제. 원격 `main`과 사용자 clone을 기준 상태로 사용.
 - `ansible-lint==26.8.0`과 `ansible-core==2.20.5` 조합의 lint 통과를 확인.
 - 임시 target에서 release install·update·rollback과 root 소유자·권한·entrypoint 동작을 확인.
 - 32 저장소 자체 Markdown style·heading·link 검사, gitleaks, `git diff --check`를 재검증해 통과.
@@ -332,7 +332,7 @@
 - `03_claude/`는 원본·allowlist·검증 절차를 확정하기 전까지 예약 영역으로 유지하도록 활성화 조건을 정의.
 - 도구 중립 규칙은 `01_repository_governance/`, 도구 종속 자료는 각 도구 영역에 배치하는 분리 기준을 정의.
 - 이관 저장소의 템플릿 사용 실태를 측정하고, 현재 사용 형식과 미사용 문서의 재검토 조건을 기록.
-- Zircon Windows 후속 작업을 `/root/22_github_private/12_zircon_win/TODO.md`로 이관하고 `TODO2.md`에서 관련 블록을 정리.
+- Zircon Windows 후속 작업을 `12_zircon_win` 저장소의 `TODO.md`로 이관하고 `TODO2.md`에서 관련 블록을 정리.
 - Ansible 저장소의 `.governance/` 병행 검증을 완료하고 중앙 `chobo_ansible` profile과 관련 활성 참조를 제거.
 - `TODO2.md`의 Ansible profile 정리 항목을 완료하고 임시 TODO 문서를 삭제.
 - `TODO.md`에서 완료된 작업과 해소된 검사 예외를 제거하고, 실제 미완료 fact-check와 유효한 검사 예외만 유지.
