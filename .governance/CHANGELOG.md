@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- 검사 도구 고정 판 0.6.0 (2026-11-17, 05 D130 U9-1, 사용자 허용): [검사 workflow](../.github/workflows/update-date.yml)의 sia_scripts 판을 0.5.0에서 0.6.0으로 바꾸고(0.5.1은 건너뜀), 첨부 archive의 SHA-256을 직접 계산해 05 검토 값과 대조한 뒤 고정했습니다. [검증 기준](verification.md)과 [PLAN](PLAN.md) 4절의 판 표기도 함께 고쳤습니다. 바꾸기 전 커밋 사본에 0.6.0으로 workflow 검사 다섯 단계를 돌려 모두 0건이었고, 예외 목록은 총 5건이었습니다.
+
 - 계정 표기 6곳 일반화 (2026-11-17, 05 D128 B1, 사용자 허용): `96_scripts/windows/win_hosts_manager.py`의 로그 폴더 이름을 스크립트 이름 기반으로, `02_infrastructure/web_server/nginx_geoip2_install.sh` 머리 주석의 작성자를 저장소 표기 `siasia86`으로 바꿨습니다. 이 파일의 옛 항목 2곳은 `<옛 표기>`로 가리고, 계정 홈 경로 1곳은 `~/.kiro/...` 꼴로 일반화했습니다. Git 이력은 다시 쓰지 않았습니다.
 
 - 보고만 항목 2차 정정 (2026-11-16): 사용자 결정(권장안 모두 승인)으로 1차 검토에서 남긴 항목을 11묶음으로 다시 처리해 171개 파일을 고쳤습니다. 위험·모순(strace 권한, trivy 실행 순서, docker·compose cgroup 권장 통일, OCSP stapling 예시, AWS MFA·Network Firewall 그림), 지난 날짜 표(PostgreSQL 14·.NET 8/9 지원 종료, Windows Server ESU, 현행 Claude 모델, AI 도구 비교표, 최신 판), 절 재작성(GitLab 이벤트 API 전제, dbtrail 저장 구조, Kiro 도구 매핑, 빈 절)과 다이어그램 안 한글의 영문화를 반영했고, `_reference` 노트를 다시 확인한 곳은 확인일과 INDEX를 맞췄습니다. 근거를 끝내 찾지 못한 값, 파일 통합·삭제가 필요한 항목(gstack 문서 전제, tcpdump 예시 중복), 공개 문서의 실습 경로는 고치지 않았습니다.
@@ -1083,6 +1085,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-17
 
 © 2026 siasia86. Licensed under CC BY 4.0.
