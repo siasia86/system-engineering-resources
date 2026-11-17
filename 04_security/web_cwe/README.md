@@ -3,7 +3,7 @@
 CWE(Common Weakness Enumeration) 기반 웹 취약점을 실습 환경에서 재현하고 대응 방법을 학습합니다. 각 문서는 취약점 유형별 원리, PoC, 대응을 포함합니다.
 
 > 실습 환경: Hyper-V Rocky 10 VM (192.0.2.182) + httpd 2.4 + PHP 8.2
-> playbook: `/opt/00_chobo_ansible/06_security/webshell_test/setup_webshell_lab.yml`
+> playbook: `setup_webshell_lab.yml` (별도 Ansible 저장소에서 관리, 경로는 환경마다 다름)
 
 ## 목차
 
@@ -82,8 +82,8 @@ Linux Server (Ansible Control)            Hyper-V VM (Rocky 10)
 ### 환경 구축
 
 ```bash
-cd /opt/00_chobo_ansible/06_security/webshell_test
-ansible-playbook -i ../../05_vagrant/inventory.ini setup_webshell_lab.yml --limit vm-rocky10
+cd <playbook 디렉토리>
+ansible-playbook -i <inventory 파일> setup_webshell_lab.yml --limit <대상 호스트>
 ```
 
 [⬆ 목차로 돌아가기](#목차)
