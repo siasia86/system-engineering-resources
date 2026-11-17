@@ -297,7 +297,7 @@ pktmon etl2pcap PktMon.etl --drop-only --out drops.pcapng
 
 🟡 주의: 기본 기록 방식은 순환(circular)이라 파일 크기 상한에 닿으면 오래된 패킷을 덮어씁니다. 기본 캡처 길이는 패킷당 128바이트로 헤더 분석에는 충분하지만 payload 전체가 필요하면 `--pkt-size 0`을 지정합니다. 캡처 파일에는 실제 통신 내용이 들어 있으므로 외부 공유 전에 민감 정보를 확인합니다.
 
-pcapng 변환 시에는 드롭 정보와 구성 요소 정보가 빠집니다. 드롭 원인을 보려면 `etl2txt` 결과나 `pktmon counters`를 함께 봅니다. Linux 쪽 패킷 분석은 [tcpdump_examples.md](../networking/tcpdump_examples.md)를 봅니다.
+pcapng 변환 시에는 드롭 정보와 구성 요소 정보가 빠집니다. 드롭 원인을 보려면 `etl2txt` 결과나 `pktmon counters`를 함께 봅니다. Linux 쪽 패킷 분석은 [packet_analysis.md](../networking/packet_analysis.md)를 봅니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

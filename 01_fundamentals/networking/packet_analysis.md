@@ -594,6 +594,7 @@ def parse_proxy_v2_from_tcpdump(hex_data):
         # 실제 데이터 시작 위치
         data_start = 16 + addr_len
         print(f"\nPayload starts at byte {data_start}")
+        print(f"Payload: {hex_data[data_start:data_start+50]}")
 
 # 사용 예시
 hex_string = "0d0a0d0a000d0a515549540a2111000cc0a801640a000001d4310050"

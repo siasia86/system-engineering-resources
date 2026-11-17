@@ -349,7 +349,7 @@ api "show sess"          # 현재 세션 목록 (많으면 주의)
 | 400·502 간헐 발생   | `show errors`                                | 규격에 맞지 않는 요청·응답 헤더                 |
 
 - `Idle_pct`가 0에 가까우면 HAProxy CPU가 포화된 것입니다. 공식 문서는 swap, CPU 공유, 과도한 스레드 수를 먼저 의심하라고 설명합니다.
-- 패킷 수준 확인은 [tcpdump 예제](../../01_fundamentals/networking/tcpdump_examples.md)를 봅니다.
+- 패킷 수준 확인은 [패킷 분석의 tcpdump 예시](../../01_fundamentals/networking/packet_analysis.md)를 봅니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

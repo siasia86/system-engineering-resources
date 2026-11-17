@@ -70,7 +70,6 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [패킷 분석](01_fundamentals/networking/packet_analysis.md)                         | IP/TCP/UDP 헤더, PROXY Proto       |
 | [네트워크 헤더](01_fundamentals/networking/network_headers.md)                     | Ethernet, ARP, DNS, TLS            |
 | [HTTP 메서드](01_fundamentals/networking/http_methods.md)                          | GET/POST/PUT/DELETE/PATCH          |
-| [tcpdump 예제](01_fundamentals/networking/tcpdump_examples.md)                     | 패킷 캡처 실전 예제                |
 | [Switch VLAN Mode](01_fundamentals/networking/switch_vlan_mode.md)                 | Access/Trunk/Hybrid                |
 | [VPN Protocol](01_fundamentals/networking/vpn_protocol_concepts.md)                | PPTP~WireGuard 비교                |
 | [에러 코드](01_fundamentals/networking/error_codes.md)                             | HTTP/SMTP/FTP 상태 코드            |

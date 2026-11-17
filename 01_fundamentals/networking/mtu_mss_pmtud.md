@@ -207,7 +207,7 @@ sudo tcpdump -ni any 'icmp6 and ip6[40] == 2'
 sudo tcpdump -ni eth0 'tcp[tcpflags] & tcp-syn != 0' -v
 ```
 
-`ip6[40]`은 확장 헤더가 없는 경우에만 ICMPv6 타입 위치와 맞습니다. 캡처 결과 읽는 법은 [tcpdump_examples.md](./tcpdump_examples.md)를 봅니다.
+`ip6[40]`은 확장 헤더가 없는 경우에만 ICMPv6 타입 위치와 맞습니다. 캡처 결과 읽는 법은 [packet_analysis.md](./packet_analysis.md)를 봅니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
