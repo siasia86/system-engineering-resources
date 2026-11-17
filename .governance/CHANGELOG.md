@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- 출처 미확인 commit 되돌림 (2026-11-17, 05 D133, 사용자 승인): 16:58에 main에 들어온 `fc60899`("docs: docs modified")가 루트 `CHANGELOG.md`·`README.md`, `06_career/README.md`, `_reference/INDEX.md`에 stash 충돌 표시를 남겨 CI가 실패했습니다. `git revert`로 되돌려(`5cfb780`) 트리를 `8655aae`와 같게 맞췄습니다. 10-13 stash는 그대로 두었고, commit을 만든 주체는 미확인입니다.
+
 - 단독 업무 점검 (2026-11-17, 05 D122 배정): 고정 판 sia_scripts 0.6.0(archive SHA-256과 manifest 38개 파일 대조)으로 커밋 사본(`f12a3f9`)에 [검증 기준](verification.md)의 현장 검사 여섯 가지를 돌려 모두 이슈 0건이었습니다(링크 1715개, 문체 455개 파일, 헤딩 552개 파일, 예외 목록 총 5건·사유 미확인 0건). 고칠 문서가 없어 문서는 바꾸지 않았고, [ISSUE](ISSUE.md)에 ISS-03 재확인 결과를 덧붙였습니다.
 
 - 검사 도구 고정 판 0.6.0 (2026-11-17, 05 D130 U9-1, 사용자 허용): [검사 workflow](../.github/workflows/update-date.yml)의 sia_scripts 판을 0.5.0에서 0.6.0으로 바꾸고(0.5.1은 건너뜀), 첨부 archive의 SHA-256을 직접 계산해 05 검토 값과 대조한 뒤 고정했습니다. [검증 기준](verification.md)과 [PLAN](PLAN.md) 4절의 판 표기도 함께 고쳤습니다. 바꾸기 전 커밋 사본에 0.6.0으로 workflow 검사 다섯 단계를 돌려 모두 0건이었고, 예외 목록은 총 5건이었습니다. PR 3의 CI(예외 목록 총 5건)가 성공한 뒤 사용자 지시로 병합했고(`04939d4`), 병합 commit의 main CI도 성공했습니다.
