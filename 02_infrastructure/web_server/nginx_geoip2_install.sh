@@ -1,5 +1,5 @@
 #!/bin/bash
-#### This script was created by sjyun on 2026-05-20. version 26.05.20.
+#### This script was created by siasia86 on 2026-05-20. version 26.05.20.
 #### nginx geoip2 모듈 설치 — Ubuntu 22.04 (jammy), nginx 공식 stable 레포 (1.30.x)
 #### 사용법: sudo bash nginx_geoip2_install.sh [nginx_version]
 ####         nginx_version 미지정 시 1.30.6 사용

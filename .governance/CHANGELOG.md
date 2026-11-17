@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- 계정 표기 6곳 일반화 (2026-11-17, 05 D128 B1, 사용자 허용): `96_scripts/windows/win_hosts_manager.py`의 로그 폴더 이름을 스크립트 이름 기반으로, `02_infrastructure/web_server/nginx_geoip2_install.sh` 머리 주석의 작성자를 저장소 표기 `siasia86`으로 바꿨습니다. 이 파일의 옛 항목 2곳은 `<옛 표기>`로 가리고, 계정 홈 경로 1곳은 `~/.kiro/...` 꼴로 일반화했습니다. Git 이력은 다시 쓰지 않았습니다.
+
 - 보고만 항목 2차 정정 (2026-11-16): 사용자 결정(권장안 모두 승인)으로 1차 검토에서 남긴 항목을 11묶음으로 다시 처리해 171개 파일을 고쳤습니다. 위험·모순(strace 권한, trivy 실행 순서, docker·compose cgroup 권장 통일, OCSP stapling 예시, AWS MFA·Network Firewall 그림), 지난 날짜 표(PostgreSQL 14·.NET 8/9 지원 종료, Windows Server ESU, 현행 Claude 모델, AI 도구 비교표, 최신 판), 절 재작성(GitLab 이벤트 API 전제, dbtrail 저장 구조, Kiro 도구 매핑, 빈 절)과 다이어그램 안 한글의 영문화를 반영했고, `_reference` 노트를 다시 확인한 곳은 확인일과 INDEX를 맞췄습니다. 근거를 끝내 찾지 못한 값, 파일 통합·삭제가 필요한 항목(gstack 문서 전제, tcpdump 예시 중복), 공개 문서의 실습 경로는 고치지 않았습니다.
 
 - 폴더별 새 문서 추가 (2026-11-16): 사용자 지시(승인 없이 추가)로 11개 폴더 묶음의 빠진 주제를 분석해 새 문서 42개를 더하고, 폴더 README 9개와 루트 README에 목록·문서 수를 반영했습니다. 주요 주제는 systemd·journald·sysctl, Python 동시성·HTTP·날짜·디버깅, DNS·MTU, 분산 시스템·수 표현·확률적 자료구조·일관된 해싱, GitLab CI·Dockerfile·Podman·Kubernetes 장애 진단, LVM·mdadm·node_exporter·CloudWatch, 점진 배포·Feature Flag·Toil·Resilience, AIDE·auditd·SELinux·침해 초동 점검, PostgreSQL 백업·VACUUM·PgBouncer·MySQL 논리 백업, MCP·AI 작성 코드 검토·기술 면접·기술 문서 작성, 에이전트 평가·MCP 서버 점검·실행 관측입니다. 같은 LVM 주제가 두 폴더에 나와 `02_infrastructure/storage/lvm_operations.md` 하나만 남겼습니다.
@@ -56,7 +58,7 @@
 
 - MAIN-20261109-01 / DOCS-32 (2026-11-10): D4 후속(사용자 승인)으로 다른 저장소의 `yunli` branch를 가리키던 링크 4개를 정리했습니다. 31 저장소의 `agent_skill_improvement_workflow.md`는 2026-10-03에 삭제됐습니다. 현행 `theorems/skill-maintenance.md`는 skill·저장소 지침 수정 절차만 다루고 32→41→35 흐름과 공용·개인 범위는 다루지 않아 후속 문서로 보지 않았습니다. 그래서 `harness_engineering.md`·`loop_engineering.md`·`_reference/github_references.md`의 링크 3개는 빼고 문장만 남겼습니다. 41 저장소의 참고 기록 링크는 같은 파일이 있는 `main`으로 바꿨습니다. `github_references.md`는 출처를 다시 확인하지 않아 `last_checked`를 유지했습니다.
 
-- MAIN-20261109-01 / DOCS-32 (2026-11-10): 검증 후속 D3·D4(사용자 승인). D3: `02_infrastructure/iac/packer.md` 권리 고지의 `sjyun`을 저장소 표기 `siasia86`으로 맞췄습니다. D4: 예시 브랜치로 쓰인 계정 이름 `yunli`를 바꿨습니다. `git_guide.md` fast-forward 그림은 앞 그림과 같은 `feature`로 바꾸고 `C---D` 열 위치를 유지했습니다. `gh_command_reference.md`는 명령 예시를 `feature/login`으로, `gh run list` 출력 예시의 branch 열을 `main`으로 바꿨습니다. 다른 저장소의 `yunli` 브랜치를 가리키는 실제 링크와 스크립트 안의 이름은 고치지 않았습니다.
+- MAIN-20261109-01 / DOCS-32 (2026-11-10): 검증 후속 D3·D4(사용자 승인). D3: `02_infrastructure/iac/packer.md` 권리 고지의 `<옛 표기>`를 저장소 표기 `siasia86`으로 맞췄습니다. D4: 예시 브랜치로 쓰인 계정 이름 `yunli`를 바꿨습니다. `git_guide.md` fast-forward 그림은 앞 그림과 같은 `feature`로 바꾸고 `C---D` 열 위치를 유지했습니다. `gh_command_reference.md`는 명령 예시를 `feature/login`으로, `gh run list` 출력 예시의 branch 열을 `main`으로 바꿨습니다. 다른 저장소의 `yunli` 브랜치를 가리키는 실제 링크와 스크립트 안의 이름은 고치지 않았습니다.
 
 - MAIN-20261109-01 / DOCS-32 (2026-11-09): 검증 후속 D9(사용자 승인, 공식 근거나 재현으로 확인된 문장 수준 정정만)으로 작은 정정 후보 약 90건 중 대부분을 90개 문서에서 고쳤습니다. 예: Python 내장 예외를 가리는 클래스 이름, Rust `should_panic` 메시지·axum `State` 추출자, C# 중복 선언, HTB 기본 class·conntrack 기본값·overcommit 권장 단서, bash `((frame++))`·`set -E`, SoftEther Raw L2TP·기본 리스너, Cloudflare Magic Transit의 ASN·계층, Kafka 리스너 분리·JMX 이미지·파티셔너, Harness YAML 이름, systemd 드롭인, Chaos Monkey 2010·성숙도 모델 출처, SSH ssh.socket·PQ 키 교환, Windows OpenSSH 인코딩, mod_php 전용 지시어 단서, XtraBackup `--defaults-extra-file`, 라이선스 가이드 법률 단정 완화, 출처 노트 5개(`_reference/INDEX.md` 확인일 반영). 판단이 필요하거나 절·표를 새로 짜야 하는 항목은 고치지 않았습니다.
 
@@ -666,7 +668,7 @@
 - 내부 링크 전수 수정 (md-link-check 0건)
 - md-style-check.py FILE_SKIP + EXCLUDE_DIRS 경로 갱신
 - md-style-check.py 박스 상/하단 공백 혼입 검출 규칙 추가
-- .gitignore: `99_archive/` 통합 (기존 51_siasia, 33_sjyun, 99_ETC 제거)
+- .gitignore: `99_archive/` 통합 (기존 51_siasia, 33_<옛 표기>, 99_ETC 제거)
 - 기존 디렉토리 README.md 12개 삭제
 - `00_readme.md/`, `90_DELETE/` 삭제
 
@@ -897,7 +899,7 @@
 - `09_database/README.md` 목차에 설치 문서 링크 추가 (mysql_install, postgresql_install)
 - `README.md` `01_install` 섹션 표에 신규 13개 파일 추가, 문서 트리 업데이트, 마지막 업데이트 갱신
 - `README.md` 문서 트리 링크 텍스트 오류 6건 수정 (하이픈 → 언더스코어)
-- `/home/sjyun/.kiro/markdown/STYLE.md` 규칙 10 보강 — 반말체 종결어미 금지 패턴 명시 (`~이다.` `~한다.` 등)
+- `~/.kiro/markdown/STYLE.md` 규칙 10 보강 — 반말체 종결어미 금지 패턴 명시 (`~이다.` `~한다.` 등)
 
 ### Fixed
 

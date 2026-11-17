@@ -40,9 +40,9 @@ def _setup_logger(name='win_hosts_manager'):
         lgr.addHandler(ch)
         try:
             if platform.system() == 'Windows':
-                log_dir = os.path.join(os.environ.get('TEMP', 'C:\\Temp'), 'sjyun_logs')
+                log_dir = os.path.join(os.environ.get('TEMP', 'C:\\Temp'), 'win_hosts_manager_logs')
             else:
-                log_dir = '/var/log/sjyun'
+                log_dir = '/var/log/win_hosts_manager'
             os.makedirs(log_dir, exist_ok=True)
             log_path = os.path.join(log_dir, f"{name}_{datetime.now().strftime('%Y%m')}.log")
             fh = logging.FileHandler(log_path, encoding='utf-8')
