@@ -4,25 +4,16 @@
 
 ## 구조
 
-<<<<<<< Updated upstream
 | 디렉토리                 | 설명                                                             | 문서 수 |
 |--------------------------|------------------------------------------------------------------|---------|
 | [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로, 기술 면접 준비                | 6       |
 | [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권, 리버스 엔지니어링, 개인정보       | 6       |
 | [ai_tools/](./ai_tools/) | AI 도구 — 공통 문서와 claude/·codex/·kiro/·jev/ 도구별 하위 폴더 | 31      |
-=======
-| 디렉토리                 | 설명                                                                     | 문서 수 |
-|--------------------------|--------------------------------------------------------------------------|---------|
-| [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로                                        | 4       |
-| [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권                                            | 2       |
-| [ai_tools/](./ai_tools/) | AI 도구 — Kiro CLI, Codex, Jev, AI 개발 요청 템플릿, 프롬프트 엔지니어링 | 20      |
->>>>>>> Stashed changes
 
 ## 주요 문서
 
 - [se_roadmap.md](./roadmap/se_roadmap.md) — 시스템 엔지니어 성장 경로
 - [sre_roadmap.md](./roadmap/sre_roadmap.md) — SRE 역할 정의, 필요 역량
-<<<<<<< Updated upstream
 - [dba_roadmap.md](./roadmap/dba_roadmap.md) — DBA 역할, 필수 지식, 고가용성, 단계별 학습, 자격증
 - [infra_roles_comparison.md](./roadmap/infra_roles_comparison.md) — DevOps·Cloud·SRE·SE·Platform·MLOps 직군의 역할·도구·전환 경로 비교
 - [se_complete_roadmap_programming_languages.md](./roadmap/se_complete_roadmap_programming_languages.md) — SE 관점의 언어별 우선순위·실무 사례·학습 순서
@@ -64,23 +55,6 @@
 - [privacy_law_guide.md](./legal/privacy_law_guide.md) — 개인정보 보호 법령, 감독기관, 처리자·취급자, CI/DI, CPO·CISO, 침해사고 대응
 - [privacy_improvement_checklist.md](./legal/privacy_improvement_checklist.md) — 2026 개인정보보호 유공 포상 공적 요지 기반 관리·기술 보호조치 점검
 - [_reference/DOWNLOAD_TIP.md](./legal/_reference/DOWNLOAD_TIP.md) — 개인정보보호위원회(pipc.go.kr) 첨부파일 다운로드 방법(출처 자료 수집용)
-=======
-- [kiro_cli_command_reference.md](./ai_tools/kiro_cli_command_reference.md) — Kiro CLI 전체 명령어
-- [codex_cli_linux_guide.md](./ai_tools/codex_cli_linux_guide.md) — Codex CLI Linux 설치·인증·샌드박스·자동화
-- [codex_skills_setup_guide.md](./ai_tools/codex_skills_setup_guide.md) — Codex skill 작성·설치·호출·비활성화와 참고 URL
-- [codex_skills_catalog.md](./ai_tools/codex_skills_catalog.md) — 세션 제공 스킬 31개의 한 줄 설명·선택·호출 예시
-- [codex_concepts.md](./ai_tools/codex_concepts.md) — Codex 동작 원리, 수정 예시, 설정과 권한, 학습 순서
-- [codex_gui_guide.md](./ai_tools/codex_gui_guide.md) — ChatGPT 웹·데스크톱에서 Codex 작업 관리
-- [codex_ide_guide.md](./ai_tools/codex_ide_guide.md) — IDE context 기반 수정·리뷰·위임
-- [codex_api_guide.md](./ai_tools/codex_api_guide.md) — Codex SDK, app-server, CI 자동화
-- [harness_engineering.md](./ai_tools/harness_engineering.md) — 에이전트 환경·검증·상태 전달과 참고 구현
-- [loop_engineering.md](./ai_tools/loop_engineering.md) — 목표·피드백·정지 조건과 제한된 반복 설계
-- [jev_concepts.md](./ai_tools/jev_concepts.md) — System One 모델, 질문 유형, 확률·신뢰도
-- [jev_guide.md](./ai_tools/jev_guide.md) — Playground, HTTP API, Python SDK와 결과 분기
-- [ai_work_archetypes.md](./ai_tools/ai_work_archetypes.md) — Boris Cherny의 다섯 업무 원형·제품 단계별 조합·인프라 적용 예시
-- [aside_browser_guide.md](./ai_tools/aside_browser_guide.md) — Aside AI 브라우저의 기능·요금·권한·데이터 처리·CLI·MCP
-- [ip_ownership_guide.md](./legal/ip_ownership_guide.md) — 코드 저작권, 직무 발명
->>>>>>> Stashed changes
 
 ## 추천 학습 순서
 
@@ -102,10 +76,6 @@
 
 **작성일**: 2026-07-07
 
-<<<<<<< Updated upstream
 **마지막 업데이트**: 2026-11-16
-=======
-**마지막 업데이트**: 2026-10-13
->>>>>>> Stashed changes
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -448,7 +448,6 @@ RDBMS, NoSQL, 운영, 포렌식.
 
 ### AI Tools
 
-<<<<<<< Updated upstream
 | 문서                                                                                     | 설명                                         |
 |------------------------------------------------------------------------------------------|----------------------------------------------|
 | [AI 개발 요청 템플릿](06_career/ai_tools/ai_development_request_template.md)             | AI 활용 요청 양식                            |
@@ -499,30 +498,6 @@ AX(AI 전환) 환경 구축 참고 자료. 도구와 무관한 환경 구축 방
 | [에이전트 평가 설계](07_ai_transformation/agent_evaluation_design.md)               | 과제·채점기·pass^k·회귀 평가               |
 | [MCP 서버 도입·운영 점검](07_ai_transformation/mcp_server_adoption_checklist.md)    | 전송·권한·도구 안전 점검                   |
 | [에이전트 실행 관측과 감사 기록](07_ai_transformation/agent_observability_audit.md) | OpenTelemetry GenAI 규약, 감사 기록        |
-=======
-| 문서                                                                         | 설명                                       |
-|------------------------------------------------------------------------------|--------------------------------------------|
-| [Kiro CLI 레퍼런스](06_career/ai_tools/kiro_cli_command_reference.md)        | 명령어 전체 정리                           |
-| [Kiro 모델 가이드](06_career/ai_tools/kiro_model_guide.md)                   | 모델 선택 기준                             |
-| [Kiro 설정 가이드](06_career/ai_tools/kiro_setup_guide.md)                   | CLI 초기 설정                              |
-| [Kiro Agent Lock](06_career/ai_tools/kiro_agent_lock.md)                     | 동시 실행 방지                             |
-| [Codex 공통 개념](06_career/ai_tools/codex_concepts.md)                      | 동작 원리, 수정 예시, 설정과 권한          |
-| [Codex CLI Linux 가이드](06_career/ai_tools/codex_cli_linux_guide.md)        | TUI, 로컬 작업, 비대화형 실행              |
-| [Codex Skills 설정 가이드](06_career/ai_tools/codex_skills_setup_guide.md)   | skill 작성·설치·호출·비활성화, 참고 URL    |
-| [Codex 스킬 목록](06_career/ai_tools/codex_skills_catalog.md)                | 세션 제공 스킬 31개·한 줄 설명·호출 예시   |
-| [Codex GUI 가이드](06_career/ai_tools/codex_gui_guide.md)                    | ChatGPT 웹·데스크톱 작업 관리              |
-| [Codex IDE 가이드](06_career/ai_tools/codex_ide_guide.md)                    | 편집기 context 기반 수정·리뷰              |
-| [Codex API·자동화 가이드](06_career/ai_tools/codex_api_guide.md)             | SDK, app-server, CI 자동화                 |
-| [AI 개발 요청 템플릿](06_career/ai_tools/ai_development_request_template.md) | AI 활용 요청 양식                          |
-| [AI Markdown 패턴](06_career/ai_tools/ai_markdown_design_patterns.md)        | 에이전트용 문서 패턴                       |
-| [AI 코딩 도구 비교](06_career/ai_tools/ai_coding_tools_comparison.md)        | Kiro·Claude Code·Codex·Cursor·Copilot 비교 |
-| [AI 시대 다섯 업무 원형](06_career/ai_tools/ai_work_archetypes.md)           | Boris Cherny의 역할 구분과 팀 구성         |
-| [Aside AI 브라우저](06_career/ai_tools/aside_browser_guide.md)               | 기능·플랫폼·요금·권한·CLI·MCP              |
-| [Harness Engineering](06_career/ai_tools/harness_engineering.md)             | 에이전트 환경·검증·상태 전달·참고 구현     |
-| [Loop Engineering](06_career/ai_tools/loop_engineering.md)                   | 목표·피드백·정지 조건·참고 실행기          |
-| [Jev 개념](06_career/ai_tools/jev_concepts.md)                               | 구조화된 판단, 질문 유형, 확률·신뢰도      |
-| [Jev 사용 가이드](06_career/ai_tools/jev_guide.md)                           | Playground, HTTP API, Python SDK           |
->>>>>>> Stashed changes
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -607,10 +582,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-<<<<<<< Updated upstream
 **마지막 업데이트**: 2026-11-16
-=======
-**마지막 업데이트**: 2026-10-13
->>>>>>> Stashed changes
 
 © 2026 siasia86. Licensed under CC BY 4.0.
