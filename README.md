@@ -204,7 +204,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [게임 인프라 KPI](02_infrastructure/monitoring/game_infra_kpi_presentation.md)           | 운영 핵심 지표            |
 | [Grafana Heatmap](02_infrastructure/monitoring/grafana_gitlab_heatmap.md)                | GitLab 커밋 히트맵        |
 | [GRAID SupremeRAID 점검](02_infrastructure/monitoring/graid_supremeraid_server_check.md) | GPU RAID 점검 가이드      |
-| [Gstack 모니터링](02_infrastructure/monitoring/gstack.md)                                | 통합 모니터링 스택        |
+| [gstack](02_infrastructure/monitoring/gstack.md)                                         | Claude Code용 skill 묶음  |
 
 ### Cloud (AWS)
 
