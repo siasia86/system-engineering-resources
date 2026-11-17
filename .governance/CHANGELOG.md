@@ -6,7 +6,7 @@
 
 ## [Unreleased]
 
-- 검사 도구 고정 판 0.6.0 (2026-11-17, 05 D130 U9-1, 사용자 허용): [검사 workflow](../.github/workflows/update-date.yml)의 sia_scripts 판을 0.5.0에서 0.6.0으로 바꾸고(0.5.1은 건너뜀), 첨부 archive의 SHA-256을 직접 계산해 05 검토 값과 대조한 뒤 고정했습니다. [검증 기준](verification.md)과 [PLAN](PLAN.md) 4절의 판 표기도 함께 고쳤습니다. 바꾸기 전 커밋 사본에 0.6.0으로 workflow 검사 다섯 단계를 돌려 모두 0건이었고, 예외 목록은 총 5건이었습니다.
+- 검사 도구 고정 판 0.6.0 (2026-11-17, 05 D130 U9-1, 사용자 허용): [검사 workflow](../.github/workflows/update-date.yml)의 sia_scripts 판을 0.5.0에서 0.6.0으로 바꾸고(0.5.1은 건너뜀), 첨부 archive의 SHA-256을 직접 계산해 05 검토 값과 대조한 뒤 고정했습니다. [검증 기준](verification.md)과 [PLAN](PLAN.md) 4절의 판 표기도 함께 고쳤습니다. 바꾸기 전 커밋 사본에 0.6.0으로 workflow 검사 다섯 단계를 돌려 모두 0건이었고, 예외 목록은 총 5건이었습니다. PR 3의 CI(예외 목록 총 5건)가 성공한 뒤 사용자 지시로 병합했고(`04939d4`), 병합 commit의 main CI도 성공했습니다.
 
 - 계정 표기 6곳 일반화 (2026-11-17, 05 D128 B1, 사용자 허용): `96_scripts/windows/win_hosts_manager.py`의 로그 폴더 이름을 스크립트 이름 기반으로, `02_infrastructure/web_server/nginx_geoip2_install.sh` 머리 주석의 작성자를 저장소 표기 `siasia86`으로 바꿨습니다. 이 파일의 옛 항목 2곳은 `<옛 표기>`로 가리고, 계정 홈 경로 1곳은 `~/.kiro/...` 꼴로 일반화했습니다. Git 이력은 다시 쓰지 않았습니다.
 
