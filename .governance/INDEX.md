@@ -4,7 +4,7 @@
 
 ## 1. 구조와 원본
 
-[규칙](GOVERNANCE.md)·[현행 상태](TODO.md)·[계획](PLAN.md)·[문제](ISSUE.md)·[검증](verification.md)·[완료](CHANGELOG.md)·[재개](HANDOFF.md)의 역할을 구분합니다. 현행 PLAN·TODO·CHANGELOG와 공통 관리 문서는 .governance에 통일합니다. 이전 루트 상태·이력을 실제 적용에서 보존·병합하고 TODO2 상세 설계 과제를 일반 작업에 일괄 적용하지 않습니다.
+[규칙](GOVERNANCE.md)·[현행 상태](TODO.md)·[계획](PLAN.md)·[문제](ISSUE.md)·[검증](verification.md)·[완료](CHANGELOG.md)·[재개](HANDOFF.md)의 역할을 구분합니다. 현행 PLAN·TODO·CHANGELOG와 공통 관리 문서는 .governance에 통일합니다. 실제 적용에서는 현장의 기존 상태와 이력을 보존하고 필요한 내용만 병합합니다.
 
 ```text
 32_system-engineering-resources/

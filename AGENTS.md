@@ -14,7 +14,7 @@
 
 기존 소스 탐색 지침을 먼저 따르고 관리 구조·작업별 읽기 조건은 [관리 INDEX](.governance/INDEX.md)에서 필요한 부분만 확인합니다. 상태는 [TODO](.governance/TODO.md), 실행·검증·복구 순서는 [PLAN](.governance/PLAN.md), 원인·영향은 [ISSUE](.governance/ISSUE.md)에 둡니다.
 
-현행 PLAN·TODO·CHANGELOG와 공통 관리 문서는 .governance에 통일합니다. 이전 루트 상태·이력을 실제 적용에서 보존·병합하고 TODO2 상세 설계 과제를 일반 작업에 일괄 적용하지 않습니다. 관리 공간 배치를 skill 설치·자동 선택 성공으로 대신하지 않습니다.
+현행 PLAN·TODO·CHANGELOG와 공통 관리 문서는 .governance에 통일합니다. 실제 적용에서는 현장의 기존 상태와 이력을 보존하고 필요한 내용만 병합합니다. 관리 공간 배치를 skill 설치·자동 선택 성공으로 대신하지 않습니다.
 
 소유 적용 기록이나 이번 배정에서 `common+codex`를 선택해 수동 병합한 Codex 작업은 Git 루트 기준 `.codex/repository-guidance.md`를 이 작업 문맥에서 한 번 읽습니다. 파일이 있다는 사실만으로 선택한 조합을 판정하지 않습니다. 선택한 안내가 없으면 실패로 기록하고 관련 도구 구간을 대기하며 재개 조건을 남깁니다.
 
