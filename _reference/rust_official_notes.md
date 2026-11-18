@@ -7,7 +7,7 @@ tags:
   - systems-programming
   - cargo
   - crates
-last_checked: 2026-11-10
+last_checked: 2026-11-18
 sources:
   - https://doc.rust-lang.org/book/
   - https://doc.rust-lang.org/std/
@@ -18,23 +18,25 @@ sources:
   - https://blog.rust-lang.org/releases/
   - https://doc.rust-lang.org/edition-guide/rust-2024/index.html
   - https://doc.rust-lang.org/cargo/reference/rust-version.html
+  - https://blog.rust-lang.org/2026/11/12/Rust-1.100.0/
+  - https://static.rust-lang.org/dist/channel-rust-stable.toml
 ---
 
 # Rust 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-11-09)
+## 1. 버전 현황 (확인일: 2026-11-18)
 
 ### Rust 릴리스
 
-> 확인일: 2026-11-09 기준. Rust는 6주 릴리스 사이클로 업데이트됩니다. Stable 1.99.1은 2026-10-15에 릴리스되었습니다(2026-07-29 당시 Stable은 1.97.1).
+> 확인일: 2026-11-18 기준(공식 배포 manifest `channel-rust-stable.toml`과 릴리스 공지). Rust는 6주 릴리스 사이클로 업데이트됩니다. Stable 1.100.0은 2026-11-12에 공지되었습니다(2026-11-09 확인 당시 Stable은 2026-10-15 공지된 1.99.1, 2026-07-29 당시 1.97.1).
 
-| 항목        | 버전   | 비고                                   |
-|-------------|--------|----------------------------------------|
-| Stable      | 1.99.1 | MSRV 기준 확인 필요                    |
-| Edition     | 2024   | 현행 권장 (Rust 1.85+, cargo new 기본) |
-| MSRV (예시) | 1.85   | Edition 2024=1.85+, LazyLock=1.80+     |
+| 항목        | 버전    | 비고                                   |
+|-------------|---------|----------------------------------------|
+| Stable      | 1.100.0 | MSRV 기준 확인 필요                    |
+| Edition     | 2024    | 현행 권장 (Rust 1.85+, cargo new 기본) |
+| MSRV (예시) | 1.85    | Edition 2024=1.85+, LazyLock=1.80+     |
 
-### 주요 크레이트 최신 안정 버전 (2026-11-09)
+### 주요 크레이트 최신 안정 버전 (2026-11-18)
 
 | 크레이트    | 최신 버전 | 주요 변경             |
 |-------------|-----------|-----------------------|
@@ -42,13 +44,13 @@ sources:
 | serde       | 1.0.229   | 안정적                |
 | reqwest     | 0.13.5    | 0.12→0.13 breaking    |
 | axum        | 0.8.9     | 0.7→0.8 breaking      |
-| clap        | 4.6.7     | derive 방식 표준화    |
+| clap        | 4.6.8     | derive 방식 표준화    |
 | anyhow      | 1.0.104   | 안정적                |
 | thiserror   | 2.0.21    | 2.x로 major bump      |
 | signal-hook | 0.4.6     | 0.3→0.4 minor 변경    |
-| nix         | 0.31.3    | 0.29→0.31             |
+| nix         | 0.32.0    | 0.32 변경 미확인      |
 | crossbeam   | 0.8.5     | MPMC (mpsc와 다름)    |
-| regex       | 1.13.1    | 안정적                |
+| regex       | 1.13.2    | 안정적                |
 | chrono      | 0.4.45    | 안정적                |
 
 ## 2. 소유권 시스템 핵심 사실
@@ -282,4 +284,7 @@ static RE: LazyLock<Regex> = LazyLock::new(|| {
 | 1.80      | LazyLock, LazyCell 안정화          |
 | 1.82      | `&raw const/mut` 안정화            |
 | 1.85      | edition 2024 출시                  |
+| 1.100     | `!` 타입·Allocator·DropGuard       |
+
+1.100 상세(2026-11-12 공지): `!`(never) 타입을 어디서나 이름으로 쓸 수 있게 안정화, `std::alloc::Allocator` 트레이트, `core::mem::DropGuard`, unsafe 함수 `std::mem::conjure_zst`가 추가되었습니다. Cargo는 `.cargo/config.toml`의 `global-min-publish-age`로 최근 게시된 의존성 판을 해석에서 제외할 수 있습니다. nix 0.32.0은 crates.io에서 판만 확인했고 변경 내용은 미확인이며, [시스템 프로그래밍](../01_fundamentals/programming/rust/system_programming.md) 예시는 `0.31`로 고정되어 있습니다.
 

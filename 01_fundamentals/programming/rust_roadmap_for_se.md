@@ -49,6 +49,8 @@
 | Git            | 기본 워크플로우                        | commit/push/branch   |
 | 영어 문서 독해 | Rust 생태계는 영문 자료가 압도적       | 공식 Book 읽기 가능  |
 
+bash·python을 주로 써 왔다면 [bash·python 사용자를 위한 Rust 전환 가이드](./rust/rust_for_bash_python_se.md)의 대응표와 첫 4주 계획으로 시작합니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ---
@@ -76,6 +78,15 @@ Phase 4: 실전 프로젝트 (2~3개월)
 ```
 
 **총 소요: 7~11개월** (주 5~10시간 기준)
+
+### 단계별 저장소 문서
+
+| 단계    | 읽을 문서                                                                                                                                                                                                                         |
+|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Phase 1 | [전환 가이드](./rust/rust_for_bash_python_se.md), [핵심 개념](./rust/rust_key_concepts.md), [소유권과 빌림](./rust/ownership_borrowing.md), [에러 처리](./rust/error_handling.md), [트레이트와 제네릭](./rust/traits_generics.md) |
+| Phase 2 | [시스템 프로그래밍](./rust/system_programming.md), [동시성](./rust/concurrency.md), [테스트](./rust/testing.md)                                                                                                                   |
+| Phase 3 | [네트워크 프로그래밍](./rust/networking.md), [크레이트 생태계](./rust/crates_ecosystem.md)                                                                                                                                        |
+| Phase 4 | [CLI 도구 개발](./rust/cli_tools.md), [SE 실전 예제](./rust/practical_examples.md)                                                                                                                                                |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -324,6 +335,6 @@ use prometheus_client::registry::Registry;
 
 **작성일**: 2026-07-28
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.

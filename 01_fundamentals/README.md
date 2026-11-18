@@ -9,7 +9,7 @@
 | [linux/](./linux/)             | Linux 관리 — bash, cgroup, systemd·journald, sysctl, 파일시스템, 저장장치, 커널, vim              | 55      |
 | [networking/](./networking/)   | 네트워크 기초 — TCP/IP, HTTP, DNS, MTU, CDN, VPN, IPv4/IPv6                                       | 18      |
 | [cs/](./cs/)                   | 컴퓨터 과학 — 알고리즘·압축, 자료구조, 분산 시스템, 수 표현, CPU 아키텍처, 버전 관리, 테스트 설계 | 58      |
-| [programming/](./programming/) | 프로그래밍 언어 — Python, Bash, C/C++, C#, Go, Rust, LSP                                          | 56      |
+| [programming/](./programming/) | 프로그래밍 언어 — Python, Bash, C/C++, C#, Go, Rust, LSP                                          | 57      |
 | [math/](./math/)               | 수학 기초 — 극한과 엡실론-델타 정의, Little 법칙·대기열                                           | 2       |
 | [windows/](./windows/)         | Windows Server 관리 — 시스템 리소스 분석, 네트워크 진단                                           | 2       |
 
@@ -41,6 +41,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.

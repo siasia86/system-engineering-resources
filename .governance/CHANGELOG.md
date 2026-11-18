@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- Rust 학습 자료 보강 (2026-11-18, 사용자 요청): 로드맵·개념 문서·참조 노트가 이미 있어 새로 만들지 않고 빈 곳을 채웠습니다. [bash·python 사용자를 위한 Rust 전환 가이드](../01_fundamentals/programming/rust/rust_for_bash_python_se.md)(사용 판단, 도구·작업 대응표, 세 언어 비교 예제 3개, 처음 막히는 지점, 첫 4주 계획)와 [rust/ README](../01_fundamentals/programming/rust/README.md)를 새로 만들고, [로드맵](../01_fundamentals/programming/rust_roadmap_for_se.md)에 단계별 저장소 문서 표와 전환 가이드 안내를 넣었습니다. 예제 3개는 공식 `rust:1.100-slim` 이미지에서 컴파일·실행하고 clippy 경고 0건을 확인했습니다. [참조 노트](../_reference/rust_official_notes.md)는 Stable을 1.100.0(2026-11-12 공지, 공식 배포 manifest 대조)으로, clap·regex·nix 판을 crates.io 값으로 바꾸고 1.100 주요 변경을 더했습니다(nix 0.32 변경 내용은 미확인). 루트 README·`01_fundamentals` README 문서 수(56→57)·`_reference` INDEX를 맞췄습니다.
+
 - SoftEther VPN 경유 Linux 서버 작업 가이드 추가 (2026-11-18, 사용자 요청): [softether_vpn_linux_server_ops.md](../01_fundamentals/networking/softether_vpn_linux_server_ops.md)를 새로 만들었습니다. Ubuntu·Rocky Linux 서버가 vpnclient로 접속한 뒤의 작업(작업 전 점검과 자동 원복 타이머, RADIUS+OTP 계정의 재연결·자동 연결 제약, 고정 IP·DHCP, Split Tunnel, DNS, ufw·firewalld·SELinux·rp_filter, SSH·rsync·MTU, 작업 스크립트, 종료 점검)을 다룹니다. vpncmd 명령과 RHEL 10 `dhclient` 제거는 공식 문서로 대조했고, Ubuntu의 `dhclient` 기본 설치 여부는 미확인으로 적었습니다. 실제 서버에서 명령을 실행해 보지는 않았습니다. 루트 README Networking 표에 1행을 넣고(표 정렬), [클라이언트 가이드](../01_fundamentals/networking/softether_vpn_client_guide.md) 개요에 연결 1줄을 추가했습니다.
 
 - 루트 `TODO2.md` 삭제 (2026-11-17, 사용자 직접 결정): 31·00·30·51 저장소 구조와 governance 공급을 다룬 별도 설계 과제 문서를 지웠습니다. 저장소 안에서 이 파일을 링크하거나 입력으로 쓰는 곳은 없었고, 다른 저장소(03·31)의 언급은 이름만 적은 관찰 기록입니다. [INDEX](INDEX.md)의 트리 1행과 읽기 조건 표 1행을 지우고 [삭제 기록](REMOVED.md)에 복원 명령을 남겼습니다. AGENTS·GOVERNANCE·INDEX·`.governance/README.md`의 "TODO2 상세 설계 과제를 일반 작업에 일괄 적용하지 않습니다" 문장은 31 profile 원문이라 이 저장소에서 고치지 않았습니다.
