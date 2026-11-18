@@ -1,7 +1,7 @@
 # bash·python 사용자를 위한 Rust 전환 가이드
 <!-- reference: _reference/rust_official_notes.md -->
 
-bash·python으로 인프라 작업을 해 온 SE가 Rust를 시작할 때 필요한 대응표와 비교 예제입니다. 학습 기간 전체 계획은 [SE를 위한 Rust 학습 로드맵](../rust_roadmap_for_se.md), 개념 설명은 [Rust 핵심 개념](./rust_key_concepts.md)에 있습니다.
+bash·python으로 인프라 작업을 해 온 SE가 Rust를 시작할 때 필요한 대응표와 비교 예제입니다. 학습 기간 전체 계획은 [SE를 위한 Rust 학습 로드맵](../rust_roadmap_for_se.md), 문법 기초는 [Rust 기초 문법](./rust_basics.md), 개념 설명은 [Rust 핵심 개념](./rust_key_concepts.md)에 있습니다.
 
 ## 목차
 
@@ -307,12 +307,12 @@ python은 `timeout_secs`가 빠져 있으면 해당 줄을 실행할 때 `KeyErr
 
 로드맵 Phase 1의 앞부분을 실무 스크립트 하나로 연결한 계획입니다. 주 5~10시간을 기준으로 합니다.
 
-| 주차 | 읽을 것                                                                        | 만들 것                                          |
-|------|--------------------------------------------------------------------------------|--------------------------------------------------|
-| 1주  | The Rust Programming Language 1~6장, [소유권과 빌림](./ownership_borrowing.md) | 6절 ERROR 세기 도구                              |
-| 2주  | Book 8~9장, [에러 처리](./error_handling.md)                                   | 6절 JSON 설정 읽기 + 필드 검사                   |
-| 3주  | [CLI 도구 개발](./cli_tools.md)                                                | 평소 쓰는 bash 스크립트 하나를 `clap`으로 옮기기 |
-| 4주  | Book 11장, [테스트](./testing.md)                                              | 3주 도구에 테스트와 `cargo clippy` 경고 0건      |
+| 주차 | 읽을 것                                                                                                            | 만들 것                                          |
+|------|--------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|
+| 1주  | [Rust 기초 문법](./rust_basics.md), The Rust Programming Language 1~6장, [소유권과 빌림](./ownership_borrowing.md) | 6절 ERROR 세기 도구                              |
+| 2주  | Book 8~9장, [에러 처리](./error_handling.md)                                                                       | 6절 JSON 설정 읽기 + 필드 검사                   |
+| 3주  | [CLI 도구 개발](./cli_tools.md)                                                                                    | 평소 쓰는 bash 스크립트 하나를 `clap`으로 옮기기 |
+| 4주  | Book 11장, [테스트](./testing.md)                                                                                  | 3주 도구에 테스트와 `cargo clippy` 경고 0건      |
 
 옮길 스크립트는 입력·출력이 분명하고 외부 명령 호출이 적은 것(로그 집계, 설정 검사, 디스크 사용량 보고)이 좋습니다. 4주 뒤에는 [로드맵](../rust_roadmap_for_se.md) Phase 1의 트레이트·제네릭으로 이어 갑니다.
 

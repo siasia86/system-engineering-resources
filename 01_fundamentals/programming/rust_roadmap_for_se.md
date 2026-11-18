@@ -81,12 +81,12 @@ Phase 4: 실전 프로젝트 (2~3개월)
 
 ### 단계별 저장소 문서
 
-| 단계    | 읽을 문서                                                                                                                                                                                                                         |
-|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Phase 1 | [전환 가이드](./rust/rust_for_bash_python_se.md), [핵심 개념](./rust/rust_key_concepts.md), [소유권과 빌림](./rust/ownership_borrowing.md), [에러 처리](./rust/error_handling.md), [트레이트와 제네릭](./rust/traits_generics.md) |
-| Phase 2 | [시스템 프로그래밍](./rust/system_programming.md), [동시성](./rust/concurrency.md), [테스트](./rust/testing.md)                                                                                                                   |
-| Phase 3 | [네트워크 프로그래밍](./rust/networking.md), [크레이트 생태계](./rust/crates_ecosystem.md)                                                                                                                                        |
-| Phase 4 | [CLI 도구 개발](./rust/cli_tools.md), [SE 실전 예제](./rust/practical_examples.md)                                                                                                                                                |
+| 단계    | 읽을 문서                                                                                                                                                                                                                                                             |
+|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Phase 1 | [전환 가이드](./rust/rust_for_bash_python_se.md), [기초 문법](./rust/rust_basics.md), [핵심 개념](./rust/rust_key_concepts.md), [소유권과 빌림](./rust/ownership_borrowing.md), [에러 처리](./rust/error_handling.md), [트레이트와 제네릭](./rust/traits_generics.md) |
+| Phase 2 | [시스템 프로그래밍](./rust/system_programming.md), [동시성](./rust/concurrency.md), [테스트](./rust/testing.md)                                                                                                                                                       |
+| Phase 3 | [네트워크 프로그래밍](./rust/networking.md), [크레이트 생태계](./rust/crates_ecosystem.md)                                                                                                                                                                            |
+| Phase 4 | [CLI 도구 개발](./rust/cli_tools.md), [SE 실전 예제](./rust/practical_examples.md)                                                                                                                                                                                    |
 
 [⬆ 목차로 돌아가기](#목차)
 

@@ -122,6 +122,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [언어 비교](01_fundamentals/programming/c_cpp_csharp_go_python_bash_comparison.md) | 6개 언어 비교               |
 | [Rust SE 로드맵](01_fundamentals/programming/rust_roadmap_for_se.md)               | SE 관점 Rust 학습 경로      |
 | [Rust 전환 가이드](01_fundamentals/programming/rust/rust_for_bash_python_se.md)    | bash·python 사용자용 대응표 |
+| [Rust 기초 문법](01_fundamentals/programming/rust/rust_basics.md)                  | 변수~모듈, bash·python 비교 |
 | [LSP 가이드](01_fundamentals/programming/lsp_guide.md)                             | Language Server Protocol    |
 | [GraphQL 가이드](01_fundamentals/programming/graphql_guide_for_se.md)              | SE 관점 GraphQL             |
 | [gRPC 가이드](01_fundamentals/programming/grpc_guide_for_se.md)                    | SE 관점 gRPC                |
