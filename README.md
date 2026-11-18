@@ -342,6 +342,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [침해 의심 서버 초동 점검](04_security/hardening/linux_intrusion_triage_checklist.md) | 휘발성 수집, 지속 실행, 격리  |
 | [Vault 설치](04_security/hardening/vault_install.md)                                  | HashiCorp Vault 설치·운영     |
 | [Windows OpenSSH](04_security/hardening/windows_openssh_install.md)                   | Windows SSH 서버 설치         |
+| [Windows 코드 서명](04_security/hardening/windows_code_signing_guide.md)              | 게임 배포, SmartScreen·UAC    |
 
 ### Cloud Security
 

@@ -104,6 +104,7 @@ sources:
 | Rust                           | `_reference/rust_official_notes.md`                     | 1.100.0, Edition 2024, 주요 크레이트                    | 2026-11-18 |
 | Windows Server 에디션/라이선스 | `_reference/windows_server_editions_licensing_notes.md` | Standard vs Datacenter, KMS/MAK/AVMA                    | 2026-11-16 |
 | Windows Server Concepts        | `_reference/windows_server_concepts_notes.md`           | Hyper-V, S2D, Failover Cluster, Shielded VM, SDN        | 2026-11-09 |
+| Windows 코드 서명              | `_reference/windows_code_signing_official_notes.md`     | Authenticode·SmartScreen·Artifact Signing·CSBR 3.11.0   | 2026-11-18 |
 | SCVMM                          | `_reference/scvmm_official_notes.md`                    | System Center 2025, 호스트 관리·베어메탈·Arc            | 2026-11-09 |
 | SVN (Subversion)               | `_reference/svn_official_notes.md`                      | 1.15.0                                                  | 2026-11-09 |
 | Git                            | `_reference/git_official_notes.md`                      | 2.56.1                                                  | 2026-11-16 |

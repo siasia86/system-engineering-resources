@@ -1,4 +1,5 @@
 # SoftEther VPN 경유 Linux 서버 작업 가이드
+<!-- reference: _reference/softether_official_notes.md -->
 
 ## 목차
 

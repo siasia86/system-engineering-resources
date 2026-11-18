@@ -1,4 +1,5 @@
 # bash·python 사용자를 위한 Rust 전환 가이드
+<!-- reference: _reference/rust_official_notes.md -->
 
 bash·python으로 인프라 작업을 해 온 SE가 Rust를 시작할 때 필요한 대응표와 비교 예제입니다. 학습 기간 전체 계획은 [SE를 위한 Rust 학습 로드맵](../rust_roadmap_for_se.md), 개념 설명은 [Rust 핵심 개념](./rust_key_concepts.md)에 있습니다.
 
