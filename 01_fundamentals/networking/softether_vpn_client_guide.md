@@ -14,6 +14,7 @@
 
 SoftEther VPN은 멀티 프로토콜을 지원하는 오픈소스 VPN 소프트웨어입니다.
 이 문서는 Linux 클라이언트(`vpnclient`) 설치 및 연결 방법을 다룹니다.
+연결한 뒤 Ubuntu·Rocky Linux 서버에서 작업하는 절차(OTP 계정, Split Tunnel, 방화벽)는 [SoftEther VPN 경유 Linux 서버 작업 가이드](./softether_vpn_linux_server_ops.md)에서 다룹니다.
 
 | 항목      | 내용                                                |
 |-----------|-----------------------------------------------------|
@@ -746,6 +747,6 @@ ip addr show tun0
 
 **작성일**: 2026-05-11
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- SoftEther VPN 경유 Linux 서버 작업 가이드 추가 (2026-11-18, 사용자 요청): [softether_vpn_linux_server_ops.md](../01_fundamentals/networking/softether_vpn_linux_server_ops.md)를 새로 만들었습니다. Ubuntu·Rocky Linux 서버가 vpnclient로 접속한 뒤의 작업(작업 전 점검과 자동 원복 타이머, RADIUS+OTP 계정의 재연결·자동 연결 제약, 고정 IP·DHCP, Split Tunnel, DNS, ufw·firewalld·SELinux·rp_filter, SSH·rsync·MTU, 작업 스크립트, 종료 점검)을 다룹니다. vpncmd 명령과 RHEL 10 `dhclient` 제거는 공식 문서로 대조했고, Ubuntu의 `dhclient` 기본 설치 여부는 미확인으로 적었습니다. 실제 서버에서 명령을 실행해 보지는 않았습니다. 루트 README Networking 표에 1행을 넣고(표 정렬), [클라이언트 가이드](../01_fundamentals/networking/softether_vpn_client_guide.md) 개요에 연결 1줄을 추가했습니다.
+
 - 루트 `TODO2.md` 삭제 (2026-11-17, 사용자 직접 결정): 31·00·30·51 저장소 구조와 governance 공급을 다룬 별도 설계 과제 문서를 지웠습니다. 저장소 안에서 이 파일을 링크하거나 입력으로 쓰는 곳은 없었고, 다른 저장소(03·31)의 언급은 이름만 적은 관찰 기록입니다. [INDEX](INDEX.md)의 트리 1행과 읽기 조건 표 1행을 지우고 [삭제 기록](REMOVED.md)에 복원 명령을 남겼습니다. AGENTS·GOVERNANCE·INDEX·`.governance/README.md`의 "TODO2 상세 설계 과제를 일반 작업에 일괄 적용하지 않습니다" 문장은 31 profile 원문이라 이 저장소에서 고치지 않았습니다.
 
 - 루트 연결 안내 삭제 (2026-11-17, 사용자 직접 결정): 2026-10-27 `.governance/`로 옮긴 뒤 루트에 두었던 `TODO.md`·`PLAN.md`·`CHANGELOG.md` 연결 안내를 지웠습니다. 저장소 안 링크·도구 입력은 0건이었고, 현행 AGENTS의 "옛 자리 안내는 외부 참조가 있을 때 둡니다"에 따라 관찰 유예 끝(11-26) 전에 앞당겼습니다. [옮김 기록](MOVED.md) 세 행을 닫고 [삭제 기록](REMOVED.md)에 복원 명령을 남겼으며, [INDEX](INDEX.md) 트리 1행과 TODO·HANDOFF의 대기 줄을 정리했습니다. 05 총괄에 미리 알렸습니다. `TODO2.md`는 그대로 둡니다.
@@ -1095,6 +1097,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-17
+**마지막 업데이트**: 2026-11-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.

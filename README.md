@@ -62,24 +62,25 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Networking
 
-| 문서                                                                               | 설명                               |
-|------------------------------------------------------------------------------------|------------------------------------|
-| [IPv4 주소 체계](01_fundamentals/networking/ipv4_addressing_guide.md)              | 서브넷, CIDR, AWS VPC              |
-| [IPv6 주소 체계](01_fundamentals/networking/ipv6_addressing_guide.md)              | 주소 구조, 표기법, SLAAC           |
-| [TCP 상태 전이](01_fundamentals/networking/tcp_state_concepts.md)                  | 3/4-Way Handshake, TIME_WAIT       |
-| [패킷 분석](01_fundamentals/networking/packet_analysis.md)                         | IP/TCP/UDP 헤더, PROXY Proto       |
-| [네트워크 헤더](01_fundamentals/networking/network_headers.md)                     | Ethernet, ARP, DNS, TLS            |
-| [HTTP 메서드](01_fundamentals/networking/http_methods.md)                          | GET/POST/PUT/DELETE/PATCH          |
-| [Switch VLAN Mode](01_fundamentals/networking/switch_vlan_mode.md)                 | Access/Trunk/Hybrid                |
-| [VPN Protocol](01_fundamentals/networking/vpn_protocol_concepts.md)                | PPTP~WireGuard 비교                |
-| [에러 코드](01_fundamentals/networking/error_codes.md)                             | HTTP/SMTP/FTP 상태 코드            |
-| [ASN/DDoS 대응](01_fundamentals/networking/asn_and_cloudflare_ddos.md)             | ASN 운영, Cloudflare               |
-| [CDN/Proxy/Origin](01_fundamentals/networking/cdn_proxy_origin_ip.md)              | CDN 구조, Origin IP 보호           |
-| [SoftEther VPN Client](01_fundamentals/networking/softether_vpn_client_guide.md)   | SoftEther 클라이언트 설정          |
-| [SoftEther VPN Server](01_fundamentals/networking/softether_vpn_server_guide.md)   | SoftEther 서버 설치·설정           |
-| [VPN 프로토콜 선택 가이드](01_fundamentals/networking/vpn_comparison_blog.md)      | 프로토콜 비교·시나리오 선택        |
-| [DNS 해석·장애 진단](01_fundamentals/networking/dns_resolution_troubleshooting.md) | 해석 흐름, TTL, dig 진단           |
-| [MTU·MSS·PMTUD](01_fundamentals/networking/mtu_mss_pmtud.md)                       | 단편화, PMTUD 블랙홀, MSS clamping |
+| 문서                                                                                         | 설명                               |
+|----------------------------------------------------------------------------------------------|------------------------------------|
+| [IPv4 주소 체계](01_fundamentals/networking/ipv4_addressing_guide.md)                        | 서브넷, CIDR, AWS VPC              |
+| [IPv6 주소 체계](01_fundamentals/networking/ipv6_addressing_guide.md)                        | 주소 구조, 표기법, SLAAC           |
+| [TCP 상태 전이](01_fundamentals/networking/tcp_state_concepts.md)                            | 3/4-Way Handshake, TIME_WAIT       |
+| [패킷 분석](01_fundamentals/networking/packet_analysis.md)                                   | IP/TCP/UDP 헤더, PROXY Proto       |
+| [네트워크 헤더](01_fundamentals/networking/network_headers.md)                               | Ethernet, ARP, DNS, TLS            |
+| [HTTP 메서드](01_fundamentals/networking/http_methods.md)                                    | GET/POST/PUT/DELETE/PATCH          |
+| [Switch VLAN Mode](01_fundamentals/networking/switch_vlan_mode.md)                           | Access/Trunk/Hybrid                |
+| [VPN Protocol](01_fundamentals/networking/vpn_protocol_concepts.md)                          | PPTP~WireGuard 비교                |
+| [에러 코드](01_fundamentals/networking/error_codes.md)                                       | HTTP/SMTP/FTP 상태 코드            |
+| [ASN/DDoS 대응](01_fundamentals/networking/asn_and_cloudflare_ddos.md)                       | ASN 운영, Cloudflare               |
+| [CDN/Proxy/Origin](01_fundamentals/networking/cdn_proxy_origin_ip.md)                        | CDN 구조, Origin IP 보호           |
+| [SoftEther VPN Client](01_fundamentals/networking/softether_vpn_client_guide.md)             | SoftEther 클라이언트 설정          |
+| [SoftEther VPN Server](01_fundamentals/networking/softether_vpn_server_guide.md)             | SoftEther 서버 설치·설정           |
+| [SoftEther VPN 경유 서버 작업](01_fundamentals/networking/softether_vpn_linux_server_ops.md) | Ubuntu·Rocky, OTP, Split Tunnel    |
+| [VPN 프로토콜 선택 가이드](01_fundamentals/networking/vpn_comparison_blog.md)                | 프로토콜 비교·시나리오 선택        |
+| [DNS 해석·장애 진단](01_fundamentals/networking/dns_resolution_troubleshooting.md)           | 해석 흐름, TTL, dig 진단           |
+| [MTU·MSS·PMTUD](01_fundamentals/networking/mtu_mss_pmtud.md)                                 | 단편화, PMTUD 블랙홀, MSS clamping |
 
 ### CS
 
@@ -581,6 +582,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.
