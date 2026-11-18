@@ -31,6 +31,10 @@ Codex 설치·인증은 [CLI Linux 가이드](codex_cli_linux_guide.md), 기능�
 
 이 구분은 [공식 Customization 안내](https://learn.chatgpt.com/docs/customization/overview)를 기준으로 합니다. skill의 설명은 작업 선택에 쓰이며, 실제 파일·네트워크 접근은 실행 환경의 권한 설정을 따릅니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 2. 저장 위치
 
 아래는 [공식 Build skills 안내](https://learn.chatgpt.com/docs/build-skills#where-to-save-skills)의 로컬 탐색 위치입니다.
@@ -45,6 +49,10 @@ Codex 설치·인증은 [CLI Linux 가이드](codex_cli_linux_guide.md), 기능�
 프로젝트에서는 현재 작업 디렉토리부터 Git 저장소 루트까지의 `.agents/skills/`를 탐색합니다. 같은 `name`이 여러 위치에 있으면 자동 병합하지 않으므로, 목록에서 출처를 확인합니다. symlink로 배치한 경우에는 링크 대상과 접근 가능 여부도 확인합니다.
 
 일부 설치 도구는 사용자 skill을 공식 경로와 다른 곳(예: `~/.codex/skills/`)에 배치할 수 있습니다. 2026-11-09 확인 기준 [Vercel skills CLI의 agent 경로 표](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)는 Codex 전역 경로를 `~/.agents/skills/`로 안내합니다. 공식 사용자 경로와 설치 도구의 목적지가 다를 수 있으므로, 프로젝트 범위로 시작하거나 설치 결과의 경로를 확인한 뒤 Codex의 `/skills`에서 발견 여부를 검증합니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 3. 사용자 skill 작성
 
@@ -96,6 +104,10 @@ description: SE Markdown 문서의 내부 링크, 목차, 검사 누락을 검�
 
 `name`과 `description`은 필수입니다. `description`에는 적용할 요청과 제외할 요청을 쓰고, 본문에는 입력·수행 절차·완료 기준을 적습니다. 자세한 배경 자료는 `references/`, 복사할 템플릿은 `assets/`, 반복 계산이나 파일 처리는 필요할 때 `scripts/`에 둡니다. [공식 skill 작성 안내](https://developers.openai.com/plugins/build/skills)
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 4. 외부 skill 설치
 
 ### Codex 기본 설치 도구
@@ -136,6 +148,10 @@ codex plugin list --json
 
 직접 배포할 plugin의 구조와 marketplace 설정은 [공식 Package your plugin 안내](https://developers.openai.com/plugins/build/plugins)를 참고합니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 5. 메타데이터와 MCP
 
 skill의 `agents/openai.yaml`은 선택 사항입니다. 표시 이름과 기본 요청, 암묵적 호출 정책 등을 설정할 수 있습니다.
@@ -153,6 +169,10 @@ policy:
 `allow_implicit_invocation: false`이면 요청 내용에 따른 자동 선택을 막고 `$se-doc-review`와 같은 명시적 호출을 사용합니다. 기본값은 `true`입니다. [공식 선택 메타데이터 안내](https://learn.chatgpt.com/docs/build-skills#optional-metadata)
 
 MCP가 필요한 skill은 같은 파일에 의존성을 선언할 수 있습니다. 실제 연결 방법은 [CLI 가이드의 MCP 설정](codex_cli_linux_guide.md#7-설정과-agentsmd)을 참고하며, `SKILL.md`에는 사용할 도구와 연결 실패 시 처리 방법을 적습니다. API key와 token은 skill 파일에 기록하지 않습니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 6. 호출과 검증
 
@@ -175,6 +195,10 @@ $se-doc-review README.md를 검토해 주세요.
 
 암묵적 호출을 비활성화했다면 해당 행의 기대 결과는 자동 선택하지 않는 것으로 바꿉니다. 목록에 보이는 것과 작업을 올바르게 수행하는 것은 각각 확인합니다. 변경이 반영되지 않으면 새 세션을 열거나 Codex를 재시작합니다. 검증 요청의 구성은 [공식 Test the skill 안내](https://developers.openai.com/plugins/build/skills#test-the-skill)를 참고합니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 7. 비활성화와 복구
 
 로컬 skill은 `~/.codex/config.toml`의 `[[skills.config]]`로 비활성화할 수 있습니다. 기존 설정에 아래 항목을 병합하고, `path`는 해당 환경의 실제 절대 경로로 바꿉니다.
@@ -188,6 +212,10 @@ enabled = false
 설정 변경 후 Codex를 재시작합니다. 다시 사용하려면 `enabled = true`로 바꾸거나 해당 비활성화 항목을 제거합니다. 경로 형식은 [공식 비활성화 예제](https://learn.chatgpt.com/docs/build-skills#enable-or-disable-local-codex-skills)를 기준으로 합니다.
 
 skill 본문 변경은 기존 파일을 보관하거나 Git으로 관리하고, 문제가 생기면 자신이 수정한 부분만 복원합니다. 설치 도구로 관리하는 skill은 해당 도구의 제거 절차를 확인합니다. plugin은 skill의 `[[skills.config]]`와 별도로 plugin 관리 기능을 사용합니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 8. 설정 참고 URL
 
@@ -231,6 +259,6 @@ Karpathy skills의 `CLAUDE.md` 기반 지침, gstack의 Codex host 설치, 다�
 
 **작성일**: 2026-10-03
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.

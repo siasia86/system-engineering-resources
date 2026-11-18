@@ -38,6 +38,10 @@ git rev-parse --show-toplevel
 command -v bwrap || true
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 2. 설치
 
 ### Linux standalone installer
@@ -561,6 +565,10 @@ skill 저장 위치·작성 예제·설치 도구·호출 검증·비활성화�
 codex resume --last
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 9. 운영 체크리스트와 문제 해결
 
 ### 설치·실행 확인
@@ -626,6 +634,6 @@ codex --help
 
 **작성일**: 2026-09-14
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.

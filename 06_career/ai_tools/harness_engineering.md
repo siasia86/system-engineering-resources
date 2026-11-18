@@ -10,6 +10,8 @@ AI 에이전트가 실제 작업을 안정적으로 수행할 수 있도록 주�
 | [4. 주요 원칙](#4-주요-원칙) / [5. 관련 도구 비교](#5-관련-도구-비교) / [6. 실전 적용](#6-실전-적용) |
 | [7. Prompt Engineering과의 차이](#7-prompt-engineering과의-차이) / [8. 트러블슈팅](#8-트러블슈팅)    |
 
+---
+
 ## 1. 개요
 
 | 항목        | 값                                                                       |
@@ -30,6 +32,10 @@ AI 에이전트가 실제 작업을 안정적으로 수행할 수 있도록 주�
 | Agent Loop     | 에이전트의 관찰 → 판단 → 행동 → 검증 반복 사이클        |
 | Context Window | 에이전트가 한 번에 참고할 수 있는 정보의 한계           |
 | Verification   | 에이전트 출력물의 정확성을 자동으로 확인하는 과정       |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 2. 핵심 구성 요소
 
@@ -58,6 +64,10 @@ AI 에이전트가 실제 작업을 안정적으로 수행할 수 있도록 주�
 | Memory & State   | 세션 간 지식 유지, 장기 기억             | 실행 계획, 의사결정 로그, 품질 점수     |
 | Sandbox          | 안전한 격리 실행 환경                    | Docker, git worktree, 임시 환경         |
 | Planning         | 작업 분해 및 진행 추적을 위한 문서       | Plan.md, exec-plans/, tech-debt-tracker |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 3. 아키텍처
 
@@ -118,6 +128,10 @@ repo/
 
 핵심 원칙: AGENTS.md는 백과사전이 아닌 **목차**(table of contents)입니다. OpenAI 사례의 약 100줄은 해당 팀의 운영 예시이며 공통 제한이 아닙니다. 진입점은 짧게 유지하고 작업별 상세 기준은 한 곳에서 관리합니다. [OpenAI 원문](https://openai.com/index/harness-engineering/)
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 4. 주요 원칙
 
 ### OpenAI (Codex팀) 원칙
@@ -154,6 +168,10 @@ repo/
 | Inferential controls     | LLM 기반 의미 분석, AI 코드 리뷰 (비결정론적)              |
 | Context Engineering 연관 | 하네스 엔지니어링은 컨텍스트 엔지니어링의 구체적 적용 형태 |
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 5. 관련 도구 비교
 
 | 도구/프레임워크              | 유형            | 하네스 엔지니어링 관련성                      |
@@ -174,6 +192,10 @@ repo/
 | 지속성 | 일회성                       | 레포에 버전 관리되는 영구 아티팩트         |
 | 검증   | 수동 확인                    | 자동화된 피드백 루프                       |
 | 확장성 | 프롬프트 수만큼 선형 확장    | 한 번 설계하면 모든 작업에 적용            |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 6. 실전 적용
 
@@ -265,6 +287,10 @@ Anthropic의 장기 실행 사례는 초기 환경 준비와 후속 작업을 �
 
 git worktree는 작업 파일을 분리하는 수단입니다. OS 권한·네트워크·비밀 접근을 제한하는 보안 sandbox와는 역할이 다릅니다. 위 Bash 린터도 구조를 설명하는 예시이며, 실제 프로젝트에서는 언어별 import 규칙과 Windows 실행 환경에 맞춰 검증해야 합니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 7. Prompt Engineering과의 차이
 
 ```
@@ -291,6 +317,10 @@ git worktree는 작업 파일을 분리하는 수단입니다. OS 권한·네트
 
 하네스 안의 관찰·행동 루프와 여러 실행을 다시 호출하는 외부 루프는 서로 다른 범위입니다. Addy Osmani는 후자를 중심으로 설명합니다. 하네스와 루프를 항상 한쪽이 다른 쪽을 포함하는 단일 계층으로 고정하지 않고, [Loop Engineering의 관계 설명](./loop_engineering.md#7-harness-engineering과의-관계)처럼 실행 범위를 명시합니다. [Loop Engineering 원문](https://addyosmani.com/blog/loop-engineering/)
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 8. 트러블슈팅
 
 | 증상                             | 원인                                     | 해결                                       |
@@ -300,6 +330,10 @@ git worktree는 작업 파일을 분리하는 수단입니다. OS 권한·네트
 | 컨텍스트 윈도우 초과             | AGENTS.md가 너무 길음                    | 목차 방식으로 전환, progressive disclosure |
 | 코드 스타일 일관성 저하          | 모델이 기존 패턴을 복제하여 drift        | 정기 cleanup 에이전트 운영                 |
 | 에이전트가 외부 지식에 접근 불가 | Slack/Docs의 암묵지가 레포에 없음        | 모든 결정을 레포 내 마크다운으로 기록      |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 참고 자료
 
@@ -315,8 +349,19 @@ git worktree는 작업 파일을 분리하는 수단입니다. OS 권한·네트
 
 ---
 
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
+---
+
 **작성일**: 2026-06-19
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.

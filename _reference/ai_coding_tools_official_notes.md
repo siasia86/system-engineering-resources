@@ -11,7 +11,7 @@ tags:
   - devin
   - aider
   - agents-sdk
-last_checked: 2026-11-16
+last_checked: 2026-11-18
 sources:
   - https://kiro.dev/pricing
   - https://code.claude.com/docs/en/overview
@@ -32,9 +32,38 @@ sources:
   - https://kiro.dev/docs/models/available-models/
   - https://developers.openai.com/api/docs/models/gpt-5.6-sol
   - https://ampcode.com/news/amp-inc
+  - https://devin.ai/desktop
+  - https://github.com/features/copilot/plans
+  - https://developers.openai.com/api/docs/models
+  - https://kiro.dev/docs/models/
 ---
 
 # AI 코딩 도구 공식 문서 참조 노트
+
+## 최신 재확인 (2026-11-18)
+
+아래 값은 2026-11-18에 각 공식 페이지를 직접 열어 확인했습니다. 1절 이하의 이전 확인값과 다르면 이 절이 우선합니다.
+
+| 항목                 | 2026-11-18 확인값                                                                                                                                                                                                                                                                        | 출처                                  |
+|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|
+| Windsurf             | `windsurf.com` → `devin.ai/desktop` 308 이동. "Devin Desktop is the new name for Windsurf", 이름과 브랜딩만 바뀌고 플랜·가격 유지                                                                                                                                                        | devin.ai/desktop                      |
+| Windsurf 요금        | `windsurf.com/pricing` → `devin.ai/pricing` 308 이동. 요금 페이지에는 Devin 플랜만 표기                                                                                                                                                                                                  | devin.ai/pricing                      |
+| Devin 요금           | Free $0, Pro $20, Max $200, Teams $80/월 + 정식 좌석당 $40/월, Enterprise 문의                                                                                                                                                                                                           | devin.ai/pricing                      |
+| Kiro 요금            | Free $0(50), Pro $20(1,000), Pro+ $40(2,000), Pro Max $100(5,000), Power $200(10,000) 크레딧/월, 추가 $0.04/크레딧. 팀 좌석당 $20(500 크레딧, 2좌석 이상)                                                                                                                                | kiro.dev/pricing                      |
+| Kiro 모델            | 페이지 갱신 2026-11-16. GPT-5.6 Sol/Terra/Luna 4.4x/2.2x/0.6x(272K 초과 2배), Opus 5.5 2.0x, Sonnet 5.5 1.3x, Haiku 5.5 0.06x(100K 초과 0.3x), Opus 5·4.8·4.7·4.6·4.5 2.2x, Sonnet 5·4.6 1.3x(Pro 이상), Sonnet 4.5·4.0 1.3x(Free 이상), Fable 5.1 6x(Enterprise, US East). GPT-6 미등재 | kiro.dev/docs/models                  |
+| Claude 요금          | Pro $20(연간 월 $17), Max $100, Ultra $200, Team Standard $25(연간 $20)·Premium $125(연간 $100), Enterprise 좌석당 $20(20좌석 이상) + API 요금. Free는 Claude Code 미포함                                                                                                                | claude.com/pricing                    |
+| Cursor 요금          | Free, Plus $8(공유 풀, Grok 모델만), Premium $30, Super $100, Ultra $200, Teams $30+/사용자, Enterprise 문의                                                                                                                                                                             | cursor.com/pricing                    |
+| Copilot 요금         | Free(2,000 completions), Pro $10, Pro+ $39, Max $100. 사용량은 GitHub AI Credits(1 = $0.01): Pro $15, Pro+ $70, Max $200 상당. 유료 플랜 자동완성은 크레딧 미차감. Business·Enterprise 금액 미표기                                                                                       | github.com/features/copilot/plans     |
+| Amp 요금             | Hobby 무료, Megawatt $20(호스팅 orb 45,000분), 학생·교사 $10, Gigawatt 금액 미표기, Teams 추가 요금 없음                                                                                                                                                                                 | ampcode.com/pricing                   |
+| v0 요금              | Free(하루 7메시지), Plus $30/사용자, Business $100/사용자, 신규 $5 1회 크레딧                                                                                                                                                                                                            | v0.app/pricing                        |
+| Bolt.new 요금        | Free 월 1M(하루 300K) 토큰, Pro $25(월 10M 토큰부터), Teams $30/멤버                                                                                                                                                                                                                     | bolt.new/pricing                      |
+| OpenAI 주력 모델     | GPT-6.2 Astra $8/$40, GPT-6.2 Sol $2/$10, GPT-6.1 Terra $1/$5, GPT-6 Luna $0.1/$0.5 (1M 토큰당, 컨텍스트 1.05M). GPT-5.6 일반 모델은 주력 표에서 빠짐                                                                                                                                    | developers.openai.com/api/docs/models |
+| Agents SDK           | openai-agents-python v0.25.0(2026-11-18), MIT, stars 약 30.7K                                                                                                                                                                                                                            | GitHub API                            |
+| Aider                | stars 약 50.2K, Apache-2.0, 최신 릴리스 v0.86.0(2025-08-09)                                                                                                                                                                                                                              | GitHub API                            |
+| BenchLM 코딩         | Fable 5.2 89.7, Gemini 4 Carbon 83.4, Opus 5.5 82.9, Sonnet 5.5 80.6, GPT-6 Astra 78.4 ("Last verified: November 18, 2026")                                                                                                                                                              | benchlm.ai/best/coding                |
+| BenchLM Computer Use | Opus 4.8 85.2, Qwen3.8 Max 82.7, GPT-5.4 79.2, Qwen3.8-27B 78.9, Opus 4.6 76.9 (2026-11-18 갱신)                                                                                                                                                                                         | benchlm.ai/best/computer-use          |
+
+검증: Windsurf 변경은 `windsurf.com`과 `windsurf.com/pricing` 두 주소의 이동 응답과 `devin.ai/desktop` 본문으로 교차 확인했습니다. 나머지 값은 각 공식 페이지 1회 확인이며, 이전 확인값(1절 이하)과 대조해 바뀐 항목만 본문 문서에 반영했습니다.
 
 ## 1. 가격 정보 (2026-07-27 직접 확인)
 

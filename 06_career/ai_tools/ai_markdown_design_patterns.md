@@ -1,4 +1,7 @@
 # AI 에이전트용 Markdown 디자인 패턴
+<!-- reference: _reference/agent_skills_spec_official_notes.md -->
+
+AI 코딩 에이전트(Kiro, Claude Code, Gemini CLI, Cursor 등)에서 사용하는 마크다운 파일의 설계 패턴과 작성 규칙을 정리합니다.
 
 ## 목차
 
@@ -8,15 +11,6 @@
 | [3. 스킬 디렉토리 패턴](#3-스킬-디렉토리-패턴) / [4. 마크다운 프롬프트 구조 패턴](#4-마크다운-프롬프트-구조-패턴)                                                       |
 | [5. 토큰 효율 패턴](#5-토큰-효율-패턴)                                                                                                                                  |
 | [6. 스킬 작성 규칙](#6-스킬-작성-규칙) / [7. 보안 규칙](#7-보안-규칙) / [8. 실전 적용 예시 (Kiro CLI)](#8-실전-적용-예시-kiro-cli)                                      |
-
-
----
-
-
-AI 코딩 에이전트(Kiro, Claude Code, Gemini CLI, Cursor 등)에서 사용하는
-마크다운 파일의 설계 패턴과 작성 규칙을 정리합니다.
-
-| [⬆ 목차로 돌아가기](#목차) |
 
 ---
 
@@ -371,6 +365,8 @@ description: >
 
 공통 작업 규칙(`work-rules`), 인프라 운영 절차(`infra-ops`, 참조 문서·점검 스크립트 포함), 네이밍 규칙(`naming-rules`)을 skill 하나씩으로 나눈 예시입니다.
 
+[⬆ 목차로 돌아가기](#목차)
+
 ---
 
 ## 참고 자료
@@ -380,7 +376,6 @@ description: >
 - Instructions.md vs Skills.md vs Agent.md vs Agents.md: [priyankavergadia.substack.com](https://priyankavergadia.substack.com/p/how-to-structure-skillmd-agentsmd) — ★★☆☆☆
 - How to Develop SKILL.md for AI Coding Agents: [mtechzilla.com](https://www.mtechzilla.com/guides/how-to-develop-skill-md-production-guide-engineering-teams) — ★★☆☆☆
 - Agent Skills 101: a practical guide for engineers: [blog.serghei.pl](https://blog.serghei.pl/posts/agent-skills-101/) — ★★☆☆☆
-
 
 ---
 
@@ -397,6 +392,6 @@ description: >
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.

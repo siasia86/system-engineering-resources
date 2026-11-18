@@ -96,7 +96,7 @@ sources:
 | Linux Filesystem               | `_reference/linux_filesystem_official_notes.md`         | ext4, XFS, Btrfs, VFS                                   | 2026-11-09 |
 | MinIO                          | `_reference/minio_official_notes.md`                    | AGPLv3·S3-compatible·Versioning·Object Lock·Replication | 2026-11-09 |
 | Storage Tools                  | `_reference/storage_tools_official_notes.md`            | 15개 도구·공식 매뉴얼 범위                              | 2026-11-09 |
-| AI 코딩 도구                   | `_reference/ai_coding_tools_official_notes.md`          | 가격·모델 (2026-11-16), 벤치마크 (2026-07-27)           | 2026-11-16 |
+| AI 코딩 도구                   | `_reference/ai_coding_tools_official_notes.md`          | 가격·모델·벤치마크 (2026-11-18), Windsurf→Devin Desktop | 2026-11-18 |
 | AI 에이전트 운영 도구          | `_reference/ai_agent_workspace_tools_official_notes.md` | herdr·omp·Orca·pi·OpenCode·cmux 등                      | 2026-10-27 |
 | AI 업무 원형                   | `_reference/ai_work_archetypes_notes.md`                | Boris Cherny 제안·전재 대조·원문 직접 열람 제한         | 2026-11-09 |
 | Aside AI 브라우저              | `_reference/aside_browser_official_notes.md`            | v1.0.1116.1·플랫폼·요금·권한·데이터 처리·CLI·MCP        | 2026-11-16 |

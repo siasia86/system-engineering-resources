@@ -18,6 +18,10 @@
 - lock 파일이 존재하면 다른 agent는 작업을 중단합니다
 - 작업 완료 시 lock 파일 삭제
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 2. 구현 방식
 
 kiro의 `.kiro/skills/` 디렉토리에 스킬로 등록하여 agent가 규칙을 따르도록 합니다.
@@ -46,6 +50,10 @@ agents/*.json                       # resources에 skill://kiro-lock 추가
 |-----------------|-----------|------------------------------|
 | 쓰기 가능 agent | ✅        | 파일 수정 가능 → lock 필요   |
 | 읽기 전용 agent | ❌        | 파일 수정 없음 → lock 불필요 |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 3. 동작 흐름
 
@@ -91,6 +99,10 @@ printf "user: $(whoami)\nhost: $(hostname)\nstarted: $(date -Iseconds)\nsession:
 rm -f .kiro-lock
 ```
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 4. 엣지 케이스
 
 | 케이스                   | 처리 방법                                            |
@@ -103,6 +115,10 @@ rm -f .kiro-lock
 | delegate 호출 시         | 오케스트레이터가 lock 보유, 하위 agent는 재확인 생략 |
 | context compaction 후    | 10분 이상 경과 시 자기 lock 재확인                   |
 | 읽기 전용 작업           | lock 확인/획득 없이 수행                             |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 5. 유사 오픈소스 프로젝트
 
@@ -126,6 +142,10 @@ python mutex.py --agent Agent_01 --release --changes "Added validate_input()"
 - Python 3.12+, FastMCP 기반
 - 별도 데몬 프로세스로 동작
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 6. 비교
 
 | 항목             | .kiro-lock (스킬)   | BEXAI/Mutex          | flock (OS)         |
@@ -143,6 +163,10 @@ python mutex.py --agent Agent_01 --release --changes "Added validate_input()"
 - **소규모 팀 + kiro 간 협업** → `.kiro-lock` 스킬 방식 (현재 구현)
 - **다수 agent 동시 실행 + 파일 단위 lock** → BEXAI/Mutex
 - **OS 레벨 원천 차단** → `flock` 래퍼 스크립트
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
 
 ## 참고 자료
 
@@ -165,6 +189,6 @@ python mutex.py --agent Agent_01 --release --changes "Added validate_input()"
 
 **작성일**: 2026-06-09
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.

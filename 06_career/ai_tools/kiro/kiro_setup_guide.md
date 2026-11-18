@@ -2,11 +2,11 @@
 
 ## 목차
 
-| 섹션                                                                                                 |
-|------------------------------------------------------------------------------------------------------|
-| [1. 개요](#1-개요) / [2. 디렉토리 구조](#2-디렉토리-구조) / [3. Skill 작성](#3-skill-작성)           |
-| [4. Agent 작성](#4-agent-작성) / [5. Prompt 작성](#5-prompt-작성) / [6. Hook 설정](#6-hook-설정)     |
-| [7. 설정 검증](#7-설정-검증) / [8. 실전 조합 패턴](#8-실전-조합-패턴) / [9. 참고 자료](#9-참고-자료) |
+| 섹션                                                                                             |
+|--------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. 디렉토리 구조](#2-디렉토리-구조) / [3. Skill 작성](#3-skill-작성)       |
+| [4. Agent 작성](#4-agent-작성) / [5. Prompt 작성](#5-prompt-작성) / [6. Hook 설정](#6-hook-설정) |
+| [7. 설정 검증](#7-설정-검증) / [8. 실전 조합 패턴](#8-실전-조합-패턴) / [참고 자료](#참고-자료)  |
 
 ---
 
@@ -704,7 +704,7 @@ Task arrives
 
 ---
 
-## 9. 참고 자료
+## 참고 자료
 
 - addyosmani/agent-skills: [github.com](https://github.com/addyosmani/agent-skills) — ★★★☆☆
 - Kiro CLI 공식 문서: [kiro.dev/docs/cli](https://kiro.dev/docs/cli/) — ★★★☆☆
@@ -715,10 +715,23 @@ Task arrives
 - 프롬프트 관리: [kiro.dev/docs/cli/chat/manage-prompts](https://kiro.dev/docs/cli/chat/manage-prompts/) — ★★★☆☆
 - [kiro_cli_command_reference.md](./kiro_cli_command_reference.md)
 
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 통계
+
+![GitHub stars](https://img.shields.io/github/stars/siasia86/system-engineering-resources?style=social)
+![GitHub forks](https://img.shields.io/github/forks/siasia86/system-engineering-resources?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/siasia86/system-engineering-resources?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/siasia86/system-engineering-resources)
+![License](https://img.shields.io/github/license/siasia86/system-engineering-resources)
+![Actions](https://img.shields.io/github/actions/workflow/status/siasia86/system-engineering-resources/update-date.yml)
+
 ---
 
 **작성일**: 2026-06-09
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-18
 
 © 2026 siasia86. Licensed under CC BY 4.0.
