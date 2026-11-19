@@ -64,6 +64,7 @@ Codex 등 다른 도구와 같이 쓰는 저장소는 공통 규칙을 `AGENTS.m
 - 같은 키는 우선순위가 높은 값이 적용되고, `permissions.allow` 같은 목록 값은 병합됩니다.
 - `.claude/settings.local.json`은 Claude Code가 처음 만들 때 전역 git exclude에 추가합니다. 직접 만들면 `.gitignore`에 추가합니다.
 - 설정 화면은 `/config`, 권한 규칙은 `/permissions`로 엽니다.
+- 공유와 개인 설정의 구분, 권한 규칙 문법, hook 실패 시 동작은 [설정 파일 가이드](claude_code_settings_guide.md)에서 자세히 다룹니다.
 
 ```json
 {
@@ -306,6 +307,6 @@ claude plugin install commit-commands@claude-plugins-official
 
 **작성일**: 2026-10-14
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

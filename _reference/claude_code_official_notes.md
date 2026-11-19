@@ -7,7 +7,7 @@ tags:
   - anthropic
   - ai-agent
   - cli
-last_checked: 2026-11-16
+last_checked: 2026-11-19
 sources:
   - https://code.claude.com/docs/llms.txt
   - https://code.claude.com/docs/en/overview.md
@@ -16,6 +16,9 @@ sources:
   - https://code.claude.com/docs/en/platforms.md
   - https://code.claude.com/docs/en/permission-modes.md
   - https://code.claude.com/docs/en/settings.md
+  - https://code.claude.com/docs/en/settings-reference.md
+  - https://code.claude.com/docs/en/permissions.md
+  - https://code.claude.com/docs/en/hooks.md
   - https://code.claude.com/docs/en/memory.md
   - https://code.claude.com/docs/en/skills.md
   - https://code.claude.com/docs/en/hooks-guide.md
@@ -134,6 +137,14 @@ sources:
   - 프로젝트: `./CLAUDE.md` 또는 `./.claude/CLAUDE.md`
   - 개인 프로젝트용: `./CLAUDE.local.md` (`.gitignore` 대상)
 - `AGENTS.md`: 작업 디렉터리나 상위에 `CLAUDE.md`·`.claude/CLAUDE.md`·`CLAUDE.local.md`가 없으면 `AGENTS.md`를 프로젝트 지침으로 읽습니다. 둘 다 있으면 `CLAUDE.md`만 읽고, `CLAUDE.md`에서 `AGENTS.md`를 import하면 함께 읽습니다.
+- 설정 세부 (settings·settings-reference·permissions·hooks, 2026-11-19 확인):
+  - 권한 규칙은 deny → ask → allow 순서로 평가하고 처음 일치한 것이 결과입니다. 어느 층의 deny든 다른 층의 allow보다 앞섭니다.
+  - 공유 `.claude/settings.json`의 `permissions.allow`·`additionalDirectories`·대부분의 `env`는 폴더 신뢰 수락 뒤 적용되고, deny·ask는 바로 적용됩니다. 공유 파일의 hook은 신뢰 전에도 실행됩니다.
+  - `permissions.defaultMode`의 `auto`·`bypassPermissions`는 프로젝트·개인 프로젝트 파일에서 적용되지 않습니다(v2.1.257 이후).
+  - Bash 규칙: `*`는 공백 포함 아무 글자. 끝의 ` *`는 인수 없는 명령도 일치. `:*`는 끝에 올 때만 ` *`와 같음. 연결 명령은 나눠 평가하고, deny·ask는 하위 셸·명령 치환 안까지 적용. 명령 글자 비교라서 `git -C . push`, 절대 경로, `sh -c`는 막지 못함.
+  - Read·Edit 경로: `//`는 절대 경로, `~/`는 홈, `/`는 설정 파일 기준(사용자 파일은 `~/.claude`), 상대 경로는 현재 폴더. `.claudeignore`는 효과 없음.
+  - hook 종료 코드: 0은 결정 없음 또는 JSON 적용, 2는 차단, 그 밖의 코드·실행 실패·시간 초과는 차단하지 않는 오류로 작업이 진행됩니다. `onFailure: "block"`(v2.1.295 이상)이면 실패 시 차단합니다. 기본 `timeout`은 command hook 600초입니다.
+  - `permissions.disableBypassPermissionsMode: "disable"`은 어느 파일에서나 적용됩니다. `includeCoAuthoredBy`는 v2.0.62부터 사용 중단 예정이며 `attribution`으로 대체됩니다. `cleanupPeriodDays` 기본값은 30입니다.
 - Auto memory: Claude가 직접 기록하는 저장소별 메모리로, 세션마다 앞 200줄 또는 25KB까지 로드합니다.
 
 ## 8. 확장 기능
@@ -205,6 +216,7 @@ sources:
 - 2차 대조(2026-10-14): platform.claude.com의 models overview·pricing·model-deprecations와 claude.com/pricing, GitHub 릴리스 API로 모델 ID·가격·플랜·버전을 교차 확인했습니다. setup 문서의 "Pro, Max, Team, Enterprise, Console 계정 필요"와 pricing 페이지의 "모든 유료 플랜 포함"이 일치함을 확인했습니다.
 - 3차 대조(2026-10-15): quickstart·interactive-mode·common-workflows·best-practices·checkpointing·commands·desktop·skills 원문을 내려받아 기본 사용법·데스크톱 앱·스킬 목록 문서의 단축키·명령·plan 모드·되돌리기 한계·SSH 요구 사항·스킬 우선순위를 확인했습니다. 사이드바 섹션 구성(Pinned·Routines·Sessions·사용자 그룹)은 공식 문서에 없어 같은 날 데스크톱 앱 SSH 세션에서 관찰한 결과로 적었습니다.
 - 4차 대조(2026-11-09): claude.com/pricing·setup·costs·claude-projects 원문과 GitHub 릴리스 API로 Ultra 플랜, 필요 계정, Projects 제공 범위, 최신 릴리스를 다시 확인했습니다.
+- 5차 대조(2026-11-19): settings·settings-reference·permissions·hooks 원문을 내려받아 [설정 파일 가이드](../06_career/ai_tools/claude/claude_code_settings_guide.md)의 층·우선순위·규칙 문법·hook 실패 동작을 확인했습니다. 로컬 `claude --version`은 `2.1.311 (Claude Code)`입니다. Codex 대응은 Codex rules 공식 문서(developers.openai.com/codex/rules)로 확인했습니다. 권한 규칙 예시의 실제 일치 여부는 세션에서 시험하지 않았습니다.
 - 미검증: `claude --version` 외의 터미널 명령, 직접 설치·로그인, 단축키 동작은 실행하지 않았습니다. Max 20배 요금제의 정확한 가격은 pricing 페이지 본문에서 확인하지 못했습니다.
 
 ## 13. 공식 자료
@@ -214,6 +226,9 @@ sources:
 - Authentication: https://code.claude.com/docs/en/authentication
 - Permission modes: https://code.claude.com/docs/en/permission-modes
 - Settings: https://code.claude.com/docs/en/settings
+- Settings reference: https://code.claude.com/docs/en/settings-reference
+- Permissions: https://code.claude.com/docs/en/permissions
+- Hooks reference: https://code.claude.com/docs/en/hooks
 - Memory: https://code.claude.com/docs/en/memory
 - Skills: https://code.claude.com/docs/en/skills
 - Hooks guide: https://code.claude.com/docs/en/hooks-guide
@@ -238,6 +253,6 @@ sources:
 
 **작성일**: 2026-10-14
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

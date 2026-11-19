@@ -8,7 +8,7 @@
 |--------------------------|------------------------------------------------------------------|---------|
 | [roadmap/](./roadmap/)   | 로드맵 — SE, SRE, DBA 커리어 경로, 기술 면접 준비                | 6       |
 | [legal/](./legal/)       | 법률 — DRM, 지적재산권/저작권, 리버스 엔지니어링, 개인정보       | 6       |
-| [ai_tools/](./ai_tools/) | AI 도구 — 공통 문서와 claude/·codex/·kiro/·jev/ 도구별 하위 폴더 | 31      |
+| [ai_tools/](./ai_tools/) | AI 도구 — 공통 문서와 claude/·codex/·kiro/·jev/ 도구별 하위 폴더 | 32      |
 
 ## 주요 문서
 
@@ -33,6 +33,7 @@
 - [claude/claude_code_basics_guide.md](./ai_tools/claude/claude_code_basics_guide.md) — 요청 작성, plan 모드, 파일 지정, 컨텍스트 관리, 세션 재개와 되돌리기
 - [claude/claude_code_desktop_guide.md](./ai_tools/claude/claude_code_desktop_guide.md) — 데스크톱 앱 Code 탭, SSH 원격 세션, 세션·사이드바 정리
 - [claude/claude_code_extensions_guide.md](./ai_tools/claude/claude_code_extensions_guide.md) — CLAUDE.md·설정·Skills·Hooks·Subagents·MCP·Plugins
+- [claude/claude_code_settings_guide.md](./ai_tools/claude/claude_code_settings_guide.md) — 설정 파일 층·우선순위, 공유와 개인 구분, 권한 규칙 문법, hook 실패 시 동작·배포 방식, Codex 대응
 - [claude/claude_models_guide.md](./ai_tools/claude/claude_models_guide.md) — Claude 모델 라인업·가격·작업별 선택·폐기 일정
 - [claude/claude_skills_catalog.md](./ai_tools/claude/claude_skills_catalog.md) — 개인 스킬 14개와 기본 제공·계정 스킬의 한 줄 설명·우선순위
 - [codex/codex_concepts.md](./ai_tools/codex/codex_concepts.md) — Codex 동작 원리, 수정 예시, 설정과 권한, 학습 순서
@@ -76,6 +77,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.
