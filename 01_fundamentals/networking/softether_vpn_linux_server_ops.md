@@ -32,7 +32,8 @@ Ubuntu·Rocky Linux 서버가 SoftEther VPN Client(`vpnclient`)로 VPN에 붙어
 | 사내망 대역         | `10.20.0.0/16`, 사내 DNS `10.20.0.53`                    |
 | 작업자 접속 원본 IP | `198.51.100.25` (공인 IP로 서버에 SSH 접속 중)           |
 
-- `vpnclient`는 `/opt/vpnclient`에 설치되어 있고, 계정과 NIC은 클라이언트 가이드 4절대로 만들어 두었다고 가정합니다.
+- `vpnclient`는 `/opt/vpnclient`에 설치되어 있고 NIC은 클라이언트 가이드 4절대로 만들어 두었다고 가정합니다. 계정 생성은 [4절](#계정-생성과-최초-1회-설정)에 있습니다.
+- 서버가 443이 아닌 포트(예: 10443)로 열려 있으면 계정의 `/SERVER:주소:포트`에 그 포트를 적습니다.
 - 명령은 root 권한으로 실행합니다. 일반 계정이면 앞에 `sudo`를 붙입니다.
 
 ### 구성
@@ -58,15 +59,15 @@ Ubuntu·Rocky Linux 서버가 SoftEther VPN Client(`vpnclient`)로 VPN에 붙어
 
 ## 2. Ubuntu와 Rocky Linux 차이
 
-| 항목                 | Ubuntu Server                                                                   | Rocky Linux                                                              |
-|----------------------|---------------------------------------------------------------------------------|--------------------------------------------------------------------------|
-| 패키지 관리          | `apt`                                                                           | `dnf`                                                                    |
-| 기본 네트워크 관리   | netplan + systemd-networkd                                                      | NetworkManager                                                           |
-| 수동 DHCP 클라이언트 | `dhclient`(isc-dhcp-client) 또는 `dhcpcd`. 기본 설치 여부는 판마다 다름(미확인) | 8·9: `dhclient`(`dhcp-client` 패키지). 10: `dhclient` 제거(RHEL 10 기준) |
-| DNS 설정             | systemd-resolved(`resolvectl`)                                                  | NetworkManager가 `/etc/resolv.conf` 관리                                 |
-| 방화벽               | ufw (서버 설치 기본 비활성)                                                     | firewalld (기본 활성)                                                    |
-| 강제 접근 제어       | AppArmor                                                                        | SELinux (기본 enforcing)                                                 |
-| 빌드 의존성          | 클라이언트 가이드 2절                                                           | 클라이언트 가이드 3절                                                    |
+| 항목                 | Ubuntu Server                                                                    | Rocky Linux                                                              |
+|----------------------|----------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| 패키지 관리          | `apt`                                                                            | `dnf`                                                                    |
+| 기본 네트워크 관리   | netplan + systemd-networkd                                                       | NetworkManager                                                           |
+| 수동 DHCP 클라이언트 | 24.04 Server: `dhcpcd`(dhcpcd-base) 기본 설치, `dhclient` 없음. 다른 판은 미확인 | 8·9: `dhclient`(`dhcp-client` 패키지). 10: `dhclient` 제거(RHEL 10 기준) |
+| DNS 설정             | systemd-resolved(`resolvectl`)                                                   | NetworkManager가 `/etc/resolv.conf` 관리                                 |
+| 방화벽               | ufw (서버 설치 기본 비활성)                                                      | firewalld (기본 활성)                                                    |
+| 강제 접근 제어       | AppArmor                                                                         | SELinux (기본 enforcing)                                                 |
+| 빌드 의존성          | 클라이언트 가이드 2절                                                            | 클라이언트 가이드 3절                                                    |
 
 - `vpn_vpn0`은 vpnclient가 만드는 TAP 인터페이스라 netplan·NetworkManager 설정 파일에 없습니다. 주소·경로는 `ip` 명령으로 직접 다룹니다.
 - Rocky에서 NetworkManager가 `vpn_vpn0`을 관리 대상으로 잡아 주소를 지우거나 바꾸면 관리 대상에서 뺍니다.
@@ -117,18 +118,48 @@ systemctl stop vpn-rollback.timer
 | 부팅 시 자동 연결 (`AccountStartupSet`) | 사용 가능          | 사용하지 않음 (같은 이유)                                                       |
 | 끊긴 뒤 복구                            | 자동               | 새 OTP로 패스워드를 다시 설정한 뒤 연결                                         |
 | 무인 운영                               | 가능               | 사실상 불가. 상시 연결이 필요하면 인증서 인증 등 별도 계정을 서버 관리자와 협의 |
+| 같은 계정 동시 접속                     | 서버 정책에 따름   | 같음. 다른 PC에서 같은 계정이 연결 중이면 거부될 수 있음(트러블슈팅 code 20)    |
 
 🟡 실패한 재시도가 반복되면 RADIUS 서버 정책에 따라 계정이 잠길 수 있습니다. 잠금 기준은 서버 관리자에게 확인합니다.
 
-### 최초 1회 설정
+### 계정 생성과 최초 1회 설정
+
+vpncmd 대화 모드로 들어갑니다. 패스워드는 이 단계에서 넣지 않습니다.
+
+```bash
+/opt/vpnclient/vpncmd localhost /CLIENT
+```
 
 ```
-# vpncmd 진입: 2 (Management of VPN Client) 선택, Hostname은 Enter
+VPN Client> AccountCreate work_vpn /SERVER:192.0.2.1:443 /HUB:VPN /USERNAME:otpuser /NICNAME:vpn0
 VPN Client> AccountRetrySet work_vpn /NUM:0 /INTERVAL:15
 VPN Client> AccountStartupRemove work_vpn
+VPN Client> RemoteDisable
 ```
 
-`AccountStartupRemove`는 시작 연결로 지정되지 않은 계정이면 오류를 내며, 이 경우 그대로 두면 됩니다.
+- `AccountStartupRemove`는 시작 연결로 지정되지 않은 계정이면 오류를 내며, 이 경우 그대로 두면 됩니다.
+- `RemoteDisable`은 다른 호스트에서 이 vpnclient를 관리하지 못하게 합니다.
+
+### 서버 인증서 검증
+
+`AccountCreate`로 만든 계정은 서버 인증서 검증이 꺼져 있습니다(`AccountGet`의 `Verify Server Certificate`가 `Disable`). 이 상태에서는 중간에서 서버를 흉내 내도 알 수 없으므로, 서버 인증서를 받아 등록하고 검증을 켭니다. 인증서는 서버 관리자에게 받거나, 이미 연결되는 Windows 클라이언트의 연결 상태 창에서 `Server Certificate`를 열어 파일로 내보냅니다.
+
+```
+VPN Client> AccountServerCertSet work_vpn /LOADCERT:/root/vpnserver.cer
+VPN Client> AccountServerCertEnable work_vpn
+```
+
+### 설정 확인
+
+| 확인 위치                                | 항목                                                                | 기대값                      |
+|------------------------------------------|---------------------------------------------------------------------|-----------------------------|
+| `AccountGet work_vpn`                    | `Destination VPN Server Host Name`·`Port Number`·`Virtual Hub Name` | 서버 관리자가 준 값         |
+| `AccountGet work_vpn`                    | `Authentication Type`                                               | `RADIUS or NT Domain ...`   |
+| `AccountGet work_vpn`                    | `Device Name Used for Connection`                                   | `vpn0`                      |
+| `AccountGet work_vpn`                    | `Verify Server Certificate`                                         | `Enable`                    |
+| `/opt/vpnclient/vpn_client.config`       | `StartupAccount` / `NumRetry` / `AllowRemoteConfig`                 | `false` / `0` / `false`     |
+| `ls -l /opt/vpnclient/vpn_client.config` | 권한                                                                | `-rw-------` root           |
+| `ss -ltnp`                               | vpnclient 관리 포트 9930                                            | `127.0.0.1:9930`에서만 대기 |
 
 ### 연결
 
@@ -139,6 +170,7 @@ VPN Client> AccountStatusGet work_vpn
 ```
 
 - OTP 6자리는 유효 시간(30초)이 짧으므로, 새 코드가 뜬 직후 패스워드 설정과 연결을 이어서 실행합니다.
+- 같은 계정을 Windows 등 다른 PC에서 쓰고 있으면 그쪽 연결을 먼저 끊습니다. 서버가 같은 사용자의 세션 수를 제한하면 두 번째 연결은 인증 뒤 거부됩니다.
 - 패스워드를 셸 명령 인수(`vpncmd ... /CMD AccountPasswordSet ... /PASSWORD:...`)로 넘기면 셸 기록과 프로세스 목록에 남습니다. vpncmd 대화 모드에서 입력하거나 [10절](#10-작업-스크립트)처럼 메모리 파일을 거칩니다.
 - vpnclient는 계정 설정을 설치 디렉토리의 `vpn_client.config`에 저장합니다. 파일 권한이 root 전용(`600`)인지 확인합니다.
 
@@ -170,17 +202,38 @@ DHCP를 써야 하면 [자동 원복 타이머](#자동-원복-타이머)를 걸
 
 | 배포판    | 명령                                       | 비고                                                                |
 |-----------|--------------------------------------------|---------------------------------------------------------------------|
-| Ubuntu    | `dhclient vpn_vpn0` 또는 `dhcpcd vpn_vpn0` | 없으면 `apt install isc-dhcp-client` 또는 `apt install dhcpcd-base` |
+| Ubuntu    | `dhcpcd vpn_vpn0` 또는 `dhclient vpn_vpn0` | 없으면 `apt install dhcpcd-base` 또는 `apt install isc-dhcp-client` |
 | Rocky 8·9 | `dhclient vpn_vpn0`                        | 없으면 `dnf install dhcp-client`                                    |
 | Rocky 10  | 고정 IP 사용                               | `dhclient` 제거. 대체 DHCP 클라이언트의 패키지 저장소는 미확인      |
 
-```bash
-# VPN 쪽 기본 경로가 생겼는지 확인
-ip route show default
+`dhcpcd`는 옵션을 주지 않으면 기본 경로와 DNS·hostname·시간 서버 설정까지 바꿉니다. 원격 서버에서는 주소만 받도록 실행합니다.
 
-# 생겼으면 VPN 쪽 기본 경로만 제거 (eth0 기본 경로는 유지)
+```bash
+# 기본 경로(-G)와 DNS·hostname·NTP 훅(-C)을 쓰지 않음
+dhcpcd -4 -G -t 30 -C resolv.conf -C hostname -C ntp.conf -C timesyncd.conf vpn_vpn0
+
+# 받은 값 확인 (서버가 보낸 경로 옵션 포함)
+dhcpcd -4 -U vpn_vpn0
+
+# VPN 쪽 기본 경로가 생겼는지 확인, 생겼으면 그것만 제거 (eth0 기본 경로는 유지)
+ip route show default
 ip route del default dev vpn_vpn0
+
+# 작업 끝: 주소 반납과 dhcpcd 종료
+dhcpcd -k vpn_vpn0
 ```
+
+### 서버가 내려 주는 경로
+
+SecureNAT DHCP는 사내 대역 경로를 classless static route로 보낼 수 있습니다. 같은 경로가 RFC 3442 형식(`classless_static_routes`, option 121)과 Microsoft 형식(`ms_classless_static_routes`, option 249)으로 함께 오면 dhcpcd는 그 경로를 `vpn_vpn0`에 추가합니다. `dhcpcd -U` 출력에 `classless_static_routes=` 줄이 있으면 받은 것입니다.
+
+| 상황                                          | 처리                                                                                                               |
+|-----------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| 받은 대역이 작업 대상이고 서버 대역과 안 겹침 | 그대로 사용. Windows 클라이언트도 같은 경로를 받음                                                                 |
+| 받은 대역이 서버의 기존 대역·관리 경로와 겹침 | `-O classless_static_routes -O ms_classless_static_routes`를 붙여 받지 않고, 필요한 대역만 [6절](#6-라우팅)로 추가 |
+
+- 두 옵션 중 하나만 막으면 다른 형식으로 같은 경로가 들어옵니다.
+- 🟡 dhcpcd가 이미 그 인터페이스에서 실행 중일 때 시험 모드(`dhcpcd -T vpn_vpn0`)를 실행하면 기존 주소와 경로가 지워질 수 있습니다. 실행 중인 dhcpcd가 있으면 `dhcpcd -U`로 값을 보고, 주소가 지워졌으면 `dhcpcd -n vpn_vpn0`으로 다시 받습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -294,6 +347,24 @@ sysctl -w net.ipv4.conf.vpn_vpn0.rp_filter=2
 
 커널은 `all`과 인터페이스 값 중 큰 값을 적용하므로, `all`이 `1`이고 인터페이스가 `2`이면 `2`가 적용됩니다.
 
+### ARP 응답 범위
+
+Linux 기본값(`arp_ignore=0`)은 어느 인터페이스로 들어온 ARP 요청이든 자기 주소면 답합니다. VPN 쪽 장비가 서버의 `eth0` 주소를 물으면 `vpn_vpn0`으로 답해, VPN 쪽에 서버의 공인망 주소가 알려지고 응답이 터널로 돌아올 수 있습니다. `vpn_vpn0`에서는 자기 주소에 대한 요청에만 답하게 합니다.
+
+```bash
+sysctl net.ipv4.conf.all.arp_ignore net.ipv4.conf.vpn_vpn0.arp_ignore
+
+# vpn_vpn0: 그 인터페이스 주소에 대한 요청만 응답, 보낼 때도 그 인터페이스 주소 사용
+sysctl -w net.ipv4.conf.vpn_vpn0.arp_ignore=1
+sysctl -w net.ipv4.conf.vpn_vpn0.arp_announce=2
+```
+
+`arp_ignore`·`arp_announce`도 `all`과 인터페이스 값 중 큰 값을 씁니다. vpnclient를 다시 시작하거나 NIC을 다시 만들면 `vpn_vpn0` 값이 초기화될 수 있으므로 [작업 스크립트](#10-작업-스크립트)에서 연결할 때마다 설정합니다.
+
+### UDP 가속
+
+vpnclient는 TCP로 연결한 뒤 서버와 UDP 가속을 시도하며, 이때 서버의 내부 주소로도 UDP를 보냅니다. 서버가 내려 준 경로에 그 내부 주소가 들어 있으면 이 UDP가 서버의 `eth0` 원본 주소를 단 채 터널로 들어갑니다. `AccountStatusGet`의 `UDP Acceleration is Active`가 `No`이면 TCP로만 동작하는 것이며 연결 자체에는 문제가 없습니다. vpncmd에는 이 기능을 끄는 명령이 없고, 설정 파일의 `NoUdpAcceleration` 항목을 바꾸는 방법은 이 문서에서 확인하지 않았습니다.
+
 [⬆ 목차로 돌아가기](#목차)
 
 ## 9. VPN 너머 작업
@@ -362,8 +433,11 @@ set -euo pipefail
 VPNCMD=/opt/vpnclient/vpncmd
 ACCOUNT=work_vpn
 NIC=vpn_vpn0
-VPN_ADDR=192.168.30.50/24       # 서버 관리자에게 받은 고정 IP
+VPN_ADDR=192.168.30.50/24       # 서버 관리자에게 받은 고정 IP, DHCP면 dhcp
 ROUTES=(10.20.0.0/16)           # VPN으로 보낼 대역
+# DHCP: 기본 경로·DNS·hostname·NTP를 받지 않음
+# 서버가 내려 주는 경로도 막으려면 -O classless_static_routes -O ms_classless_static_routes 추가
+DHCPCD_OPTS=(-4 -G -t 30 -C resolv.conf -C hostname -C ntp.conf -C timesyncd.conf)
 TMP_IN=""
 
 trap 'rm -f "${TMP_IN}"' EXIT
@@ -393,8 +467,15 @@ up() {
         sleep 1
     done
 
-    ip addr replace "${VPN_ADDR}" dev "${NIC}"
+    sysctl -qw "net.ipv4.conf.${NIC}.arp_ignore=1" "net.ipv4.conf.${NIC}.arp_announce=2"
     ip link set "${NIC}" up
+    if [[ "${VPN_ADDR}" == dhcp ]]; then
+        dhcpcd "${DHCPCD_OPTS[@]}" "${NIC}" || { log "DHCP 주소 받기 실패"; exit 1; }
+        ip route del default dev "${NIC}" 2> /dev/null || true   # 안전장치
+    else
+        ip addr replace "${VPN_ADDR}" dev "${NIC}"
+    fi
+    ip -brief addr show "${NIC}"
     for r in "${ROUTES[@]}"; do
         ip route replace "${r}" dev "${NIC}"
     done
@@ -403,6 +484,9 @@ up() {
 }
 
 down() {
+    if [[ "${VPN_ADDR}" == dhcp ]]; then
+        dhcpcd -k "${NIC}" > /dev/null 2>&1 || true
+    fi
     vcmd AccountDisconnect "${ACCOUNT}" > /dev/null || true
     for r in "${ROUTES[@]}"; do
         ip route del "${r}" dev "${NIC}" 2> /dev/null || true
@@ -430,7 +514,9 @@ install -m 700 vpn-work.sh /usr/local/sbin/vpn-work.sh
 vpn-work.sh up
 ```
 
-- `Session Established`는 `AccountStatusGet` 출력의 세션 상태 문자열입니다. 판에 따라 문구가 다르면 실제 출력에 맞춰 고칩니다.
+- `Session Established`는 `AccountStatusGet` 출력의 세션 상태 문자열입니다. 4.44 Build 9807에서는 `Connection Completed (Session Established)`로 나옵니다. 판에 따라 문구가 다르면 실제 출력에 맞춰 고칩니다.
+- `VPN_ADDR=dhcp`이면 `dhcpcd`가 주소를 받고 `down`에서 반납합니다. 처음에는 `ROUTES`를 VPN 대역(예: `192.168.30.0/24`)만 두고, 서버가 내려 준 경로를 [5절](#서버가-내려-주는-경로)대로 확인한 뒤 필요한 대역을 더합니다.
+- 고정 IP·대역 값을 정하기 전에는 실행되지 않게, 설치할 때 두 값을 `CHANGE_ME`로 두고 `case` 앞에서 그 값이면 종료하는 검사를 넣어 두면 안전합니다.
 - `/dev/shm` 파일도 실행 중에는 root가 읽을 수 있습니다. 공용 서버라면 vpncmd 대화 모드에서 직접 입력하는 편이 낫습니다.
 - `vpnclient` 서비스 자체는 [클라이언트 가이드 6절](./softether_vpn_client_guide.md#6-systemd-서비스-등록)처럼 systemd로 띄워 두고, 이 스크립트는 계정 연결만 다룹니다.
 
@@ -446,6 +532,7 @@ systemctl stop vpn-rollback.timer 2> /dev/null || true
 
 ip route show > /root/route.after
 diff /root/route.before /root/route.after   # 차이가 없어야 함
+pgrep -a dhcpcd                             # DHCP를 썼다면 vpn_vpn0용 dhcpcd가 없어야 함
 ```
 
 | 확인 항목     | 원상태                                                         |
@@ -461,19 +548,22 @@ diff /root/route.before /root/route.after   # 차이가 없어야 함
 
 ## 12. 트러블슈팅
 
-| 증상                                   | 원인                                       | 조치                                                                    |
-|----------------------------------------|--------------------------------------------|-------------------------------------------------------------------------|
-| 연결 직후 공인 IP로 들어온 SSH가 끊김  | DHCP가 `vpn_vpn0`으로 기본 경로를 추가     | 콘솔에서 `ip route del default dev vpn_vpn0`, 이후 고정 IP 사용         |
-| 처음 연결에서 인증 실패                | OTP 만료, 형식 오류, `/TYPE:standard` 사용 | 새 코드로 즉시 재설정, `/TYPE:radius` 확인, 형식은 서버 관리자에게 확인 |
-| 끊긴 뒤 재연결이 계속 실패, 계정 잠김  | 만료된 OTP로 자동 재시도 반복              | `AccountRetrySet /NUM:0`, 잠금 해제는 서버 관리자에게 요청              |
-| 재부팅 후 혼자 연결을 시도하다 실패    | `AccountStartupSet` 남아 있음              | `AccountStartupRemove work_vpn`                                         |
-| `dhclient: command not found`          | Rocky 10 제거, Ubuntu 미설치               | 고정 IP 사용 또는 [5절](#5-ip-할당) 표대로 설치                         |
-| 주소를 넣었는데 곧 사라짐 (Rocky)      | NetworkManager가 인터페이스 관리           | `nmcli device set vpn_vpn0 managed no`                                  |
-| 사내 호스트 이름 해석 안 됨            | DNS 미설정                                 | [7절](#7-dns)                                                           |
-| VPN 쪽에서 이 서버로 SSH 안 됨 (Rocky) | firewalld zone 미지정                      | [8절](#rocky-linux-firewalld) `vpn` zone                                |
-| 요청은 들어오는데 응답이 없음          | rp_filter 엄격 모드와 비대칭 경로          | 원본 대역 경로 추가 또는 `vpn_vpn0` rp_filter `2`                       |
-| ping은 되는데 SSH·scp가 멈춤           | 경로 MTU 감소                              | [9절 MTU](#mtu)                                                         |
-| vpncmd 접속 불가                       | vpnclient 미실행                           | `systemctl status vpnclient`, 클라이언트 가이드 8절                     |
+| 증상                                                  | 원인                                         | 조치                                                                                                      |
+|-------------------------------------------------------|----------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| 연결 직후 공인 IP로 들어온 SSH가 끊김                 | DHCP가 `vpn_vpn0`으로 기본 경로를 추가       | 콘솔에서 `ip route del default dev vpn_vpn0`, 이후 고정 IP 사용                                           |
+| 처음 연결에서 인증 실패                               | OTP 만료, 형식 오류, `/TYPE:standard` 사용   | 새 코드로 즉시 재설정, `/TYPE:radius` 확인, 형식은 서버 관리자에게 확인                                   |
+| 로그에 `too many sessions by the same user (code 20)` | 같은 계정이 다른 PC(예: Windows)에서 연결 중 | 그쪽 연결을 끊고 새 OTP로 다시 연결. 동시 사용이 필요하면 서버 관리자에게 세션 수 조정이나 별도 계정 요청 |
+| 연결 뒤 예상하지 않은 대역 경로가 생김                | DHCP classless static route 수신             | `dhcpcd -4 -U vpn_vpn0`로 확인, [5절](#서버가-내려-주는-경로)                                             |
+| `dhcpcd -T` 뒤 `vpn_vpn0` 주소가 사라짐               | 실행 중인 dhcpcd와 시험 모드 충돌            | `dhcpcd -n vpn_vpn0`으로 다시 받기                                                                        |
+| 끊긴 뒤 재연결이 계속 실패, 계정 잠김                 | 만료된 OTP로 자동 재시도 반복                | `AccountRetrySet /NUM:0`, 잠금 해제는 서버 관리자에게 요청                                                |
+| 재부팅 후 혼자 연결을 시도하다 실패                   | `AccountStartupSet` 남아 있음                | `AccountStartupRemove work_vpn`                                                                           |
+| `dhclient: command not found`                         | Rocky 10 제거, Ubuntu 미설치                 | 고정 IP 사용 또는 [5절](#5-ip-할당) 표대로 설치                                                           |
+| 주소를 넣었는데 곧 사라짐 (Rocky)                     | NetworkManager가 인터페이스 관리             | `nmcli device set vpn_vpn0 managed no`                                                                    |
+| 사내 호스트 이름 해석 안 됨                           | DNS 미설정                                   | [7절](#7-dns)                                                                                             |
+| VPN 쪽에서 이 서버로 SSH 안 됨 (Rocky)                | firewalld zone 미지정                        | [8절](#rocky-linux-firewalld) `vpn` zone                                                                  |
+| 요청은 들어오는데 응답이 없음                         | rp_filter 엄격 모드와 비대칭 경로            | 원본 대역 경로 추가 또는 `vpn_vpn0` rp_filter `2`                                                         |
+| ping은 되는데 SSH·scp가 멈춤                          | 경로 MTU 감소                                | [9절 MTU](#mtu)                                                                                           |
+| vpncmd 접속 불가                                      | vpnclient 미실행                             | `systemctl status vpnclient`, 클라이언트 가이드 8절                                                       |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -503,6 +593,6 @@ diff /root/route.before /root/route.after   # 차이가 없어야 함
 
 **작성일**: 2026-11-18
 
-**마지막 업데이트**: 2026-11-18
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.
