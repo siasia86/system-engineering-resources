@@ -1,0 +1,25 @@
+# security_check.py 저장소 설정 (32_system-engineering-resources)
+# 스크립트 옆 공통 설정 위에 덧붙입니다. 보호 규칙은 끌 수 없고 예외만 추가합니다.
+# 아래 값은 문서 예시에서 비밀번호 규칙이 값으로 잘못 읽은 것입니다.
+# 값 전체가 같을 때만 제외하므로 다른 실제 값은 계속 탐지됩니다.
+
+[placeholder]
+values = [
+    # Ansible Vault 암호문 표시(값은 다음 줄의 AES256 암호문)
+    "!vault",
+    # 생략 표시
+    "...", "...`",
+    # 비밀 저장소의 비밀 이름·ARN 경로(값이 아님)
+    "prod/app/db", "prod/app/*", "prod/db/password",
+    # 코드 표현과 변수 이름
+    "secret[", "hashed_password", "access_token", "REGISTRY_PASS", "DOCKER_PASS",
+    "?SIA_SCRIPTS_RELEASE_TOKEN", "?API", "비밀번호",
+    # sudoers NOPASSWD 뒤의 명령 범위
+    "ALL", "ALL\\n",
+    # 정책 이름·숫자 설정·출력 서식
+    "myapp-policy", "120000", "0.1", ".3f",
+    # 로컬 에뮬레이터 고정값, Vagrant 공개 기본값, 나쁜 예 주석
+    "local", "vagrant", "hardcoded-password",
+    # 설명 문장의 단어(PASS 규칙, fstab pass 열, GHSA ID 일부)
+    "VPN", "0=검사", "공격자",
+]
