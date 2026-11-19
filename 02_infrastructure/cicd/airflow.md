@@ -334,10 +334,10 @@ pip install apache-airflow-providers-postgres
 ```bash
 export AIRFLOW_HOME=~/airflow
 export AIRFLOW__CORE__EXECUTOR=LocalExecutor
-export AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://user:pass@localhost/airflow
+export AIRFLOW__DATABASE__SQL_ALCHEMY_CONN='postgresql+psycopg2://user:<PASSWORD>@localhost/airflow'
 export AIRFLOW__CORE__PARALLELISM=32
 export AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG=16
-export AIRFLOW__API__SECRET_KEY=your-secret-key
+export AIRFLOW__API__SECRET_KEY='<SECRET_KEY>'
 ```
 
 ### airflow.cfg 주요 설정
@@ -646,7 +646,7 @@ backend_kwargs = {"connections_prefix": "airflow/connections", "variables_prefix
 
 ```bash
 # AWS Secrets Manager에 Connection 등록
-aws secretsmanager create-secret   --name "airflow/connections/my_postgres"   --secret-string "postgresql://user:pass@host:5432/db"
+aws secretsmanager create-secret   --name "airflow/connections/my_postgres"   --secret-string "postgresql://user:<PASSWORD>@host:5432/db"
 ```
 
 ```python
@@ -668,13 +668,13 @@ aws secretsmanager create-secret   --name "airflow/connections/my_postgres"   --
 
 ```bash
 # URI 형식
-export AIRFLOW_CONN_MY_POSTGRES='postgresql://user:pass@host:5432/db'
+export AIRFLOW_CONN_MY_POSTGRES='postgresql://user:<PASSWORD>@host:5432/db'
 
 # JSON 형식
 export AIRFLOW_CONN_MY_S3='{"conn_type": "aws", "extra": {"region_name": "ap-northeast-1"}}'
 
 # Variable
-export AIRFLOW_VAR_API_KEY='SecureKey123'
+export AIRFLOW_VAR_API_KEY='<API_KEY>'
 ```
 
 ### 웹서버 보안 설정
@@ -706,7 +706,7 @@ OAUTH_PROVIDERS = [
 # 운영 환경 필수
 expose_config = False
 # 반드시 변경
-secret_key = your-random-secret-key
+secret_key = <SECRET_KEY>
 
 [core]
 hide_sensitive_var_conn_fields = True
@@ -844,6 +844,6 @@ airflow tasks states-for-dag-run my_dag manual__2026-04-27T00:00:00+00:00
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

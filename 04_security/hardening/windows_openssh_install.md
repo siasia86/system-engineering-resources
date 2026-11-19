@@ -67,8 +67,8 @@ New-NetFirewallRule -Name "OpenSSH-Server-In-TCP" `
 ### Step 1 — 전용 계정 생성
 
 ```powershell
-$pw = ConvertTo-SecureString "SecurePassword123" -AsPlainText -Force
-New-LocalUser -Name "ansibleuser" -Password $pw -PasswordNeverExpires
+$secureInput = Read-Host -Prompt "ansibleuser 계정 암호" -AsSecureString   # 화면에 표시하지 않고 입력
+New-LocalUser -Name "ansibleuser" -Password $secureInput -PasswordNeverExpires
 Add-LocalGroupMember -Group "Administrators" -Member "ansibleuser"
 ```
 
@@ -296,6 +296,6 @@ Get-WinEvent -LogName "OpenSSH/Operational" -MaxEvents 20 | Select TimeCreated, 
 
 **작성일**: 2026-05-18
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

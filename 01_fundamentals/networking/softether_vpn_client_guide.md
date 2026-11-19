@@ -181,7 +181,7 @@ VPN Client> AccountCreate myconn /SERVER:192.0.2.1:443 /HUB:VPN /USERNAME:Secure
 ### 패스워드 설정
 
 ```
-VPN Client> AccountPasswordSet myconn /PASSWORD:SecurePassword123 /TYPE:standard
+VPN Client> AccountPasswordSet myconn /PASSWORD:<PASSWORD> /TYPE:standard
 ```
 
 > `/TYPE` 옵션: `standard` (일반) 또는 `radius` (RADIUS 인증)
@@ -212,7 +212,7 @@ SoftEther 클라이언트는 아래 4가지 인증 방식을 지원합니다.
 #### 패스워드 인증 (standard / radius)
 
 ```
-VPN Client> AccountPasswordSet myconn /PASSWORD:SecurePassword123 /TYPE:standard
+VPN Client> AccountPasswordSet myconn /PASSWORD:<PASSWORD> /TYPE:standard
 ```
 
 #### 클라이언트 인증서 인증
@@ -471,7 +471,7 @@ Used Virtual Network Adapter Name: vpn0
 VPN Client> AccountCreate my_vpn /SERVER:vpn.example.com:80 /HUB:VPN /USERNAME:Secureuser123 /NICNAME:vpn0
 
 # 패스워드 설정 (standard: 일반 / radius: RADIUS+OTP)
-VPN Client> AccountPasswordSet my_vpn /PASSWORD:SecurePassword123456789 /TYPE:radius
+VPN Client> AccountPasswordSet my_vpn /PASSWORD:<PASSWORD><OTP> /TYPE:radius
 ```
 
 #### 확인
@@ -496,7 +496,7 @@ VPN Client> AccountDisconnect my_vpn
 VPN Client> AccountDisconnect my_vpn
 VPN Client> AccountDelete my_vpn
 VPN Client> AccountCreate my_vpn /SERVER:new-server.example.com:443 /HUB:VPN /USERNAME:Secureuser123 /NICNAME:vpn0
-VPN Client> AccountPasswordSet my_vpn /PASSWORD:SecurePassword123456789 /TYPE:radius
+VPN Client> AccountPasswordSet my_vpn /PASSWORD:<PASSWORD><OTP> /TYPE:radius
 ```
 
 #### 삭제
@@ -546,7 +546,7 @@ ip route add 10.0.0.0/24 dev vpn_vpn0
 ### 인증 실패
 
 ```
-VPN Client> AccountPasswordSet myconn /PASSWORD:SecurePassword123 /TYPE:standard
+VPN Client> AccountPasswordSet myconn /PASSWORD:<PASSWORD> /TYPE:standard
 ```
 
 > 서버 인증 방식이 RADIUS 인 경우 `/TYPE:radius` 로 변경
@@ -557,10 +557,10 @@ VPN Client> AccountPasswordSet myconn /PASSWORD:SecurePassword123 /TYPE:standard
 패스워드를 `고정패스워드 + OTP 6자리` 를 붙여서 입력합니다.
 
 ```
-VPN Client> AccountPasswordSet my_vpn /PASSWORD:SecurePassword123456789 /TYPE:radius
+VPN Client> AccountPasswordSet my_vpn /PASSWORD:<PASSWORD><OTP> /TYPE:radius
 ```
 
-> 예: 고정 패스워드 `SecurePassword123`, OTP `456789` → `SecurePassword123456789`
+> 예: 고정 패스워드 `<PASSWORD>`, OTP 6자리 `<OTP>` → `<PASSWORD><OTP>` (공백 없이 이어 붙임)
 
 | 확인 항목     | 내용                                   |
 |---------------|----------------------------------------|
@@ -575,7 +575,7 @@ VPN Client> AccountPasswordSet my_vpn /PASSWORD:SecurePassword123456789 /TYPE:ra
 VPN Client> AccountList
 
 # 2. RADIUS 패스워드 설정 (고정패스워드 + OTP 6자리)
-VPN Client> AccountPasswordSet my_vpn /PASSWORD:SecurePassword123456789 /TYPE:radius
+VPN Client> AccountPasswordSet my_vpn /PASSWORD:<PASSWORD><OTP> /TYPE:radius
 
 # 3. 연결
 VPN Client> AccountConnect my_vpn
@@ -747,6 +747,6 @@ ip addr show tun0
 
 **작성일**: 2026-05-11
 
-**마지막 업데이트**: 2026-11-18
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

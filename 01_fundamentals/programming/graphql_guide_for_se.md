@@ -219,7 +219,7 @@ GraphQL 사양은 transport를 강제하지 않지만, HTTP를 사용할 때는 
 
 ```bash
 curl --request POST 'https://api.example.com/graphql' \
-  --header 'Authorization: Bearer SecureToken123' \
+  --header 'Authorization: Bearer <TOKEN>' \
   --header 'Content-Type: application/json' \
   --header 'Accept: application/graphql-response+json' \
   --data '{
@@ -556,6 +556,6 @@ curl --fail-with-body --silent --show-error \
 
 **작성일**: 2026-09-14
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -143,7 +143,7 @@ apt-get install percona-xtrabackup-84
 
 ```sql
 -- MySQL 8.0 / 8.4
-CREATE USER 'backup'@'localhost' IDENTIFIED BY 'SecurePassword123!';
+CREATE USER 'backup'@'localhost' IDENTIFIED BY '<PASSWORD>';
 
 GRANT BACKUP_ADMIN, PROCESS, RELOAD, LOCK TABLES, REPLICATION CLIENT 
 ON *.* TO 'backup'@'localhost';
@@ -156,7 +156,7 @@ FLUSH PRIVILEGES;
 
 ```sql
 -- MySQL 5.7
-CREATE USER 'backup'@'localhost' IDENTIFIED BY 'SecurePassword123!';
+CREATE USER 'backup'@'localhost' IDENTIFIED BY '<PASSWORD>';
 
 GRANT RELOAD, LOCK TABLES, PROCESS, REPLICATION CLIENT 
 ON *.* TO 'backup'@'localhost';
@@ -251,7 +251,7 @@ Full ──→ Diff1
 # 기본 명령어
 xtrabackup \
   --user=backup \
-  --password='SecurePassword123!' \
+  --password='<PASSWORD>' \
   --backup \
   --target-dir=/backup/full/$(date +%Y%m%d-%H)
 
@@ -266,7 +266,7 @@ xtrabackup \
 # 압축하여 백업 (디스크 공간 절약)
 xtrabackup \
   --user=backup \
-  --password='SecurePassword123!' \
+  --password='<PASSWORD>' \
   --backup \
   --compress \
   --compress-threads=4 \
@@ -279,7 +279,7 @@ xtrabackup \
 # 여러 스레드로 빠르게 백업
 xtrabackup \
   --user=backup \
-  --password='SecurePassword123!' \
+  --password='<PASSWORD>' \
   --backup \
   --parallel=4 \
   --target-dir=/backup/full/$(date +%Y%m%d-%H)
@@ -318,7 +318,7 @@ cat ${BACKUP_DIR}/xtrabackup_checkpoints
 # Full Backup 기준으로 증분 백업
 xtrabackup \
   --user=backup \
-  --password='SecurePassword123!' \
+  --password='<PASSWORD>' \
   --backup \
   --target-dir=/backup/inc/$(date +%Y%m%d-%H) \
   --incremental-basedir=/backup/full/$(date +%Y%m%d)-00
@@ -502,7 +502,7 @@ EOF
 
 # 패스워드 파일 생성 (보안)
 mkdir -p /etc/xtrabackup
-echo "SecurePassword123!" > /etc/xtrabackup/.backup_password
+echo "<PASSWORD>" > /etc/xtrabackup/.backup_password
 chmod 600 /etc/xtrabackup/.backup_password
 ```
 
@@ -1057,10 +1057,10 @@ xtrabackup --backup \
 
 ```bash
 # ❌ 나쁜 예: 평문 패스워드
-xtrabackup --user=backup --password='SecurePassword123!' --backup
+xtrabackup --user=backup --password='<PASSWORD>' --backup
 
 # ✅ 좋은 예: 파일로 관리
-echo "SecurePassword123!" > /etc/xtrabackup/.password
+echo "<PASSWORD>" > /etc/xtrabackup/.password
 chmod 600 /etc/xtrabackup/.password
 
 xtrabackup --user=backup --password=$(cat /etc/xtrabackup/.password) --backup
@@ -1069,7 +1069,7 @@ xtrabackup --user=backup --password=$(cat /etc/xtrabackup/.password) --backup
 # /etc/xtrabackup/my.cnf
 [xtrabackup]
 user=backup
-password=SecurePassword123!
+password=<PASSWORD>
 
 xtrabackup --defaults-file=/etc/xtrabackup/my.cnf --backup
 chmod 600 /etc/xtrabackup/my.cnf
@@ -2323,6 +2323,6 @@ cat ${RESULTS_FILE}
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

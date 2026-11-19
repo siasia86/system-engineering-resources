@@ -572,7 +572,7 @@ Content-Type: application/json
 
 {
   "email": "user@example.com",
-  "password": "securePassword123!",
+  "password": "<PASSWORD>",
   "name": "홍길동"
 }
 
@@ -589,19 +589,19 @@ Content-Type: application/json
 
 {
   "email": "user@example.com",
-  "password": "securePassword123!"
+  "password": "<PASSWORD>"
 }
 
 Response: 200 OK
 {
-  "accessToken": "eyJhbGc...",
-  "refreshToken": "dGhpc2lz...",
+  "accessToken": "<ACCESS_TOKEN>",
+  "refreshToken": "<REFRESH_TOKEN>",
   "expiresIn": 3600
 }
 
 # 3. 프로필 조회
 GET /api/users/456
-Authorization: Bearer eyJhbGc...
+Authorization: Bearer <ACCESS_TOKEN>
 
 Response: 200 OK
 {
@@ -613,7 +613,7 @@ Response: 200 OK
 
 # 4. 프로필 부분 수정
 PATCH /api/users/456
-Authorization: Bearer eyJhbGc...
+Authorization: Bearer <ACCESS_TOKEN>
 Content-Type: application/json
 
 {
@@ -624,12 +624,12 @@ Response: 200 OK
 
 # 5. 비밀번호 변경
 POST /api/users/456/change-password
-Authorization: Bearer eyJhbGc...
+Authorization: Bearer <ACCESS_TOKEN>
 Content-Type: application/json
 
 {
-  "currentPassword": "securePassword123!",
-  "newPassword": "newSecurePass456!"
+  "currentPassword": "<PASSWORD>",
+  "newPassword": "<NEW_PASSWORD>"
 }
 
 Response: 200 OK
@@ -643,7 +643,7 @@ Response: 200 OK
 ```http
 # 1. 파일 업로드
 POST /api/files/upload
-Authorization: Bearer eyJhbGc...
+Authorization: Bearer <ACCESS_TOKEN>
 Content-Type: multipart/form-data
 
 file: [binary data]
@@ -689,11 +689,11 @@ Response: 204 No Content
 ### 1. GET 요청 보안
 ```http
 # 나쁜 예: URL에 민감 정보 노출
-GET /api/users?password=secret123&ssn=123-45-6789
+GET /api/users?password=<PASSWORD>&ssn=123-45-6789
 
 # 좋은 예: 인증 토큰 사용
 GET /api/users/profile
-Authorization: Bearer eyJhbGc...
+Authorization: Bearer <ACCESS_TOKEN>
 ```
 
 **주의사항:**
@@ -723,7 +723,7 @@ Content-Type: application/json
 ```http
 # 인증 및 권한 확인 필수
 DELETE /api/products/123
-Authorization: Bearer eyJhbGc...
+Authorization: Bearer <ACCESS_TOKEN>
 ```
 
 **체크리스트:**
@@ -812,10 +812,10 @@ location / {
 ```http
 # Bearer 토큰 사용
 GET /api/protected-resource
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Authorization: Bearer <ACCESS_TOKEN>
 
 # 쿼리 파라미터로 토큰 전송 금지
-GET /api/protected-resource?token=eyJhbGc...
+GET /api/protected-resource?token=<ACCESS_TOKEN>
 ```
 
 **권장사항:**
@@ -924,6 +924,6 @@ Response: 500 Internal Server Error
 
 **작성일**: 2026-04-14
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

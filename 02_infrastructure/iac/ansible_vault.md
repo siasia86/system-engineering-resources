@@ -59,8 +59,8 @@ ansible-vault rekey group_vars/all/vault.yml
 
 ```yaml
 # group_vars/all/vault.yml (암호화 전 평문)
-vault_db_password: "SecurePassword123"
-vault_api_key: "sk-1234567890abcdef"
+vault_db_password: "<PASSWORD>"
+vault_api_key: "<API_KEY>"
 vault_ssl_cert: |
   -----BEGIN CERTIFICATE-----
   MIIBkTCB+wIJ...
@@ -85,7 +85,7 @@ api_key: "{{ vault_api_key }}"
 
 ```bash
 # 값 암호화 (출력을 복사하여 yml에 붙여넣기)
-ansible-vault encrypt_string 'SecurePassword123' --name 'db_password'
+ansible-vault encrypt_string '<PASSWORD>' --name 'db_password'
 ```
 
 출력 예시:
@@ -331,6 +331,6 @@ ansible localhost -m debug -a "var=vault_db_password" \
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -455,8 +455,8 @@ data:
 ```bash
 # 명령어로 생성
 kubectl create secret generic my-app-secret \
-  --from-literal=DB_PASSWORD=SecurePassword123 \
-  --from-literal=API_KEY=SecureKey123
+  --from-literal=DB_PASSWORD='<PASSWORD>' \
+  --from-literal=API_KEY='<API_KEY>'
 
 # 파일에서 생성
 kubectl create secret generic tls-secret \
@@ -473,9 +473,9 @@ metadata:
   name: my-app-secret
 type: Opaque
 data:
-  DB_PASSWORD: U2VjdXJlUGFzc3dvcmQxMjM=   # base64
+  DB_PASSWORD: <BASE64_PASSWORD>   # base64 (echo -n '<PASSWORD>' | base64)
 stringData:
-  API_KEY: SecureKey123   # 평문 (자동 인코딩)
+  API_KEY: "<API_KEY>"   # 평문 (자동 인코딩)
 ```
 
 ### Pod에서 사용
@@ -803,6 +803,6 @@ kubectl debug -it my-pod --image=busybox --target=my-app
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-11-10
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

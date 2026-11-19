@@ -164,7 +164,7 @@ VPN Client> AccountServerCertEnable work_vpn
 ### 연결
 
 ```
-VPN Client> AccountPasswordSet work_vpn /PASSWORD:SecurePassword123456789 /TYPE:radius
+VPN Client> AccountPasswordSet work_vpn /PASSWORD:<PASSWORD><OTP> /TYPE:radius
 VPN Client> AccountConnect work_vpn
 VPN Client> AccountStatusGet work_vpn
 ```

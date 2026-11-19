@@ -209,8 +209,8 @@ Securing the MySQL server deployment.
 
 Enter password for user root:          # 임시 패스워드 입력 (Rocky) 또는 엔터 (Ubuntu)
 
-New password: SecurePassword123!       # 새 root 패스워드 설정 (RPM 설치는 validate_password 기본 정책 적용)
-Re-enter new password: SecurePassword123!
+New password: <PASSWORD>       # 새 root 패스워드 설정 (RPM 설치는 validate_password 기본 정책 적용)
+Re-enter new password: <PASSWORD>
 
 Remove anonymous users? [Y/n] Y
 Disallow root login remotely? [Y/n] Y
@@ -235,11 +235,11 @@ mysql -u root -p
 CREATE DATABASE mydb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 전용 계정 생성 (로컬 접속)
-CREATE USER 'Secureuser123'@'localhost' IDENTIFIED BY 'SecurePassword123!';
+CREATE USER 'Secureuser123'@'localhost' IDENTIFIED BY '<PASSWORD>';
 GRANT ALL PRIVILEGES ON mydb.* TO 'Secureuser123'@'localhost';
 
 -- 원격 접속 허용 (특정 IP 대역)
-CREATE USER 'Secureuser123'@'10.0.1.%' IDENTIFIED BY 'SecurePassword123!';
+CREATE USER 'Secureuser123'@'10.0.1.%' IDENTIFIED BY '<PASSWORD>';
 GRANT SELECT, INSERT, UPDATE, DELETE ON mydb.* TO 'Secureuser123'@'10.0.1.%';
 
 FLUSH PRIVILEGES;
@@ -250,7 +250,7 @@ FLUSH PRIVILEGES;
 ```sql
 -- root 계정 인증 방식 변경
 ALTER USER 'root'@'localhost'
-    IDENTIFIED WITH caching_sha2_password BY 'SecurePassword123!';
+    IDENTIFIED WITH caching_sha2_password BY '<PASSWORD>';
 FLUSH PRIVILEGES;
 ```
 
@@ -319,7 +319,7 @@ sudo systemctl restart mysqld  # Rocky
 ### Primary 계정 생성
 
 ```sql
-CREATE USER 'repl'@'10.0.1.%' IDENTIFIED BY 'SecurePassword123!';
+CREATE USER 'repl'@'10.0.1.%' IDENTIFIED BY '<PASSWORD>';
 GRANT REPLICATION SLAVE ON *.* TO 'repl'@'10.0.1.%';
 FLUSH PRIVILEGES;
 ```
@@ -472,7 +472,7 @@ SELECT user, host FROM mysql.user;
 SHOW GRANTS FOR 'Secureuser123'@'localhost';
 
 -- 패스워드 변경
-ALTER USER 'Secureuser123'@'localhost' IDENTIFIED BY 'NewPassword123!';
+ALTER USER 'Secureuser123'@'localhost' IDENTIFIED BY '<NEW_PASSWORD>';
 
 -- 계정 삭제
 DROP USER 'Secureuser123'@'localhost';
@@ -532,6 +532,6 @@ sudo mysqladmin -u root -p processlist   # 실행 중인 쿼리
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.
