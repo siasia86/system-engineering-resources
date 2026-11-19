@@ -261,6 +261,8 @@ ansible --version
 
 ### uv (차세대 패키지 관리자)
 
+uv의 대체 도구 표, 시스템 Python을 바꾸지 않는 설치, 프로젝트 관리는 [uv 문서](./python_uv.md)에서 자세히 다룹니다.
+
 ```bash
 # 설치 (공식 독립 설치기. PEP 668 배포판은 venv 밖 pip install이 막힘)
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -322,6 +324,6 @@ uv pip freeze > requirements.txt
 
 **작성일**: 2026-04-20
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

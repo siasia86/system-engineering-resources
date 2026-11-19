@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- uv 설명 문서 추가 (2026-11-19, 30 전담 세션 요청 30-REQ-20261119-UV, 사용자 지시로 보낸 요청): [uv 문서](../01_fundamentals/programming/python/python_uv.md)(uv 소개, 대체하는 도구 표, 시스템 Python 보호 원칙과 `--no-bin`, PEP 668·deadsnakes PPA를 쓰지 않는 이유, sha256 대조 설치, 기본 사용 예, 프로젝트·도구 관리)와 [참조 노트](../_reference/python_uv_official_notes.md)를 만들었습니다. 최신 판 0.13.9(2026-11-17), `--no-bin` 설명, 저장 위치, 대체 대상은 Astral 공식 문서·GitHub Releases와 대조했습니다. 문서의 명령 예제는 `ubuntu:24.04` 컨테이너의 일반 사용자 계정에서 실행해 출력을 확인했습니다. 이 이미지에는 시스템 Python이 없어 시스템 Python 불변은 30 devenv README 6절의 실기 시험 결과를 인용했습니다. 설치 스크립트 예는 30 저장소(비공개) 링크로 대신했습니다. Python README 목록·학습 순서, [가상환경](../01_fundamentals/programming/python/python_virtual_env.md) uv 절 연결 1줄, 루트 README(Python 30→31개, uv 행), `01_fundamentals` README 문서 수(58→59), `_reference` INDEX를 맞췄습니다.
+
 - TODO2 문장 4곳 현장 병합 (2026-11-18, 05 AX-HUB-24 N7 배정, 사용자 요청으로 배정 요청): `AGENTS.md` 17행, `GOVERNANCE.md` 15행, `INDEX.md` 7행, `.governance/README.md` 5행의 "이전 루트 상태·이력을 실제 적용에서 보존·병합하고 TODO2 상세 설계 과제를 일반 작업에 일괄 적용하지 않습니다." 문장만 31 `5cc4a68` profile 원문 "실제 적용에서는 현장의 기존 상태와 이력을 보존하고 필요한 내용만 병합합니다."로 바꿨습니다. 바꾼 4줄은 31 해당 줄과 글자까지 같고, 네 파일의 `TODO2`는 0곳입니다. 같은 줄의 다른 문장과 각 파일 날짜는 그대로 두었고, [HANDOFF](HANDOFF.md) 보류 칸의 후속 안내를 완료로 고쳤습니다.
 
 - Rust 기초 문법 문서 추가 (2026-11-18, 사용자 요청): 개념 문서 앞 단계가 비어 있어 [Rust 기초 문법](../01_fundamentals/programming/rust/rust_basics.md)(프로그램 구조, 변수와 가변성, 기본 타입, 문자열, 제어문, 함수, 구조체, 열거형과 match·Option, 컬렉션, 모듈, 출력과 포맷, 종합 예제)을 bash·python 비교 형식으로 만들었습니다. Rust 예제 14개를 공식 `rust:1.100-slim` 이미지에서 컴파일·실행해 문서의 출력과 실제 출력을 자동 대조했고(처음 적은 출력 2곳을 실제 값으로 정정), clippy 경고 1건을 고쳐 `-D warnings` 0건을 확인했습니다. rust/ README 목록·학습 순서, 로드맵 Phase 1 표, 전환 가이드 도입부·첫 주 계획, 루트 README, `01_fundamentals` README 문서 수(57→58)를 맞췄습니다.

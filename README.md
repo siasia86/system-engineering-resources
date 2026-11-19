@@ -116,7 +116,8 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 | 문서                                                                               | 설명                        |
 |------------------------------------------------------------------------------------|-----------------------------|
-| [Python 가이드](01_fundamentals/programming/python/)                               | 클래스~subprocess (30개)    |
+| [Python 가이드](01_fundamentals/programming/python/)                               | 클래스~subprocess (31개)    |
+| [uv 가이드](01_fundamentals/programming/python/python_uv.md)                       | uv로 버전·가상환경 관리     |
 | [C# 가이드](01_fundamentals/programming/csharp/)                                   | async, LINQ, OOP, 예외 처리 |
 | [Rust 가이드](01_fundamentals/programming/rust/)                                   | 소유권, 동시성, 에러 처리   |
 | [언어 비교](01_fundamentals/programming/c_cpp_csharp_go_python_bash_comparison.md) | 6개 언어 비교               |
@@ -585,6 +586,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-18
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

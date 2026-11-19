@@ -102,6 +102,7 @@ sources:
 | Aside AI 브라우저              | `_reference/aside_browser_official_notes.md`            | v1.0.1116.1·플랫폼·요금·권한·데이터 처리·CLI·MCP        | 2026-11-16 |
 | ASD-STE100                     | `_reference/asd_ste100_official_notes.md`               | Issue 9 공식 설명·GitHub 5개·Codex 적용 근거            | 2026-10-09 |
 | Rust                           | `_reference/rust_official_notes.md`                     | 1.100.0, Edition 2024, 주요 크레이트                    | 2026-11-18 |
+| uv (Python)                    | `_reference/python_uv_official_notes.md`                | 0.13.9, `--no-bin`, PEP 668, deadsnakes 비교            | 2026-11-19 |
 | Windows Server 에디션/라이선스 | `_reference/windows_server_editions_licensing_notes.md` | Standard vs Datacenter, KMS/MAK/AVMA                    | 2026-11-16 |
 | Windows Server Concepts        | `_reference/windows_server_concepts_notes.md`           | Hyper-V, S2D, Failover Cluster, Shielded VM, SDN        | 2026-11-09 |
 | Windows 코드 서명              | `_reference/windows_code_signing_official_notes.md`     | Authenticode·SmartScreen·Artifact Signing·CSBR 3.11.0   | 2026-11-18 |
@@ -149,6 +150,6 @@ sources:
 
 **작성일**: 2026-05-22
 
-**마지막 업데이트**: 2026-11-18
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.

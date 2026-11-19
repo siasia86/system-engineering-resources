@@ -53,6 +53,7 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 - **[JSON/YAML](python_json_yaml.md)** - 설정 파일, 데이터 교환
 - **[argparse](python_argparse.md)** - CLI 도구 제작
 - **[가상환경](python_virtual_env.md)** - venv, pip, 의존성 관리
+- **[uv](python_uv.md)** - uv로 Python 버전·가상환경·패키지 관리, 시스템 Python 보호
 - **[테스트](python_testing.md)** - pytest, unittest, Mock, 커버리지
 - **[디버깅·프로파일링](python_debugging_profiling.md)** - pdb, faulthandler, cProfile, tracemalloc
 
@@ -92,6 +93,7 @@ Python 기초부터 고급 기능까지 다루는 학습 자료입니다.
 9. [JSON/YAML](python_json_yaml.md) - 설정 파일 처리
 10. [argparse](python_argparse.md) - CLI 도구 제작
 11. [가상환경](python_virtual_env.md) - 환경 관리
+12. [uv](python_uv.md) - Python 버전·가상환경 통합 관리
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -250,6 +252,6 @@ logging.info("작업 시작")
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-19
 
 © 2026 siasia86. Licensed under CC BY 4.0.
