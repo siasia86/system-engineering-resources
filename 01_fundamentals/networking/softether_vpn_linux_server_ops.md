@@ -33,7 +33,7 @@ Ubuntu·Rocky Linux 서버가 SoftEther VPN Client(`vpnclient`)로 VPN에 붙어
 | 작업자 접속 원본 IP | `198.51.100.25` (공인 IP로 서버에 SSH 접속 중)           |
 
 - `vpnclient`는 `/opt/vpnclient`에 설치되어 있고 NIC은 클라이언트 가이드 4절대로 만들어 두었다고 가정합니다. 계정 생성은 [4절](#계정-생성과-최초-1회-설정)에 있습니다.
-- 서버가 443이 아닌 포트(예: 10443)로 열려 있으면 계정의 `/SERVER:주소:포트`에 그 포트를 적습니다.
+- 서버가 443이 아닌 포트로 열려 있으면 계정의 `/SERVER:주소:포트`에 그 포트를 적습니다.
 - 명령은 root 권한으로 실행합니다. 일반 계정이면 앞에 `sudo`를 붙입니다.
 
 ### 구성
@@ -225,14 +225,14 @@ dhcpcd -k vpn_vpn0
 
 ### 서버가 내려 주는 경로
 
-SecureNAT DHCP는 사내 대역 경로를 classless static route로 보낼 수 있습니다. 같은 경로가 RFC 3442 형식(`classless_static_routes`, option 121)과 Microsoft 형식(`ms_classless_static_routes`, option 249)으로 함께 오면 dhcpcd는 그 경로를 `vpn_vpn0`에 추가합니다. `dhcpcd -U` 출력에 `classless_static_routes=` 줄이 있으면 받은 것입니다.
+VPN 쪽 DHCP 서버(SecureNAT 등)는 사내 대역 경로를 classless static route로 보낼 수 있습니다. 형식은 RFC 3442(`classless_static_routes`, option 121)와 Microsoft(`ms_classless_static_routes`, option 249) 두 가지이며, 서버가 둘 중 하나나 둘 다를 보내면 dhcpcd는 받은 경로를 `vpn_vpn0`에 추가합니다. `dhcpcd -U` 출력에 `classless_static_routes=` 줄이 있으면 받은 것입니다.
 
 | 상황                                          | 처리                                                                                                               |
 |-----------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| 받은 대역이 작업 대상이고 서버 대역과 안 겹침 | 그대로 사용. Windows 클라이언트도 같은 경로를 받음                                                                 |
+| 받은 대역이 작업 대상이고 서버 대역과 안 겹침 | 그대로 사용                                                                                                        |
 | 받은 대역이 서버의 기존 대역·관리 경로와 겹침 | `-O classless_static_routes -O ms_classless_static_routes`를 붙여 받지 않고, 필요한 대역만 [6절](#6-라우팅)로 추가 |
 
-- 두 옵션 중 하나만 막으면 다른 형식으로 같은 경로가 들어옵니다.
+- 서버가 두 형식을 모두 보내면 하나만 막아도 다른 형식으로 같은 경로가 들어오므로 둘 다 막습니다.
 - 🟡 dhcpcd가 이미 그 인터페이스에서 실행 중일 때 시험 모드(`dhcpcd -T vpn_vpn0`)를 실행하면 기존 주소와 경로가 지워질 수 있습니다. 실행 중인 dhcpcd가 있으면 `dhcpcd -U`로 값을 보고, 주소가 지워졌으면 `dhcpcd -n vpn_vpn0`으로 다시 받습니다.
 
 [⬆ 목차로 돌아가기](#목차)
@@ -363,7 +363,7 @@ sysctl -w net.ipv4.conf.vpn_vpn0.arp_announce=2
 
 ### UDP 가속
 
-vpnclient는 TCP로 연결한 뒤 서버와 UDP 가속을 시도하며, 이때 서버의 내부 주소로도 UDP를 보냅니다. 서버가 내려 준 경로에 그 내부 주소가 들어 있으면 이 UDP가 서버의 `eth0` 원본 주소를 단 채 터널로 들어갑니다. `AccountStatusGet`의 `UDP Acceleration is Active`가 `No`이면 TCP로만 동작하는 것이며 연결 자체에는 문제가 없습니다. vpncmd에는 이 기능을 끄는 명령이 없고, 설정 파일의 `NoUdpAcceleration` 항목을 바꾸는 방법은 이 문서에서 확인하지 않았습니다.
+vpnclient는 TCP로 연결한 뒤 서버와 UDP 가속을 시도하며, 서버가 알려 준 다른 주소(서버의 사설 주소 등)로도 UDP를 보낼 수 있습니다. 서버가 내려 준 경로에 그 주소가 들어 있으면 이 UDP가 서버의 `eth0` 원본 주소를 단 채 터널로 들어갑니다. `AccountStatusGet`의 `UDP Acceleration is Active`가 `No`이면 TCP로만 동작하는 것이며 연결 자체에는 문제가 없습니다. vpncmd에는 이 기능을 끄는 명령이 없고, 설정 파일의 `NoUdpAcceleration` 항목을 바꾸는 방법은 이 문서에서 확인하지 않았습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
