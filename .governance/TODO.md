@@ -16,10 +16,6 @@
 
 현재 진행 중인 작업은 없습니다. 열린 이슈와 대기 결정은 [ISSUE](ISSUE.md)의 ISS-02·03에서 관리합니다. 끝난 작업의 기록은 `CHANGELOG.md`에 있습니다.
 
-대기 — AX-HUB-19 후속: [07_ai_transformation](../07_ai_transformation/README.md)의 그 밖의 주제는 사용자가 정할 때 작성합니다. 기존 `06_career/ai_tools/` 문서는 옮기지 않으며 이동은 별도 결정입니다. 지금까지 더한 문서는 `CHANGELOG.md`의 2026-11-12·2026-11-16 항목에 있습니다.
-
-대기 — MAIN-20261113-01 / AX-HUB-20 후속: [후보 기록](tracks/MAIN-20261113-01_ax-reference-docs/40_results/CANDIDATES.md)의 "기존 갱신" 후보 13건(6~11·13·14·16·20·21·23·28)은 사용자가 정할 때 기존 공식 노트를 넓힙니다. 권장 묶음 4개 작성은 `CHANGELOG.md`의 2026-11-13 항목에 있습니다.
-
 ### 검사 예외 파일
 
 설정 파일의 파일별 예외입니다. 사유와 재검토일의 원본은 [검증 기준](verification.md)이며, 재검토 대기는 [ISSUE](ISSUE.md)의 ISS-02로 관리합니다.
