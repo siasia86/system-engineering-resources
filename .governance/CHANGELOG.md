@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- TODO·PLAN 끝난 항목 정리 (2026-11-21, 05 AX-HUB-24 배정, 05 D122): TODO 머리 규칙("완료된 항목은 `CHANGELOG.md`로 이동")에 따라 [TODO](TODO.md) 1절의 끝난 문단 3개(2026-09-15 테스트 문서 `[5.0.2]` 안내, 웹 서버 테스트 `MAIN-20261027-01`·`-02` 완료 문장, "수신 완료 — MAIN-20261027-06" 문단)를 지우고, 대기 줄 2개(AX-HUB-19 후속, MAIN-20261113-01 / AX-HUB-20 후속)에 쌓인 끝난 경과를 줄여 다음 행동만 남겼습니다. [PLAN](PLAN.md) 4절의 v0.6.0 전환 경과 두 문장은 이력 안내 한 문장으로 바꾸고 다음 갱신 규칙은 그대로 두었습니다. 지운 내용은 모두 이 파일의 `[5.0.2]`, 2026-10-27·2026-11-01·2026-11-12·2026-11-13·2026-11-16·2026-11-17 항목에 이미 있어 새로 옮긴 원문은 없습니다. 열린 줄은 대기 2개와 검사 예외 표(ISS-02)로 전후 같습니다.
+
 - Claude Code 설정 파일 가이드 추가 (2026-11-19, 31 Claude 세션 요청, 사용자 지시로 보낸 요청과 같은 날 변경 2건): [설정 파일 가이드](../06_career/ai_tools/claude/claude_code_settings_guide.md)(설정 파일 층, 우선순위와 병합·신뢰, 공유와 개인 구분, 권한 규칙 문법, deny·ask·allow 후보, 안전 설정, hook 실패 시 동작, hook 배포 방식 세 가지, Codex 대응, 적용과 확인)를 범용 학습 문서로 만들었습니다. 변경 요청에 따라 위험 명령 deny와 자격증명 읽기 차단은 저장소 공유안이 아니라 개인 설정의 선택 예시로 쓰고, 위험 작업이 잦은 사용자는 ask나 개인 프로젝트 파일로 조절하는 방법을 함께 적었습니다. code.claude.com의 settings·settings-reference·permissions·hooks 원문과 Codex rules 공식 문서로 대조했습니다. 요청 목록의 `push origin :*`는 규칙으로 쓰면 끝의 `:*`가 와일드카드로 읽혀 모든 push에 일치하므로 hook 검사로 안내했습니다. 규칙 예시는 세션에서 실제 일치를 시험하지 않았습니다. [참조 노트](../_reference/claude_code_official_notes.md) 7절·12절·출처, [확장 기능 가이드](../06_career/ai_tools/claude/claude_code_extensions_guide.md) 연결 1줄, 루트 README 행, `06_career` README(ai_tools 31→32)·`_reference` INDEX를 맞췄습니다.
 
 - `security_check.py` internal-host 오탐 허용 (2026-11-19, 사용자 요청): 남은 high 20건이 모두 internal-host 규칙이었습니다. `.local`로 끝나는 설정 파일 이름(Claude 개인 지침 파일, `/etc` 아래 파일)과 내부 도메인 접미사를 붙인 문서용 예시 호스트라서, 30 문서 12절의 방식대로 [`.security_check.toml`](../.security_check.toml)에 14개 파일의 `[[allow]]`(rule `internal-host` + path)를 넣었습니다. 그 파일들의 다른 규칙은 계속 검사합니다. 저장소 전체 재검사 결과 high 0건, 종료 코드 0(경고 356·낮음 41은 차단 기준 미만)입니다. 정정(2026-11-19): 이 결과는 이 항목을 쓰기 전에 잰 값이며, 처음 쓴 이 항목이 예시 호스트 이름을 그대로 인용해 high 1건이 생겼습니다. 파일·호스트 이름을 빼고 다시 잰 결과는 high 0건, 종료 코드 0입니다.
@@ -1119,6 +1121,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-18
+**마지막 업데이트**: 2026-11-21
 
 © 2026 siasia86. Licensed under CC BY 4.0.
