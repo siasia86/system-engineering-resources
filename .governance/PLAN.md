@@ -97,16 +97,16 @@
 
 완료된 30 consumer 전환·검증 이력은 `CHANGELOG.md`의 `[4.0.0]`에 기록합니다.
 
-현재 승인된 consumer baseline은 다음과 같습니다. 2026-11-17에 [검사 workflow](../.github/workflows/update-date.yml)의 고정 값과 대조했습니다.
+현재 승인된 consumer baseline은 다음과 같습니다. 2026-11-21에 [검사 workflow](../.github/workflows/update-date.yml)의 고정 값과 대조했습니다.
 
 ```text
 repository: siasia86/30_sia-scripts
-release:    v0.6.0
-artifact:   sia_scripts_0.6.0.tar.gz
-sha256:     460cec0857e55a8f7fb2f605f9ef7a8a499378359494cd219c899e1c3b7dedb4
+release:    v0.7.0
+artifact:   sia_scripts_0.7.0.tar.gz
+sha256:     53749376656bc4e638cece58b001fa83de29fd18dcdef17bcb110f9b73a01a2d
 ```
 
-v0.6.0으로 바꾼 경과는 `CHANGELOG.md`의 2026-11-17 "검사 도구 고정 판 0.6.0" 항목에 있습니다. 다음 고정 판 갱신도 31·32·35를 함께 바꾸는 일괄 결정을 따르며, 바꿀 때는 workflow의 판·checksum, [검증 기준](verification.md)의 판, 이 절을 같은 변경에서 고칩니다.
+판을 바꾼 경과는 `CHANGELOG.md`의 "검사 도구 고정 판" 항목(0.6.0은 2026-11-17, 0.7.0은 2026-11-21)에 있습니다. 다음 고정 판 갱신도 31·32·35를 함께 바꾸는 일괄 결정을 따르며, 바꿀 때는 workflow의 판·checksum, [검증 기준](verification.md)의 판, 이 절을 같은 변경에서 고칩니다.
 
 ## 5. 문서 운영 계획
 
