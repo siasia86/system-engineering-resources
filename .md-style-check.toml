@@ -15,12 +15,6 @@ reason = "외부 프로젝트 README 원문 보존 — 목차 아이콘 포함"
 review = "상시"
 
 [[file_skip]]
-path = "01_fundamentals/networking/network_headers.md"
-checks = ["box-chars"]
-reason = "RFC header diagram의 필드 경계 조합을 보존"
-review = "2026-11-30"
-
-[[file_skip]]
 path = "02_infrastructure/monitoring/game_infra_kpi_presentation.md"
 checks = ["diagram-kr"]
 reason = "발표 자료의 다이어그램 내부 한글을 보존"
@@ -29,8 +23,8 @@ review = "상시"
 [[file_skip]]
 path = "04_security/cloud/ddos_defense_architecture.md"
 checks = ["diagram-width"]
-reason = "인접 박스 연결선에 대한 검사기 오탐"
-review = "2026-11-30"
+reason = "오른쪽 연결선이 끝난 아래 행(127~130행)의 폭 차이. 공백으로 채우면 줄 끝 공백 검사와 충돌하고, 다시 그리면 화살표 뜻이 바뀜"
+review = "2027-02-28"
 
 [[file_skip]]
 path = "06_career/ai_tools/kiro/kiro_cli_command_reference.md"

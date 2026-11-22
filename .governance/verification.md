@@ -12,15 +12,14 @@
 
 설정의 TOML 해석, .gitignore의 private/생성 파일 제외와 관리 문서 포함을 확인합니다. 공통 설정과 local 구간을 구분하고 기존 규칙을 보존합니다. 문서 배치 검사는 도구·hook·skill 설치 증거가 아닙니다.
 
-검사 도구는 TOOLS-30 sia_scripts `0.7.0`이며 [검사 workflow](../.github/workflows/update-date.yml)가 release archive의 SHA256과 manifest를 확인한 뒤 실행합니다. [기본 설정](../.md-style-check.toml)과 CI 설정 `.md-style-check.sia_scripts.toml`은 같은 파일별 예외 5개를 갖습니다. 도입 기록은 `be2d024`입니다. 예외의 사유와 재검토 시점은 다음과 같으며 재검토 대기는 [ISSUE](ISSUE.md)의 ISS-02로 관리합니다.
+검사 도구는 TOOLS-30 sia_scripts `0.7.0`이며 [검사 workflow](../.github/workflows/update-date.yml)가 release archive의 SHA256과 manifest를 확인한 뒤 실행합니다. [기본 설정](../.md-style-check.toml)과 CI 설정 `.md-style-check.sia_scripts.toml`은 같은 파일별 예외 4개를 갖습니다. 도입 기록은 `be2d024`입니다. 예외의 사유와 재검토 시점은 다음과 같으며 재검토 대기는 [ISSUE](ISSUE.md)의 ISS-02로 관리합니다.
 
-| 경로                                                          | 검사 항목        | 기존 사유                                         | 재검토     |
-|---------------------------------------------------------------|------------------|---------------------------------------------------|------------|
-| `01_fundamentals/linux/vim_airline.md`                        | `emoji-disallow` | 외부 프로젝트 README 원문 보존 — 목차 아이콘 포함 | 상시       |
-| `01_fundamentals/networking/network_headers.md`               | `box-chars`      | RFC header diagram의 필드 경계 조합을 보존        | 2026-11-30 |
-| `02_infrastructure/monitoring/game_infra_kpi_presentation.md` | `diagram-kr`     | 발표 자료의 다이어그램 내부 한글을 보존           | 상시       |
-| `04_security/cloud/ddos_defense_architecture.md`              | `diagram-width`  | 인접 박스 연결선에 대한 검사기 오탐               | 2026-11-30 |
-| `06_career/ai_tools/kiro/kiro_cli_command_reference.md`       | `diagram-kr`     | Kiro CLI 문서 다이어그램 내부 한글을 보존         | 상시       |
+| 경로                                                          | 검사 항목        | 기존 사유                                                                                                                   | 재검토     |
+|---------------------------------------------------------------|------------------|-----------------------------------------------------------------------------------------------------------------------------|------------|
+| `01_fundamentals/linux/vim_airline.md`                        | `emoji-disallow` | 외부 프로젝트 README 원문 보존 — 목차 아이콘 포함                                                                           | 상시       |
+| `02_infrastructure/monitoring/game_infra_kpi_presentation.md` | `diagram-kr`     | 발표 자료의 다이어그램 내부 한글을 보존                                                                                     | 상시       |
+| `04_security/cloud/ddos_defense_architecture.md`              | `diagram-width`  | 오른쪽 연결선이 끝난 아래 행(127~130행)의 폭 차이. 공백으로 채우면 줄 끝 공백 검사와 충돌하고, 다시 그리면 화살표 뜻이 바뀜 | 2027-02-28 |
+| `06_career/ai_tools/kiro/kiro_cli_command_reference.md`       | `diagram-kr`     | Kiro CLI 문서 다이어그램 내부 한글을 보존                                                                                   | 상시       |
 
 ### 현장 검사 명령
 
@@ -44,6 +43,6 @@
 
 **작성일**: 2026-10-04
 
-**마지막 업데이트**: 2026-11-21
+**마지막 업데이트**: 2026-11-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.

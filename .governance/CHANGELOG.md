@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- ISS-02 검사 예외 재검토 (2026-11-22, 05 AX-HUB-24 마무리 계획 A2·N2, 05 D158 C2): 재검토일 2026-11-30을 앞당겨 검사 도구 0.7.0으로 두 예외를 빼고 검사했고, 두 파일 모두 다시 걸렸습니다(box-chars 2건, diagram-width 4건). [network_headers](../01_fundamentals/networking/network_headers.md)는 Ethernet·TLS 그림에서 앞 필드가 끝나고 Payload가 같은 줄 오른쪽에서 시작하는 칸에 `Payload (continues)` 이름을 붙이고 경계를 `├───┴───┤`로 바꿔 예외를 없앴습니다. 한글 이름은 diagram-kr 검사에 걸려 영문으로 썼습니다. [ddos 방어 구조](../04_security/cloud/ddos_defense_architecture.md)는 사유를 "인접 박스 연결선 오탐"에서 실제 원인(오른쪽 연결선이 끝난 아래 행의 폭 차이, 공백으로 채우면 줄 끝 공백 검사와 충돌, 다시 그리면 화살표 뜻이 바뀜)으로 고치고 재검토일을 2027-02-28로 연장했습니다. 두 설정 파일, [검증 기준](verification.md), [TODO](TODO.md) 예외 표, [ISSUE](ISSUE.md) ISS-02, [HANDOFF](HANDOFF.md) 다음 기한을 함께 맞췄습니다.
+
 - TODO 대기 줄 2개 닫음 (2026-11-21, 05 AX-HUB-24, 사용자 결정 05 D156 ②): [TODO](TODO.md) 1절의 "대기 — AX-HUB-19 후속"과 "대기 — MAIN-20261113-01 / AX-HUB-20 후속"을 닫았습니다. "기존 갱신" 후보 13건(6~11·13·14·16·20·21·23·28)은 [후보 기록](tracks/MAIN-20261113-01_ax-reference-docs/40_results/CANDIDATES.md)에 그대로 보존하며, 사용자가 요청하면 TODO에 새 줄로 엽니다. 후보 파일과 `07_ai_transformation` 문서는 바꾸지 않았습니다.
 
 - 검사 도구 고정 판 0.7.0 (2026-11-21, 05 AX-HUB-24, 사용자 결정 05 D155 ①): [검사 workflow](../.github/workflows/update-date.yml)의 sia_scripts 판을 0.6.0에서 0.7.0으로 바꿨습니다(tag v0.7.0 → 30 `aa43731`). 첨부 archive를 직접 내려받아 계산한 SHA-256이 05가 release asset에서 확인한 값과 같았습니다. [검증 기준](verification.md)과 [PLAN](PLAN.md) 4절의 판 표기도 함께 고쳤습니다. 커밋 사본에 0.7.0 도구로 link·style(설정과 기본)·heading·inventory 검사를 돌려 모두 0건이었고, 예외 목록은 총 5건이었습니다.
@@ -1125,6 +1127,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-21
+**마지막 업데이트**: 2026-11-22
 
 © 2026 siasia86. Licensed under CC BY 4.0.
