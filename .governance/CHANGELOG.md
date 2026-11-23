@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B10 로깅 문서와 1순위 완료 (2026-11-23, 00 세션 직접 요청 DO-07): [Elastic Stack 로그 수집](../02_infrastructure/data_pipeline/elastic_stack.md)(ES·Kibana·Filebeat 9.5.6), [Grafana Loki](../02_infrastructure/data_pipeline/loki.md)(Loki 3.7.10·Alloy), [Graylog](../02_infrastructure/data_pipeline/graylog.md)(7.2.2, Data Node preflight) 문서를 컨테이너 시험과 함께 쓰고, [로깅 도구 비교](../02_infrastructure/data_pipeline/logging_saas_comparison.md)(Splunk·Papertrail 참조 노트, 상용이라 비교만)를 더했습니다. 이로써 1순위 37개 주제(B1~B10)가 끝났고, 2·3순위는 PLAN 7절 B11~B24로 이어갑니다.
+
 - DO-07 B9 모니터링 문서 (2026-11-23, 00 세션 직접 요청 DO-07): Prometheus·Grafana 문서는 나누지 않고 node_exporter 1.13.1로 판을 갱신했고, [Zabbix](../02_infrastructure/monitoring/zabbix.md) 8.0 LTS 문서(컨테이너 compose·agent2 설치 시험)와 [모니터링 SaaS 비교](../02_infrastructure/monitoring/monitoring_saas_comparison.md)(Datadog 참조 노트, 상용이라 비교만)를 새로 썼습니다. B9 묶음이 끝났습니다.
 
 - DO-07 B8b 리버스 프록시·방화벽 문서 (2026-11-23, 00 세션 직접 요청 DO-07): [리버스 프록시 개념](../02_infrastructure/web_server/reverse_proxy.md)(RFC 9110·7239 기준)과 [ufw·firewalld](../04_security/hardening/ufw_firewalld.md) 문서·참조 노트를 새로 썼습니다. ufw는 `ubuntu:24.04` 컨테이너(NET_ADMIN)에서, firewalld는 `rockylinux/rockylinux:10`에서 `firewall-offline-cmd`로 설정을 확인했습니다. B8 묶음이 끝났습니다.

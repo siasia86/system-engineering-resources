@@ -229,6 +229,7 @@ curl -s -u "elastic:$ELASTIC_PASSWORD" -X PUT http://127.0.0.1:9200/_ilm/policy/
 - [로그 수집 100 GB 규모](./log_aggregation_100gb.md) · [100 TB 규모](./log_aggregation_100tb.md) — 규모별 설계
 - [Kafka](./kafka.md) — 수집 앞단의 버퍼
 - [Grafana Loki](./loki.md) · [Graylog](./graylog.md) — 다른 로그 저장소
+- [로깅 도구 비교](./logging_saas_comparison.md) — Splunk·Papertrail 등 상용 제품과 비교
 
 ---
 

@@ -177,6 +177,7 @@ printf '{"version":"1.1","host":"web01","short_message":"payment timeout","level
 ## 함께 보기
 
 - [Elastic Stack 로그 수집](./elastic_stack.md) · [Grafana Loki](./loki.md) — 다른 로그 저장소
+- [로깅 도구 비교](./logging_saas_comparison.md) — Splunk·Papertrail 등 상용 제품과 비교
 - [로그 수집 100 GB 규모](./log_aggregation_100gb.md) — 규모별 설계
 - [ufw·firewalld](../../04_security/hardening/ufw_firewalld.md) — 입력 포트 열기
 

@@ -258,15 +258,16 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Data Pipeline
 
-| 문서                                                                         | 설명                  |
-|------------------------------------------------------------------------------|-----------------------|
-| [Kafka](02_infrastructure/data_pipeline/kafka.md)                            | 분산 메시지 스트리밍  |
-| [게임 로그 파이프라인](02_infrastructure/data_pipeline/game_log_pipeline.md) | 수집→저장→분석        |
-| [로그 100GB](02_infrastructure/data_pipeline/log_aggregation_100gb.md)       | 중규모 로그 설계      |
-| [로그 100TB](02_infrastructure/data_pipeline/log_aggregation_100tb.md)       | 대규모 로그 설계      |
-| [Elastic Stack 로그 수집](02_infrastructure/data_pipeline/elastic_stack.md)  | Filebeat, ECS, ILM    |
-| [Grafana Loki](02_infrastructure/data_pipeline/loki.md)                      | Alloy, LogQL, 보존    |
-| [Graylog](02_infrastructure/data_pipeline/graylog.md)                        | Data Node, GELF, 보존 |
+| 문서                                                                         | 설명                          |
+|------------------------------------------------------------------------------|-------------------------------|
+| [Kafka](02_infrastructure/data_pipeline/kafka.md)                            | 분산 메시지 스트리밍          |
+| [게임 로그 파이프라인](02_infrastructure/data_pipeline/game_log_pipeline.md) | 수집→저장→분석                |
+| [로그 100GB](02_infrastructure/data_pipeline/log_aggregation_100gb.md)       | 중규모 로그 설계              |
+| [로그 100TB](02_infrastructure/data_pipeline/log_aggregation_100tb.md)       | 대규모 로그 설계              |
+| [Elastic Stack 로그 수집](02_infrastructure/data_pipeline/elastic_stack.md)  | Filebeat, ECS, ILM            |
+| [Grafana Loki](02_infrastructure/data_pipeline/loki.md)                      | Alloy, LogQL, 보존            |
+| [Graylog](02_infrastructure/data_pipeline/graylog.md)                        | Data Node, GELF, 보존         |
+| [로깅 도구 비교](02_infrastructure/data_pipeline/logging_saas_comparison.md) | Splunk·Papertrail과 자체 운영 |
 
 ### Storage
 
