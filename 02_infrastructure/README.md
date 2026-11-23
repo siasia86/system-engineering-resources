@@ -6,7 +6,7 @@
 
 | 디렉토리                             | 설명                                                                     | 문서 수 |
 |--------------------------------------|--------------------------------------------------------------------------|---------|
-| [containers/](./containers/)         | 컨테이너 — Docker, Compose, Dockerfile, Podman, 런타임, Kubernetes, Helm | 16      |
+| [containers/](./containers/)         | 컨테이너 — Docker, Compose, Dockerfile, Podman, 런타임, Kubernetes, Helm | 17      |
 | [cicd/](./cicd/)                     | CI/CD — ArgoCD, Ansible, Jenkins, GitHub Actions, GitLab CI, Airflow     | 17      |
 | [iac/](./iac/)                       | Infrastructure as Code — Ansible, Terraform, Playbook 운영               | 15      |
 | [monitoring/](./monitoring/)         | 모니터링 — Prometheus, Grafana, Zabbix, node_exporter, 시스템 메트릭     | 9       |

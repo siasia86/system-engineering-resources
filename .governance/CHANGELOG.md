@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- kind 독립 문서 추가 (2026-11-23, 05 DO-03 R7 배정, 05 D122): [kind](../02_infrastructure/containers/kind.md)(설치, 첫 클러스터, 설정 파일, 앱 배포와 접속, 로컬 이미지, 여러 클러스터, 검증, 트러블슈팅)를 새로 썼습니다. 기준 판은 v0.33.0(기본 노드 이미지 v1.37.0)이며, 설치와 시험 PC inotify 한도 변경이 필요해 실행 시험은 하지 않고 kind 공식 문서 원본과 대조했습니다. 옮긴 기존 본문은 없습니다.
+
 - systemd 포함 컨테이너 문서 보완 (2026-11-23, 00 세션 직접 요청 DO-03 R9 보완): [systemd 포함 컨테이너](../02_infrastructure/containers/systemd_container.md)에 4-3절 "공개 이미지를 쓸 때"(이미지의 `VOLUME /sys/fs/cgroup` 때문에 구성 A에서 멈추는 문제와 진입 스크립트, getty@tty1·systemd-modules-load mask, systemd 219 제약), 구성 B의 호스트 cgroup 빈 디렉터리 주의, inotify 실측 수치, 트러블슈팅 2행을 더했습니다. 수치와 현상은 00 세션의 실측 보고를 출처로 밝혀 적었고, 공개 이미지 Dockerfile의 `VOLUME` 선언은 이 세션에서 대조했습니다.
 
 - yamllint 독립 문서 추가 (2026-11-23, 05 DO-03 R8 배정, 05 D122): [yamllint](../02_infrastructure/iac/yamllint.md)(설치, 첫 검사, 주요 규칙, 설정 파일, 예외 처리, 종료 코드와 출력 형식, ansible-lint와 함께 쓰기, CI 연결, 검증, 트러블슈팅)를 새로 썼습니다. 예제는 yamllint 1.38.0으로 실행해 출력과 종료 코드(error 1, strict에서 warning 2)를 확인했고, ansible-lint 호환 설정은 ansible-lint 원본 설정 파일과 대조했습니다. 옮긴 기존 본문은 없습니다.
