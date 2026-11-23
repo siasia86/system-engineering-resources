@@ -287,6 +287,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Caddy](02_infrastructure/web_server/caddy.md)                                       | 자동 HTTPS, Caddyfile             |
 | [Varnish](02_infrastructure/web_server/varnish.md)                                   | HTTP 캐시, VCL, 적중 확인         |
 | [Squid](02_infrastructure/web_server/squid.md)                                       | 전달 프록시, 접근 제어            |
+| [리버스 프록시 개념](02_infrastructure/web_server/reverse_proxy.md)                  | 역할, Forwarded 헤더, 도구 비교   |
 | [HAProxy](02_infrastructure/web_server/haproxy_install.md)                           | L4/L7 LB, SSL 터미네이션          |
 | [HAProxy 핵심 개념](02_infrastructure/web_server/haproxy_concepts.md)                | 구조, 분산, 헬스체크, reload      |
 | [HAProxy 운영 가이드](02_infrastructure/web_server/haproxy_operations_guide.md)      | 변경 절차, Runtime API, 장애 확인 |

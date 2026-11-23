@@ -89,6 +89,7 @@ sources:
 | Caddy                                         | `_reference/caddy_official_notes.md`                    | v2.11.9, 자동 HTTPS, Caddyfile                                            | 2026-11-23 |
 | Varnish                                       | `_reference/varnish_official_notes.md`                  | 8.0.2, VCL, 캐시 적중 확인                                                | 2026-11-23 |
 | Squid                                         | `_reference/squid_official_notes.md`                    | 7.8, http_access·acl                                                      | 2026-11-23 |
+| 리버스 프록시 (RFC 9110·7239)                 | `_reference/reverse_proxy_official_notes.md`            | Forwarded·X-Forwarded-*, Via                                              | 2026-11-23 |
 | IIS                                           | `_reference/iis_official_notes.md`                      | IIS 10, 설치·구조·로그                                                    | 2026-11-23 |
 | YAML Spec                                     | `_reference/yaml_spec_notes.md`                         | 1.2 (1.1 호환)                                                            | 2026-11-09 |
 | Zabbix                                        | `_reference/zabbix_official_notes.md`                   | 8.0 LTS (2026-11-05), 7.4 Standard                                        | 2026-11-09 |
