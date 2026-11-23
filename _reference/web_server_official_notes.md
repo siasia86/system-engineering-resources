@@ -11,7 +11,7 @@ tags:
   - load-balancer
   - keepalived
   - acme
-last_checked: 2026-11-16
+last_checked: 2026-11-23
 sources:
   - https://nginx.org/en/docs/
   - https://httpd.apache.org/docs/2.4/
@@ -39,7 +39,7 @@ sources:
 | Stable   | 1.30.3 | 프로덕션 권장     |
 
 - 출처: https://nginx.org/en/download.html
-- 2026-11-09 확인: Mainline 1.31.8(2026-10-21), Stable 1.30.6(2026-10-14)입니다(nginx.org CHANGES).
+- 2026-11-23 확인: Mainline 1.31.9, Stable 1.30.7 (둘 다 2026-11-18, nginx.org CHANGES·CHANGES-1.30). 이전 확인(2026-11-09)은 1.31.8·1.30.6이었습니다.
 
 ### 핵심 설정
 
@@ -118,7 +118,7 @@ location ~ \.(conf|sql|env)$ { deny all; } # 설정파일 접근 차단
 
 - 2.2.x: EOL (2017-12)
 - 출처: https://httpd.apache.org/download.cgi
-- 2026-11-09 확인: 최신 2.4.70(2026-11-06)입니다(httpd.apache.org).
+- 2026-11-23 확인: 최신 2.4.71(2026-11-11)입니다(httpd.apache.org). 이전 확인(2026-11-09)은 2.4.70이었습니다.
 
 ### 핵심 설정
 

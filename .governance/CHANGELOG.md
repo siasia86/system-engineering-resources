@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B7a Nginx·Apache 검토 (2026-11-23, 00 세션 직접 요청 DO-07): 기존 [Nginx](../02_infrastructure/web_server/nginx_install.md)·[Apache](../02_infrastructure/web_server/apache_install.md) 문서가 설치부터 TLS·트러블슈팅까지 다뤄 새 문서 없이 보강 불필요로 판단했습니다. 공통 [웹 서버 참조 노트](../_reference/web_server_official_notes.md)의 판을 nginx.org·httpd.apache.org 기준으로 갱신(Nginx 1.31.9·1.30.7, Apache 2.4.71)하고, Apache 문서에 빠져 있던 참조 주석을 더했습니다.
+
 - DO-07 B6 Git 호스팅 문서 (2026-11-23, 00 세션 직접 요청 DO-07): [GitHub](../02_infrastructure/cicd/github.md), [GitLab](../02_infrastructure/cicd/gitlab.md), [Git 호스팅 비교](../02_infrastructure/cicd/git_hosting_comparison.md)를 새로 쓰고 [Git 명령 참조](../02_infrastructure/cicd/git_command_reference.md)에 설치·판 확인을 보강했습니다. 참조 노트 3개(GitHub, GitLab, Bitbucket)를 새로 썼습니다. GitHub·Bitbucket은 계정이 필요하고 GitLab은 권장 메모리(16 GB)에 못 미쳐 실행 시험은 하지 않았으며, 명령은 공식 문서 원문과 대조했습니다. 저장소 이전 절차(mirror)는 로컬 저장소로 시험했습니다.
 
 - DO-07 B5 셸·편집기 문서 (2026-11-23, 00 세션 직접 요청 DO-07): [Bash 스크립트](../01_fundamentals/linux/bash_scripting.md), [PowerShell](../01_fundamentals/windows/powershell.md), [nano](../01_fundamentals/linux/nano.md)를 새로 쓰고 [Vim](../01_fundamentals/linux/vim.md)에 설치·설정 파일·검증 절을 보강했습니다. 참조 노트는 PowerShell·nano를 새로 쓰고 Bash(엄격 모드·ShellCheck)·Vim(설정 파일 위치)을 보강했습니다. PowerShell은 Microsoft 수명 주기 문서가 7.7.0 정식판 이전 갱신본이라 판 번호를 GitHub release 기준으로 적고, `ubuntu:24.04` 컨테이너에 7.7.0을 설치해 시험했습니다. Bash 예제는 ShellCheck 경고 0건, nano는 7.2와 최신 판의 단축키 차이를 실제 화면과 공식 단축키표로 확인했습니다.

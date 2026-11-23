@@ -84,7 +84,7 @@ sources:
 | Terraform                                     | `_reference/terraform_official_notes.md`                | v1.17.1, AWS Provider v6.72.0                                             | 2026-11-09 |
 | VPN Protocol                                  | `_reference/vpn_protocol_official_notes.md`             | RFC 7296 / WireGuard protocol                                             | 2026-11-10 |
 | SoftEther VPN                                 | `_reference/softether_official_notes.md`                | v4.44-9807-rtm (Stable), 5.2.5188 (개발)                                  | 2026-11-16 |
-| Web Server                                    | `_reference/web_server_official_notes.md`               | Nginx 1.30.6, Apache 2.4.70, HAProxy 3.4.7 LTS                            | 2026-11-16 |
+| Web Server                                    | `_reference/web_server_official_notes.md`               | Nginx 1.30.7, Apache 2.4.71, HAProxy 3.4.7 LTS                            | 2026-11-23 |
 | YAML Spec                                     | `_reference/yaml_spec_notes.md`                         | 1.2 (1.1 호환)                                                            | 2026-11-09 |
 | Zabbix                                        | `_reference/zabbix_official_notes.md`                   | 8.0 LTS (2026-11-05), 7.4 Standard                                        | 2026-11-09 |
 | e4fsprogs (CentOS 5)                          | `_reference/e4fsprogs_centos5_notes.md`                 | 1.41.12-4.el5_10, fsck.ext4                                               | 2026-07-22 |

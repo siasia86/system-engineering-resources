@@ -1,4 +1,5 @@
 # Apache HTTP Server 설치 가이드
+<!-- reference: _reference/web_server_official_notes.md -->
 
 ## 목차
 
@@ -600,6 +601,6 @@ apache2ctl status 2>/dev/null || curl -s http://localhost/server-status?auto
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.
