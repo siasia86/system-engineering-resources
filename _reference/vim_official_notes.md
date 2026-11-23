@@ -1,6 +1,6 @@
 ---
 name: vim-official-notes
-last_checked: 2026-11-09
+last_checked: 2026-11-23
 sources:
   - https://vimhelp.org/
   - https://github.com/vim/vim/blob/master/runtime/doc/vim.1
@@ -97,10 +97,23 @@ sources:
 | `vi` 호환 모드 | `vim -C` 또는 `set compatible` — 기능 제한됨        | vimhelp.org |
 | swap 파일      | 비정상 종료 시 `.swp` 파일 생성 — 복구 후 삭제 필요 | vimhelp.org |
 
+
+## 설정 파일 위치
+
+### 검증된 사실 (2026-11-23)
+
+| 항목        | 값                                               | 출처            |
+|-------------|--------------------------------------------------|-----------------|
+| 사용자 설정 | `$HOME/.vimrc`, 두 번째 후보 `~/.vim/vimrc`      | `vim --version` |
+| 시스템 설정 | Debian·Ubuntu `/etc/vim/vimrc` (배포판마다 다름) | `vim --version` |
+| 판 확인     | `vim --version`, Vim 안에서 `:version`           | vim.1           |
+
+검증: Ubuntu 24.04의 Vim 9.1에서 `vim --version` 출력으로 확인했습니다.
+
 ---
 
 **작성일**: 2026-08-01
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

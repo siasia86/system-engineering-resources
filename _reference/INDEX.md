@@ -131,7 +131,7 @@ sources:
 | tcpdump                                       | `_reference/tcpdump_official_notes.md`                  | 4.99.7, BPF 필터, -w pcap, -n/-nn/-X 옵션                                 | 2026-11-09 |
 | Bash Shell                                    | `_reference/bash_shell_official_notes.md`               | 5.3, interactive/non-interactive, 리다이렉션, 엄격 모드·ShellCheck 0.11.0 | 2026-11-23 |
 | PowerShell                                    | `_reference/powershell_official_notes.md`               | 7.7.0, LTS 7.6, 프로필·오류 처리                                          | 2026-11-23 |
-| Vim                                           | `_reference/vim_official_notes.md`                      | 9.2, Normal/Insert/Visual/Command 모드                                    | 2026-11-09 |
+| Vim                                           | `_reference/vim_official_notes.md`                      | 9.2, Normal/Insert/Visual/Command 모드, 설정 파일 위치                    | 2026-11-23 |
 | nano                                          | `_reference/nano_official_notes.md`                     | 9.3, 판별 단축키, nanorc                                                  | 2026-11-23 |
 | C# / .NET                                     | `_reference/csharp_official_notes.md`                   | .NET 11 STS/C# 15, .NET 10 LTS, async/await, NRT, CLI                     | 2026-11-16 |
 
