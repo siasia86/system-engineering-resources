@@ -446,36 +446,7 @@ tasks:
 
 ## 9. Template (Jinja2)
 
-```jinja2
-{# templates/nginx.conf.j2 #}
-worker_processes auto;
-
-events {
-    worker_connections {{ max_connections | default(1024) }};
-}
-
-http {
-    server {
-        listen {{ http_port }};
-        server_name {{ ansible_hostname }};
-
-{% if app_env == "production" %}
-        access_log /var/log/nginx/access.log;
-{% else %}
-        access_log off;
-{% endif %}
-    }
-}
-```
-
-```yaml
-tasks:
-  - name: nginx 설정 배포
-    template:
-      src: templates/nginx.conf.j2
-      dest: /etc/nginx/nginx.conf
-    notify: restart nginx
-```
+`template` 모듈은 Jinja2 템플릿(`.j2`)에 변수를 채워 대상 서버에 파일로 둡니다. 문법(조건, 반복, 필터, 공백 제어), `template` 모듈 사용법, 렌더링 결과 검증은 [Jinja2](./jinja2.md) 문서로 옮겼습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -1214,6 +1185,7 @@ playbook을 새로 쓰거나 고친 뒤 아래 순서로 확인합니다. 앞 �
 - [Ansible Playbook 필드](./ansible_playbook_fields.md) — play·task 키 레퍼런스
 - [Ansible Linux playbook](./ansible_playbook_linux.md) · [Ansible Windows playbook](./ansible_playbook_windows.md) — 예제 모음
 - [ansible-lint](./ansible_lint.md) — 실행 전 정적 검사, profile, CI 연결
+- [Jinja2](./jinja2.md) — 템플릿 문법과 `template` 모듈
 - [Molecule](./molecule.md) — role 시험
 - [YAML 문법](./yaml_syntax.md) — 들여쓰기, 따옴표, 여러 줄 문자열
 - [SSH 보안](../../04_security/hardening/ssh_security.md) — 키 접속과 sshd 설정

@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- Jinja2 독립 문서 추가 (2026-11-23, 05 DO-03 R4 배정, 05 D122): [Jinja2](../02_infrastructure/iac/jinja2.md)(설치, 기본 문법, 조건과 반복, 필터와 테스트, 공백 제어, 재사용, Ansible에서 쓰기, 검증, 트러블슈팅)를 새로 썼습니다. 예제는 Jinja2 3.1.6과 ansible-core 2.20.5로 렌더링해 확인했고, template 모듈 두 번째 실행 `changed=0`까지 보았습니다. [Ansible 기초 가이드](../02_infrastructure/iac/ansible_basic_guide.md) 9장 본문은 새 문서로 옮기고 안내만 남겼습니다.
+
 - ansible-lint 독립 문서 추가 (2026-11-23, 05 DO-03 R3 배정, 05 D122): [ansible-lint](../02_infrastructure/iac/ansible_lint.md)(설치, 첫 검사, profile 6단계, 자주 만나는 규칙, 설정 파일, 예외 처리, 자동 수정, CI 연결, 검증, 트러블슈팅)를 새로 썼습니다. 기준 판은 v26.11.0입니다. 사용자 승인으로 scratchpad 가상환경에 ansible-lint 26.11.0을 시험 설치해 3·7·8절 예제를 실행했고, 결과로 위반 표(`command-instead-of-shell` 추가), 요약 문구와 종료 코드, `--fix`가 고치는 규칙, 검증 2단계를 바로잡았습니다. [Ansible 기초 가이드](../02_infrastructure/iac/ansible_basic_guide.md) 19장 본문은 새 문서로 옮기고 안내만 남겼습니다.
 
 - 직접 요청 경로 추가 (2026-11-23, 사용자 결정 05 D169, 05 `2e6a6a7` 기록 대조): [HANDOFF](HANDOFF.md) 2절 세션 역할을 "05 총괄 배정과 다른 Claude 세션의 문서 요청을 받음"으로 바꾸고, 3절에 직접 요청 조건(형식 B, TODO 기록, 공개 저장소의 비공개 정보 금지, commit·push 사용자 확인, 여러 저장소·사용자 결정 건은 05로, 05 배정 우선, Codex 제외, 05 비대조)을 더했습니다. 지침 개정으로 보고 이 세션 사용자 확인 뒤 반영했습니다.

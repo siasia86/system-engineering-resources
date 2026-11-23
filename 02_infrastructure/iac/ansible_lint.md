@@ -338,6 +338,7 @@ repos:
 ## 함께 보기
 
 - [Ansible 기초 가이드](./ansible_basic_guide.md) — 설치, 인벤토리, playbook, 검증
+- [Jinja2](./jinja2.md) — `jinja[spacing]` 등 템플릿 식 작성
 - [Molecule](./molecule.md) — role을 실제로 실행해 시험
 - [YAML 문법](./yaml_syntax.md) — 들여쓰기, truthy 값
 - [GitHub Actions](../cicd/github_actions.md) — workflow 작성
