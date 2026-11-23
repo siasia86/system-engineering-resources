@@ -109,6 +109,7 @@ sources:
 | SCVMM                                         | `_reference/scvmm_official_notes.md`                    | System Center 2025, 호스트 관리·베어메탈·Arc                              | 2026-11-09 |
 | SVN (Subversion)                              | `_reference/svn_official_notes.md`                      | 1.15.0                                                                    | 2026-11-09 |
 | Git                                           | `_reference/git_official_notes.md`                      | 2.56.1                                                                    | 2026-11-16 |
+| GitHub                                        | `_reference/github_official_notes.md`                   | 2FA 의무화, SSH, rulesets, gh 2.105.0                                     | 2026-11-23 |
 | eBPF / bpftrace                               | `_reference/ebpf_bpftrace_official_notes.md`            | libbpf v1.8.0, bpftrace v0.27.1                                           | 2026-11-09 |
 | Linux Process / Memory / IPC                  | `_reference/linux_process_official_notes.md`            | fork/exec/wait, mmap, OOM, pipe/shm/mq                                    | 2026-11-09 |
 | GDB                                           | `_reference/gdb_official_notes.md`                      | 18.1, breakpoint/watchpoint/bt, ptrace attach                             | 2026-11-09 |
