@@ -1,5 +1,10 @@
 # Ansible 기초 가이드
 
+에이전트 없이 SSH로 서버를 설정하는 Ansible을 설치부터 첫 playbook 실행과 검증까지 이 문서만으로 따라 할 수 있게 정리했습니다. 팀 공용 운영, Vault 상세, playbook 예제 모음은 [함께 보기](#함께-보기)의 문서에서 다룹니다.
+
+- 기준 판: ansible-core 2.22.0(2026-11-02 release), ansible 묶음 패키지 15.0.0
+- 예제 시험: 2026-11-23, ansible-core 2.20.5와 Python 3.14에서 20절의 검증 순서를 로컬 대상(`ansible_connection=local`)으로 실행
+
 ## 목차
 
 | 섹션                                                                                                                                                |
@@ -10,7 +15,7 @@
 | [10. Role 구조](#10-role-구조) / [11. 자주 쓰는 실행 옵션](#11-자주-쓰는-실행-옵션) / [12. 실습 순서 권장](#12-실습-순서-권장)                      |
 | [13. 모듈 상세 사용법](#13-모듈-상세-사용법) / [14. raw 모듈과 delegate_to](#14-raw-모듈과-delegate_to) / [15. 에러 처리](#15-에러-처리)            |
 | [16. 태그](#16-태그) / [17. Dynamic Inventory](#17-dynamic-inventory) / [18. Vault — 시크릿 관리](#18-vault--시크릿-관리)                           |
-| [19. ansible-lint — 코드 품질 검사](#19-ansible-lint--코드-품질-검사)                                                                               |
+| [19. ansible-lint — 코드 품질 검사](#19-ansible-lint--코드-품질-검사) / [20. 검증](#20-검증) / [함께 보기](#함께-보기)                              |
 
 
 ---
@@ -26,6 +31,40 @@ Control Node (내 서버)  ──SSH──>  Managed Node (대상 서버)
   ad-hoc   → 1회성 명령 (ansible 명령어)
   playbook → 반복 가능한 자동화 (ansible-playbook 명령어)
 ```
+
+### 설치
+
+Ansible은 제어 노드(명령을 실행하는 PC)에만 설치합니다. 대상 서버에는 SSH 접속과 Python만 있으면 됩니다.
+
+| 패키지         | 내용                                  | 제어 노드 Python (PyPI 기준)                                |
+|----------------|---------------------------------------|-------------------------------------------------------------|
+| `ansible-core` | 명령, 엔진, `ansible.builtin` 모듈    | 2.22: 3.13 이상, 2.20·2.21: 3.12 이상, 2.18·2.19: 3.11 이상 |
+| `ansible`      | `ansible-core` + 커뮤니티 컬렉션 묶음 | 15.x는 core 2.22, 14.x는 2.21, 13.x는 2.20                  |
+
+pip는 설치된 Python이 지원하는 가장 새 판을 고릅니다. 예를 들어 Python 3.12에서는 core 2.22 대신 2.21이 설치됩니다.
+
+```bash
+# 방법 A: Python 가상환경 + pip (배포판과 무관, 판 고정 쉬움)
+python3 -m venv ~/.venvs/ansible
+~/.venvs/ansible/bin/pip install --upgrade pip
+~/.venvs/ansible/bin/pip install ansible        # 컬렉션까지 필요 없으면 ansible-core
+export PATH="$HOME/.venvs/ansible/bin:$PATH"    # 셸 설정 파일에 넣어 두면 편함
+
+# 방법 B: 배포판 패키지
+sudo apt-get install -y ansible                 # Ubuntu / Debian (배포판 판이라 오래될 수 있음)
+sudo dnf install -y ansible-core                # RHEL / Rocky (AppStream)
+```
+
+### 설치 확인
+
+```bash
+ansible --version
+# ansible [core 2.22.0]
+#   config file = None            ← 아직 ansible.cfg가 없음 (2절)
+#   python version = 3.13.x       ← 제어 노드 Python
+```
+
+`ansible: command not found`이면 가상환경의 `bin`이 `PATH`에 있는지 확인합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -1129,58 +1168,7 @@ ansible-playbook -i inventory/ site.yml
 
 ## 18. Vault — 시크릿 관리
 
-패스워드, API 키 등 민감한 값을 암호화하여 playbook에 포함합니다.
-
-```bash
-# 암호화된 파일 생성
-ansible-vault create secrets.yml
-
-# 기존 파일 암호화
-ansible-vault encrypt vars/secrets.yml
-
-# 복호화 (평문으로 저장 — 주의)
-ansible-vault decrypt vars/secrets.yml
-
-# 내용 확인 (복호화 없이)
-ansible-vault view vars/secrets.yml
-
-# 내용 수정
-ansible-vault edit vars/secrets.yml
-
-# 패스워드 변경
-ansible-vault rekey vars/secrets.yml
-```
-
-```yaml
-# vars/secrets.yml (암호화 전)
-db_password: SecurePassword123
-api_key: SecureKey123
-```
-
-```yaml
-# playbook에서 사용
-- name: DB 설정
-  hosts: dbservers
-  vars_files:
-    - vars/secrets.yml    # vault 파일 포함
-
-  tasks:
-    - name: DB 패스워드 설정
-      template:
-        src: my.cnf.j2
-        dest: /etc/mysql/my.cnf
-      no_log: true        # 로그에 민감한 값 출력 방지
-```
-
-```bash
-# 실행 시 vault 패스워드 입력
-ansible-playbook site.yml --ask-vault-pass
-
-# 패스워드 파일 사용 (CI/CD 환경)
-ansible-playbook site.yml --vault-password-file ~/.vault_pass
-```
-
-🟡 `.vault_pass` 파일은 `.gitignore`에 반드시 추가합니다.
+비밀번호, API 키 같은 값은 `ansible-vault`로 암호화해 저장소에 둡니다. 실행할 때는 `--ask-vault-pass` 또는 `--vault-password-file`로 비밀번호를 주고, 비밀 값을 다루는 task에는 `no_log: true`를 붙입니다. 명령, 변수 인라인 암호화, vault-id, CI 연동은 [Ansible Vault](./ansible_vault.md) 문서에서 다룹니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -1277,12 +1265,52 @@ skip_list:
 
 ---
 
+## 20. 검증
+
+playbook을 새로 쓰거나 고친 뒤 아래 순서로 확인합니다. 앞 단계가 통과해야 다음 단계로 갑니다.
+
+| 순서 | 확인 내용      | 명령                                                                      | 기대 결과                                |
+|------|----------------|---------------------------------------------------------------------------|------------------------------------------|
+| 1    | 설치           | `ansible --version`                                                       | core 판과 Python 판 출력                 |
+| 2    | 설정 파일      | `ansible-config dump --only-changed`                                      | 의도한 `ansible.cfg` 값만 표시           |
+| 3    | 인벤토리       | `ansible-inventory -i inventory --graph`                                  | 그룹과 호스트가 의도대로 묶임            |
+| 4    | 접속           | `ansible -i inventory all -m ansible.builtin.ping`                        | 모든 호스트 `SUCCESS`, `"ping": "pong"`  |
+| 5    | 문법           | `ansible-playbook -i inventory site.yml --syntax-check`                   | `playbook: site.yml`만 출력              |
+| 6    | 대상·task 목록 | `ansible-playbook ... --list-hosts --list-tasks`                          | 실행될 호스트와 task 확인                |
+| 7    | 변경 미리 보기 | `ansible-playbook ... --check --diff`                                     | 바뀔 내용이 diff로 표시, 실제 변경 없음  |
+| 8    | 실행           | `ansible-playbook -i inventory site.yml`                                  | PLAY RECAP에 `failed=0`, `unreachable=0` |
+| 9    | 멱등성         | 같은 명령을 한 번 더 실행                                                 | `changed=0`                              |
+| 10   | 결과 확인      | `ansible -i inventory all -m ansible.builtin.command -a "cat /path/파일"` | 의도한 상태                              |
+
+- 9번에서 `changed`가 0이 아니면 매번 무언가를 바꾸는 task가 있다는 뜻입니다. `command`·`shell` task에는 `changed_when`을 붙이거나 전용 모듈로 바꿉니다.
+- `--check`는 모듈이 지원할 때만 정확합니다. `command`·`shell`은 check 모드에서 건너뜁니다.
+- 대상의 Python 위치를 매번 찾는다는 경고(`discovered Python interpreter`)가 나오면 인벤토리에 `ansible_python_interpreter`를 지정합니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 함께 보기
+
+- [Ansible 설치 및 팀 운영](./ansible_install_and_team_operation.md) — 배포판별 설치, 전용 계정, 팀 공용 구성, 감사 로그
+- [Ansible Vault](./ansible_vault.md) — 시크릿 암호화, vault-id, CI 연동
+- [Ansible Playbook 필드](./ansible_playbook_fields.md) — play·task 키 레퍼런스
+- [Ansible Linux playbook](./ansible_playbook_linux.md) · [Ansible Windows playbook](./ansible_playbook_windows.md) — 예제 모음
+- [Molecule](./molecule.md) — role 시험
+- [YAML 문법](./yaml_syntax.md) — 들여쓰기, 따옴표, 여러 줄 문자열
+- [SSH 보안](../../04_security/hardening/ssh_security.md) — 키 접속과 sshd 설정
+
+---
+
 ## 참고 자료
 
 - Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/) — ★★★☆☆
 - Ansible Best Practices: [docs.ansible.com/tips_tricks](https://docs.ansible.com/ansible/latest/tips_tricks/ansible_tips_tricks.html) — ★★★☆☆
 - Ansible Configuration Settings: [docs.ansible.com/config](https://docs.ansible.com/ansible/latest/reference_appendices/config.html) — ★★★☆☆
 - ansible-lint Profiles: [docs.ansible.com/projects/lint/profiles](https://docs.ansible.com/projects/lint/profiles/) — ★★★☆☆
+- Ansible Documentation: [Installing Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) — ★★★☆☆
+- Ansible Documentation: [Releases and maintenance](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html) — ★★★☆☆
+- PyPI: [ansible-core](https://pypi.org/project/ansible-core/) · [ansible](https://pypi.org/project/ansible/) — 판과 Python 요구 판 확인 2026-11-23 — ★★★☆☆
 
 ---
 
@@ -1299,6 +1327,6 @@ skip_list:
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

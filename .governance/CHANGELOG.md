@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- Ansible 기초 문서를 혼자 읽는 문서로 보강 (2026-11-23, 05 DO-03 R2 배정, 05 D122): [Ansible 기초 가이드](../02_infrastructure/iac/ansible_basic_guide.md) 1절에 설치(가상환경 pip, 배포판 패키지)와 설치 확인을 더하고, ansible-core 판별 제어 노드 Python 요구 판(2.22는 3.13 이상, PyPI 확인 2026-11-23)을 표로 적었습니다. 20절 검증(설정 → 인벤토리 → 접속 → 문법 → 미리 보기 → 실행 → 멱등성)과 함께 보기를 새로 두었습니다. 18절 Vault 본문은 [Ansible Vault](../02_infrastructure/iac/ansible_vault.md)와 겹쳐 그 문서 안내로 줄였습니다. 9절 Jinja2와 19절 ansible-lint는 R4·R3 문서를 쓸 때 옮깁니다. 검증 순서는 ansible-core 2.20.5에서 로컬 대상으로 실행해 두 번째 실행 `changed=0`까지 확인했습니다.
+
 - Docker Compose 독립 문서 추가 (2026-11-23, 05 DO-03 R1 배정, 05 D122): [Docker Compose](../02_infrastructure/containers/docker_compose.md)(설치, 첫 프로젝트, compose.yaml 구조, 명령, 변수와 .env, 여러 환경, 운영 설정, 검증, 트러블슈팅)를 새로 썼습니다. 기준 판은 Compose v5.8.0이고, 3절 예제와 9절 검증 명령은 Docker Engine 29.8.1·Compose v5.5.1에서 실행해 확인했습니다. 흩어져 있던 Compose 본문(docker 7장, 설치 문서 6·7장과 트러블슈팅 2행, 치트시트 2장과 4장의 리소스·헬스체크·환경 변수·프로파일)은 새 문서로 옮기고 그 자리에는 안내만 남겼습니다. 치트시트 3장 네트워크와 4장 cgroup은 R5·R9 문서를 쓸 때 옮깁니다. 파일 경로는 바뀌지 않아 [옮김 기록](MOVED.md) 대상이 아닙니다.
 
 - ISS-02 검사 예외 재검토 (2026-11-22, 05 AX-HUB-24 마무리 계획 A2·N2, 05 D158 C2): 재검토일 2026-11-30을 앞당겨 검사 도구 0.7.0으로 두 예외를 빼고 검사했고, 두 파일 모두 다시 걸렸습니다(box-chars 2건, diagram-width 4건). [network_headers](../01_fundamentals/networking/network_headers.md)는 Ethernet·TLS 그림에서 앞 필드가 끝나고 Payload가 같은 줄 오른쪽에서 시작하는 칸에 `Payload (continues)` 이름을 붙이고 경계를 `├───┴───┤`로 바꿔 예외를 없앴습니다. 한글 이름은 diagram-kr 검사에 걸려 영문으로 썼습니다. [ddos 방어 구조](../04_security/cloud/ddos_defense_architecture.md)는 사유를 "인접 박스 연결선 오탐"에서 실제 원인(오른쪽 연결선이 끝난 아래 행의 폭 차이, 공백으로 채우면 줄 끝 공백 검사와 충돌, 다시 그리면 화살표 뜻이 바뀜)으로 고치고 재검토일을 2027-02-28로 연장했습니다. 두 설정 파일, [검증 기준](verification.md), [TODO](TODO.md) 예외 표, [ISSUE](ISSUE.md) ISS-02, [HANDOFF](HANDOFF.md) 다음 기한을 함께 맞췄습니다.
