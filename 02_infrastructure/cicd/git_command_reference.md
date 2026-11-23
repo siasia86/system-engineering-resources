@@ -16,6 +16,16 @@ Git 저장소의 설정, 브랜치, 원격 저장소, 커밋, 병합, 복구 작
 
 ## 1. 설정과 인증
 
+### 설치와 판 확인
+
+```bash
+git --version                       # git version 2.x
+sudo apt-get install -y git         # Ubuntu / Debian
+sudo dnf install -y git             # RHEL 계열
+```
+
+배포판 패키지는 최신 판(2026-11-23 기준 2.56.1)보다 낮을 수 있습니다. 새 기능이 꼭 필요할 때만 배포판의 백포트 저장소나 공식 소스를 검토합니다.
+
 ### Git 설정 확인
 
 ```bash
@@ -489,6 +499,6 @@ git -C /path/to/destination tag
 
 **작성일**: 2026-08-24
 
-**마지막 업데이트**: 2026-10-13
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.
