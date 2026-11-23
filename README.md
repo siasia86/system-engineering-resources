@@ -92,6 +92,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [DNS 해석·장애 진단](01_fundamentals/networking/dns_resolution_troubleshooting.md)           | 해석 흐름, TTL, dig 진단           |
 | [MTU·MSS·PMTUD](01_fundamentals/networking/mtu_mss_pmtud.md)                                 | 단편화, PMTUD 블랙홀, MSS clamping |
 | [OSI 모델](01_fundamentals/networking/osi_model.md)                                          | 7계층, TCP/IP 대응, 계층별 진단    |
+| [HTTP와 HTTPS](01_fundamentals/networking/http_https.md)                                     | 판 비교, TLS·ALPN·HSTS             |
 
 ### CS
 
