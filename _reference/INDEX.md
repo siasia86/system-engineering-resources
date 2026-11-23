@@ -97,6 +97,7 @@ sources:
 | Datadog                                       | `_reference/datadog_official_notes.md`                  | Agent 7.85.5, 사이트·요금·보존 기간                                       | 2026-11-23 |
 | Elastic Stack (로그 수집)                     | `_reference/elastic_stack_official_notes.md`            | 9.5.6, Filebeat data stream·ILM 기본값                                    | 2026-11-23 |
 | Grafana Loki                                  | `_reference/loki_official_notes.md`                     | Loki 3.7.10, Alloy v1.22.0, Promtail EOL                                  | 2026-11-23 |
+| Graylog                                       | `_reference/graylog_official_notes.md`                  | 7.2.2, Data Node preflight                                                | 2026-11-23 |
 | e4fsprogs (CentOS 5)                          | `_reference/e4fsprogs_centos5_notes.md`                 | 1.41.12-4.el5_10, fsck.ext4                                               | 2026-07-22 |
 | Hyper-V I/O 경합                              | `_reference/hyperv_io_contention_notes.md`              | Storage Stack·Storage QoS·성능 카운터                                     | 2026-11-16 |
 | Hyper-V I/O 경합 (CentOS 5)                   | `_reference/hyperv_centos5_io_contention_notes.md`      | Storage QoS·LIS 지원 범위·CentOS 5.11                                     | 2026-11-09 |

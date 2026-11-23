@@ -221,7 +221,7 @@ limits_config:
 
 ## 함께 보기
 
-- [Elastic Stack 로그 수집](./elastic_stack.md) — 본문 색인형 로그 저장소
+- [Elastic Stack 로그 수집](./elastic_stack.md) · [Graylog](./graylog.md) — 본문 색인형 로그 저장소
 - [Prometheus + Grafana](../monitoring/prometheus_grafana.md) — 같은 라벨 방식의 지표 수집
 - [로그 수집 100 GB 규모](./log_aggregation_100gb.md) — 규모별 설계
 
