@@ -168,7 +168,7 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning
 
   node-exporter:
-    image: prom/node-exporter:v1.12.1
+    image: prom/node-exporter:v1.13.1
     ports:
       - "9100:9100"
     volumes:
@@ -636,6 +636,6 @@ curl -s http://localhost:9090/api/v1/status/tsdb | jq '.data.headStats'
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

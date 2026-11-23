@@ -6,19 +6,22 @@ tags:
   - monitoring
   - dashboard
   - visualization
-last_checked: 2026-11-05
+last_checked: 2026-11-23
 sources:
+  - https://github.com/grafana/grafana/releases
   - https://grafana.com/docs/grafana/latest/introduction/
   - https://grafana.com/docs/grafana/latest/datasources/
 ---
 
 # Grafana 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-11-05)
+## 1. 버전 현황 (확인일: 2026-11-23)
 
 | 항목    | 버전    | 비고             |
 |---------|---------|------------------|
-| Grafana | v13.3.0 | OSS / Enterprise |
+| Grafana | v13.3.1 | OSS / Enterprise |
+
+- 2026-11-23 GitHub releases 최신 `v13.3.1`(2026-11-10). Docker Hub에는 이전 계열 패치(13.2.6, 13.1.10)도 계속 올라오므로 태그는 판을 고정합니다.
 
 ## 2. 공식 정의
 

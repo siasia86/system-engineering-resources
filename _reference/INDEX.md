@@ -54,7 +54,7 @@ sources:
 | Trivy                                         | `_reference/trivy_official_notes.md`                    | v0.76.2·GHSA-69fq 공급망 사고·action v0.36.0                              | 2026-11-10 |
 | TLS 인증서 수명 주기                          | `_reference/tls_cert_lifecycle_official_notes.md`       | BR v2.3.1·LE 45일·RFC 9773·blackbox v0.29.1                               | 2026-11-09 |
 | Lynis                                         | `_reference/lynis_official_notes.md`                    | 3.1.7·GPG 서명·프로필·보고서 형식·Hardening index                         | 2026-11-05 |
-| Grafana                                       | `_reference/grafana_official_notes.md`                  | v13.3.0                                                                   | 2026-11-05 |
+| Grafana                                       | `_reference/grafana_official_notes.md`                  | v13.3.1                                                                   | 2026-11-23 |
 | Helm                                          | `_reference/helm_official_notes.md`                     | v4.3.2                                                                    | 2026-11-16 |
 | ISMS-P                                        | `_reference/isms_p_official_notes.md`                   | 고시 제2024-30호, isms-p.or.kr                                            | 2026-11-09 |
 | Kubernetes                                    | `_reference/kubernetes_official_notes.md`               | v1.37.2                                                                   | 2026-11-16 |
@@ -75,7 +75,7 @@ sources:
 | OpenZFS                                       | `_reference/openzfs_official_notes.md`                  | COW·checksum·Snapshot·RAIDZ·복제·압축·암호화                              | 2026-09-21 |
 | Platform Engineering                          | `_reference/platform_engineering_official_notes.md`     | CNCF Platforms WP                                                         | 2026-11-16 |
 | PostgreSQL                                    | `_reference/postgresql_official_notes.md`               | 18.7 (EOL 2030-11)                                                        | 2026-11-16 |
-| Prometheus                                    | `_reference/prometheus_official_notes.md`               | v3.16.0 (LTS 3.13.5)                                                      | 2026-11-09 |
+| Prometheus                                    | `_reference/prometheus_official_notes.md`               | v3.16.0 (LTS 3.13), Alertmanager 0.35.0, node_exporter 1.13.1             | 2026-11-23 |
 | Protocol Error Codes                          | `_reference/protocol_error_codes_official_notes.md`     | RFC 9110 / RFC 5321 / RFC 959                                             | 2026-11-09 |
 | Rsync                                         | `_reference/rsync_official_notes.md`                    | 3.5.2, daemon·SSH·TLS·rrsync 보안                                         | 2026-11-16 |
 | Restic                                        | `_reference/restic_official_notes.md`                   | v0.19.1, Snapshot·암호화·중복 제거·S3·무결성 검사                         | 2026-11-09 |
@@ -172,6 +172,6 @@ sources:
 
 **작성일**: 2026-05-22
 
-**마지막 업데이트**: 2026-11-19
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

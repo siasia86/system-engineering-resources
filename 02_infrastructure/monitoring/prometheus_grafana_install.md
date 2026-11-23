@@ -133,7 +133,7 @@ sudo kill -HUP $(pidof prometheus)
 모니터링 대상 서버마다 설치합니다.
 
 ```bash
-NODE_EXP_VERSION="1.12.1"
+NODE_EXP_VERSION="1.13.1"
 wget https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXP_VERSION}/node_exporter-${NODE_EXP_VERSION}.linux-amd64.tar.gz
 tar xzf node_exporter-${NODE_EXP_VERSION}.linux-amd64.tar.gz
 sudo mv node_exporter-${NODE_EXP_VERSION}.linux-amd64/node_exporter /usr/local/bin/
@@ -330,7 +330,7 @@ services:
     restart: unless-stopped
 
   node_exporter:
-    image: prom/node-exporter:v1.12.1
+    image: prom/node-exporter:v1.13.1
     ports:
       - "127.0.0.1:9100:9100"
     volumes:
@@ -453,6 +453,6 @@ promtool check rules /etc/prometheus/rules/node.yml
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

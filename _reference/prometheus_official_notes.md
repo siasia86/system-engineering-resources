@@ -6,7 +6,7 @@ tags:
   - monitoring
   - alerting
   - metrics
-last_checked: 2026-11-09
+last_checked: 2026-11-23
 sources:
   - https://prometheus.io/docs/introduction/overview/
   - https://prometheus.io/docs/concepts/data_model/
@@ -16,13 +16,14 @@ sources:
 
 # Prometheus 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-11-05)
+## 1. 버전 현황 (확인일: 2026-11-23)
 
 | 항목       | 버전    |
 |------------|---------|
-| Prometheus | v3.15.1 |
+| Prometheus | v3.16.0 |
 
 - (2026-11-09 확인: 최신 릴리스는 `v3.16.0`(2026-11-04)이고, LTS는 3.13 계열(`v3.13.5`, 지원 종료 2027-07-31)입니다.)
+- (2026-11-23 재확인: GitHub releases 최신은 `v3.16.0`, 릴리스 주기 문서의 LTS 표에서 3.13이 지원 중(종료 2027-07-31). 함께 쓰는 Alertmanager `v0.35.0`(2026-11-09), node_exporter `v1.13.1`(2026-11-19). node_exporter 1.13.0에서 `node_cpu_frequency_hertz` 동작이 되돌려지고 `--collector.cpufreq.enable-cpufreq-prefix`가 추가됨)
 
 ## 2. 공식 정의
 

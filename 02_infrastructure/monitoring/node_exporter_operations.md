@@ -3,7 +3,7 @@
 
 node_exporter는 Linux·Unix 호스트의 CPU·메모리·디스크·네트워크 같은 하드웨어·커널 지표를 Prometheus 형식으로 노출하는 exporter입니다. 설치는 [Prometheus·Grafana 설치](prometheus_grafana_install.md)에서 다루므로, 이 문서는 collector 선택, textfile collector, 핵심 지표와 PromQL, 알림 규칙, 보안·부하 관리를 운영 관점에서 정리합니다.
 
-> 기준 판: node_exporter 1.12.1 (2026-07-14 릴리스, GitHub releases 기준, 확인일 2026-11-16).
+> 기준 판: node_exporter 1.13.1 (2026-11-19 릴리스, GitHub releases 기준, 확인일 2026-11-23). 2026-11-23 `prom/node-exporter:v1.13.1` 컨테이너에서 `--help`와 `/metrics`를 확인했습니다.
 
 ## 목차
 
@@ -90,7 +90,14 @@ systemd collector를 켜되 필요한 유닛만 남기는 예입니다.
 
 플래그 이름과 기본값은 판마다 바뀔 수 있으므로 설치한 바이너리에서 `node_exporter --help`로 확인합니다.
 
-[⬆ 목차로 돌아가기](#목차)
+1.13에서 달라진 점입니다.
+
+| 항목                       | 내용                                                                                                                             |
+|----------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| `node_cpu_frequency_hertz` | cpu·cpufreq collector가 같은 이름을 쓰던 동작이 1.12 이전 방식으로 되돌아감. 대시보드·알림이 이 지표를 쓰면 판 올린 뒤 값을 확인 |
+| 새 플래그                  | `--collector.cpufreq.enable-cpufreq-prefix`: cpufreq 지표를 `node_cpufreq_` 이름으로 분리 (v2에서 기본값이 될 예정)              |
+| 새 collector               | `tainted`(커널 tainted 상태), `resctrl`. 둘 다 기본 꺼짐                                                                         |
+| 폐지 예정 지표             | `nvme_namespace_capacity_bytes`                                                                                                  |[⬆ 목차로 돌아가기](#목차)
 
 ---
 
@@ -359,6 +366,6 @@ sudo firewall-cmd --reload
 
 **작성일**: 2026-11-16
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.
