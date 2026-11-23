@@ -123,6 +123,7 @@ sources:
 | FreeBSD                              | `_reference/freebsd_official_notes.md`                  | 15.1, stable/15 지원 2029-12-31                         | 2026-11-23 |
 | OpenBSD                              | `_reference/openbsd_official_notes.md`                  | 8.0, 최근 두 릴리스 지원                                | 2026-11-23 |
 | NetBSD                               | `_reference/netbsd_official_notes.md`                   | 11.1, 11.x·10.x 지원                                    | 2026-11-23 |
+| procps·htop                          | `_reference/procps_official_notes.md`                   | procps-ng 4.0.7·htop 3.5.3                              | 2026-11-23 |
 | lsof                                 | `_reference/lsof_official_notes.md`                     | 4.99.7, FD/TYPE 필드, -i/-p/-u/-a 필터                  | 2026-08-01 |
 | iotop                                | `_reference/iotop_official_notes.md`                    | v1.33, I/O 모니터링, --only/--batch/--processes         | 2026-11-09 |
 | tcpdump                              | `_reference/tcpdump_official_notes.md`                  | 4.99.7, BPF 필터, -w pcap, -n/-nn/-X 옵션               | 2026-11-09 |
