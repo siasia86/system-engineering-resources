@@ -13,7 +13,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 
 ## 1. 문서 구성
 
-현재 Linux 문서는 `README.md`를 제외하고 62개입니다. 개념 문서와 실습·분석 도구 문서를 함께 배치하여 개념 학습 후 실제 시스템 관찰로 이어지도록 구성합니다.
+현재 Linux 문서는 `README.md`를 제외하고 63개입니다. 개념 문서와 실습·분석 도구 문서를 함께 배치하여 개념 학습 후 실제 시스템 관찰로 이어지도록 구성합니다.
 
 | 주제                     | 범위                                              |
 |--------------------------|---------------------------------------------------|
@@ -136,6 +136,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 - [텍스트 처리](./text_processing.md) — grep·sed·awk·sort·uniq로 찾기·치환·집계.
 - [lsof](./lsof.md) — 열린 파일과 소켓 조회.
 - [tcpdump](./tcpdump.md) — 패킷 캡처와 필터링.
+- [Linux 네트워크 점검 도구](./linux_network_tools.md) — ip·ss·dig·curl·mtr·nmap과 계층별 점검 순서.
 - [iperf3](./iperf3_guide.md) — TCP·UDP throughput, loss, jitter 측정.
 - [Bash 파일 리다이렉션](./bash_file_redirection.md) — 명령 입출력 연결.
 - [Bash trap](./bash_trap_complete_guide.md) — 운영 스크립트 정리 패턴.

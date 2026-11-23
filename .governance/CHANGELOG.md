@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B4 관측 도구 문서 추가 (2026-11-23, 00 세션 직접 요청 DO-07): [프로세스 모니터링](../01_fundamentals/linux/process_monitoring.md), [sysstat](../01_fundamentals/linux/sysstat.md), [Linux 네트워크 점검 도구](../01_fundamentals/linux/linux_network_tools.md) 문서와 참조 노트 3개(procps, sysstat, 네트워크 도구)를 새로 썼습니다. 판은 각 프로젝트 배포처로 1차 확인하고, Ubuntu 24.04의 설치 판과 Rocky 10 컨테이너에서 명령·단위 파일·기록 위치·보관 기간을 실행해 2차 대조했습니다. sysstat 보관 기간이 배포판마다 다른 점(Ubuntu 7일, Rocky 28일)과 Debian `ENABLED`가 cron 방식에만 쓰이는 점을 확인해 적었습니다. 형제 문서 간 링크는 해당 문서가 들어오는 commit에서 더해 중간 commit에도 깨진 링크가 없게 했습니다.
+
 - DO-07 B3 BSD 계열 문서 추가 (2026-11-23, 00 세션 직접 요청 DO-07): [BSD 계열](../01_fundamentals/linux/bsd_family.md) 개념 문서(Linux와 다른 점, 세 OS 비교, 판과 지원, 기본 명령 대응표, 고르는 기준, 확인 방법)와 FreeBSD·OpenBSD·NetBSD 참조 노트 3개를 새로 썼습니다. 판·지원 정책은 각 공식 사이트로, 명령은 공식 Handbook·man 페이지로 확인했습니다. BSD는 Linux 컨테이너로 실행할 수 없어 실행 시험은 하지 않았습니다.
 
 - DO-07 B2 Linux 배포판 문서 추가 (2026-11-23, 00 세션 직접 요청 DO-07): [Ubuntu·Debian](../01_fundamentals/linux/ubuntu_debian.md), [RHEL 계열](../01_fundamentals/linux/rhel_family.md), [SUSE Linux](../01_fundamentals/linux/suse_linux.md) 문서와 참조 노트 3개를 새로 썼습니다. 판·지원 기간은 각 배포판 공식 출처(ubuntu.com·changelogs.ubuntu.com, debian.org·Debian LTS wiki, access.redhat.com, suse.com lifecycle, get.opensuse.org)로 1차 확인하고, `ubuntu:24.04`·`debian:13`·`rockylinux/rockylinux:10`·`opensuse/leap:16.0` 컨테이너에서 패키지 명령을 실행해 2차 대조했습니다. 일부 날짜는 endoflife.date를 보조로 쓰고 표시했습니다. Windows는 기존 문서 4개가 범위를 다뤄 보강 불필요로 판단했습니다. HANDOFF에 DO-07 묶음의 조건부 상시 승인을 기록했습니다.

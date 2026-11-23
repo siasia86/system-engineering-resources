@@ -200,41 +200,41 @@ local 환경에 wrapper가 없으면 승인된 30 artifact를 먼저 설치합�
 
 ### 1순위 묶음과 문서
 
-| 묶음 | 주제                       | 32 문서 계획                                                                                                      | 비고                                                     |
-|------|----------------------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| B1   | Text Manipulation          | `_reference` 신규, `01_fundamentals/linux/text_processing.md` 신규 (grep·sed·awk·cut·sort·uniq·tr)                | 첫 묶음                                                  |
-| B2   | Ubuntu / Debian            | `_reference` 신규, `01_fundamentals/linux/ubuntu_debian.md` 신규 (릴리스, apt, 업그레이드)                        |                                                          |
-| B2   | RHEL / Derivatives         | `_reference` 신규, `01_fundamentals/linux/rhel_family.md` 신규 (RHEL·Rocky·Alma, dnf, 업그레이드)                 |                                                          |
-| B2   | SUSE Linux                 | `_reference` 신규, `01_fundamentals/linux/suse_linux.md` 신규 (SLES·openSUSE, zypper)                             | 요청대로 개념 중심                                       |
-| B2   | Windows                    | 보강 불필요로 판단 (2026-11-23). 기존 네트워크 진단·리소스 분석·에디션·핵심 개념 문서 4개가 서버 운영 범위를 다룸 | B5 PowerShell 문서에서 연결                              |
-| B3   | FreeBSD · OpenBSD · NetBSD | `_reference` 3개 신규, `01_fundamentals/linux/bsd_family.md` 신규 (세 OS 개념과 차이)                             | 개념만이라 계열 문서 하나로 묶음, 가이드·설치 제외       |
-| B4   | Process Monitoring         | `01_fundamentals/linux/process_monitoring.md` 신규 (ps·top·htop·pidstat 연결)                                     | `_reference`는 기존 `linux_process_official_notes` 사용  |
-| B4   | Performance Monitoring     | `_reference` 신규(sysstat), `01_fundamentals/linux/sysstat.md` 신규 (sar·mpstat·vmstat)                           | perf·iostat·nmon 등 기존 문서는 함께 보기                |
-| B4   | Networking Tools           | `01_fundamentals/linux/linux_network_tools.md` 신규 (ip·ss·dig·curl·mtr·nmap)                                     | tcpdump·iperf3는 기존 문서 함께 보기                     |
-| B5   | Bash                       | 기존 bash 문서 보강 검토 (셸 설정 파일, 스크립트 기본)                                                            | 기존 `_reference` 사용                                   |
-| B5   | Power Shell                | `_reference` 신규, `01_fundamentals/windows/powershell.md` 신규 (Linux·Windows 설치, 기본, 원격)                  |                                                          |
-| B5   | Vim / Nano / Emacs         | `vim.md` 보강 검토, `01_fundamentals/linux/nano.md` 신규                                                          | Emacs 제외: 서버 운영 편집 용도가 드물고 vim·nano로 대체 |
-| B6   | Git                        | 기존 git 문서 보강 검토 (설치, `git config` 초기 설정)                                                            | 기존 `_reference` 사용                                   |
-| B6   | GitHub                     | `02_infrastructure/cicd/github.md` 신규 (계정 보안, SSH 키, PR 흐름)                                              | `_reference`는 기존 `github_references` 확인             |
-| B6   | GitLab                     | `_reference` 신규, `02_infrastructure/cicd/gitlab.md` 신규 (Docker로 설치, 기본, 검증)                            | 기존 `gitlab_ci.md`는 함께 보기                          |
-| B6   | Bitbucket                  | `_reference` 신규, `02_infrastructure/cicd/git_hosting_comparison.md` 신규 (GitHub·GitLab·Bitbucket 비교)         | 가이드·설치 제외: Cloud는 계정, Data Center는 유료       |
-| B7   | Nginx                      | `_reference` 신규, 기존 `nginx_install.md` 보강 또는 `nginx.md` 신규                                              | 본문 검토 뒤 정함                                        |
-| B7   | Apache                     | `_reference` 신규, 기존 `apache_install.md` 보강 또는 `apache.md` 신규                                            | 본문 검토 뒤 정함                                        |
-| B7   | Tomcat                     | `_reference` 신규, `02_infrastructure/web_server/tomcat.md` 신규                                                  |                                                          |
-| B7   | Caddy                      | `_reference` 신규, `02_infrastructure/web_server/caddy.md` 신규                                                   |                                                          |
-| B7   | IIS                        | `_reference` 신규, `02_infrastructure/windows_server/iis.md` 신규                                                 | Linux 작성 환경이라 실행 시험 없음                       |
-| B8   | Forward Proxy              | `_reference` 신규(Squid), `02_infrastructure/web_server/squid.md` 신규                                            |                                                          |
-| B8   | Reverse Proxy              | `_reference` 신규, `02_infrastructure/web_server/reverse_proxy.md` 신규 (개념과 구현 비교)                        | `reverse_proxy_testing.md`는 함께 보기                   |
-| B8   | Caching Server             | `_reference` 신규(Varnish), `02_infrastructure/web_server/varnish.md` 신규                                        | `cache_cdn_testing.md`는 함께 보기                       |
-| B8   | Load Balancer              | `_reference` 신규(HAProxy), 기존 haproxy 문서 보강 검토                                                           | haproxy 문서 6개가 이미 있음                             |
-| B8   | Firewall                   | `_reference` 신규, `04_security/hardening/ufw_firewalld.md` 신규                                                  | `firewall_iptables_nftables.md`는 함께 보기              |
-| B9   | Prometheus · Grafana       | 기존 `prometheus_grafana*.md` 보강 검토 (독립 문서로 나눌지 판단)                                                 | 기존 `_reference` 사용                                   |
-| B9   | Zabbix                     | `02_infrastructure/monitoring/zabbix.md` 신규 (Docker로 설치, 에이전트, 검증)                                     | 기존 `_reference` 사용                                   |
-| B9   | Datadog                    | `_reference` 신규, `02_infrastructure/monitoring/monitoring_saas_comparison.md` 신규                              | 상용이라 비교만                                          |
-| B10  | Elastic Stack              | `_reference` 신규, `02_infrastructure/data_pipeline/elastic_stack.md` 신규 (Elasticsearch·Kibana·수집기)          | 기존 elasticsearch 문서는 함께 보기                      |
-| B10  | Loki                       | `_reference` 신규, `02_infrastructure/data_pipeline/loki.md` 신규                                                 |                                                          |
-| B10  | Graylog                    | `_reference` 신규, `02_infrastructure/data_pipeline/graylog.md` 신규                                              |                                                          |
-| B10  | Splunk · Papertrail        | `_reference` 2개 신규, `02_infrastructure/data_pipeline/logging_saas_comparison.md` 신규                          | 상용이라 비교만                                          |
+| 묶음 | 주제                       | 32 문서 계획                                                                                                      | 비고                                                                    |
+|------|----------------------------|-------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| B1   | Text Manipulation          | `_reference` 신규, `01_fundamentals/linux/text_processing.md` 신규 (grep·sed·awk·cut·sort·uniq·tr)                | 첫 묶음                                                                 |
+| B2   | Ubuntu / Debian            | `_reference` 신규, `01_fundamentals/linux/ubuntu_debian.md` 신규 (릴리스, apt, 업그레이드)                        |                                                                         |
+| B2   | RHEL / Derivatives         | `_reference` 신규, `01_fundamentals/linux/rhel_family.md` 신규 (RHEL·Rocky·Alma, dnf, 업그레이드)                 |                                                                         |
+| B2   | SUSE Linux                 | `_reference` 신규, `01_fundamentals/linux/suse_linux.md` 신규 (SLES·openSUSE, zypper)                             | 요청대로 개념 중심                                                      |
+| B2   | Windows                    | 보강 불필요로 판단 (2026-11-23). 기존 네트워크 진단·리소스 분석·에디션·핵심 개념 문서 4개가 서버 운영 범위를 다룸 | B5 PowerShell 문서에서 연결                                             |
+| B3   | FreeBSD · OpenBSD · NetBSD | `_reference` 3개 신규, `01_fundamentals/linux/bsd_family.md` 신규 (세 OS 개념과 차이)                             | 개념만이라 계열 문서 하나로 묶음, 가이드·설치 제외                      |
+| B4   | Process Monitoring         | `_reference` 신규(procps), `01_fundamentals/linux/process_monitoring.md` 신규 (ps·top·htop·pgrep)                 | 기존 `linux_process_official_notes`는 시스템 호출 범위라 별도 노트를 둠 |
+| B4   | Performance Monitoring     | `_reference` 신규(sysstat), `01_fundamentals/linux/sysstat.md` 신규 (sar·mpstat·vmstat)                           | perf·iostat·nmon 등 기존 문서는 함께 보기                               |
+| B4   | Networking Tools           | `_reference` 신규, `01_fundamentals/linux/linux_network_tools.md` 신규 (ip·ss·dig·curl·mtr·nmap)                  | tcpdump·iperf3는 기존 문서 함께 보기                                    |
+| B5   | Bash                       | 기존 bash 문서 보강 검토 (셸 설정 파일, 스크립트 기본)                                                            | 기존 `_reference` 사용                                                  |
+| B5   | Power Shell                | `_reference` 신규, `01_fundamentals/windows/powershell.md` 신규 (Linux·Windows 설치, 기본, 원격)                  |                                                                         |
+| B5   | Vim / Nano / Emacs         | `vim.md` 보강 검토, `01_fundamentals/linux/nano.md` 신규                                                          | Emacs 제외: 서버 운영 편집 용도가 드물고 vim·nano로 대체                |
+| B6   | Git                        | 기존 git 문서 보강 검토 (설치, `git config` 초기 설정)                                                            | 기존 `_reference` 사용                                                  |
+| B6   | GitHub                     | `02_infrastructure/cicd/github.md` 신규 (계정 보안, SSH 키, PR 흐름)                                              | `_reference`는 기존 `github_references` 확인                            |
+| B6   | GitLab                     | `_reference` 신규, `02_infrastructure/cicd/gitlab.md` 신규 (Docker로 설치, 기본, 검증)                            | 기존 `gitlab_ci.md`는 함께 보기                                         |
+| B6   | Bitbucket                  | `_reference` 신규, `02_infrastructure/cicd/git_hosting_comparison.md` 신규 (GitHub·GitLab·Bitbucket 비교)         | 가이드·설치 제외: Cloud는 계정, Data Center는 유료                      |
+| B7   | Nginx                      | `_reference` 신규, 기존 `nginx_install.md` 보강 또는 `nginx.md` 신규                                              | 본문 검토 뒤 정함                                                       |
+| B7   | Apache                     | `_reference` 신규, 기존 `apache_install.md` 보강 또는 `apache.md` 신규                                            | 본문 검토 뒤 정함                                                       |
+| B7   | Tomcat                     | `_reference` 신규, `02_infrastructure/web_server/tomcat.md` 신규                                                  |                                                                         |
+| B7   | Caddy                      | `_reference` 신규, `02_infrastructure/web_server/caddy.md` 신규                                                   |                                                                         |
+| B7   | IIS                        | `_reference` 신규, `02_infrastructure/windows_server/iis.md` 신규                                                 | Linux 작성 환경이라 실행 시험 없음                                      |
+| B8   | Forward Proxy              | `_reference` 신규(Squid), `02_infrastructure/web_server/squid.md` 신규                                            |                                                                         |
+| B8   | Reverse Proxy              | `_reference` 신규, `02_infrastructure/web_server/reverse_proxy.md` 신규 (개념과 구현 비교)                        | `reverse_proxy_testing.md`는 함께 보기                                  |
+| B8   | Caching Server             | `_reference` 신규(Varnish), `02_infrastructure/web_server/varnish.md` 신규                                        | `cache_cdn_testing.md`는 함께 보기                                      |
+| B8   | Load Balancer              | `_reference` 신규(HAProxy), 기존 haproxy 문서 보강 검토                                                           | haproxy 문서 6개가 이미 있음                                            |
+| B8   | Firewall                   | `_reference` 신규, `04_security/hardening/ufw_firewalld.md` 신규                                                  | `firewall_iptables_nftables.md`는 함께 보기                             |
+| B9   | Prometheus · Grafana       | 기존 `prometheus_grafana*.md` 보강 검토 (독립 문서로 나눌지 판단)                                                 | 기존 `_reference` 사용                                                  |
+| B9   | Zabbix                     | `02_infrastructure/monitoring/zabbix.md` 신규 (Docker로 설치, 에이전트, 검증)                                     | 기존 `_reference` 사용                                                  |
+| B9   | Datadog                    | `_reference` 신규, `02_infrastructure/monitoring/monitoring_saas_comparison.md` 신규                              | 상용이라 비교만                                                         |
+| B10  | Elastic Stack              | `_reference` 신규, `02_infrastructure/data_pipeline/elastic_stack.md` 신규 (Elasticsearch·Kibana·수집기)          | 기존 elasticsearch 문서는 함께 보기                                     |
+| B10  | Loki                       | `_reference` 신규, `02_infrastructure/data_pipeline/loki.md` 신규                                                 |                                                                         |
+| B10  | Graylog                    | `_reference` 신규, `02_infrastructure/data_pipeline/graylog.md` 신규                                              |                                                                         |
+| B10  | Splunk · Papertrail        | `_reference` 2개 신규, `02_infrastructure/data_pipeline/logging_saas_comparison.md` 신규                          | 상용이라 비교만                                                         |
 
 37개 주제 가운데 계열·제품군으로 묶은 것은 BSD 3개, Prometheus·Grafana, Splunk·Papertrail입니다. 하지 않는 항목은 Emacs 문서, BSD·SUSE의 가이드·설치, 상용 도구의 개별 가이드·설치이며 사유는 표의 비고에 있습니다.
 
