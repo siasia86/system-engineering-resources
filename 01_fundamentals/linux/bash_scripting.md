@@ -283,6 +283,7 @@ shellcheck -f gcc bad.sh               # 파일:행:열: 등급: 설명 [SC번�
 - [Bash 수학 연산](./bash_math.md) — 산술과 bc
 - [셸 대화형 모드](./shell_interactive_mode.md) — 대화형·비대화형 차이와 profile.d
 - [텍스트 처리](./text_processing.md) — grep·sed·awk와 함께 쓰기
+- [PowerShell](../windows/powershell.md) — Windows 쪽 스크립트
 
 ---
 

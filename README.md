@@ -109,10 +109,11 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Windows
 
-| 문서                                                                                    | 설명                       |
-|-----------------------------------------------------------------------------------------|----------------------------|
-| [Windows 서버 리소스 분석](01_fundamentals/windows/windows_server_resource_analysis.md) | CPU/메모리/디스크 분석     |
-| [Windows 네트워크 진단](01_fundamentals/windows/windows_network_diagnostics.md)         | Test-NetConnection, pktmon |
+| 문서                                                                                    | 설명                                  |
+|-----------------------------------------------------------------------------------------|---------------------------------------|
+| [Windows 서버 리소스 분석](01_fundamentals/windows/windows_server_resource_analysis.md) | CPU/메모리/디스크 분석                |
+| [Windows 네트워크 진단](01_fundamentals/windows/windows_network_diagnostics.md)         | Test-NetConnection, pktmon            |
+| [PowerShell](01_fundamentals/windows/powershell.md)                                     | 설치, 객체 파이프라인, 스크립트, 원격 |
 
 ### Math
 
