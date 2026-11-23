@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- HANDOFF 현행화 (2026-11-23, 05 30분 단위 업무 1차, 05 D122): [HANDOFF](HANDOFF.md) 2절의 기준 줄을 main `90fad96`으로, "진행 중" 행을 DO-03 R1~R9와 D169 완료 상태로 고쳤습니다. 11-17 완료 목록은 이력에 있어 행에서 뺐습니다.
+
 - Hyper-V 독립 문서 추가 (2026-11-23, 05 DO-03 R6 배정, 05 D122): [Hyper-V](../02_infrastructure/windows_server/hyper_v.md)(요구 사항, 설치, 가상 스위치, Linux VM 만들기, 운영 명령, 체크포인트, MAC 스푸핑과 중첩 가상화, 검증, 트러블슈팅)를 새로 썼습니다. 작성 환경이 Linux라 실행 시험은 하지 않았고, 명령과 요구 사항은 Microsoft Learn 문서와 Microsoft 공식 저장소 스크립트와 대조했습니다. Vagrant 10장·Packer 4장의 Hyper-V 내용은 도구별 사용법이라 옮기지 않고 함께 보기로 연결했습니다.
 
 - kind 독립 문서 추가 (2026-11-23, 05 DO-03 R7 배정, 05 D122): [kind](../02_infrastructure/containers/kind.md)(설치, 첫 클러스터, 설정 파일, 앱 배포와 접속, 로컬 이미지, 여러 클러스터, 검증, 트러블슈팅)를 새로 썼습니다. 기준 판은 v0.33.0(기본 노드 이미지 v1.37.0)이며, 설치와 시험 PC inotify 한도 변경이 필요해 실행 시험은 하지 않고 kind 공식 문서 원본과 대조했습니다. 옮긴 기존 본문은 없습니다.
