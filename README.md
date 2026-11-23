@@ -225,6 +225,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [node_exporter 운영](02_infrastructure/monitoring/node_exporter_operations.md)           | collector, textfile, 알림  |
 | [Zabbix](02_infrastructure/monitoring/zabbix.md)                                         | 8.0 LTS 설치, agent2, 알림 |
 | [Zabbix vs Prometheus](02_infrastructure/monitoring/zabbix_vs_prometheus.md)             | 아키텍처 비교              |
+| [모니터링 SaaS 비교](02_infrastructure/monitoring/monitoring_saas_comparison.md)         | Datadog과 자체 운영 비교   |
 | [리소스 모니터링](02_infrastructure/monitoring/resource_utilization_monitoring.md)       | CPU/메모리/디스크          |
 | [게임 인프라 KPI](02_infrastructure/monitoring/game_infra_kpi_presentation.md)           | 운영 핵심 지표             |
 | [Grafana Heatmap](02_infrastructure/monitoring/grafana_gitlab_heatmap.md)                | GitLab 커밋 히트맵         |

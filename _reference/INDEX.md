@@ -26,6 +26,7 @@ sources:
 
 | 기술                                          | 파일                                                    | 최신 버전                                                                 | 확인일     |
 |-----------------------------------------------|---------------------------------------------------------|---------------------------------------------------------------------------|------------|
+| Datadog                                       | `_reference/datadog_official_notes.md`                  | Agent 7.85.5, 사이트·요금·보존 기간                                       | 2026-11-23 |
 | POSIX ACL / setfacl                           | `_reference/acl_setfacl_official_notes.md`              | acl 2.4.0·setfacl·getfacl·Default ACL·mask                                | 2026-11-16 |
 | Ansible                                       | `_reference/ansible_official_notes.md`                  | 14.6.0 (core 2.21.6)                                                      | 2026-11-16 |
 | API Styles                                    | `_reference/api_styles_official_notes.md`               | REST·GraphQL·gRPC·SOAP·WebSocket·Webhook·JSON-RPC·SSE                     | 2026-08-21 |

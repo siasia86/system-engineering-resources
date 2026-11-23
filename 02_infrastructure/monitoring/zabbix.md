@@ -249,6 +249,7 @@ curl -s -H 'Content-Type: application/json-rpc' -H "Authorization: Bearer $ZBX_T
 
 - [Zabbix vs Prometheus](./zabbix_vs_prometheus.md) — 수집 방식과 운영 비교
 - [Prometheus + Grafana](./prometheus_grafana.md) — 지표 기반 모니터링
+- [모니터링 SaaS 비교](./monitoring_saas_comparison.md) — Datadog 등 상용 서비스
 - [Docker Compose](../containers/docker_compose.md) — compose 파일 관리
 - [ufw·firewalld](../../04_security/hardening/ufw_firewalld.md) — 10050·10051 포트 열기
 

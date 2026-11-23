@@ -217,6 +217,7 @@
 ## 함께 보기
 
 - [Zabbix](./zabbix.md) — 8.0 LTS 설치와 에이전트
+- [모니터링 SaaS 비교](./monitoring_saas_comparison.md) — Datadog 등 상용 서비스와 비교
 - [Prometheus + Grafana](./prometheus_grafana.md) · [Prometheus 설치](./prometheus_grafana_install.md) — Prometheus 사용과 설치
 
 ---
