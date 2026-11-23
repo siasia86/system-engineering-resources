@@ -191,6 +191,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Ansible Vault](02_infrastructure/iac/ansible_vault.md)                        | 시크릿 암호화              |
 | [ansible-lint](02_infrastructure/iac/ansible_lint.md)                          | 정적 검사, profile, CI     |
 | [Jinja2](02_infrastructure/iac/jinja2.md)                                      | 템플릿 문법, template 모듈 |
+| [yamllint](02_infrastructure/iac/yamllint.md)                                  | YAML 형식 검사, CI         |
 | [Ansible Playbook Fields](02_infrastructure/iac/ansible_playbook_fields.md)    | 필드 레퍼런스              |
 | [Ansible Linux](02_infrastructure/iac/ansible_playbook_linux.md)               | Linux 플레이북             |
 | [Ansible Windows](02_infrastructure/iac/ansible_playbook_windows.md)           | Windows 플레이북           |

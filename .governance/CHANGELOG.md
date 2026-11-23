@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- yamllint 독립 문서 추가 (2026-11-23, 05 DO-03 R8 배정, 05 D122): [yamllint](../02_infrastructure/iac/yamllint.md)(설치, 첫 검사, 주요 규칙, 설정 파일, 예외 처리, 종료 코드와 출력 형식, ansible-lint와 함께 쓰기, CI 연결, 검증, 트러블슈팅)를 새로 썼습니다. 예제는 yamllint 1.38.0으로 실행해 출력과 종료 코드(error 1, strict에서 warning 2)를 확인했고, ansible-lint 호환 설정은 ansible-lint 원본 설정 파일과 대조했습니다. 옮긴 기존 본문은 없습니다.
+
 - systemd 포함 컨테이너 독립 문서 추가 (2026-11-23, 05 DO-03 R9 배정, 05 D122): [systemd 포함 컨테이너](../02_infrastructure/containers/systemd_container.md)(준비, 이미지 만들기, 실행 구성, Compose, 서비스 다루기, Ansible 접속, 보안 주의, 검증, 트러블슈팅)를 새로 썼습니다. Docker Engine 29.8.1에서 구성 네 가지를 시험해 `--privileged --cgroupns=private`가 동작하면서 호스트 cgroup 트리를 숨기는 것을 확인했고, 이를 권장 구성으로 적었습니다. Compose 기동과 Ansible 접속은 시험 PC의 inotify 한도에 걸려 확인하지 못했고 문서에 그렇게 적었습니다. docker 11장의 systemd 전용 부분과 치트시트 4장 cgroup 설정은 새 문서로 옮기고 안내만 남겼습니다.
 
 - Docker 네트워크 독립 문서 추가 (2026-11-23, 05 DO-03 R5 배정, 05 D122): [Docker 네트워크](../02_infrastructure/containers/docker_network.md)(드라이버 비교, bridge, 네트워크 명령, 포트 공개, Compose에서 쓰기, macvlan, 그 밖의 드라이버, 검증, 트러블슈팅)를 새로 썼습니다. bridge 이름 해석, 내부 전용 네트워크, 포트 공개 범위, host·none은 Docker Engine 29.8.1에서 실행해 확인했고, macvlan은 호스트 인터페이스를 바꾸므로 시험하지 않고 공식 문서와 대조했습니다. docker 8장, 설치 문서 9장 macvlan, 치트시트 3장 본문은 새 문서로 옮기고 안내만 남겼습니다.
