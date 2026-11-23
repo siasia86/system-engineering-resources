@@ -265,6 +265,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [로그 100GB](02_infrastructure/data_pipeline/log_aggregation_100gb.md)       | 중규모 로그 설계     |
 | [로그 100TB](02_infrastructure/data_pipeline/log_aggregation_100tb.md)       | 대규모 로그 설계     |
 | [Elastic Stack 로그 수집](02_infrastructure/data_pipeline/elastic_stack.md)  | Filebeat, ECS, ILM   |
+| [Grafana Loki](02_infrastructure/data_pipeline/loki.md)                      | Alloy, LogQL, 보존   |
 
 ### Storage
 
