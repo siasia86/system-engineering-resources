@@ -7,7 +7,7 @@
 | 디렉토리                       | 설명                                                                                              | 문서 수 |
 |--------------------------------|---------------------------------------------------------------------------------------------------|---------|
 | [linux/](./linux/)             | Linux 관리 — bash, cgroup, systemd·journald, sysctl, 파일시스템, 저장장치, 커널, vim              | 65      |
-| [networking/](./networking/)   | 네트워크 기초 — TCP/IP, HTTP, DNS, MTU, CDN, VPN, IPv4/IPv6                                       | 18      |
+| [networking/](./networking/)   | 네트워크 기초 — TCP/IP, HTTP, DNS, MTU, CDN, VPN, IPv4/IPv6                                       | 19      |
 | [cs/](./cs/)                   | 컴퓨터 과학 — 알고리즘·압축, 자료구조, 분산 시스템, 수 표현, CPU 아키텍처, 버전 관리, 테스트 설계 | 58      |
 | [programming/](./programming/) | 프로그래밍 언어 — Python, Bash, C/C++, C#, Go, Rust, LSP                                          | 59      |
 | [math/](./math/)               | 수학 기초 — 극한과 엡실론-델타 정의, Little 법칙·대기열                                           | 2       |

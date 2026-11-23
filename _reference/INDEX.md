@@ -100,6 +100,7 @@ sources:
 | Graylog                                       | `_reference/graylog_official_notes.md`                  | 7.2.2, Data Node preflight                                                | 2026-11-23 |
 | Splunk                                        | `_reference/splunk_official_notes.md`                   | Enterprise 10.6.2.5, 요금 방식                                            | 2026-11-23 |
 | Papertrail                                    | `_reference/papertrail_official_notes.md`               | GB당 요금, 전송량 계산                                                    | 2026-11-23 |
+| OSI 모델                                      | `_reference/osi_model_official_notes.md`                | ITU-T X.200, RFC 1122                                                     | 2026-11-23 |
 | e4fsprogs (CentOS 5)                          | `_reference/e4fsprogs_centos5_notes.md`                 | 1.41.12-4.el5_10, fsck.ext4                                               | 2026-07-22 |
 | Hyper-V I/O 경합                              | `_reference/hyperv_io_contention_notes.md`              | Storage Stack·Storage QoS·성능 카운터                                     | 2026-11-16 |
 | Hyper-V I/O 경합 (CentOS 5)                   | `_reference/hyperv_centos5_io_contention_notes.md`      | Storage QoS·LIS 지원 범위·CentOS 5.11                                     | 2026-11-09 |
