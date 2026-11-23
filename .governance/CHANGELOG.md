@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B6 Git 호스팅 문서 (2026-11-23, 00 세션 직접 요청 DO-07): [GitHub](../02_infrastructure/cicd/github.md), [GitLab](../02_infrastructure/cicd/gitlab.md), [Git 호스팅 비교](../02_infrastructure/cicd/git_hosting_comparison.md)를 새로 쓰고 [Git 명령 참조](../02_infrastructure/cicd/git_command_reference.md)에 설치·판 확인을 보강했습니다. 참조 노트 3개(GitHub, GitLab, Bitbucket)를 새로 썼습니다. GitHub·Bitbucket은 계정이 필요하고 GitLab은 권장 메모리(16 GB)에 못 미쳐 실행 시험은 하지 않았으며, 명령은 공식 문서 원문과 대조했습니다. 저장소 이전 절차(mirror)는 로컬 저장소로 시험했습니다.
+
 - DO-07 B5 셸·편집기 문서 (2026-11-23, 00 세션 직접 요청 DO-07): [Bash 스크립트](../01_fundamentals/linux/bash_scripting.md), [PowerShell](../01_fundamentals/windows/powershell.md), [nano](../01_fundamentals/linux/nano.md)를 새로 쓰고 [Vim](../01_fundamentals/linux/vim.md)에 설치·설정 파일·검증 절을 보강했습니다. 참조 노트는 PowerShell·nano를 새로 쓰고 Bash(엄격 모드·ShellCheck)·Vim(설정 파일 위치)을 보강했습니다. PowerShell은 Microsoft 수명 주기 문서가 7.7.0 정식판 이전 갱신본이라 판 번호를 GitHub release 기준으로 적고, `ubuntu:24.04` 컨테이너에 7.7.0을 설치해 시험했습니다. Bash 예제는 ShellCheck 경고 0건, nano는 7.2와 최신 판의 단축키 차이를 실제 화면과 공식 단축키표로 확인했습니다.
 
 - DO-07 B4 관측 도구 문서 추가 (2026-11-23, 00 세션 직접 요청 DO-07): [프로세스 모니터링](../01_fundamentals/linux/process_monitoring.md), [sysstat](../01_fundamentals/linux/sysstat.md), [Linux 네트워크 점검 도구](../01_fundamentals/linux/linux_network_tools.md) 문서와 참조 노트 3개(procps, sysstat, 네트워크 도구)를 새로 썼습니다. 판은 각 프로젝트 배포처로 1차 확인하고, Ubuntu 24.04의 설치 판과 Rocky 10 컨테이너에서 명령·단위 파일·기록 위치·보관 기간을 실행해 2차 대조했습니다. sysstat 보관 기간이 배포판마다 다른 점(Ubuntu 7일, Rocky 28일)과 Debian `ENABLED`가 cron 방식에만 쓰이는 점을 확인해 적었습니다. 형제 문서 간 링크는 해당 문서가 들어오는 commit에서 더해 중간 commit에도 깨진 링크가 없게 했습니다.

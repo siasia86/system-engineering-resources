@@ -151,6 +151,7 @@ HTTPS나 API 자동화에는 비밀번호 대신 토큰을 씁니다.
 - [Git 가이드](./git_guide.md) · [Git 명령 참조](./git_command_reference.md) — Git 자체 사용법
 - [GitHub CLI 명령 참조](./gh_command_reference.md) — gh 명령 상세
 - [GitHub Actions](./github_actions.md) — 워크플로 작성
+- [GitLab](./gitlab.md) · [Git 호스팅 비교](./git_hosting_comparison.md) — 다른 호스팅 서비스
 - [Git 이력 민감 파일 제거](./git_history_sensitive_file_removal.md) — 실수로 올린 비밀값 대응
 
 ---

@@ -137,6 +137,7 @@ git clone ssh://git@gitlab.example.com:2222/<그룹>/<프로젝트>.git
 ## 함께 보기
 
 - [GitLab CI/CD](./gitlab_ci.md) — `.gitlab-ci.yml`, Runner
+- [GitHub](./github.md) · [Git 호스팅 비교](./git_hosting_comparison.md) — 다른 호스팅 서비스
 - [Git 가이드](./git_guide.md) — Git 자체 사용법
 - [Docker Compose](../containers/docker_compose.md) — 같은 설치를 compose.yaml로 관리
 
