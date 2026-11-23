@@ -117,6 +117,7 @@ sources:
 | Valgrind                             | `_reference/valgrind_official_notes.md`                 | 3.28.0, Memcheck/Callgrind/Helgrind/Massif              | 2026-11-16 |
 | perf                                 | `_reference/perf_official_notes.md`                     | stat/record/report/top/trace 서브커맨드                 | 2026-11-16 |
 | 텍스트 처리 (grep·sed·awk·coreutils) | `_reference/text_processing_official_notes.md`          | grep 3.12·sed 4.10·gawk 5.4.2·coreutils 9.12            | 2026-11-23 |
+| Ubuntu·Debian                        | `_reference/ubuntu_debian_official_notes.md`            | Ubuntu 26.04.1 LTS·24.04.5 LTS, Debian 13.8             | 2026-11-23 |
 | lsof                                 | `_reference/lsof_official_notes.md`                     | 4.99.7, FD/TYPE 필드, -i/-p/-u/-a 필터                  | 2026-08-01 |
 | iotop                                | `_reference/iotop_official_notes.md`                    | v1.33, I/O 모니터링, --only/--batch/--processes         | 2026-11-09 |
 | tcpdump                              | `_reference/tcpdump_official_notes.md`                  | 4.99.7, BPF 필터, -w pcap, -n/-nn/-X 옵션               | 2026-11-09 |
