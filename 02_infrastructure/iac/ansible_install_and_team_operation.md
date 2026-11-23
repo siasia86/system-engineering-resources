@@ -749,6 +749,14 @@ git push -u origin main
 
 ---
 
+## 함께 보기
+
+- [Ansible 기초 가이드](./ansible_basic_guide.md) — 인벤토리, playbook, 검증
+- [ansible-lint](./ansible_lint.md) — 팀 공용 저장소의 정적 검사와 CI
+- [Jinja2](./jinja2.md) — 템플릿 문법과 `template` 모듈
+
+---
+
 ## 참고 자료
 
 - Ansible Documentation: [docs.ansible.com](https://docs.ansible.com/) — ★★★☆☆
@@ -775,6 +783,6 @@ git push -u origin main
 
 **작성일**: 2026-03-24
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

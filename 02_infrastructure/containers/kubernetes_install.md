@@ -360,6 +360,12 @@ sudo journalctl -u kubelet -f
 
 ---
 
+## 함께 보기
+
+- [kind](./kind.md) — 시험·CI용으로 Docker 컨테이너를 노드로 쓰는 클러스터
+
+---
+
 ## 참고 자료
 
 - Kubernetes Documentation: [kubernetes.io/docs](https://kubernetes.io/docs/) — ★★★☆☆
@@ -385,6 +391,6 @@ sudo journalctl -u kubelet -f
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

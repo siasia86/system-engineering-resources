@@ -380,6 +380,13 @@ jobs:
 
 ---
 
+## 함께 보기
+
+- [ansible-lint](./ansible_lint.md) — 실행 전 정적 검사
+- [systemd 포함 컨테이너](../containers/systemd_container.md) — 서비스까지 시험하는 컨테이너 대상
+
+---
+
 ## 참고 자료
 
 - Molecule Documentation: [ansible.readthedocs.io/projects/molecule](https://ansible.readthedocs.io/projects/molecule/) — ★★★☆☆
@@ -403,6 +410,6 @@ jobs:
 
 **작성일**: 2026-05-15
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

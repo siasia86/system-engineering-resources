@@ -774,6 +774,12 @@ kubectl debug -it my-pod --image=busybox --target=my-app
 
 ---
 
+## 함께 보기
+
+- [kind](./kind.md) — PC 한 대에 실습용 클러스터 만들기
+
+---
+
 ## 참고 자료
 
 - Kubernetes Documentation: [kubernetes.io/docs](https://kubernetes.io/docs/home/) — ★★★☆☆
@@ -803,6 +809,6 @@ kubectl debug -it my-pod --image=busybox --target=my-app
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-11-19
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

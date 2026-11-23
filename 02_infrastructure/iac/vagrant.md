@@ -347,6 +347,12 @@ ansible_winrm_scheme=http
 
 ---
 
+## 함께 보기
+
+- [Hyper-V](../windows_server/hyper_v.md) — Hyper-V 설치, 가상 스위치, VM 운영
+
+---
+
 ## 참고 자료
 
 - Vagrant Documentation: [developer.hashicorp.com/vagrant/docs](https://developer.hashicorp.com/vagrant/docs) — ★★★☆☆
@@ -370,6 +376,6 @@ ansible_winrm_scheme=http
 
 **작성일**: 2026-05-15
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

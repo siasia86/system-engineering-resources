@@ -983,6 +983,12 @@ Get-ADComputer -Filter * | Select-Object Name, OperatingSystem
 
 ---
 
+## 함께 보기
+
+- [Hyper-V](./hyper_v.md) — Hyper-V 설치, 가상 스위치, VM 운영
+
+---
+
 ## 참고 자료
 
 - Microsoft: [Storage Spaces Direct overview](https://learn.microsoft.com/en-us/windows-server/storage/storage-spaces/storage-spaces-direct-overview) — ★★★☆☆
@@ -1020,6 +1026,6 @@ Get-ADComputer -Filter * | Select-Object Name, OperatingSystem
 
 **작성일**: 2026-07-29
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

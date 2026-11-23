@@ -350,6 +350,12 @@ sudo k3s etcd-snapshot save --name k3s-snapshot
 
 ---
 
+## 함께 보기
+
+- [kind](./kind.md) — 시험·CI용 로컬 클러스터와의 차이
+
+---
+
 ## 참고 자료
 
 - k3s Documentation: [docs.k3s.io](https://docs.k3s.io/) — ★★★☆☆
@@ -375,6 +381,6 @@ sudo k3s etcd-snapshot save --name k3s-snapshot
 
 **작성일**: 2026-05-13
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

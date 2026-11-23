@@ -372,6 +372,12 @@ Remove-Item -Recurse packer_cache
 
 ---
 
+## 함께 보기
+
+- [Hyper-V](../windows_server/hyper_v.md) — Hyper-V 설치, 가상 스위치, Linux VM 설정
+
+---
+
 ## 참고 자료
 
 - Packer Documentation: [developer.hashicorp.com/packer/docs](https://developer.hashicorp.com/packer/docs) — ★★★☆☆
@@ -383,6 +389,6 @@ Remove-Item -Recurse packer_cache
 
 **작성일**: 2026-06-04
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

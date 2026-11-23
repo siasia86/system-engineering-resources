@@ -583,6 +583,14 @@ volumes:
 
 ---
 
+## 함께 보기
+
+- [yamllint](./yamllint.md) — YAML 형식 검사와 CI 연결
+- [Jinja2](./jinja2.md) — YAML 안 `{{ }}` 식과 템플릿 문법
+- [ansible-lint](./ansible_lint.md) — Ansible YAML 규칙 검사
+
+---
+
 ## 참고 자료
 
 - YAML Specification 1.2: [yaml.org/spec](https://yaml.org/spec/1.2.2/) — ★★★☆☆
@@ -605,6 +613,6 @@ volumes:
 
 **작성일**: 2026-05-26
 
-**마지막 업데이트**: 2026-11-09
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

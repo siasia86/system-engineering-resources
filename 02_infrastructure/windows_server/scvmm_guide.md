@@ -643,6 +643,12 @@ SCVMM + Azure Arc
 
 ---
 
+## 함께 보기
+
+- [Hyper-V](./hyper_v.md) — 단일 호스트의 설치와 VM 운영
+
+---
+
 ## 참고 자료
 
 - Microsoft Docs: [docs.microsoft.com/system-center/vmm](https://docs.microsoft.com/en-us/system-center/vmm/) — ★★★☆☆
@@ -675,6 +681,6 @@ SCVMM + Azure Arc
 
 **작성일**: 2026-08-21
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

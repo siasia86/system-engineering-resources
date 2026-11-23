@@ -1,12 +1,11 @@
-# Docker & Docker Compose Cheat Sheet
+# Docker 명령 치트시트
 <!-- reference: _reference/docker_official_notes.md -->
 
 ## 목차
 
-| 섹션                                                                                                            |
-|-----------------------------------------------------------------------------------------------------------------|
-| [1. Docker 기본 명령어](#1-docker-기본-명령어) / [2. Docker Compose 기본 명령어](#2-docker-compose-기본-명령어) |
-| [3. Compose 네트워크](#3-compose-네트워크) / [4. Compose 고급 설정](#4-compose-고급-설정)                       |
+| 섹션                                                                          |
+|-------------------------------------------------------------------------------|
+| [1. Docker 기본 명령어](#1-docker-기본-명령어) / [2. 옮긴 내용](#2-옮긴-내용) |
 
 ---
 
@@ -84,27 +83,17 @@ docker system df                                 # 디스크 사용량 확인
 
 ---
 
-## 2. Docker Compose 기본 명령어
+## 2. 옮긴 내용
 
-Compose 명령은 [Docker Compose](./docker_compose.md) 5절로 옮겼습니다.
+Compose·네트워크·systemd 관련 내용은 기술별 문서로 옮겼습니다.
 
-[⬆ 목차로 돌아가기](#목차)
-
----
-
-## 3. Compose 네트워크
-
-네트워크 드라이버 비교, compose.yml 네트워크 설정, 네트워크 명령, macvlan 주의사항은 [Docker 네트워크](./docker_network.md) 문서로 옮겼습니다.
-
-[⬆ 목차로 돌아가기](#목차)
-
----
-
-## 4. Compose 고급 설정
-
-systemd 포함 컨테이너의 `privileged`·`cgroup` 설정은 [systemd 포함 컨테이너](./systemd_container.md) 4·5절로, cgroup namespace 모드 개념은 [docker.md 11절](./docker.md#11-cgroup-namespace)에 있습니다.
-
-리소스 제한, 의존성과 헬스체크, 환경 변수, 프로파일은 [Docker Compose](./docker_compose.md) 6~8절로 옮겼습니다.
+| 내용                                               | 문서                                                  |
+|----------------------------------------------------|-------------------------------------------------------|
+| Compose 명령                                       | [Docker Compose](./docker_compose.md) 5절             |
+| Compose 리소스 제한, 헬스체크, 환경 변수, 프로파일 | [Docker Compose](./docker_compose.md) 6~8절           |
+| 네트워크 드라이버, compose 네트워크 설정, macvlan  | [Docker 네트워크](./docker_network.md)                |
+| systemd 포함 컨테이너의 `privileged`·`cgroup` 설정 | [systemd 포함 컨테이너](./systemd_container.md) 4·5절 |
+| cgroup namespace 모드 개념                         | [Docker 가이드](./docker.md#11-cgroup-namespace) 11절 |
 
 [⬆ 목차로 돌아가기](#목차)
 

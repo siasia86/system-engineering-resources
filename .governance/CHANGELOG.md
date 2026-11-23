@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DevOps 문서 후속 정리와 TODO·PLAN 현행화 (2026-11-23, 사용자 요청): 기존 문서 11개(yaml_syntax, Ansible 설치·팀 운영, Molecule, Vagrant, Packer, Kubernetes 기본·설치, k3s, Podman, SCVMM, Windows Server 핵심 개념)에 `함께 보기`를 두어 DO-03 새 문서로 연결했습니다. [Docker 명령 치트시트](../02_infrastructure/containers/docker_compose_cheatsheet.md)는 제목을 바꾸고 안내만 남은 2~4장을 "옮긴 내용" 표로 합쳤고, [Docker 설치와 초기 설정](../02_infrastructure/containers/docker_install_and_compose.md)은 안내만 남은 6·7·9장을 "옮긴 내용" 표로 합쳐 트러블슈팅을 6장으로 올렸습니다(두 문서의 장 앵커로 들어오는 링크 0건 확인). [TODO](TODO.md)에 대기 3건(DO-03 실기 확인, 조건이 충족된 `.security_check.toml` 중복 예외 정리, 파일 이름 변경 결정)을 적었고, [PLAN](PLAN.md) 5절에 기술 문서 작성 원칙 3줄(한 문서 한 기술, 옮긴 자리 안내, 범용 본문)을 더했습니다.
+
 - DevOps 문서 범용 표현 정리 (2026-11-23, 사용자 요청): 오늘 쓴 DO-03 문서 가운데 특정 시험 환경에 묶인 본문 표현을 범용으로 바꿨습니다. [systemd 포함 컨테이너](../02_infrastructure/containers/systemd_container.md)는 시험 PC 상황과 보고 출처 문장을 본문에서 빼고 머리말 확인 범위로 모았으며 inotify 사용량 확인 명령을 더했습니다. [Hyper-V](../02_infrastructure/windows_server/hyper_v.md) 8절 제목을 "VM 안에서 가상화·컨테이너 쓰기"로 바꿨고, [Jinja2](../02_infrastructure/iac/jinja2.md)·[ansible-lint](../02_infrastructure/iac/ansible_lint.md)·[Docker Compose](../02_infrastructure/containers/docker_compose.md)·[Docker 네트워크](../02_infrastructure/containers/docker_network.md)의 날짜·환경 표현을 한두 곳씩 고쳤습니다.
 
 - HANDOFF 현행화 (2026-11-23, 05 30분 단위 업무 1차, 05 D122): [HANDOFF](HANDOFF.md) 2절의 기준 줄을 main `90fad96`으로, "진행 중" 행을 DO-03 R1~R9와 D169 완료 상태로 고쳤습니다. 11-17 완료 목록은 이력에 있어 행에서 뺐습니다.

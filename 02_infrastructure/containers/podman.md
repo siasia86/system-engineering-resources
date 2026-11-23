@@ -383,6 +383,13 @@ podman inspect <container> --format '{{.State.Status}} {{.State.ExitCode}}'
 
 ---
 
+## 함께 보기
+
+- [systemd 포함 컨테이너](./systemd_container.md) — Docker에서 systemd를 실행하는 구성
+- [Docker 네트워크](./docker_network.md) — bridge·macvlan 드라이버
+
+---
+
 ## 참고 자료
 
 - Podman 공식 문서: [docs.podman.io](https://docs.podman.io/en/latest/) — ★★★☆☆ (확인일 2026-11-16)
@@ -398,6 +405,6 @@ podman inspect <container> --format '{{.State.Status}} {{.State.ExitCode}}'
 
 **작성일**: 2026-11-16
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

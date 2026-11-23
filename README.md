@@ -147,7 +147,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Docker Compose](02_infrastructure/containers/docker_compose.md)                      | 설치, compose.yaml, 명령, 검증    |
 | [Docker 네트워크](02_infrastructure/containers/docker_network.md)                     | bridge, macvlan, 포트 공개        |
 | [systemd 포함 컨테이너](02_infrastructure/containers/systemd_container.md)            | privileged, cgroupns, 시험 대상   |
-| [Docker Compose 치트시트](02_infrastructure/containers/docker_compose_cheatsheet.md)  | 명령어 정리                       |
+| [Docker 명령 치트시트](02_infrastructure/containers/docker_compose_cheatsheet.md)     | docker 명령 한 줄 정리            |
 | [Docker 가이드](02_infrastructure/containers/docker.md)                               | 이미지, 볼륨, cgroup              |
 | [Dockerfile 작성과 빌드](02_infrastructure/containers/dockerfile_best_practices.md)   | 멀티 스테이지, BuildKit, 캐시     |
 | [컨테이너 아키텍처](02_infrastructure/containers/container_architecture.md)           | Namespace, Cgroup, OCI            |
