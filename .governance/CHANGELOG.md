@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- ansible-lint 독립 문서 추가 (2026-11-23, 05 DO-03 R3 배정, 05 D122): [ansible-lint](../02_infrastructure/iac/ansible_lint.md)(설치, 첫 검사, profile 6단계, 자주 만나는 규칙, 설정 파일, 예외 처리, 자동 수정, CI 연결, 검증, 트러블슈팅)를 새로 썼습니다. 기준 판은 v26.11.0입니다. 사용자 승인으로 scratchpad 가상환경에 ansible-lint 26.11.0을 시험 설치해 3·7·8절 예제를 실행했고, 결과로 위반 표(`command-instead-of-shell` 추가), 요약 문구와 종료 코드, `--fix`가 고치는 규칙, 검증 2단계를 바로잡았습니다. [Ansible 기초 가이드](../02_infrastructure/iac/ansible_basic_guide.md) 19장 본문은 새 문서로 옮기고 안내만 남겼습니다.
+
 - 직접 요청 경로 추가 (2026-11-23, 사용자 결정 05 D169, 05 `2e6a6a7` 기록 대조): [HANDOFF](HANDOFF.md) 2절 세션 역할을 "05 총괄 배정과 다른 Claude 세션의 문서 요청을 받음"으로 바꾸고, 3절에 직접 요청 조건(형식 B, TODO 기록, 공개 저장소의 비공개 정보 금지, commit·push 사용자 확인, 여러 저장소·사용자 결정 건은 05로, 05 배정 우선, Codex 제외, 05 비대조)을 더했습니다. 지침 개정으로 보고 이 세션 사용자 확인 뒤 반영했습니다.
 
 - Ansible 기초 문서를 혼자 읽는 문서로 보강 (2026-11-23, 05 DO-03 R2 배정, 05 D122): [Ansible 기초 가이드](../02_infrastructure/iac/ansible_basic_guide.md) 1절에 설치(가상환경 pip, 배포판 패키지)와 설치 확인을 더하고, ansible-core 판별 제어 노드 Python 요구 판(2.22는 3.13 이상, PyPI 확인 2026-11-23)을 표로 적었습니다. 20절 검증(설정 → 인벤토리 → 접속 → 문법 → 미리 보기 → 실행 → 멱등성)과 함께 보기를 새로 두었습니다. 18절 Vault 본문은 [Ansible Vault](../02_infrastructure/iac/ansible_vault.md)와 겹쳐 그 문서 안내로 줄였습니다. 9절 Jinja2와 19절 ansible-lint는 R4·R3 문서를 쓸 때 옮깁니다. 검증 순서는 ansible-core 2.20.5에서 로컬 대상으로 실행해 두 번째 실행 `changed=0`까지 확인했습니다.

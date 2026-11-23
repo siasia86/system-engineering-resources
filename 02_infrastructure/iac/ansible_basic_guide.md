@@ -1176,90 +1176,7 @@ ansible-playbook -i inventory/ site.yml
 
 ## 19. ansible-lint — 코드 품질 검사
 
-playbook의 버그, 스타일 위반, 멱등성 문제를 자동으로 검사합니다.
-
-### 설치
-
-```bash
-pip install ansible-lint
-```
-
-### 실행
-
-```bash
-# 단일 파일
-ansible-lint playbook.yml
-
-# 여러 파일
-ansible-lint playbook.yml playbook_ssh_setup.yml
-
-# 특정 프로파일 지정
-ansible-lint --profile production playbook.yml
-```
-
-### Profile (검사 강도)
-
-엄격도 순서: `min` → `basic` → `moderate` → `safety` → `shared` → `production`
-
-| Profile    | 주요 검사 항목                         |
-|------------|----------------------------------------|
-| min        | 문법 오류 (syntax-check, parser-error) |
-| basic      | yaml 형식, var-naming, key-order       |
-| moderate   | name[casing], name[template]           |
-| production | 전체 규칙, fqcn 포함 (CI/CD 권장)      |
-
-```bash
-# 현재 파일이 어느 profile까지 통과하는지 확인
-ansible-lint --nocolor playbook.yml
-# → "Last profile that met the validation criteria was 'production'"
-```
-
-### 주요 규칙
-
-| 규칙                    | 설명                                          | 예시                          |
-|-------------------------|-----------------------------------------------|-------------------------------|
-| `name[casing]`          | task 이름 대문자 시작                         | `- name: Install nginx`       |
-| `no-changed-when`       | `raw`/`command`/`shell`에 `changed_when` 필수 | `changed_when: false`         |
-| `ignore-errors`         | `ignore_errors` 대신 `failed_when` 사용       | `failed_when: result.rc != 0` |
-| `yaml[line-length]`     | 한 줄 160자 이하                              | URL은 변수화 또는 skip        |
-| `yaml[trailing-spaces]` | 줄 끝 공백 금지                               | 에디터 자동 제거 설정         |
-| `fqcn`                  | 모듈 전체 이름 사용                           | `ansible.builtin.copy`        |
-
-### `changed_when` 패턴
-
-```yaml
-# 항상 ok (조회/설정 task)
-- name: SSH 설정
-  ansible.builtin.raw: sed -i '...' /etc/ssh/sshd_config
-  changed_when: false
-
-# rc로 변경 감지 (설치 스크립트)
-- name: Python 설치
-  ansible.builtin.shell: bash /tmp/install.sh
-  register: result
-  changed_when: result.rc == 0
-
-# 출력으로 변경 감지
-- name: 패키지 설치
-  ansible.builtin.raw: |
-    rpm -q nginx || (yum install -y nginx && echo INSTALLED)
-  register: result
-  changed_when: "'INSTALLED' in result.stdout"
-```
-
-### `.ansible-lint` 설정 파일
-
-프로젝트 루트에 위치. 특정 규칙을 skip하거나 커스터마이즈합니다.
-
-```yaml
-# .ansible-lint
-warn_list: []
-skip_list:
-  - ignore-errors      # 조건부 ignore_errors — 의도적 사용
-  - yaml[line-length]  # URL이 160자 초과 — 단축 불가
-```
-
-🟡 `skip_list`는 최소화합니다. skip 이유를 주석으로 반드시 명시합니다.
+playbook의 문법 오류, 권장 방식 위반, 멱등성 문제를 실행 전에 찾는 도구입니다. 설치, profile, 규칙, 설정 파일, 예외 처리, CI 연결은 [ansible-lint](./ansible_lint.md) 문서로 옮겼습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -1296,6 +1213,7 @@ playbook을 새로 쓰거나 고친 뒤 아래 순서로 확인합니다. 앞 �
 - [Ansible Vault](./ansible_vault.md) — 시크릿 암호화, vault-id, CI 연동
 - [Ansible Playbook 필드](./ansible_playbook_fields.md) — play·task 키 레퍼런스
 - [Ansible Linux playbook](./ansible_playbook_linux.md) · [Ansible Windows playbook](./ansible_playbook_windows.md) — 예제 모음
+- [ansible-lint](./ansible_lint.md) — 실행 전 정적 검사, profile, CI 연결
 - [Molecule](./molecule.md) — role 시험
 - [YAML 문법](./yaml_syntax.md) — 들여쓰기, 따옴표, 여러 줄 문자열
 - [SSH 보안](../../04_security/hardening/ssh_security.md) — 키 접속과 sshd 설정
