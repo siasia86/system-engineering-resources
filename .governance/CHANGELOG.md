@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B8b 리버스 프록시·방화벽 문서 (2026-11-23, 00 세션 직접 요청 DO-07): [리버스 프록시 개념](../02_infrastructure/web_server/reverse_proxy.md)(RFC 9110·7239 기준)과 [ufw·firewalld](../04_security/hardening/ufw_firewalld.md) 문서·참조 노트를 새로 썼습니다. ufw는 `ubuntu:24.04` 컨테이너(NET_ADMIN)에서, firewalld는 `rockylinux/rockylinux:10`에서 `firewall-offline-cmd`로 설정을 확인했습니다. B8 묶음이 끝났습니다.
+
 - DO-07 B8a 프록시·캐시 문서 (2026-11-23, 00 세션 직접 요청 DO-07): [Varnish](../02_infrastructure/web_server/varnish.md)와 [Squid](../02_infrastructure/web_server/squid.md) 문서·참조 노트를 새로 썼습니다. 두 제품 모두 컨테이너로 실행해 Varnish 캐시 적중과 Squid 전달 요청(200)을 확인했습니다. HAProxy는 기존 문서 6개로 충분해 보강 불필요로 판단하고 공통 참조 노트의 판(3.4.8·3.3.18·3.2.27)만 갱신했습니다.
 
 - DO-07 B7b 웹 서버 문서 (2026-11-23, 00 세션 직접 요청 DO-07): [Tomcat](../02_infrastructure/web_server/tomcat.md), [Caddy](../02_infrastructure/web_server/caddy.md), [IIS](../02_infrastructure/windows_server/iis.md)와 참조 노트 3개를 새로 썼습니다. Tomcat 11.0.29와 Caddy v2.11.9는 공식 컨테이너로 실행해 확인했고(Caddy 설정 예 3개 `validate` 통과), IIS는 작성 환경이 Linux라 Microsoft Learn 문서와 대조만 했습니다.

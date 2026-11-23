@@ -358,6 +358,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 |---------------------------------------------------------------------------------------|-------------------------------|
 | [Linux 서버 보안 강화](04_security/hardening/linux_hardening.md)                      | sysctl, auditd, umask         |
 | [방화벽](04_security/hardening/firewall_iptables_nftables.md)                         | iptables/nftables             |
+| [ufw·firewalld](04_security/hardening/ufw_firewalld.md)                               | 호스트 방화벽 관리 도구       |
 | [SSH 보안](04_security/hardening/ssh_security.md)                                     | 키 인증, fail2ban             |
 | [TLS/SSL](04_security/hardening/tls_ssl_guide.md)                                     | 인증서, Let's Encrypt, mTLS   |
 | [시크릿 관리](04_security/hardening/secret_management.md)                             | Vault, AWS Secrets Manager    |
