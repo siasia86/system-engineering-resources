@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- 직접 요청 경로 추가 (2026-11-23, 사용자 결정 05 D169, 05 `2e6a6a7` 기록 대조): [HANDOFF](HANDOFF.md) 2절 세션 역할을 "05 총괄 배정과 다른 Claude 세션의 문서 요청을 받음"으로 바꾸고, 3절에 직접 요청 조건(형식 B, TODO 기록, 공개 저장소의 비공개 정보 금지, commit·push 사용자 확인, 여러 저장소·사용자 결정 건은 05로, 05 배정 우선, Codex 제외, 05 비대조)을 더했습니다. 지침 개정으로 보고 이 세션 사용자 확인 뒤 반영했습니다.
+
 - Ansible 기초 문서를 혼자 읽는 문서로 보강 (2026-11-23, 05 DO-03 R2 배정, 05 D122): [Ansible 기초 가이드](../02_infrastructure/iac/ansible_basic_guide.md) 1절에 설치(가상환경 pip, 배포판 패키지)와 설치 확인을 더하고, ansible-core 판별 제어 노드 Python 요구 판(2.22는 3.13 이상, PyPI 확인 2026-11-23)을 표로 적었습니다. 20절 검증(설정 → 인벤토리 → 접속 → 문법 → 미리 보기 → 실행 → 멱등성)과 함께 보기를 새로 두었습니다. 18절 Vault 본문은 [Ansible Vault](../02_infrastructure/iac/ansible_vault.md)와 겹쳐 그 문서 안내로 줄였습니다. 9절 Jinja2와 19절 ansible-lint는 R4·R3 문서를 쓸 때 옮깁니다. 검증 순서는 ansible-core 2.20.5에서 로컬 대상으로 실행해 두 번째 실행 `changed=0`까지 확인했습니다.
 
 - Docker Compose 독립 문서 추가 (2026-11-23, 05 DO-03 R1 배정, 05 D122): [Docker Compose](../02_infrastructure/containers/docker_compose.md)(설치, 첫 프로젝트, compose.yaml 구조, 명령, 변수와 .env, 여러 환경, 운영 설정, 검증, 트러블슈팅)를 새로 썼습니다. 기준 판은 Compose v5.8.0이고, 3절 예제와 9절 검증 명령은 Docker Engine 29.8.1·Compose v5.5.1에서 실행해 확인했습니다. 흩어져 있던 Compose 본문(docker 7장, 설치 문서 6·7장과 트러블슈팅 2행, 치트시트 2장과 4장의 리소스·헬스체크·환경 변수·프로파일)은 새 문서로 옮기고 그 자리에는 안내만 남겼습니다. 치트시트 3장 네트워크와 4장 cgroup은 R5·R9 문서를 쓸 때 옮깁니다. 파일 경로는 바뀌지 않아 [옮김 기록](MOVED.md) 대상이 아닙니다.
