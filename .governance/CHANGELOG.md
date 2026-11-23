@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B2 Linux 배포판 문서 추가 (2026-11-23, 00 세션 직접 요청 DO-07): [Ubuntu·Debian](../01_fundamentals/linux/ubuntu_debian.md), [RHEL 계열](../01_fundamentals/linux/rhel_family.md), [SUSE Linux](../01_fundamentals/linux/suse_linux.md) 문서와 참조 노트 3개를 새로 썼습니다. 판·지원 기간은 각 배포판 공식 출처(ubuntu.com·changelogs.ubuntu.com, debian.org·Debian LTS wiki, access.redhat.com, suse.com lifecycle, get.opensuse.org)로 1차 확인하고, `ubuntu:24.04`·`debian:13`·`rockylinux/rockylinux:10`·`opensuse/leap:16.0` 컨테이너에서 패키지 명령을 실행해 2차 대조했습니다. 일부 날짜는 endoflife.date를 보조로 쓰고 표시했습니다. Windows는 기존 문서 4개가 범위를 다뤄 보강 불필요로 판단했습니다. HANDOFF에 DO-07 묶음의 조건부 상시 승인을 기록했습니다.
+
 - DO-07 B1 텍스트 처리 문서 추가 (2026-11-23, 00 세션 직접 요청 DO-07): [텍스트 처리](../01_fundamentals/linux/text_processing.md)(설치 확인, grep·sed·awk·cut·sort·uniq·tr·wc, 파이프 조합, jq, 검증, 트러블슈팅)와 [참조 노트](../_reference/text_processing_official_notes.md)를 새로 썼습니다. 참조 노트는 설치된 GNU 도구의 `--help`와 man 페이지로 2회 검증했고, 예제는 GNU grep 3.11·sed 4.9·gawk 5.2.1·coreutils 9.4에서 실행해 확인했습니다. 같은 날 gawk·coreutils 매뉴얼 페이지는 응답이 없어 주소 응답은 다음에 다시 봅니다. README·Linux 목차·_reference INDEX에 등록했습니다.
 
 - DO-07 계획 등록 (2026-11-23, 00 세션 직접 요청 DO-07, 사용자 착수 승인): roadmap.sh DevOps 하위 주제 108개 문서 요청 가운데 1순위 37개를 [PLAN](PLAN.md) 7절에 묶음 B1~B10, 문서 계획, 제외 사유와 함께 등록했습니다. 요청의 개념·가이드·설정·설치 유형은 기술별 독립 문서 하나로 합치고, 상용 도구는 `_reference`와 비교 문서만 씁니다. [TODO](TODO.md)에 진행 1줄과 2·3순위 대기 1줄을 더했습니다.
