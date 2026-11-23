@@ -1,7 +1,9 @@
 ---
 name: bash-shell-official-notes
-last_checked: 2026-11-09
+last_checked: 2026-11-23
 sources:
+  - https://www.shellcheck.net/
+  - https://github.com/koalaman/shellcheck
   - https://www.gnu.org/software/bash/manual/bash.html
   - https://man7.org/linux/man-pages/man1/bash.1.html
   - https://ftp.gnu.org/gnu/bash/
@@ -104,10 +106,31 @@ sources:
 
 - `$'...'`(dollar-single-quotes)는 POSIX.1-2024(Issue 8) Shell Command Language 2.2.4에 추가돼 bash 전용 기능이 아닙니다. 다만 sh 구현별 지원이 달라 dash 0.5.12는 해석하지 않고 bash `--posix`·busybox sh는 해석합니다(2026-11-09 재현).
 
+
+## 스크립트 엄격 모드와 정적 검사
+
+### 공식 소스
+
+| 소스         | URL                                               | 용도                   |
+|--------------|---------------------------------------------------|------------------------|
+| bash.1 (set) | https://man7.org/linux/man-pages/man1/bash.1.html | `-e`, `-u`, `pipefail` |
+| ShellCheck   | https://github.com/koalaman/shellcheck            | 정적 검사기 판, 규칙   |
+
+### 검증된 사실 (2026-11-23)
+
+| 항목             | 값                                                                                      | 출처                                   |                     |        |
+| ---------------- | -----------------------------------------------------------------------------           | -------------                          |                     |        |
+| `set -e`         | 파이프라인·목록·복합 명령이 0이 아닌 값으로 끝나면 즉시 종료. `if`·`while` 조건, `&&`·` |                                        | ` 앞 명령 등은 예외 | bash.1 |
+| `set -u`         | `@`·`*`를 제외한 설정되지 않은 변수를 쓰면 오류                                         | bash.1                                 |                     |        |
+| `pipefail`       | 파이프라인의 종료 값이 0이 아닌 값으로 끝난 가장 오른쪽 명령의 값이 됨                  | bash.1                                 |                     |        |
+| ShellCheck       | 최신 0.11.0 (2025-08-04). `SC2086`(따옴표 없는 변수) 등 규칙 번호로 경고                | ShellCheck releases, 설치된 0.9.0 실행 |                     |        |
+
+검증: bash.1 원문(설치된 man 페이지)과 ShellCheck 0.9.0 실행 결과로 대조했습니다.
+
 ---
 
 **작성일**: 2026-08-01
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

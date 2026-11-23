@@ -29,6 +29,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Bash 수학 연산](01_fundamentals/linux/bash_math.md)                            | 산술 연산, bc, awk                  |
 | [Bash trap 가이드](01_fundamentals/linux/bash_trap_complete_guide.md)           | 시그널 처리, 정리 작업              |
 | [리다이렉션](01_fundamentals/linux/bash_file_redirection.md)                    | stdin/stdout/stderr, 파이프         |
+| [Bash 스크립트](01_fundamentals/linux/bash_scripting.md)                        | 엄격 모드, getopts, ShellCheck      |
 | [텍스트 처리](01_fundamentals/linux/text_processing.md)                         | grep·sed·awk·sort·uniq              |
 | [Ubuntu·Debian](01_fundamentals/linux/ubuntu_debian.md)                         | 판·지원 기간, apt                   |
 | [RHEL 계열](01_fundamentals/linux/rhel_family.md)                               | Rocky·Alma, dnf, EPEL               |
