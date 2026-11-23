@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B1 텍스트 처리 문서 추가 (2026-11-23, 00 세션 직접 요청 DO-07): [텍스트 처리](../01_fundamentals/linux/text_processing.md)(설치 확인, grep·sed·awk·cut·sort·uniq·tr·wc, 파이프 조합, jq, 검증, 트러블슈팅)와 [참조 노트](../_reference/text_processing_official_notes.md)를 새로 썼습니다. 참조 노트는 설치된 GNU 도구의 `--help`와 man 페이지로 2회 검증했고, 예제는 GNU grep 3.11·sed 4.9·gawk 5.2.1·coreutils 9.4에서 실행해 확인했습니다. 같은 날 gawk·coreutils 매뉴얼 페이지는 응답이 없어 주소 응답은 다음에 다시 봅니다. README·Linux 목차·_reference INDEX에 등록했습니다.
+
 - DO-07 계획 등록 (2026-11-23, 00 세션 직접 요청 DO-07, 사용자 착수 승인): roadmap.sh DevOps 하위 주제 108개 문서 요청 가운데 1순위 37개를 [PLAN](PLAN.md) 7절에 묶음 B1~B10, 문서 계획, 제외 사유와 함께 등록했습니다. 요청의 개념·가이드·설정·설치 유형은 기술별 독립 문서 하나로 합치고, 상용 도구는 `_reference`와 비교 문서만 씁니다. [TODO](TODO.md)에 진행 1줄과 2·3순위 대기 1줄을 더했습니다.
 
 - Docker 문서 2개 파일 이름 변경 (2026-11-23, 사용자 결정): DO-03 정리 뒤 Compose 내용이 빠져 이름과 내용이 어긋난 `docker_install_and_compose.md`를 [docker_install.md](../02_infrastructure/containers/docker_install.md)로, `docker_compose_cheatsheet.md`를 [docker_cheatsheet.md](../02_infrastructure/containers/docker_cheatsheet.md)로 `git mv` 했습니다. 이 저장소 안 링크 5곳(README, Docker Compose, Docker 네트워크, Podman, CHANGELOG의 링크 주소)을 같은 commit에서 고쳤고, 과거 기록의 본문 표기는 당시 이름 그대로 두었습니다. 다른 저장소 17개의 모든 branch에서 깨지는 링크는 0건이라 옛 자리 안내는 두지 않았고, [옮김 기록](MOVED.md)에 2행과 확인 범위를 더해 관찰 유예를 2026-12-23까지 둡니다.

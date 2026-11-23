@@ -13,16 +13,16 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 
 ## 1. 문서 구성
 
-현재 Linux 문서는 `README.md`를 제외하고 55개입니다. 개념 문서와 실습·분석 도구 문서를 함께 배치하여 개념 학습 후 실제 시스템 관찰로 이어지도록 구성합니다.
+현재 Linux 문서는 `README.md`를 제외하고 56개입니다. 개념 문서와 실습·분석 도구 문서를 함께 배치하여 개념 학습 후 실제 시스템 관찰로 이어지도록 구성합니다.
 
-| 주제                     | 범위                                  |
-|--------------------------|---------------------------------------|
-| Shell·CLI                | Bash, 셸 모드, 리다이렉션, 신호 처리  |
-| 프로세스·메모리·스케줄러 | 프로세스 수명, IPC, 가상 메모리, OOM  |
-| 파일시스템·저장장치      | VFS, 파일시스템, 디스크·I/O 도구      |
-| 디버깅·프로파일링        | strace, perf, GDB, eBPF, 메모리 분석  |
-| 커널·보안·격리           | cgroup, namespace, seccomp, netfilter |
-| 편집기·운영 도구         | Vim, lsof, tcpdump 등                 |
+| 주제                     | 범위                                              |
+|--------------------------|---------------------------------------------------|
+| Shell·CLI                | Bash, 셸 모드, 리다이렉션, 신호 처리, 텍스트 처리 |
+| 프로세스·메모리·스케줄러 | 프로세스 수명, IPC, 가상 메모리, OOM              |
+| 파일시스템·저장장치      | VFS, 파일시스템, 디스크·I/O 도구                  |
+| 디버깅·프로파일링        | strace, perf, GDB, eBPF, 메모리 분석              |
+| 커널·보안·격리           | cgroup, namespace, seccomp, netfilter             |
+| 편집기·운영 도구         | Vim, lsof, tcpdump 등                             |
 
 문서는 주제별 탐색을 위해 관련 분류에 중복 링크할 수 있습니다.
 
@@ -130,6 +130,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 - [tmux](./tmux_guide.md) — session·window·pane 관리.
 - [systemd 유닛 관리](./systemd_unit_management.md) — 유닛 파일, systemctl, drop-in, 재시작 정책, timer.
 - [journalctl·logrotate](./journald_logrotate_guide.md) — 저널 조회·용량 관리, 텍스트 로그 순환.
+- [텍스트 처리](./text_processing.md) — grep·sed·awk·sort·uniq로 찾기·치환·집계.
 - [lsof](./lsof.md) — 열린 파일과 소켓 조회.
 - [tcpdump](./tcpdump.md) — 패킷 캡처와 필터링.
 - [iperf3](./iperf3_guide.md) — TCP·UDP throughput, loss, jitter 측정.
@@ -160,6 +161,6 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 
 **작성일**: 2026-08-18
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.
