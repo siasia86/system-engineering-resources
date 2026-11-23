@@ -4,6 +4,7 @@
 
 - 기준 환경: Docker Engine 29.x, cgroup v2 호스트, Ubuntu 24.04 이미지(systemd 255)
 - 예제 시험: 2026-11-23, Docker Engine 29.8.1(cgroup v2, cgroup driver systemd)에서 3절 이미지를 빌드하고 4절 구성 네 가지를 실행해 결과를 비교. 5절 Compose와 7절 Ansible 접속은 이 PC의 inotify 한도에 걸려(10절) 기동 확인을 끝내지 못했음
+- 4-3절과 10절의 공개 이미지·inotify 수치는 같은 날 다른 시험 환경(Docker 29.8.1, cgroup v2, 커널 6.8)에서 systemd 237~259 공개 이미지 24개를 실측한 결과를 받아 적은 것입니다(이 문서 작성 환경에서는 공개 이미지 Dockerfile의 `VOLUME` 선언만 대조)
 
 ## 목차
 
@@ -94,6 +95,7 @@ systemd는 자기 cgroup 아래에 서비스별 하위 cgroup을 만들어야 �
 | D    | C + `--cap-add SYS_ADMIN`, AppArmor·seccomp 해제                   | 즉시 종료                           | -                                            |
 
 - 권장은 A입니다. B는 공개 이미지 README에 자주 나오는 구성인데, 컨테이너가 호스트의 cgroup 트리 전체를 보므로 격리가 약합니다.
+- B에서는 컨테이너의 systemd가 호스트 cgroup 트리에 직접 씁니다. systemd 237처럼 오래된 판은 호스트 cgroup2 루트에 v1 이름의 빈 디렉터리(`blkio`, `memory`, `systemd` 등)를 남긴다는 실측 보고가 있습니다. 남았다면 호스트에서 빈 디렉터리만 `rmdir`로 지웁니다.
 - A·B 모두 컨테이너마다 `system.slice/docker-<ID>.scope` 아래에 따로 자리를 잡으므로 여러 대를 동시에 띄워도 서로 충돌하지 않습니다.
 
 ### 4-2. 실행
@@ -111,6 +113,34 @@ docker stop node1                                 # STOPSIGNAL 덕분에 즉시 
 ```
 
 `is-system-running`이 `degraded`이면 실패한 단위가 있다는 뜻입니다. `docker exec node1 systemctl --failed`로 확인하고, 컨테이너에 필요 없는 단위면 이미지에서 `mask`합니다.
+
+### 4-3. 공개 이미지를 쓸 때
+
+널리 쓰는 Ansible 시험용 공개 이미지는 Dockerfile에 `VOLUME ["/sys/fs/cgroup", ...]`을 선언한 경우가 많습니다(예: `geerlingguy/docker-ubuntu2404-ansible`, `geerlingguy/docker-rockylinux9-ansible`). 이런 이미지는 구성 B를 전제로 만들어져 있어서, 구성 A처럼 호스트 cgroup을 연결하지 않으면 그 자리에 빈 익명 볼륨이 붙습니다. 실측 보고에 따르면 systemd 249 이후 판은 이때 `Failed to mount cgroup at /sys/fs/cgroup/systemd`로 종료 코드 255를 내며 멈춥니다. 3절처럼 직접 만든 이미지(`VOLUME` 없음)에서는 생기지 않습니다.
+
+구성 A로 쓰려면 시작할 때 익명 볼륨을 떼고 cgroup2를 다시 붙인 뒤 systemd를 실행하는 진입 스크립트를 덧씌웁니다. 같은 보고에서 systemd 237~259 이미지 24개를 이 방식으로 동시에 띄웠습니다.
+
+`entrypoint.sh`
+
+```sh
+#!/bin/sh
+umount /sys/fs/cgroup 2>/dev/null || true
+mount -t cgroup2 cgroup2 /sys/fs/cgroup
+# 호스트 tty1에 getty를 띄우지 않게, 컨테이너에서 늘 실패하는 단위를 끔
+ln -sf /dev/null /etc/systemd/system/getty@tty1.service
+ln -sf /dev/null /etc/systemd/system/systemd-modules-load.service
+exec /lib/systemd/systemd        # 이미지의 CMD 경로에 맞춤 (Rocky: /usr/lib/systemd/systemd)
+```
+
+```dockerfile
+FROM geerlingguy/docker-ubuntu2404-ansible@sha256:<다이제스트>
+COPY --chmod=0755 entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+```
+
+- `--privileged` 컨테이너의 systemd는 호스트의 `/dev/tty1`을 볼 수 있어, 이미지가 getty를 끄지 않았다면 호스트 콘솔의 `getty@tty1`과 부딪힌다는 보고가 있습니다(시각이 일치했고 인과는 추정). 위 스크립트처럼 `getty@tty1.service`를 mask합니다.
+- `systemd-modules-load.service`는 컨테이너에서 커널 모듈을 올릴 수 없어 항상 실패하므로 함께 mask합니다.
+- systemd 219(Amazon Linux 2 등)는 cgroup v2만 있는 호스트에서 D-Bus 없이 정상 동작하지 않는다는 보고가 있습니다. 이런 배포판은 가상 머신으로 시험합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -228,17 +258,19 @@ ansible -i inventory.ini nodes -m ansible.builtin.systemd -a "name=dbus"
 
 ## 10. 트러블슈팅
 
-| 증상                                                                           | 원인                                        | 해결 방법                                                          |
-|--------------------------------------------------------------------------------|---------------------------------------------|--------------------------------------------------------------------|
-| 바로 종료, `Failed to create /init.scope control group: Read-only file system` | `--privileged` 없음 (cgroup 읽기 전용)      | 4-1 구성 A로 실행                                                  |
-| 바로 종료, `Failed to allocate manager object: Too many open files`            | 호스트 inotify 인스턴스 한도 초과           | `fs.inotify.max_user_instances`를 올림 (아래)                      |
-| `System has not been booted with systemd`                                      | PID 1이 systemd가 아님                      | `CMD ["/sbin/init"]` 확인, `docker run` 끝에 다른 명령을 주지 않음 |
-| 컨테이너 안에서 호스트 서비스 이름이 보임                                      | 4-1 구성 B (`--cgroupns=host` + bind mount) | 구성 A로 바꿈                                                      |
-| `docker stop`이 10초 기다린 뒤 끝남                                            | systemd가 SIGTERM을 종료 신호로 받지 않음   | `STOPSIGNAL SIGRTMIN+3`                                            |
-| `is-system-running`이 `degraded`                                               | 컨테이너에 맞지 않는 단위 실패              | `systemctl --failed` 확인 후 이미지에서 `mask`                     |
-| `docker logs`에 아무것도 없음                                                  | systemd가 터미널이 없으면 콘솔 출력을 줄임  | 원인 확인 때만 `docker run --rm -t ...`로 출력 보기                |
+| 증상                                                                                   | 원인                                                       | 해결 방법                                                          |
+|----------------------------------------------------------------------------------------|------------------------------------------------------------|--------------------------------------------------------------------|
+| 바로 종료, `Failed to create /init.scope control group: Read-only file system`         | `--privileged` 없음 (cgroup 읽기 전용)                     | 4-1 구성 A로 실행                                                  |
+| 바로 종료, `Failed to allocate manager object: Too many open files`                    | 호스트 inotify 인스턴스 한도 초과                          | `fs.inotify.max_user_instances`를 올림 (아래)                      |
+| 공개 이미지가 구성 A에서 바로 종료, `Failed to mount cgroup at /sys/fs/cgroup/systemd` | 이미지의 `VOLUME /sys/fs/cgroup`에 빈 익명 볼륨이 붙음     | 4-3 진입 스크립트, 또는 직접 만든 이미지                           |
+| 호스트 콘솔 `getty@tty1` 실패                                                          | privileged 컨테이너의 systemd가 호스트 tty1에 getty를 띄움 | 이미지에서 `getty@tty1.service` mask (4-3)                         |
+| `System has not been booted with systemd`                                              | PID 1이 systemd가 아님                                     | `CMD ["/sbin/init"]` 확인, `docker run` 끝에 다른 명령을 주지 않음 |
+| 컨테이너 안에서 호스트 서비스 이름이 보임                                              | 4-1 구성 B (`--cgroupns=host` + bind mount)                | 구성 A로 바꿈                                                      |
+| `docker stop`이 10초 기다린 뒤 끝남                                                    | systemd가 SIGTERM을 종료 신호로 받지 않음                  | `STOPSIGNAL SIGRTMIN+3`                                            |
+| `is-system-running`이 `degraded`                                                       | 컨테이너에 맞지 않는 단위 실패                             | `systemctl --failed` 확인 후 이미지에서 `mask`                     |
+| `docker logs`에 아무것도 없음                                                          | systemd가 터미널이 없으면 콘솔 출력을 줄임                 | 원인 확인 때만 `docker run --rm -t ...`로 출력 보기                |
 
-inotify 한도는 systemd 인스턴스마다 여러 개씩 쓰므로, systemd 컨테이너를 여러 대 띄우면 기본값(배포판에 따라 128)을 넘기 쉽습니다. 2026-11-23 시험 PC에서는 사용 중 인스턴스가 이미 한도를 넘어 새 컨테이너가 위 오류로 멈췄습니다. 호스트 설정이므로 영향 범위를 확인한 뒤 바꿉니다.
+inotify 한도는 systemd 인스턴스마다 여러 개씩 쓰므로, systemd 컨테이너를 여러 대 띄우면 기본값(배포판에 따라 128)을 넘기 쉽습니다. 실측 보고에 따르면 컨테이너 한 대가 inotify 인스턴스를 6~7개 써서(15대에 약 98개) 한도 128에서는 16번째 무렵부터 이 오류로 멈추고, 1024로 올린 뒤에는 24대를 동시에 띄워 268개를 썼습니다. 2026-11-23 이 문서의 시험 PC에서도 사용 중 인스턴스가 한도를 넘어 새 컨테이너가 같은 오류로 멈췄습니다. 호스트 설정이므로 영향 범위를 확인한 뒤 바꿉니다.
 
 ```bash
 sysctl fs.inotify.max_user_instances fs.inotify.max_user_watches      # 현재 값
