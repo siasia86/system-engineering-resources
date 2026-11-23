@@ -240,7 +240,52 @@ local 환경에 wrapper가 없으면 승인된 30 artifact를 먼저 설치합�
 
 ### 2·3순위
 
-2순위 32개(네트워킹·프로토콜 등)와 3순위 39개(kind·클라우드 선행 주제 등)는 요청 목록에 있습니다. 1순위 B10에 들어가기 전에 같은 원칙으로 묶음 표를 이 절에 더하고 [TODO](TODO.md)의 대기 항목을 갱신합니다.
+2·3순위 71개도 1순위와 같은 원칙으로 묶었습니다(2026-11-23). 순서는 B11부터이며, 1순위 B10이 끝난 뒤 시작합니다. 시험 범위와 묶음 경계는 각 묶음 착수 때 기존 문서를 읽고 다시 확인합니다.
+
+#### 2순위 (32개)
+
+| 묶음 | 주제                                              | 32 문서 계획                                                                                                           | 비고                           |
+|------|---------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|--------------------------------|
+| B11  | OSI Model                                         | `_reference` 신규, `01_fundamentals/networking/osi_model.md` 신규 (계층별 프로토콜·장비·진단 명령)                     |                                |
+| B11  | DNS · HTTP · HTTPS                                | 기존 `dns_resolution_troubleshooting.md`·`http_methods.md`·`http_protocol_testing.md`·`tls_https_testing.md` 보강 검토 | 기존 문서 우선                 |
+| B11  | SSL / TLS                                         | 기존 TLS 문서 3개 보강 검토 (판·인증서 수명 주기)                                                                      | 기존 `_reference` 사용         |
+| B11  | SSH                                               | 기존 `ssh_security.md` 보강 검토 (설치·키·설정 검증)                                                                   | 기존 문서 우선                 |
+| B11  | FTP / SFTP                                        | `_reference` 신규, `01_fundamentals/networking/ftp_sftp.md` 신규 (vsftpd·OpenSSH SFTP, 컨테이너 시험)                  |                                |
+| B12  | SMTP · IMAP · POP3S                               | `_reference` 신규, `01_fundamentals/networking/mail_protocols.md` 신규 (Postfix·Dovecot 컨테이너 시험)                 | 메일 묶음                      |
+| B12  | SPF · Domain Keys · DMARC                         | `_reference` 신규(RFC 7208·6376·7489), `04_security/hardening/email_authentication.md` 신규                            | DNS 레코드 예는 example 도메인 |
+| B12  | White / Grey Listing                              | `email_authentication.md`의 한 절 (Postfix 정책 예)                                                                    | 같은 문서                      |
+| B13  | Nexus                                             | `_reference` 신규, `02_infrastructure/cicd/nexus.md` 신규 (Docker로 설치, 저장소, 검증)                                |                                |
+| B13  | Artifactory · Cloud Smith                         | `_reference` 2개 신규, `02_infrastructure/cicd/artifact_repository_comparison.md` 신규                                 | 상용이라 비교만                |
+| B14  | Jenkins · GitLab CI                               | 기존 `jenkins_install.md`·`jenkins_pipeline.md`·`gitlab_ci.md` 판 확인과 보강 검토                                     | 기존 문서 우선                 |
+| B14  | TeamCity · Circle CI · Octopus Deploy · Buildkite | `_reference` 4개 신규, `02_infrastructure/cicd/ci_tools_comparison.md` 신규                                            | 상용·SaaS라 비교만             |
+| B15  | OpenTelemetry                                     | `_reference` 신규, `02_infrastructure/monitoring/opentelemetry.md` 신규 (Collector 컨테이너 시험)                      |                                |
+| B15  | Jaeger                                            | `_reference` 신규, `02_infrastructure/monitoring/jaeger.md` 신규 (OpenTelemetry와 연결)                                |                                |
+| B15  | New Relic · Dynatrace                             | `_reference` 2개 신규, B9 `monitoring_saas_comparison.md`에 열 추가                                                    | 상용이라 비교만                |
+| B16  | SOPs                                              | `_reference` 신규, `02_infrastructure/iac/sops.md` 신규 (age 키, 컨테이너 시험)                                        | 요청의 SOPs는 SOPS 도구로 해석 |
+| B16  | Pulumi                                            | `_reference` 신규, `02_infrastructure/iac/pulumi.md` 신규 (로컬 backend 시험)                                          |                                |
+| B16  | Chef · Puppet · Salt                              | `_reference` 3개 신규, `02_infrastructure/iac/config_management_comparison.md` 신규 (Ansible과 비교)                   | 가이드·설치는 하지 않음        |
+
+#### 3순위 (39개)
+
+| 묶음 | 주제                                                           | 32 문서 계획                                                                                                                                                     | 비고                                 |
+|------|----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+| B17  | ArgoCD                                                         | 기존 `argocd.md` 판 확인과 보강 검토                                                                                                                             | 기존 `_reference` 사용               |
+| B17  | FluxCD                                                         | `_reference` 신규, `02_infrastructure/cicd/fluxcd.md` 신규 (ArgoCD와 비교 절 포함)                                                                               | kind 시험은 실행 가능 여부 확인 뒤   |
+| B18  | Docker Swarm                                                   | `_reference` 신규, `02_infrastructure/containers/docker_swarm.md` 신규 (컨테이너 안 시험)                                                                        |                                      |
+| B18  | GKE / EKS / AKS · ECS / Fargate · OpenShift                    | `_reference` 신규, `02_infrastructure/containers/managed_container_platforms.md` 신규                                                                            | 계정이 필요해 비교만                 |
+| B19  | Envoy                                                          | `_reference` 신규, `02_infrastructure/web_server/envoy.md` 신규 (컨테이너 시험)                                                                                  |                                      |
+| B19  | Istio · Linkerd · Consul                                       | `_reference` 3개 신규, `02_infrastructure/containers/service_mesh_comparison.md` 신규                                                                            | 클러스터 시험은 하지 않음            |
+| B20  | Sealed Secrets · ESO · Cloud Specific Tools                    | `_reference` 2개 신규, `04_security/cloud/kubernetes_secrets_management.md` 신규                                                                                 | 기존 AWS 비밀값 노트 사용            |
+| B21  | AWS                                                            | 기존 `cloud_aws/` 문서 묶음 확인, 개요 문서가 없으면 `02_infrastructure/cloud_aws/aws_overview.md` 신규 검토                                                     | 기존 문서 우선                       |
+| B21  | Azure · Google Cloud · Digital Ocean · Alibaba Cloud · Hetzner | `_reference` 신규, `02_infrastructure/cloud_aws/cloud_provider_comparison.md` 신규                                                                               | 계정이 필요해 비교만                 |
+| B21  | AWS CDK · CloudFormation                                       | `_reference` 2개 신규, `02_infrastructure/iac/aws_cdk_cloudformation.md` 신규 (synth·lint까지 로컬 시험)                                                         | 배포는 하지 않음                     |
+| B22  | AWS Lambda · Azure Functions · GCP Functions                   | `_reference` 신규, `02_infrastructure/cloud_aws/serverless_functions_comparison.md` 신규                                                                         | 비교만                               |
+| B22  | Cloudflare · Vercel · Netlify · Render · Railway · Heroku      | `_reference` 신규, `02_infrastructure/cloud_aws/paas_comparison.md` 신규                                                                                         | 비교만                               |
+| B23  | Python · Rust                                                  | 기존 `programming/python/`·`rust/` 문서 판 확인과 보강 검토                                                                                                      | 기존 문서 우선                       |
+| B23  | Go · Ruby · JavaScript / Node.js                               | `_reference` 3개 신규, `01_fundamentals/programming/`에 언어별 SE 입문 문서 3개 신규 (컨테이너 시험)                                                             |                                      |
+| B24  | Cloud Design Patterns 4개 영역                                 | `_reference` 신규, `03_engineering/reliability/cloud_design_patterns.md` 신규 (Availability·Data Management·Design and Implementation·Management and Monitoring) | 기존 `resilience_patterns.md`와 연결 |
+
+기존 문서가 있는 주제(DNS·HTTP·TLS·SSH·Jenkins·GitLab CI·ArgoCD·AWS·Python·Rust)는 먼저 보강 여부를 판단합니다. 계정·클러스터·비용이 필요한 클라우드·상용 주제는 공식 자료 범위의 비교 문서만 씁니다.
 
 ---
 
