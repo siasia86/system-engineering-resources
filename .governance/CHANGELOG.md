@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DevOps 문서 범용 표현 정리 (2026-11-23, 사용자 요청): 오늘 쓴 DO-03 문서 가운데 특정 시험 환경에 묶인 본문 표현을 범용으로 바꿨습니다. [systemd 포함 컨테이너](../02_infrastructure/containers/systemd_container.md)는 시험 PC 상황과 보고 출처 문장을 본문에서 빼고 머리말 확인 범위로 모았으며 inotify 사용량 확인 명령을 더했습니다. [Hyper-V](../02_infrastructure/windows_server/hyper_v.md) 8절 제목을 "VM 안에서 가상화·컨테이너 쓰기"로 바꿨고, [Jinja2](../02_infrastructure/iac/jinja2.md)·[ansible-lint](../02_infrastructure/iac/ansible_lint.md)·[Docker Compose](../02_infrastructure/containers/docker_compose.md)·[Docker 네트워크](../02_infrastructure/containers/docker_network.md)의 날짜·환경 표현을 한두 곳씩 고쳤습니다.
+
 - HANDOFF 현행화 (2026-11-23, 05 30분 단위 업무 1차, 05 D122): [HANDOFF](HANDOFF.md) 2절의 기준 줄을 main `90fad96`으로, "진행 중" 행을 DO-03 R1~R9와 D169 완료 상태로 고쳤습니다. 11-17 완료 목록은 이력에 있어 행에서 뺐습니다.
 
 - Hyper-V 독립 문서 추가 (2026-11-23, 05 DO-03 R6 배정, 05 D122): [Hyper-V](../02_infrastructure/windows_server/hyper_v.md)(요구 사항, 설치, 가상 스위치, Linux VM 만들기, 운영 명령, 체크포인트, MAC 스푸핑과 중첩 가상화, 검증, 트러블슈팅)를 새로 썼습니다. 작성 환경이 Linux라 실행 시험은 하지 않았고, 명령과 요구 사항은 Microsoft Learn 문서와 Microsoft 공식 저장소 스크립트와 대조했습니다. Vagrant 10장·Packer 4장의 Hyper-V 내용은 도구별 사용법이라 옮기지 않고 함께 보기로 연결했습니다.

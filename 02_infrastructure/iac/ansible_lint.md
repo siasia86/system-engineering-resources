@@ -248,7 +248,7 @@ ansible-lint --fix              # 지원하는 규칙을 고치고 YAML 형식�
 git diff                        # 바뀐 내용을 검토
 ```
 
-- `--fix`는 지원하는 규칙만 고칩니다. 3-1 playbook으로 시험했을 때는 `name[casing]`(이름 첫 글자), `fqcn`(`ansible.builtin.apt`), `command-instead-of-shell`(`shell` → `ansible.builtin.command`)을 고치고 파일 맨 앞에 `---`를 더했습니다. `package-latest`, `name[missing]`처럼 판단이 필요한 위반은 그대로 남습니다.
+- `--fix`는 지원하는 규칙만 고칩니다. 3-1 playbook에 쓰면 `name[casing]`(이름 첫 글자), `fqcn`(`ansible.builtin.apt`), `command-instead-of-shell`(`shell` → `ansible.builtin.command`)을 고치고 파일 맨 앞에 `---`를 더했습니다. `package-latest`, `name[missing]`처럼 판단이 필요한 위반은 그대로 남습니다.
 - YAML 재서식(들여쓰기, 따옴표)은 `--fix`를 쓰면 항상 실행됩니다. 서식을 그대로 두어야 하면 `--fix`를 쓰지 않습니다.
 
 [⬆ 목차로 돌아가기](#목차)

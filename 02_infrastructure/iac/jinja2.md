@@ -319,7 +319,7 @@ env = jinja2.Environment(
 print(env.get_template("nginx.conf.j2").render(**yaml.safe_load(open("vars.yml"))))
 ```
 
-Ansible로 확인할 때는 대상에 쓰기 전에 `ansible-playbook site.yml --check --diff`로 바뀔 내용을 봅니다. 2026-11-23 시험에서 첫 실행 `changed=1`, 두 번째 실행 `changed=0`이었습니다.
+Ansible로 확인할 때는 대상에 쓰기 전에 `ansible-playbook site.yml --check --diff`로 바뀔 내용을 봅니다. 첫 실행에서 `changed=1`, 같은 내용으로 다시 실행하면 `changed=0`이 정상입니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

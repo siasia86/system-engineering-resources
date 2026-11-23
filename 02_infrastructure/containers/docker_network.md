@@ -282,7 +282,7 @@ sudo ip link set lan-shim up
 sudo ip route add 192.0.2.144/29 dev lan-shim      # 컨테이너 범위로 가는 경로
 ```
 
-이 설정은 재부팅하면 사라집니다. 계속 쓰려면 netplan·NetworkManager·systemd-networkd 설정에 같은 내용을 넣습니다. Ansible로 컨테이너를 관리하는 경우처럼 접속만 필요하다면 `docker exec`(Ansible의 `community.docker.docker` 연결)를 쓰면 이 설정 없이도 됩니다.
+이 설정은 재부팅하면 사라집니다. 계속 쓰려면 netplan·NetworkManager·systemd-networkd 설정에 같은 내용을 넣습니다. 호스트에서 컨테이너 안 명령만 실행하면 된다면 `docker exec`(Ansible은 `community.docker.docker` 연결)로 충분하므로 이 설정이 필요 없습니다.
 
 ### 7-6. macvlan과 ipvlan
 

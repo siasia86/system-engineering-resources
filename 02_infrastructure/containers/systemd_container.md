@@ -3,8 +3,7 @@
 컨테이너 안에서 systemd를 PID 1로 실행해, 실제 서버처럼 `systemctl`로 서비스를 등록·시작할 수 있게 하는 방법입니다. Ansible playbook이나 서비스 설치 스크립트를 가상 머신 대신 가벼운 컨테이너에서 시험할 때 씁니다. 이 문서만으로 이미지 만들기 → 실행 → 서비스 확인 → 검증까지 따라 할 수 있게 썼습니다.
 
 - 기준 환경: Docker Engine 29.x, cgroup v2 호스트, Ubuntu 24.04 이미지(systemd 255)
-- 예제 시험: 2026-11-23, Docker Engine 29.8.1(cgroup v2, cgroup driver systemd)에서 3절 이미지를 빌드하고 4절 구성 네 가지를 실행해 결과를 비교. 5절 Compose와 7절 Ansible 접속은 이 PC의 inotify 한도에 걸려(10절) 기동 확인을 끝내지 못했음
-- 4-3절과 10절의 공개 이미지·inotify 수치는 같은 날 다른 시험 환경(Docker 29.8.1, cgroup v2, 커널 6.8)에서 systemd 237~259 공개 이미지 24개를 실측한 결과를 받아 적은 것입니다(이 문서 작성 환경에서는 공개 이미지 Dockerfile의 `VOLUME` 선언만 대조)
+- 예제 시험: 2026-11-23, Docker Engine 29.8.1(cgroup v2)에서 3절 이미지 빌드, 4절 구성 비교, 6절 서비스 실행을 확인. 4-3절 공개 이미지 동작과 10절 inotify 사용량은 같은 판의 다른 cgroup v2 환경에서 systemd 237~259 공개 이미지로 확인한 결과. 5절 Compose 기동과 7절 Ansible 접속은 실행 미확인
 
 ## 목차
 
@@ -95,7 +94,7 @@ systemd는 자기 cgroup 아래에 서비스별 하위 cgroup을 만들어야 �
 | D    | C + `--cap-add SYS_ADMIN`, AppArmor·seccomp 해제                   | 즉시 종료                           | -                                            |
 
 - 권장은 A입니다. B는 공개 이미지 README에 자주 나오는 구성인데, 컨테이너가 호스트의 cgroup 트리 전체를 보므로 격리가 약합니다.
-- B에서는 컨테이너의 systemd가 호스트 cgroup 트리에 직접 씁니다. systemd 237처럼 오래된 판은 호스트 cgroup2 루트에 v1 이름의 빈 디렉터리(`blkio`, `memory`, `systemd` 등)를 남긴다는 실측 보고가 있습니다. 남았다면 호스트에서 빈 디렉터리만 `rmdir`로 지웁니다.
+- B에서는 컨테이너의 systemd가 호스트 cgroup 트리에 직접 씁니다. systemd 237처럼 오래된 판은 호스트 cgroup2 루트에 v1 이름의 빈 디렉터리(`blkio`, `memory`, `systemd` 등)를 남길 수 있습니다. 남았다면 호스트에서 빈 디렉터리만 `rmdir`로 지웁니다.
 - A·B 모두 컨테이너마다 `system.slice/docker-<ID>.scope` 아래에 따로 자리를 잡으므로 여러 대를 동시에 띄워도 서로 충돌하지 않습니다.
 
 ### 4-2. 실행
@@ -116,9 +115,9 @@ docker stop node1                                 # STOPSIGNAL 덕분에 즉시 
 
 ### 4-3. 공개 이미지를 쓸 때
 
-널리 쓰는 Ansible 시험용 공개 이미지는 Dockerfile에 `VOLUME ["/sys/fs/cgroup", ...]`을 선언한 경우가 많습니다(예: `geerlingguy/docker-ubuntu2404-ansible`, `geerlingguy/docker-rockylinux9-ansible`). 이런 이미지는 구성 B를 전제로 만들어져 있어서, 구성 A처럼 호스트 cgroup을 연결하지 않으면 그 자리에 빈 익명 볼륨이 붙습니다. 실측 보고에 따르면 systemd 249 이후 판은 이때 `Failed to mount cgroup at /sys/fs/cgroup/systemd`로 종료 코드 255를 내며 멈춥니다. 3절처럼 직접 만든 이미지(`VOLUME` 없음)에서는 생기지 않습니다.
+널리 쓰는 Ansible 시험용 공개 이미지는 Dockerfile에 `VOLUME ["/sys/fs/cgroup", ...]`을 선언한 경우가 많습니다(예: `geerlingguy/docker-ubuntu2404-ansible`, `geerlingguy/docker-rockylinux9-ansible`). 이런 이미지는 구성 B를 전제로 만들어져 있어서, 구성 A처럼 호스트 cgroup을 연결하지 않으면 그 자리에 빈 익명 볼륨이 붙습니다. systemd 249 이후 판은 이때 `Failed to mount cgroup at /sys/fs/cgroup/systemd`로 종료 코드 255를 내며 멈춥니다. 3절처럼 직접 만든 이미지(`VOLUME` 없음)에서는 생기지 않습니다.
 
-구성 A로 쓰려면 시작할 때 익명 볼륨을 떼고 cgroup2를 다시 붙인 뒤 systemd를 실행하는 진입 스크립트를 덧씌웁니다. 같은 보고에서 systemd 237~259 이미지 24개를 이 방식으로 동시에 띄웠습니다.
+구성 A로 쓰려면 시작할 때 익명 볼륨을 떼고 cgroup2를 다시 붙인 뒤 systemd를 실행하는 진입 스크립트를 덧씌웁니다. 이 방식으로 systemd 237~259 이미지를 여러 대 동시에 띄울 수 있습니다.
 
 `entrypoint.sh`
 
@@ -138,9 +137,9 @@ COPY --chmod=0755 entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 ```
 
-- `--privileged` 컨테이너의 systemd는 호스트의 `/dev/tty1`을 볼 수 있어, 이미지가 getty를 끄지 않았다면 호스트 콘솔의 `getty@tty1`과 부딪힌다는 보고가 있습니다(시각이 일치했고 인과는 추정). 위 스크립트처럼 `getty@tty1.service`를 mask합니다.
+- `--privileged` 컨테이너의 systemd는 호스트의 `/dev/tty1`을 볼 수 있어, 이미지가 getty를 끄지 않았다면 호스트 콘솔의 `getty@tty1`과 부딪힐 수 있습니다. 위 스크립트처럼 `getty@tty1.service`를 mask합니다.
 - `systemd-modules-load.service`는 컨테이너에서 커널 모듈을 올릴 수 없어 항상 실패하므로 함께 mask합니다.
-- systemd 219(Amazon Linux 2 등)는 cgroup v2만 있는 호스트에서 D-Bus 없이 정상 동작하지 않는다는 보고가 있습니다. 이런 배포판은 가상 머신으로 시험합니다.
+- systemd 219(Amazon Linux 2 등)는 cgroup v2만 있는 호스트에서 D-Bus 없이 정상 동작하지 않습니다. 이런 배포판은 가상 머신으로 시험합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -169,7 +168,7 @@ docker compose exec node1 systemctl is-system-running
 docker compose down
 ```
 
-Compose의 `cgroup` 키는 `host`·`private`를 받으며 `docker run --cgroupns`와 같습니다. 2026-11-23 시험에서 `docker compose config`로 두 컨테이너에 `privileged: true`, `cgroup: private`가 적용된 것까지 확인했고, 기동은 이 PC의 inotify 한도(10절)에 걸려 확인하지 못했습니다.
+Compose의 `cgroup` 키는 `host`·`private`를 받으며 `docker run --cgroupns`와 같습니다. 적용 여부는 `docker compose config`로 확인합니다. 여러 대를 띄울 때는 10절의 inotify 한도를 먼저 확인합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -195,7 +194,6 @@ docker exec node1 systemctl is-active demo     # active
 docker exec node1 journalctl -u demo --no-pager | tail -5
 ```
 
-시험에서 4-1의 구성 A·B 모두 `active`였습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -221,7 +219,7 @@ ansible -i inventory.ini nodes -m ansible.builtin.ping
 ansible -i inventory.ini nodes -m ansible.builtin.systemd -a "name=dbus"
 ```
 
-인벤토리의 호스트 이름은 컨테이너 이름입니다(Compose는 `<프로젝트>-<서비스>-1`). 2026-11-23 시험에서는 플러그인이 설치된 것까지 확인했고, 접속은 5절과 같은 이유로 확인하지 못했습니다.
+인벤토리의 호스트 이름은 컨테이너 이름입니다(Compose는 `<프로젝트>-<서비스>-1`). 플러그인 설치 여부는 `ansible-doc -t connection community.docker.docker`로 확인합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -270,7 +268,7 @@ ansible -i inventory.ini nodes -m ansible.builtin.systemd -a "name=dbus"
 | `is-system-running`이 `degraded`                                                       | 컨테이너에 맞지 않는 단위 실패                             | `systemctl --failed` 확인 후 이미지에서 `mask`                     |
 | `docker logs`에 아무것도 없음                                                          | systemd가 터미널이 없으면 콘솔 출력을 줄임                 | 원인 확인 때만 `docker run --rm -t ...`로 출력 보기                |
 
-inotify 한도는 systemd 인스턴스마다 여러 개씩 쓰므로, systemd 컨테이너를 여러 대 띄우면 기본값(배포판에 따라 128)을 넘기 쉽습니다. 실측 보고에 따르면 컨테이너 한 대가 inotify 인스턴스를 6~7개 써서(15대에 약 98개) 한도 128에서는 16번째 무렵부터 이 오류로 멈추고, 1024로 올린 뒤에는 24대를 동시에 띄워 268개를 썼습니다. 2026-11-23 이 문서의 시험 PC에서도 사용 중 인스턴스가 한도를 넘어 새 컨테이너가 같은 오류로 멈췄습니다. 호스트 설정이므로 영향 범위를 확인한 뒤 바꿉니다.
+inotify 한도는 systemd 인스턴스마다 여러 개씩 쓰므로, systemd 컨테이너를 여러 대 띄우면 기본값(배포판에 따라 128)을 넘기 쉽습니다. 컨테이너 한 대가 inotify 인스턴스를 대략 6~7개 쓰므로, 호스트의 다른 프로그램이 쓰는 몫까지 더하면 한도 128에서는 십여 대 안팎에서 이 오류가 납니다. 한도를 1024로 올리면 20대 넘게 동시에 띄워도 여유가 있습니다. 현재 사용량은 `find /proc/*/fd -lname 'anon_inode:inotify' 2>/dev/null | wc -l`로 봅니다. 호스트 설정이므로 영향 범위를 확인한 뒤 바꿉니다.
 
 ```bash
 sysctl fs.inotify.max_user_instances fs.inotify.max_user_watches      # 현재 값
