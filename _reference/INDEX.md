@@ -93,7 +93,7 @@ sources:
 | ufw·firewalld                                 | `_reference/ufw_firewalld_official_notes.md`            | ufw 0.36.2, firewalld 2.5.2                                               | 2026-11-23 |
 | IIS                                           | `_reference/iis_official_notes.md`                      | IIS 10, 설치·구조·로그                                                    | 2026-11-23 |
 | YAML Spec                                     | `_reference/yaml_spec_notes.md`                         | 1.2 (1.1 호환)                                                            | 2026-11-09 |
-| Zabbix                                        | `_reference/zabbix_official_notes.md`                   | 8.0 LTS (2026-11-05), 7.4 Standard                                        | 2026-11-09 |
+| Zabbix                                        | `_reference/zabbix_official_notes.md`                   | 8.0 LTS (2026-11-05, 8.0.0 컨테이너 확인), 7.4 Standard                   | 2026-11-23 |
 | e4fsprogs (CentOS 5)                          | `_reference/e4fsprogs_centos5_notes.md`                 | 1.41.12-4.el5_10, fsck.ext4                                               | 2026-07-22 |
 | Hyper-V I/O 경합                              | `_reference/hyperv_io_contention_notes.md`              | Storage Stack·Storage QoS·성능 카운터                                     | 2026-11-16 |
 | Hyper-V I/O 경합 (CentOS 5)                   | `_reference/hyperv_centos5_io_contention_notes.md`      | Storage QoS·LIS 지원 범위·CentOS 5.11                                     | 2026-11-09 |

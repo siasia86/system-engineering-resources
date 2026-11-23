@@ -214,6 +214,13 @@
   SNMP/IPMI                   /metrics endpoint
 ```
 
+## 함께 보기
+
+- [Zabbix](./zabbix.md) — 8.0 LTS 설치와 에이전트
+- [Prometheus + Grafana](./prometheus_grafana.md) · [Prometheus 설치](./prometheus_grafana_install.md) — Prometheus 사용과 설치
+
+---
+
 ## 참고 자료
 
 - Zabbix Documentation: [zabbix.com/documentation](https://www.zabbix.com/documentation/current/) — ★★★☆☆
@@ -227,6 +234,6 @@
 
 **작성일**: 2026-07-03
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.
