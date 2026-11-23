@@ -182,6 +182,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [GitHub CLI 명령어 참조](02_infrastructure/cicd/gh_command_reference.md)                | gh 명령어, PR·Actions 실행    |
 | [GitHub](02_infrastructure/cicd/github.md)                                              | 2FA, SSH 키, PR, 브랜치 보호  |
 | [GitLab CI/CD](02_infrastructure/cicd/gitlab_ci.md)                                     | .gitlab-ci.yml, rules, Runner |
+| [GitLab](02_infrastructure/cicd/gitlab.md)                                              | Docker 자체 설치, 운영, 백업  |
 | [ArgoCD](02_infrastructure/cicd/argocd.md)                                              | GitOps CD, Application        |
 | [Harness](02_infrastructure/cicd/harness_inc.md)                                        | CI/CD 플랫폼                  |
 | [Git 가이드](02_infrastructure/cicd/git_guide.md)                                       | diff, log, rebase, stash      |
