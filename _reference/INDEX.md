@@ -26,7 +26,6 @@ sources:
 
 | 기술                                          | 파일                                                    | 최신 버전                                                                 | 확인일     |
 |-----------------------------------------------|---------------------------------------------------------|---------------------------------------------------------------------------|------------|
-| Datadog                                       | `_reference/datadog_official_notes.md`                  | Agent 7.85.5, 사이트·요금·보존 기간                                       | 2026-11-23 |
 | POSIX ACL / setfacl                           | `_reference/acl_setfacl_official_notes.md`              | acl 2.4.0·setfacl·getfacl·Default ACL·mask                                | 2026-11-16 |
 | Ansible                                       | `_reference/ansible_official_notes.md`                  | 14.6.0 (core 2.21.6)                                                      | 2026-11-16 |
 | API Styles                                    | `_reference/api_styles_official_notes.md`               | REST·GraphQL·gRPC·SOAP·WebSocket·Webhook·JSON-RPC·SSE                     | 2026-08-21 |
@@ -95,6 +94,8 @@ sources:
 | IIS                                           | `_reference/iis_official_notes.md`                      | IIS 10, 설치·구조·로그                                                    | 2026-11-23 |
 | YAML Spec                                     | `_reference/yaml_spec_notes.md`                         | 1.2 (1.1 호환)                                                            | 2026-11-09 |
 | Zabbix                                        | `_reference/zabbix_official_notes.md`                   | 8.0 LTS (2026-11-05, 8.0.0 컨테이너 확인), 7.4 Standard                   | 2026-11-23 |
+| Datadog                                       | `_reference/datadog_official_notes.md`                  | Agent 7.85.5, 사이트·요금·보존 기간                                       | 2026-11-23 |
+| Elastic Stack (로그 수집)                     | `_reference/elastic_stack_official_notes.md`            | 9.5.6, Filebeat data stream·ILM 기본값                                    | 2026-11-23 |
 | e4fsprogs (CentOS 5)                          | `_reference/e4fsprogs_centos5_notes.md`                 | 1.41.12-4.el5_10, fsck.ext4                                               | 2026-07-22 |
 | Hyper-V I/O 경합                              | `_reference/hyperv_io_contention_notes.md`              | Storage Stack·Storage QoS·성능 카운터                                     | 2026-11-16 |
 | Hyper-V I/O 경합 (CentOS 5)                   | `_reference/hyperv_centos5_io_contention_notes.md`      | Storage QoS·LIS 지원 범위·CentOS 5.11                                     | 2026-11-09 |
