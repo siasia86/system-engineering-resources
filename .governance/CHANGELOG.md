@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- Hyper-V 독립 문서 추가 (2026-11-23, 05 DO-03 R6 배정, 05 D122): [Hyper-V](../02_infrastructure/windows_server/hyper_v.md)(요구 사항, 설치, 가상 스위치, Linux VM 만들기, 운영 명령, 체크포인트, MAC 스푸핑과 중첩 가상화, 검증, 트러블슈팅)를 새로 썼습니다. 작성 환경이 Linux라 실행 시험은 하지 않았고, 명령과 요구 사항은 Microsoft Learn 문서와 Microsoft 공식 저장소 스크립트와 대조했습니다. Vagrant 10장·Packer 4장의 Hyper-V 내용은 도구별 사용법이라 옮기지 않고 함께 보기로 연결했습니다.
+
 - kind 독립 문서 추가 (2026-11-23, 05 DO-03 R7 배정, 05 D122): [kind](../02_infrastructure/containers/kind.md)(설치, 첫 클러스터, 설정 파일, 앱 배포와 접속, 로컬 이미지, 여러 클러스터, 검증, 트러블슈팅)를 새로 썼습니다. 기준 판은 v0.33.0(기본 노드 이미지 v1.37.0)이며, 설치와 시험 PC inotify 한도 변경이 필요해 실행 시험은 하지 않고 kind 공식 문서 원본과 대조했습니다. 옮긴 기존 본문은 없습니다.
 
 - systemd 포함 컨테이너 문서 보완 (2026-11-23, 00 세션 직접 요청 DO-03 R9 보완): [systemd 포함 컨테이너](../02_infrastructure/containers/systemd_container.md)에 4-3절 "공개 이미지를 쓸 때"(이미지의 `VOLUME /sys/fs/cgroup` 때문에 구성 A에서 멈추는 문제와 진입 스크립트, getty@tty1·systemd-modules-load mask, systemd 219 제약), 구성 B의 호스트 cgroup 빈 디렉터리 주의, inotify 실측 수치, 트러블슈팅 2행을 더했습니다. 수치와 현상은 00 세션의 실측 보고를 출처로 밝혀 적었고, 공개 이미지 Dockerfile의 `VOLUME` 선언은 이 세션에서 대조했습니다.

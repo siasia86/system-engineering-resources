@@ -232,11 +232,12 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Windows Server
 
-| 문서                                                                                           | 설명                 |
-|------------------------------------------------------------------------------------------------|----------------------|
-| [Windows Server 에디션](02_infrastructure/windows_server/windows_server_editions_licensing.md) | 에디션/라이선스 비교 |
-| [Windows Server 핵심 개념](02_infrastructure/windows_server/windows_server_key_concepts.md)    | AD, DNS, 역할 서비스 |
-| [SCVMM 가이드](02_infrastructure/windows_server/scvmm_guide.md)                                | VM 중앙 관리 플랫폼  |
+| 문서                                                                                           | 설명                        |
+|------------------------------------------------------------------------------------------------|-----------------------------|
+| [Windows Server 에디션](02_infrastructure/windows_server/windows_server_editions_licensing.md) | 에디션/라이선스 비교        |
+| [Windows Server 핵심 개념](02_infrastructure/windows_server/windows_server_key_concepts.md)    | AD, DNS, 역할 서비스        |
+| [SCVMM 가이드](02_infrastructure/windows_server/scvmm_guide.md)                                | VM 중앙 관리 플랫폼         |
+| [Hyper-V](02_infrastructure/windows_server/hyper_v.md)                                         | 설치, 가상 스위치, Linux VM |
 
 ### Data Pipeline
 
