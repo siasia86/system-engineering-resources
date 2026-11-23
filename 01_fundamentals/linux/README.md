@@ -13,7 +13,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 
 ## 1. 문서 구성
 
-현재 Linux 문서는 `README.md`를 제외하고 64개입니다. 개념 문서와 실습·분석 도구 문서를 함께 배치하여 개념 학습 후 실제 시스템 관찰로 이어지도록 구성합니다.
+현재 Linux 문서는 `README.md`를 제외하고 65개입니다. 개념 문서와 실습·분석 도구 문서를 함께 배치하여 개념 학습 후 실제 시스템 관찰로 이어지도록 구성합니다.
 
 | 주제                     | 범위                                              |
 |--------------------------|---------------------------------------------------|
@@ -130,6 +130,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 
 - [Vim](./vim.md) — Linux 운영 환경의 편집기 사용.
 - [Vim airline](./vim_airline.md) — Vim 상태 표시줄 설정.
+- [nano](./nano.md) — 단축키가 화면에 보이는 간단한 편집기, 판별 단축키, nanorc.
 - [Neovim](./neovim_guide.md) — Lua 설정, API, LSP, headless 실행.
 - [tmux](./tmux_guide.md) — session·window·pane 관리.
 - [systemd 유닛 관리](./systemd_unit_management.md) — 유닛 파일, systemctl, drop-in, 재시작 정책, timer.

@@ -41,6 +41,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Root 패스워드 복구](01_fundamentals/linux/root_password_recovery.md)           | 복구 모드, single user mode         |
 | [Shell 인터랙티브 모드](01_fundamentals/linux/shell_interactive_mode.md)        | interactive/non-interactive         |
 | [Vim 사용법](01_fundamentals/linux/vim.md)                                      | 기본 명령어, 모드, 설정             |
+| [nano](01_fundamentals/linux/nano.md)                                           | 단축키, nanorc                      |
 | [시스템 프로세스](01_fundamentals/linux/linux_system_processes.md)              | init, systemd, 데몬                 |
 | [systemd 유닛 관리](01_fundamentals/linux/systemd_unit_management.md)           | 유닛 파일, drop-in, timer           |
 | [journalctl·logrotate](01_fundamentals/linux/journald_logrotate_guide.md)       | 저널 조회, 로그 순환                |
