@@ -107,7 +107,7 @@ echo '<h1>compose demo</h1>' > html/index.html
 
 ```bash
 WEB_PORT=8080
-POSTGRES_PASSWORD=change-me
+POSTGRES_PASSWORD=<PASSWORD>                 # 실제 비밀번호로 바꿈
 ```
 
 `compose.yaml`

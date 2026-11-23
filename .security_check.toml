@@ -5,8 +5,6 @@
 
 [placeholder]
 values = [
-    # Ansible Vault 암호문 표시(값은 다음 줄의 AES256 암호문)
-    "!vault",
     # 생략 표시
     "...", "...`",
     # 비밀 저장소의 비밀 이름·ARN 경로(값이 아님)
@@ -25,44 +23,6 @@ values = [
 ]
 
 # internal-host 규칙 허용(규칙+경로). 값이 아니라 경로로 허용하므로 그 파일의 다른 규칙은 계속 검사합니다.
-
-# CLAUDE.local.md 파일 이름(.local 접미사)
-[[allow]]
-rule = "internal-host"
-path = ".gitignore"
-
-[[allow]]
-rule = "internal-host"
-path = "06_career/ai_tools/claude/claude_code_concepts.md"
-
-[[allow]]
-rule = "internal-host"
-path = "06_career/ai_tools/claude/claude_code_extensions_guide.md"
-
-[[allow]]
-rule = "internal-host"
-path = "_reference/agent_instruction_files_official_notes.md"
-
-[[allow]]
-rule = "internal-host"
-path = "_reference/claude_code_official_notes.md"
-
-# /etc/fail2ban/jail.local·/etc/rc.local·/etc/profile.d/sh.local 파일 이름
-[[allow]]
-rule = "internal-host"
-path = "01_fundamentals/linux/shell_interactive_mode.md"
-
-[[allow]]
-rule = "internal-host"
-path = "04_security/hardening/ssh_security.md"
-
-[[allow]]
-rule = "internal-host"
-path = "06_career/roadmap/se_roadmap.md"
-
-[[allow]]
-rule = "internal-host"
-path = "_reference/hyperv_centos5_io_contention_notes.md"
 
 # 문서용 예시 호스트(db01.corp.example, web01.internal, primary.db.internal, dev.game.internal 등)
 [[allow]]
