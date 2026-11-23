@@ -282,6 +282,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Nginx](02_infrastructure/web_server/nginx_install.md)                               | 가상 호스트, 리버스 프록시        |
 | [Nginx GeoIP2 모듈](02_infrastructure/web_server/nginx_geoip2_install.md)            | GeoIP2 동적 모듈 빌드·설정        |
 | [Apache](02_infrastructure/web_server/apache_install.md)                             | MPM, SSL                          |
+| [Tomcat](02_infrastructure/web_server/tomcat.md)                                     | 판 고르기, WAR 배포, 운영 설정    |
 | [HAProxy](02_infrastructure/web_server/haproxy_install.md)                           | L4/L7 LB, SSL 터미네이션          |
 | [HAProxy 핵심 개념](02_infrastructure/web_server/haproxy_concepts.md)                | 구조, 분산, 헬스체크, reload      |
 | [HAProxy 운영 가이드](02_infrastructure/web_server/haproxy_operations_guide.md)      | 변경 절차, Runtime API, 장애 확인 |
