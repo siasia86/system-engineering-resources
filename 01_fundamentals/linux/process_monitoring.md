@@ -218,6 +218,7 @@ CPU 사용을 시간 간격으로 기록하려면 `pidstat 1 5`(sysstat)를, 시
 
 ## 함께 보기
 
+- [sysstat](./sysstat.md) — sar·mpstat·iostat로 시간대별 성능 기록
 - [pidstat](./pidstat.md) — 프로세스별 CPU·I/O 간격 측정
 - [Linux 시스템 프로세스](./linux_system_processes.md) — 기본 시스템 프로세스의 역할
 - [프로세스 수명](./process_lifecycle.md) — fork·exec·좀비가 생기는 원리

@@ -35,6 +35,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [SUSE Linux](01_fundamentals/linux/suse_linux.md)                               | SLES·openSUSE, zypper               |
 | [BSD 계열](01_fundamentals/linux/bsd_family.md)                                 | FreeBSD·OpenBSD·NetBSD              |
 | [프로세스 모니터링](01_fundamentals/linux/process_monitoring.md)                | ps·top·htop·pgrep, 상태와 load 해석 |
+| [sysstat](01_fundamentals/linux/sysstat.md)                                     | sar·mpstat·iostat, 과거 기록        |
 | [Root 패스워드 복구](01_fundamentals/linux/root_password_recovery.md)           | 복구 모드, single user mode         |
 | [Shell 인터랙티브 모드](01_fundamentals/linux/shell_interactive_mode.md)        | interactive/non-interactive         |
 | [Vim 사용법](01_fundamentals/linux/vim.md)                                      | 기본 명령어, 모드, 설정             |
