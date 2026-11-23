@@ -33,6 +33,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Ubuntu·Debian](01_fundamentals/linux/ubuntu_debian.md)                         | 판·지원 기간, apt           |
 | [RHEL 계열](01_fundamentals/linux/rhel_family.md)                               | Rocky·Alma, dnf, EPEL       |
 | [SUSE Linux](01_fundamentals/linux/suse_linux.md)                               | SLES·openSUSE, zypper       |
+| [BSD 계열](01_fundamentals/linux/bsd_family.md)                                 | FreeBSD·OpenBSD·NetBSD      |
 | [Root 패스워드 복구](01_fundamentals/linux/root_password_recovery.md)           | 복구 모드, single user mode |
 | [Shell 인터랙티브 모드](01_fundamentals/linux/shell_interactive_mode.md)        | interactive/non-interactive |
 | [Vim 사용법](01_fundamentals/linux/vim.md)                                      | 기본 명령어, 모드, 설정     |

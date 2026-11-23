@@ -13,7 +13,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 
 ## 1. 문서 구성
 
-현재 Linux 문서는 `README.md`를 제외하고 59개입니다. 개념 문서와 실습·분석 도구 문서를 함께 배치하여 개념 학습 후 실제 시스템 관찰로 이어지도록 구성합니다.
+현재 Linux 문서는 `README.md`를 제외하고 60개입니다. 개념 문서와 실습·분석 도구 문서를 함께 배치하여 개념 학습 후 실제 시스템 관찰로 이어지도록 구성합니다.
 
 | 주제                     | 범위                                              |
 |--------------------------|---------------------------------------------------|
@@ -23,7 +23,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 | 디버깅·프로파일링        | strace, perf, GDB, eBPF, 메모리 분석              |
 | 커널·보안·격리           | cgroup, namespace, seccomp, netfilter             |
 | 편집기·운영 도구         | Vim, lsof, tcpdump 등                             |
-| 배포판·패키지 관리       | Ubuntu·Debian, RHEL 계열, SUSE                    |
+| 배포판·패키지 관리       | Ubuntu·Debian, RHEL 계열, SUSE, BSD 계열          |
 
 문서는 주제별 탐색을 위해 관련 분류에 중복 링크할 수 있습니다.
 
@@ -148,6 +148,7 @@ Linux 운영체제의 기본 개념과 시스템 운영 도구를 단계적으�
 - [Ubuntu·Debian](./ubuntu_debian.md) — 판·지원 기간, apt, deb822 저장소, 자동 보안 업데이트, 판 업그레이드.
 - [RHEL 계열](./rhel_family.md) — RHEL·Rocky·Alma, dnf, CRB·EPEL, dnf-automatic, Leapp.
 - [SUSE Linux](./suse_linux.md) — SLES·openSUSE, zypper, Agama·Cockpit.
+- [BSD 계열](./bsd_family.md) — FreeBSD·OpenBSD·NetBSD의 차이, Linux와 다른 점, 기본 명령 대응표.
 
 [⬆ 목차로 돌아가기](#목차)
 

@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B3 BSD 계열 문서 추가 (2026-11-23, 00 세션 직접 요청 DO-07): [BSD 계열](../01_fundamentals/linux/bsd_family.md) 개념 문서(Linux와 다른 점, 세 OS 비교, 판과 지원, 기본 명령 대응표, 고르는 기준, 확인 방법)와 FreeBSD·OpenBSD·NetBSD 참조 노트 3개를 새로 썼습니다. 판·지원 정책은 각 공식 사이트로, 명령은 공식 Handbook·man 페이지로 확인했습니다. BSD는 Linux 컨테이너로 실행할 수 없어 실행 시험은 하지 않았습니다.
+
 - DO-07 B2 Linux 배포판 문서 추가 (2026-11-23, 00 세션 직접 요청 DO-07): [Ubuntu·Debian](../01_fundamentals/linux/ubuntu_debian.md), [RHEL 계열](../01_fundamentals/linux/rhel_family.md), [SUSE Linux](../01_fundamentals/linux/suse_linux.md) 문서와 참조 노트 3개를 새로 썼습니다. 판·지원 기간은 각 배포판 공식 출처(ubuntu.com·changelogs.ubuntu.com, debian.org·Debian LTS wiki, access.redhat.com, suse.com lifecycle, get.opensuse.org)로 1차 확인하고, `ubuntu:24.04`·`debian:13`·`rockylinux/rockylinux:10`·`opensuse/leap:16.0` 컨테이너에서 패키지 명령을 실행해 2차 대조했습니다. 일부 날짜는 endoflife.date를 보조로 쓰고 표시했습니다. Windows는 기존 문서 4개가 범위를 다뤄 보강 불필요로 판단했습니다. HANDOFF에 DO-07 묶음의 조건부 상시 승인을 기록했습니다.
 
 - DO-07 B1 텍스트 처리 문서 추가 (2026-11-23, 00 세션 직접 요청 DO-07): [텍스트 처리](../01_fundamentals/linux/text_processing.md)(설치 확인, grep·sed·awk·cut·sort·uniq·tr·wc, 파이프 조합, jq, 검증, 트러블슈팅)와 [참조 노트](../_reference/text_processing_official_notes.md)를 새로 썼습니다. 참조 노트는 설치된 GNU 도구의 `--help`와 man 페이지로 2회 검증했고, 예제는 GNU grep 3.11·sed 4.9·gawk 5.2.1·coreutils 9.4에서 실행해 확인했습니다. 같은 날 gawk·coreutils 매뉴얼 페이지는 응답이 없어 주소 응답은 다음에 다시 봅니다. README·Linux 목차·_reference INDEX에 등록했습니다.
