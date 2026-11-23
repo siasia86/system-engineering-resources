@@ -1,4 +1,4 @@
-# Docker 설치 및 Compose 운영 가이드
+# Docker 설치와 초기 설정
 <!-- reference: _reference/docker_official_notes.md -->
 
 ## 목차
@@ -289,118 +289,7 @@ docker system df
 
 ## 6. Docker Compose
 
-### compose.yaml 기본 구조
-
-```yaml
-# compose.yaml (권장 파일명, docker-compose.yml도 지원)
-services:
-  app:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./html:/usr/share/nginx/html:ro
-    environment:
-      - TZ=Asia/Seoul
-    restart: unless-stopped
-    depends_on:
-      db:
-        condition: service_healthy
-
-  db:
-    image: mysql:8.4
-    environment:
-      MYSQL_ROOT_PASSWORD: SecurePassword123
-      MYSQL_DATABASE: mydb
-      MYSQL_USER: Secureuser123
-      MYSQL_PASSWORD: SecurePassword123
-    volumes:
-      - db_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
-
-volumes:
-  db_data:
-```
-
-### 주요 명령어
-
-| 명령어                         | 설명                                 |
-|--------------------------------|--------------------------------------|
-| `docker compose up -d`         | 백그라운드 실행 (이미지 없으면 pull) |
-| `docker compose down`          | 컨테이너 + 네트워크 삭제             |
-| `docker compose down -v`       | 볼륨까지 삭제                        |
-| `docker compose ps`            | 서비스 상태 확인                     |
-| `docker compose logs -f`       | 전체 로그 스트리밍                   |
-| `docker compose logs -f app`   | 특정 서비스 로그                     |
-| `docker compose exec app sh`   | 컨테이너 접속                        |
-| `docker compose pull`          | 이미지 최신화                        |
-| `docker compose up -d --build` | 이미지 빌드 후 재시작                |
-| `docker compose restart app`   | 특정 서비스 재시작                   |
-| `docker compose config`        | 최종 설정 확인 (변수 치환 결과)      |
-
-### 환경 변수 분리 (.env)
-
-민감 정보는 `.env` 파일로 분리하고 `.gitignore`에 추가합니다.
-
-```bash
-# .env
-MYSQL_ROOT_PASSWORD=SecurePassword123
-MYSQL_USER=Secureuser123
-MYSQL_PASSWORD=SecurePassword123
-APP_PORT=8080
-```
-
-```yaml
-# compose.yaml
-services:
-  db:
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-  app:
-    ports:
-      - "${APP_PORT}:80"
-```
-
-```bash
-# .gitignore
-.env
-```
-
-### 멀티 환경 구성 (override)
-
-```bash
-# 기본 설정
-compose.yaml
-
-# 개발 환경: docker compose up 시 자동 병합
-compose.override.yaml
-
-# 프로덕션 환경: 명시적 지정
-docker compose -f compose.yaml -f compose.prod.yaml up -d
-```
-
-```yaml
-# compose.prod.yaml
-services:
-  app:
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 1G
-    logging:
-      driver: json-file
-      options:
-        max-size: "100m"
-        max-file: "3"
-```
+Compose 플러그인 설치, `compose.yaml` 작성, 명령, 운영 설정(healthcheck, 로그·리소스 제한, 포트 바인딩, 태그 고정), 검증은 [Docker Compose](./docker_compose.md) 문서로 옮겼습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -408,107 +297,10 @@ services:
 
 ## 7. 실무 팁
 
-### Tip 1: 내부 서비스는 127.0.0.1에 바인딩
-
-외부에 노출하지 않을 서비스는 루프백에만 바인딩합니다.
-
-```yaml
-services:
-  db:
-    ports:
-      - "127.0.0.1:3306:3306"   # 로컬에서만 접근 가능
-  app:
-    ports:
-      - "0.0.0.0:80:80"         # 외부 접근 허용 (기본값)
-```
-
-### Tip 2: Named Volume vs Bind Mount
-
-| 항목      | Named Volume                             | Bind Mount                  |
-|-----------|------------------------------------------|-----------------------------|
-| 경로      | Docker 관리 (`/var/lib/docker/volumes/`) | 호스트 절대경로             |
-| 백업      | `docker volume` 명령으로 관리            | 호스트 파일시스템 직접 접근 |
-| 권장 용도 | DB 데이터, 영구 저장소                   | 설정 파일, 소스 코드 (개발) |
-| SELinux   | 자동 처리                                | `:z` / `:Z` 레이블 필요     |
-
-```yaml
-volumes:
-  - db_data:/var/lib/mysql                          # Named Volume (DB 권장)
-  - ./config/nginx.conf:/etc/nginx/nginx.conf:ro    # Bind Mount (설정 파일)
-```
-
-### Tip 3: healthcheck로 의존성 순서 보장
-
-`depends_on`만으로는 서비스 준비 완료를 보장하지 않습니다.
-
-```yaml
-services:
-  app:
-    depends_on:
-      db:
-        condition: service_healthy
-  db:
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-```
-
-### Tip 4: 이미지 태그 고정
-
-```yaml
-# 나쁜 예: 예기치 않은 업데이트로 장애 유발 가능
-image: mysql:latest
-
-# 좋은 예: 패치 버전까지 고정
-image: mysql:8.4.5
-```
-
-### Tip 5: 서비스 단위 업데이트
+Compose 실무 팁은 [Docker Compose](./docker_compose.md) 8절로 옮겼습니다. 컨테이너 로그 파일 크기는 다음 명령으로 확인합니다.
 
 ```bash
-# 1. 새 이미지 pull
-docker compose pull app
-
-# 2. 해당 서비스만 다시 만듦 (다른 서비스 영향 없음, 컨테이너를 멈추고 새로 만드는 동안 app은 잠깐 끊김)
-docker compose up -d --no-deps app
-
-# 3. 이전 이미지 정리
-docker image prune -f
-```
-
-### Tip 6: 로그 디스크 관리
-
-```yaml
-services:
-  app:
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "5"
-```
-
-```bash
-# 컨테이너 로그 파일 크기 확인
 sudo du -sh /var/lib/docker/containers/*/*-json.log | sort -rh | head -10
-```
-
-### Tip 7: 리소스 제한
-
-```yaml
-services:
-  app:
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 512M
-        reservations:
-          cpus: '0.25'
-          memory: 128M
 ```
 
 [⬆ 목차로 돌아가기](#목차)
@@ -517,16 +309,14 @@ services:
 
 ## 8. 트러블슈팅
 
-| 증상                                  | 원인                     | 해결 방법                                         |
-|---------------------------------------|--------------------------|---------------------------------------------------|
-| `permission denied` (docker 명령)     | docker 그룹 미적용       | `sudo usermod -aG docker $USER` 후 재로그인       |
-| `port is already allocated`           | 호스트 포트 충돌         | `ss -tlnp \| grep PORT` 로 점유 프로세스 확인     |
-| 컨테이너가 즉시 종료됨                | 포그라운드 프로세스 없음 | `docker logs CONTAINER` 로 오류 확인              |
-| `no space left on device`             | Docker 디스크 가득 참    | `docker system prune -a --volumes`                |
-| DB 컨테이너 접속 불가 (앱 시작 직후)  | DB 초기화 미완료         | `healthcheck` + `condition: service_healthy` 적용 |
-| 볼륨 데이터 유지 안 됨                | `down -v` 사용           | `-v` 없이 `down` 사용, Named Volume 확인          |
-| RHEL: 볼륨 마운트 `permission denied` | SELinux 컨텍스트 불일치  | 볼륨 경로에 `:z` 또는 `:Z` 추가                   |
-| `Cannot connect to the Docker daemon` | docker 서비스 미실행     | `sudo systemctl start docker`                     |
+| 증상                                  | 원인                     | 해결 방법                                     |
+|---------------------------------------|--------------------------|-----------------------------------------------|
+| `permission denied` (docker 명령)     | docker 그룹 미적용       | `sudo usermod -aG docker $USER` 후 재로그인   |
+| `port is already allocated`           | 호스트 포트 충돌         | `ss -tlnp \| grep PORT` 로 점유 프로세스 확인 |
+| 컨테이너가 즉시 종료됨                | 포그라운드 프로세스 없음 | `docker logs CONTAINER` 로 오류 확인          |
+| `no space left on device`             | Docker 디스크 가득 참    | `docker system prune -a --volumes`            |
+| RHEL: 볼륨 마운트 `permission denied` | SELinux 컨텍스트 불일치  | 볼륨 경로에 `:z` 또는 `:Z` 추가               |
+| `Cannot connect to the Docker daemon` | docker 서비스 미실행     | `sudo systemctl start docker`                 |
 
 ### 디버깅 명령
 
@@ -670,6 +460,6 @@ sudo ip link set macvlan0 up
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

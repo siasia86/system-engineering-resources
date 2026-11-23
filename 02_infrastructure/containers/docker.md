@@ -165,39 +165,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ## 7. docker-compose
 
-여러 컨테이너를 하나의 파일로 정의하고 함께 관리합니다.
-
-```yaml
-# compose.yml
-services:
-  web:
-    image: nginx:1.25
-    ports:
-      - "8080:80"
-    volumes:
-      - ./html:/usr/share/nginx/html
-    depends_on:
-      - db
-
-  db:
-    image: mysql:8.4
-    environment:
-      MYSQL_ROOT_PASSWORD: SecurePassword123
-      MYSQL_DATABASE: SecureDbName123
-    volumes:
-      - db_data:/var/lib/mysql
-
-volumes:
-  db_data:
-```
-
-```bash
-docker compose up -d        # 백그라운드 실행
-docker compose down         # 중지 + 컨테이너 삭제
-docker compose down -v      # 볼륨까지 삭제
-docker compose logs -f web  # 로그
-docker compose ps           # 상태 확인
-```
+여러 컨테이너를 `compose.yaml` 한 파일로 정의하고 함께 관리하는 도구입니다. 설치, 파일 구조, 명령, 검증은 [Docker Compose](./docker_compose.md) 문서에서 다룹니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -502,6 +470,6 @@ docker system prune -a   # 볼륨 제외 3가지 + 미사용 네트워크 (볼�
 
 **작성일**: 2026-05-15
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

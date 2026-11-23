@@ -141,21 +141,22 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Containers
 
-| 문서                                                                                 | 설명                           |
-|--------------------------------------------------------------------------------------|--------------------------------|
-| [Docker 설치 + Compose](02_infrastructure/containers/docker_install_and_compose.md)  | 설치, daemon.json, Compose     |
-| [Docker Compose 치트시트](02_infrastructure/containers/docker_compose_cheatsheet.md) | 명령어 정리                    |
-| [Docker 가이드](02_infrastructure/containers/docker.md)                              | 이미지, 네트워크, 볼륨         |
-| [Dockerfile 작성과 빌드](02_infrastructure/containers/dockerfile_best_practices.md)  | 멀티 스테이지, BuildKit, 캐시  |
-| [컨테이너 아키텍처](02_infrastructure/containers/container_architecture.md)          | Namespace, Cgroup, OCI         |
-| [Container Runtime](02_infrastructure/containers/container_runtime.md)               | containerd, CRI-O              |
-| [Podman](02_infrastructure/containers/podman.md)                                     | rootless, Quadlet, Pod         |
-| [Kubernetes 설치](02_infrastructure/containers/kubernetes_install.md)                | k3s, kubeadm                   |
-| [Kubernetes 기본](02_infrastructure/containers/kubernetes_basic.md)                  | Pod, Deployment, Service       |
-| [Kubernetes 장애 진단](02_infrastructure/containers/kubernetes_troubleshooting.md)   | Pod 상태별 원인, kubectl debug |
-| [k3s](02_infrastructure/containers/k3s.md)                                           | 경량 K8s, SQLite 기반          |
-| [Helm](02_infrastructure/containers/helm.md)                                         | Chart, Values, Release         |
-| [n8n Docker](02_infrastructure/containers/n8n_docker_cheatsheet.md)                  | n8n 치트시트                   |
+| 문서                                                                                  | 설명                           |
+|---------------------------------------------------------------------------------------|--------------------------------|
+| [Docker 설치 + 초기 설정](02_infrastructure/containers/docker_install_and_compose.md) | 설치, daemon.json, 방화벽      |
+| [Docker Compose](02_infrastructure/containers/docker_compose.md)                      | 설치, compose.yaml, 명령, 검증 |
+| [Docker Compose 치트시트](02_infrastructure/containers/docker_compose_cheatsheet.md)  | 명령어 정리                    |
+| [Docker 가이드](02_infrastructure/containers/docker.md)                               | 이미지, 네트워크, 볼륨         |
+| [Dockerfile 작성과 빌드](02_infrastructure/containers/dockerfile_best_practices.md)   | 멀티 스테이지, BuildKit, 캐시  |
+| [컨테이너 아키텍처](02_infrastructure/containers/container_architecture.md)           | Namespace, Cgroup, OCI         |
+| [Container Runtime](02_infrastructure/containers/container_runtime.md)                | containerd, CRI-O              |
+| [Podman](02_infrastructure/containers/podman.md)                                      | rootless, Quadlet, Pod         |
+| [Kubernetes 설치](02_infrastructure/containers/kubernetes_install.md)                 | k3s, kubeadm                   |
+| [Kubernetes 기본](02_infrastructure/containers/kubernetes_basic.md)                   | Pod, Deployment, Service       |
+| [Kubernetes 장애 진단](02_infrastructure/containers/kubernetes_troubleshooting.md)    | Pod 상태별 원인, kubectl debug |
+| [k3s](02_infrastructure/containers/k3s.md)                                            | 경량 K8s, SQLite 기반          |
+| [Helm](02_infrastructure/containers/helm.md)                                          | Chart, Values, Release         |
+| [n8n Docker](02_infrastructure/containers/n8n_docker_cheatsheet.md)                   | n8n 치트시트                   |
 
 ### CI/CD
 
@@ -587,6 +588,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-19
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

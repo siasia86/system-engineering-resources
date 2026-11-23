@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- Docker Compose 독립 문서 추가 (2026-11-23, 05 DO-03 R1 배정, 05 D122): [Docker Compose](../02_infrastructure/containers/docker_compose.md)(설치, 첫 프로젝트, compose.yaml 구조, 명령, 변수와 .env, 여러 환경, 운영 설정, 검증, 트러블슈팅)를 새로 썼습니다. 기준 판은 Compose v5.8.0이고, 3절 예제와 9절 검증 명령은 Docker Engine 29.8.1·Compose v5.5.1에서 실행해 확인했습니다. 흩어져 있던 Compose 본문(docker 7장, 설치 문서 6·7장과 트러블슈팅 2행, 치트시트 2장과 4장의 리소스·헬스체크·환경 변수·프로파일)은 새 문서로 옮기고 그 자리에는 안내만 남겼습니다. 치트시트 3장 네트워크와 4장 cgroup은 R5·R9 문서를 쓸 때 옮깁니다. 파일 경로는 바뀌지 않아 [옮김 기록](MOVED.md) 대상이 아닙니다.
+
 - ISS-02 검사 예외 재검토 (2026-11-22, 05 AX-HUB-24 마무리 계획 A2·N2, 05 D158 C2): 재검토일 2026-11-30을 앞당겨 검사 도구 0.7.0으로 두 예외를 빼고 검사했고, 두 파일 모두 다시 걸렸습니다(box-chars 2건, diagram-width 4건). [network_headers](../01_fundamentals/networking/network_headers.md)는 Ethernet·TLS 그림에서 앞 필드가 끝나고 Payload가 같은 줄 오른쪽에서 시작하는 칸에 `Payload (continues)` 이름을 붙이고 경계를 `├───┴───┤`로 바꿔 예외를 없앴습니다. 한글 이름은 diagram-kr 검사에 걸려 영문으로 썼습니다. [ddos 방어 구조](../04_security/cloud/ddos_defense_architecture.md)는 사유를 "인접 박스 연결선 오탐"에서 실제 원인(오른쪽 연결선이 끝난 아래 행의 폭 차이, 공백으로 채우면 줄 끝 공백 검사와 충돌, 다시 그리면 화살표 뜻이 바뀜)으로 고치고 재검토일을 2027-02-28로 연장했습니다. 두 설정 파일, [검증 기준](verification.md), [TODO](TODO.md) 예외 표, [ISSUE](ISSUE.md) ISS-02, [HANDOFF](HANDOFF.md) 다음 기한을 함께 맞췄습니다.
 
 - TODO 대기 줄 2개 닫음 (2026-11-21, 05 AX-HUB-24, 사용자 결정 05 D156 ②): [TODO](TODO.md) 1절의 "대기 — AX-HUB-19 후속"과 "대기 — MAIN-20261113-01 / AX-HUB-20 후속"을 닫았습니다. "기존 갱신" 후보 13건(6~11·13·14·16·20·21·23·28)은 [후보 기록](tracks/MAIN-20261113-01_ax-reference-docs/40_results/CANDIDATES.md)에 그대로 보존하며, 사용자가 요청하면 TODO에 새 줄로 엽니다. 후보 파일과 `07_ai_transformation` 문서는 바꾸지 않았습니다.
@@ -1127,6 +1129,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-22
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.

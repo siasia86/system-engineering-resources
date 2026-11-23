@@ -86,69 +86,7 @@ docker system df                                 # 디스크 사용량 확인
 
 ## 2. Docker Compose 기본 명령어
 
-### 컨테이너 관리
-
-```bash
-docker compose up -d                             # 모든 서비스 시작 (백그라운드)
-docker compose up                                # 모든 서비스 시작 (포그라운드)
-docker compose down                              # 모든 서비스 중지 + 네트워크 제거
-docker compose down -v                           # 중지 + 볼륨까지 삭제
-docker compose stop <서비스>                     # 특정 서비스 중지
-docker compose start <서비스>                    # 특정 서비스 시작
-docker compose restart <서비스>                  # 특정 서비스 재시작
-docker compose ps                                # 서비스 상태 확인
-docker compose logs                              # 모든 서비스 로그
-docker compose logs -f <서비스>                  # 특정 서비스 실시간 로그
-docker compose top                               # 서비스별 프로세스 목록
-```
-
-### 컨테이너 내부 접속
-
-```bash
-docker compose exec <서비스> bash                # 서비스 컨테이너 내부 접속
-docker compose run --rm <서비스> bash            # 새 컨테이너로 실행 후 삭제
-```
-
-### 이미지/빌드 관리
-
-```bash
-docker compose pull                              # compose.yml 기준 이미지 다운로드
-docker compose build                             # Dockerfile 빌드
-docker compose build --no-cache                  # 캐시 없이 빌드
-docker compose images                            # 서비스별 이미지 확인
-```
-
-### 설정 검증
-
-```bash
-docker compose config                            # compose.yml 파싱 결과 출력 (검증)
-docker compose config --services                 # 서비스 목록만 출력
-```
-
-### 스케일링
-
-```bash
-docker compose up -d --scale <서비스>=3          # 서비스 인스턴스 수 조정
-```
-
-### 데이터 초기화
-
-```bash
-# 볼륨 초기화 후 재시작 (이 프로젝트의 named·익명 볼륨만 삭제)
-docker compose down -v
-docker compose up -d
-
-# 특정 서비스만 재생성
-docker compose up -d --force-recreate <서비스>
-```
-
-### 팁
-
-- `docker compose rm -s -v <서비스>` — 서비스 컨테이너 중지 후 삭제 + 익명 볼륨 삭제
-- `docker volume prune -f` — 사용하지 않는 익명 볼륨 삭제 (`-a`: 이름 있는 볼륨 포함)
-- `docker network inspect <project>_default` — 네트워크 확인
-- `docker compose exec <서비스> ping <다른서비스>` — 컨테이너 간 연결 테스트
-- `-f` 옵션으로 파일 지정: `docker compose -f docker-compose.prod.yml up -d`
+Compose 명령은 [Docker Compose](./docker_compose.md) 5절로 옮겼습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -235,59 +173,7 @@ services:
 
 🔵 geerlingguy systemd 이미지 README는 `--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns=host` 조합을 안내합니다. 모드별 상세는 [docker.md 11절](./docker.md#11-cgroup-namespace)을 참고합니다.
 
-### 리소스 제한
-
-```yaml
-services:
-  app:
-    deploy:
-      resources:
-        limits:
-          cpus: "2.0"
-          memory: 512M
-        reservations:
-          cpus: "0.5"
-          memory: 128M
-```
-
-### 의존성 + 헬스체크
-
-```yaml
-services:
-  app:
-    depends_on:
-      db:
-        condition: service_healthy
-  db:
-    healthcheck:
-      test: ["CMD", "pg_isready"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-```
-
-### 환경변수 관리
-
-```yaml
-services:
-  app:
-    env_file: .env                    # 파일에서 로드
-    environment:
-      - DB_HOST=db                    # 직접 지정
-      - DB_PASSWORD=${DB_PASS}        # 셸 변수 참조
-```
-
-### 프로파일 (선택적 서비스)
-
-```yaml
-services:
-  app:
-    profiles: []                      # 항상 시작
-  debug:
-    profiles: ["dev"]                 # --profile dev 시에만 시작
-
-# docker compose --profile dev up -d
-```
+리소스 제한, 의존성과 헬스체크, 환경 변수, 프로파일은 [Docker Compose](./docker_compose.md) 6~8절로 옮겼습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -314,6 +200,6 @@ services:
 
 **작성일**: 2026-03-25
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-23
 
 © 2026 siasia86. Licensed under CC BY 4.0.
