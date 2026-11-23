@@ -173,39 +173,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ## 8. 네트워크
 
-```bash
-docker network ls                              # 목록
-docker network create mynet                    # bridge 네트워크 생성
-docker network create -d macvlan \
-  --subnet 192.0.2.0/24 \
-  --gateway 192.0.2.1 \
-  -o parent=eth0 macvlan_net                   # macvlan 네트워크 생성
-docker run --network mynet nginx               # 네트워크 지정
-docker network inspect mynet                   # 상세 정보
-docker network connect mynet <컨테이너>        # 실행 중 컨테이너에 네트워크 추가
-```
-
-### 드라이버 비교
-
-| 드라이버  | MAC 주소    | 외부 직접 접속 | 호스트↔컨테이너 | 사용 사례                             |
-|-----------|-------------|----------------|-----------------|---------------------------------------|
-| `bridge`  | 가상        | 포트 포워딩    | ✅              | 기본값, 단일 호스트 개발/테스트       |
-| `macvlan` | 고유 MAC    | ✅ 직접        | ❌ (별도 설정)  | 물리 네트워크 직접 노출               |
-| `ipvlan`  | 호스트 공유 | ✅ 직접        | ❌ (별도 설정)  | MAC 제한 환경 (일부 클라우드/Hyper-V) |
-| `host`    | 호스트 공유 | ✅ 직접        | ✅              | 성능 최우선, 포트 격리 불필요         |
-| `overlay` | 가상        | 포트 포워딩    | ✅              | Swarm/멀티호스트 클러스터             |
-| `none`    | 없음        | ❌             | ❌              | 완전 격리                             |
-
-### macvlan vs ipvlan
-
-| 항목            | macvlan                           | ipvlan (L2)          |
-|-----------------|-----------------------------------|----------------------|
-| MAC 주소        | 컨테이너별 고유 MAC               | 호스트 MAC 공유      |
-| Hyper-V 설정    | MAC spoofing On 필요              | 불필요               |
-| 스위치 MAC 제한 | 포트당 MAC 수 제한에 걸릴 수 있음 | 제한 없음            |
-| 권장 환경       | 물리 서버, MAC spoofing 가능      | 클라우드 VM, Hyper-V |
-
-🟡 macvlan/ipvlan 모두 호스트→컨테이너 직접 통신이 기본적으로 불가합니다. 필요 시 호스트에 별도 macvlan/ipvlan 인터페이스를 추가합니다.
+컨테이너 네트워크 드라이버(bridge, host, none, macvlan, ipvlan, overlay)의 차이, 네트워크 명령, 포트 공개, macvlan 구성은 [Docker 네트워크](./docker_network.md) 문서로 옮겼습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

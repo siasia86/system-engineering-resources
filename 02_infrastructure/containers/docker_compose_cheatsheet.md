@@ -94,59 +94,7 @@ Compose 명령은 [Docker Compose](./docker_compose.md) 5절로 옮겼습니다.
 
 ## 3. Compose 네트워크
 
-### 네트워크 드라이버
-
-| 드라이버 | 컨테이너 IP       | 호스트→컨테이너 | 외부→컨테이너 | 사용 사례                         |
-|----------|-------------------|-----------------|---------------|-----------------------------------|
-| bridge   | 172.17.x.x (내부) | ✅              | ❌            | 기본값, 포트 포워딩으로 외부 노출 |
-| host     | 호스트 IP 공유    | ✅              | ✅            | 성능 우선, 포트 격리 불필요       |
-| macvlan  | 실제 네트워크 IP  | ❌              | ✅            | 물리 네트워크 직접 노출 (VM처럼)  |
-| ipvlan   | 실제 네트워크 IP  | ❌              | ✅            | MAC 제한 환경 (클라우드/Hyper-V)  |
-| overlay  | 가상 (멀티호스트) | ✅              | ❌            | Swarm 클러스터                    |
-| none     | 없음              | ❌              | ❌            | 완전 격리                         |
-
-### compose.yml 네트워크 설정
-
-```yaml
-# bridge (기본)
-networks:
-  app_net:
-    driver: bridge
-
-# macvlan (사내 네트워크 직접 노출)
-networks:
-  ansible_net:
-    driver: macvlan
-    driver_opts:
-      parent: eth0
-    ipam:
-      config:
-        - subnet: 192.0.2.0/24
-          gateway: 192.0.2.1
-          ip_range: 192.0.2.128/27
-
-# 서비스에 고정 IP 할당
-services:
-  ubuntu22:
-    networks:
-      ansible_net:
-        ipv4_address: 192.0.2.143
-```
-
-### 네트워크 명령어
-
-```bash
-docker network ls                                # 네트워크 목록
-docker network inspect <프로젝트>_<네트워크명>   # 상세 정보 (할당 IP 확인)
-docker network prune                             # 미사용 네트워크 삭제
-docker compose up -d --force-recreate            # 네트워크 설정 변경 후 재생성
-```
-
-### macvlan 주의사항
-
-- 호스트 → macvlan 컨테이너 직접 통신 불가 (Linux 커널 제한)
-- 해결: `docker` connection (Ansible) 또는 호스트에 macvlan sub-interface 추가
-- Hyper-V 환경에서는 가상 스위치에 MAC spoofing 허용 필요
+네트워크 드라이버 비교, compose.yml 네트워크 설정, 네트워크 명령, macvlan 주의사항은 [Docker 네트워크](./docker_network.md) 문서로 옮겼습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

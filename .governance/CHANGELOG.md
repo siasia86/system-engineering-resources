@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- Docker 네트워크 독립 문서 추가 (2026-11-23, 05 DO-03 R5 배정, 05 D122): [Docker 네트워크](../02_infrastructure/containers/docker_network.md)(드라이버 비교, bridge, 네트워크 명령, 포트 공개, Compose에서 쓰기, macvlan, 그 밖의 드라이버, 검증, 트러블슈팅)를 새로 썼습니다. bridge 이름 해석, 내부 전용 네트워크, 포트 공개 범위, host·none은 Docker Engine 29.8.1에서 실행해 확인했고, macvlan은 호스트 인터페이스를 바꾸므로 시험하지 않고 공식 문서와 대조했습니다. docker 8장, 설치 문서 9장 macvlan, 치트시트 3장 본문은 새 문서로 옮기고 안내만 남겼습니다.
+
 - Jinja2 독립 문서 추가 (2026-11-23, 05 DO-03 R4 배정, 05 D122): [Jinja2](../02_infrastructure/iac/jinja2.md)(설치, 기본 문법, 조건과 반복, 필터와 테스트, 공백 제어, 재사용, Ansible에서 쓰기, 검증, 트러블슈팅)를 새로 썼습니다. 예제는 Jinja2 3.1.6과 ansible-core 2.20.5로 렌더링해 확인했고, template 모듈 두 번째 실행 `changed=0`까지 보았습니다. [Ansible 기초 가이드](../02_infrastructure/iac/ansible_basic_guide.md) 9장 본문은 새 문서로 옮기고 안내만 남겼습니다.
 
 - ansible-lint 독립 문서 추가 (2026-11-23, 05 DO-03 R3 배정, 05 D122): [ansible-lint](../02_infrastructure/iac/ansible_lint.md)(설치, 첫 검사, profile 6단계, 자주 만나는 규칙, 설정 파일, 예외 처리, 자동 수정, CI 연결, 검증, 트러블슈팅)를 새로 썼습니다. 기준 판은 v26.11.0입니다. 사용자 승인으로 scratchpad 가상환경에 ansible-lint 26.11.0을 시험 설치해 3·7·8절 예제를 실행했고, 결과로 위반 표(`command-instead-of-shell` 추가), 요약 문구와 종료 코드, `--fix`가 고치는 규칙, 검증 2단계를 바로잡았습니다. [Ansible 기초 가이드](../02_infrastructure/iac/ansible_basic_guide.md) 19장 본문은 새 문서로 옮기고 안내만 남겼습니다.
