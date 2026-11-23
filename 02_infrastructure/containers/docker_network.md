@@ -355,7 +355,7 @@ docker run --rm --network none busybox:1.37 ip -o link    # lo 만 보임
 
 - [Docker 가이드](./docker.md) — 이미지, 컨테이너, 볼륨, cgroup
 - [Docker Compose](./docker_compose.md) — `networks:`를 쓰는 compose.yaml
-- [Docker 설치와 초기 설정](./docker_install_and_compose.md) — daemon.json, 방화벽
+- [Docker 설치와 초기 설정](./docker_install.md) — daemon.json, 방화벽
 - [Podman](./podman.md) — rootless 컨테이너 네트워크
 - [IPv4 주소 체계](../../01_fundamentals/networking/ipv4_addressing_guide.md) — CIDR, 서브넷 계산
 - [Linux namespace 개념](../../01_fundamentals/linux/namespace_concepts.md) — 네트워크 namespace

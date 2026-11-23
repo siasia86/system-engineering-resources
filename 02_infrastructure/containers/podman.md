@@ -351,7 +351,7 @@ docker-compose version    # 또는 Docker API를 쓰는 다른 도구
 - rootless에서는 컨테이너 IP로 호스트가 직접 접근하는 구성이 rootful Docker와 다르게 동작할 수 있습니다.
 - Compose의 일부 고급 옵션은 구현(docker-compose, podman-compose)에 따라 지원 범위가 다르므로 실행 전 `config`로 해석 결과를 확인합니다.
 
-Compose 문법 자체는 [Docker Compose 치트시트](./docker_compose_cheatsheet.md)를 참고합니다.
+Compose 문법 자체는 [Docker Compose 치트시트](./docker_cheatsheet.md)를 참고합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

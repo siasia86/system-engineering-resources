@@ -459,9 +459,9 @@ docker image prune -f                # 쓰지 않는 옛 이미지 정리
 
 ## 함께 보기
 
-- [Docker 설치와 초기 설정](./docker_install_and_compose.md) — Engine 설치, daemon.json, 방화벽
+- [Docker 설치와 초기 설정](./docker_install.md) — Engine 설치, daemon.json, 방화벽
 - [Docker 가이드](./docker.md) — 이미지, 컨테이너, 볼륨, cgroup
-- [Docker 명령 치트시트](./docker_compose_cheatsheet.md) — docker 명령 한 줄 정리
+- [Docker 명령 치트시트](./docker_cheatsheet.md) — docker 명령 한 줄 정리
 - [Docker 네트워크](./docker_network.md) — bridge·macvlan, 포트 공개, `networks:` 설정
 - [Dockerfile 작성과 빌드](./dockerfile_best_practices.md) — `build:`에 쓰는 이미지 만들기
 - [Podman](./podman.md) — `podman compose`와 rootless 컨테이너
