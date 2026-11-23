@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B8a 프록시·캐시 문서 (2026-11-23, 00 세션 직접 요청 DO-07): [Varnish](../02_infrastructure/web_server/varnish.md)와 [Squid](../02_infrastructure/web_server/squid.md) 문서·참조 노트를 새로 썼습니다. 두 제품 모두 컨테이너로 실행해 Varnish 캐시 적중과 Squid 전달 요청(200)을 확인했습니다. HAProxy는 기존 문서 6개로 충분해 보강 불필요로 판단하고 공통 참조 노트의 판(3.4.8·3.3.18·3.2.27)만 갱신했습니다.
+
 - DO-07 B7b 웹 서버 문서 (2026-11-23, 00 세션 직접 요청 DO-07): [Tomcat](../02_infrastructure/web_server/tomcat.md), [Caddy](../02_infrastructure/web_server/caddy.md), [IIS](../02_infrastructure/windows_server/iis.md)와 참조 노트 3개를 새로 썼습니다. Tomcat 11.0.29와 Caddy v2.11.9는 공식 컨테이너로 실행해 확인했고(Caddy 설정 예 3개 `validate` 통과), IIS는 작성 환경이 Linux라 Microsoft Learn 문서와 대조만 했습니다.
 
 - DO-07 B7a Nginx·Apache 검토 (2026-11-23, 00 세션 직접 요청 DO-07): 기존 [Nginx](../02_infrastructure/web_server/nginx_install.md)·[Apache](../02_infrastructure/web_server/apache_install.md) 문서가 설치부터 TLS·트러블슈팅까지 다뤄 새 문서 없이 보강 불필요로 판단했습니다. 공통 [웹 서버 참조 노트](../_reference/web_server_official_notes.md)의 판을 nginx.org·httpd.apache.org 기준으로 갱신(Nginx 1.31.9·1.30.7, Apache 2.4.71)하고, Apache 문서에 빠져 있던 참조 주석을 더했습니다.
