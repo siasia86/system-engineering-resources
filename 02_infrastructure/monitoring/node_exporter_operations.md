@@ -97,7 +97,9 @@ systemd collector를 켜되 필요한 유닛만 남기는 예입니다.
 | `node_cpu_frequency_hertz` | cpu·cpufreq collector가 같은 이름을 쓰던 동작이 1.12 이전 방식으로 되돌아감. 대시보드·알림이 이 지표를 쓰면 판 올린 뒤 값을 확인 |
 | 새 플래그                  | `--collector.cpufreq.enable-cpufreq-prefix`: cpufreq 지표를 `node_cpufreq_` 이름으로 분리 (v2에서 기본값이 될 예정)              |
 | 새 collector               | `tainted`(커널 tainted 상태), `resctrl`. 둘 다 기본 꺼짐                                                                         |
-| 폐지 예정 지표             | `nvme_namespace_capacity_bytes`                                                                                                  |[⬆ 목차로 돌아가기](#목차)
+| 폐지 예정 지표             | `nvme_namespace_capacity_bytes`                                                                                                  |
+
+[⬆ 목차로 돌아가기](#목차)
 
 ---
 
