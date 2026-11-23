@@ -270,40 +270,9 @@ private mode:
   container B ── own cgroup namespace
 ```
 
-### compose.yml 설정
+### systemd 포함 컨테이너
 
-호스트의 `/sys/fs/cgroup`을 bind mount하는 systemd 이미지는 이미지 README가 안내하는 대로 `host` 모드와 함께 씁니다(geerlingguy 이미지 README: `--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns=host`).
-
-```yaml
-services:
-  ubuntu22:
-    image: geerlingguy/docker-ubuntu2204-ansible
-    privileged: true
-    command: /lib/systemd/systemd
-    cgroup: host             # image README: --cgroupns=host with /sys/fs/cgroup rw
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:rw
-```
-
-### 실제 동작 확인 (테스트 결과)
-
-Docker는 컨테이너마다 고유한 cgroup 경로를 자동 할당합니다:
-
-```
-/sys/fs/cgroup/system.slice/docker-<container_id_A>.scope
-/sys/fs/cgroup/system.slice/docker-<container_id_B>.scope
-```
-
-따라서 **같은 호스트에서 systemd 컨테이너 여러 개를 동시에 실행해도 실제로는 충돌하지 않습니다.**
-`cgroup: host`에서도 컨테이너별 cgroup 경로가 따로 잡히므로 동시 실행이 가능합니다.
-
-`cgroup: private`이 유효한 경우:
-- 컨테이너 내부에서 `/sys/fs/cgroup`의 루트가 컨테이너 자신의 cgroup으로 보임 (격리 강화)
-- 컨테이너 내부 프로세스가 호스트 전체 cgroup 트리를 볼 수 없게 제한
-- 보안 격리가 필요한 일반 컨테이너에서 권장
-- 호스트 `/sys/fs/cgroup`을 rw로 bind mount하면 호스트 트리가 그대로 보이므로 위 격리 효과가 없습니다. systemd 이미지의 bind mount 구성은 위 `host` 예시를 따릅니다.
-
-🟡 Compose의 `cgroup` 속성은 Compose Specification을 따르는 Docker Compose v2에서 사용합니다. 값을 지정하지 않으면 컨테이너 런타임이 정합니다. (공식 문서: [compose-spec cgroup](https://docs.docker.com/reference/compose-file/services/#cgroup))
+컨테이너 안에서 systemd를 실행할 때의 권한·cgroup namespace 구성(구성별 시험 결과 포함), compose 설정, 여러 대 동시 실행은 [systemd 포함 컨테이너](./systemd_container.md) 문서로 옮겼습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 

@@ -102,24 +102,7 @@ Compose 명령은 [Docker Compose](./docker_compose.md) 5절로 옮겼습니다.
 
 ## 4. Compose 고급 설정
 
-### cgroup 설정
-
-```yaml
-services:
-  ubuntu22:
-    privileged: true
-    cgroup: host          # with host /sys/fs/cgroup bind mount (image README)
-    # cgroup: private     # dockerd default on cgroup v2, no host cgroup mount
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:rw
-```
-
-| cgroup 모드 | dockerd 기본값   | 용도                                                   |
-|-------------|------------------|--------------------------------------------------------|
-| `host`      | cgroup v1 호스트 | systemd 이미지 + 호스트 `/sys/fs/cgroup` rw bind mount |
-| `private`   | cgroup v2 호스트 | 일반 컨테이너 (컨테이너 자신의 cgroup만 보임)          |
-
-🔵 geerlingguy systemd 이미지 README는 `--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns=host` 조합을 안내합니다. 모드별 상세는 [docker.md 11절](./docker.md#11-cgroup-namespace)을 참고합니다.
+systemd 포함 컨테이너의 `privileged`·`cgroup` 설정은 [systemd 포함 컨테이너](./systemd_container.md) 4·5절로, cgroup namespace 모드 개념은 [docker.md 11절](./docker.md#11-cgroup-namespace)에 있습니다.
 
 리소스 제한, 의존성과 헬스체크, 환경 변수, 프로파일은 [Docker Compose](./docker_compose.md) 6~8절로 옮겼습니다.
 

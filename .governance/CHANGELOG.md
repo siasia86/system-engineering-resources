@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- systemd 포함 컨테이너 독립 문서 추가 (2026-11-23, 05 DO-03 R9 배정, 05 D122): [systemd 포함 컨테이너](../02_infrastructure/containers/systemd_container.md)(준비, 이미지 만들기, 실행 구성, Compose, 서비스 다루기, Ansible 접속, 보안 주의, 검증, 트러블슈팅)를 새로 썼습니다. Docker Engine 29.8.1에서 구성 네 가지를 시험해 `--privileged --cgroupns=private`가 동작하면서 호스트 cgroup 트리를 숨기는 것을 확인했고, 이를 권장 구성으로 적었습니다. Compose 기동과 Ansible 접속은 시험 PC의 inotify 한도에 걸려 확인하지 못했고 문서에 그렇게 적었습니다. docker 11장의 systemd 전용 부분과 치트시트 4장 cgroup 설정은 새 문서로 옮기고 안내만 남겼습니다.
+
 - Docker 네트워크 독립 문서 추가 (2026-11-23, 05 DO-03 R5 배정, 05 D122): [Docker 네트워크](../02_infrastructure/containers/docker_network.md)(드라이버 비교, bridge, 네트워크 명령, 포트 공개, Compose에서 쓰기, macvlan, 그 밖의 드라이버, 검증, 트러블슈팅)를 새로 썼습니다. bridge 이름 해석, 내부 전용 네트워크, 포트 공개 범위, host·none은 Docker Engine 29.8.1에서 실행해 확인했고, macvlan은 호스트 인터페이스를 바꾸므로 시험하지 않고 공식 문서와 대조했습니다. docker 8장, 설치 문서 9장 macvlan, 치트시트 3장 본문은 새 문서로 옮기고 안내만 남겼습니다.
 
 - Jinja2 독립 문서 추가 (2026-11-23, 05 DO-03 R4 배정, 05 D122): [Jinja2](../02_infrastructure/iac/jinja2.md)(설치, 기본 문법, 조건과 반복, 필터와 테스트, 공백 제어, 재사용, Ansible에서 쓰기, 검증, 트러블슈팅)를 새로 썼습니다. 예제는 Jinja2 3.1.6과 ansible-core 2.20.5로 렌더링해 확인했고, template 모듈 두 번째 실행 `changed=0`까지 보았습니다. [Ansible 기초 가이드](../02_infrastructure/iac/ansible_basic_guide.md) 9장 본문은 새 문서로 옮기고 안내만 남겼습니다.
