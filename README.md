@@ -94,6 +94,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [OSI 모델](01_fundamentals/networking/osi_model.md)                                          | 7계층, TCP/IP 대응, 계층별 진단    |
 | [HTTP와 HTTPS](01_fundamentals/networking/http_https.md)                                     | 판 비교, TLS·ALPN·HSTS             |
 | [FTP와 SFTP](01_fundamentals/networking/ftp_sftp.md)                                         | FTPS(vsftpd), SFTP chroot          |
+| [SSH 사용](01_fundamentals/networking/ssh.md)                                                | 키, config, ProxyJump, 포워딩      |
 
 ### CS
 

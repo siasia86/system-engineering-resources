@@ -178,6 +178,7 @@ curl의 비밀번호 인자는 셸 이력에 남으므로 실제 계정은 `~/.n
 
 ## 함께 보기
 
+- [SSH 사용](./ssh.md) — 키, config, scp·sftp 기본
 - [ufw·firewalld](../../04_security/hardening/ufw_firewalld.md) — 21·passive 포트·22 열기
 - [TLS/SSL 가이드](../../04_security/hardening/tls_ssl_guide.md) — FTPS 인증서 발급
 

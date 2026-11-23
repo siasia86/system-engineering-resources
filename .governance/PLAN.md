@@ -244,26 +244,26 @@ local 환경에 wrapper가 없으면 승인된 30 artifact를 먼저 설치합�
 
 #### 2순위 (32개)
 
-| 묶음 | 주제                                              | 32 문서 계획                                                                                                           | 비고                           |
-|------|---------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|--------------------------------|
-| B11  | OSI Model                                         | `_reference` 신규, `01_fundamentals/networking/osi_model.md` 신규 (계층별 프로토콜·장비·진단 명령)                     |                                |
-| B11  | DNS · HTTP · HTTPS                                | 기존 `dns_resolution_troubleshooting.md`·`http_methods.md`·`http_protocol_testing.md`·`tls_https_testing.md` 보강 검토 | 기존 문서 우선                 |
-| B11  | SSL / TLS                                         | 기존 TLS 문서 3개 보강 검토 (판·인증서 수명 주기)                                                                      | 기존 `_reference` 사용         |
-| B11  | SSH                                               | 기존 `ssh_security.md` 보강 검토 (설치·키·설정 검증)                                                                   | 기존 문서 우선                 |
-| B11  | FTP / SFTP                                        | `_reference` 신규, `01_fundamentals/networking/ftp_sftp.md` 신규 (vsftpd·OpenSSH SFTP, 컨테이너 시험)                  |                                |
-| B12  | SMTP · IMAP · POP3S                               | `_reference` 신규, `01_fundamentals/networking/mail_protocols.md` 신규 (Postfix·Dovecot 컨테이너 시험)                 | 메일 묶음                      |
-| B12  | SPF · Domain Keys · DMARC                         | `_reference` 신규(RFC 7208·6376·7489), `04_security/hardening/email_authentication.md` 신규                            | DNS 레코드 예는 example 도메인 |
-| B12  | White / Grey Listing                              | `email_authentication.md`의 한 절 (Postfix 정책 예)                                                                    | 같은 문서                      |
-| B13  | Nexus                                             | `_reference` 신규, `02_infrastructure/cicd/nexus.md` 신규 (Docker로 설치, 저장소, 검증)                                |                                |
-| B13  | Artifactory · Cloud Smith                         | `_reference` 2개 신규, `02_infrastructure/cicd/artifact_repository_comparison.md` 신규                                 | 상용이라 비교만                |
-| B14  | Jenkins · GitLab CI                               | 기존 `jenkins_install.md`·`jenkins_pipeline.md`·`gitlab_ci.md` 판 확인과 보강 검토                                     | 기존 문서 우선                 |
-| B14  | TeamCity · Circle CI · Octopus Deploy · Buildkite | `_reference` 4개 신규, `02_infrastructure/cicd/ci_tools_comparison.md` 신규                                            | 상용·SaaS라 비교만             |
-| B15  | OpenTelemetry                                     | `_reference` 신규, `02_infrastructure/monitoring/opentelemetry.md` 신규 (Collector 컨테이너 시험)                      |                                |
-| B15  | Jaeger                                            | `_reference` 신규, `02_infrastructure/monitoring/jaeger.md` 신규 (OpenTelemetry와 연결)                                |                                |
-| B15  | New Relic · Dynatrace                             | `_reference` 2개 신규, B9 `monitoring_saas_comparison.md`에 열 추가                                                    | 상용이라 비교만                |
-| B16  | SOPs                                              | `_reference` 신규, `02_infrastructure/iac/sops.md` 신규 (age 키, 컨테이너 시험)                                        | 요청의 SOPs는 SOPS 도구로 해석 |
-| B16  | Pulumi                                            | `_reference` 신규, `02_infrastructure/iac/pulumi.md` 신규 (로컬 backend 시험)                                          |                                |
-| B16  | Chef · Puppet · Salt                              | `_reference` 3개 신규, `02_infrastructure/iac/config_management_comparison.md` 신규 (Ansible과 비교)                   | 가이드·설치는 하지 않음        |
+| 묶음 | 주제                                              | 32 문서 계획                                                                                                                                                         | 비고                                        |
+|------|---------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
+| B11  | OSI Model                                         | `_reference` 신규, `01_fundamentals/networking/osi_model.md` 신규 (계층별 프로토콜·장비·진단 명령)                                                                   |                                             |
+| B11  | DNS · HTTP · HTTPS                                | DNS는 보강 불필요로 판단 (2026-11-23, 해석 흐름·레코드·dig 진단을 다룸). HTTP·HTTPS는 판 비교·HTTPS 흐름 개요가 없어 `01_fundamentals/networking/http_https.md` 신규 | `_reference/http_official_notes.md` 신규    |
+| B11  | SSL / TLS                                         | 보강 불필요로 판단 (2026-11-23). `tls_ssl_guide.md`·`tls_certificate_expiry_monitoring.md`·`tls_https_testing.md`가 인증서·만료·시험을 다룸, RFC 9846 반영됨         | 기존 `_reference` 사용                      |
+| B11  | SSH                                               | 기존 `ssh_security.md`는 서버 강화 문서라 그대로 두고, 클라이언트 사용 문서 `01_fundamentals/networking/ssh.md` 신규                                                 | `_reference/openssh_official_notes.md` 신규 |
+| B11  | FTP / SFTP                                        | `_reference` 신규, `01_fundamentals/networking/ftp_sftp.md` 신규 (vsftpd·OpenSSH SFTP, 컨테이너 시험)                                                                |                                             |
+| B12  | SMTP · IMAP · POP3S                               | `_reference` 신규, `01_fundamentals/networking/mail_protocols.md` 신규 (Postfix·Dovecot 컨테이너 시험)                                                               | 메일 묶음                                   |
+| B12  | SPF · Domain Keys · DMARC                         | `_reference` 신규(RFC 7208·6376·7489), `04_security/hardening/email_authentication.md` 신규                                                                          | DNS 레코드 예는 example 도메인              |
+| B12  | White / Grey Listing                              | `email_authentication.md`의 한 절 (Postfix 정책 예)                                                                                                                  | 같은 문서                                   |
+| B13  | Nexus                                             | `_reference` 신규, `02_infrastructure/cicd/nexus.md` 신규 (Docker로 설치, 저장소, 검증)                                                                              |                                             |
+| B13  | Artifactory · Cloud Smith                         | `_reference` 2개 신규, `02_infrastructure/cicd/artifact_repository_comparison.md` 신규                                                                               | 상용이라 비교만                             |
+| B14  | Jenkins · GitLab CI                               | 기존 `jenkins_install.md`·`jenkins_pipeline.md`·`gitlab_ci.md` 판 확인과 보강 검토                                                                                   | 기존 문서 우선                              |
+| B14  | TeamCity · Circle CI · Octopus Deploy · Buildkite | `_reference` 4개 신규, `02_infrastructure/cicd/ci_tools_comparison.md` 신규                                                                                          | 상용·SaaS라 비교만                          |
+| B15  | OpenTelemetry                                     | `_reference` 신규, `02_infrastructure/monitoring/opentelemetry.md` 신규 (Collector 컨테이너 시험)                                                                    |                                             |
+| B15  | Jaeger                                            | `_reference` 신규, `02_infrastructure/monitoring/jaeger.md` 신규 (OpenTelemetry와 연결)                                                                              |                                             |
+| B15  | New Relic · Dynatrace                             | `_reference` 2개 신규, B9 `monitoring_saas_comparison.md`에 열 추가                                                                                                  | 상용이라 비교만                             |
+| B16  | SOPs                                              | `_reference` 신규, `02_infrastructure/iac/sops.md` 신규 (age 키, 컨테이너 시험)                                                                                      | 요청의 SOPs는 SOPS 도구로 해석              |
+| B16  | Pulumi                                            | `_reference` 신규, `02_infrastructure/iac/pulumi.md` 신규 (로컬 backend 시험)                                                                                        |                                             |
+| B16  | Chef · Puppet · Salt                              | `_reference` 3개 신규, `02_infrastructure/iac/config_management_comparison.md` 신규 (Ansible과 비교)                                                                 | 가이드·설치는 하지 않음                     |
 
 #### 3순위 (39개)
 
