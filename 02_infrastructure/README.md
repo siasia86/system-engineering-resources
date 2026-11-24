@@ -7,7 +7,7 @@
 | 디렉토리                             | 설명                                                                     | 문서 수 |
 |--------------------------------------|--------------------------------------------------------------------------|---------|
 | [containers/](./containers/)         | 컨테이너 — Docker, Compose, Dockerfile, Podman, 런타임, Kubernetes, Helm | 17      |
-| [cicd/](./cicd/)                     | CI/CD — ArgoCD, Ansible, Jenkins, GitHub Actions, GitLab CI, Airflow     | 20      |
+| [cicd/](./cicd/)                     | CI/CD — ArgoCD, Ansible, Jenkins, GitHub Actions, GitLab CI, Airflow     | 21      |
 | [iac/](./iac/)                       | Infrastructure as Code — Ansible, Terraform, Playbook 운영               | 15      |
 | [monitoring/](./monitoring/)         | 모니터링 — Prometheus, Grafana, Zabbix, node_exporter, 시스템 메트릭     | 11      |
 | [cloud_aws/](./cloud_aws/)           | AWS 클라우드 — VPC, S3, Network Firewall, CloudWatch, 백업               | 9       |
@@ -44,6 +44,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-11-23
+**마지막 업데이트**: 2026-11-24
 
 © 2026 siasia86. Licensed under CC BY 4.0.
