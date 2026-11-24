@@ -86,7 +86,7 @@ S: 250 2.0.0 Ok: queued as 4D4D81D14B1AC
 C: QUIT
 ```
 
-- 봉투(`MAIL FROM`, `RCPT TO`)와 헤더(`From:`, `To:`)는 서로 다를 수 있습니다. 메일링 리스트·숨은 참조(BCC)가 이 차이로 동작하고, 위조도 같은 차이를 이용합니다. 그래서 SPF·DKIM·DMARC로 발신 도메인을 확인합니다.
+- 봉투(`MAIL FROM`, `RCPT TO`)와 헤더(`From:`, `To:`)는 서로 다를 수 있습니다. 메일링 리스트·숨은 참조(BCC)가 이 차이로 동작하고, 위조도 같은 차이를 이용합니다. 그래서 SPF·DKIM·DMARC로 발신 도메인을 확인합니다([메일 인증](../../04_security/hardening/email_authentication.md)).
 - 응답 코드 첫 자리: `2`는 성공, `4`는 임시 실패(나중에 재시도), `5`는 영구 실패. 자세한 코드는 [에러 코드](./error_codes.md)에 있습니다.
 - 서버가 `EHLO` 응답에 광고한 기능(`STARTTLS`, `AUTH`, `SIZE` 등)만 쓸 수 있습니다.
 
@@ -303,6 +303,7 @@ sudo doveadm mailbox status -u bob "messages unseen" INBOX
 
 ## 함께 보기
 
+- [메일 인증 (SPF · DKIM · DMARC)](../../04_security/hardening/email_authentication.md) — 발신 도메인 인증, 그레이 리스트
 - [에러 코드](./error_codes.md) — SMTP 응답 코드
 - [DNS 이름 해석과 장애 진단](./dns_resolution_troubleshooting.md) — MX·PTR 조회
 - [TLS/SSL 가이드](../../04_security/hardening/tls_ssl_guide.md) — 인증서 발급·확인

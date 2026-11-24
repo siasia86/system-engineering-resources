@@ -105,6 +105,7 @@ sources:
 | FTP·SFTP                                      | `_reference/ftp_sftp_official_notes.md`                 | RFC 959·4217, vsftpd 3.0.5                                                | 2026-11-23 |
 | OpenSSH                                       | `_reference/openssh_official_notes.md`                  | 10.6p2, ssh_config·ProxyJump                                              | 2026-11-23 |
 | 메일 프로토콜 (RFC)                           | `_reference/mail_protocols_official_notes.md`           | RFC 5321·6409·8314·9051, Postfix 3.11.8                                   | 2026-11-24 |
+| 메일 인증 (SPF·DKIM·DMARC)                    | `_reference/email_authentication_official_notes.md`     | RFC 7208·6376·9989, RFC 6647                                              | 2026-11-24 |
 | e4fsprogs (CentOS 5)                          | `_reference/e4fsprogs_centos5_notes.md`                 | 1.41.12-4.el5_10, fsck.ext4                                               | 2026-07-22 |
 | Hyper-V I/O 경합                              | `_reference/hyperv_io_contention_notes.md`              | Storage Stack·Storage QoS·성능 카운터                                     | 2026-11-16 |
 | Hyper-V I/O 경합 (CentOS 5)                   | `_reference/hyperv_centos5_io_contention_notes.md`      | Storage QoS·LIS 지원 범위·CentOS 5.11                                     | 2026-11-09 |
