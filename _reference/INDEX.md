@@ -132,6 +132,8 @@ sources:
 | GitLab                                        | `_reference/gitlab_official_notes.md`                   | CE 19.5.8, 메모리 16 GB 기준, Docker 설치                                 | 2026-11-23 |
 | Bitbucket                                     | `_reference/bitbucket_official_notes.md`                | Cloud Free 5명, Standard·Premium, Data Center                             | 2026-11-23 |
 | Nexus Repository                              | `_reference/nexus_official_notes.md`                    | 3.98.3 CE, H2·PostgreSQL, Docker 설치                                     | 2026-11-24 |
+| JFrog Artifactory                             | `_reference/artifactory_official_notes.md`              | 7.173.21 (자체 관리), 요금 2026-11                                        | 2026-11-24 |
+| Cloudsmith                                    | `_reference/cloudsmith_official_notes.md`               | SaaS, 형식 34개, cloudsmith-cli 1.31.4                                    | 2026-11-24 |
 | eBPF / bpftrace                               | `_reference/ebpf_bpftrace_official_notes.md`            | libbpf v1.8.0, bpftrace v0.27.1                                           | 2026-11-09 |
 | Linux Process / Memory / IPC                  | `_reference/linux_process_official_notes.md`            | fork/exec/wait, mmap, OOM, pipe/shm/mq                                    | 2026-11-09 |
 | GDB                                           | `_reference/gdb_official_notes.md`                      | 18.1, breakpoint/watchpoint/bt, ptrace attach                             | 2026-11-09 |

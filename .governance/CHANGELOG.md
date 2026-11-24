@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B13 아티팩트 저장소 문서 (2026-11-24, 00 세션 직접 요청 DO-07): [Nexus Repository](../02_infrastructure/cicd/nexus.md) 문서를 3.98.3 CE 컨테이너 시험(H2·PostgreSQL 17, raw·PyPI·Docker 저장소, 백업·복원)과 함께 쓰고, [아티팩트 저장소 비교](../02_infrastructure/cicd/artifact_repository_comparison.md)와 참조 노트 3개를 추가했습니다. CE EULA 수락은 사용자 승인 뒤 시험 컨테이너에서만 했습니다. Artifactory·Cloudsmith는 상용이라 실행하지 않았고, Cloudsmith 가격 페이지는 직접 열지 못해 미확인으로 남겼습니다.
+
 - DO-07 B12 메일 문서 (2026-11-24, 00 세션 직접 요청 DO-07): [메일 프로토콜](../01_fundamentals/networking/mail_protocols.md), [메일 인증](../04_security/hardening/email_authentication.md) 문서와 참조 노트 2개를 Debian 13 컨테이너(Postfix·Dovecot·OpenDKIM·OpenDMARC·postgrey) 시험과 함께 썼습니다. DMARC는 RFC 7489를 대체한 RFC 9989~9991 기준입니다. 시험 DNS 구성에서 opendkim-testkey가 레코드를 찾지 못한 원인은 미확인으로 기록했습니다.
 
 - DO-07 B11 프로토콜 기초 문서 (2026-11-23, 00 세션 직접 요청 DO-07): [OSI 모델](../01_fundamentals/networking/osi_model.md), [HTTP와 HTTPS](../01_fundamentals/networking/http_https.md), [FTP와 SFTP](../01_fundamentals/networking/ftp_sftp.md), [SSH 사용](../01_fundamentals/networking/ssh.md) 문서와 참조 노트 4개를 컨테이너 시험과 함께 썼습니다. DNS·TLS 기존 문서는 보강 불필요로 판단했습니다. Alpine 3.22 vsftpd의 FTPS 세션 뒤 종료(139)는 원인 미확인으로 기록했습니다.

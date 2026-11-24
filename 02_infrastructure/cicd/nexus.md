@@ -422,6 +422,7 @@ docker exec nexus ls -l /nexus-data/backup                   # nexus-<날짜-시
 
 ## 함께 보기
 
+- [아티팩트 저장소 비교](./artifact_repository_comparison.md) — Nexus·Artifactory·Cloudsmith 등 고르는 기준
 - [Docker Compose](../containers/docker_compose.md) — 2.2절 Compose 구성의 기본
 - [리버스 프록시](../web_server/reverse_proxy.md) — HTTPS 앞단 구성
 - [GitHub Actions](./github_actions.md) · [Jenkins Pipeline](./jenkins_pipeline.md) — CI에서 결과물 올리기
