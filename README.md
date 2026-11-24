@@ -95,6 +95,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [HTTP와 HTTPS](01_fundamentals/networking/http_https.md)                                     | 판 비교, TLS·ALPN·HSTS             |
 | [FTP와 SFTP](01_fundamentals/networking/ftp_sftp.md)                                         | FTPS(vsftpd), SFTP chroot          |
 | [SSH 사용](01_fundamentals/networking/ssh.md)                                                | 키, config, ProxyJump, 포워딩      |
+| [메일 프로토콜](01_fundamentals/networking/mail_protocols.md)                                | SMTP·IMAP·POP3, Postfix·Dovecot    |
 
 ### CS
 
@@ -626,6 +627,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-23
+**마지막 업데이트**: 2026-11-24
 
 © 2026 siasia86. Licensed under CC BY 4.0.

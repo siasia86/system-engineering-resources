@@ -104,6 +104,7 @@ sources:
 | HTTP·HTTPS (RFC)                              | `_reference/http_official_notes.md`                     | RFC 9110~9114, 9846, 6797                                                 | 2026-11-23 |
 | FTP·SFTP                                      | `_reference/ftp_sftp_official_notes.md`                 | RFC 959·4217, vsftpd 3.0.5                                                | 2026-11-23 |
 | OpenSSH                                       | `_reference/openssh_official_notes.md`                  | 10.6p2, ssh_config·ProxyJump                                              | 2026-11-23 |
+| 메일 프로토콜 (RFC)                           | `_reference/mail_protocols_official_notes.md`           | RFC 5321·6409·8314·9051, Postfix 3.11.8                                   | 2026-11-24 |
 | e4fsprogs (CentOS 5)                          | `_reference/e4fsprogs_centos5_notes.md`                 | 1.41.12-4.el5_10, fsck.ext4                                               | 2026-07-22 |
 | Hyper-V I/O 경합                              | `_reference/hyperv_io_contention_notes.md`              | Storage Stack·Storage QoS·성능 카운터                                     | 2026-11-16 |
 | Hyper-V I/O 경합 (CentOS 5)                   | `_reference/hyperv_centos5_io_contention_notes.md`      | Storage QoS·LIS 지원 범위·CentOS 5.11                                     | 2026-11-09 |
@@ -182,6 +183,6 @@ sources:
 
 **작성일**: 2026-05-22
 
-**마지막 업데이트**: 2026-11-23
+**마지막 업데이트**: 2026-11-24
 
 © 2026 siasia86. Licensed under CC BY 4.0.
