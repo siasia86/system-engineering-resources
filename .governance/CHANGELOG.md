@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B14 CI/CD 도구 (2026-11-26, 00 세션 직접 요청 DO-07): [Jenkins 설치](../02_infrastructure/cicd/jenkins_install.md)에 Docker·플러그인 미리 설치·JCasC·백업과 복원·업그레이드 절을 2.580.3 컨테이너 시험(REST 빌드, `master.key` 유무 복원 비교)과 함께 보강하고, [GitLab CI/CD](../02_infrastructure/cicd/gitlab_ci.md)에 Runner 19.6.1 컨테이너 확인(`exec` 없음, `lint`)과 컴포넌트·`auto_cancel`·CI lint API를 더했습니다. [CI/CD 도구 비교](../02_infrastructure/cicd/ci_tools_comparison.md)와 참조 노트 5개(jenkins, teamcity, circleci, buildkite, octopus_deploy)를 추가했습니다. JCasC가 Pipeline 스크립트의 `${...}`를 지우는 문제를 시험으로 찾아 `^${...}` 이스케이프를 적었습니다. TeamCity Enterprise 가격, CircleCI 추가 사용자 비용, CircleCI Server 판은 미확인으로 남겼습니다.
+
 - ART-01 Blender 2순위 문서 (2026-11-26, 사용자 직접 요청): UV와 텍스처링·조명과 렌더·애니메이션과 리깅·[지오메트리 노드](../08_art/blender/blender_geometry_nodes.md)·스컬프팅·[파일 형식](../08_art/blender/blender_file_formats.md) 문서 6개를 추가하고 참조 노트에 확인 결과를 덧붙였습니다. 모두 `bpy` 5.3.0 컨테이너 실행으로 기본값·동작을 확인했고, 5.3에서 지오메트리 노드 모디파이어 입력 접근 방식이 바뀐 점, glTF 기본값이 모디파이어를 적용하지 않는 점을 시험으로 찾아 반영했습니다. 화면 조작·GPU 렌더·외부 프로그램에서 열기는 시험하지 않았습니다.
 
 - ART-01 Art 섹션과 Blender 1순위 문서 (2026-11-26, 사용자 직접 요청): 새 최상위 폴더 `08_art/`와 [Blender 설치](../08_art/blender/blender_install.md)·화면 구성·단축키·모델링 기초·모디파이어·재질과 셰이딩 문서 6개, [참조 노트](../_reference/blender_official_notes.md)를 추가했습니다. blender.org 계열 사이트가 자동 조회에 403이라 판은 GitHub 미러 태그·판 정의 헤더와 PyPI `bpy`로, 기본값·키맵·모디파이어·재질은 `bpy` 5.3.0 컨테이너 실행으로 확인했고 시스템 요구사항·LTS 지원 기간은 검색 요약으로만 확인했습니다. 5.3에서 메뉴의 Array가 노드 에셋으로 바뀌고 내장 Array가 Legacy로 표시되는 점을 반영했습니다. DO-07 B14는 조사까지만 하고 보류했습니다.

@@ -131,6 +131,10 @@ sources:
 | GitHub                                        | `_reference/github_official_notes.md`                   | 2FA 의무화, SSH, rulesets, gh 2.105.0                                     | 2026-11-23 |
 | GitLab                                        | `_reference/gitlab_official_notes.md`                   | CE 19.5.8·19.6.2, Runner 19.6.1, 메모리 16 GB 기준, Docker 설치           | 2026-11-26 |
 | Jenkins                                       | `_reference/jenkins_official_notes.md`                  | 2.580.3 LTS, Java 21·25, JCasC·백업 컨테이너 시험                         | 2026-11-26 |
+| TeamCity                                      | `_reference/teamcity_official_notes.md`                 | 2026.2, Professional 무료 한도, Kotlin DSL                                | 2026-11-26 |
+| CircleCI                                      | `_reference/circleci_official_notes.md`                 | SaaS, 크레딧 요금제, self-hosted runner                                   | 2026-11-26 |
+| Buildkite                                     | `_reference/buildkite_official_notes.md`                | SaaS 제어 + 자체 에이전트, agent v4.12.0                                  | 2026-11-26 |
+| Octopus Deploy                                | `_reference/octopus_deploy_official_notes.md`           | Server 2026.3, 요금제, CD 개념                                            | 2026-11-26 |
 | Bitbucket                                     | `_reference/bitbucket_official_notes.md`                | Cloud Free 5명, Standard·Premium, Data Center                             | 2026-11-23 |
 | Nexus Repository                              | `_reference/nexus_official_notes.md`                    | 3.98.3 CE, H2·PostgreSQL, Docker 설치                                     | 2026-11-24 |
 | JFrog Artifactory                             | `_reference/artifactory_official_notes.md`              | 7.173.21 (자체 관리), 요금 2026-11                                        | 2026-11-24 |

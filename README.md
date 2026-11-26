@@ -179,30 +179,31 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### CI/CD
 
-| 문서                                                                                    | 설명                              |
-|-----------------------------------------------------------------------------------------|-----------------------------------|
-| [Jenkins 설치](02_infrastructure/cicd/jenkins_install.md)                               | 설치, 플러그인, 초기 설정         |
-| [Jenkins Pipeline](02_infrastructure/cicd/jenkins_pipeline.md)                          | Declarative/Scripted              |
-| [GitHub Actions](02_infrastructure/cicd/github_actions.md)                              | 워크플로우, Runner                |
-| [GitHub CLI 명령어 참조](02_infrastructure/cicd/gh_command_reference.md)                | gh 명령어, PR·Actions 실행        |
-| [GitHub](02_infrastructure/cicd/github.md)                                              | 2FA, SSH 키, PR, 브랜치 보호      |
-| [GitLab CI/CD](02_infrastructure/cicd/gitlab_ci.md)                                     | .gitlab-ci.yml, rules, Runner     |
-| [GitLab](02_infrastructure/cicd/gitlab.md)                                              | Docker 자체 설치, 운영, 백업      |
-| [Git 호스팅 비교](02_infrastructure/cicd/git_hosting_comparison.md)                     | GitHub·GitLab·Bitbucket, 이전     |
-| [Nexus Repository](02_infrastructure/cicd/nexus.md)                                     | 저장소 관리자, Docker·PyPI 프록시 |
-| [아티팩트 저장소 비교](02_infrastructure/cicd/artifact_repository_comparison.md)        | Nexus·Artifactory·Cloudsmith      |
-| [ArgoCD](02_infrastructure/cicd/argocd.md)                                              | GitOps CD, Application            |
-| [Harness](02_infrastructure/cicd/harness_inc.md)                                        | CI/CD 플랫폼                      |
-| [Git 가이드](02_infrastructure/cicd/git_guide.md)                                       | diff, log, rebase, stash          |
-| [Git 명령어 참조](02_infrastructure/cicd/git_command_reference.md)                      | 설정, 브랜치, 원격, 복구          |
-| [Airflow](02_infrastructure/cicd/airflow.md)                                            | DAG, Operator, 스케줄링           |
-| [AWS Step Functions](02_infrastructure/cicd/aws_step_functions.md)                      | 상태 머신, 워크플로우             |
-| [SVN 가이드](02_infrastructure/cicd/svn_guide.md)                                       | Subversion 기본                   |
-| [Ansible vs Jenkins](02_infrastructure/cicd/ansible_vs_jenkins.md)                      | 도구 비교                         |
-| [DevOps Toolchain](02_infrastructure/cicd/devops_toolchain.md)                          | 전체 파이프라인 도구 맵           |
-| [Infra Monorepo](02_infrastructure/cicd/infra_monorepo_and_boilerplate.md)              | 모노레포 구조, 보일러플레이트     |
-| [.gitignore 패턴](02_infrastructure/cicd/gitignore_patterns.md)                         | 언어별 패턴 정리                  |
-| [Git 이력 민감 파일 제거](02_infrastructure/cicd/git_history_sensitive_file_removal.md) | 이력 재작성 런북                  |
+| 문서                                                                                    | 설명                                                  |
+|-----------------------------------------------------------------------------------------|-------------------------------------------------------|
+| [Jenkins 설치](02_infrastructure/cicd/jenkins_install.md)                               | 설치, 플러그인, 초기 설정                             |
+| [Jenkins Pipeline](02_infrastructure/cicd/jenkins_pipeline.md)                          | Declarative/Scripted                                  |
+| [GitHub Actions](02_infrastructure/cicd/github_actions.md)                              | 워크플로우, Runner                                    |
+| [GitHub CLI 명령어 참조](02_infrastructure/cicd/gh_command_reference.md)                | gh 명령어, PR·Actions 실행                            |
+| [GitHub](02_infrastructure/cicd/github.md)                                              | 2FA, SSH 키, PR, 브랜치 보호                          |
+| [GitLab CI/CD](02_infrastructure/cicd/gitlab_ci.md)                                     | .gitlab-ci.yml, rules, Runner                         |
+| [GitLab](02_infrastructure/cicd/gitlab.md)                                              | Docker 자체 설치, 운영, 백업                          |
+| [Git 호스팅 비교](02_infrastructure/cicd/git_hosting_comparison.md)                     | GitHub·GitLab·Bitbucket, 이전                         |
+| [Nexus Repository](02_infrastructure/cicd/nexus.md)                                     | 저장소 관리자, Docker·PyPI 프록시                     |
+| [아티팩트 저장소 비교](02_infrastructure/cicd/artifact_repository_comparison.md)        | Nexus·Artifactory·Cloudsmith                          |
+| [CI/CD 도구 비교](02_infrastructure/cicd/ci_tools_comparison.md)                        | Jenkins·GitLab CI·TeamCity·CircleCI·Buildkite·Octopus |
+| [ArgoCD](02_infrastructure/cicd/argocd.md)                                              | GitOps CD, Application                                |
+| [Harness](02_infrastructure/cicd/harness_inc.md)                                        | CI/CD 플랫폼                                          |
+| [Git 가이드](02_infrastructure/cicd/git_guide.md)                                       | diff, log, rebase, stash                              |
+| [Git 명령어 참조](02_infrastructure/cicd/git_command_reference.md)                      | 설정, 브랜치, 원격, 복구                              |
+| [Airflow](02_infrastructure/cicd/airflow.md)                                            | DAG, Operator, 스케줄링                               |
+| [AWS Step Functions](02_infrastructure/cicd/aws_step_functions.md)                      | 상태 머신, 워크플로우                                 |
+| [SVN 가이드](02_infrastructure/cicd/svn_guide.md)                                       | Subversion 기본                                       |
+| [Ansible vs Jenkins](02_infrastructure/cicd/ansible_vs_jenkins.md)                      | 도구 비교                                             |
+| [DevOps Toolchain](02_infrastructure/cicd/devops_toolchain.md)                          | 전체 파이프라인 도구 맵                               |
+| [Infra Monorepo](02_infrastructure/cicd/infra_monorepo_and_boilerplate.md)              | 모노레포 구조, 보일러플레이트                         |
+| [.gitignore 패턴](02_infrastructure/cicd/gitignore_patterns.md)                         | 언어별 패턴 정리                                      |
+| [Git 이력 민감 파일 제거](02_infrastructure/cicd/git_history_sensitive_file_removal.md) | 이력 재작성 런북                                      |
 
 ### IaC
 
