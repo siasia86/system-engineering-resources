@@ -564,6 +564,9 @@ AX(AI 전환) 환경 구축 참고 자료. 도구와 무관한 환경 구축 방
 | [Blender 모델링 기초](08_art/blender/blender_modeling.md)            | 메시 구조, Edit 모드 도구, 토폴로지       |
 | [Blender 모디파이어](08_art/blender/blender_modifiers.md)            | 스택 순서, 자주 쓰는 6종, 적용 시점       |
 | [Blender 재질과 셰이딩](08_art/blender/blender_materials_shading.md) | Principled BSDF, 텍스처, 색 공간          |
+| [Blender UV와 텍스처링](08_art/blender/blender_uv_texturing.md)      | 심, 펼치기, 텍스처 페인팅, 베이크         |
+| [Blender 조명과 렌더](08_art/blender/blender_lighting_rendering.md)  | 조명, 카메라, EEVEE·Cycles, 출력          |
+| [Blender 스컬프팅](08_art/blender/blender_sculpting.md)              | 브러시, 복셀 리메시, Multires, 마스크     |
 
 [⬆ 목차로 돌아가기](#목차)
 

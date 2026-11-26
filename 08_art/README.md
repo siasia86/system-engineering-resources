@@ -4,10 +4,10 @@
 
 ## 나누는 기준
 
-| 위치                          | 다루는 내용                              |
-|-------------------------------|------------------------------------------|
-| [blender/](./blender/)        | Blender 설치·화면·모델링·재질·렌더       |
-| [_reference/](../_reference/) | 공식 원문 정리(판, 지원 기간, 시험 결과) |
+| 위치                          | 다루는 내용                                   |
+|-------------------------------|-----------------------------------------------|
+| [blender/](./blender/)        | Blender 설치·화면·모델링·재질·렌더·애니메이션 |
+| [_reference/](../_reference/) | 공식 원문 정리(판, 지원 기간, 시험 결과)      |
 
 ## Blender 문서 목록
 
@@ -19,6 +19,9 @@
 | [Blender 모델링 기초](blender/blender_modeling.md)            | 메시 구조, Edit 모드 도구, 토폴로지       | 2026-11-26 |
 | [Blender 모디파이어](blender/blender_modifiers.md)            | 스택 순서, 자주 쓰는 6종, 적용 시점       | 2026-11-26 |
 | [Blender 재질과 셰이딩](blender/blender_materials_shading.md) | Principled BSDF, 텍스처, 색 공간          | 2026-11-26 |
+| [Blender UV와 텍스처링](blender/blender_uv_texturing.md)      | 심, 펼치기, 텍스처 페인팅, 베이크         | 2026-11-26 |
+| [Blender 조명과 렌더](blender/blender_lighting_rendering.md)  | 조명, 카메라, EEVEE·Cycles, 출력          | 2026-11-26 |
+| [Blender 스컬프팅](blender/blender_sculpting.md)              | 브러시, 복셀 리메시, Multires, 마스크     | 2026-11-26 |
 
 공식 원문 정리:
 
