@@ -1,4 +1,8 @@
 # Jenkins Pipeline
+<!-- reference: _reference/jenkins_official_notes.md -->
+
+- 기준 판: Jenkins 2.580.3 LTS, Pipeline 플러그인 `workflow-aggregator` 608.v67378e9d3db_1 (2026-11-26 확인)
+- 예제 시험: 2026-11-26, 컨테이너의 선언형 Pipeline(parallel 단계, `archiveArtifacts`, `parameters`)을 REST API로 3회 실행하고 crumb·API 토큰 동작을 확인(9절 표). 그 밖의 절(공유 라이브러리, 에이전트, ECR, Prometheus 등)은 이번에 다시 실행하지 않았음
 
 ## 목차
 
@@ -396,7 +400,26 @@ environment {
 curl -X POST \
   "https://jenkins.example.com/job/my-job/build" \
   --user "<username>:<api-token>"
+
+# 매개변수가 있는 작업
+curl -X POST \
+  "https://jenkins.example.com/job/my-job/buildWithParameters?WHO=jenkins" \
+  --user "<username>:<api-token>"
 ```
+
+2.580.3 시험(2026-11-26)에서 확인한 동작:
+
+| 호출                                             | 결과                                                       |
+|--------------------------------------------------|------------------------------------------------------------|
+| 비밀번호 인증 + crumb 없는 POST                  | 403 (CSRF 보호)                                            |
+| 비밀번호 인증 + crumb(같은 세션 쿠키) POST       | 201                                                        |
+| API 토큰 인증 + crumb 없는 POST                  | 201 (토큰은 crumb 면제)                                    |
+| 첫 실행 전 `buildWithParameters`                 | 400. 선언형 `parameters` 블록은 첫 실행 뒤에 작업에 등록됨 |
+| 첫 실행을 `/build`로 한 뒤 `buildWithParameters` | 201, 매개변수 값 반영                                      |
+
+- 스크립트·자동화에는 비밀번호 대신 사용자별 API 토큰을 씁니다(사용자 설정 > Security > API Token).
+- 작업 정의를 다시 만들면(JCasC·Job DSL 재적용) 매개변수 등록도 초기화되어 다시 첫 실행이 필요했습니다.
+- 설치·JCasC·백업은 [Jenkins 설치](./jenkins_install.md) 7~9절에 있습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -835,6 +858,6 @@ stage('Integration Test') {
 
 **작성일**: 2026-04-27
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-26
 
 © 2026 siasia86. Licensed under CC BY 4.0.

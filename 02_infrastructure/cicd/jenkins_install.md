@@ -1,16 +1,39 @@
 # Jenkins 설치 가이드
+<!-- reference: _reference/jenkins_official_notes.md -->
+
+- 기준 판: Jenkins 2.580.3 LTS (2026-11-25 출시, 2026-11-26 확인), Java 21
+- 예제 시험: 2026-11-26, `jenkins/jenkins:2.580.3-jdk21` 기반 이미지에 플러그인을 미리 설치하고 JCasC로 관리자·권한·Pipeline 작업을 만든 뒤 REST API로 빌드 3회 실행, `JENKINS_HOME` 백업을 새 볼륨 2개에 복원(`master.key` 유무 비교)해 확인. 2~3절 패키지 설치, nginx 앞단, 에이전트 연결은 시험하지 않았음
 
 ## 목차
 
-| 섹션                                                                                                             |
-|------------------------------------------------------------------------------------------------------------------|
-| [1. 개요](#1-개요) / [2. Ubuntu 설치](#2-ubuntu-설치) / [3. RHEL 계열 설치](#3-rhel-계열-설치)                   |
-| [4. 초기 설정](#4-초기-설정) / [5. 기본 사용법](#5-기본-사용법) / [6. Pipeline 예시](#6-pipeline-예시)           |
-| [7. Docker Compose로 구성](#7-docker-compose로-구성) / [8. 실무 팁](#8-실무-팁) / [9. 트러블슈팅](#9-트러블슈팅) |
+| 섹션                                                                                                                                |
+|-------------------------------------------------------------------------------------------------------------------------------------|
+| [1. 개요](#1-개요) / [2. Ubuntu 설치](#2-ubuntu-설치) / [3. RHEL 계열 설치](#3-rhel-계열-설치)                                      |
+| [4. 초기 설정](#4-초기-설정) / [5. 기본 사용법](#5-기본-사용법) / [6. Pipeline 예시](#6-pipeline-예시)                              |
+| [7. Docker로 구성](#7-docker로-구성) / [8. 플러그인 미리 설치와 JCasC](#8-플러그인-미리-설치와-jcasc)                               |
+| [9. 백업과 복원](#9-백업과-복원) / [10. 업그레이드](#10-업그레이드) / [11. 실무 팁](#11-실무-팁) / [12. 트러블슈팅](#12-트러블슈팅) |
 
 ---
 
 ## 1. 개요
+
+### 판 고르기
+
+| 계열         | 주기       | 2026-11 기준         | 쓰는 곳      |
+|--------------|------------|----------------------|--------------|
+| LTS          | 약 4주마다 | 2.580.3 (2026-11-25) | 운영 서버    |
+| 주간(Weekly) | 매주       | -                    | 새 기능 시험 |
+
+- Docker 이미지 `jenkins/jenkins`의 `latest` 태그는 주간판입니다. 운영은 `lts-jdk21` 또는 판을 고정한 `2.580.3-jdk21`을 씁니다.
+- LTS 2.580.x 직전은 2.568.3(2026-09-02)입니다. LTS는 기준판(예: 2.580)을 정해 `.1`·`.2`·`.3` 수정판을 냅니다.
+
+| Java | 지원 시작 LTS           | 지원 끝(예정) |
+|------|-------------------------|---------------|
+| 25   | 2.541.1 (2026-01)       | 2029-09       |
+| 21   | 2.479.1 (2024-10)       | 2027-09       |
+| 17   | 지원 끝(마지막 2.541.3) | -             |
+
+- 2.555.1(2026-04-15)부터 Java 21 이상이 필요합니다. Java 17로는 기동하지 않습니다.
 
 ### 시스템 요구사항
 
@@ -237,19 +260,20 @@ pipeline {
 
 ---
 
-## 7. Docker Compose로 구성
+## 7. Docker로 구성
 
 ```yaml
 # compose.yaml
 services:
   jenkins:
-    image: jenkins/jenkins:lts-jdk21
+    image: jenkins/jenkins:2.580.3-jdk21   # 판 고정. lts-jdk21은 새 LTS로 바뀜
     ports:
       - "8080:8080"
-      - "50000:50000"   # Agent 연결 포트
+      - "50000:50000"   # 인바운드 에이전트용(WebSocket 에이전트만 쓰면 불필요)
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock  # 호스트 Docker 소켓 공유 (docker CLI는 별도 설치)
+    environment:
+      JAVA_OPTS: "-Xmx1g"
     restart: unless-stopped
 
 volumes:
@@ -258,16 +282,171 @@ volumes:
 
 ```bash
 docker compose up -d
+docker compose logs -f jenkins | grep -m1 "fully up and running"
 
-# 초기 패스워드 확인
+# 초기 패스워드 확인 (설치 마법사를 쓸 때만 생김)
 docker compose exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 ```
+
+- 공식 이미지에는 Docker CLI가 없습니다. 빌드에서 Docker를 쓰려면 공식 문서의 Docker-in-Docker(`docker:dind` 사이드카, TLS) 구성이나 Docker를 가진 별도 에이전트를 씁니다.
+- 호스트 `/var/run/docker.sock`을 넘기는 방식은 Jenkins가 호스트 Docker 전체(사실상 root)를 제어하게 됩니다. 공식 설치 문서는 이 방식을 안내하지 않습니다.
+- 시험: 기동 시작부터 "Jenkins is fully up and running"까지 수 초였고, Java는 21.0.13이었습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
 ---
 
-## 8. 실무 팁
+## 8. 플러그인 미리 설치와 JCasC
+
+설치 마법사와 화면 설정 대신 이미지와 YAML로 Jenkins를 만들면 같은 서버를 다시 만들 수 있습니다.
+
+```text
+jenkins-image/
+├── Dockerfile
+├── plugins.txt     설치할 플러그인 목록
+└── casc.yaml       Jenkins 설정(JCasC)
+```
+
+```dockerfile
+FROM jenkins/jenkins:2.580.3-jdk21
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+ENV CASC_JENKINS_CONFIG=/var/jenkins_home/casc.yaml
+COPY --chown=jenkins:jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
+COPY --chown=jenkins:jenkins casc.yaml /var/jenkins_home/casc.yaml
+```
+
+```text
+# plugins.txt (이름 또는 이름:판)
+workflow-aggregator
+configuration-as-code
+job-dsl
+git
+```
+
+```yaml
+# casc.yaml
+jenkins:
+  systemMessage: "Configured by JCasC"
+  numExecutors: 2
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "${ADMIN_PW}"          # 컨테이너 환경 변수에서 읽음
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+unclassified:
+  location:
+    url: "https://jenkins.example.com/"
+jobs:
+  - script: |
+      pipelineJob('hello') {
+        definition {
+          cps {
+            sandbox(true)
+            script('''
+              pipeline {
+                agent any
+                parameters { string(name: 'WHO', defaultValue: 'world') }
+                stages {
+                  stage('Build') {
+                    steps {
+                      sh 'echo build ^${BUILD_NUMBER}'
+                      writeFile file: 'out.txt', text: "hello ^${params.WHO}"
+                      archiveArtifacts artifacts: 'out.txt'
+                    }
+                  }
+                }
+              }
+            '''.stripIndent())
+          }
+        }
+      }
+```
+
+```bash
+docker build -t my-jenkins:2.580.3 jenkins-image/
+docker run -d --name jenkins -p 8080:8080 -v jenkins_home:/var/jenkins_home \
+  --env-file jenkins.env my-jenkins:2.580.3     # jenkins.env에 ADMIN_PW=... (권한 600, 저장소에 넣지 않음)
+```
+
+시험 결과(2.580.3):
+
+| 확인                                   | 결과                                                                                         |
+|----------------------------------------|----------------------------------------------------------------------------------------------|
+| 플러그인                               | 4개 지정 → 의존성 포함 63개 설치(`configuration-as-code` 2150.v9cb_6a_756737e, `git` 5.11.0) |
+| 설치 마법사                            | 건너뜀, `initialAdminPassword` 파일 없음                                                     |
+| 익명 / 관리자 / 틀린 비밀번호 API 호출 | 403 / 200 / 401                                                                              |
+| `jobs:`(Job DSL)                       | `hello` Pipeline 작업 생성                                                                   |
+| 설정 다시 읽기                         | `POST /configuration-as-code/reload`(crumb 필요)                                             |
+| 현재 설정 내보내기                     | `POST /configuration-as-code/export`                                                         |
+
+- JCasC는 YAML 안의 `${이름}`을 환경 변수로 바꿉니다. Pipeline 스크립트 안의 `${BUILD_NUMBER}`·`${params.WHO}`도 바뀌어 빈 값이 됩니다. 시험에서 이스케이프 없이 넣자 저장된 스크립트에서 변수가 모두 지워졌고, `^${...}`로 쓰자 그대로 남아 `build 4`, `hello world`가 출력되었습니다.
+- Pipeline 스크립트가 길면 YAML에 넣지 말고 `cpsScm`으로 저장소의 `Jenkinsfile`을 가리키게 합니다. 이스케이프 문제도 피할 수 있습니다.
+- 비밀번호·토큰은 YAML에 쓰지 않고 환경 변수나 비밀 파일(Docker secret 등)로 넘깁니다.
+- 내보내기 결과는 지금 설정을 YAML로 옮길 때 출발점으로 씁니다. 그대로 다시 넣으면 오류가 나는 항목도 있어 필요한 부분만 골라 씁니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 9. 백업과 복원
+
+모든 상태는 `JENKINS_HOME`(컨테이너는 `/var/jenkins_home`)에 있습니다.
+
+| 대상                            | 백업  | 이유                                                                             |
+|---------------------------------|-------|----------------------------------------------------------------------------------|
+| `*.xml`, `jobs/`, `users/`      | 함    | 설정, 작업 정의·빌드 기록, 사용자                                                |
+| `plugins/*.jpi`                 | 함    | 같은 판으로 되돌리기 위해. 풀린 `plugins/<이름>/` 폴더는 재시작 때 다시 만들어짐 |
+| `secrets/` (`master.key` 제외)  | 함    | 암호화된 비밀값(`hudson.util.Secret` 등)                                         |
+| `secrets/master.key`            | 따로  | 공식 문서: 백업에 넣지 말고 안전한 곳에 따로 보관                                |
+| `war/`, `caches/`, `workspace/` | 안 함 | 다시 만들어짐                                                                    |
+| `builds/archive`                | 선택  | 산출물을 오래 보관해야 할 때만(크기 큼)                                          |
+
+```bash
+# 컨테이너에서 백업 (master.key는 따로)
+docker exec jenkins sh -c 'cd /var/jenkins_home && tar \
+  --exclude=./war --exclude=./workspace --exclude=./caches \
+  --exclude=./secrets/master.key -czf /tmp/jenkins-home.tgz .'
+docker cp jenkins:/tmp/jenkins-home.tgz ./jenkins-home-$(date +%F).tgz
+docker cp jenkins:/var/jenkins_home/secrets/master.key ./master.key   # 별도 보관소로 옮기고 권한 600
+```
+
+시험 결과(작업 1개, 빌드 4회, 플러그인 63개):
+
+| 항목                              | 결과                                                                                                                    |
+|-----------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| `JENKINS_HOME` 크기               | 약 211MB, 위 제외 규칙으로 만든 tar.gz 약 111MB(대부분 플러그인)                                                        |
+| 새 볼륨에 복원, `master.key` 없음 | 기동은 됨, 빌드 기록 4개 복원. 로그에 `identity.key.enc is corrupted` SEVERE와 `BadPaddingException`, 식별 키 새로 생성 |
+| 새 볼륨에 복원, `master.key` 함께 | 오류 없이 기동, 빌드 기록 4개 복원                                                                                      |
+
+- `master.key`가 없으면 저장된 자격 증명·비밀값을 풀 수 없습니다. 시험에서는 인스턴스 식별 키가 깨진 것으로 확인했습니다. 복원할 때는 tar와 `master.key`를 함께 씁니다.
+- 백업 파일과 `master.key`를 같은 곳에 두면 백업이 유출될 때 비밀값도 함께 풀립니다.
+- 복원 뒤 Jenkins를 띄우기 전에 파일 소유자를 컨테이너 사용자(UID 1000)로 맞춥니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 10. 업그레이드
+
+1. 9절대로 백업합니다(`master.key` 포함 확인).
+2. LTS 변경 기록(changelog-stable)과 업그레이드 안내에서 건너뛰는 판 사이의 주의 사항을 읽습니다.
+3. 이미지 태그를 다음 LTS로 바꾸고 다시 만듭니다. 패키지 설치는 `apt upgrade jenkins`·`dnf upgrade jenkins`.
+4. 기동 뒤 `Manage Jenkins`의 경고, 플러그인 업데이트, 시스템 로그를 확인합니다.
+5. 플러그인은 스테이징에서 먼저 올려 보고, `plugins.txt`에 판을 고정해 운영과 맞춥니다.
+
+- Java 판 요구가 바뀌는 LTS(예: 2.555.1의 Java 21 요구)는 Java부터 올립니다.
+- 이 절의 판 올리기는 시험하지 않았습니다.
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 11. 실무 팁
 
 ### Tip 1: 빌드 이력 보존 기간 설정
 
@@ -311,15 +490,20 @@ Jenkins → Manage Jenkins → Nodes → New Node
 
 ---
 
-## 9. 트러블슈팅
+## 12. 트러블슈팅
 
-| 증상                     | 원인                         | 해결 방법                                                |
-|--------------------------|------------------------------|----------------------------------------------------------|
-| 웹 UI 접속 불가          | 서비스 미실행 또는 포트 차단 | `systemctl status jenkins`, 방화벽 확인                  |
-| 플러그인 설치 실패       | 네트워크 또는 프록시 문제    | Manage Jenkins → Plugin Manager → Advanced → 프록시 설정 |
-| 빌드 `Permission denied` | jenkins 사용자 권한 부족     | `usermod -aG docker jenkins` 후 재시작                   |
-| `OutOfMemoryError`       | JVM 힙 부족                  | `systemctl edit jenkins`로 `JAVA_OPTS` 조정              |
-| Git checkout 실패        | Credential 오류              | Credential ID 확인, 토큰 만료 여부 확인                  |
+| 증상                                    | 원인                                    | 해결 방법                                                              |
+|-----------------------------------------|-----------------------------------------|------------------------------------------------------------------------|
+| 웹 UI 접속 불가                         | 서비스 미실행 또는 포트 차단            | `systemctl status jenkins`, 방화벽 확인                                |
+| 플러그인 설치 실패                      | 네트워크 또는 프록시 문제               | Manage Jenkins → Plugin Manager → Advanced → 프록시 설정               |
+| 빌드 `Permission denied`                | jenkins 사용자 권한 부족                | `usermod -aG docker jenkins` 후 재시작                                 |
+| `OutOfMemoryError`                      | JVM 힙 부족                             | `systemctl edit jenkins`로 `JAVA_OPTS` 조정                            |
+| Git checkout 실패                       | Credential 오류                         | Credential ID 확인, 토큰 만료 여부 확인                                |
+| Java 17에서 기동 안 됨                  | 2.555.1부터 Java 21 이상 필요           | Java 21·25로 올림                                                      |
+| JCasC Pipeline 변수가 빈 값             | YAML의 `${...}`를 환경 변수로 치환      | `^${...}`로 이스케이프, 또는 `cpsScm`으로 `Jenkinsfile` 사용           |
+| `buildWithParameters` 400               | 선언형 `parameters`는 첫 실행 뒤 등록됨 | 처음 한 번 `/build`로 실행                                             |
+| API POST 403                            | CSRF crumb 없음                         | `/crumbIssuer/api/json`의 crumb를 같은 세션으로 보내거나 API 토큰 사용 |
+| 복원 뒤 `identity.key.enc is corrupted` | `master.key` 없이 복원                  | 백업 때 따로 보관한 `master.key`를 `secrets/`에 넣고 재기동            |
 
 ```bash
 # 로그 확인
@@ -337,6 +521,10 @@ sudo journalctl -u jenkins -f
 - Jenkins Pipeline: [jenkins.io/doc/book/pipeline](https://www.jenkins.io/doc/book/pipeline/) — ★★★☆☆
 - Jenkins Linux 설치: [jenkins.io/doc/book/installing/linux](https://www.jenkins.io/doc/book/installing/linux/) — ★★★☆☆
 - Jenkins systemd 서비스 관리: [jenkins.io/doc/book/system-administration/systemd-services](https://www.jenkins.io/doc/book/system-administration/systemd-services/) — ★★★☆☆
+- Jenkins Docker 설치: [jenkins.io/doc/book/installing/docker](https://www.jenkins.io/doc/book/installing/docker/) · [jenkinsci/docker README](https://github.com/jenkinsci/docker/blob/master/README.md) — ★★★☆☆
+- Configuration as Code: [jenkins.io/doc/book/managing/casc](https://www.jenkins.io/doc/book/managing/casc/) — ★★★☆☆
+- 백업: [jenkins.io/doc/book/system-administration/backing-up](https://www.jenkins.io/doc/book/system-administration/backing-up/) — ★★★☆☆
+- Java 지원 정책: [jenkins.io/doc/book/platform-information/support-policy-java](https://www.jenkins.io/doc/book/platform-information/support-policy-java/) · [LTS 변경 기록](https://www.jenkins.io/changelog-stable/) — ★★★☆☆
 - [jenkins_pipeline.md](./jenkins_pipeline.md)
 
 ---
@@ -354,6 +542,6 @@ sudo journalctl -u jenkins -f
 
 **작성일**: 2026-05-04
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-26
 
 © 2026 siasia86. Licensed under CC BY 4.0.
