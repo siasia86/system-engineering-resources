@@ -129,7 +129,7 @@ sources:
 | SVN (Subversion)                              | `_reference/svn_official_notes.md`                      | 1.15.0                                                                    | 2026-11-09 |
 | Git                                           | `_reference/git_official_notes.md`                      | 2.56.1                                                                    | 2026-11-16 |
 | GitHub                                        | `_reference/github_official_notes.md`                   | 2FA 의무화, SSH, rulesets, gh 2.105.0                                     | 2026-11-23 |
-| GitLab                                        | `_reference/gitlab_official_notes.md`                   | CE 19.5.8, 메모리 16 GB 기준, Docker 설치                                 | 2026-11-23 |
+| GitLab                                        | `_reference/gitlab_official_notes.md`                   | CE 19.5.8·19.6.2, Runner 19.6.1, 메모리 16 GB 기준, Docker 설치           | 2026-11-26 |
 | Jenkins                                       | `_reference/jenkins_official_notes.md`                  | 2.580.3 LTS, Java 21·25, JCasC·백업 컨테이너 시험                         | 2026-11-26 |
 | Bitbucket                                     | `_reference/bitbucket_official_notes.md`                | Cloud Free 5명, Standard·Premium, Data Center                             | 2026-11-23 |
 | Nexus Repository                              | `_reference/nexus_official_notes.md`                    | 3.98.3 CE, H2·PostgreSQL, Docker 설치                                     | 2026-11-24 |

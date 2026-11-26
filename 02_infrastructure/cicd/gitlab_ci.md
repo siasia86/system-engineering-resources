@@ -1,8 +1,12 @@
 # GitLab CI/CD
 <!-- reference: _reference/gitlab_ci_variables_official_notes.md -->
+<!-- reference: _reference/gitlab_official_notes.md -->
 
 GitLab CI/CD는 저장소 루트의 `.gitlab-ci.yml` 파일에 정의한 Pipeline을 GitLab Runner가 실행하는 구조입니다.
 이 문서는 시스템 엔지니어가 Pipeline을 읽고, 고치고, Runner를 운영할 때 필요한 문법·실행 규칙·점검 기준을 정리합니다.
+
+- 기준 판: GitLab 19.6.2, GitLab Runner 19.6.1 (2026-11-26 확인)
+- 예제 시험: 2026-11-26, `gitlab/gitlab-runner:latest`(19.6.1) 컨테이너에서 명령 목록, `register` 옵션, `exec` 명령 유무, `config.toml` 검사(`lint`)를 확인. GitLab 서버에 Runner를 등록해 Pipeline을 실행하지는 않았음
 
 ## 목차
 
@@ -233,6 +237,15 @@ test-matrix:
   script: [./run-tests.sh "$DB"]
 ```
 
+`interruptible` Job을 실제로 취소하는 규칙은 `workflow:auto_cancel`로 정합니다.
+
+```yaml
+workflow:
+  auto_cancel:
+    on_new_commit: interruptible   # conservative(초기값) | interruptible | none
+    on_job_failure: all            # all | none: Job 하나가 실패하면 나머지 취소
+```
+
 `trigger:strategy: mirror`를 주면 trigger Job이 하위 Pipeline의 상태를 그대로 따르고 다음 Stage는 하위 Pipeline이 끝날 때까지 기다립니다. 지정하지 않으면 하위 Pipeline이 만들어지는 순간 trigger Job은 성공으로 끝납니다.
 
 [⬆ 목차로 돌아가기](#목차)
@@ -312,6 +325,35 @@ deploy-stg:
   script: [./deploy.sh staging]
 ```
 
+CI/CD 컴포넌트는 입력값을 받는 재사용 단위입니다. 컴포넌트 파일 맨 위에 `spec:inputs`로 입력을 선언하고 `---` 아래에 Job을 둡니다.
+
+```yaml
+# 컴포넌트 저장소의 templates/python-test.yml
+spec:
+  inputs:
+    stage:
+      default: test
+    python_version:
+      default: "3.12"
+---
+python-test:
+  stage: $[[ inputs.stage ]]
+  image: python:$[[ inputs.python_version ]]-slim
+  script: [pytest -q]
+```
+
+```yaml
+# 사용하는 프로젝트의 .gitlab-ci.yml
+include:
+  - component: $CI_SERVER_FQDN/platform/ci-components/python-test@1.2.0
+    inputs:
+      python_version: "3.13"
+```
+
+- 컴포넌트 주소는 `<도메인>/<프로젝트 경로>/<컴포넌트 이름>@<판>` 형식이고, 판은 tag로 고정합니다.
+- `include:inputs`는 GitLab 17.0에서 정식 기능이 되었고, 한 Pipeline의 include는 기본 150개까지입니다(공식 문서 확인 2026-11-26).
+- 위 두 YAML은 공식 문법 예시를 옮긴 것이며 GitLab 서버에서 실행하지 않았습니다.
+
 `extends`는 상속 단계를 최대 11단계까지 허용하지만 공식 문서는 3단계를 넘기지 않도록 권합니다. 공통 템플릿을 브랜치 이름으로 참조하면 템플릿 저장소의 변경이 모든 프로젝트에 바로 퍼지므로, 운영 Pipeline은 tag나 커밋으로 고정합니다.
 
 [⬆ 목차로 돌아가기](#목차)
@@ -338,7 +380,7 @@ sudo dnf install gitlab-runner
 
 ### 등록
 
-현재 등록 방식은 GitLab UI(프로젝트·그룹·인스턴스의 Runner 설정)에서 Runner를 먼저 만들고, 그때 받은 Runner 인증 토큰으로 등록하는 것입니다. 예전 등록 토큰(registration token) 방식은 지원 중단(deprecated) 상태입니다.
+현재 등록 방식은 GitLab UI(프로젝트·그룹·인스턴스의 Runner 설정)에서 Runner를 먼저 만들고, 그때 받은 Runner 인증 토큰(`glrt-`로 시작)으로 등록하는 것입니다. 예전 등록 토큰(registration token) 방식은 지원 중단(deprecated) 상태이고 GitLab 20.0에서 없앨 예정입니다. Runner 19.6.1의 `register --help`에도 `--registration-token`이 "deprecated, use --token"으로 표시됩니다.
 
 ```bash
 sudo gitlab-runner register --non-interactive \
@@ -368,6 +410,33 @@ concurrent = 4                 # 이 Runner 프로세스 전체 동시 Job 수 (
     privileged = false         # true는 컨테이너에 모든 capability를 줌
     volumes = ["/cache"]
 ```
+
+### 컨테이너로 실행
+
+Runner 자체를 컨테이너로 돌리고 설정 파일만 볼륨에 둘 수 있습니다.
+
+```bash
+# 등록 (config.toml이 볼륨에 만들어짐)
+docker run --rm -it -v gitlab-runner-config:/etc/gitlab-runner gitlab/gitlab-runner:latest register
+
+# 실행 (docker executor가 호스트 Docker로 Job 컨테이너를 만듦)
+docker run -d --name gitlab-runner --restart always \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v gitlab-runner-config:/etc/gitlab-runner \
+  gitlab/gitlab-runner:latest
+```
+
+- 설정을 바꾼 뒤에는 컨테이너를 다시 시작합니다. 컨테이너 안에서 `gitlab-runner restart`를 쓰면 새 프로세스가 하나 더 뜹니다(공식 문서).
+- Docker 소켓을 넘기면 Runner 컨테이너가 호스트 Docker 전체를 제어할 수 있습니다. 신뢰하는 프로젝트의 Job만 받게 합니다.
+
+### config.toml 검사
+
+```bash
+gitlab-runner lint     # 기본 설정 파일 경로를 검사하고 Runner는 시작하지 않음
+```
+
+- 시험(19.6.1): 정상 파일은 "Configuration file is valid.", `image = 5`처럼 형식이 틀리면 "toml: line 6 (last key "runners.docker.image"): incompatible types" 오류로 끝났습니다.
+- 예전에 Job을 로컬에서 돌려 보던 `gitlab-runner exec`는 19.6.1에 없습니다("Command exec not found"). `.gitlab-ci.yml` 검사는 11절의 Pipeline editor·CI lint API를 씁니다.
 
 ### Executor 선택
 
@@ -460,6 +529,16 @@ Dockerfile 자체를 작게·안전하게 쓰는 방법은 [Dockerfile 작성과
 - CLI: GitLab CLI `glab`의 `glab ci lint` 명령으로 검사할 수 있습니다.
 - API: CI lint API 엔드포인트로 자동 검사에 붙일 수 있습니다.
 
+```bash
+# 프로젝트 문맥으로 검사 (include·변수 해석 포함). 토큰은 api 범위 필요
+jq -n --rawfile c .gitlab-ci.yml '{content: $c, dry_run: true}' \
+  | curl -s --header "PRIVATE-TOKEN: $GITLAB_TOKEN" --header "Content-Type: application/json" \
+         --data @- "https://gitlab.example.com/api/v4/projects/<프로젝트 ID>/ci/lint" \
+  | jq '{valid, errors, warnings}'
+```
+
+- `POST /projects/:id/ci/lint`는 `content`(필수)와 `dry_run`·`include_jobs`·`ref`를 받습니다. 저장소의 파일을 그대로 검사하는 `GET /projects/:id/ci/lint`도 있고, 19.6에서 이 GET 요청에 인증을 요구하는 설정(`ci_lint_api_require_authentication`)이 추가되었습니다(공식 문서 확인 2026-11-26, 실행하지 않음).
+
 ### 자주 만나는 증상
 
 | 증상                                           | 확인할 것                                                                      |
@@ -502,6 +581,6 @@ sudo gitlab-runner --debug run      # 서비스를 멈춘 상태에서 전경 �
 
 **작성일**: 2026-11-16
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-26
 
 © 2026 siasia86. Licensed under CC BY 4.0.
