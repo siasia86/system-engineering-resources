@@ -4,7 +4,7 @@
 Blender는 모델링·스컬프팅·애니메이션·렌더·합성을 한 프로그램에서 하는 무료 오픈소스(GPL) 3D 제작 도구입니다. 이 문서는 판 고르기 → OS별 설치 → 첫 실행 확인 → 설정 폴더 → 여러 판 함께 쓰기 순서로 정리합니다.
 
 - 기준 판: Blender 5.3.0 (2026-11-09 태그), LTS 5.2·4.5 (2026-11-26 확인)
-- 예제 시험: 2026-11-26, Python 3.13 컨테이너에 `bpy` 5.3.0(Blender를 Python 모듈로 빌드한 패키지)을 설치해 판, 설정 폴더, 기본 환경설정을 확인. 공식 내려받기 페이지와 매뉴얼은 자동 조회가 막혀(HTTP 403) 설치 파일 이름, 시스템 요구사항은 검색 요약으로만 확인했고 화면 설치 과정은 실행하지 않았음
+- 예제 시험: 2026-11-26, Python 3.13 컨테이너에 `bpy` 5.3.0(Blender를 Python 모듈로 빌드한 패키지)을 설치해 판, 설정 폴더, 기본 환경설정을 확인. 매뉴얼은 자동 조회가 막혀(HTTP 403) 시스템 요구사항은 검색 요약으로만 확인했고 화면 설치 과정은 실행하지 않았음. 같은 날 뒤늦게 공식 내려받기 폴더(`download.blender.org/release/Blender5.3/`)가 열려 파일 이름·체크섬을 확인하고, Linux 압축판을 컨테이너에서 풀어 실행함
 
 ## 목차
 
@@ -67,7 +67,7 @@ Blender는 약 4개월마다 새 판을 내고, 1년에 한 번 LTS(Long-term Su
 ### 3.2 macOS
 
 - 디스크 이미지(`.dmg`)를 열어 `Blender.app`을 응용 프로그램 폴더로 끌어 놓습니다.
-- Apple Silicon용과 Intel용 파일이 따로 있는지는 판마다 다르므로 내려받기 페이지에서 확인합니다(이 문서에서는 미확인).
+- 5.3.0 내려받기 폴더의 macOS 파일은 `blender-5.3.0-macos-arm64.dmg`(Apple Silicon) 하나입니다. Intel Mac용 파일은 목록에 없었습니다.
 
 ### 3.3 Linux
 
@@ -89,7 +89,15 @@ blender --version
 | Steam                   | 자동 업데이트                                                   |
 | 배포판 패키지           | `apt`·`dnf`로 설치, 판이 늦거나 일부 기능이 빠진 빌드일 수 있음 |
 
-- 받은 파일은 같은 폴더의 체크섬 파일과 `sha256sum`으로 대조합니다. 체크섬 파일 이름은 판마다 확인합니다.
+- 받은 파일은 같은 폴더의 체크섬 파일 `blender-5.3.0.sha256`(모든 OS 파일의 값이 한 파일에)으로 대조합니다.
+
+```bash
+grep linux-x64 blender-5.3.0.sha256 | sha256sum -c -
+# blender-5.3.0-linux-x64.tar.xz: OK
+```
+
+- 5.3.0 파일: Linux `linux-x64.tar.xz`, Windows `windows-x64`·`windows-arm64`의 `.msi`·`.msix`·`.zip`, macOS `macos-arm64.dmg`, 체크섬 `.sha256`·`.md5`.
+- 압축을 풀면 `blender` 실행 파일, `5.3/`(datafiles·extensions·python·scripts), `lib/`, `blender.desktop`, 아이콘이 있습니다. 화면 없는 서버에서도 X11·GL 라이브러리가 필요합니다([명령줄과 일괄 렌더](./blender_cli_batch_render.md) 8절).
 - 압축판의 `blender.desktop`과 아이콘을 `~/.local/share/applications/`에 복사하면 데스크톱 메뉴에 나옵니다.
 
 [⬆ 목차로 돌아가기](#목차)

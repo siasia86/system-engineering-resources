@@ -4,27 +4,31 @@
 
 ## 나누는 기준
 
-| 위치                          | 다루는 내용                                   |
-|-------------------------------|-----------------------------------------------|
-| [blender/](./blender/)        | Blender 설치·화면·모델링·재질·렌더·애니메이션 |
-| [_reference/](../_reference/) | 공식 원문 정리(판, 지원 기간, 시험 결과)      |
+| 위치                          | 다루는 내용                                            |
+|-------------------------------|--------------------------------------------------------|
+| [blender/](./blender/)        | Blender 설치·화면·모델링·재질·렌더·애니메이션·스크립트 |
+| [_reference/](../_reference/) | 공식 원문 정리(판, 지원 기간, 시험 결과)               |
 
 ## Blender 문서 목록
 
-| 문서                                                              | 내용                                      | 확인일     |
-|-------------------------------------------------------------------|-------------------------------------------|------------|
-| [Blender 설치](blender/blender_install.md)                        | 판 고르기(LTS·최신), OS별 설치, 설정 폴더 | 2026-11-26 |
-| [Blender 화면 구성](blender/blender_interface.md)                 | 작업 공간, 편집기, 모드, 기본 설정        | 2026-11-26 |
-| [Blender 단축키](blender/blender_shortcuts.md)                    | 초기 설정 기준 자주 쓰는 단축키           | 2026-11-26 |
-| [Blender 모델링 기초](blender/blender_modeling.md)                | 메시 구조, Edit 모드 도구, 토폴로지       | 2026-11-26 |
-| [Blender 모디파이어](blender/blender_modifiers.md)                | 스택 순서, 자주 쓰는 6종, 적용 시점       | 2026-11-26 |
-| [Blender 재질과 셰이딩](blender/blender_materials_shading.md)     | Principled BSDF, 텍스처, 색 공간          | 2026-11-26 |
-| [Blender UV와 텍스처링](blender/blender_uv_texturing.md)          | 심, 펼치기, 텍스처 페인팅, 베이크         | 2026-11-26 |
-| [Blender 조명과 렌더](blender/blender_lighting_rendering.md)      | 조명, 카메라, EEVEE·Cycles, 출력          | 2026-11-26 |
-| [Blender 스컬프팅](blender/blender_sculpting.md)                  | 브러시, 복셀 리메시, Multires, 마스크     | 2026-11-26 |
-| [Blender 애니메이션과 리깅](blender/blender_animation_rigging.md) | 키프레임, 그래프 편집기, 뼈대, 스키닝     | 2026-11-26 |
-| [Blender 지오메트리 노드](blender/blender_geometry_nodes.md)      | 필드, 인스턴스, 모디파이어 입력, 존       | 2026-11-26 |
-| [Blender 파일 형식](blender/blender_file_formats.md)              | glTF·FBX·OBJ·USD 내보내기, 왕복 시험      | 2026-11-26 |
+| 문서                                                              | 내용                                        | 확인일     |
+|-------------------------------------------------------------------|---------------------------------------------|------------|
+| [Blender 설치](blender/blender_install.md)                        | 판 고르기(LTS·최신), OS별 설치, 설정 폴더   | 2026-11-26 |
+| [Blender 화면 구성](blender/blender_interface.md)                 | 작업 공간, 편집기, 모드, 기본 설정          | 2026-11-26 |
+| [Blender 단축키](blender/blender_shortcuts.md)                    | 초기 설정 기준 자주 쓰는 단축키             | 2026-11-26 |
+| [Blender 모델링 기초](blender/blender_modeling.md)                | 메시 구조, Edit 모드 도구, 토폴로지         | 2026-11-26 |
+| [Blender 모디파이어](blender/blender_modifiers.md)                | 스택 순서, 자주 쓰는 6종, 적용 시점         | 2026-11-26 |
+| [Blender 재질과 셰이딩](blender/blender_materials_shading.md)     | Principled BSDF, 텍스처, 색 공간            | 2026-11-26 |
+| [Blender UV와 텍스처링](blender/blender_uv_texturing.md)          | 심, 펼치기, 텍스처 페인팅, 베이크           | 2026-11-26 |
+| [Blender 조명과 렌더](blender/blender_lighting_rendering.md)      | 조명, 카메라, EEVEE·Cycles, 출력            | 2026-11-26 |
+| [Blender 스컬프팅](blender/blender_sculpting.md)                  | 브러시, 복셀 리메시, Multires, 마스크       | 2026-11-26 |
+| [Blender 애니메이션과 리깅](blender/blender_animation_rigging.md) | 키프레임, 그래프 편집기, 뼈대, 스키닝       | 2026-11-26 |
+| [Blender 지오메트리 노드](blender/blender_geometry_nodes.md)      | 필드, 인스턴스, 모디파이어 입력, 존         | 2026-11-26 |
+| [Blender 파일 형식](blender/blender_file_formats.md)              | glTF·FBX·OBJ·USD 내보내기, 왕복 시험        | 2026-11-26 |
+| [Blender Python 스크립트](blender/blender_python_scripting.md)    | bpy 구조, 데이터 API, 문맥, 연산자 등록     | 2026-11-26 |
+| [Blender 명령줄과 일괄 렌더](blender/blender_cli_batch_render.md) | 인수 순서, 프레임 지정, 나눠 렌더, 컨테이너 | 2026-11-26 |
+| [Blender 애드온](blender/blender_addons.md)                       | 확장 manifest, 빌드·설치, 켜기 범위         | 2026-11-26 |
+| [Blender 트러블슈팅](blender/blender_troubleshooting.md)          | 진단 순서, 충돌 로그, 복구, 자동 실행       | 2026-11-26 |
 
 공식 원문 정리:
 

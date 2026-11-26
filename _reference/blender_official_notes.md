@@ -19,6 +19,7 @@ sources:
   - https://www.blender.org/download/lts/
   - https://developer.blender.org/docs/release_notes/
   - https://docs.blender.org/manual/en/latest/
+  - https://download.blender.org/release/Blender5.3/
 ---
 
 # Blender 공식 자료 참조 노트
@@ -36,7 +37,7 @@ sources:
 | 라이선스    | GPL-3.0 이상                                                              | 저장소 README, PyPI                       |
 
 - blender.org, docs.blender.org, download.blender.org, developer.blender.org, projects.blender.org는 이번 확인에서 자동 조회가 모두 HTTP 403이었습니다. 위 "검색 요약"은 검색 결과 요약이며 원문 문장 대조는 미완료입니다.
-- 내려받기 파일 이름(압축판·설치판)과 체크섬 파일 이름은 확인하지 못했습니다.
+- 같은 날 뒤에 `download.blender.org/release/Blender5.3/`가 기본 curl 요청에 200으로 열렸습니다(요청 방식은 바꾸지 않음). 파일: `blender-5.3.0-linux-x64.tar.xz`(406,944,100바이트, 2026-11-10 09:00), `macos-arm64.dmg`, `windows-x64`·`windows-arm64`의 `.msi`·`.msix`·`.zip`, 체크섬 `blender-5.3.0.sha256`·`.md5`. Linux 압축판 sha256 `dacb8264197a3f7f...2f22e05` 대조 OK.
 
 ## 2. 시스템 요구사항 (검색 요약, 원문 403)
 
@@ -93,7 +94,7 @@ sources:
 | 기본 키맵                  | 내장 `keymap_data/blender_default.py`에 초기 설정값(왼쪽 클릭 선택, Space 재생)을 넣어 생성 (7절)                             |
 
 - `RenderSettings.engine`의 RNA 열거 목록은 `BLENDER_EEVEE`만 돌려줬지만 `CYCLES`·`BLENDER_WORKBENCH`를 직접 지정하면 렌더됐습니다. 엔진 목록은 실행 중 등록되는 값입니다.
-- GPU 렌더(CUDA·OptiX·HIP), 화면 조작, 애드온·확장 설치는 시험하지 않았습니다.
+- GPU 렌더(CUDA·OptiX·HIP), 화면 조작은 시험하지 않았습니다. 애드온·확장 설치는 9절에서 시험했습니다.
 
 ## 5. 모디파이어 시험값 (정육면체, 평가 결과 정점/모서리/면)
 
@@ -150,3 +151,23 @@ Base Color (0.8, 0.8, 0.8, 1), Metallic 0, Roughness 0.5, IOR 1.5, Alpha 1, Thin
 | 지오메트리 노드 | GeometryNode 종류 292개. 16m² 평면 Density 10 → 정점 1924, 20 → 3844. 모디파이어 입력은 `mod.properties.inputs.<Socket_n>.value`(`mod["Socket_n"]`은 오류). Simulation·Repeat·For Each·Closure 노드 생성 가능   |
 | 스컬프팅        | 기본 브러시 64개, 처음 브러시 Draw, 크기 기준 VIEW. 복셀 크기 초기값 0.1: UV 구 482 → 2000 정점, 0.05 → 7672. Multires 3단계 정육면체 386 정점. Dyntopo Relative 12px Subdivide Collapse. 메시 대칭 초기값 꺼짐 |
 | 파일 형식       | glTF `export_apply` 꺼짐(모디파이어 미적용), USD `export_animation` 꺼짐, OBJ 가져오기 객체 회전 X 90도, STL 3각형·재질 없음. FBX `apply_scale_options` FBX_SCALE_NONE("All Local"), Add Leaf Bones 켬          |
+
+## 9. 3순위 확인 (2026-11-26, Blender 5.3.0 Linux 압축판 컨테이너)
+
+구성: `ubuntu:24.04`에 X11·GL 런타임 라이브러리 설치 뒤 공식 압축판을 `/opt`에 풂. 라이브러리 없이 실행하면 `libX11.so.6: cannot open shared object file`. 내장 Python 3.13.13, pip 26.2.2.
+
+| 분야        | 확인 결과                                                                                                                                                                                                                                                                                                                        |
+|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Python      | 객체 200개: 데이터 API 0.013초, 연산자 0.629초. 백그라운드 `view3d.snap_cursor_to_center` → `poll() failed, context is incorrect`. `temp_override`로 `modifier_add` 성공. `sys.flags.no_user_site` 1                                                                                                                             |
+| 종료 코드   | 스크립트 예외: 옵션 없음 0, `--python-exit-code 3` → 3. 없는 `.blend` 1. 강제 충돌 139와 `/tmp/blender.crash.txt`                                                                                                                                                                                                                |
+| 명령줄 렌더 | `-o`를 파일 앞에 두면 파일 값(`//from_file_`)이 이김, `-f` 뒤의 `-o`도 무시. `-f 2..3,5` 3장, `-s 1 -e 6 -j 2 -a` 1·3·5. `-x 0` 확장자 없음. `-E help` EEVEE·Workbench·Cycles. `-F FFMPEG` → `mov_0001-0006.mkv`                                                                                                                 |
+| 나눠 렌더   | `use_overwrite=False`, `use_placeholder=True` 두 프로세스가 1·3·5 / 2·4·6 렌더. 렌더 중 강제 종료하면 크기 0 파일이 남음                                                                                                                                                                                                         |
+| EGL 문구    | GPU 없는 환경에서 Workbench 렌더에 `EGL_BAD_MATCH` 3회, Cycles 0회. 결과 파일은 생성                                                                                                                                                                                                                                             |
+| 확장        | `--command extension validate`·`build`·`install-file -r user_default -e`·`list`·`remove` 동작. 모듈 `bl_ext.user_default.<id>`. `type = "addon"`이면 validate 종료 코드 1. `-e` 없으면 꺼짐. `--addons`는 이번 실행에만(클래스 등록, 환경 설정 목록에는 없음). `remove` 때 `blender_org` 폴더 없음 `[Errno 2]` 문구 뒤 제거 성공 |
+| 예전 애드온 | `scripts/addons/`의 `bl_info` 모듈을 `--addons`·`addon_utils.enable`로 켬, `save_userpref` 뒤 유지                                                                                                                                                                                                                               |
+| 자동 실행   | `use_scripts_auto_execute` 초기값 False. 기본·`-Y` 실행 안 함(`autoexec_fail` True), `-y`·`--enable-autoexec` 실행. 도움말: `-y` enable, `-Y` disable(default)                                                                                                                                                                   |
+| 복구 설정   | 자동 저장 켬·2분, `save_version` 1, Undo 32, `temporary_directory` 빈 값                                                                                                                                                                                                                                                         |
+| 텍스처 누락 | 렌더는 `WARNING Image file ... does not exist` 뒤 성공(종료 코드 0)                                                                                                                                                                                                                                                              |
+| 메뉴        | 환경 설정 탭 `Get Extensions`·`Add-ons`, `Install from Disk...`, `File > Recover > Last Session`·`Auto Save...`, External Data의 Pack Resources·Make Paths Relative·Report Missing Files·Find Missing Files. `wm.console_toggle`은 Windows에서만 Window 메뉴에 표시                                                              |
+
+- 미확인: GPU 렌더, 화면 조작, 온라인 확장 저장소, 확장 `permissions`·`wheels`, Windows·macOS 동작.
