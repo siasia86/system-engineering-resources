@@ -95,6 +95,8 @@ sources:
 | YAML Spec                                     | `_reference/yaml_spec_notes.md`                         | 1.2 (1.1 호환)                                                            | 2026-11-09 |
 | Zabbix                                        | `_reference/zabbix_official_notes.md`                   | 8.0 LTS (2026-11-05, 8.0.0 컨테이너 확인), 7.4 Standard                   | 2026-11-23 |
 | Datadog                                       | `_reference/datadog_official_notes.md`                  | Agent 7.85.5, 사이트·요금·보존 기간                                       | 2026-11-23 |
+| OpenTelemetry                                 | `_reference/opentelemetry_official_notes.md`            | Collector v0.166.0, Python SDK 1.45.2, 구성 요소 이름 밑줄 형식           | 2026-11-26 |
+| Jaeger                                        | `_reference/jaeger_official_notes.md`                   | v2.23.0, 마지막 v1.76.0, v1 HTTP 경로 제거(v2.21.0)                       | 2026-11-26 |
 | Elastic Stack (로그 수집)                     | `_reference/elastic_stack_official_notes.md`            | 9.5.6, Filebeat data stream·ILM 기본값                                    | 2026-11-23 |
 | Grafana Loki                                  | `_reference/loki_official_notes.md`                     | Loki 3.7.10, Alloy v1.22.0, Promtail EOL                                  | 2026-11-23 |
 | Graylog                                       | `_reference/graylog_official_notes.md`                  | 7.2.2, Data Node preflight                                                | 2026-11-23 |

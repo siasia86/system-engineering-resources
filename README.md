@@ -226,19 +226,21 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Monitoring
 
-| 문서                                                                                     | 설명                       |
-|------------------------------------------------------------------------------------------|----------------------------|
-| [Prometheus + Grafana](02_infrastructure/monitoring/prometheus_grafana.md)               | PromQL, 대시보드           |
-| [Prometheus 설치](02_infrastructure/monitoring/prometheus_grafana_install.md)            | 설치, Node Exporter        |
-| [node_exporter 운영](02_infrastructure/monitoring/node_exporter_operations.md)           | collector, textfile, 알림  |
-| [Zabbix](02_infrastructure/monitoring/zabbix.md)                                         | 8.0 LTS 설치, agent2, 알림 |
-| [Zabbix vs Prometheus](02_infrastructure/monitoring/zabbix_vs_prometheus.md)             | 아키텍처 비교              |
-| [모니터링 SaaS 비교](02_infrastructure/monitoring/monitoring_saas_comparison.md)         | Datadog과 자체 운영 비교   |
-| [리소스 모니터링](02_infrastructure/monitoring/resource_utilization_monitoring.md)       | CPU/메모리/디스크          |
-| [게임 인프라 KPI](02_infrastructure/monitoring/game_infra_kpi_presentation.md)           | 운영 핵심 지표             |
-| [Grafana Heatmap](02_infrastructure/monitoring/grafana_gitlab_heatmap.md)                | GitLab 커밋 히트맵         |
-| [GRAID SupremeRAID 점검](02_infrastructure/monitoring/graid_supremeraid_server_check.md) | GPU RAID 점검 가이드       |
-| [gstack](02_infrastructure/monitoring/gstack.md)                                         | Claude Code용 skill 묶음   |
+| 문서                                                                                     | 설명                                  |
+|------------------------------------------------------------------------------------------|---------------------------------------|
+| [Prometheus + Grafana](02_infrastructure/monitoring/prometheus_grafana.md)               | PromQL, 대시보드                      |
+| [Prometheus 설치](02_infrastructure/monitoring/prometheus_grafana_install.md)            | 설치, Node Exporter                   |
+| [node_exporter 운영](02_infrastructure/monitoring/node_exporter_operations.md)           | collector, textfile, 알림             |
+| [Zabbix](02_infrastructure/monitoring/zabbix.md)                                         | 8.0 LTS 설치, agent2, 알림            |
+| [Zabbix vs Prometheus](02_infrastructure/monitoring/zabbix_vs_prometheus.md)             | 아키텍처 비교                         |
+| [모니터링 SaaS 비교](02_infrastructure/monitoring/monitoring_saas_comparison.md)         | Datadog과 자체 운영 비교              |
+| [OpenTelemetry](02_infrastructure/monitoring/opentelemetry.md)                           | Collector, Python 계측, tail sampling |
+| [Jaeger](02_infrastructure/monitoring/jaeger.md)                                         | v2 트레이스 저장, Badger, v3 API      |
+| [리소스 모니터링](02_infrastructure/monitoring/resource_utilization_monitoring.md)       | CPU/메모리/디스크                     |
+| [게임 인프라 KPI](02_infrastructure/monitoring/game_infra_kpi_presentation.md)           | 운영 핵심 지표                        |
+| [Grafana Heatmap](02_infrastructure/monitoring/grafana_gitlab_heatmap.md)                | GitLab 커밋 히트맵                    |
+| [GRAID SupremeRAID 점검](02_infrastructure/monitoring/graid_supremeraid_server_check.md) | GPU RAID 점검 가이드                  |
+| [gstack](02_infrastructure/monitoring/gstack.md)                                         | Claude Code용 skill 묶음              |
 
 ### Cloud (AWS)
 
