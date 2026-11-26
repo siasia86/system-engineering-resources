@@ -5,7 +5,7 @@ tags:
   - index
   - reference
   - directory
-last_checked: 2026-11-23
+last_checked: 2026-11-26
 sources:
   - self (이 파일이 인덱스 역할)
 ---
@@ -159,6 +159,7 @@ sources:
 | Vim                                           | `_reference/vim_official_notes.md`                      | 9.2, Normal/Insert/Visual/Command 모드, 설정 파일 위치                    | 2026-11-23 |
 | nano                                          | `_reference/nano_official_notes.md`                     | 9.3, 판별 단축키, nanorc                                                  | 2026-11-23 |
 | C# / .NET                                     | `_reference/csharp_official_notes.md`                   | .NET 11 STS/C# 15, .NET 10 LTS, async/await, NRT, CLI                     | 2026-11-16 |
+| Blender                                       | `_reference/blender_official_notes.md`                  | 5.3.0, LTS 5.2·4.5, bpy 컨테이너 확인                                     | 2026-11-26 |
 
 
 ## 사용 규칙
@@ -187,6 +188,6 @@ sources:
 
 **작성일**: 2026-05-22
 
-**마지막 업데이트**: 2026-11-24
+**마지막 업데이트**: 2026-11-26
 
 © 2026 siasia86. Licensed under CC BY 4.0.

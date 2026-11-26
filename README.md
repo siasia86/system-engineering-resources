@@ -11,7 +11,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [1. Fundamentals](#1-fundamentals) / [2. Infrastructure](#2-infrastructure) |
 | [3. Engineering](#3-engineering) / [4. Security](#4-security)               |
 | [5. Database](#5-database) / [6. Career](#6-career)                         |
-| [7. AI Transformation](#7-ai-transformation)                                |
+| [7. AI Transformation](#7-ai-transformation) / [8. Art](#8-art)             |
 | [추천 학습 순서](#추천-학습-순서) / [기타 문서](#기타-문서)                 |
 
 ---
@@ -551,6 +551,21 @@ AX(AI 전환) 환경 구축 참고 자료. 도구와 무관한 환경 구축 방
 
 ---
 
+## 8. Art
+
+3D·그래픽 제작 도구의 설치·조작·제작 흐름. 도구별 폴더로 나눕니다.
+
+| 문서                                                     | 설명                                      |
+|----------------------------------------------------------|-------------------------------------------|
+| [Art 안내](08_art/README.md)                             | 나누는 기준과 문서 목록                   |
+| [Blender 설치](08_art/blender/blender_install.md)        | 판 고르기(LTS·최신), OS별 설치, 설정 폴더 |
+| [Blender 화면 구성](08_art/blender/blender_interface.md) | 작업 공간, 편집기, 모드, 시점             |
+| [Blender 단축키](08_art/blender/blender_shortcuts.md)    | 초기 설정 기준 상황별 단축키              |
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
 ## 추천 학습 순서
 
 ### 초급 (Linux 입문)
@@ -630,6 +645,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-24
+**마지막 업데이트**: 2026-11-26
 
 © 2026 siasia86. Licensed under CC BY 4.0.
