@@ -132,3 +132,21 @@ Base Color (0.8, 0.8, 0.8, 1), Metallic 0, Roughness 0.5, IOR 1.5, Alpha 1, Thin
 - 기본 설정 파일 `Blender.py`: 선택 마우스는 기본값을 지정하지 않아 첫 항목 `LEFT`, 스페이스바 기본값 `PLAY`.
 - `Params()`를 인수 없이 만들면 `select_mouse='RIGHT'`, `spacebar_action='TOOL'`이라 초기 설정과 다른 키가 나옵니다. 문서의 단축키는 초기 설정 기준으로 뽑은 값입니다.
 - 왼쪽·오른쪽 클릭 선택에 따라 달라지는 키: 문맥 메뉴(오른쪽 클릭 ↔ W), 루프 선택(Alt+왼쪽 클릭 ↔ Alt+오른쪽 클릭), 끌어서 이동, Space(재생 ↔ 도구 모음).
+
+## 8. 2순위 확인 (2026-11-26, `bpy` 5.3.0 컨테이너)
+
+| 분야            | 확인 결과                                                                                                                                                                                                       |
+|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| UV              | Unwrap 방식 Conformal(초기값)·Angle Based·Minimum Stretch, 여백 0.001. Smart UV Project 각도 66도, 섬 여백 0                                                                                                    |
+| 베이크          | Cycles 종류 12개(Combined·AO·Shadow·Position·Normal·UV·Roughness·Emit·Environment·Diffuse·Glossy·Transmission). 활성 Image Texture 노드 없으면 "No active and selected image texture node found"                |
+| 조명            | `light_add` 초기값 Point·Spot·Area 10W, Sun 1.0, Area 크기 1.0. 기본 장면 조명 Point 1000W, 반지름 0.1                                                                                                          |
+| 월드·카메라     | 월드 Background (0.051) 세기 1.0. 카메라 50mm, 센서 36mm, 클립 0.1~100m, DOF 꺼짐 F2.8                                                                                                                          |
+| Cycles          | 뷰포트 샘플 1024, Max Bounces 12, Diffuse·Glossy 4, Transmission 12, Transparent 8, 뷰포트 노이즈 제거 꺼짐                                                                                                     |
+| EEVEE           | 뷰포트 샘플 16, Ray Tracing 꺼짐(Screen-Trace), 그림자 Rays 1·Steps 6, Fast GI 켬                                                                                                                               |
+| 출력            | `media_type` IMAGE·MULTI_LAYER_IMAGE·VIDEO. VIDEO는 FFmpeg, 컨테이너 MKV·코덱 H264 초기값. 3프레임 PNG 시퀀스와 `movie_0001-0003.mkv` 생성                                                                      |
+| GPU             | GPU 없는 컨테이너에서 Cycles 장치 목록 비어 있음, CUEW 초기화 경고                                                                                                                                              |
+| 애니메이션      | 액션은 layers·slots 구조(슬롯 `OBCube`). 키 보간 Bezier·핸들 Auto Clamped. 1→25프레임 0→4: Bezier 7·13·19프레임 0.625·2.0·3.375, Linear 1·2·3. Cycles F-Modifier 24프레임 주기 반복. Auto Keying 꺼짐           |
+| 리깅            | 아마추어 표시 Octahedral, 뼈 모음 `Bones`. `ARMATURE_AUTO`로 정점 그룹·Armature 모디파이어 생성. 포즈 뼈 회전 방식 Quaternion. 위쪽 뼈 X 90도 → 끝점 (y 0.3, z 4.0)→(y -0.48, z 2.31)                           |
+| 지오메트리 노드 | GeometryNode 종류 292개. 16m² 평면 Density 10 → 정점 1924, 20 → 3844. 모디파이어 입력은 `mod.properties.inputs.<Socket_n>.value`(`mod["Socket_n"]`은 오류). Simulation·Repeat·For Each·Closure 노드 생성 가능   |
+| 스컬프팅        | 기본 브러시 64개, 처음 브러시 Draw, 크기 기준 VIEW. 복셀 크기 초기값 0.1: UV 구 482 → 2000 정점, 0.05 → 7672. Multires 3단계 정육면체 386 정점. Dyntopo Relative 12px Subdivide Collapse. 메시 대칭 초기값 꺼짐 |
+| 파일 형식       | glTF `export_apply` 꺼짐(모디파이어 미적용), USD `export_animation` 꺼짐, OBJ 가져오기 객체 회전 X 90도, STL 3각형·재질 없음. FBX `apply_scale_options` FBX_SCALE_NONE("All Local"), Add Leaf Bones 켬          |
