@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- gitleaks 대형 저장소 검사 보강 (2026-11-26, 30 세션 요청: 사용자 지시 "32 repo 에 있는 문서에 없다면, 추가 작성"): [gitleaks 가이드](../04_security/hardening/gitleaks_guide.md) 3절에 경로 인자 검사, 압축 포함 이력 전체 검사의 메모리 실측(다른 세션 보고 1건), 범위·깊이·파일 크기로 나눠 검사하는 방법, 종료 코드 137을 미검사로 다루는 기준, `--redact` 없는 보고서에 원문이 남는 점을 더했습니다. 가짜 토큰 저장소로 v8.30.1 옵션 동작을 시험해 `A..B`가 시작 커밋을 빼므로 첫 구간은 `<B>`만 써야 하는 점을 찾았습니다.
+
 - ART-01 Blender 3순위 문서 (2026-11-26, 사용자 직접 요청): [Python 스크립트](../08_art/blender/blender_python_scripting.md)·[명령줄과 일괄 렌더](../08_art/blender/blender_cli_batch_render.md)·[애드온](../08_art/blender/blender_addons.md)·[트러블슈팅](../08_art/blender/blender_troubleshooting.md) 문서 4개를 추가해 ART-01 16개를 끝냈습니다. 공식 내려받기 폴더가 열려 Linux 압축판(sha256 확인)을 컨테이너에서 실행해 확인했고, [설치](../08_art/blender/blender_install.md) 문서와 [참조 노트](../_reference/blender_official_notes.md)의 미확인이던 파일 이름·체크섬을 채웠습니다. 시험에서 스크립트 예외가 종료 코드 0으로 끝나는 점, `-o`를 파일 앞에 두면 무시되는 점, `--addons`는 이번 실행에만 켜는 점, 자동 실행을 켜는 옵션이 대문자 `-Y`가 아니라 소문자 `-y`인 점을 찾아 적었습니다.
 
 - DO-07 B15 관측 도구 (2026-11-26, 00 세션 직접 요청 DO-07): [OpenTelemetry](../02_infrastructure/monitoring/opentelemetry.md)와 [Jaeger](../02_infrastructure/monitoring/jaeger.md) 문서를 Collector v0.166.0·Jaeger v2.23.0·Python SDK 1.45.2 컨테이너 시험(OTLP/HTTP 수신, tail sampling으로 오류 트레이스만 남김, Badger 재시작 보존, v3 API)과 함께 쓰고, [모니터링 SaaS 비교](../02_infrastructure/monitoring/monitoring_saas_comparison.md)에 New Relic·Dynatrace 열과 비용, OpenTelemetry로 SaaS에 보내는 절을 더했습니다. 참조 노트 4개(opentelemetry, jaeger, new_relic, dynatrace)를 추가했습니다. 시험에서 Collector 0.166.0의 구성 요소 이름이 밑줄 형식(`otlp_grpc`, `host_metrics`)으로 바뀌어 예전 이름에 deprecated 경고가 나는 점과 Jaeger v2.21.0부터 v1 HTTP 경로(`/api/services`)가 404인 점을 찾아 적었습니다. New Relic CCU 단가와 Dynatrace 요청 제한·Managed URL은 미확인으로 남겼습니다.

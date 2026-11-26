@@ -50,7 +50,7 @@ sources:
 | GitHub References                             | `_reference/github_references.md`                       | Codex Skills·Harness/Loop·개발 절차·명세·탐색 목록                        | 2026-10-03 |
 | HashiCorp Vault                               | `_reference/hashicorp_vault_official_notes.md`          | KV·Database Dynamic Secret·라이선스                                       | 2026-08-20 |
 | GitLab CI/CD Variables                        | `_reference/gitlab_ci_variables_official_notes.md`      | Protected·Masked·File·AWS OIDC                                            | 2026-08-19 |
-| Gitleaks                                      | `_reference/gitleaks_official_notes.md`                 | v8.30.1                                                                   | 2026-11-09 |
+| Gitleaks                                      | `_reference/gitleaks_official_notes.md`                 | v8.30.1, 대형 이력 검사 시험                                              | 2026-11-26 |
 | Trivy                                         | `_reference/trivy_official_notes.md`                    | v0.76.2·GHSA-69fq 공급망 사고·action v0.36.0                              | 2026-11-10 |
 | TLS 인증서 수명 주기                          | `_reference/tls_cert_lifecycle_official_notes.md`       | BR v2.3.1·LE 45일·RFC 9773·blackbox v0.29.1                               | 2026-11-09 |
 | Lynis                                         | `_reference/lynis_official_notes.md`                    | 3.1.7·GPG 서명·프로필·보고서 형식·Hardening index                         | 2026-11-05 |

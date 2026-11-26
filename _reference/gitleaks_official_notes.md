@@ -5,7 +5,7 @@ tags:
   - gitleaks
   - secret-scanning
   - security
-last_checked: 2026-11-09
+last_checked: 2026-11-26
 sources:
   - https://api.github.com/repos/gitleaks/gitleaks/releases/latest
   - https://github.com/gitleaks/gitleaks/blob/v8.30.1/README.md
@@ -76,3 +76,8 @@ useDefault = true
 - 탐지 결과 출력에는 `--redact`를 사용하여 시크릿 노출을 줄입니다.
 - baseline은 기존 finding을 숨기는 기능이므로, 실제 시크릿을 해결한 것으로 간주하지 않습니다. 노출된 자격 증명은 별도로 폐기·교체해야 합니다.
 - GitHub Action 조직 계정 사용 시 `GITLEAKS_LICENSE`가 필요할 수 있으므로 공식 Action 문서를 확인합니다.
+
+## 6. 대형 저장소 검사 확인 (2026-11-26, v8.30.1)
+
+- 시험 저장소(가짜 토큰, 3커밋)에서 확인: `gitleaks git <경로>` 경로 인자 동작. `--redact` 없는 `-r` JSON 보고서는 `Secret` 원문 포함, `--redact`면 `Secret`·`Match`가 `REDACTED`. `--max-archive-depth 1`이면 `pack.zip!in.cfg` 탐지, 0이면 안 함. `--log-opts="A..B"`는 A 제외, `--log-opts="<B>"`는 처음부터 B까지. `--max-target-megabytes 1`이면 3MB 파일 건너뜀. 없는 경로는 종료 코드 1, `--exit-code 2`면 탐지 2·오류 1. 3커밋 최대 RSS 약 50MB.
+- 다른 세션 실측 보고(비공개 저장소 1건, 커밋 591개, 압축 파일 다수, `--max-archive-depth 3`): 여유 메모리 약 2GB에서 약 11분·최대 RSS 약 5.1GB에 OOM 종료(137), 메모리 15GB에서 12분 25초·최대 RSS 약 7.5GB·종료 코드 1·보고서 약 39MB. 이 문서 작성자가 재현하지 않았음.
