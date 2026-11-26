@@ -39,7 +39,7 @@ sources:
 | Chaos/FinOps                                  | `_reference/chaos_finops_official_notes.md`             | principlesofchaos.org / finops.org                                        | 2026-11-16 |
 | CPU 시스템 운영                               | `_reference/cpu_system_engineering_official_notes.md`   | NUMA·스케줄링·가상화·CPU 호환성                                           | 2026-08-21 |
 | Charset/Encoding                              | `_reference/charset_encoding_official_notes.md`         | RFC 3629, Unicode 18.0                                                    | 2026-11-09 |
-| Claude Code                                   | `_reference/claude_code_official_notes.md`              | v2.1.325·모델 5.5/Fable 5.1·권한·설정·hook·확장·앱                        | 2026-11-19 |
+| Claude Code                                   | `_reference/claude_code_official_notes.md`              | v2.1.325·모델 5.5/Fable 5.1·권한·설정·hook·확장·앱·Code Mode·Projects     | 2026-11-26 |
 | Codex CLI                                     | `_reference/codex_cli_official_notes.md`                | Skills 설정·plugin; v0.167.0 (로컬 도움말 v0.164.0)                       | 2026-11-09 |
 | 에이전트 지침 파일                            | `_reference/agent_instruction_files_official_notes.md`  | AGENTS.md·Codex·Claude Code 비교, 버전 표기 없음                          | 2026-11-13 |
 | Agent Skills 규격                             | `_reference/agent_skills_spec_official_notes.md`        | SKILL.md 필드·폴더·단계적 로딩, 버전 표기 없음                            | 2026-11-13 |

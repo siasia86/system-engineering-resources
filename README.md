@@ -514,6 +514,8 @@ RDBMS, NoSQL, 운영, 포렌식.
 | [Claude Code CLI Linux 가이드](06_career/ai_tools/claude/claude_code_cli_linux_guide.md) | 설치, 인증, 권한 규칙, 비대화형·CI           |
 | [Claude Code 기본 사용법](06_career/ai_tools/claude/claude_code_basics_guide.md)         | plan 모드, 컨텍스트 관리, 되돌리기           |
 | [Claude Code 데스크톱 앱](06_career/ai_tools/claude/claude_code_desktop_guide.md)        | Code 탭, SSH 세션, 사이드바 정리             |
+| [Claude Code의 Projects](06_career/ai_tools/claude/claude_code_projects.md)              | 스레드 조정, 공통 문맥, 사용량, 제한         |
+| [Claude Code의 Code Mode](06_career/ai_tools/claude/claude_code_mode.md)                 | 도구 호출을 코드로 묶는 실험 기능, 이름 구분 |
 | [Claude Code 확장 기능](06_career/ai_tools/claude/claude_code_extensions_guide.md)       | CLAUDE.md, 설정, Skills, Hooks, MCP          |
 | [Claude Code 설정 파일](06_career/ai_tools/claude/claude_code_settings_guide.md)         | 설정 층, 우선순위, 권한 규칙, hook 실패 동작 |
 | [Claude 모델 가이드](06_career/ai_tools/claude/claude_models_guide.md)                   | 라인업, 가격, 작업별 선택, 폐기 일정         |

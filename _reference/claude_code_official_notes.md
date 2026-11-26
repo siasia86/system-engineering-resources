@@ -7,7 +7,7 @@ tags:
   - anthropic
   - ai-agent
   - cli
-last_checked: 2026-11-19
+last_checked: 2026-11-26
 sources:
   - https://code.claude.com/docs/llms.txt
   - https://code.claude.com/docs/en/overview.md
@@ -46,7 +46,7 @@ sources:
 
 ## 1. 버전 상태
 
-- 2026-10-14 확인한 GitHub 최신 릴리스: `v2.1.299` (2026-10-14 게시, `gh api repos/anthropics/claude-code/releases/latest`). 2026-11-09 확인: `v2.1.319` (2026-11-06 게시). 2026-11-16 확인: `v2.1.325` (2026-11-13 게시).
+- 2026-10-14 확인한 GitHub 최신 릴리스: `v2.1.299` (2026-10-14 게시, `gh api repos/anthropics/claude-code/releases/latest`). 2026-11-09 확인: `v2.1.319` (2026-11-06 게시). 2026-11-16 확인: `v2.1.325` (2026-11-13 게시). 2026-11-26 확인: npm `@anthropic-ai/claude-code` latest `2.1.332`.
 - 공식 문서의 설치 확인 예시 출력은 `2.1.211 (Claude Code)`이며, 이는 형식 예시입니다.
 - 작성 서버의 `PATH`에는 `claude` CLI가 없습니다. 2026-10-15 데스크톱 앱이 SSH 세션용으로 설치한 `~/.claude/remote/ccd-cli/2.1.295-<빌드>`에서 `--version`을 실행해 `2.1.295 (Claude Code)`를 확인했습니다. 그 밖의 CLI 도움말·실제 실행 대조는 하지 않았고 명령·옵션은 공식 문서 기준입니다.
 - 문서에 버전 조건이 붙은 기능은 해당 버전을 함께 기록합니다. 예: 내장 기본 권한 모드 `auto`는 v2.1.283 이상.
@@ -208,7 +208,9 @@ sources:
 - 연동: Chrome, GitHub Actions, GitLab CI/CD, Code Review, Slack, Claude Tag.
 - Desktop 앱은 macOS·Windows를 지원하며 Ubuntu·Debian은 apt 설치 베타입니다. 유료 구독이 필요하고 CLI를 따로 설치하지 않아도 됩니다.
 
-- Projects (claude-projects, 2026-10-15, 2026-11-09 재확인): Pro·Max·Ultra 공개 beta, 단계적 제공(Team·Enterprise 미제공). 대화 하나가 스레드(기본 클라우드 세션)를 시작·추적하고 프로젝트 지침·메모리를 공유합니다. claude.ai/code·데스크톱 앱·모바일 앱에서만 쓰며 터미널 CLI·VS Code·JetBrains·Bedrock·Agent Platform·Foundry에서는 쓸 수 없습니다. 직접 시작한 로컬 세션은 프로젝트에 넣을 수 없고, 로컬 폴더 작업은 Remote Control(v2.1.280 이상)로 연결한 폴더에서 **Work locally** 스레드로 실행합니다(auto 모드, 프로젝트 지침은 적용·메모리 파일은 미적용). 클라우드 sandbox를 다시 열지 못하면 새 clone에서 이어가 commit하지 않은 변경이 사라질 수 있습니다. 한 사용자 전용이며 공유할 수 없습니다. 코드 작업은 github.com 저장소와 Claude GitHub App·push 권한이 필요합니다.
+- Projects (claude-projects, 2026-10-15, 2026-11-09·2026-11-26 재확인): Pro·Max·Ultra 공개 beta, 단계적 제공(Team·Enterprise 미제공). 대화 하나가 스레드(기본 클라우드 세션)를 시작·추적하고 프로젝트 지침·메모리를 공유합니다. claude.ai/code·데스크톱 앱·모바일 앱에서만 쓰며 터미널 CLI·VS Code·JetBrains·Bedrock·Agent Platform·Foundry에서는 쓸 수 없습니다. 직접 시작한 로컬 세션은 프로젝트에 넣을 수 없고, 로컬 폴더 작업은 Remote Control(v2.1.280 이상)로 연결한 폴더에서 **Work locally** 스레드로 실행합니다(auto 모드, 프로젝트 지침은 적용·메모리 파일은 미적용). 클라우드 sandbox를 다시 열지 못하면 새 clone에서 이어가 commit하지 않은 변경이 사라질 수 있습니다. 한 사용자 전용이며 공유할 수 없습니다. 코드 작업은 github.com 저장소와 Claude GitHub App·push 권한이 필요합니다. 2026-11-26 추가 확인: 스레드 하루 500개 상한, 프로젝트 지침 최대 16,000자, 업로드 1,000개·2GB·파일 480MB·폴더 10개, 클라우드 스레드는 저장소 `CLAUDE.md`·`.claude/rules/`·skill을 읽고 `.mcp.json`·settings의 hook·권한·`env`는 읽지 않음, 새 프로젝트 기본 모델 Opus(스레드 effort medium). 문서: [Projects](../06_career/ai_tools/claude/claude_code_projects.md).
+
+- Code Mode (code-mode, 2026-11-26): 실험 기능, 기본 꺼짐. Claude가 여러 도구 호출을 담은 JavaScript를 쓰고 `REPL` 도구가 실행. 요구: v2.1.323 이상(클라우드 제공자 v2.1.331), 터미널 대화형 `claude`만(VS Code·데스크톱 앱·클라우드 세션 불가), 모델 Opus 5.5·Sonnet 5.5·Haiku 5.5·Fable 5.2, gateway·Claude for Government·HIPAA·ZDR 불가. 켜기 `CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1`(프로젝트 설정에서는 무시, 어디든 `0`이면 꺼짐, managed settings로 막기만 가능). auto 분류기는 코드 단위로 검토. 코드는 10분 제한, 백그라운드 최대 2시간. Remote Control·Chrome·computer use와 함께 못 씀. 문서: [Code Mode](../06_career/ai_tools/claude/claude_code_mode.md). 실행 시험 없음.
 
 ## 12. 검증 기록
 
@@ -217,6 +219,7 @@ sources:
 - 3차 대조(2026-10-15): quickstart·interactive-mode·common-workflows·best-practices·checkpointing·commands·desktop·skills 원문을 내려받아 기본 사용법·데스크톱 앱·스킬 목록 문서의 단축키·명령·plan 모드·되돌리기 한계·SSH 요구 사항·스킬 우선순위를 확인했습니다. 사이드바 섹션 구성(Pinned·Routines·Sessions·사용자 그룹)은 공식 문서에 없어 같은 날 데스크톱 앱 SSH 세션에서 관찰한 결과로 적었습니다.
 - 4차 대조(2026-11-09): claude.com/pricing·setup·costs·claude-projects 원문과 GitHub 릴리스 API로 Ultra 플랜, 필요 계정, Projects 제공 범위, 최신 릴리스를 다시 확인했습니다.
 - 5차 대조(2026-11-19): settings·settings-reference·permissions·hooks 원문을 내려받아 [설정 파일 가이드](../06_career/ai_tools/claude/claude_code_settings_guide.md)의 층·우선순위·규칙 문법·hook 실패 동작을 확인했습니다. 로컬 `claude --version`은 `2.1.311 (Claude Code)`입니다. Codex 대응은 Codex rules 공식 문서(developers.openai.com/codex/rules)로 확인했습니다. 권한 규칙 예시의 실제 일치 여부는 세션에서 시험하지 않았습니다.
+- 6차 대조(2026-11-26): code-mode·claude-projects·agents 원문과 `llms.txt`, npm latest로 Code Mode와 Projects를 확인했습니다. Code Mode는 실행하지 않았습니다.
 - 미검증: `claude --version` 외의 터미널 명령, 직접 설치·로그인, 단축키 동작은 실행하지 않았습니다. Max 20배 요금제의 정확한 가격은 pricing 페이지 본문에서 확인하지 못했습니다.
 
 ## 13. 공식 자료

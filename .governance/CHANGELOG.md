@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- Claude Code의 Code Mode·Projects 문서 (2026-11-26, 05 총괄 배정 D187: 사용자 지시 "32 repo (세션)에 요청 하는 방향으로 작업 진행 후 파일 생성까지"): 사용자가 말한 "claude code mode"를 공식 문서의 실험 기능 Code Mode로, "프로젝트 모드"를 Projects(beta)로 정하고 [Code Mode](../06_career/ai_tools/claude/claude_code_mode.md)와 [Projects](../06_career/ai_tools/claude/claude_code_projects.md) 문서를 새로 만들었습니다. Code Mode 문서 1절에 Code 탭·권한 모드·plan 모드·fast mode·Projects와의 이름 구분 표를 두었고, [데스크톱 앱](../06_career/ai_tools/claude/claude_code_desktop_guide.md) 8절에 링크를, [참조 노트](../_reference/claude_code_official_notes.md)에 Code Mode 항목과 Projects 추가 확인을 더했습니다. 두 기능 모두 실행 시험은 하지 않았습니다.
+
 - gitleaks 대형 저장소 검사 보강 (2026-11-26, 30 세션 요청: 사용자 지시 "32 repo 에 있는 문서에 없다면, 추가 작성"): [gitleaks 가이드](../04_security/hardening/gitleaks_guide.md) 3절에 경로 인자 검사, 압축 포함 이력 전체 검사의 메모리 실측(다른 세션 보고 1건), 범위·깊이·파일 크기로 나눠 검사하는 방법, 종료 코드 137을 미검사로 다루는 기준, `--redact` 없는 보고서에 원문이 남는 점을 더했습니다. 가짜 토큰 저장소로 v8.30.1 옵션 동작을 시험해 `A..B`가 시작 커밋을 빼므로 첫 구간은 `<B>`만 써야 하는 점을 찾았습니다.
 
 - ART-01 Blender 3순위 문서 (2026-11-26, 사용자 직접 요청): [Python 스크립트](../08_art/blender/blender_python_scripting.md)·[명령줄과 일괄 렌더](../08_art/blender/blender_cli_batch_render.md)·[애드온](../08_art/blender/blender_addons.md)·[트러블슈팅](../08_art/blender/blender_troubleshooting.md) 문서 4개를 추가해 ART-01 16개를 끝냈습니다. 공식 내려받기 폴더가 열려 Linux 압축판(sha256 확인)을 컨테이너에서 실행해 확인했고, [설치](../08_art/blender/blender_install.md) 문서와 [참조 노트](../_reference/blender_official_notes.md)의 미확인이던 파일 이름·체크섬을 채웠습니다. 시험에서 스크립트 예외가 종료 코드 0으로 끝나는 점, `-o`를 파일 앞에 두면 무시되는 점, `--addons`는 이번 실행에만 켜는 점, 자동 실행을 켜는 옵션이 대문자 `-Y`가 아니라 소문자 `-y`인 점을 찾아 적었습니다.

@@ -199,6 +199,7 @@ PR 상태 확인은 GitHub CLI(`gh`) 설치와 인증이 필요합니다.
 - 그 컴퓨터의 폴더가 필요한 작업은 먼저 폴더를 Remote Control로 연결하고(데스크톱 앱 **Settings > Claude Code > Use this computer from your phone and claude.ai**에서 폴더 추가, 또는 그 폴더에서 `claude remote-control` 실행, v2.1.280 이상), 프로젝트 대화의 **+** 메뉴에서 **Work locally**로 요청합니다. 이 스레드는 auto 모드로 실행되고, 프로젝트 지침은 받지만 메모리 파일은 받지 않으며, 그 컴퓨터가 켜져 연결된 동안만 진행됩니다.
 - 클라우드 스레드의 sandbox는 턴 사이에 멈췄다가 다시 열립니다. 다시 열지 못하면 새 clone에서 이어가므로 commit하지 않은 변경이 사라질 수 있습니다. 긴 작업은 중간 commit·push를 요청합니다.
 - claude.ai 채팅의 이전 Projects(대화와 참고 파일 묶음)와는 다른 기능입니다.
+- 개념·구성·지침과 메모리·사용량·제한은 [Claude Code의 Projects](./claude_code_projects.md)에 정리했습니다(2026-11-26 확인).
 - 한 세션 안에서 끝나는 작업이나 로컬 서버 작업이 중심이면 Code 세션이 단순합니다. 여러 저장소에 걸치거나 계속 작업이 들어오는 목표라면 프로젝트가 맞습니다.
 
 [⬆ 목차로 돌아가기](#목차)
@@ -288,6 +289,6 @@ Windows·Linux 기준이며 macOS는 `Ctrl` 대신 `Cmd`를 씁니다. 세션 �
 
 **작성일**: 2026-10-15
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-26
 
 © 2026 siasia86. Licensed under CC BY 4.0.
