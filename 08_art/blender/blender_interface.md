@@ -193,6 +193,7 @@ Blender 화면은 작업 공간(Workspace) 탭 아래에 여러 편집기(Editor
 
 - [Blender 설치](./blender_install.md) — 판 고르기, 설정 폴더
 - [Blender 단축키](./blender_shortcuts.md) — 초기 설정 기준 단축키
+- [Blender 재질과 셰이딩](./blender_materials_shading.md) — Shading 작업 공간에서 재질 만들기
 
 ---
 

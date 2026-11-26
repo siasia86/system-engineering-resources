@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- ART-01 Art 섹션과 Blender 1순위 문서 (2026-11-26, 사용자 직접 요청): 새 최상위 폴더 `08_art/`와 [Blender 설치](../08_art/blender/blender_install.md)·화면 구성·단축키·모델링 기초·모디파이어·재질과 셰이딩 문서 6개, [참조 노트](../_reference/blender_official_notes.md)를 추가했습니다. blender.org 계열 사이트가 자동 조회에 403이라 판은 GitHub 미러 태그·판 정의 헤더와 PyPI `bpy`로, 기본값·키맵·모디파이어·재질은 `bpy` 5.3.0 컨테이너 실행으로 확인했고 시스템 요구사항·LTS 지원 기간은 검색 요약으로만 확인했습니다. 5.3에서 메뉴의 Array가 노드 에셋으로 바뀌고 내장 Array가 Legacy로 표시되는 점을 반영했습니다. DO-07 B14는 조사까지만 하고 보류했습니다.
+
 - DO-07 B13 아티팩트 저장소 문서 (2026-11-24, 00 세션 직접 요청 DO-07): [Nexus Repository](../02_infrastructure/cicd/nexus.md) 문서를 3.98.3 CE 컨테이너 시험(H2·PostgreSQL 17, raw·PyPI·Docker 저장소, 백업·복원)과 함께 쓰고, [아티팩트 저장소 비교](../02_infrastructure/cicd/artifact_repository_comparison.md)와 참조 노트 3개를 추가했습니다. CE EULA 수락은 사용자 승인 뒤 시험 컨테이너에서만 했습니다. Artifactory·Cloudsmith는 상용이라 실행하지 않았고, Cloudsmith 가격 페이지는 직접 열지 못해 미확인으로 남겼습니다.
 
 - DO-07 B12 메일 문서 (2026-11-24, 00 세션 직접 요청 DO-07): [메일 프로토콜](../01_fundamentals/networking/mail_protocols.md), [메일 인증](../04_security/hardening/email_authentication.md) 문서와 참조 노트 2개를 Debian 13 컨테이너(Postfix·Dovecot·OpenDKIM·OpenDMARC·postgrey) 시험과 함께 썼습니다. DMARC는 RFC 7489를 대체한 RFC 9989~9991 기준입니다. 시험 DNS 구성에서 opendkim-testkey가 레코드를 찾지 못한 원인은 미확인으로 기록했습니다.
@@ -1191,6 +1193,6 @@
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-23
+**마지막 업데이트**: 2026-11-26
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -97,19 +97,35 @@ sources:
 
 ## 5. 모디파이어 시험값 (정육면체, 평가 결과 정점/모서리/면)
 
-| 모디파이어          | 기본값                                 | 결과                          |
-|---------------------|----------------------------------------|-------------------------------|
-| Subdivision Surface | 단계 2로 설정                          | 98/192/96                     |
-| Mirror              | X축만, Merge 켬, Clipping 끔           | 16/24/12 (원점 기준 복제)     |
-| Array               | Fixed Count, 상대 간격 X 1.0, Merge 끔 | 개수 3에서 24/36/18           |
-| Solidify            | 두께 0.01                              | 16/24/12                      |
-| Bevel               | 폭 0.1, 분할 1, 제한 방식 Angle        | 24/48/26                      |
-| Boolean             | Difference, 해법 Exact                 | UV 구와 겹쳐 265/526/263      |
-| Apply               | 스택 첫 모디파이어 적용                | 메시에 반영되고 스택에서 빠짐 |
+| 모디파이어          | 기본값                                        | 결과                                                    |
+|---------------------|-----------------------------------------------|---------------------------------------------------------|
+| Subdivision Surface | 단계 2로 설정                                 | 98/192/96                                               |
+| Mirror              | X축만, Merge 켬, Clipping 끔                  | 16/24/12 (원점 기준 복제)                               |
+| Array (Legacy)      | Fixed Count, 상대 간격 X 1.0, Merge 끔        | 개수 3에서 24/36/18                                     |
+| Array (노드 에셋)   | 모양 Line, 개수 3, 상대 간격 X 1.0, Merge 끔  | 그대로 24/36/18                                         |
+| Solidify            | 두께 0.01                                     | 16/24/12                                                |
+| Bevel               | 폭 0.1, 분할 1, 제한 방식 Angle               | 24/48/26                                                |
+| Boolean             | Difference, 해법 Exact (Float·Exact·Manifold) | UV 구 265/526/263, 원기둥 구멍은 세 해법 모두 72/112/40 |
+| Apply               | Array(Legacy, 2개)·Subdivision 중 첫째 적용   | 메시 16/24/12, 스택에 Subdivision만 남음                |
+| 순서                | Subdivision 1 → Bevel 0.05 / 반대 순서        | 96/192/98 / 98/192/96                                   |
+
+- 5.3 `Add Modifier` 메뉴(`bl_ui/properties_data_modifier.py`): 분류 Edit·Generate·Deform·Normals·Physics·Color. Generate의 "Array"는 기본 제공 노드 에셋(`datafiles/assets/nodes/geometry_nodes_essentials.blend`의 `Array`)이고 내장 모디파이어는 "Array (Legacy)"로 표시. 같은 파일에 Smooth by Angle·Curve to Tube·Scatter on Surface.
+- Edit 모드 연산자(정육면체): 윗면 `extrude_region_move` z+1 → 12/20/10, 이어서 `inset` 0.2 → 16/28/14, 이어서 전체 `bevel` 0.05·3분할 → 224/448/226. `subdivide` 1회 → 26/48/24. 전체 복제 뒤 `remove_doubles`(Merge by Distance) → 26/48/24. `flip_normals` 뒤 `normals_make_consistent(inside=False)` → 윗면 법선 z 1.0. `shade_auto_smooth` → 지오메트리 노드 모디파이어 "Smooth by Angle" 추가.
+- Subdivision Surface 기본값: 뷰포트 1, 렌더 2, Catmull-Clark. 원기둥 추가 기본 꼭짓점 32.
 
 ## 6. Principled BSDF 입력 (5.3.0, 기본값)
 
 Base Color (0.8, 0.8, 0.8, 1), Metallic 0, Roughness 0.5, IOR 1.5, Alpha 1, Thin Wall 끔, Normal, Weight, Diffuse Roughness 0, Subsurface Weight 0·Radius (1, 0.2, 0.1)·Scale 0.005·IOR 1.4·Anisotropy 0, Specular IOR Level 0.5, Specular Tint 흰색, Anisotropic 0, Anisotropic Rotation 0, Tangent, Transmission Weight 0, Transmission Dispersion Scale 0·Abbe Number 20, Coat Weight 0·Roughness 0.03·IOR 1.5·Tint 흰색·Normal, Sheen Weight 0·Roughness 0.5·Tint 흰색, Emission Color 흰색·Strength 0, Thin Film Thickness 0·IOR 1.33.
+
+### 6.1 재질·색 관리 (5.3.0)
+
+- 새 재질과 기본 정육면체 재질은 노드 트리(Principled BSDF + Material Output)를 처음부터 가짐. 기본 정육면체는 UV 맵 `UVMap`, 재질 슬롯 연결 `DATA`.
+- EEVEE 재질 Render Method: `DITHERED`(초기값), `BLENDED`.
+- 입력 색 공간에 `sRGB`(새 이미지 초기값), `Non-Color`, `Linear Rec.709`, ACES·AgX·카메라 로그 계열.
+- 보기 변환 초기값 AgX, Look None, Display sRGB. `Standard` 지정 가능.
+- EEVEE 렌더 샘플 64. Cycles 샘플 4096, 적응 샘플링 켬(0.01), 노이즈 제거 켬(OpenImageDenoise).
+- Normal Map 노드 입력: Strength, Color. ShaderNode 종류 108개(`bpy.types` 이름 기준).
+- 기본 장면 정육면체에 생성 이미지(Color Grid)를 Base Color로 연결해 EEVEE·Cycles(CPU 16샘플) 128×128 렌더 성공, 결과 이미지에서 텍스처 확인.
 
 ## 7. 기본 키맵 (초기 설정)
 

@@ -555,12 +555,15 @@ AX(AI 전환) 환경 구축 참고 자료. 도구와 무관한 환경 구축 방
 
 3D·그래픽 제작 도구의 설치·조작·제작 흐름. 도구별 폴더로 나눕니다.
 
-| 문서                                                     | 설명                                      |
-|----------------------------------------------------------|-------------------------------------------|
-| [Art 안내](08_art/README.md)                             | 나누는 기준과 문서 목록                   |
-| [Blender 설치](08_art/blender/blender_install.md)        | 판 고르기(LTS·최신), OS별 설치, 설정 폴더 |
-| [Blender 화면 구성](08_art/blender/blender_interface.md) | 작업 공간, 편집기, 모드, 시점             |
-| [Blender 단축키](08_art/blender/blender_shortcuts.md)    | 초기 설정 기준 상황별 단축키              |
+| 문서                                                                 | 설명                                      |
+|----------------------------------------------------------------------|-------------------------------------------|
+| [Art 안내](08_art/README.md)                                         | 나누는 기준과 문서 목록                   |
+| [Blender 설치](08_art/blender/blender_install.md)                    | 판 고르기(LTS·최신), OS별 설치, 설정 폴더 |
+| [Blender 화면 구성](08_art/blender/blender_interface.md)             | 작업 공간, 편집기, 모드, 시점             |
+| [Blender 단축키](08_art/blender/blender_shortcuts.md)                | 초기 설정 기준 상황별 단축키              |
+| [Blender 모델링 기초](08_art/blender/blender_modeling.md)            | 메시 구조, Edit 모드 도구, 토폴로지       |
+| [Blender 모디파이어](08_art/blender/blender_modifiers.md)            | 스택 순서, 자주 쓰는 6종, 적용 시점       |
+| [Blender 재질과 셰이딩](08_art/blender/blender_materials_shading.md) | Principled BSDF, 텍스처, 색 공간          |
 
 [⬆ 목차로 돌아가기](#목차)
 

@@ -261,6 +261,7 @@ Object 모드와 Edit 모드에서 같습니다.
 
 ## 함께 보기
 
+- [Blender 모델링 기초](./blender_modeling.md) — Edit 모드 도구를 쓰는 순서와 정리 작업
 - [Blender 화면 구성](./blender_interface.md) — 작업 공간·편집기·모드·시점
 - [Blender 설치](./blender_install.md) — 판 고르기, 설정 폴더
 
