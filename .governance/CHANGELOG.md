@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B15 관측 도구 (2026-11-26, 00 세션 직접 요청 DO-07): [OpenTelemetry](../02_infrastructure/monitoring/opentelemetry.md)와 [Jaeger](../02_infrastructure/monitoring/jaeger.md) 문서를 Collector v0.166.0·Jaeger v2.23.0·Python SDK 1.45.2 컨테이너 시험(OTLP/HTTP 수신, tail sampling으로 오류 트레이스만 남김, Badger 재시작 보존, v3 API)과 함께 쓰고, [모니터링 SaaS 비교](../02_infrastructure/monitoring/monitoring_saas_comparison.md)에 New Relic·Dynatrace 열과 비용, OpenTelemetry로 SaaS에 보내는 절을 더했습니다. 참조 노트 4개(opentelemetry, jaeger, new_relic, dynatrace)를 추가했습니다. 시험에서 Collector 0.166.0의 구성 요소 이름이 밑줄 형식(`otlp_grpc`, `host_metrics`)으로 바뀌어 예전 이름에 deprecated 경고가 나는 점과 Jaeger v2.21.0부터 v1 HTTP 경로(`/api/services`)가 404인 점을 찾아 적었습니다. New Relic CCU 단가와 Dynatrace 요청 제한·Managed URL은 미확인으로 남겼습니다.
+
 - DO-07 B14 CI/CD 도구 (2026-11-26, 00 세션 직접 요청 DO-07): [Jenkins 설치](../02_infrastructure/cicd/jenkins_install.md)에 Docker·플러그인 미리 설치·JCasC·백업과 복원·업그레이드 절을 2.580.3 컨테이너 시험(REST 빌드, `master.key` 유무 복원 비교)과 함께 보강하고, [GitLab CI/CD](../02_infrastructure/cicd/gitlab_ci.md)에 Runner 19.6.1 컨테이너 확인(`exec` 없음, `lint`)과 컴포넌트·`auto_cancel`·CI lint API를 더했습니다. [CI/CD 도구 비교](../02_infrastructure/cicd/ci_tools_comparison.md)와 참조 노트 5개(jenkins, teamcity, circleci, buildkite, octopus_deploy)를 추가했습니다. JCasC가 Pipeline 스크립트의 `${...}`를 지우는 문제를 시험으로 찾아 `^${...}` 이스케이프를 적었습니다. TeamCity Enterprise 가격, CircleCI 추가 사용자 비용, CircleCI Server 판은 미확인으로 남겼습니다.
 
 - ART-01 Blender 2순위 문서 (2026-11-26, 사용자 직접 요청): UV와 텍스처링·조명과 렌더·애니메이션과 리깅·[지오메트리 노드](../08_art/blender/blender_geometry_nodes.md)·스컬프팅·[파일 형식](../08_art/blender/blender_file_formats.md) 문서 6개를 추가하고 참조 노트에 확인 결과를 덧붙였습니다. 모두 `bpy` 5.3.0 컨테이너 실행으로 기본값·동작을 확인했고, 5.3에서 지오메트리 노드 모디파이어 입력 접근 방식이 바뀐 점, glTF 기본값이 모디파이어를 적용하지 않는 점을 시험으로 찾아 반영했습니다. 화면 조작·GPU 렌더·외부 프로그램에서 열기는 시험하지 않았습니다.
