@@ -172,6 +172,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Docker 명령 치트시트](02_infrastructure/containers/docker_cheatsheet.md)                  | docker 명령 한 줄 정리                |
 | [Docker 가이드](02_infrastructure/containers/docker.md)                                    | 이미지, 볼륨, cgroup                  |
 | [Dockerfile 작성과 빌드](02_infrastructure/containers/dockerfile_best_practices.md)        | 멀티 스테이지, BuildKit, 캐시         |
+| [컨테이너 이미지 승격](02_infrastructure/containers/container_image_promotion.md)          | 태그·digest, 서명·SBOM, 정리          |
 | [컨테이너 아키텍처](02_infrastructure/containers/container_architecture.md)                | Namespace, Cgroup, OCI                |
 | [Container Runtime](02_infrastructure/containers/container_runtime.md)                     | containerd, CRI-O                     |
 | [Podman](02_infrastructure/containers/podman.md)                                           | rootless, Quadlet, Pod                |
@@ -185,55 +186,58 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### CI/CD
 
-| 문서                                                                                    | 설명                                                  |
-|-----------------------------------------------------------------------------------------|-------------------------------------------------------|
-| [Jenkins 설치](02_infrastructure/cicd/jenkins_install.md)                               | 설치, 플러그인, 초기 설정                             |
-| [Jenkins Pipeline](02_infrastructure/cicd/jenkins_pipeline.md)                          | Declarative/Scripted                                  |
-| [GitHub Actions](02_infrastructure/cicd/github_actions.md)                              | 워크플로우, Runner                                    |
-| [GitHub CLI 명령어 참조](02_infrastructure/cicd/gh_command_reference.md)                | gh 명령어, PR·Actions 실행                            |
-| [GitHub](02_infrastructure/cicd/github.md)                                              | 2FA, SSH 키, PR, 브랜치 보호                          |
-| [GitLab CI/CD](02_infrastructure/cicd/gitlab_ci.md)                                     | .gitlab-ci.yml, rules, Runner                         |
-| [GitLab](02_infrastructure/cicd/gitlab.md)                                              | Docker 자체 설치, 운영, 백업                          |
-| [Git 호스팅 비교](02_infrastructure/cicd/git_hosting_comparison.md)                     | GitHub·GitLab·Bitbucket, 이전                         |
-| [Nexus Repository](02_infrastructure/cicd/nexus.md)                                     | 저장소 관리자, Docker·PyPI 프록시                     |
-| [아티팩트 저장소 비교](02_infrastructure/cicd/artifact_repository_comparison.md)        | Nexus·Artifactory·Cloudsmith                          |
-| [CI/CD 도구 비교](02_infrastructure/cicd/ci_tools_comparison.md)                        | Jenkins·GitLab CI·TeamCity·CircleCI·Buildkite·Octopus |
-| [ArgoCD](02_infrastructure/cicd/argocd.md)                                              | GitOps CD, Application                                |
-| [FluxCD](02_infrastructure/cicd/fluxcd.md)                                              | GitOps 컨트롤러, Argo CD 비교                         |
-| [Harness](02_infrastructure/cicd/harness_inc.md)                                        | CI/CD 플랫폼                                          |
-| [Git 가이드](02_infrastructure/cicd/git_guide.md)                                       | diff, log, rebase, stash                              |
-| [Git 명령어 참조](02_infrastructure/cicd/git_command_reference.md)                      | 설정, 브랜치, 원격, 복구                              |
-| [Airflow](02_infrastructure/cicd/airflow.md)                                            | DAG, Operator, 스케줄링                               |
-| [AWS Step Functions](02_infrastructure/cicd/aws_step_functions.md)                      | 상태 머신, 워크플로우                                 |
-| [SVN 가이드](02_infrastructure/cicd/svn_guide.md)                                       | Subversion 기본                                       |
-| [Ansible vs Jenkins](02_infrastructure/cicd/ansible_vs_jenkins.md)                      | 도구 비교                                             |
-| [DevOps Toolchain](02_infrastructure/cicd/devops_toolchain.md)                          | 전체 파이프라인 도구 맵                               |
-| [Infra Monorepo](02_infrastructure/cicd/infra_monorepo_and_boilerplate.md)              | 모노레포 구조, 보일러플레이트                         |
-| [.gitignore 패턴](02_infrastructure/cicd/gitignore_patterns.md)                         | 언어별 패턴 정리                                      |
-| [Git 이력 민감 파일 제거](02_infrastructure/cicd/git_history_sensitive_file_removal.md) | 이력 재작성 런북                                      |
+| 문서                                                                                     | 설명                                                  |
+|------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| [Jenkins 설치](02_infrastructure/cicd/jenkins_install.md)                                | 설치, 플러그인, 초기 설정                             |
+| [Jenkins Pipeline](02_infrastructure/cicd/jenkins_pipeline.md)                           | Declarative/Scripted                                  |
+| [GitHub Actions](02_infrastructure/cicd/github_actions.md)                               | 워크플로우, Runner                                    |
+| [GitHub CLI 명령어 참조](02_infrastructure/cicd/gh_command_reference.md)                 | gh 명령어, PR·Actions 실행                            |
+| [GitHub](02_infrastructure/cicd/github.md)                                               | 2FA, SSH 키, PR, 브랜치 보호                          |
+| [GitLab CI/CD](02_infrastructure/cicd/gitlab_ci.md)                                      | .gitlab-ci.yml, rules, Runner                         |
+| [GitLab](02_infrastructure/cicd/gitlab.md)                                               | Docker 자체 설치, 운영, 백업                          |
+| [Git 호스팅 비교](02_infrastructure/cicd/git_hosting_comparison.md)                      | GitHub·GitLab·Bitbucket, 이전                         |
+| [Nexus Repository](02_infrastructure/cicd/nexus.md)                                      | 저장소 관리자, Docker·PyPI 프록시                     |
+| [아티팩트 저장소 비교](02_infrastructure/cicd/artifact_repository_comparison.md)         | Nexus·Artifactory·Cloudsmith                          |
+| [이미지 판 관리와 단계별 승격](02_infrastructure/cicd/image_versioning_and_promotion.md) | 불변 이미지, 판 번호, 승격, 보관                      |
+| [이미지 관리 도구 비교](02_infrastructure/cicd/image_management_tools_comparison.md)     | HCP Packer, Harbor, 클라우드 갤러리                   |
+| [CI/CD 도구 비교](02_infrastructure/cicd/ci_tools_comparison.md)                         | Jenkins·GitLab CI·TeamCity·CircleCI·Buildkite·Octopus |
+| [ArgoCD](02_infrastructure/cicd/argocd.md)                                               | GitOps CD, Application                                |
+| [FluxCD](02_infrastructure/cicd/fluxcd.md)                                               | GitOps 컨트롤러, Argo CD 비교                         |
+| [Harness](02_infrastructure/cicd/harness_inc.md)                                         | CI/CD 플랫폼                                          |
+| [Git 가이드](02_infrastructure/cicd/git_guide.md)                                        | diff, log, rebase, stash                              |
+| [Git 명령어 참조](02_infrastructure/cicd/git_command_reference.md)                       | 설정, 브랜치, 원격, 복구                              |
+| [Airflow](02_infrastructure/cicd/airflow.md)                                             | DAG, Operator, 스케줄링                               |
+| [AWS Step Functions](02_infrastructure/cicd/aws_step_functions.md)                       | 상태 머신, 워크플로우                                 |
+| [SVN 가이드](02_infrastructure/cicd/svn_guide.md)                                        | Subversion 기본                                       |
+| [Ansible vs Jenkins](02_infrastructure/cicd/ansible_vs_jenkins.md)                       | 도구 비교                                             |
+| [DevOps Toolchain](02_infrastructure/cicd/devops_toolchain.md)                           | 전체 파이프라인 도구 맵                               |
+| [Infra Monorepo](02_infrastructure/cicd/infra_monorepo_and_boilerplate.md)               | 모노레포 구조, 보일러플레이트                         |
+| [.gitignore 패턴](02_infrastructure/cicd/gitignore_patterns.md)                          | 언어별 패턴 정리                                      |
+| [Git 이력 민감 파일 제거](02_infrastructure/cicd/git_history_sensitive_file_removal.md)  | 이력 재작성 런북                                      |
 
 ### IaC
 
-| 문서                                                                           | 설명                        |
-|--------------------------------------------------------------------------------|-----------------------------|
-| [Ansible 기초](02_infrastructure/iac/ansible_basic_guide.md)                   | 인벤토리, 플레이북, 롤      |
-| [Ansible 팀 운영](02_infrastructure/iac/ansible_install_and_team_operation.md) | 설치, 팀 운영, 권한 관리    |
-| [Ansible Vault](02_infrastructure/iac/ansible_vault.md)                        | 시크릿 암호화               |
-| [SOPS](02_infrastructure/iac/sops.md)                                          | 값 단위 암호화, age         |
-| [ansible-lint](02_infrastructure/iac/ansible_lint.md)                          | 정적 검사, profile, CI      |
-| [Jinja2](02_infrastructure/iac/jinja2.md)                                      | 템플릿 문법, template 모듈  |
-| [yamllint](02_infrastructure/iac/yamllint.md)                                  | YAML 형식 검사, CI          |
-| [Ansible Playbook Fields](02_infrastructure/iac/ansible_playbook_fields.md)    | 필드 레퍼런스               |
-| [Ansible Linux](02_infrastructure/iac/ansible_playbook_linux.md)               | Linux 플레이북              |
-| [Ansible Windows](02_infrastructure/iac/ansible_playbook_windows.md)           | Windows 플레이북            |
-| [Molecule](02_infrastructure/iac/molecule.md)                                  | 역할 테스트                 |
-| [Terraform](02_infrastructure/iac/terraform.md)                                | HCL, State, Module          |
-| [Pulumi](02_infrastructure/iac/pulumi.md)                                      | 일반 언어 IaC, 로컬 backend |
-| [AWS CDK와 CloudFormation](02_infrastructure/iac/aws_cdk_cloudformation.md)    | 템플릿, cfn-lint, synth     |
-| [설정 관리 도구 비교](02_infrastructure/iac/config_management_comparison.md)   | Ansible·Chef·Puppet·Salt    |
-| [Packer](02_infrastructure/iac/packer.md)                                      | 이미지 빌드                 |
-| [Vagrant](02_infrastructure/iac/vagrant.md)                                    | 개발 환경 프로비저닝        |
-| [YAML 문법](02_infrastructure/iac/yaml_syntax.md)                              | YAML 1.2 규칙               |
+| 문서                                                                           | 설명                         |
+|--------------------------------------------------------------------------------|------------------------------|
+| [Ansible 기초](02_infrastructure/iac/ansible_basic_guide.md)                   | 인벤토리, 플레이북, 롤       |
+| [Ansible 팀 운영](02_infrastructure/iac/ansible_install_and_team_operation.md) | 설치, 팀 운영, 권한 관리     |
+| [Ansible Vault](02_infrastructure/iac/ansible_vault.md)                        | 시크릿 암호화                |
+| [SOPS](02_infrastructure/iac/sops.md)                                          | 값 단위 암호화, age          |
+| [ansible-lint](02_infrastructure/iac/ansible_lint.md)                          | 정적 검사, profile, CI       |
+| [Jinja2](02_infrastructure/iac/jinja2.md)                                      | 템플릿 문법, template 모듈   |
+| [yamllint](02_infrastructure/iac/yamllint.md)                                  | YAML 형식 검사, CI           |
+| [Ansible Playbook Fields](02_infrastructure/iac/ansible_playbook_fields.md)    | 필드 레퍼런스                |
+| [Ansible Linux](02_infrastructure/iac/ansible_playbook_linux.md)               | Linux 플레이북               |
+| [Ansible Windows](02_infrastructure/iac/ansible_playbook_windows.md)           | Windows 플레이북             |
+| [Molecule](02_infrastructure/iac/molecule.md)                                  | 역할 테스트                  |
+| [Terraform](02_infrastructure/iac/terraform.md)                                | HCL, State, Module           |
+| [Pulumi](02_infrastructure/iac/pulumi.md)                                      | 일반 언어 IaC, 로컬 backend  |
+| [AWS CDK와 CloudFormation](02_infrastructure/iac/aws_cdk_cloudformation.md)    | 템플릿, cfn-lint, synth      |
+| [설정 관리 도구 비교](02_infrastructure/iac/config_management_comparison.md)   | Ansible·Chef·Puppet·Salt     |
+| [Packer](02_infrastructure/iac/packer.md)                                      | 이미지 빌드                  |
+| [Vagrant](02_infrastructure/iac/vagrant.md)                                    | 개발 환경 프로비저닝         |
+| [VM 이미지 판 관리](02_infrastructure/iac/vm_image_versioning.md)              | box catalog, Packer manifest |
+| [YAML 문법](02_infrastructure/iac/yaml_syntax.md)                              | YAML 1.2 규칙                |
 
 ### Monitoring
 
@@ -681,6 +685,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-26
+**마지막 업데이트**: 2026-11-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

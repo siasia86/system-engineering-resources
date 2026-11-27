@@ -375,6 +375,8 @@ Remove-Item -Recurse packer_cache
 ## 함께 보기
 
 - [Hyper-V](../windows_server/hyper_v.md) — Hyper-V 설치, 가상 스위치, Linux VM 설정
+- [VM 이미지 판 관리](./vm_image_versioning.md) — manifest·checksum 후처리기로 판·체크섬 기록, box catalog
+- [이미지 판 관리와 단계별 승격](../cicd/image_versioning_and_promotion.md) — 한 번 빌드하고 단계별로 올리는 원칙
 
 ---
 
@@ -389,6 +391,6 @@ Remove-Item -Recurse packer_cache
 
 **작성일**: 2026-06-04
 
-**마지막 업데이트**: 2026-11-23
+**마지막 업데이트**: 2026-11-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

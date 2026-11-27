@@ -192,6 +192,11 @@ sources:
 | Ruby                                                      | `_reference/ruby_official_notes.md`                        | 4.0.10, branches 상태, webrick 미포함                                     | 2026-11-27 |
 | Node.js                                                   | `_reference/nodejs_official_notes.md`                      | 26.13.1 Active LTS, 일정, node:test 시험                                  | 2026-11-27 |
 | Cloud Design Patterns                                     | `_reference/cloud_design_patterns_official_notes.md`       | Azure 카탈로그 44개, 기둥 표기, 2014년판 8개 영역                         | 2026-11-27 |
+| Vagrant box 판 관리                                       | `_reference/vagrant_box_versioning_official_notes.md`      | 2.4.9, catalog·box_version, HCP Vagrant 종료, 컨테이너 시험               | 2026-11-27 |
+| Packer manifest · HCP Packer                              | `_reference/packer_manifest_official_notes.md`             | 1.16.3, manifest·checksum 시험, 채널·revoke                               | 2026-11-27 |
+| 컨테이너 이미지 승격(crane·skopeo·cosign·Syft·ECR)        | `_reference/container_image_promotion_official_notes.md`   | cosign v3.1.6 signing config, 서명 복사, GC 시험                          | 2026-11-27 |
+| Harbor                                                    | `_reference/harbor_official_notes.md`                      | v2.15.5, 태그 불변·보존 규칙·GC                                           | 2026-11-27 |
+| 클라우드 이미지(Azure Gallery·AMI·GCP)·판 규칙            | `_reference/cloud_image_galleries_official_notes.md`       | 판 형식, latest 제외, 폐기 상태, SemVer·CalVer                            | 2026-11-27 |
 
 
 ## 사용 규칙
@@ -220,6 +225,6 @@ sources:
 
 **작성일**: 2026-05-22
 
-**마지막 업데이트**: 2026-11-26
+**마지막 업데이트**: 2026-11-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

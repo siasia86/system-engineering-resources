@@ -350,6 +350,7 @@ ansible_winrm_scheme=http
 ## 함께 보기
 
 - [Hyper-V](../windows_server/hyper_v.md) — Hyper-V 설치, 가상 스위치, VM 운영
+- [VM 이미지 판 관리](./vm_image_versioning.md) — box 판 고정·갱신, catalog 직접 호스팅(HCP Vagrant는 2026-12-31 운영 종료)
 
 ---
 
@@ -376,6 +377,6 @@ ansible_winrm_scheme=http
 
 **작성일**: 2026-05-15
 
-**마지막 업데이트**: 2026-11-23
+**마지막 업데이트**: 2026-11-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -6,9 +6,9 @@
 
 | 디렉토리                             | 설명                                                                                              | 문서 수 |
 |--------------------------------------|---------------------------------------------------------------------------------------------------|---------|
-| [containers/](./containers/)         | 컨테이너 — Docker, Compose, Swarm, Dockerfile, Podman, 런타임, Kubernetes, Helm, 관리형·메시 비교 | 20      |
-| [cicd/](./cicd/)                     | CI/CD — ArgoCD, FluxCD, Ansible, Jenkins, GitHub Actions, GitLab CI, Airflow                      | 24      |
-| [iac/](./iac/)                       | Infrastructure as Code — Ansible, Terraform, Pulumi, CDK, SOPS, 설정 관리 비교                    | 19      |
+| [containers/](./containers/)         | 컨테이너 — Docker, Compose, Swarm, Dockerfile, Podman, 런타임, Kubernetes, Helm, 관리형·메시 비교 | 21      |
+| [cicd/](./cicd/)                     | CI/CD — ArgoCD, FluxCD, Ansible, Jenkins, GitHub Actions, GitLab CI, Airflow                      | 26      |
+| [iac/](./iac/)                       | Infrastructure as Code — Ansible, Terraform, Pulumi, CDK, SOPS, 설정 관리 비교                    | 20      |
 | [monitoring/](./monitoring/)         | 모니터링 — Prometheus, Grafana, Zabbix, OpenTelemetry, Jaeger, 시스템 메트릭                      | 13      |
 | [cloud_aws/](./cloud_aws/)           | AWS 클라우드 — 개요, 사업자·서버리스·PaaS 비교, VPC, S3, Network Firewall, CloudWatch, 백업       | 13      |
 | [data_pipeline/](./data_pipeline/)   | 데이터 파이프라인 — Kafka, 로그 수집(100GB~100TB)                                                 | 8       |
@@ -45,6 +45,6 @@
 
 **작성일**: 2026-07-07
 
-**마지막 업데이트**: 2026-11-26
+**마지막 업데이트**: 2026-11-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

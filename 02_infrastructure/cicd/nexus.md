@@ -426,6 +426,7 @@ docker exec nexus ls -l /nexus-data/backup                   # nexus-<날짜-시
 - [Docker Compose](../containers/docker_compose.md) — 2.2절 Compose 구성의 기본
 - [리버스 프록시](../web_server/reverse_proxy.md) — HTTPS 앞단 구성
 - [GitHub Actions](./github_actions.md) · [Jenkins Pipeline](./jenkins_pipeline.md) — CI에서 결과물 올리기
+- [이미지 판 관리와 단계별 승격](./image_versioning_and_promotion.md) — raw·Docker 저장소로 이미지 판 보관과 승격
 
 ---
 
@@ -453,6 +454,6 @@ docker exec nexus ls -l /nexus-data/backup                   # nexus-<날짜-시
 
 **작성일**: 2026-11-24
 
-**마지막 업데이트**: 2026-11-24
+**마지막 업데이트**: 2026-11-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

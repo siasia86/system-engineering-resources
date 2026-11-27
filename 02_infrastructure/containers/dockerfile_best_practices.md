@@ -95,7 +95,7 @@ FROM python:3.12-slim
 FROM python:3.12-slim@sha256:<DIGEST>
 ```
 
-현재 이미지의 digest는 `docker buildx imagetools inspect python:3.12-slim` 또는 `docker image inspect --format '{{index .RepoDigests 0}}' python:3.12-slim`으로 확인합니다.
+현재 이미지의 digest는 `docker buildx imagetools inspect python:3.12-slim` 또는 `docker image inspect --format '{{index .RepoDigests 0}}' python:3.12-slim`으로 확인합니다. 만든 이미지를 digest로 승격·배포하는 방법은 [컨테이너 이미지 승격](./container_image_promotion.md)에 있습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -370,6 +370,6 @@ Dockerfile 변경을 검토할 때 아래 항목을 차례로 확인합니다.
 
 **작성일**: 2026-11-16
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.
