@@ -169,6 +169,7 @@ sources:
 | nano                                          | `_reference/nano_official_notes.md`                     | 9.3, 판별 단축키, nanorc                                                  | 2026-11-23 |
 | C# / .NET                                     | `_reference/csharp_official_notes.md`                   | .NET 11 STS/C# 15, .NET 10 LTS, async/await, NRT, CLI                     | 2026-11-16 |
 | Blender                                       | `_reference/blender_official_notes.md`                  | 5.3.0, LTS 5.2·4.5, bpy·압축판 컨테이너 확인                              | 2026-11-26 |
+| SOPS                                          | `_reference/sops_official_notes.md`                     | v3.13.3, age v1.3.2, `.sops.yaml` 설정 키, 기본 키 위치 함께 읽힘         | 2026-11-27 |
 
 
 ## 사용 규칙

@@ -8,7 +8,7 @@
 |--------------------------------------|------------------------------------------------------------------------------|---------|
 | [containers/](./containers/)         | 컨테이너 — Docker, Compose, Dockerfile, Podman, 런타임, Kubernetes, Helm     | 17      |
 | [cicd/](./cicd/)                     | CI/CD — ArgoCD, Ansible, Jenkins, GitHub Actions, GitLab CI, Airflow         | 23      |
-| [iac/](./iac/)                       | Infrastructure as Code — Ansible, Terraform, Playbook 운영                   | 15      |
+| [iac/](./iac/)                       | Infrastructure as Code — Ansible, Terraform, SOPS, Playbook 운영             | 16      |
 | [monitoring/](./monitoring/)         | 모니터링 — Prometheus, Grafana, Zabbix, OpenTelemetry, Jaeger, 시스템 메트릭 | 13      |
 | [cloud_aws/](./cloud_aws/)           | AWS 클라우드 — VPC, S3, Network Firewall, CloudWatch, 백업                   | 9       |
 | [data_pipeline/](./data_pipeline/)   | 데이터 파이프라인 — Kafka, 로그 수집(100GB~100TB)                            | 8       |
