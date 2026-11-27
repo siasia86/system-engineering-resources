@@ -193,6 +193,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [아티팩트 저장소 비교](02_infrastructure/cicd/artifact_repository_comparison.md)        | Nexus·Artifactory·Cloudsmith                          |
 | [CI/CD 도구 비교](02_infrastructure/cicd/ci_tools_comparison.md)                        | Jenkins·GitLab CI·TeamCity·CircleCI·Buildkite·Octopus |
 | [ArgoCD](02_infrastructure/cicd/argocd.md)                                              | GitOps CD, Application                                |
+| [FluxCD](02_infrastructure/cicd/fluxcd.md)                                              | GitOps 컨트롤러, Argo CD 비교                         |
 | [Harness](02_infrastructure/cicd/harness_inc.md)                                        | CI/CD 플랫폼                                          |
 | [Git 가이드](02_infrastructure/cicd/git_guide.md)                                       | diff, log, rebase, stash                              |
 | [Git 명령어 참조](02_infrastructure/cicd/git_command_reference.md)                      | 설정, 브랜치, 원격, 복구                              |

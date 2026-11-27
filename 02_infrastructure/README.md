@@ -7,7 +7,7 @@
 | 디렉토리                             | 설명                                                                         | 문서 수 |
 |--------------------------------------|------------------------------------------------------------------------------|---------|
 | [containers/](./containers/)         | 컨테이너 — Docker, Compose, Dockerfile, Podman, 런타임, Kubernetes, Helm     | 17      |
-| [cicd/](./cicd/)                     | CI/CD — ArgoCD, Ansible, Jenkins, GitHub Actions, GitLab CI, Airflow         | 23      |
+| [cicd/](./cicd/)                     | CI/CD — ArgoCD, FluxCD, Ansible, Jenkins, GitHub Actions, GitLab CI, Airflow | 24      |
 | [iac/](./iac/)                       | Infrastructure as Code — Ansible, Terraform, Pulumi, SOPS, 설정 관리 비교    | 18      |
 | [monitoring/](./monitoring/)         | 모니터링 — Prometheus, Grafana, Zabbix, OpenTelemetry, Jaeger, 시스템 메트릭 | 13      |
 | [cloud_aws/](./cloud_aws/)           | AWS 클라우드 — VPC, S3, Network Firewall, CloudWatch, 백업                   | 9       |
@@ -23,6 +23,7 @@
 - [prometheus_grafana.md](./monitoring/prometheus_grafana.md) — Prometheus + Grafana 아키텍처
 - [kafka.md](./data_pipeline/kafka.md) — Kafka 클러스터 구성과 운영
 - [argocd.md](./cicd/argocd.md) — GitOps 기반 배포
+- [fluxcd.md](./cicd/fluxcd.md) — 컨트롤러 기반 GitOps, Argo CD 비교
 
 ## 추천 학습 순서
 
