@@ -175,6 +175,7 @@ sources:
 | Puppet · OpenVox                              | `_reference/puppet_openvox_official_notes.md`           | Puppet Core 25노드 무료, OpenVox 9.5.0·8.34.0                             | 2026-11-27 |
 | Salt                                          | `_reference/salt_official_notes.md`                     | 3008.5 LTS, 지원 주기 표, onedir 체크섬                                   | 2026-11-27 |
 | FluxCD                                        | `_reference/fluxcd_official_notes.md`                   | v2.10.1, 컨트롤러 판, Kustomization 필드, kind 시험                       | 2026-11-27 |
+| Docker Swarm                                  | `_reference/docker_swarm_official_notes.md`             | Engine v29.10.1, 포트·Raft·secret, dind 3노드 시험                        | 2026-11-27 |
 
 
 ## 사용 규칙
