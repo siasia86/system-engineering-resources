@@ -183,6 +183,8 @@ sources:
 | Consul                                        | `_reference/consul_official_notes.md`                      | v2.1.0, BSL 1.1, Envoy sidecar 메시                                       | 2026-11-27 |
 | Sealed Secrets                                | `_reference/sealed_secrets_official_notes.md`              | v0.41.2, 범위, 30일 키 갱신·백업, kind 시험                               | 2026-11-27 |
 | External Secrets Operator                     | `_reference/external_secrets_official_notes.md`            | v2.15.0, 공급자 안정도, creationPolicy, 클라우드 CSI                      | 2026-11-27 |
+| AWS CDK                                       | `_reference/aws_cdk_official_notes.md`                     | CLI 2.1149.0·라이브러리 2.278.0 판 분리, synth 시험                       | 2026-11-27 |
+| CloudFormation                                | `_reference/cloudformation_official_notes.md`              | cfn-lint 1.61.0, 오류 코드 시험                                           | 2026-11-27 |
 
 
 ## 사용 규칙
