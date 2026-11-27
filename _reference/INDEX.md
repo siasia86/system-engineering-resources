@@ -181,6 +181,8 @@ sources:
 | Istio                                         | `_reference/istio_official_notes.md`                       | 1.32.0, Kubernetes 1.33~1.37, ambient 단일 클러스터 운영 가능             | 2026-11-27 |
 | Linkerd                                       | `_reference/linkerd_official_notes.md`                     | edge-26.11.2, 안정 판은 벤더 배포, Rust 프록시                            | 2026-11-27 |
 | Consul                                        | `_reference/consul_official_notes.md`                      | v2.1.0, BSL 1.1, Envoy sidecar 메시                                       | 2026-11-27 |
+| Sealed Secrets                                | `_reference/sealed_secrets_official_notes.md`              | v0.41.2, 범위, 30일 키 갱신·백업, kind 시험                               | 2026-11-27 |
+| External Secrets Operator                     | `_reference/external_secrets_official_notes.md`            | v2.15.0, 공급자 안정도, creationPolicy, 클라우드 CSI                      | 2026-11-27 |
 
 
 ## 사용 규칙

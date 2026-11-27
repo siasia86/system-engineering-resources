@@ -7,7 +7,7 @@
 | 디렉토리                   | 설명                                                                             | 문서 수 |
 |----------------------------|----------------------------------------------------------------------------------|---------|
 | [hardening/](./hardening/) | 서버 강화 — iptables/nftables, SSH, 시크릿 관리, gitleaks, AIDE, auditd, SELinux | 22      |
-| [cloud/](./cloud/)         | 클라우드 보안 — AWS Security, DDoS 방어, Network Firewall                        | 4       |
+| [cloud/](./cloud/)         | 클라우드 보안 — AWS Security, DDoS 방어, Network Firewall, Kubernetes 비밀값     | 5       |
 | [cve/](./cve/)             | CVE 분석 — 2026년 Linux 커널·PHP 취약점 (Dirty Frag 등)                          | 9       |
 | [web_cwe/](./web_cwe/)     | 웹 취약점 — CWE-22, CWE-78, CWE-200, CWE-434                                     | 4       |
 

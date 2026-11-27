@@ -402,12 +402,13 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Cloud Security
 
-| 문서                                                                    | 설명                     |
-|-------------------------------------------------------------------------|--------------------------|
-| [AWS 보안](04_security/cloud/aws_security.md)                           | IAM, SG, WAF, GuardDuty  |
-| [DDoS 방어 아키텍처](04_security/cloud/ddos_defense_architecture.md)    | XDP/nftables/CrowdSec    |
-| [AWS Network Firewall](04_security/cloud/aws_network_firewall_guide.md) | 관리형 방화벽 가이드     |
-| [네트워크 공격 용어](04_security/cloud/network_attack_glossary.md)      | DDoS, MITM, ARP Spoofing |
+| 문서                                                                         | 설명                     |
+|------------------------------------------------------------------------------|--------------------------|
+| [AWS 보안](04_security/cloud/aws_security.md)                                | IAM, SG, WAF, GuardDuty  |
+| [DDoS 방어 아키텍처](04_security/cloud/ddos_defense_architecture.md)         | XDP/nftables/CrowdSec    |
+| [AWS Network Firewall](04_security/cloud/aws_network_firewall_guide.md)      | 관리형 방화벽 가이드     |
+| [네트워크 공격 용어](04_security/cloud/network_attack_glossary.md)           | DDoS, MITM, ARP Spoofing |
+| [Kubernetes 비밀값 관리](04_security/cloud/kubernetes_secrets_management.md) | Sealed Secrets, ESO, CSI |
 
 ### CVE / CWE
 
