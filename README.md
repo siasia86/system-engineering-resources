@@ -315,6 +315,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [HAProxy 운영 가이드](02_infrastructure/web_server/haproxy_operations_guide.md)      | 변경 절차, Runtime API, 장애 확인 |
 | [HAProxy + Keepalived 이중화](02_infrastructure/web_server/haproxy_keepalived_ha.md) | VRRP VIP 전환, peers 동기화       |
 | [HAProxy ACME 자동 갱신](02_infrastructure/web_server/haproxy_acme_guide.md)         | 내장 ACME, 인증서 저장, 갱신 감시 |
+| [Envoy](02_infrastructure/web_server/envoy.md)                                       | 정적 설정, 상태 검사, 처리율 제한 |
 
 [⬆ 목차로 돌아가기](#목차)
 
