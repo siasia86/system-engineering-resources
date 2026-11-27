@@ -222,6 +222,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Molecule](02_infrastructure/iac/molecule.md)                                  | 역할 테스트                 |
 | [Terraform](02_infrastructure/iac/terraform.md)                                | HCL, State, Module          |
 | [Pulumi](02_infrastructure/iac/pulumi.md)                                      | 일반 언어 IaC, 로컬 backend |
+| [설정 관리 도구 비교](02_infrastructure/iac/config_management_comparison.md)   | Ansible·Chef·Puppet·Salt    |
 | [Packer](02_infrastructure/iac/packer.md)                                      | 이미지 빌드                 |
 | [Vagrant](02_infrastructure/iac/vagrant.md)                                    | 개발 환경 프로비저닝        |
 | [YAML 문법](02_infrastructure/iac/yaml_syntax.md)                              | YAML 1.2 규칙               |

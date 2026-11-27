@@ -171,6 +171,9 @@ sources:
 | Blender                                       | `_reference/blender_official_notes.md`                  | 5.3.0, LTS 5.2·4.5, bpy·압축판 컨테이너 확인                              | 2026-11-26 |
 | SOPS                                          | `_reference/sops_official_notes.md`                     | v3.13.3, age v1.3.2, `.sops.yaml` 설정 키, 기본 키 위치 함께 읽힘         | 2026-11-27 |
 | Pulumi                                        | `_reference/pulumi_official_notes.md`                   | v3.278.0, 자체 backend, 패스프레이즈 비밀값, 상태 파일 구조               | 2026-11-27 |
+| Chef                                          | `_reference/chef_official_notes.md`                     | Infra Client 19.5.19, 19 라이선스 키, Habitat 패키지 `chef-ice`           | 2026-11-27 |
+| Puppet · OpenVox                              | `_reference/puppet_openvox_official_notes.md`           | Puppet Core 25노드 무료, OpenVox 9.5.0·8.34.0                             | 2026-11-27 |
+| Salt                                          | `_reference/salt_official_notes.md`                     | 3008.5 LTS, 지원 주기 표, onedir 체크섬                                   | 2026-11-27 |
 
 
 ## 사용 규칙

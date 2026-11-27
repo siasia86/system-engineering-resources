@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B16 비밀값·IaC·설정 관리 (2026-11-27, 00 세션 직접 요청 DO-07): [SOPS](../02_infrastructure/iac/sops.md)와 [Pulumi](../02_infrastructure/iac/pulumi.md) 문서를 SOPS v3.13.3·age v1.3.2·Pulumi v3.278.0 컨테이너 시험(선택한 키만 암호화, updatekeys·rotate, MAC 불일치 탐지, 로컬 파일 backend, 패스프레이즈 비밀값, 상태 파일 구조)과 함께 쓰고, [설정 관리 도구 비교](../02_infrastructure/iac/config_management_comparison.md)에서 Ansible·Chef·Puppet·Salt를 비교했습니다. Puppet 예시는 OpenVox 8.34.0, Salt 예시는 3008.5 onedir로 실행했고 Chef는 라이선스 키가 필요해 미실행입니다. 참조 노트 5개(sops, pulumi, chef, puppet_openvox, salt)를 추가했습니다. 시험에서 `.sops.yaml`에 맞는 규칙이 없으면 `--age`를 줘도 실패하는 점, `SOPS_AGE_KEY_FILE`을 줘도 기본 위치의 키를 함께 읽는 점, Python 3.13에서 `pip install salt`가 실패하는 점을 찾아 적었습니다.
+
 - Claude Code의 Code Mode·Projects 문서 (2026-11-26, 05 총괄 배정 D187: 사용자 지시 "32 repo (세션)에 요청 하는 방향으로 작업 진행 후 파일 생성까지"): 사용자가 말한 "claude code mode"를 공식 문서의 실험 기능 Code Mode로, "프로젝트 모드"를 Projects(beta)로 정하고 [Code Mode](../06_career/ai_tools/claude/claude_code_mode.md)와 [Projects](../06_career/ai_tools/claude/claude_code_projects.md) 문서를 새로 만들었습니다. Code Mode 문서 1절에 Code 탭·권한 모드·plan 모드·fast mode·Projects와의 이름 구분 표를 두었고, [데스크톱 앱](../06_career/ai_tools/claude/claude_code_desktop_guide.md) 8절에 링크를, [참조 노트](../_reference/claude_code_official_notes.md)에 Code Mode 항목과 Projects 추가 확인을 더했습니다. 두 기능 모두 실행 시험은 하지 않았습니다.
 
 - gitleaks 대형 저장소 검사 보강 (2026-11-26, 30 세션 요청: 사용자 지시 "32 repo 에 있는 문서에 없다면, 추가 작성"): [gitleaks 가이드](../04_security/hardening/gitleaks_guide.md) 3절에 경로 인자 검사, 압축 포함 이력 전체 검사의 메모리 실측(다른 세션 보고 1건), 범위·깊이·파일 크기로 나눠 검사하는 방법, 종료 코드 137을 미검사로 다루는 기준, `--redact` 없는 보고서에 원문이 남는 점을 더했습니다. 가짜 토큰 저장소로 v8.30.1 옵션 동작을 시험해 `A..B`가 시작 커밋을 빼므로 첫 구간은 `<B>`만 써야 하는 점을 찾았습니다.

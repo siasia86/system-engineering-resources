@@ -256,6 +256,7 @@ config:
 - [Terraform](./terraform.md) — HCL 기반 IaC
 - [SOPS](./sops.md) — 비밀값 파일 암호화
 - [Ansible 기초](./ansible_basic_guide.md) — 서버 안 설정 관리
+- [설정 관리 도구 비교](./config_management_comparison.md) — Ansible·Chef·Puppet·Salt
 
 ---
 
