@@ -188,6 +188,9 @@ sources:
 | 클라우드 사업자(AWS·Azure·GCP·DO·Alibaba·Hetzner)         | `_reference/cloud_providers_official_notes.md`             | 리전 수, 체험 조건, VM·트래픽 요금, 미확인 표시                           | 2026-11-27 |
 | 서버리스 함수(Lambda·Azure Functions·Cloud Run functions) | `_reference/serverless_functions_official_notes.md`        | 무료 한도, 실행 제한, Linux Consumption 종료                              | 2026-11-27 |
 | PaaS(Cloudflare·Vercel·Netlify·Render·Railway·Heroku)     | `_reference/paas_official_notes.md`                        | 무료 플랜 한도, 잠듦, 첫 유료 플랜                                        | 2026-11-27 |
+| Go                                                        | `_reference/go_official_notes.md`                          | 1.27.4, 지원 정책, 정적·교차 빌드 시험                                    | 2026-11-27 |
+| Ruby                                                      | `_reference/ruby_official_notes.md`                        | 4.0.10, branches 상태, webrick 미포함                                     | 2026-11-27 |
+| Node.js                                                   | `_reference/nodejs_official_notes.md`                      | 26.13.1 Active LTS, 일정, node:test 시험                                  | 2026-11-27 |
 
 
 ## 사용 규칙

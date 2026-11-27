@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B23 프로그래밍 언어 (2026-11-27, 00 세션 직접 요청 DO-07): Python·Rust 기존 문서는 판 확인 결과 최신과 같아 보강하지 않았고, [Go 입문](../01_fundamentals/programming/go_for_se.md)·[Ruby 입문](../01_fundamentals/programming/ruby_for_se.md)·[Node.js 입문](../01_fundamentals/programming/nodejs_for_se.md)을 새로 썼습니다. 세 문서는 같은 호스트 목록 도구(인수 처리, JSON, 외부 명령, 제한 시간 있는 HTTP, 테스트)를 Go 1.27.4·Ruby 4.0.10·Node.js 26.13.1 공식 이미지에서 실행해 확인했고, 참조 노트 3개를 추가했습니다. 시험에서 Go 정적 빌드가 동적 링크 없이 7.2MB로 나오는 점, Ruby 4.0 기본 설치에 webrick이 없는 점, `npm init -y`가 `"type": "commonjs"`를 기록하는 점을 적었습니다.
+
 - DO-07 B22 서버리스·PaaS (2026-11-27, 00 세션 직접 요청 DO-07): [서버리스 함수 비교](../02_infrastructure/cloud_aws/serverless_functions_comparison.md)에서 AWS Lambda·Azure Functions·Cloud Run functions의 무료 한도·실행 제한·콜드 스타트 대책을, [PaaS 비교](../02_infrastructure/cloud_aws/paas_comparison.md)에서 Cloudflare Workers·Vercel·Netlify·Render·Railway·Heroku의 무료 플랜 한도·잠듦·첫 유료 플랜을 공식 페이지로 대조했습니다. 참조 노트 2개를 추가했습니다. Lambda 표준 함수 최대 시간이 공식 문서에서 30분으로 표시된 점, Azure Linux Consumption 플랜이 2028-09-30 종료 예정인 점을 적었고, Google 요금·Azure 단가·무료 플랜 상업적 사용 조건은 읽지 못해 미확인으로 남겼습니다.
 
 - DO-07 B21 클라우드와 AWS IaC (2026-11-27, 00 세션 직접 요청 DO-07): [AWS CDK와 CloudFormation](../02_infrastructure/iac/aws_cdk_cloudformation.md) 문서를 cfn-lint 1.61.0·CDK CLI 2.1149.0 컨테이너 시험(오류 코드 E3002·E3034·E6101, init·synth, 자격 증명 없는 diff 실패)과 함께 쓰고, 개요 문서가 없던 AWS에 [AWS 개요](../02_infrastructure/cloud_aws/aws_overview.md)를 새로 써 기존 AWS 문서 9개를 연결했으며, [클라우드 사업자 비교](../02_infrastructure/cloud_aws/cloud_provider_comparison.md)에서 Azure·Google Cloud·DigitalOcean·Alibaba Cloud·Hetzner를 공식 페이지로 대조했습니다. 참조 노트 3개를 추가했습니다. 시험에서 CDK CLI(`aws-cdk` 2.1xxx)와 라이브러리(`aws-cdk-lib` 2.2xx)의 판 번호가 달라 GitHub 릴리스 판으로 CLI를 설치하면 실패하는 점을 찾았고, 읽지 못한 가격 페이지는 미확인으로 남겼습니다.

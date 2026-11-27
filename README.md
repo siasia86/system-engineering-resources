@@ -130,22 +130,25 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Programming
 
-| 문서                                                                               | 설명                        |
-|------------------------------------------------------------------------------------|-----------------------------|
-| [Python 가이드](01_fundamentals/programming/python/)                               | 클래스~subprocess (31개)    |
-| [uv 가이드](01_fundamentals/programming/python/python_uv.md)                       | uv로 버전·가상환경 관리     |
-| [C# 가이드](01_fundamentals/programming/csharp/)                                   | async, LINQ, OOP, 예외 처리 |
-| [Rust 가이드](01_fundamentals/programming/rust/)                                   | 소유권, 동시성, 에러 처리   |
-| [언어 비교](01_fundamentals/programming/c_cpp_csharp_go_python_bash_comparison.md) | 6개 언어 비교               |
-| [Rust SE 로드맵](01_fundamentals/programming/rust_roadmap_for_se.md)               | SE 관점 Rust 학습 경로      |
-| [Rust 전환 가이드](01_fundamentals/programming/rust/rust_for_bash_python_se.md)    | bash·python 사용자용 대응표 |
-| [Rust 기초 문법](01_fundamentals/programming/rust/rust_basics.md)                  | 변수~모듈, bash·python 비교 |
-| [LSP 가이드](01_fundamentals/programming/lsp_guide.md)                             | Language Server Protocol    |
-| [GraphQL 가이드](01_fundamentals/programming/graphql_guide_for_se.md)              | SE 관점 GraphQL             |
-| [gRPC 가이드](01_fundamentals/programming/grpc_guide_for_se.md)                    | SE 관점 gRPC                |
-| [Protocol Buffers 가이드](01_fundamentals/programming/protobuf_guide_for_se.md)    | SE 관점 Protocol Buffers    |
-| [REST API 가이드](01_fundamentals/programming/rest_api_guide_for_se.md)            | SE 관점 REST API            |
-| [Lean SE 로드맵](01_fundamentals/programming/lean_roadmap_for_se.md)               | SE 관점 Lean 학습 경로      |
+| 문서                                                                               | 설명                            |
+|------------------------------------------------------------------------------------|---------------------------------|
+| [Python 가이드](01_fundamentals/programming/python/)                               | 클래스~subprocess (31개)        |
+| [uv 가이드](01_fundamentals/programming/python/python_uv.md)                       | uv로 버전·가상환경 관리         |
+| [C# 가이드](01_fundamentals/programming/csharp/)                                   | async, LINQ, OOP, 예외 처리     |
+| [Rust 가이드](01_fundamentals/programming/rust/)                                   | 소유권, 동시성, 에러 처리       |
+| [Go 입문](01_fundamentals/programming/go_for_se.md)                                | SE용 CLI, 정적·교차 빌드        |
+| [Ruby 입문](01_fundamentals/programming/ruby_for_se.md)                            | 스크립트, Bundler, Chef·Vagrant |
+| [Node.js 입문](01_fundamentals/programming/nodejs_for_se.md)                       | 표준 모듈 스크립트, node:test   |
+| [언어 비교](01_fundamentals/programming/c_cpp_csharp_go_python_bash_comparison.md) | 6개 언어 비교                   |
+| [Rust SE 로드맵](01_fundamentals/programming/rust_roadmap_for_se.md)               | SE 관점 Rust 학습 경로          |
+| [Rust 전환 가이드](01_fundamentals/programming/rust/rust_for_bash_python_se.md)    | bash·python 사용자용 대응표     |
+| [Rust 기초 문법](01_fundamentals/programming/rust/rust_basics.md)                  | 변수~모듈, bash·python 비교     |
+| [LSP 가이드](01_fundamentals/programming/lsp_guide.md)                             | Language Server Protocol        |
+| [GraphQL 가이드](01_fundamentals/programming/graphql_guide_for_se.md)              | SE 관점 GraphQL                 |
+| [gRPC 가이드](01_fundamentals/programming/grpc_guide_for_se.md)                    | SE 관점 gRPC                    |
+| [Protocol Buffers 가이드](01_fundamentals/programming/protobuf_guide_for_se.md)    | SE 관점 Protocol Buffers        |
+| [REST API 가이드](01_fundamentals/programming/rest_api_guide_for_se.md)            | SE 관점 REST API                |
+| [Lean SE 로드맵](01_fundamentals/programming/lean_roadmap_for_se.md)               | SE 관점 Lean 학습 경로          |
 
 [⬆ 목차로 돌아가기](#목차)
 
