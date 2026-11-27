@@ -302,6 +302,8 @@ local 환경에 wrapper가 없으면 승인된 30 artifact를 먼저 설치합�
 
 참조 노트는 `_reference/`에 주제별로 둡니다. 끝나면 00 세션에 문서별 경로·commit SHA·판정을 알립니다.
 
+결과(2026-11-27, `d752a77`): 4개 모두 작성. 참조 노트 5개(vagrant_box_versioning, packer_manifest, container_image_promotion, harbor, cloud_image_galleries). 서명·SBOM(cosign·Syft)은 컨테이너 문서 7절에 포함. Hyper-V·VirtualBox·libvirt 실제 빌드, `vagrant up`, Harbor·ECR·HCP Packer 실행은 미시험.
+
 ---
 
 ## 참고 자료
@@ -313,6 +315,6 @@ local 환경에 wrapper가 없으면 승인된 30 artifact를 먼저 설치합�
 
 **작성일**: 2026-08-27
 
-**마지막 업데이트**: 2026-11-26
+**마지막 업데이트**: 2026-11-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.
