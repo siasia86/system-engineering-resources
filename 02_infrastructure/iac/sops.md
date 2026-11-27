@@ -279,6 +279,7 @@ sops rotate -i secrets/app.yaml
 - [Ansible Vault](./ansible_vault.md) — Ansible 안의 파일 암호화
 - [HashiCorp Vault 개념](../../04_security/hardening/hashicorp_vault_concepts.md) — 서버형 비밀값 관리
 - [Terraform](./terraform.md) — 상태 파일의 비밀값 다루기
+- [Pulumi](./pulumi.md) — stack 설정의 비밀값 암호화
 
 ---
 
