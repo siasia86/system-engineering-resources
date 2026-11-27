@@ -10,7 +10,7 @@
 | [cicd/](./cicd/)                     | CI/CD — ArgoCD, FluxCD, Ansible, Jenkins, GitHub Actions, GitLab CI, Airflow                      | 24      |
 | [iac/](./iac/)                       | Infrastructure as Code — Ansible, Terraform, Pulumi, CDK, SOPS, 설정 관리 비교                    | 19      |
 | [monitoring/](./monitoring/)         | 모니터링 — Prometheus, Grafana, Zabbix, OpenTelemetry, Jaeger, 시스템 메트릭                      | 13      |
-| [cloud_aws/](./cloud_aws/)           | AWS 클라우드 — 개요, 사업자 비교, VPC, S3, Network Firewall, CloudWatch, 백업                     | 11      |
+| [cloud_aws/](./cloud_aws/)           | AWS 클라우드 — 개요, 사업자·서버리스·PaaS 비교, VPC, S3, Network Firewall, CloudWatch, 백업       | 13      |
 | [data_pipeline/](./data_pipeline/)   | 데이터 파이프라인 — Kafka, 로그 수집(100GB~100TB)                                                 | 8       |
 | [web_server/](./web_server/)         | 웹 서버 — Nginx, Apache, HAProxy, Envoy 설치·개념·운영·이중화·ACME                                | 14      |
 | [storage/](./storage/)               | 스토리지 — 구조 설계, SSD 검수, 파일시스템, LVM, RAID, 백업, MinIO                                | 8       |
