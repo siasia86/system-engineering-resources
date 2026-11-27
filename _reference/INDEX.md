@@ -178,6 +178,9 @@ sources:
 | Docker Swarm                                  | `_reference/docker_swarm_official_notes.md`                | Engine v29.10.1, 포트·Raft·secret, dind 3노드 시험                        | 2026-11-27 |
 | EKS · GKE · AKS · ECS/Fargate · OpenShift     | `_reference/managed_container_platforms_official_notes.md` | 요금·판 지원 정책, GKE 요금·AKS 금액 미확인                               | 2026-11-27 |
 | Envoy                                         | `_reference/envoy_official_notes.md`                       | v1.40.2, 12개월 지원, no_traffic_interval 60초 기본                       | 2026-11-27 |
+| Istio                                         | `_reference/istio_official_notes.md`                       | 1.32.0, Kubernetes 1.33~1.37, ambient 단일 클러스터 운영 가능             | 2026-11-27 |
+| Linkerd                                       | `_reference/linkerd_official_notes.md`                     | edge-26.11.2, 안정 판은 벤더 배포, Rust 프록시                            | 2026-11-27 |
+| Consul                                        | `_reference/consul_official_notes.md`                      | v2.1.0, BSL 1.1, Envoy sidecar 메시                                       | 2026-11-27 |
 
 
 ## 사용 규칙

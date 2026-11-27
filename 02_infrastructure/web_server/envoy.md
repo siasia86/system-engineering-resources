@@ -269,6 +269,7 @@ curl -s http://127.0.0.1:9901/stats | grep -E "cluster.api.(health_check|members
 
 - [리버스 프록시](./reverse_proxy.md) — 개념과 도구 비교
 - [HAProxy 개념](./haproxy_concepts.md) — 다른 L4·L7 로드밸런서
+- [서비스 메시 비교](../containers/service_mesh_comparison.md) — Envoy를 데이터 플레인으로 쓰는 메시
 
 ---
 

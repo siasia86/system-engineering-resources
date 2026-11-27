@@ -164,6 +164,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Docker 네트워크](02_infrastructure/containers/docker_network.md)                          | bridge, macvlan, 포트 공개            |
 | [Docker Swarm](02_infrastructure/containers/docker_swarm.md)                               | 서비스, stack, quorum                 |
 | [관리형 컨테이너 플랫폼 비교](02_infrastructure/containers/managed_container_platforms.md) | EKS, GKE, AKS, ECS/Fargate, OpenShift |
+| [서비스 메시 비교](02_infrastructure/containers/service_mesh_comparison.md)                | Istio, Linkerd, Consul                |
 | [systemd 포함 컨테이너](02_infrastructure/containers/systemd_container.md)                 | privileged, cgroupns, 시험 대상       |
 | [Docker 명령 치트시트](02_infrastructure/containers/docker_cheatsheet.md)                  | docker 명령 한 줄 정리                |
 | [Docker 가이드](02_infrastructure/containers/docker.md)                                    | 이미지, 볼륨, cgroup                  |
