@@ -217,6 +217,7 @@ cdk deploy           # 변경 적용 (미실행)
 
 - [Terraform](./terraform.md) — 여러 클라우드 IaC
 - [Pulumi](./pulumi.md) — 일반 언어 IaC, 자체 backend
+- [AWS 개요](../cloud_aws/aws_overview.md) — 계정·리전·서비스 지도
 
 ---
 

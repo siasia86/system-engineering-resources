@@ -252,17 +252,19 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 
 ### Cloud (AWS)
 
-| 문서                                                                                    | 설명                       |
-|-----------------------------------------------------------------------------------------|----------------------------|
-| [S3 버킷 생성 옵션](02_infrastructure/cloud_aws/s3_bucket_create_options.md)            | SSE, 버전관리, Object Lock |
-| [S3 Gateway Endpoint](02_infrastructure/cloud_aws/s3_gateway_endpoint_cross_account.md) | 크로스 계정 S3 접근        |
-| [S3 Object Lock](02_infrastructure/cloud_aws/s3_object_lock.md)                         | WORM, Compliance           |
-| [S3 백업 팁](02_infrastructure/cloud_aws/s3_backup_tips.md)                             | 비용/성능/무결성           |
-| [CloudWatch Agent·경보](02_infrastructure/cloud_aws/cloudwatch_agent_alarms.md)         | Agent 설정, 경보 평가      |
-| [STS AssumeRole](02_infrastructure/cloud_aws/sts_assume_role.md)                        | 크로스 계정 역할 위임      |
-| [클라우드 백업 비용 비교](02_infrastructure/cloud_aws/cloud_backup_cost_comparison.md)  | 백업 도구 리소스·비용 비교 |
-| [VPC Peering](02_infrastructure/cloud_aws/vpc_peering_inter_region_guide.md)            | Inter-Region Peering       |
-| [AWS Network Firewall](02_infrastructure/cloud_aws/aws_network_firewall.md)             | 관리형 방화벽              |
+| 문서                                                                                    | 설명                             |
+|-----------------------------------------------------------------------------------------|----------------------------------|
+| [AWS 개요](02_infrastructure/cloud_aws/aws_overview.md)                                 | 리전, 계정 구조, 요금            |
+| [클라우드 사업자 비교](02_infrastructure/cloud_aws/cloud_provider_comparison.md)        | Azure, GCP, DO, Alibaba, Hetzner |
+| [S3 버킷 생성 옵션](02_infrastructure/cloud_aws/s3_bucket_create_options.md)            | SSE, 버전관리, Object Lock       |
+| [S3 Gateway Endpoint](02_infrastructure/cloud_aws/s3_gateway_endpoint_cross_account.md) | 크로스 계정 S3 접근              |
+| [S3 Object Lock](02_infrastructure/cloud_aws/s3_object_lock.md)                         | WORM, Compliance                 |
+| [S3 백업 팁](02_infrastructure/cloud_aws/s3_backup_tips.md)                             | 비용/성능/무결성                 |
+| [CloudWatch Agent·경보](02_infrastructure/cloud_aws/cloudwatch_agent_alarms.md)         | Agent 설정, 경보 평가            |
+| [STS AssumeRole](02_infrastructure/cloud_aws/sts_assume_role.md)                        | 크로스 계정 역할 위임            |
+| [클라우드 백업 비용 비교](02_infrastructure/cloud_aws/cloud_backup_cost_comparison.md)  | 백업 도구 리소스·비용 비교       |
+| [VPC Peering](02_infrastructure/cloud_aws/vpc_peering_inter_region_guide.md)            | Inter-Region Peering             |
+| [AWS Network Firewall](02_infrastructure/cloud_aws/aws_network_firewall.md)             | 관리형 방화벽                    |
 
 ### Windows Server
 

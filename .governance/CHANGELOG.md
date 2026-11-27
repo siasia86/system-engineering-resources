@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B21 클라우드와 AWS IaC (2026-11-27, 00 세션 직접 요청 DO-07): [AWS CDK와 CloudFormation](../02_infrastructure/iac/aws_cdk_cloudformation.md) 문서를 cfn-lint 1.61.0·CDK CLI 2.1149.0 컨테이너 시험(오류 코드 E3002·E3034·E6101, init·synth, 자격 증명 없는 diff 실패)과 함께 쓰고, 개요 문서가 없던 AWS에 [AWS 개요](../02_infrastructure/cloud_aws/aws_overview.md)를 새로 써 기존 AWS 문서 9개를 연결했으며, [클라우드 사업자 비교](../02_infrastructure/cloud_aws/cloud_provider_comparison.md)에서 Azure·Google Cloud·DigitalOcean·Alibaba Cloud·Hetzner를 공식 페이지로 대조했습니다. 참조 노트 3개를 추가했습니다. 시험에서 CDK CLI(`aws-cdk` 2.1xxx)와 라이브러리(`aws-cdk-lib` 2.2xx)의 판 번호가 달라 GitHub 릴리스 판으로 CLI를 설치하면 실패하는 점을 찾았고, 읽지 못한 가격 페이지는 미확인으로 남겼습니다.
+
 - DO-07 B20 Kubernetes 비밀값 관리 (2026-11-27, 00 세션 직접 요청 DO-07): [Kubernetes 비밀값 관리](../04_security/cloud/kubernetes_secrets_management.md) 문서에서 Sealed Secrets·External Secrets Operator·Secrets Store CSI Driver와 클라우드별 도구(AWS ASCP, GKE Secret Manager 애드온, AKS Key Vault 애드온)를 비교했습니다. kind에서 Sealed Secrets v0.41.2(봉인·복원, strict 범위에서 다른 namespace 실패, 오프라인 봉인)와 ESO v2.15.0(Fake provider 동기화, 값 변경 갱신, 오류 시 마지막 값 유지, ExternalSecret 삭제 시 Secret 삭제)을 실행해 확인했고, 참조 노트 2개를 추가했습니다.
 
 - DO-07 B19 프록시·서비스 메시 (2026-11-27, 00 세션 직접 요청 DO-07): [Envoy](../02_infrastructure/web_server/envoy.md) 문서를 v1.40.2 컨테이너 시험(설정 검증, 경로·80:20 가중치 라우팅, 능동 상태 검사, 처리율 제한, 관리 API)과 함께 쓰고, [서비스 메시 비교](../02_infrastructure/containers/service_mesh_comparison.md)에서 Istio·Linkerd·Consul의 데이터 플레인 구조, 배포·라이선스 조건, 판 지원을 공식 자료로 대조했습니다. 참조 노트 4개(envoy, istio, linkerd, consul)를 추가했습니다. 시험에서 상태 검사의 `no_traffic_interval`(기본 60초)을 정하지 않으면 멈춘 백엔드가 30초 동안 healthy로 남는 점을 찾아 적었고, Linkerd 안정 판이 2024-02부터 벤더 배포라는 점과 Consul이 BSL 1.1이라는 점을 비교 표에 넣었습니다.
