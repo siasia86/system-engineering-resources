@@ -359,6 +359,10 @@ clusters:
 
 [⬆ 목차로 돌아가기](#목차)
 
+## 함께 보기
+
+- [클라우드 설계 패턴](./cloud_design_patterns.md) — 가용성·데이터 관리·설계·모니터링 패턴 전체 지도
+
 ## 참고 자료
 
 - Google SRE Book Ch.21: [Handling Overload](https://sre.google/sre-book/handling-overload/) — ★★★★☆ (확인일 2026-11-16)
@@ -375,6 +379,6 @@ clusters:
 
 **작성일**: 2026-11-16
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

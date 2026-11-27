@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+- DO-07 B24와 DO-07 완료 (2026-11-27, 00 세션 직접 요청 DO-07): [클라우드 설계 패턴](../03_engineering/reliability/cloud_design_patterns.md)에서 Azure Architecture Center 카탈로그 44개를 가용성·데이터 관리·설계와 구현·관리와 모니터링 4개 영역과 그 밖(메시징·보안)으로 정리하고, 현재 카탈로그의 Well-Architected 기둥 표기와 2014년판 8개 문제 영역을 대조했습니다. [Resilience Patterns](../03_engineering/reliability/resilience_patterns.md)와 서로 연결했고 참조 노트 1개를 추가했습니다. 이로써 roadmap.sh DevOps 108개 주제(1순위 37개, 2·3순위 71개)를 모두 마쳤습니다. B17~B24는 2026-11-27 사용자 지시("남은 작업도 사용자 승인 없이 계속 진행하여 마무리 할것")에 따라 묶음마다 묻지 않고 진행했습니다.
+
 - DO-07 B23 프로그래밍 언어 (2026-11-27, 00 세션 직접 요청 DO-07): Python·Rust 기존 문서는 판 확인 결과 최신과 같아 보강하지 않았고, [Go 입문](../01_fundamentals/programming/go_for_se.md)·[Ruby 입문](../01_fundamentals/programming/ruby_for_se.md)·[Node.js 입문](../01_fundamentals/programming/nodejs_for_se.md)을 새로 썼습니다. 세 문서는 같은 호스트 목록 도구(인수 처리, JSON, 외부 명령, 제한 시간 있는 HTTP, 테스트)를 Go 1.27.4·Ruby 4.0.10·Node.js 26.13.1 공식 이미지에서 실행해 확인했고, 참조 노트 3개를 추가했습니다. 시험에서 Go 정적 빌드가 동적 링크 없이 7.2MB로 나오는 점, Ruby 4.0 기본 설치에 webrick이 없는 점, `npm init -y`가 `"type": "commonjs"`를 기록하는 점을 적었습니다.
 
 - DO-07 B22 서버리스·PaaS (2026-11-27, 00 세션 직접 요청 DO-07): [서버리스 함수 비교](../02_infrastructure/cloud_aws/serverless_functions_comparison.md)에서 AWS Lambda·Azure Functions·Cloud Run functions의 무료 한도·실행 제한·콜드 스타트 대책을, [PaaS 비교](../02_infrastructure/cloud_aws/paas_comparison.md)에서 Cloudflare Workers·Vercel·Netlify·Render·Railway·Heroku의 무료 플랜 한도·잠듦·첫 유료 플랜을 공식 페이지로 대조했습니다. 참조 노트 2개를 추가했습니다. Lambda 표준 함수 최대 시간이 공식 문서에서 30분으로 표시된 점, Azure Linux Consumption 플랜이 2028-09-30 종료 예정인 점을 적었고, Google 요금·Azure 단가·무료 플랜 상업적 사용 조건은 읽지 못해 미확인으로 남겼습니다.

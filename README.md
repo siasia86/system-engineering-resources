@@ -345,6 +345,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Chaos Engineering](03_engineering/reliability/chaos_engineering.md)       | 가설 실험, 폭발 반경, Game Day         |
 | [Toil 관리](03_engineering/reliability/toil_reduction.md)                  | Toil 판별·측정·자동화 우선순위         |
 | [Resilience Patterns](03_engineering/reliability/resilience_patterns.md)   | Timeout, Retry Budget, Circuit Breaker |
+| [클라우드 설계 패턴](03_engineering/reliability/cloud_design_patterns.md)  | Azure 카탈로그 44개, 4개 영역          |
 
 ### Delivery
 

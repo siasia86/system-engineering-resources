@@ -4,12 +4,12 @@
 
 ## 구조
 
-| 디렉토리                         | 설명                                                                               | 문서 수 |
-|----------------------------------|------------------------------------------------------------------------------------|---------|
-| [reliability/](./reliability/)   | 신뢰성 — Chaos Engineering, Incident 관리, On-Call, Postmortem, Toil, Resilience   | 8       |
-| [delivery/](./delivery/)         | 딜리버리 — ADR, 용량 계획, 변경 관리, 무중단 마이그레이션, 점진 배포, Feature Flag | 8       |
-| [organization/](./organization/) | 조직 설계 — Platform Engineering, Team Topology, 레거시 현대화                     | 4       |
-| [cost/](./cost/)                 | 비용 — 클라우드 비용 최적화, 기술 부채 관리                                        | 2       |
+| 디렉토리                         | 설명                                                                                        | 문서 수 |
+|----------------------------------|---------------------------------------------------------------------------------------------|---------|
+| [reliability/](./reliability/)   | 신뢰성 — Chaos Engineering, Incident 관리, On-Call, Postmortem, Toil, Resilience, 설계 패턴 | 9       |
+| [delivery/](./delivery/)         | 딜리버리 — ADR, 용량 계획, 변경 관리, 무중단 마이그레이션, 점진 배포, Feature Flag          | 8       |
+| [organization/](./organization/) | 조직 설계 — Platform Engineering, Team Topology, 레거시 현대화                              | 4       |
+| [cost/](./cost/)                 | 비용 — 클라우드 비용 최적화, 기술 부채 관리                                                 | 2       |
 
 ## 주요 문서
 

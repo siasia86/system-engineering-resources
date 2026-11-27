@@ -191,6 +191,7 @@ sources:
 | Go                                                        | `_reference/go_official_notes.md`                          | 1.27.4, 지원 정책, 정적·교차 빌드 시험                                    | 2026-11-27 |
 | Ruby                                                      | `_reference/ruby_official_notes.md`                        | 4.0.10, branches 상태, webrick 미포함                                     | 2026-11-27 |
 | Node.js                                                   | `_reference/nodejs_official_notes.md`                      | 26.13.1 Active LTS, 일정, node:test 시험                                  | 2026-11-27 |
+| Cloud Design Patterns                                     | `_reference/cloud_design_patterns_official_notes.md`       | Azure 카탈로그 44개, 기둥 표기, 2014년판 8개 영역                         | 2026-11-27 |
 
 
 ## 사용 규칙
