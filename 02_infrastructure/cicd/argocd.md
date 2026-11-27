@@ -1,6 +1,9 @@
 # ArgoCD
 <!-- reference: _reference/argocd_official_notes.md -->
 
+- 기준 판: Argo CD v3.6.3 (2026-11-24), Helm 차트 `argo/argo-cd` 10.20.0 (2026-11-27 확인)
+- 예제 시험: 2026-11-27 4절 매니페스트 설치(server-side)와 5·6절 자동 동기화·selfHeal, `argocd --core` 조회를 kind v0.33.0(Kubernetes v1.37.0)에서 확인. Helm 차트 설치, HA 구성, SSO·RBAC·알림, App of Apps, Image Updater는 미실행
+
 ## 목차
 
 | 섹션                                                                                              |
@@ -8,7 +11,7 @@
 | [1. 개요](#1-개요) / [2. 아키텍처](#2-아키텍처) / [3. 핵심 개념](#3-핵심-개념)                    |
 | [4. 설치](#4-설치) / [5. Application 관리](#5-application-관리) / [6. Sync 전략](#6-sync-전략)    |
 | [7. App of Apps 패턴](#7-app-of-apps-패턴) / [8. RBAC & 보안](#8-rbac--보안) / [9. 알림](#9-알림) |
-| [10. Tips](#10-tips)                                                                              |
+| [10. Tips](#10-tips) / [11. 판과 업그레이드](#11-판과-업그레이드) / [함께 보기](#함께-보기)       |
 
 ---
 
@@ -91,6 +94,19 @@ ArgoCD는 Kubernetes를 위한 GitOps 기반 CD(Continuous Delivery) 도구. Git
 
 ## 4. 설치
 
+### 매니페스트로 설치
+
+```bash
+kubectl create namespace argocd
+kubectl apply -n argocd --server-side --force-conflicts \
+  -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.6.3/manifests/install.yaml
+kubectl -n argocd rollout status deploy/argocd-server
+```
+
+- `--server-side`를 빼면 `The CustomResourceDefinition "applicationsets.argoproj.io" is invalid: metadata.annotations: Too long: may not be more than 262144 bytes`로 실패합니다(v3.6.3 시험). 공식 설치·업그레이드 명령도 `--server-side --force-conflicts`를 씁니다.
+- `install.yaml`은 시험·평가용 단일 replica 구성입니다. 운영은 `manifests/ha/install.yaml`을 씁니다. API 서버·UI 없이 컨트롤러만 두는 `core-install.yaml`도 있습니다.
+- 시험에서 Deployment 6개(applicationset-controller, dex-server, notifications-controller, redis, repo-server, server)와 StatefulSet `argocd-application-controller`가 떴습니다.
+
 ### Helm으로 설치
 
 ```bash
@@ -101,10 +117,10 @@ kubectl create namespace argocd
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
 
-# 차트 9.5.15 = Argo CD v3.4.2 (판 목록: helm search repo argo/argo-cd --versions)
+# 차트 10.20.0 = Argo CD v3.6.3 (판 목록: helm search repo argo/argo-cd --versions)
 helm install argocd argo/argo-cd \
   --namespace argocd \
-  --version 9.5.15 \
+  --version 10.20.0 \
   --set server.service.type=LoadBalancer
 ```
 
@@ -496,7 +512,54 @@ metadata:
 
 🟡 ArgoCD UI/API는 외부에 노출하지 않습니다. VPN 또는 내부 네트워크에서만 접근하도록 설정합니다.
 
+🟡 Sync가 `Synced`인데 Health가 `Degraded`이면 리소스 하나의 상태 문제입니다. 시험에서 metrics-server가 없는 kind 클러스터에 HPA가 들어간 앱은 HPA가 `ScalingActive False`(`FailedGetResourceMetric`)로 남아 앱 전체가 `Degraded`로 표시됐습니다. `kubectl describe`로 해당 리소스의 조건을 봅니다.
+
+🟡 `prune: true`는 Argo CD가 관리하던 리소스 중 Git에서 빠진 것만 지웁니다. 같은 namespace에 손으로 만든 리소스(시험에서 ConfigMap)는 지우지 않았습니다.
+
+### CLI만으로 조회 (core 모드)
+
+```bash
+# API 서버 로그인 없이 현재 kubeconfig 권한으로 조회
+kubectl config set-context --current --namespace=argocd
+argocd app list --core
+argocd app get podinfo --core
+```
+
 [⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 11. 판과 업그레이드
+
+| Argo CD | 시험된 Kubernetes 판       |
+|---------|----------------------------|
+| 3.6     | v1.37, v1.36, v1.35, v1.34 |
+| 3.5     | v1.36, v1.35, v1.34, v1.33 |
+| 3.4     | v1.35, v1.34, v1.33, v1.32 |
+
+- 최근 minor 판 세 개만 patch를 받고, 그보다 오래된 판은 EOL입니다. 2026-11-24에 v3.6.3·v3.5.9·v3.4.15가 함께 나왔습니다.
+- minor 판을 건너뛰어 올릴 때는 사이의 업그레이드 문서를 모두 읽습니다. 3.4 → 3.6에서 볼 점:
+
+| 구간      | 주요 변경                                                                                                                                                                               |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 3.4 → 3.5 | Helm 4.2로 올라 plain HTTP OCI 저장소는 `--insecure-oci-force-http` 등 조치 필요, GnuPG 서명 검증이 Source Integrity로 바뀌고 `signatureKeys` 사용 중단 예고                            |
+| 3.5 → 3.6 | Server-Side Apply를 쓰면 Server-Side Diff를 쓰고 Structured-Merge Diff는 제거, repo-server OTLP 헤더 환경 변수 이름 변경, `app diff --local` 기본 포함 파일에 `*.tpl`·`Chart.lock` 추가 |
+
+```bash
+# 업그레이드도 같은 방식 (판만 바꿈)
+kubectl apply -n argocd --server-side --force-conflicts \
+  -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.6.3/manifests/install.yaml
+```
+
+[⬆ 목차로 돌아가기](#목차)
+
+---
+
+## 함께 보기
+
+- [FluxCD](./fluxcd.md) — 컨트롤러 기반 GitOps, Argo CD 비교
+- [Helm](../containers/helm.md) — 차트와 릴리스
+- [kind](../containers/kind.md) — 시험용 로컬 클러스터
 
 ---
 
@@ -506,7 +569,8 @@ metadata:
 - ArgoCD Best Practices: [argo-cd.readthedocs.io/best_practices](https://argo-cd.readthedocs.io/en/stable/user-guide/best_practices/) — ★★★☆☆
 - Argo CD Image Updater: [argocd-image-updater.readthedocs.io](https://argocd-image-updater.readthedocs.io/) — ★★★☆☆
 - Argo CD Helm (OCI 차트 repoURL 형식): [argo-cd.readthedocs.io/user-guide/helm](https://argo-cd.readthedocs.io/en/stable/user-guide/helm/) — ★★★☆☆
-- Argo Helm argo-cd-9.5.15 릴리스 (appVersion v3.4.2): [github.com/argoproj/argo-helm](https://github.com/argoproj/argo-helm/releases/tag/argo-cd-9.5.15) — ★★★☆☆
+- Argo Helm argo-cd-10.20.0 릴리스 (appVersion v3.6.3): [github.com/argoproj/argo-helm](https://github.com/argoproj/argo-helm/releases/tag/argo-cd-10.20.0) — ★★★☆☆
+- 업그레이드 문서 (GitHub 원본): [3.4-3.5](https://github.com/argoproj/argo-cd/blob/v3.6.3/docs/operator-manual/upgrading/3.4-3.5.md) · [3.5-3.6](https://github.com/argoproj/argo-cd/blob/v3.6.3/docs/operator-manual/upgrading/3.5-3.6.md) · [시험된 Kubernetes 판](https://github.com/argoproj/argo-cd/blob/v3.6.3/docs/operator-manual/tested-kubernetes-versions.md) — ★★★☆☆
 - Bitnami Charts README (OCI 설치 안내): [github.com/bitnami/charts](https://github.com/bitnami/charts) — ★★★☆☆
 - Argo CD Notifications 트리거 카탈로그 (notifications_catalog/install.yaml): [github.com/argoproj/argo-cd](https://github.com/argoproj/argo-cd/blob/stable/notifications_catalog/install.yaml) — ★★★☆☆ (확인일 2026-11-16)
 
@@ -525,6 +589,6 @@ metadata:
 
 **작성일**: 2026-05-10
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

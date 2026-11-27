@@ -3,7 +3,7 @@
 kind(Kubernetes IN Docker)는 Docker 컨테이너를 Kubernetes 노드로 써서 PC 한 대에 클러스터를 만드는 도구입니다. 몇 분 안에 만들고 지울 수 있어 Kubernetes 학습, manifest·Helm chart 시험, CI에 맞습니다. 이 문서만으로 설치 → 클러스터 만들기 → 앱 배포 → 검증 → 삭제까지 따라 할 수 있게 썼습니다.
 
 - 기준 판: kind v0.33.0(2026-08-26 release), 기본 노드 이미지 `kindest/node:v1.37.0`
-- 예제 시험: 미실행. 명령과 설정은 kind 공식 문서 원본(kubernetes-sigs/kind `site/content/docs/user/`, 2026-11-23 확인)과 대조했습니다
+- 예제 시험: 2026-11-27 설치(체크섬 일치)와 단일 노드 클러스터 생성·삭제를 실행(`kind create cluster --wait 180s` 약 36초, 노드 `v1.37.0`, 노드 OS Debian 13). 여러 노드 구성, 포트 매핑, 이미지 로드 등 나머지 명령은 미실행이며 kind 공식 문서 원본(kubernetes-sigs/kind `site/content/docs/user/`, 2026-11-23 확인)과 대조했습니다
 
 ## 목차
 
@@ -57,7 +57,7 @@ VER=v0.33.0
 chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
 kind version
-# kind v0.33.0 go1.xx linux/amd64
+# kind v0.33.0 go1.26.7 linux/amd64
 ```
 
 그 밖의 방법: macOS `brew install kind`, Windows `choco install kind`, Go 개발 환경 `go install sigs.k8s.io/kind@v0.33.0`.
@@ -292,6 +292,6 @@ sudo sysctl fs.inotify.max_user_instances=512
 
 **작성일**: 2026-11-23
 
-**마지막 업데이트**: 2026-11-23
+**마지막 업데이트**: 2026-11-27
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -6,21 +6,25 @@ tags:
   - gitops
   - kubernetes
   - cicd
-last_checked: 2026-11-16
+last_checked: 2026-11-27
 sources:
   - https://argo-cd.readthedocs.io/en/stable/
   - https://argo-cd.readthedocs.io/en/stable/core_concepts/
   - https://argo-cd.readthedocs.io/en/stable/getting_started/
   - https://argo-cd.readthedocs.io/en/stable/operator-manual/health/
+  - https://github.com/argoproj/argo-cd/releases
+  - https://github.com/argoproj/argo-cd/blob/v3.6.3/docs/operator-manual/upgrading/3.5-3.6.md
+  - https://github.com/argoproj/argo-helm/releases
 ---
 
 # ArgoCD 공식 문서 참조 노트
 
-## 1. 버전 현황 (확인일: 2026-11-16)
+## 1. 버전 현황 (확인일: 2026-11-27)
 
-| 항목   | 버전   |
-|--------|--------|
-| ArgoCD | v3.6.1 |
+| 항목                | 버전                                                              |
+|---------------------|-------------------------------------------------------------------|
+| ArgoCD              | v3.6.3 (2026-11-24, 같은 날 v3.5.9·v3.4.15)                       |
+| Helm 차트 `argo-cd` | 10.20.0 (2026-11-25, appVersion v3.6.3, kubeVersion `>=1.25.0-0`) |
 
 ## 2. 공식 정의
 
@@ -79,3 +83,22 @@ kubectl apply -n argocd --server-side --force-conflicts -f \
 - `argocd app sync` 명령으로 수동 sync 가능
 - SSO 연동 권장 (Dex 내장)
 - 멀티 클러스터 관리 가능 (클러스터별 kubeconfig 등록)
+
+## 8. 판 지원과 업그레이드 (2026-11-27, GitHub 원본 문서 v3.6.3)
+
+- readthedocs가 HTTP 429를 돌려줘 같은 문서를 GitHub 저장소 원본으로 읽음.
+- 지원: "Only the three most recent minor versions are eligible for patch releases."(release-process-and-cadence.md)
+- 시험된 Kubernetes 판: 3.6 → v1.37·v1.36·v1.35·v1.34, 3.5 → v1.36~v1.33, 3.4 → v1.35~v1.32.
+- 3.4→3.5: Helm 4.2.0(plain HTTP OCI 저장소 조치), GnuPG 서명 검증 → Source Integrity, `signatureKeys`·`add-signature-key` 사용 중단 예고, Event-listing gRPC 반환형 변경.
+- 3.5→3.6: Server-Side Apply 사용 시 Server-Side Diff, Structured-Merge Diff 제거, repo-server OTLP 헤더 환경 변수 이름 변경, `--local-include` 기본값에 `*.tpl`·`Chart.lock` 추가.
+
+## 9. kind 시험 (2026-11-27, kind v0.33.0, Kubernetes v1.37.0)
+
+- CLI `argocd-linux-amd64` v3.6.3 체크섬(cli_checksums.txt) 일치.
+- client-side `kubectl apply -f install.yaml`: `The CustomResourceDefinition "applicationsets.argoproj.io" is invalid: metadata.annotations: Too long: may not be more than 262144 bytes`. server-side `--force-conflicts`로 성공.
+- Deployment 6개 + StatefulSet 1개 준비, `argocd-initial-admin-secret` 생성.
+- podinfo `kustomize` Application(automated prune·selfHeal, CreateNamespace): Synced, Health Degraded. HPA `ScalingActive False`(`FailedGetResourceMetric`, metrics-server 없음)가 함께 나타남.
+- selfHeal: 이미지를 손으로 6.0.0으로 바꾸고 20초 뒤 6.17.0으로 복귀.
+- prune: 손으로 만든 ConfigMap은 15초 뒤에도 남음.
+- `argocd app list --core`, `argocd app get --core` 동작.
+- 미실행: Helm 차트 설치, HA, SSO, 알림.

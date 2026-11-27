@@ -35,7 +35,7 @@ sources:
 | REST API                                      | `_reference/rest_api_official_notes.md`                 | RFC 9110·9457·5789, OpenAPI 3.2.1                                         | 2026-11-09 |
 | AWS STS/IAM/S3/KMS                            | `_reference/aws_sts_iam_s3_kms_official_notes.md`       | AssumeRole, session, cross-account 권한                                   | 2026-08-13 |
 | AWS Secrets Manager                           | `_reference/aws_secrets_manager_official_notes.md`      | Secret lifecycle·Rotation·IAM                                             | 2026-08-19 |
-| ArgoCD                                        | `_reference/argocd_official_notes.md`                   | v3.6.1                                                                    | 2026-11-16 |
+| ArgoCD                                        | `_reference/argocd_official_notes.md`                   | v3.6.3, Helm 차트 10.20.0, 3.4→3.6 업그레이드, kind 시험                  | 2026-11-27 |
 | Chaos/FinOps                                  | `_reference/chaos_finops_official_notes.md`             | principlesofchaos.org / finops.org                                        | 2026-11-16 |
 | CPU 시스템 운영                               | `_reference/cpu_system_engineering_official_notes.md`   | NUMA·스케줄링·가상화·CPU 호환성                                           | 2026-08-21 |
 | Charset/Encoding                              | `_reference/charset_encoding_official_notes.md`         | RFC 3629, Unicode 18.0                                                    | 2026-11-09 |
