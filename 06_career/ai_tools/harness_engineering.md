@@ -1,5 +1,7 @@
 # Harness Engineering
 
+<!-- reference: _reference/harness_loop_engineering_sources_notes.md -->
+
 AI 에이전트가 실제 작업을 안정적으로 수행할 수 있도록 주변 환경(scaffolding)을 설계하는 엔지니어링 분야입니다. 프롬프트 엔지니어링이 "무엇을 말할지"에 집중한다면, 하네스 엔지니어링은 "에이전트가 작업할 환경을 어떻게 구성할지"에 집중합니다.
 
 ## 목차
@@ -14,14 +16,14 @@ AI 에이전트가 실제 작업을 안정적으로 수행할 수 있도록 주�
 
 ## 1. 개요
 
-| 항목        | 값                                                                       |
-|-------------|--------------------------------------------------------------------------|
-| 정의        | AI 에이전트의 환경, 의도 전달, 피드백 루프를 설계하는 분야 (출처 종합)   |
-| 등장 시기   | 2026년 초 (OpenAI 게시: 2026-02-11, 첫 커밋: 2025-08)                    |
-| 주요 제안자 | OpenAI (Codex팀), Anthropic (Claude팀), Birgitta Böckeler (Thoughtworks) |
-| 핵심 철학   | 모델이 아닌 환경(harness)에 투자하여 에이전트 성공률을 높임              |
-| 전제 조건   | AI 코딩 에이전트 (Codex, Claude Code, Cursor 등) 사용 환경               |
-| 실증 성과   | 3명이 5개월간 코드 0줄 직접 작성, ~100만 줄·~1,500 PR 생산 (OpenAI 원문) |
+| 항목      | 값                                                                                                                 |
+|-----------|--------------------------------------------------------------------------------------------------------------------|
+| 정의      | 모델을 뺀 에이전트의 나머지(지침·도구·상태·검사·권한·실행 환경)를 설계·개선하는 분야 (출처 종합)                   |
+| 등장 시기 | 2026년 2월 (Hashimoto가 2026-02-05 이름 붙임, OpenAI 게시 2026-02-11)                                              |
+| 주요 자료 | Mitchell Hashimoto, OpenAI (Codex팀), Anthropic, Birgitta Böckeler (Thoughtworks), LangChain                       |
+| 핵심 철학 | 모델이 아닌 환경(harness)에 투자하여 에이전트 성공률을 높임                                                        |
+| 전제 조건 | AI 코딩 에이전트 (Codex, Claude Code, Cursor 등) 사용 환경                                                         |
+| 사례 수치 | 엔지니어 3명→7명, 약 5개월, 직접 쓴 코드 0줄, 약 100만 줄·PR 약 1,500개, 1인 하루 평균 PR 3.5개 (OpenAI 자체 보고) |
 
 ### 용어 정의
 
@@ -32,6 +34,20 @@ AI 에이전트가 실제 작업을 안정적으로 수행할 수 있도록 주�
 | Agent Loop     | 에이전트의 관찰 → 판단 → 행동 → 검증 반복 사이클        |
 | Context Window | 에이전트가 한 번에 참고할 수 있는 정보의 한계           |
 | Verification   | 에이전트 출력물의 정확성을 자동으로 확인하는 과정       |
+
+### 용어의 기원과 범위
+
+- Mitchell Hashimoto는 2026-02-05 글에서 이 일을 "harness engineering"이라고 불렀습니다. 에이전트가 실수할 때마다 같은 실수를 다시 하지 않도록 해결책을 만들어 두는 일이며, 방법은 지침 파일(AGENTS.md 등)에 한 줄을 더하거나 실제 도구(화면 캡처, 일부 테스트만 돌리는 스크립트 등)를 만드는 것입니다. [My AI Adoption Journey](https://mitchellh.com/writing/my-ai-adoption-journey)
+- 같은 달 11일 OpenAI가 Codex 사례를 같은 이름으로 발표하면서 널리 쓰이기 시작했습니다.
+- LangChain은 "Agent = Model + Harness"로 정리합니다. 모델이 아닌 코드·설정·실행 논리가 모두 하네스입니다. [The Anatomy of an Agent Harness](https://www.langchain.com/blog/the-anatomy-of-an-agent-harness)
+- 표준 정의는 없습니다. 출처마다 범위가 달라, 이 문서는 "에이전트를 쓰는 쪽이 저장소와 작업 환경에 더하는 것"을 중심으로 다룹니다.
+
+| 헷갈리기 쉬운 이름               | 뜻                                                                                                      |
+|----------------------------------|---------------------------------------------------------------------------------------------------------|
+| 에이전트 하네스 (이 문서)        | 에이전트가 일하는 환경: 지침·도구·상태·검사·권한                                                        |
+| 평가 하네스 (evaluation harness) | 모델·에이전트의 성능을 재는 시험 틀. [평가 설계](../../07_ai_transformation/agent_evaluation_design.md) |
+| 테스트 하네스 (test harness)     | 소프트웨어 시험용 실행 틀(드라이버·stub)                                                                |
+| Harness (회사·제품)              | CI/CD 플랫폼. [Harness](../../02_infrastructure/cicd/harness_inc.md)                                    |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -136,37 +152,58 @@ repo/
 
 ### OpenAI (Codex팀) 원칙
 
-| 원칙                                | 설명                                                              |
-|-------------------------------------|-------------------------------------------------------------------|
-| Humans steer, Agents execute        | 인간은 설계/방향 제시, 에이전트는 코드 작성                       |
-| Map, not manual                     | AGENTS.md는 짧은 목차, 상세 내용은 별도 문서                      |
-| Agent legibility first              | 에이전트가 읽을 수 있는 형태로 모든 지식을 레포에 저장            |
-| Enforcing architecture and taste    | 아키텍처 경계와 취향(taste)을 린터/원칙으로 인코딩하여 강제       |
-| Entropy management                  | 정기적으로 기술 부채를 청소하는 에이전트를 운영                   |
-| Throughput changes merge philosophy | 고처리량 환경에서 수정 비용이 대기 비용보다 낮아 빠른 머지를 우선 |
-| Long-running autonomy               | 단일 에이전트 실행이 최대 6시간 이상 무인 동작 가능 (OpenAI 원문) |
+| 원칙                                | 설명                                                                                                                                                 |
+|-------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Humans steer, Agents execute        | 인간은 설계/방향 제시, 에이전트는 코드 작성                                                                                                          |
+| Map, not manual                     | AGENTS.md는 짧은 목차, 상세 내용은 별도 문서                                                                                                         |
+| Agent legibility first              | 에이전트가 읽을 수 있는 형태로 모든 지식을 레포에 저장                                                                                               |
+| Enforcing architecture and taste    | 아키텍처 경계와 취향(taste)을 린터/원칙으로 인코딩하여 강제                                                                                          |
+| Entropy management                  | 매주 금요일(20%)에 하던 정리를 원칙 검사·리팩터링 PR을 여는 배경 작업으로 바꿈(garbage collection 비유), 오래된 문서는 doc-gardening 에이전트가 고침 |
+| Throughput changes merge philosophy | 고처리량 환경에서 수정 비용이 대기 비용보다 낮아 빠른 머지를 우선                                                                                    |
+| Long-running autonomy               | Codex 1회 실행이 한 작업에 6시간 넘게 무인으로 동작하는 일이 잦음 (OpenAI 원문)                                                                      |
 
-### Anthropic (Claude팀) 접근법
+### Anthropic 접근법
 
-🟡 아래는 Anthropic 기사의 핵심 교훈을 요약한 것이며, 원문이 명시적으로 "원칙"으로 제시한 것은 아닙니다.
+🟡 아래는 Anthropic 두 글(2025-11-26, 2026-03-24)의 교훈을 요약한 것이며, 원문이 "원칙"으로 이름 붙인 것은 아닙니다.
 
-| 교훈                               | 설명                                               |
-|------------------------------------|----------------------------------------------------|
-| Harness design impacts performance | 하네스 설계가 에이전트 성능에 실질적 영향을 미침   |
-| Decompose into tractable chunks    | 작업을 관리 가능한 단위로 분해하여 에이전트에 전달 |
-| Structured artifacts for handoff   | 세션 간 컨텍스트 전달에 구조화된 아티팩트 사용     |
-| Evaluator with calibrated criteria | few-shot 예시 기반 평가자로 출력물 품질 자동 검증  |
+| 교훈                    | 설명                                                                                                                      |
+|-------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| 준비와 진척을 나눔      | 첫 실행의 initializer가 기능 목록·진행 기록·`init.sh`·첫 commit을 만들고, 이후 coding 에이전트가 한 번에 하나씩 진척      |
+| 구조화된 인계 자료      | 기능 목록은 JSON, 진행은 `claude-progress.txt`, 이력은 설명이 있는 git commit                                             |
+| 끝에서 끝까지 확인      | 시험 없이 완료로 표시하는 일을 브라우저 자동화(Puppeteer·Playwright MCP)로 줄임                                           |
+| 역할 분리               | planner(짧은 요청 → 명세), generator(구현), evaluator(실제 앱을 조작해 평가)                                              |
+| 완료 기준을 먼저 합의   | 작업 묶음마다 generator와 evaluator가 "완료"를 먼저 정함(sprint contract)                                                 |
+| 평가자 보정             | 점수 분해가 있는 few-shot 예시로 evaluator를 보정                                                                         |
+| 문맥 초기화와 요약 구분 | reset은 새 에이전트로 깨끗이 시작, compaction은 요약해 이어감. compaction은 서두르는 경향(context anxiety)이 남을 수 있음 |
+| 모델이 좋아지면 걷어냄  | 하네스의 각 부분은 "모델이 혼자 못 하는 일"에 대한 가정이므로 새 모델이 나오면 필요 없는 부분을 뺌                        |
 
 ### Birgitta Böckeler (Thoughtworks) 프레임워크
 
-🟡 martinfowler.com 게재 기사의 저자는 Birgitta Böckeler입니다.
+martinfowler.com 글 "Harness engineering for coding agent users"(2026-04-02, 2026-02-17 메모를 대체)의 틀입니다.
 
-| 개념                     | 설명                                                       |
-|--------------------------|------------------------------------------------------------|
-| Guides and Sensors       | 에이전트를 안내(Guide)하고 결과를 감지(Sensor)하는 도구    |
-| Computational controls   | 린터, 테스트 등 결정론적이고 빠른 검증                     |
-| Inferential controls     | LLM 기반 의미 분석, AI 코드 리뷰 (비결정론적)              |
-| Context Engineering 연관 | 하네스 엔지니어링은 컨텍스트 엔지니어링의 구체적 적용 형태 |
+| 개념                     | 설명                                                                            |
+|--------------------------|---------------------------------------------------------------------------------|
+| Guides (feedforward)     | 행동하기 전에 방향을 잡음: 지침, 규칙, 예시, 템플릿                             |
+| Sensors (feedback)       | 행동한 뒤 관찰해 스스로 고치게 함: 테스트, 린터, 리뷰                           |
+| Computational            | 린터, 테스트, 타입 검사, 구조 분석 등 결정적이고 빠른 통제                      |
+| Inferential              | LLM 기반 의미 분석, AI 코드 리뷰, LLM as judge (결정적이지 않음)                |
+| 조절 영역                | Maintainability, Architecture fitness(fitness function), Behaviour(가장 어려움) |
+| 쓰는 쪽 하네스           | 모델 → 도구 제작사의 builder 하네스 → 사용자가 더하는 user 하네스의 바깥 고리   |
+| Keep quality left        | 문제는 일찍 찾을수록 고치기 싸므로 검사를 배포 경로의 앞쪽에 둠                 |
+| Steering loop            | 같은 문제가 다시 나오면 사람이 사전·사후 통제를 고쳐 에이전트를 조종            |
+| Harnessability           | 강한 타입·분명한 모듈 경계가 있는 코드일수록 통제를 걸기 쉬움                   |
+| Context Engineering 연관 | 코딩 에이전트의 사용자 하네스는 컨텍스트 엔지니어링의 특정 형태라고 설명        |
+
+### Mitchell Hashimoto의 반복 방식
+
+| 단계 | 할 일                                                              |
+|------|--------------------------------------------------------------------|
+| 1    | 에이전트의 잘못된 행동을 발견                                      |
+| 2    | 단순한 것이면 지침 파일에 그 행동을 막는 한 줄을 더함              |
+| 3    | 반복되거나 확인이 필요한 것이면 스크립트·도구를 만들고 지침에 연결 |
+| 4    | 다음 실행에서 같은 실수가 없어졌는지 확인                          |
+
+그가 예로 든 Ghostty 저장소의 AGENTS.md는 각 줄이 실제로 관찰한 나쁜 행동에서 나왔다고 적었습니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -255,6 +292,19 @@ if [ -n "$VIOLATIONS" ]; then
 fi
 ```
 
+### 통제 점검표
+
+Böckeler의 두 축을 겹쳐 빈 칸을 찾습니다. 칸마다 하나 이상 있으면 최소 하네스로 봅니다.
+
+| 구분           | Computational (결정적)                   | Inferential (LLM 판단)              |
+|----------------|------------------------------------------|-------------------------------------|
+| Guides (사전)  | 코드 생성 템플릿, 스키마, 형식 도구 설정 | AGENTS.md 규칙, skill, 예시 코드    |
+| Sensors (사후) | 린터, 타입 검사, 구조 테스트, 링크 검사  | AI 리뷰, 평가자 모델, 시나리오 판정 |
+
+- 결정적 검사로 확인할 수 있는 것(파일 존재, 링크, 빌드, 테스트)은 LLM 판단에 맡기지 않습니다.
+- 지침 한 줄로 막은 실수가 다시 나오면 같은 내용을 검사 도구로 옮깁니다.
+- 새 모델로 바꾸면 각 통제가 아직 필요한지 다시 봅니다. 필요 없는 통제는 문맥과 시간을 씁니다.
+
 ### 향후 도입 검토
 
 | 항목            | 내용                                              | 시점                        |
@@ -323,13 +373,17 @@ git worktree는 작업 파일을 분리하는 수단입니다. OS 권한·네트
 
 ## 8. 트러블슈팅
 
-| 증상                             | 원인                                     | 해결                                       |
-|----------------------------------|------------------------------------------|--------------------------------------------|
-| 에이전트가 같은 실수를 반복      | 검증 루프 부재                           | 린터/구조 테스트 추가, CI에서 자동 차단    |
-| 에이전트가 아키텍처를 무시       | AGENTS.md에 규칙만 있고 기계적 강제 없음 | 커스텀 린터로 경계를 강제                  |
-| 컨텍스트 윈도우 초과             | AGENTS.md가 너무 길음                    | 목차 방식으로 전환, progressive disclosure |
-| 코드 스타일 일관성 저하          | 모델이 기존 패턴을 복제하여 drift        | 정기 cleanup 에이전트 운영                 |
-| 에이전트가 외부 지식에 접근 불가 | Slack/Docs의 암묵지가 레포에 없음        | 모든 결정을 레포 내 마크다운으로 기록      |
+| 증상                              | 원인                                     | 해결                                               |
+|-----------------------------------|------------------------------------------|----------------------------------------------------|
+| 에이전트가 같은 실수를 반복       | 검증 루프 부재                           | 린터/구조 테스트 추가, CI에서 자동 차단            |
+| 에이전트가 아키텍처를 무시        | AGENTS.md에 규칙만 있고 기계적 강제 없음 | 커스텀 린터로 경계를 강제                          |
+| 컨텍스트 윈도우 초과              | AGENTS.md가 너무 길음                    | 목차 방식으로 전환, progressive disclosure         |
+| 코드 스타일 일관성 저하           | 모델이 기존 패턴을 복제하여 drift        | 정기 cleanup 에이전트 운영                         |
+| 에이전트가 외부 지식에 접근 불가  | Slack/Docs의 암묵지가 레포에 없음        | 모든 결정을 레포 내 마크다운으로 기록              |
+| 일이 남았는데 완료라고 보고       | 진척만 보고 끝났다고 판단, 시험 생략     | 기능 목록에 통과 여부를 두고 끝에서 끝까지 확인    |
+| 한 번에 전부 만들다 중간에 무너짐 | 작업 단위가 큼                           | 한 실행에 기능 하나, 끝날 때 commit·진행 기록      |
+| 문맥이 차면 서둘러 마무리         | context anxiety                          | 요약 대신 새 실행으로 시작하고 인계 자료를 읽게 함 |
+| 모델을 바꾼 뒤 오히려 느려짐      | 옛 모델 한계를 메우던 통제가 남음        | 통제별로 빼 보고 결과가 같으면 걷어냄              |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -337,12 +391,15 @@ git worktree는 작업 파일을 분리하는 수단입니다. OS 권한·네트
 
 ## 참고 자료
 
-- OpenAI: [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/) — ★★★☆☆
+- Mitchell Hashimoto: [My AI Adoption Journey](https://mitchellh.com/writing/my-ai-adoption-journey) (2026-02-05) — ★★☆☆☆
+- OpenAI: [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/) (2026-02-11) — ★★★☆☆
 - Anthropic: [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps) — ★★★☆☆
 - Anthropic: [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) — ★★★☆☆
 - OpenAI: [Custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) — ★★★☆☆
 - [Harness/Loop 참고 저장소](../../_reference/github_references.md#4-harnessloop)
-- martinfowler.com: [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html) — ★★☆☆☆
+- martinfowler.com: [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html) (2026-04-02) — ★★☆☆☆
+- LangChain: [The Anatomy of an Agent Harness](https://www.langchain.com/blog/the-anatomy-of-an-agent-harness) (2026-03-10) — ★★☆☆☆
+- [1차 자료 대조 노트](../../_reference/harness_loop_engineering_sources_notes.md) (확인일 2026-11-28)
 - GitHub: [ai-boost/awesome-harness-engineering](https://github.com/ai-boost/awesome-harness-engineering) — ★★☆☆☆
 - GitHub: [walkinglabs/awesome-harness-engineering](https://github.com/walkinglabs/awesome-harness-engineering) — ★★☆☆☆
 - Learn Harness Engineering: [walkinglabs.github.io](https://walkinglabs.github.io/learn-harness-engineering/en/) — ★★☆☆☆
@@ -362,6 +419,6 @@ git worktree는 작업 파일을 분리하는 수단입니다. OS 권한·네트
 
 **작성일**: 2026-06-19
 
-**마지막 업데이트**: 2026-11-18
+**마지막 업데이트**: 2026-11-28
 
 © 2026 siasia86. Licensed under CC BY 4.0.

@@ -1,5 +1,7 @@
 # Loop Engineering
 
+<!-- reference: _reference/harness_loop_engineering_sources_notes.md -->
+
 에이전트에게 매번 프롬프트하는 대신, 에이전트를 프롬프트하는 시스템을 설계하는 작업 방식입니다. Harness Engineering이 "에이전트가 작업할 환경"을 설계한다면, Loop Engineering은 "그 환경에서 에이전트가 자율적으로 반복 실행되는 루프"를 설계합니다.
 
 ## 목차
@@ -17,14 +19,15 @@
 | 항목      | 값                                                                                 |
 |-----------|------------------------------------------------------------------------------------|
 | 정의      | 에이전트를 자동으로 반복 실행하며, 작업 발견·분배·검증·기록을 수행하는 시스템 설계 |
-| 등장 시기 | 2026년 6월 (Addy Osmani 블로그, Peter Steinberger, Boris Cherny)                   |
+| 등장 시기 | 2026-06-07 Addy Osmani 글, 실무편 2026-08-14 (O'Reilly 재게재 2026-11-02)          |
+| 앞선 기법 | Ralph 루프 (Geoffrey Huntley, 2025-07-14): 같은 프롬프트를 반복 실행하는 Bash 루프 |
 | 핵심 전환 | "에이전트에 프롬프트" → "에이전트에 프롬프트하는 루프를 설계"                      |
 | 전제 조건 | 실행 도구와 목표·검증·정지 조건; Skills·CI/CD는 필요에 따라 선택                   |
 | 주의      | 초기 단계, 토큰 비용 주의 필수                                                     |
 
 ### 원문에서 참고할 설계 관점
 
-Addy Osmani는 에이전트를 다시 호출하는 외부 루프를 설계 대상으로 설명하며, 후속 글에서 검증 가능한 목표·제약·정지 조건과 결과 검토를 강조합니다. 아래 예시는 이 관점을 문서 조사에 맞춘 정리입니다. [Loop Engineering](https://addyosmani.com/blog/loop-engineering/), [Practical Loop Engineering](https://addyosmani.com/blog/practical-loop-engineering/)
+Addy Osmani는 "에이전트에게 프롬프트하는 사람"을 스스로 대신하는 시스템을 만드는 일로 설명합니다. 출발점은 Peter Steinberger의 "에이전트를 프롬프트하는 루프를 설계하라"는 말과, Claude Code를 이끄는 Boris Cherny의 "내 일은 루프를 쓰는 것"이라는 말입니다. 형식 정의는 없고, 후속 실무편에서 검증 가능한 목표·제약·정지 조건과 결과 검토를 강조합니다. 아래 예시는 이 관점을 문서 조사에 맞춘 정리입니다. [Loop Engineering](https://addyosmani.com/blog/loop-engineering/), [Practical Loop Engineering](https://addyosmani.com/blog/practical-loop-engineering/)
 
 ### 이전 방식과의 비교
 
@@ -34,6 +37,39 @@ Addy Osmani는 에이전트를 다시 호출하는 외부 루프를 설계 대�
 | 한 세션 내 주고받기            | 스케줄/이벤트 기반 자동 실행      |
 | 사람이 도구를 직접 쥐고 있음   | 루프가 작업을 찾아 분배·검증·기록 |
 | 컨텍스트를 매번 재설명         | Skills + Memory로 누적            |
+
+### 앞선 기법: Ralph 루프
+
+Geoffrey Huntley가 2025-07-14에 소개한 방식으로, 가장 단순한 형태는 같은 프롬프트 파일을 에이전트에 계속 넣는 Bash 루프입니다(원문 예: `while :; do cat PROMPT.md | claude-code ; done`).
+
+| 원문의 요령          | 뜻                                                        |
+|----------------------|-----------------------------------------------------------|
+| 한 번에 한 가지      | 반복 한 번에 일 하나만 하게 함                            |
+| 프롬프트에 표지 추가 | 잘못된 행동을 본 뒤 그 행동을 막는 문장을 프롬프트에 더함 |
+| 먼저 찾아보기        | 구현이 없다고 가정하기 전에 코드를 검색하게 함            |
+| 되밀기               | 테스트·정적 검사가 실패를 돌려줘 다음 반복의 방향을 바꿈  |
+| 남은 일 파일         | `fix_plan.md` 같은 파일에 남은 일을 적고 반복마다 갱신    |
+
+원문의 무한 루프는 멈추지 않으므로 실제로는 횟수 상한과 검사 통과를 정지 조건으로 둡니다. 아래는 구조 예시이며, `agent_cmd`는 사용하는 에이전트 CLI의 비대화 실행 명령으로 바꿉니다.
+
+```bash
+#!/usr/bin/env bash
+# bounded_loop.sh - 상한과 검사가 있는 반복 실행 예시
+set -euo pipefail
+
+max_runs=10
+for i in $(seq 1 "$max_runs"); do
+  agent_cmd < PROMPT.md            # 에이전트 1회 실행(도구별 명령으로 바꿈)
+  if ./scripts/check.sh; then      # 결정적 검사가 통과하면 정지
+    echo "check passed at run $i"
+    exit 0
+  fi
+done
+echo "limit reached without passing checks" >&2
+exit 1
+```
+
+상한에 걸려 끝난 것은 미완료로 기록합니다. 에이전트가 쓸 수 있는 권한·네트워크·비용 한도는 루프 밖에서 따로 정합니다.
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -249,6 +285,21 @@ Automations 탭:
 
 상태에는 `대상/출처/확인 commit/실행/검증/미실행/다음 작업`을 남깁니다. 읽을 경로를 지침·프롬프트·인계에 연결해야 하며 파일 저장만으로 자동 재개가 구현되는 것은 아닙니다. 처음에는 현재 세션에서 순차 진행하고 필요가 확인된 구성 요소를 추가합니다.
 
+### 정지 조건 작성 기준
+
+Osmani 실무편과 그 글이 인용한 Claude Code 팀 설명에서 뽑은 기준입니다.
+
+| 기준             | 예                                                                       |
+|------------------|--------------------------------------------------------------------------|
+| 결정적 기준      | 통과한 테스트 수, 점수 기준 통과처럼 기계가 판정할 수 있는 조건          |
+| 횟수 상한        | "5번 시도 뒤 정지", "10턴 뒤 정지"                                       |
+| 개선 없음        | 두 턴 연속 나아진 것이 없으면 중단                                       |
+| 같은 명령 반복   | 바뀐 것 없이 같은 명령을 세 번째 내면 멈출 때로 봄                       |
+| 검증 분리        | 일을 한 에이전트가 그 결과를 판정하지 않음. 초안과 검증을 나눔           |
+| 위험에 맞춘 감독 | 인증·보안·금융에 닿으면 가까이 지켜보고, 문서·테스트 범위 점검은 더 맡김 |
+
+`/goal` 뒤의 evaluator는 대화 기록으로 지정한 규칙만 확인합니다. 실무편은 이것이 위의 "검증 분리"에 해당하는 검사자가 아니라고 적었습니다.
+
 ### 참고할 실행 구현
 
 [Harness/Loop GitHub 목록](../../_reference/github_references.md#4-harnessloop)에 Symphony·Ralph·autonomous-coding·Deep Agents·mini-swe-agent와 자료 모음을 정리했습니다. 실행기 전체 도입과 그 안의 상태 저장·작은 작업·검증 패턴을 참고하는 선택은 각각의 작업 범위에서 판단합니다.
@@ -355,22 +406,24 @@ Inner loop: observe -> act -> inspect feedback -> next action
 
 ## 8. 용어 정리
 
-| 용어                | 정의                                                               |
-|---------------------|--------------------------------------------------------------------|
-| Loop                | 목표·입력·검증·정지 조건에 따라 에이전트 작업을 반복하는 흐름      |
-| Automation          | 스케줄에 따라 발동하여 작업을 발견·분류하는 트리거                 |
-| Worktree            | git worktree 기반 격리 작업 디렉토리 (에이전트 간 충돌 방지)       |
-| Skill               | SKILL.md에 절차를 기록하고, 이름·설명으로 발견해 선택 시 본문 로드 |
-| Connector           | MCP 기반으로 외부 도구(이슈 트래커, DB, Slack)에 연결              |
-| Sub-agent           | 별도 작업 지침·context로 작업을 수행하는 보조 agent                |
-| Memory              | 단일 대화 밖에서 상태를 보존하는 디스크 기반 파일                  |
-| /goal               | thread에 목표를 유지하고 완료·중단·예산 등 정지 조건까지 진행      |
-| /loop               | Claude Code의 세션 내 주기 재호출 명령; 수명·재개 제약 확인        |
-| Triage              | 발견된 작업의 우선순위 분류 (자동화의 출력)                        |
-| Intent Debt         | 에이전트가 의도의 빈틈을 추측으로 메우면서 발생하는 품질 저하      |
-| Comprehension Debt  | 직접 쓰지 않은 코드가 늘면서 이해도가 떨어지는 현상                |
-| Cognitive Surrender | 루프 결과를 비판 없이 수용하는 인지적 포기 상태                    |
-| Orchestration Tax   | 병렬 에이전트 관리에 드는 사람의 오버헤드                          |
+| 용어                | 정의                                                                                  |
+|---------------------|---------------------------------------------------------------------------------------|
+| Loop                | 목표·입력·검증·정지 조건에 따라 에이전트 작업을 반복하는 흐름                         |
+| Automation          | 스케줄에 따라 발동하여 작업을 발견·분류하는 트리거                                    |
+| Worktree            | git worktree 기반 격리 작업 디렉토리 (에이전트 간 충돌 방지)                          |
+| Skill               | SKILL.md에 절차를 기록하고, 이름·설명으로 발견해 선택 시 본문 로드                    |
+| Connector           | MCP 기반으로 외부 도구(이슈 트래커, DB, Slack)에 연결                                 |
+| Sub-agent           | 별도 작업 지침·context로 작업을 수행하는 보조 agent                                   |
+| Memory              | 단일 대화 밖에서 상태를 보존하는 디스크 기반 파일                                     |
+| /goal               | thread에 목표를 유지하고 완료·중단·예산 등 정지 조건까지 진행                         |
+| /loop               | Claude Code의 세션 내 주기 재호출 명령; 수명·재개 제약 확인                           |
+| Triage              | 발견된 작업의 우선순위 분류 (자동화의 출력)                                           |
+| Intent Debt         | 에이전트가 의도의 빈틈을 추측으로 메우면서 발생하는 품질 저하 (Osmani의 다른 글 용어) |
+| Comprehension Debt  | 직접 쓰지 않은 코드가 늘면서 이해도가 떨어지는 현상                                   |
+| Cognitive Surrender | 루프 결과를 비판 없이 수용하는 인지적 포기 상태                                       |
+| Orchestration Tax   | 병렬 에이전트 관리에 드는 사람의 오버헤드 (Osmani의 다른 글 용어)                     |
+| Ralph 루프          | 같은 프롬프트를 반복 실행하는 단순 루프 기법 (Huntley, 2025-07)                       |
+| Back-pressure       | 테스트·검사 실패가 다음 반복의 행동을 바꾸게 하는 되먹임                              |
 
 [⬆ 목차로 돌아가기](#목차)
 
@@ -378,8 +431,10 @@ Inner loop: observe -> act -> inspect feedback -> next action
 
 ## 참고 자료
 
-- Addy Osmani: [Loop Engineering](https://addyosmani.com/blog/loop-engineering/) — ★★☆☆☆
-- Addy Osmani: [Practical Loop Engineering](https://addyosmani.com/blog/practical-loop-engineering/) — ★★☆☆☆
+- Addy Osmani: [Loop Engineering](https://addyosmani.com/blog/loop-engineering/) (2026-06-07) — ★★☆☆☆
+- Addy Osmani: [Practical Loop Engineering](https://addyosmani.com/blog/practical-loop-engineering/) (2026-08-14), [O'Reilly Radar 재게재](https://www.oreilly.com/radar/practical-loop-engineering/) (2026-11-02) — ★★☆☆☆
+- Geoffrey Huntley: [Ralph Wiggum as a "software engineer"](https://ghuntley.com/ralph) (2025-07-14) — ★★☆☆☆
+- [1차 자료 대조 노트](../../_reference/harness_loop_engineering_sources_notes.md) (확인일 2026-11-28)
 - Anthropic: [Goals](https://code.claude.com/docs/en/goal), [Scheduled tasks](https://code.claude.com/docs/en/scheduled-tasks) — ★★★☆☆
 - [Harness/Loop 참고 저장소](../../_reference/github_references.md#4-harnessloop)
 - OpenAI Skills: [learn.chatgpt.com/docs/build-skills](https://learn.chatgpt.com/docs/build-skills) — ★★★☆☆
@@ -401,6 +456,6 @@ Inner loop: observe -> act -> inspect feedback -> next action
 
 **작성일**: 2026-07-02
 
-**마지막 업데이트**: 2026-11-16
+**마지막 업데이트**: 2026-11-28
 
 © 2026 siasia86. Licensed under CC BY 4.0.
