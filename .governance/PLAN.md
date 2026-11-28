@@ -317,6 +317,8 @@ local 환경에 wrapper가 없으면 승인된 30 artifact를 먼저 설치합�
 
 미시험: Windows·Hyper-V 실제 빌드, sysprep·OOBE 실행, SetupComplete.cmd 실행. 00 템플릿에 제안할 점은 04 회신에 적습니다.
 
+결과: 2026-11-28 사용자 확인 "push 진행" 뒤 `139ae43`으로 push했고 CI run 46146887348이 성공했습니다. 빌드·sysprep 결과 문장은 04의 [보고] 표시로만 적었습니다.
+
 ---
 
 ## 참고 자료
