@@ -283,6 +283,7 @@ Linux, 네트워크, 보안, 데이터베이스, 인프라 도구, SRE 프로세
 | [Windows Server 핵심 개념](02_infrastructure/windows_server/windows_server_key_concepts.md)    | AD, DNS, 역할 서비스           |
 | [SCVMM 가이드](02_infrastructure/windows_server/scvmm_guide.md)                                | VM 중앙 관리 플랫폼            |
 | [Hyper-V](02_infrastructure/windows_server/hyper_v.md)                                         | 설치, 가상 스위치, Linux VM    |
+| [Windows 골든 이미지](02_infrastructure/windows_server/windows_golden_image_sysprep.md)        | Packer·응답 파일·sysprep       |
 | [IIS](02_infrastructure/windows_server/iis.md)                                                 | 사이트, 애플리케이션 풀, HTTPS |
 
 ### Data Pipeline
@@ -685,6 +686,6 @@ sia-readme-inventory-check README.md
 
 **작성일**: 2026-03-11
 
-**마지막 업데이트**: 2026-11-27
+**마지막 업데이트**: 2026-11-28
 
 © 2026 siasia86. Licensed under CC BY 4.0.

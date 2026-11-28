@@ -20,11 +20,13 @@ values = [
     "local", "vagrant", "hardcoded-password",
     # 설명 문장의 단어(PASS 규칙, fstab pass 열, GHSA ID 일부)
     "VPN", "0=검사", "공격자",
+    # Windows 응답 파일의 구성 패스 이름(pass 속성)과 Microsoft 공개 publicKeyToken
+    "windowsPE", "oobeSystem", "31bf3856ad364e35",
 ]
 
 # internal-host 규칙 허용(규칙+경로). 값이 아니라 경로로 허용하므로 그 파일의 다른 규칙은 계속 검사합니다.
 
-# 문서용 예시 호스트(db01.corp.example, web01.internal, primary.db.internal, dev.game.internal 등)
+# 문서용 예시 호스트 이름(내부 이름 규칙에 걸리는 example·internal 형식)
 [[allow]]
 rule = "internal-host"
 path = "01_fundamentals/networking/softether_vpn_linux_server_ops.md"

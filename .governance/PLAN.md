@@ -4,11 +4,11 @@
 
 ## 목차
 
-| 섹션                                                                                                                           |
-|--------------------------------------------------------------------------------------------------------------------------------|
-| [1. Repository 목적](#1-repository-목적) / [2. 30 통합 역할](#2-30-통합-역할) / [3. 관리 범위](#3-관리-범위)                   |
-| [4. 현재 상태](#4-현재-상태) / [5. 문서 운영 계획](#5-문서-운영-계획) / [6. 검증과 rollback](#6-검증과-rollback)               |
-| [7. DO-07 DevOps 주제 문서](#7-do-07-devops-주제-문서) / [8. DO-10 이미지 판 관리·승격 문서](#8-do-10-이미지-판-관리승격-문서) |
+| 섹션                                                                                                                                                                                            |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [1. Repository 목적](#1-repository-목적) / [2. 30 통합 역할](#2-30-통합-역할) / [3. 관리 범위](#3-관리-범위)                                                                                    |
+| [4. 현재 상태](#4-현재-상태) / [5. 문서 운영 계획](#5-문서-운영-계획) / [6. 검증과 rollback](#6-검증과-rollback)                                                                                |
+| [7. DO-07 DevOps 주제 문서](#7-do-07-devops-주제-문서) / [8. DO-10 이미지 판 관리·승격 문서](#8-do-10-이미지-판-관리승격-문서) / [9. DO-11 Windows sysprep 문서](#9-do-11-windows-sysprep-문서) |
 
 ---
 
@@ -304,6 +304,19 @@ local 환경에 wrapper가 없으면 승인된 30 artifact를 먼저 설치합�
 
 결과(2026-11-27, `d752a77`): 4개 모두 작성. 참조 노트 5개(vagrant_box_versioning, packer_manifest, container_image_promotion, harbor, cloud_image_galleries). 서명·SBOM(cosign·Syft)은 컨테이너 문서 7절에 포함. Hyper-V·VirtualBox·libvirt 실제 빌드, `vagrant up`, Harbor·ECR·HCP Packer 실행은 미시험.
 
+## 9. DO-11 Windows sysprep 문서
+
+04 세션의 직접 요청 DO-11(2026-11-28)으로 Windows 11 Hyper-V Packer sysprep 골든 이미지 과정과 개념을 범용 문서로 씁니다. 00 비공개 템플릿은 구조 근거로만 읽고 이름·값·구성은 옮기지 않습니다. 빌드 성공과 sysprep 단계 결과는 04 확인 전에는 쓰지 않습니다.
+
+| 순서 | 문서                                                               | 내용                                                         | 시험                                       |
+|------|--------------------------------------------------------------------|--------------------------------------------------------------|--------------------------------------------|
+| 1    | `_reference/windows_sysprep_official_notes.md`                     | 옵션, generalize 제한, 로그, Store 앱 실패, 서버 역할        | 공식 문서 대조                             |
+| 2    | `_reference/windows_unattend_answer_file_official_notes.md`        | 검색 순서, Panther 캐시, SetupComplete.cmd, 계정 설정, 로그  | 공식 문서 대조                             |
+| 3    | `02_infrastructure/windows_server/windows_golden_image_sysprep.md` | 빌드 흐름, 응답 파일 두 개, 비밀번호 위치, 결과물, 문제 해결 | HCL fmt·syntax-only, XML 형식, pwsh 구문만 |
+| 4    | `02_infrastructure/iac/packer.md`, `hyper_v.md`                    | 연결, Packer 로그 환경 변수                                  | 링크 검사                                  |
+
+미시험: Windows·Hyper-V 실제 빌드, sysprep·OOBE 실행, SetupComplete.cmd 실행. 00 템플릿에 제안할 점은 04 회신에 적습니다.
+
 ---
 
 ## 참고 자료
@@ -315,6 +328,6 @@ local 환경에 wrapper가 없으면 승인된 30 artifact를 먼저 설치합�
 
 **작성일**: 2026-08-27
 
-**마지막 업데이트**: 2026-11-27
+**마지막 업데이트**: 2026-11-28
 
 © 2026 siasia86. Licensed under CC BY 4.0.

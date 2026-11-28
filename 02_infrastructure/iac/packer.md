@@ -209,6 +209,7 @@ boot_command = [
 
  # Windows — Autounattend.xml 무인 설치 (설치 옵션 입력은 불필요)
  # UEFI(Gen2)의 "Press any key to boot from CD or DVD" 대기만 키 입력으로 넘김
+ # 놓치면 설치가 시작되지 않으므로 boot_wait와 키 반복을 조정 (Windows 골든 이미지 문서 9절)
 boot_command = ["<enter>"]
 ```
 
@@ -348,6 +349,8 @@ packer build rocky9.pkr.hcl *>&1 | Tee-Object -FilePath packer_build.log -Append
 🟡 `Out-File` 파이프는 packer 종료 후에야 flush됩니다.
 실시간 확인이 필요하면 `Tee-Object`를 사용합니다.
 
+Packer 자체 로그는 `PACKER_LOG`(빈 값·0 제외)와 `PACKER_LOG_PATH`를 함께 지정해야 파일로 남습니다. `PACKER_LOG_PATH`만으로는 남지 않습니다.
+
 ### ISO 캐시 관리
 
 다운로드된 ISO는 `packer_cache/` 디렉토리에 저장됩니다.
@@ -377,6 +380,7 @@ Remove-Item -Recurse packer_cache
 - [Hyper-V](../windows_server/hyper_v.md) — Hyper-V 설치, 가상 스위치, Linux VM 설정
 - [VM 이미지 판 관리](./vm_image_versioning.md) — manifest·checksum 후처리기로 판·체크섬 기록, box catalog
 - [이미지 판 관리와 단계별 승격](../cicd/image_versioning_and_promotion.md) — 한 번 빌드하고 단계별로 올리는 원칙
+- [Windows 골든 이미지](../windows_server/windows_golden_image_sysprep.md) — Windows 11 무인 설치, 응답 파일 두 개, sysprep 일반화
 
 ---
 
@@ -391,6 +395,6 @@ Remove-Item -Recurse packer_cache
 
 **작성일**: 2026-06-04
 
-**마지막 업데이트**: 2026-11-27
+**마지막 업데이트**: 2026-11-28
 
 © 2026 siasia86. Licensed under CC BY 4.0.

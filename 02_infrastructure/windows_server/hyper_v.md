@@ -276,6 +276,7 @@ grep -c -E 'vmx|svm' /proc/cpuinfo       # 0보다 크면 노출됨
 - [Windows Server 에디션과 라이선스](./windows_server_editions_licensing.md) — 가상화 권한
 - [Vagrant](../iac/vagrant.md) — Hyper-V provider로 VM을 코드로 만들기 (10절)
 - [Packer](../iac/packer.md) — `hyperv-iso` 빌더로 VM 이미지 만들기 (4절)
+- [Windows 골든 이미지](./windows_golden_image_sysprep.md) — Packer·sysprep로 일반화 VHDX 만들기
 - [Docker 네트워크](../containers/docker_network.md) — VM 안 macvlan과 MAC 스푸핑
 
 ---
@@ -306,6 +307,6 @@ grep -c -E 'vmx|svm' /proc/cpuinfo       # 0보다 크면 노출됨
 
 **작성일**: 2026-11-23
 
-**마지막 업데이트**: 2026-11-23
+**마지막 업데이트**: 2026-11-28
 
 © 2026 siasia86. Licensed under CC BY 4.0.
